@@ -308,5 +308,62 @@ The rule fails with the following call trace:
 
 ![](../.gitbook/assets/iterate1.png)
 
-Let's unpack what can be seen here. First, the length of the `keys` array is 1, and we read a key `22f2`. We than write `100` to it in the map, and then `iterate` function is done. We then note that `someKey`, the key that we want to check for, is not `22f2`, but rather `20c9`. While we assumed that it is contained in the map, using the `contains` function, it is not contained in the `keys` array. This is expected since the state that the Prover starts with can be completely arbitrary, subject to constraints that we specify on the state. We wish to leave the `contains` function to be an `O(1)` complexity function, and rather provide the tool with the invariants that will allow it to see only states that "make sense", or in more precise terms, we only want to see states where the `keys` array contains exactly the same elements as the non-zero valued keys in the map
+Let's unpack what can be seen here. First, the length of the `keys` array is 1, and we read a key `22f2`. We than write `100` to it in the map, and then `iterate` function is done. We then note that `someKey`, the key that we want to check for, is not `22f2`, but rather `20c9`. While we assumed that it is contained in the map, using the `contains` function, it is not contained in the `keys` array. This is expected since the state that the Prover starts with can be completely arbitrary, subject to constraints that we specify on the state. We wish to leave the `contains` function to be an `O(1)` complexity function, and rather provide the tool with the invariants that will allow it to see only states that "make sense", or in more precise terms, we only want to see states where the `keys` array contains exactly the same elements as the non-zero valued keys in the map.
+
+In mathematical terms, the invariant that our `IterableMap` contract should satisfy is:
+
+$$
+\forall x. (map(x) \neq 0 \iff \exists i. 0\leq i \leq keys.length \land keys[i] =x)
+$$
+
+This invariant can be encoded directly in the spec file, as follows \(for convenience we assume `keys` is public and has a getter\):
+
+```text
+invariant inMapIffInArray(uint x) 
+    get(x) != 0 <=> 
+        (exists uint i. 0 <= i && i < getNumOfKeys() && keys(i) == x)
+```
+
+It is however not recommended to invoke the underlying contract directly within quantified expressions \(such as `exists uint i. ...`\). The complexity of the underlying bytecode might lead to timeouts, and thus it is recommended to move to _ghost variables_. Ghost variables, once properly instrumented, allow us to write specs that are separated from the many technicalities of low-level bytecode, and are thus a powerful abstraction tool. 
+
+We will write the above invariant using ghost variables exclusively. First, we will declare ghost variables for the underlying map structure as a function mapping keys to values:
+
+```text
+ghost _map(uint) returns uint;
+```
+
+The above declaration declares a _ghost function_. The ghost function takes a `uint` argument \(represnting a key in the map\) and returns a `uint` value. We want `_map` to return for each given key the same value as returned by the `map` in the code. We can state this property as an invariant:
+
+```text
+invariant checkMapGhost(uint someKey) get(someKey) == _map(someKey)
+```
+
+Currently, the rule fails for all state-mutating functions, and even in the contract's initial state after constructor \(rule `checkMapGhost_instate`\):
+
+![](../.gitbook/assets/image.png)
+
+This is in fact unsurprising. There is nothing in the spec that links the value of the ghost to its Solidity counterpart. To make that link, we write _hooks_. Hooks allow us to instrument the verified code, that is, to wrap a bytecode operation with our own code, defined in the spec file. 
+
+For example, we can hook on `SSTORE` operations that write to the underlying map as follows:
+
+```text
+hook Sstore map[KEY uint k] uint v STORAGE {
+    havoc _map assuming _map@new(k) == v &&
+        (forall uint k2. k2 != k => _map@new(k2) == _map@old(k2));
+}
+```
+
+This hook will match on every storage write to `map[k]`, denoting the written value by `v`. Optionally, and not shown in the syntax above, we can also specify the ovewritten value of `map[k`\]. The body of the hook is the injected code. It will apply `havoc` on the `_map` ghost, meaning that every key-value association it stored is "forgotten" by the prover, and results in a completely new instance of `_map`. However, we restrict the new instance of `_map` using the old `_map` definition, with the `assuming ...` syntax. Under `assuming` we get a two-state context: we can see both old and new instances of `_map`, accessible with `_map@old` and `_map@new`. We require that `_map@old` and `_map@new` are exactly the same for all keys except for `k`, the one we write to, and for `k` we require that `_map@new(k) == v` .
+
+If we run `checkMapGhost` with only the `SSTORE` hook, the rule will pass for all functions but fail in the initial state, where no values were written. It is possible to specify initial state axioms on ghosts.
+
+Similarly, one could define `SLOAD` hooks:
+
+```text
+hook Sload uint v map[KEY uint k] STORAGE {
+    require _map(k) == v;
+}
+```
+
+This hook says that every time the Prover encounters an `SLOAD` operation that reads the value `v` from `map[k]`, it will inject the code within the body of the hook after the `SLOAD`. This will make our `checkMapGhost` rule pass, but it's also become a tautology, because it's always true: by calling `get` we're already calling instrumented code that requires `_map(k) == v` whenever we load an arbitrary value `v` from the key `k`.
 
