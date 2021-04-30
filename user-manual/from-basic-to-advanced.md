@@ -326,6 +326,8 @@ invariant inMapIffInArray(uint x)
 
 It is however not recommended to invoke the underlying contract directly within quantified expressions \(such as `exists uint i. ...`\). The complexity of the underlying bytecode might lead to timeouts, and thus it is recommended to move to _ghost variables_. Ghost variables, once properly instrumented, allow us to write specs that are separated from the many technicalities of low-level bytecode, and are thus a powerful abstraction tool. 
 
+### A soft introduction to ghosts
+
 We will write the above invariant using ghost variables exclusively. First, we will declare ghost variables for the underlying map structure as a function mapping keys to values:
 
 ```text
