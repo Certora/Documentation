@@ -231,57 +231,6 @@ contract IterableMap {
 }
 ```
 
-We can now run the original spec file on the new contract. Unfortunately, not all rules are passing. The `inverses` rule is failing. Let's consider the call trace for this rule:
-
-![](../.gitbook/assets/inverses.png)
-
-### The IterableMap contract
-
-The `IterableMap` will maintain an internal array of the keys inserted to the map. In the next section, we will add an iteration function.
-
-```text
-contract IterableMap {
-    mapping(uint => uint) internal map;
-    function get(uint key) public view returns(uint) { return map[key]; }
-
-    uint[] internal keys;
-    function numOfKeys() external view returns (uint) { return keys.length; }
-
-    function insert(uint key, uint value) external {
-        require(value != 0, "0 is not a valid value");
-        require (!exists(key), "key already exists");
-        map[key] = value;
-    }
-
-    function remove(uint key) external {
-        require (map[key] != 0, "Key does not exist");
-        map[key] = 0;
-        uint i = indexOf(key);
-        if (i < keys.length - 1) {
-            keys[i] = keys[keys.length-1];
-        }
-        keys.pop();
-    }
-
-    function contains(uint key) internal view returns (bool) {
-        if (map[key] == 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    function indexOf(uint key) internal view returns (uint) {
-        for (uint i = 0 ; i < keys.length ; i++) {
-            if (keys[i] == key) {
-                return i;
-            }
-        }
-        require(false, "Could not find key");
-    }
-}
-```
-
 We can now run the original spec file on the new contract. Unfortunately, not all rules are passing. The `inverses` rule is failing. The assertion message tells us `Unwinding condition in a loop`. It is output whenever we encounter a loop that cannot be finitely unrolled. To avoid misdetections of bugs, the Prover outputs an assertion error in the loop's stop condition. We can control how many times the loops are unrolled, and in the future the Prover will also support specification of inductive invariants for full loop coverage. In our example, we can start by simply assuming loops can be fully unrolled even if only unrolled once, by specifying `--settings -assumeUnwindCond` in the command line for running the Prover.
 
 Even then `inverses` still fails. Let's consider the call trace for this rule: 
