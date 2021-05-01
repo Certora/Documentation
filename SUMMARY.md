@@ -6,9 +6,12 @@
 ## User Manual
 
 * [Specification by example](user-manual/specification/README.md)
-  * [Specification Basics in Specify](user-manual/specification/specification-basics-in-specify.md)
-  * [Understanding the results of the Certora Prover](user-manual/specification/understanding-the-results-of-the-certora-prover.md)
-  * [Hyperproperties](user-manual/specification/hyperproperties.md)
+  * [The Bank](user-manual/specification/specification-basics-in-specify/README.md)
+    * [Types](user-manual/specification/specification-basics-in-specify/types.md)
+    * [Keywords](user-manual/specification/specification-basics-in-specify/keywords.md)
+    * [Commands](user-manual/specification/specification-basics-in-specify/commands.md)
+    * [Understanding the results of the Certora Prover](user-manual/specification/specification-basics-in-specify/understanding-the-results-of-the-certora-prover.md)
+    * [Hyperproperties](user-manual/specification/specification-basics-in-specify/hyperproperties.md)
 * [From basic to advanced](user-manual/from-basic-to-advanced.md)
 * [Advanced subjects](user-manual/advanced-subjects/README.md)
   * [Multicontract](user-manual/advanced-subjects/multicontract.md)
