@@ -4,7 +4,10 @@
 
 The `IterableMap` will maintain an internal array of the keys inserted to the map. In the next section, we will add an iteration function.
 
+{% code title="IterableMap.sol" %}
 ```text
+pragma solidity ^0.7.0;
+
 contract IterableMap {
     mapping(uint => uint) internal map;
     function get(uint key) public view returns(uint) { return map[key]; }
@@ -46,6 +49,7 @@ contract IterableMap {
     }
 }
 ```
+{% endcode %}
 
 We can now run the original spec file on the new contract. Unfortunately, not all rules are passing. The `inverses` rule is failing. The assertion message tells us `Unwinding condition in a loop`. It is output whenever we encounter a loop that cannot be finitely unrolled. To avoid misdetections of bugs, the Prover outputs an assertion error in the loop's stop condition. We can control how many times the loops are unrolled, and in the future the Prover will also support specification of inductive invariants for full loop coverage. In our example, we can start by simply assuming loops can be fully unrolled even if only unrolled once, by specifying `--settings -assumeUnwindCond` in the command line for running the Prover.
 

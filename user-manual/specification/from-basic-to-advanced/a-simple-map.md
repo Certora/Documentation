@@ -6,6 +6,7 @@
 
 The below code contains the implementation of a simple map data structure, holding `uint` keys, `uint` values, and assuming that the value `0` indicates a non-existent key. It is possible to get, insert, or remove a key from the map.
 
+{% code title="SimpleMap.sol" %}
 ```text
 pragma solidity ^0.7.0;
 
@@ -33,6 +34,7 @@ contract SimpleMap {
     }
 }
 ```
+{% endcode %}
 
 In the next sections of the tutorial, we will generalize this trivial contract to support enumeration of the keys in the map.
 
@@ -46,6 +48,7 @@ Rules that generalize unit tests focus on a single state-mutating function of th
 
 Here is a simple rule for the `insert` function:
 
+{% code title="simpleMap.spec" %}
 ```text
 rule checkInsert(uint key, uint value) {
     env e;
@@ -54,6 +57,7 @@ rule checkInsert(uint key, uint value) {
     assert contains(key), "key is not contained after successful insertion";
 }
 ```
+{% endcode %}
 
 This rule checks that once a key is successfully inserted with `insert`, getting the key with `get` returns the value inserted. The `key` and `value` parameters declared in the rule's header are completely arbitrarily chosen. The `env` \(environment\) variable `e` is capturing the \(symbolic\) values of the blockchain variables, such as `msg.sender` and `block.number`. The invocation of insert expects to get as a first argument the environment variable, followed by the arguments according to the function's declaration.
 
@@ -89,6 +93,7 @@ methods {
 
 As noted before, by default invocations are assuming only the non-reverting paths of the function. It is useful to precisely characterize all conditions that guarantee that the function would not revert. We write such a rule for `insert`:
 
+{% code title="simpleMap.spec" %}
 ```text
 rule insertRevertConditions(uint key, uint value) {
     env e;
@@ -98,6 +103,7 @@ rule insertRevertConditions(uint key, uint value) {
     assert value != 0  => succeeded;
 }
 ```
+{% endcode %}
 
 Here, we invoke `insert` but append to the function name the modifier `@withrevert` that tells the Prover to skip the pruning of reverting paths. \(One could also stress that a function should prune the reverting paths using `@norevert`, although this is equivalent to not writing any modifier at all.\) We then save into a boolean variable the negation of `lastReverted`, which is a special keyword that is set to `true` if the last invocation reverted. We then assert that if the value inserted is non-zero \(recall that we consider 0 to be an illegal value in our map implementation\), then the value of `succeeded` must be true.
 
@@ -113,6 +119,7 @@ A hint towards what happened can be found in the `Variables` section. The value 
 
 We refine the rule as follows, and require that `e.msg.value` is 0:
 
+{% code title="simpleMap.spec" %}
 ```text
 rule insertRevertConditions(uint key, uint value) {
     env e;
@@ -124,6 +131,7 @@ rule insertRevertConditions(uint key, uint value) {
         => succeeded;
 }
 ```
+{% endcode %}
 
 We run the rule again, but it still fails: 
 
@@ -131,6 +139,7 @@ We run the rule again, but it still fails:
 
 We get a call trace that tells us the most important operations performed by the bytecode of the contract, on which the Prover operates. The call trace tells us that we were reading from a storage slot the value 1. To assist us in identifying the issue, in parenthesis we get a reference to the matching source code, which is the load of `map[key]` in line 19, which is where the `contains` function is defined. We understand that we forgot to include the condition that the key does not already exist in the map. So we refine the code again:
 
+{% code title="simpleMap.spec" %}
 ```text
 rule insertRevertConditions(uint key, uint value) {
     env e;
@@ -143,6 +152,7 @@ rule insertRevertConditions(uint key, uint value) {
         => succeeded;
 }
 ```
+{% endcode %}
 
 And finally our rule is successfully verified.
 
@@ -155,6 +165,7 @@ In some cases, wider coverage can be reached if we write rules that check the in
 
 The below rule shows how we can check these two assertions:
 
+{% code title="" %}
 ```text
 rule inverses(uint key, uint value) {
     env e;
@@ -167,6 +178,7 @@ rule inverses(uint key, uint value) {
     assert get(key) != value, "value of removed key must not be the inserted value";
 }
 ```
+{% endcode %}
 
 Note that we use two separate environments for `insert` and `remove` for better coverage.
 
