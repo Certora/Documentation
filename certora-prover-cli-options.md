@@ -20,7 +20,7 @@ certoraRun contractFile:contractName --verify contractName:specFile
 #### Options that help reduce the running time
 
 ```text
-[--settings -rule=rulename] process only a single rule rulename
+[--rule rulename] process only a single rule rulename
 [--settings -graphDrawLimit=0] do not generate graphs
 [--settings -t=XX] set timeout of SMT solvers to XX, default is 600 (seconds)
 ```
@@ -61,7 +61,7 @@ Enable sanity checking mode with
 --settings -ruleSanityChecks
 ```
 
-This mode will check for each rule that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requires and sinvoke does not create an “empty” rule that is always true. For example:
+This mode will check for each rule that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true. For example:
 
 ```text
 rule empty_rule() {
@@ -69,12 +69,13 @@ rule empty_rule() {
    address to; 
    uint256 amount;
    // invoke function transfer and assume - caller is e.msg.from
-   uint256 balance = sinvoke getfunds(e.msg.sender);
+   uint256 balance = getfunds(e.msg.sender);
    require (amount > balance);  
-   sinvoke transfer(e, to, amount);
+   transfer(e, to, amount);
    // check that transfer reverts if not enough funds 
    assert lastReverted , "insufficient funds"; 
-   /* this rule would fail the sanity check, because sinvoke takes into account only paths that do not revert, and all paths obeying the require reverts. */
+   /* this rule would fail the sanity check, because by default we takw into account only paths that do not revert.
+   To consider the revert path, use transfer@withRevert(e, to, amount)*/
 }
 ```
 
