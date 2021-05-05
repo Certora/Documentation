@@ -25,7 +25,7 @@ contract SimpleMap {
         map[key] = uint(0);
     }
 
-    function contains(uint key) internal view returns (bool) {
+    function contains(uint key) public view returns (bool) {
         if (map[key] == uint(0)) {
             return false;
         }
@@ -44,7 +44,7 @@ Writing rules requires us to consider what are the high-level properties our con
 
 #### Generalized unit tests
 
-Rules that generalize unit tests focus on a single state-mutating function of the contract, and make sure that the state is mutated in the expected way. The main benefits of these rules is that they are easy to come up with, due to their similarity to unit tests. The added benefit compared to unit tests is that they only use symbolic values, meaning that we check not a single set of concrete values in the unit test, but _all_ possible values.
+Rules that generalize unit tests focus on a single state-mutating function of the contract and ensure that the state is mutated as expected. The main benefits of these rules are that they are easy to develop due to their similarity to unit tests. The added advantage compared to unit tests is that they only use symbolic values, meaning that we check not a single set of concrete values in the unit test but _all_ possible values.
 
 Here is a simple rule for the `insert` function:
 
@@ -81,7 +81,7 @@ Unfortunately, the tool outputs the following error:
 [main] ERROR log.Logger - Syntax error in spec file (9:5): could not type expression "get(key)", message: Could not find an overloading of method get that matches the given arguments: uint. Method is not envfree; did you forget to provide the environment as the first function argument?
 ```
 
-The cause of the failure is that we did not pass an environment variable to the invocation of `get`. While it is possible to reuse `e` or even declare another environment variable, we note that `get` actually does not depend on any of the blockchain related variables. Thus, we can tell the Prover to relieve us from specifying the environment, by adding the following declaration to the top of the spec file:
+The cause of the failure is that we did not pass an environment variable to the invocation of `get`. While it is possible to reuse `e` or even declare another environment variable, we note that `get` does not depend on any of the blockchain-related variables. Thus, we can tell the Prover to relieve us from specifying the environment by adding the following declaration to the top of the spec file:
 
 ```text
 methods {
@@ -89,9 +89,11 @@ methods {
 }
 ```
 
+Add an envfree declaration for the method `contains` too.
+
 #### Revert conditions
 
-As noted before, by default invocations are assuming only the non-reverting paths of the function. It is useful to precisely characterize all conditions that guarantee that the function would not revert. We write such a rule for `insert`:
+As noted before, by default, invocations are assuming only the non-reverting paths of the function. It is useful to precisely characterize all conditions that guarantee that the function would not revert. We can write such a rule for `insert`:
 
 {% code title="simpleMap.spec" %}
 ```text
@@ -105,7 +107,7 @@ rule insertRevertConditions(uint key, uint value) {
 ```
 {% endcode %}
 
-Here, we invoke `insert` but append to the function name the modifier `@withrevert` that tells the Prover to skip the pruning of reverting paths. \(One could also stress that a function should prune the reverting paths using `@norevert`, although this is equivalent to not writing any modifier at all.\) We then save into a boolean variable the negation of `lastReverted`, which is a special keyword that is set to `true` if the last invocation reverted. We then assert that if the value inserted is non-zero \(recall that we consider 0 to be an illegal value in our map implementation\), then the value of `succeeded` must be true.
+Here, we invoke `insert` but append to the function name the modifier `@withrevert` that tells the Prover to skip the pruning of reverting paths. \(One could also stress that a function should prune the reverting paths using `@norevert`, although this is equivalent to not writing any modifier at all.\) We then save into a boolean variable the negation of `lastReverted`, which is a special keyword set to `true` if the last invocation reverted. We then assert that if the value inserted is non-zero \(recall that we consider 0 to be an illegal value in our map implementation\), then the value of `succeeded` must be true.
 
 {% hint style="info" %}
 `lastReverted` will _always_ be `false` following an invocation that is not permitting reverting paths.
