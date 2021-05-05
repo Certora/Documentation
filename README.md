@@ -65,7 +65,7 @@ Follow this link to view the results. A verification report is an HTML file pres
 
 Need some help? Try to run another verification on `CounterFixed.sol` and see the difference.
 
-An explanation of the results is briefly described [here](https://docs.google.com/document/d/11rKc_DgWfNrBSk38HJXDxdZWOMffc9xo_nvYLqLfMYk/edit#heading=h.lkpzkcqx8uj). To find out more about how to run the tool, see [Certora Prover CLI Options](certora-prover-cli-options.md). 
+An explanation of the results is briefly described [here](user-manual/specification/specification-basics-in-specify/understanding-the-results-of-the-certora-prover.md). To find out more about how to run the tool, see [Certora Prover CLI Options](certora-prover-cli-options.md). 
 
 Congratulations! You have just completed a verification using Certora Prover.
 
