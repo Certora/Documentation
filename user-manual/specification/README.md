@@ -8,6 +8,6 @@ description: >-
 
 ## Available examples
 
-* The Bank
-* The Map
+* [The Bank](specification-basics-in-specify/)
+* [The Map](from-basic-to-advanced/)
 
