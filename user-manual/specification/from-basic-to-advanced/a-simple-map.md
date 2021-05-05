@@ -160,7 +160,7 @@ And finally our rule is successfully verified.
 
 #### Inverses
 
-In some cases, wider coverage can be reached if we write rules that check the interaction of multiple functions with each other. In the map implementation, it is natural to check that `insert` and `remove` inverses of one another. Specifically, we'd like to check that:
+In some cases, we can reach wider coverage if we write rules that check the interaction of multiple functions with each other. In the map implementation, it is natural to check that insert and remove inverses of one another. Specifically, we'd like to check that:
 
 * Invoking `remove` after a successful `insert` must succeed too.
 * The value of a key that was inserted and immediately removed is not the value that we inserted.
