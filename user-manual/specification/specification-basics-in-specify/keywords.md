@@ -16,18 +16,21 @@ The Specify language includes the following standard identifiers:
 
 {% code title="bank.spec" %}
 ```javascript
-// A rule with two free variables: 
-//     - to - the address the transfer is passed to 
-//     - amount - the amount of money to pass
 rule transfer_reverts() {
-   env e; 
-   address to; 
-   uint256 amount;
-   // invoke function transfer and assume the caller is w.msg.from
-   uint256 balance = getFunds(e, e.msg.sender);
-   transfer@withrevert(e, to, amount);
-   // check that transfer reverts if the sender does not have enough funds 
-   assert balance < amount => lastReverted , "insufficient funds"; 
+	// A rule with two free variables: 
+	//     - to - the address the transfer is passed to 
+	//     - amount - the amount of money to pass
+	address to; 
+	uint256 amount;
+	
+	env e;
+	// Get the caller's balance before the invocation of transfer
+	uint256 balance = getFunds(e.msg.sender);
+
+	// invoke function transfer and assume the caller is w.msg.from
+	transfer@withrevert(e, to, amount);
+	// check that transfer reverts if the sender does not have enough funds 
+	assert balance < amount => lastReverted , "insufficient funds"; 
 }
 ```
 {% endcode %}
