@@ -8,12 +8,12 @@ description: >-
 
 ## Predefined types
 
-* `env` - represents the environment of the EVM during execution. This type contains the following fields, for an instance `env e`:
+* `env` - represents the environment of the EVM during execution. For an instance `env e`, it contains the following fields:
   * `e.msg.address` - address of the contract being verified, e.g., `Bank`
-  * `e.msg.sender` -  sender of the message 
+  * `e.msg.sender` -  address of the sender of the message 
   * `e.msg.value` - number of wei sent with the message
   * `e.block.number` - current block number
-  * `e.block.timestamp` - current time stamp
+  * `e.block.timestamp` - current block's time stamp
   * `e.tx.origin` - original message sender
 * `method` - represents methods and their attributes. This type contains the following fields for an instance `method m`:
   * `m.name` - the name of the method m
@@ -21,11 +21,11 @@ description: >-
   * `m.isPure` - true when m is declared with the pure attribute
   * `m.isView` - true when m is declared with the view attribute
   * `m.numberOfArguments` - the number of arguments to method m
-* `mathint` - represents an integer, positive or negative, of any value. Namely, it is not bounded by the number of bits that are used to represent it.
+* `mathint` - represents an integer, positive or negative, of any value. Namely, it is not bounded by the number of bits that represent it.
 
 ## EVM types vs. mathematical types
 
-In Specify, arithmetic operators \(+, -, \* and /\) are overloaded: they could mean a machine-arithmetic operation that can overflow, or a mathematical operation that does not overflow. The default interpretation used in almost all cases is the mathematical one. Therefore, the below assertion holds:
+In Specify, arithmetic operators \(+, -, \* and /\) are overloaded: they could mean a machine-arithmetic operation that can overflow, or a mathematical operation that does not overflow. The default interpretation used in almost all cases is the mathematical one. Therefore, the assertion below holds:
 
 ```javascript
 uint x;
@@ -48,12 +48,12 @@ mathint y = x + 1;
 assert y > x;
 ```
 
-The meaning is the same as in the first snippet, since an assignment to a `mathint` variable allows non-overflowing interpretations of the arithmetic operators.
+The meaning is the same as in the first snippet since an assignment to a `mathint` variable allows non-overflowing interpretations of the arithmetic operators.
 
-The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to invoke, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if `mathint` variable is passed directly as an invoke argument.
+The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to functions, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if `mathint` variable is passed directly as a function argument.
 
 ```javascript
-uint MAX_INT = ...;
+uint256 MAX_INT = 2**256 - 1;
 foo(MAX_INT + 1); // equivalent to invoking foo(0)
 assert MAX_INT + 1 == 0; // always false, because ‘+’ here is mathematical
 

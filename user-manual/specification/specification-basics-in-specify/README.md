@@ -15,6 +15,8 @@ Consider the following contract interface to implement a simple bank:
 
 {% code title="Bank.sol" %}
 ```javascript
+pragma solidity >= 0.4.24 < 0.8;
+
 contract Bank {
     mapping (address => uint) public funds;
     uint public totalFunds;
@@ -38,15 +40,19 @@ And here is a rule for verifying that withdraw either reverts or returns true.
 {% code title="bank.spec" %}
 ```javascript
 rule withdraw_succeeds {
-   env e; // env represents the bytecode environment passed on every call
-   // invoke function withdraw and assume that it does not revert
-   bool success = withdraw(e);  // e is passed as an additional arg
-   assert success, “withdraw must succeed”; // verify that withdraw succeed
+	/* The env type represents the EVM parameters passed in every 
+	   call (msg.*, tx.*, block.* variables in solidity 
+	 */
+	env e; 
+	// Invoke function withdraw and assume it does not revert
+	/* For non-envfree methods, the environment is passed as the first argument*/
+	bool success = withdraw(e);
+	assert success, "withdraw must succeed";
 }
 ```
 {% endcode %}
 
-The rule calls withdraw with an arbitrary EVM environment \(`e`\) in an arbitrary initial state. It assumes that the function does not revert.  The assert command checks that success is true on all potential executions. Notice that each Solidity function has an extra argument, which is the EVM environment.
+The rule calls withdraw with an arbitrary EVM environment \(`e`\) in an arbitrary initial state. It assumes that the function does not revert. The assert command checks that success is true on all potential executions. Notice that each Solidity function has an extra argument, which is the EVM environment.
 
 ## Parametric rules
 
@@ -54,22 +60,24 @@ To simulate the execution of all functions in the contract, you can define a met
 
 {% code title="bank.spec" %}
 ```javascript
-rule others_can_only_increase_balance {
-   method f; // an arbitrary function in the contract
-   env e;  // the execution environment
-   address other; // a different account
-   // assume msg.sender is a different address
-   require e.msg.sender != other;
-   // get balance before the function call
-   uint256 _balance = getFunds(e,other);
-   // exec some method
-   calldataarg arg; // any argument
-   f(e,arg); // successful (potentially state-changing!)
-   //get balance after
-   uint256 balance_ = getFunds(e,other);
-   // balance should not be reduced by any operation
-   // may increase due to a transfer from msg.sender to other
-   assert _balance <= balance_ ,"withdraw from others balance"; 
+rule others_can_only_increase_my_balance() {
+	method f; // an arbitrary function in the contract
+	env e;  // the execution environment
+
+	address other;
+	// Assume the actor and the other address are distinct
+	require e.msg.sender != other;
+
+	// Get the balance of `other` before the invocation
+	uint256 _balance = getFunds(other);
+	
+	calldataarg arg; // any argument
+	f(e, arg); // successful (potentially state-changing!)
+	
+	// Get the balance of `other` after the invocation
+	uint256 balance_ = getFunds(other);
+	
+	assert _balance <= balance_, "Reduced the balance of another address";
 }
 ```
 {% endcode %}
@@ -90,6 +98,8 @@ rule invariantAsRule(method f) {
     assert exp;
 }
 ```
+
+Unlike a rule, the invariant also checks that `exp` holds right after the constructor of the code.
 
 ### Declaring functions used in the invariant
 
