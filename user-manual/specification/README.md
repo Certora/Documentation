@@ -8,7 +8,7 @@ description: >-
 
 ## Available examples
 
-All avialable examples can be found in [our repository](https://github.com/Certora/CertoraProverSupplementary/tree/master/Examples).
+All available examples contracts and specification files can be found in [our repository](https://github.com/Certora/CertoraProverSupplementary/tree/master/Examples).
 
 * [The Bank](specification-basics-in-specify/)
 * [The Map](from-basic-to-advanced/)
