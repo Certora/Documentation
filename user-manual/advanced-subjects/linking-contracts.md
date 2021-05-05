@@ -44,7 +44,7 @@ contract Bank {
     }
 ```
 
-If we check `Bank` on its own without the knowledge of the code of `BankStorage`, the Certora Prover is not able to guarantee that the code of `Bank` is correct. This is because the implementation of `BankStorage` may not behave in the intended way.
+If we check `Bank` on its own without knowing the code of `BankStorage`, the Certora Prover cannot guarantee that the code of `Bank` is correct. This is because the implementation of `BankStorage` may not behave as intended.
 
 One way to overcome this problem is by _linking_ the `Bank` contract to `BankStorage`. This is done as follows:
 

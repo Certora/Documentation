@@ -1,6 +1,6 @@
 # Multicontract
 
-When we run the Certora Prover we usually write the specification with a particular contract in mind. However, the checked contract may interact with other contracts, e.g. other contracts that belong to the same protocol, or 3rd party contracts such as ERC20.
+When we run the Certora Prover, we usually write the specification with a particular contract in mind. However, the checked contract may interact with other contracts, e.g., other contracts that belong to the same protocol, or 3rd party contracts such as ERC20.
 
 The Certora Prover allows modeling the interaction between concrete instances of contracts. First, one has to include all relevant contracts in the verification context. For example, if we have `Protocol.sol` interacting with another contract `Auxiliary.sol`, we will run the tool as follows:
 
