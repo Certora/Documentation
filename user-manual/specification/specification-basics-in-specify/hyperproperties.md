@@ -26,7 +26,7 @@ rule additiveTransfer(uint256 amt1, uint256 amt2, address from, address to) {
 	uint256 balanceFromCase2 = getFunds(from);
 	assert balanceToCase1 == balanceToCase2 && 
 		   balanceFromCase1 == balanceFromCase2, 
-		   "expected transfer to be additive" ;
+		   "expected transfer to be additive";
 ```
 
 
