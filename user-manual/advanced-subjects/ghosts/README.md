@@ -35,7 +35,7 @@ contract Bank {
 ```
 {% endcode %}
 
-The state of the contract consists of `totalSupply` and `balances` where `balances` keeps track of the balance in each account and `totalSupply` keeps track of the sum of all balances. Now let's suppose that we don't trust that `totalSupply` gets updated correctly. What we can do is introduce a ghost function to keep track of the sum, and then compare that ghost function with `totalSupply` to see if they both got updated as expected. Here's what that looks like:
+The state of the contract consists of `totalSupply` and `balances` where `balances` keeps track of the balance in each account and `totalSupply` keeps track of the sum of all balances. Now let's suppose that we don't trust that `totalSupply` gets updated correctly. We can  introduce a ghost function to keep track of the sum and then compare that ghost function with `totalSupply` to see if they both got updated as expected. Here's what that looks like:
 
 {% code title="Bank.spec" %}
 ```cpp
@@ -66,9 +66,9 @@ rule totalSupplyInvariant(method f) {
 
 There are a few things going on here. 
 
-1. We declared `ghost ghostSupply() returns uint256`. This creates an uninterpreted function called `ghostSupply` that takes 0 arguments and returns a `uint256`. Notice that this is in a global scope. Each rule will get it's own version of this uninterpreted function, but this way it doesn't have to be written several times.
-2. We declared a `hook`, This hook tells the tool to analyze the TAC for the rule and find every `Sstore` \(write\) to an entry in `balances`. It binds the value _written_ to the name `balance` and the _old value_ to the name `old_balance`.
-3. We defined a _ghost update_ inside the _body_ of the hook. We used a _havoc assuming_ statement to mutate the ghost function. The _havoc assuming_ statement---in this case `havoc ghostSupply assuming` binds `ghostSupply@new()`, the havoc'd version and `ghostSupply@old()` the pre-havoc version. `ghostSupply` does not exist to the right of `assuming`. We then constrain the new version in terms of the old.
+1. We declared `ghost ghostSupply() returns uint256`. This creates an uninterpreted function called `ghostSupply` that takes 0 arguments and returns a `uint256`. Notice that this is in a global scope. Each rule will get its own version of this uninterpreted function, but this way, it doesn't have to be written several times.
+2. We declared a `hook`. This hook tells the tool to analyze the ~~TAC for the~~ rule and find every `Sstore` \(write\) to an entry in `balances`. It binds the value _written_ to the name `balance` and the _old value_ to the name `old_balance`.
+3. We defined a _ghost update_ inside the _body_ of the hook. We used a `havoc assuming` statement to mutate the ghost function. The `havoc assuming` statement --- in this case `havoc ghostSupply assuming` binds `ghostSupply@new()`, the havoc'd version, and `ghostSupply@old()` the pre-havoc version. `ghostSupply` does not exist to the right of `assuming`. We then constrain the new version in terms of the old.
 
 When all of these work in conjunction, CVT successfully proves the rule `totalSupplyInvariant`.
 
