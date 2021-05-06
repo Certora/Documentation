@@ -36,7 +36,7 @@ Indicate that the member `slot` in `abstractName` is resolved as `contractName`.
 #### Options for dealing with loops
 
 ```text
-[--settings -assumeUnwindCond,-b=x] 
+[--loop_iter b][--settings -assumeUnwindCond] 
 ```
 
 Handle each loop as having at most `b` iterations. Default value of `b` is 1.
