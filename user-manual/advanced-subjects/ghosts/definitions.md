@@ -1,6 +1,6 @@
 # Definitions
 
-Specify Definitions are essentially type checked macros that allow encapsulation of commonly used expressions. They can take any number of arguments of any primitive types--including uninterpreted sorts--and evaluate to a single primitive type--also including uninterpreted sorts.
+Specify Definitions are essentially type-checked macros that allow encapsulation of commonly used expressions. They can take any number of arguments of any primitive types, including uninterpreted sorts, and evaluate to a single primitive type, including uninterpreted sorts.
 
 ## Syntax
 
@@ -8,7 +8,7 @@ Definitions are declared at the top-level of a specification and are in scope in
 
 ### Basic Definitions
 
-The following shows basic usage of definitions. The definitions bind parameters for use in an arbitrary expression on the right hand side, which should evaluate to the declared return type. In the example below, `is_even` binds the variable `x` as a `uint256`. Definitions are applied just as any function would be.
+The following shows the basic usage of definitions. The definitions bind parameters for use in an arbitrary expression on the right-hand side, which should evaluate to the declared return type. In the example below, `is_even` binds the variable `x` as a `uint256`. Definitions are applied just as any function would be.
 
 ```text
 methods {
@@ -38,7 +38,7 @@ There can be arbitrarily deep nesting, however there must not be a circular depe
 definition MAX_UINT256() returns uint256 = 0xffffffffffffffffffffffffffffffff;
 definition is_even(uint256 x) returns bool = exists y. 2 * y == x;
 definition is_odd(uint256 x) returns bool = !is_even(x);
-definition is_odd_no_overflow returns bool = is_odd(x) && x <= MAX_UINT256();
+definition is_odd_no_overflow(uint256 x) returns bool = is_odd(x) && x <= MAX_UINT256();
 ```
 
 The following examples would result in a type error due to a circular dependency:
