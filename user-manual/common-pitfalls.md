@@ -2,7 +2,7 @@
 
 ## Vacuity
 
-Vacuity refers to the state where we have a spec that is reported to be correct by the Prover, even for assertions that are obviously wrong. To be more precise, an assertion in the spec is effectively not checked, because no input satisfies all requirements defined by the spec.
+Vacuity refers to the state where we have a spec reported to be correct by the Prover, even for assertions that are obviously wrong. To be more precise, an assertion in the spec is effectively not checked because no input satisfies all requirements defined by the spec.
 
 An obvious example of vacuity is the following rule:
 
@@ -13,7 +13,7 @@ rule vacuous(uint x) {
 }
 ```
 
-No input `x` ever satisfies x != x, but the `assert false` is expected to trigger a failure. The vacuity of the `require` statement implies our assertion is not reachable, thus the rule is proven.
+No input `x` ever satisfies `x != x`, but the `assert false` is expected to trigger a failure. The vacuity of the `require` statement implies our assertion is not reachable, thus the rule is proven.
 
 Vacuity is problematic because it indicates that the spec itself is wrong. Usually, vacuity is not as blatantly visible as in the above example, and thus we should take precautions to avoid writing vacuous specs.
 
@@ -34,7 +34,7 @@ rule dontForgetThe4Bytes {
     env e;
     calldataarg args;
     foo@norevert(e, args);
-    bar@withrevert(e, args);
+    bar@norevert(e, args);
     assert false;
 }
 ```
