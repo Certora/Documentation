@@ -8,7 +8,7 @@ description: >-
 
 ## Summarizing Solidity Functions
 
-Contracts often interact with other contracts, and by default these interactions are abstracted away by the tool. Roughly, this means the Prover tool assumes any outcome is possible.
+Contracts often interact with other contracts, and by default, these interactions are abstracted away by the tool. Roughly, this means the Prover tool assumes any outcome is possible.
 
 This document details the exact behavior of the Prover in different scenarios, and how these can be controlled in the specification.
 
@@ -28,7 +28,7 @@ rule callFun {
 
 ### Calls inside the code
 
-A call to an external contract that was not _linked_ is abstracted. It means certain variables can be set to arbitrary values following this call. We often refer to this call as being _havoc'd_ and we use the same term for variables set to arbitrary values. For a havoc'd call:
+A call to an external contract that was not _linked_ is abstracted. It means certain variables can be set to arbitrary values following this call. We often refer to this call as being _havoc'd_, __and we use the same term for variables set to arbitrary values. For a havoc'd call:
 
 * The return values \(`returndata`\) can take any value
 * The return code of the call can take any value
@@ -52,7 +52,7 @@ The _`DISPATCHER` summary_ handles each call to the declared method as if any me
 
 One can override the default mode of the`DISPATCHER` by enabling an _optimistic_ mode. This mode assumes that only known contracts may be called. It is enabled by specifying `DISPATCHER(true)`. Note that either `DISPATCHER(false)`or `DISPATCHER` denote that the default mode is enabled.
 
-The `AUTO` summary depends on the type of call, namely, the EVM opcode used by the call. Static calls \(`STATICCALL`\) don't havoc any contract's state. Regular calls and contract creations \(`CALL`,`CREATE`\) havoc all contracts' state except for the current contract's \(like `HAVOC_ECF`\). Library calls \(`DELEGATECALL` and `CALLCODE`\) havoc _only_ the current contract's state.
+The `AUTO` summary depends on the type of call, namely, the EVM opcode used by the call. Static calls \(`STATICCALL`\) don't havoc any contract's state. Regular calls and contract creations \(`CALL`,`CREATE`\) havoc all contracts' states except for the current contract's \(like `HAVOC_ECF`\). Library calls \(`DELEGATECALL` and `CALLCODE`\) havoc _only_ the current contract's state.
 
 Some of the summaries change the balances. While the `HAVOC_ALL` summary fully havocs the balances of the current contract and the target contract, other balance changing summaries partially havoc these balances as follows:
 
@@ -63,7 +63,7 @@ Some of the summaries change the balances. While the `HAVOC_ALL` summary fully h
 If the contract you are verifying relies heavily on modification of ETH balances, it's recommended to identify the balance-modifying functions and mark them `HAVOC_ALL` if necessary.
 {% endhint %}
 
-A technical remark about `returnsize`: For `CONSTANT` and `PER_CALLEE` summaries, the summaries extend naturally to functions that return multiple return values, where the assumption is that the return size in bytes is a multiple of 32 bytes \(as standard in Solidity\). The `returnsize` variable is updated accordingly and is determined by the size requested by the caller. 
+**A technical remark about `returnsize`:** For `CONSTANT` and `PER_CALLEE` summaries, the summaries extend naturally to functions that return multiple return values. The assumption is that the return size in bytes is a multiple of 32 bytes \(as standard in Solidity\). The `returnsize` variable is updated accordingly and is determined by the size requested by the caller. 
 
 {% hint style="info" %}
 If you do not trust the target contract to return exactly the number of arguments dictated by the Solidity-level interface, **do not use**`CONSTANT` and `PER_CALLEE_CONSTANT`summaries. 
