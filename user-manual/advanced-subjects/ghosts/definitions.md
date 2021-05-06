@@ -78,7 +78,7 @@ rule rule_assuming_foo_is_even_at(uint256 x) {
 }
 ```
 
-More interestingly, we can use the two-context version of ghosts in a definition \(adding the `@new` or `@old` annotations. Note, if we use the two-context version of a ghost, we _may not_ use the ghost _without_ an `@new` or `@old` annotation. Additionally, that definition _must_ be used in a [two state context](hooks.md#two-state-context) for that ghost function \(i.e. an the right side of a `havoc assuming` statement for that ghost\).
+More interestingly, we can use the two-context version of ghosts in a definition \(adding the `@new` or `@old` annotations. If we use the two-context version of a ghost, we _may not_ use the ghost _without_ an `@new` or `@old` annotation. Additionally, that definition _must_ be used in a [two state context](hooks.md#two-state-context) for that ghost function \(i.e., at the right side of a `havoc assuming` statement for that ghost\).
 
 ```text
 ghost foo(uint256 x) returns uint256;
