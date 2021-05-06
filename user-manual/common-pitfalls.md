@@ -47,7 +47,7 @@ The `lastReverted` keyword is updated every time a Solidity function is invoked.
 
 ```text
 rule bad {
-    invoke foo();
+    foo();
     assert bar() => lastReverted;
 }
 ```
@@ -57,7 +57,7 @@ A corrected version of the spec should like this:
 
 ```text
 rule good1 {
-    invoke foo();
+    foo();
     bool fooReverted = lastReverted;
     assert bar() => fooReverted;
 }
@@ -68,7 +68,7 @@ There are cases where we can evaluate `bar()` either before or after `foo()`. In
 ```text
 rule good2 {
     bool barHolds = bar();
-    invoke foo();
+    foo();
     assert barHolds => lastReverted;
 }
 ```
