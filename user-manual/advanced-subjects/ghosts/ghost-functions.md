@@ -39,7 +39,7 @@ This will generate an assertion violation. Behind the scenes, the solver gets to
 
 ## Uninterpreted Functions
 
-Uninterpreted functions are called _uninterpreted_ because they have _no interpretation_ associated with them. In the example above, it is impossible to say what `bar(x, y)` _means_. Uninterpreted functions really only give us a single guarantee:
+Uninterpreted functions are called _uninterpreted_ because they have _no interpretation_ associated with them. In the example above, it is impossible to say what `bar(x, y)` _means_. Uninterpreted functions only give us a single guarantee:
 
 {% hint style="info" %}
 Any two applications of the same uninterpreted function with the same arguments will return the same value.
@@ -66,7 +66,7 @@ rule shouldFail(Foo x, Foo y, Foo z) {
 
 ### Axioms for Uninterpreted Functions
 
-Sometimes we might want to constrain the behavior of an uninterpreted function in some particular way. In CVL this is achieved by writing _axioms_. Axioms are simply CVL expressions that the tool will then _assume_ are true about the uninterpreted functions. For example:
+Sometimes we might want to constrain the behavior of an uninterpreted function in some particular way. In CVL this is achieved by writing _axioms_. Axioms are CVL expressions that the tool will then _assume_ are true about the uninterpreted functions. For example:
 
 ```text
 ghost bar(uint256) returns uint256 {

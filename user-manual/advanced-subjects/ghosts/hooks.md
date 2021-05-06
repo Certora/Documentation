@@ -2,11 +2,11 @@
 
 ## Motivation
 
-The previous section described uninterpreted functions as they exist in CVT. But by themselves these uninterpreted functions are pretty useless. In fact, they don't even seem to keep track of any "ghost" state, as there is no way to relate the uninterpreted functions to the state of the contract being analyzed. _Hooks_ are the glue that piece together program behavior and the uninterpreted functions by providing a way to _hook_ into certain program behavior and _update_ ghost relations to reflect that program behavior.
+The previous section described uninterpreted functions as they exist in CVT. But by themselves, these uninterpreted functions are pretty useless. They don't even seem to keep track of any "ghost" state, as there is no way to relate the uninterpreted functions to the state of the contract being analyzed. _Hooks_ are the glue that pieces together program behavior and the uninterpreted functions by providing a way to _hook_ into certain program behavior and _update_ ghost relations to reflect that program behavior.
 
 ### Program State
 
-Ghosts are used to represent some state of a smart contract that the contract itself doesn't necessarily explicitly express. Nonetheless, there is often a relationship between what we want to express as ghost state and the actual state of the program. For this reason, the hooks that can be expressed in CVT are linked to changes in contract `storage`, the only place where persistent contract state lives.
+Ghosts are used to represent some state of a smart contract that the contract itself doesn't necessarily explicitly express. Nonetheless, there is often a relationship between what we want to express as a ghost state and the actual state of the program. For this reason, the hooks that can be expressed in CVT are linked to changes in contract `storage`, the only place where persistent contract state lives.
 
 ## The Anatomy of a Hook
 
