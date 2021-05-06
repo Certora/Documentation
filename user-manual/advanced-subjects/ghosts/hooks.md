@@ -12,16 +12,16 @@ Ghosts are used to represent some state of a smart contract that the contract it
 
 A hook is made up of two separate pieces.
 
-1. The _pattern_: describes what read or write pattern for CVT to look for
+1. The _pattern_: describes what read or write pattern the CVT looks for
 2. The _body_: a block of code for CVT to insert
 
-Inside each rule, CVT takes these hooks, and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
+Inside each rule, CVT takes these hooks and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
 
 ### Hook Patterns
 
 #### Sload and Sstore
 
-`Sload` and `Sstore` are two `TAC` primitives that represent a _read_ from storage and a _write_ to storage, respectively. A pattern for an `Sload` will bind a variable to provide access to "the value loaded" and a pattern for an `Sstore` will bind a variable both for "the value stored" and \(optionally\) "the old value that was overwritten." For example:
+`Sload` and `Sstore` are two `TAC` primitives representing a _read_ from storage and a _write_ to storage, respectively. A pattern for an `Sload` will bind a variable to provide access to "the value loaded", and a pattern for an `Sstore` will bind a variable both for "the value stored" and \(optionally\) "the old value that was overwritten." For example:
 
 ```text
 hook Sload uint256 v <pattern> STORAGE {
@@ -49,7 +49,7 @@ In the last hook, CVT will generate an extra `Sload v_old <pattern>` before ever
 
 #### Slot Patterns
 
-Slot patterns represent any access path that could represent a storage access to any of Solidity's data structures \(struct, array, mapping\). However, because the EVM view of storage is just of a flat array of 256 bit words, it is possible for an inline assembly block to produce a storage access that is not expressible by our slot pattern \(in which case the storage analysis will be unable to reason about it anyway\). A slot pattern conforms to the following grammar:
+Slot patterns represent any access path that could represent a storage access to any of Solidity's data structures \(struct, array, mapping\). However, because the EVM view of storage is just of a flat array of 256 bit words, an inline assembly block can produce a storage access that is not expressible by our slot pattern \(in which case the storage analysis will be unable to reason about it anyway\). A slot pattern conforms to the following grammar:
 
 ```text
 ap := id            // some storage variable declared in contract
@@ -61,10 +61,10 @@ ap := id            // some storage variable declared in contract
 ```
 
 {% hint style="warning" %}
-Nested struct offsets \(`ap.(offset n)`\) will be flattened before matching with the storage analysis \(which will also flatten struct acceses\). So, for example, both `ap.(offset 5).(offset 3)`and `ap.(offset 4).(offset 4)` will compile to `ap.(offset 8)` and would match any stuct access where `ap` matches the base and some sequence of struct dereferences adds up to `8` bytes.
+Nested struct offsets \(`ap.(offset n)`\) will be flattened before matching with the storage analysis \(which will also flatten struct accesses\). So, for example, both `ap.(offset 5).(offset 3)`and `ap.(offset 4).(offset 4)` will compile to `ap.(offset 8)` and would match any struct access where `ap` matches the base and some sequence of struct dereferences adds up to `8` bytes.
 {% endhint %}
 
-These slot patterns provide a simple syntax to specify what storage slot to hook on directly based on the Solidity-level declarations of storage variables. The following are a few examples of Solidity-level declarations of storage variables, and slot patterns that will match accesses to these
+These slot patterns provide a simple syntax to specify what storage slot to hook on directly based on the Solidity-level declarations of storage variables. The following are a few examples of Solidity-level declarations of storage variables and slot patterns that will match accesses to these
 
 ```text
 mapping(address => uint256) balances;
@@ -84,7 +84,7 @@ map[KEY uint256 k][INDEX uint256 i].(offset 0) // an access to el_1 of some
 ```
 
 {% hint style="info" %}
-The access pattern `(slot n)` requires an understanding of the storage layout of a contract. If you know where a top level variable sits in the top-level storage array you can use this access pattern. Additionally, with `solc5.X` and older, you must use this pattern instead of storage variable identifiers since the storage layout is unavailable in versions older than `solc5.X`
+The access pattern `(slot n)` requires an understanding of the storage layout of a contract. If you know where a top-level variable sits in the top-level storage array you can use this access pattern. Additionally, with `solc5.X` and older, you must use this pattern instead of storage variable identifiers since the storage layout is unavailable in versions older than `solc5.X`
 {% endhint %}
 
 ### Struct Patterns
@@ -92,8 +92,8 @@ The access pattern `(slot n)` requires an understanding of the storage layout of
 The storage analysis has a less than perfect view of structs which makes them relatively complicated. There are several important things to note:
 
 1. The storage analysis **only** reasons about 1 word/256 bit/32 byte slots,
-2. **except** for in static slots \(i.e. not inside of a mapping or array\)
-3. It is possible to extract struct values that are packed but it requires knowledge of how solidity packs structs
+2. **except** for in static slots \(i.e., not inside of a mapping or array\)
+3. It is possible to extract packed struct values, but it requires knowledge of how solidity packs structs
 
 We will examine these three cases in the following running example:
 
@@ -198,7 +198,7 @@ hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
 
 ### The Body of a Hook
 
-The body of a hook may include straight-line commands \(i.e. _neither_ if statements _nor_ invocations of contract functions\). Expressions in these commands may reference variables bound by the hook. For example:
+The body of a hook may include straight-line commands \(i.e., _neither_ if statements _nor_ invocations of contract functions\). Expressions in these commands may reference variables bound by the hook. For example:
 
 ```text
 ghost ghostBalances(address) returns uint256;
@@ -208,11 +208,11 @@ hook Sload uint256 v balances[KEY address account] STORAGE {
 }
 ```
 
-This would make sure that on every read, we make sure that `ghostBalances` matches `balances` . Often times hook bodies only include a one-line update to a ghost function, but this doesn't necessarily need to be the case. A similar update to `ghostBalances` would be possible on an `Sstore` but requires understanding a two state context.
+This would make sure that on every read, we make sure that `ghostBalances` matches `balances`. Often hook bodies only include a one-line update to a ghost function, but this doesn't necessarily need to be the case. A similar update to `ghostBalances` would be possible on an `Sstore` but requires understanding a _two-state context_.
 
 ### Two State Context
 
-A two state context is a scope in which two versions of a variable or ghost function are available, representing _two different_ states of that variable/ghost function. If we are talking about the variable `my_var` then the _old_ version would be accessed using `my_var@old` and the new version would be accessed using `my_var@new`. For ghost functions, we annotate the ghost application. For example, an application of the _old_ version might look like `my_ghost@old(x, y)` and an application of the _new_ version might look like `my_ghost@new(x, y)` .
+A two-state context is a scope in which two versions of a variable or ghost function are available, representing _two different_ states of that variable/ghost function. If we are talking about the variable `my_var` then the _old_ version would be accessed using `my_var@old`, and the new version would be accessed using `my_var@new`. For ghost functions, we annotate the ghost application. For example, an application of the _old_ version might look like `my_ghost@old(x, y)`, and an application of the _new_ version might look like `my_ghost@new(x, y)` .
 
 But how is it that we would have _two_ versions of a variable or ghost function? Currently, the _only_ place that will _create_ these two versions is a havoc-assuming statement.
 
@@ -261,7 +261,7 @@ Finally, as shown in the section on [definitions,](definitions.md#reference-ghos
 
 ### A Hook that Modifies Ghost State
 
-[Above](hooks.md#the-body-of-a-hook) we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not actually modify ghost state, but rather _further constrained_ it according to new information. But when the concrete state is modified, we need some way to modify ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same, and that the balance of the account that was changed gets updated:
+[Above](hooks.md#the-body-of-a-hook) we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather _further constrained_ it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:
 
 ```text
 ghost ghostBalances(address) returns uint256;
