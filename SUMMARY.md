@@ -5,6 +5,7 @@
 
 ## User Manual
 
+* [Technology Overview](user-manual/technology-overview.md)
 * [Specification by example](user-manual/specification/README.md)
   * [The Bank](user-manual/specification/specification-basics-in-specify/README.md)
     * [Types](user-manual/specification/specification-basics-in-specify/types.md)
@@ -17,6 +18,7 @@
     * [An Iterable Map](user-manual/specification/from-basic-to-advanced/an-iterable-map/README.md)
       * [Verification with ghosts](user-manual/specification/from-basic-to-advanced/an-iterable-map/verification-with-ghosts.md)
 * [Exercises](user-manual/exercises/README.md)
+  * [Writing Simple Rules](user-manual/exercises/writing-simple-rules.md)
   * [Understanding Counter-examples](user-manual/exercises/understanding-counter-examples.md)
 * [Advanced subjects](user-manual/advanced-subjects/README.md)
   * [Multicontract](user-manual/advanced-subjects/multicontract.md)
