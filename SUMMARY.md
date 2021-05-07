@@ -16,6 +16,8 @@
     * [A Simple Map](user-manual/specification/from-basic-to-advanced/a-simple-map.md)
     * [An Iterable Map](user-manual/specification/from-basic-to-advanced/an-iterable-map/README.md)
       * [Verification with ghosts](user-manual/specification/from-basic-to-advanced/an-iterable-map/verification-with-ghosts.md)
+* [Exercises](user-manual/exercises/README.md)
+  * [Understanding Counter-examples](user-manual/exercises/understanding-counter-examples.md)
 * [Advanced subjects](user-manual/advanced-subjects/README.md)
   * [Multicontract](user-manual/advanced-subjects/multicontract.md)
   * [Linking contracts](user-manual/advanced-subjects/linking-contracts.md)
