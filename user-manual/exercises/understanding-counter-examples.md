@@ -1,15 +1,14 @@
 ---
 description: >-
   In this tutorial, you will practice understanding counter-examples produced by
-  Certora Prover. As we discussed, the tool assumes all possible input values
-  and states as a starting state. Some of them
+  Certora Prover.
 ---
 
 # Understanding Counter-examples
 
 ## Warm-up Exercise
 
-Start with [Ball Game](https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/BallGame/BallGame.sol), implementing a ball game with four players. Player 1 passes the ball to Player 2; Player 2 passes back to Player 1. Player 3 and 4 passes to each other. The ball starts at Player 1. Let's prove that the ball can never reach player 4.
+Start with [Ball Game](https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/BallGame/BallGame.sol), implementing a ball game with four players. Player 1 passes the ball to Player 2; Player 2 passes back to Player 1. Player 3 and 4 pass to each other. The ball starts at Player 1. Let's prove that the ball can never reach player 4.
 
 * Run:
 
@@ -20,7 +19,7 @@ Start with [Ball Game](https://github.com/Certora/CertoraProverSupplementary/blo
 * Understand the counter-example
 * Fix the rule to avoid superfluous initial states
 
-We learn here that in order to prove the required property we needed to prove a stronger invariant.
+We learn here that to prove the required property, we needed to prove a stronger invariant.
 
 ## Realistic Exercise
 
@@ -39,7 +38,7 @@ We learn here that in order to prove the required property we needed to prove a 
 * Fix the rule.
 * Check your rule as sometimes the rule is too strict, it limits the possible initial states or executions too much:
   * Insert bugs to the code that you believe should be uncovered and re-run Certora Prover
-  * Run on [ManagerBug1](https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/ManagerBug1.sol) and [ManagerBug2](https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/ManagerBug2.sol)
+  * Run on [ManagerBug1](https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/ManagerBug1.sol) and [ManagerBug2](https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/ManagerBug2.sol)
 
     To run on those files:
 
