@@ -25,7 +25,7 @@ Run the `certora-cli` with the following additional option: `--settings -ruleSan
 
 Below we present a few examples of vacuous specs.
 
-### Raw arguments
+### Raw arguments \(soon to be solved!\)
 
 The `calldataarg` type represents the full byte array passed as "calldata" to the EVM bytecode. It includes, in particular, the 4-byte sighash used by the ABI specification to identify the high-level function executed. Therefore, the following spec will pass vacuously:
 
