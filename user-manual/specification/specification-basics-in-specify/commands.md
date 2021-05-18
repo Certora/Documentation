@@ -33,7 +33,7 @@ require !lastReverted;
 
 * CVL supports _If Then Else \(ITE\)_ expressions that can be used at any place where an expression is expected \(e.g. right hand side of an _assignment statement\)._ 
 * It uses the syntax `cond ? e1 : e2` where `cond` is a boolean expression and `e1` and `e2` are arbitrary expressions of the same type. 
-* It is a type error if `cond` is _**not**_ of type `bool` \(e.g. `5 ? 1 : 0`\) or if `e1` and `e2` are of different types \(e.g. `true ? 1 : false`\).
+* It is a type error if `cond` is _**not**_ of type `bool` \(e.g. `5 ? 1 : 0`\) or if `e1` and `e2` are of **different** types \(e.g. `true ? 1 : false`\).
 * Here are a few examples showing the use of _ITE_ expressions:
 
 ```javascript
