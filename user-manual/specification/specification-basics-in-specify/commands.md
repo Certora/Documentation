@@ -37,24 +37,30 @@ require !lastReverted;
 * Here are a few examples showing the use of ITE expressions:
 
 ```javascript
+methods {
+    inc() envfree
+    dec() envfree
+}
 // In definitions
 definition ABOVE_TEN(uint256 x) returns bool = x > 10 ? true : false;
-definition SIGNED_INT_TO_MATHINT(uint256 x) returns mathint = x >= 2^255 ?  x - 2^256 : x;
-
-
+definition SIGNED_INT_TO_MATHINT(uint256 x) returns mathint = x >= 2^255 ? x - 2^256 : x;
+ 
+ 
 rule checkITE(mathint r) {
 	// In assignment expressions
-	uint x = 4 > 5 ? 24 : 42;					
+	uint x = 4 > 5 ? 24 : 42; 
 	uint y = SIGNED_INT_TO_MATHINT(2^255);
 	bool f = ABOVE_TEN(10);
-	uint z = r > 5 ? inc(e) : dec(e);										// r is symbolic; inc()/dec() are functions in a Solidity smart contract
+	uint z = r > 5 ? inc() : dec();
 	
 	// In assert
 	assert z == 11;
+  bool a;
+  bool b;
   assert (z > y ? 111 : 222) == ((a && b) ? 333 : 111);
-  
-  // In forall exp
-  assert forall uint256 x. ((a || b) ? 100 : 500) * x == 100 * x;
+ 
+ // In forall exp
+ assert forall uint256 x. ((a || b) ? 100 : 500) * x == 100 * x;
 }
 
 
