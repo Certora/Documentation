@@ -31,10 +31,10 @@ require !lastReverted;
 
 #### If Then Else \(ITE\) expressions
 
-* CVL supports _If Then Else \(ITE\)_ expressions that can be used at any place where an expression is expected \(e.g. right hand side of an _assignment statement\)._ 
+* CVL supports _If Then Else \(ITE\)_ expressions that can be used at any place where an expression is expected \(e.g., right-hand side of an assignment statement_\)._ 
 * It uses the syntax `cond ? e1 : e2` where `cond` is a boolean expression and `e1` and `e2` are arbitrary expressions of the same type. 
 * It is a type error if `cond` is _**not**_ of type `bool` \(e.g. `5 ? 1 : 0`\) or if `e1` and `e2` are of **different** types \(e.g. `true ? 1 : false`\).
-* Here are a few examples showing the use of _ITE_ expressions:
+* Here are a few examples showing the use of ITE expressions:
 
 ```javascript
 // In definitions
@@ -60,5 +60,5 @@ rule checkITE(mathint r) {
 
 ```
 
-**Note**: When `cond` evaluates to **true**, _only_ expression `e1` is executed, i.e. _only the **then branch** is executed_ while `e2` is ignored_._ Similarly, when `cond` evaluates to **false**, _only_ expression `e2` is executed, i.e. _only the **else branch** is executed._ 
+**Note**: When `cond` evaluates to **true**, _only_ expression `e1` is executed, i.e., _only the **then branch** is executed_ while `e2` is ignored_._ Similarly, when `cond` evaluates to **false**, _only_ expression `e2` is executed, i.e., _only the **else branch** is executed._ 
 
