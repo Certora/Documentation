@@ -1,0 +1,36 @@
+INHERIT: common.yml
+
+docs_dir: ref-manual
+site_name: Certora Prover Reference Manual
+theme: readthedocs
+
+nav:
+ - Introduction: index.md
+ - Changelog: changelog.md
+ - The Certora Verification Language:
+   - Syntactic conventions used in this guide: cvl/syntax.md
+   - Specification file contents:
+     - Pragmas: cvl/pragmas.md
+     - Import and use statements: cvl/imports.md
+     - Using statements: cvl/using.md
+     - The methods block: cvl/methods.md
+     - The events block: cvl/events.md
+     - Rules: cvl/rules.md
+     - Built-in rules: cvl/builtin.md
+     - Functions: cvl/functions.md
+     - Invariants: cvl/invariants.md
+     - Uninterpreted sorts: cvl/sorts.md
+     - Ghosts: cvl/ghosts.md
+     - Definitions: cvl/defs.md
+     - Hooks: cvl/hooks.md
+   - Syntactic elements:
+     - Types: cvl/types.md
+     - Expressions: cvl/expr.md
+     - Blocks: cvl/blocks.md
+ - The Certora CLI:
+   - Verification: cli/verification.md
+   - Linking: cli/linking.md
+   - Command line options: cli/options.md
+ - The Certora Portal:
+   - Using the Certora Portal: portal/using.md
+

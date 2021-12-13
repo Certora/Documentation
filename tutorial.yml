@@ -1,0 +1,9 @@
+INHERIT: common.yml
+
+docs_dir: tutorial
+site_name: Certora Prover Reference Manual
+theme: readthedocs
+
+nav:
+ - Introduction
+
