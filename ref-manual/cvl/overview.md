@@ -39,7 +39,7 @@ the following items in any order:
 
  - **Definitions:** CVL definitions contain CVL expressions that can be reused throughout the spec.
 
- - **Uninterpreted sorts:** TODO
+ - **Sorts:** Sorts define simple types that can be compared for equality.
 
  - **Ghosts:** Ghosts define additional variables that can be used to keep track
    of state changes in the contracts.
