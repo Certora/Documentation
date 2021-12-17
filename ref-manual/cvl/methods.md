@@ -4,11 +4,11 @@ methods          ::= "methods" "{" { method_spec } "}"
 method_spec      ::= ( hash | [ id "." ] id "(" params ")" )
                      [ "returns" types ]
                      [ "envfree" ]
-                     [ "=>" summary [ "UNRESOLVED" | "ALL" ] ]
+                     [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      [ ";" ]
 
 types ::= cvl_type { "," cvl_type }
-        | "(" [ evm_type [ id ] { "," type [ id ] } ] ")"
+        | "(" [ evm_type [ id ] { "," evm_type [ id ] } ] ")"
 
 method_summary   ::= "ALWAYS" "(" value ")"
                    | "CONSTANT"
