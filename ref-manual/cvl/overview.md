@@ -17,7 +17,7 @@ The beginning of a spec file contains some header information:
  - **The methods block:** This section contains information on how methods
    should be summarized by the prover during verification
 
- - **The events block:** TODO
+ - **The events block:** This section is currently unused
 
 All of the above header sections are optional, but if they appear they must
 appear in the order they are listed here, and they must come before any of the
