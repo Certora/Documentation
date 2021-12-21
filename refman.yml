@@ -8,7 +8,13 @@ nav:
  - Introduction: index.md
  - Changelog: changelog.md
  - The Certora Verification Language:
+   - Overview: cvl/overview.md
    - Syntactic conventions used in this guide: cvl/syntax.md
+   - Common syntactic elements:
+     - Comments: cvl/comments.md
+     - Types: cvl/types.md
+     - Expressions: cvl/expr.md
+     - Blocks: cvl/blocks.md
    - Specification file contents:
      - Pragmas: cvl/pragmas.md
      - Import and use statements: cvl/imports.md
@@ -23,10 +29,6 @@ nav:
      - Ghosts: cvl/ghosts.md
      - Definitions: cvl/defs.md
      - Hooks: cvl/hooks.md
-   - Syntactic elements:
-     - Types: cvl/types.md
-     - Expressions: cvl/expr.md
-     - Blocks: cvl/blocks.md
  - The Certora CLI:
    - Verification: cli/verification.md
    - Linking: cli/linking.md
