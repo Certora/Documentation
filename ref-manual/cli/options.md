@@ -1,4 +1,5 @@
-Command line arguments:
+Command Line Arguments
+======================
 
 ```
 optional arguments:

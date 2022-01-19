@@ -1,17 +1,45 @@
-# Welcome to MkDocs
+Certora User's Guide
+====================
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+```{toctree}
+:maxdepth: 2
 
-## Commands
+intro.md
+```
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+Getting started
+---------------
 
-## Project layout
+```{toctree}
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+install.md
+layout.md
+running.md
+```
+
+Case studies
+------------
+
+### Liquidity pools
+
+#### Balancer
+#### Euler
+
+### Options markets
+
+#### SirenMarkets
+
+### Governance Systems
+
+#### OpenZeppelin Governance
+
+General Rules
+-------------
+
+### solvency rules
+### Valid states and transitions
+### Rules for ERC20
+
+Managing Timeouts
+-----------------
+

@@ -1,0 +1,12 @@
+version: 2
+
+python:
+  version: "3.8"
+  install:
+    - requirements: requirements.txt
+
+sphinx:
+  builder: html
+  configuration: conf.py
+  fail_on_warning: true
+

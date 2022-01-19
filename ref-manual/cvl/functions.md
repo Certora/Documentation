@@ -1,3 +1,6 @@
+Functions
+=========
+
 ```
 function ::= [ "override" ]
              "function" id

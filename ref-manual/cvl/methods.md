@@ -1,3 +1,6 @@
+The Methods Block
+=================
+
 ```
 methods          ::= "methods" "{" { method_spec } "}"
 
