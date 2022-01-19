@@ -1,3 +1,6 @@
+Uninterpreted Sorts
+===================
+
 ```
 sort ::= "sort" id ";"
 ```

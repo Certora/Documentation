@@ -1,3 +1,6 @@
+Events
+======
+
 ```
 events ::= "events" "{" { event } "}"
 event  ::= id "(" event_params ")"

@@ -1,3 +1,6 @@
+Types
+=====
+
 ```
 cvl_type ::= "mathint" | "calldataarg" | "storage" | "env" | "method"
            | id

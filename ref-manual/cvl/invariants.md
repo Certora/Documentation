@@ -1,3 +1,6 @@
+Invariants
+==========
+
 ```
 invariant ::= "invariant" id
               [ "(" params ")" ]

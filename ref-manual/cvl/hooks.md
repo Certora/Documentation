@@ -1,3 +1,6 @@
+Hooks
+=====
+
 ```
 hook ::= store_hook | load_hook
 

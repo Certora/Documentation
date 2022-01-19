@@ -1,3 +1,6 @@
+Definitions
+===========
+
 ```
 definition ::= [ "override" ]
                "definition" id [ "(" params ")" ]

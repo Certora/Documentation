@@ -1,3 +1,6 @@
+Rules
+=====
+
 ```
 rule     ::= [ "rule" ]
              id
