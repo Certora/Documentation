@@ -1,5 +1,10 @@
 version: 2
 
+python:
+  version: "3.9"
+  install:
+    - requirements: requirements.txt
+
 sphinx:
   builder: html
   configuration: conf.py
