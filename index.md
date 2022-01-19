@@ -1,8 +1,8 @@
-Welcome to Certora Prover Documentation's documentation!
-========================================================
+Certora Prover Documentation
+============================
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 3
 :caption: Contents
 
 tutorial/index.md
