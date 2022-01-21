@@ -1,5 +1,5 @@
-Certora Prover Documentation (from confluence)
-==============================================
+Old Documentation
+=================
 
 ## Getting started
 
