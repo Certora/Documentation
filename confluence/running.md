@@ -41,7 +41,7 @@ A verification report is an HTML file presenting a table with all the spec file 
 
 Need some help? Try to run another verification on `CounterFixed.sol` and see the difference.
 
-An explanation of the results is briefly described [here](../TODO.md). To find out more about how to run the tool, see Certora Prover CLI Options. 
+An explanation of the results is briefly described [here](/TODO.md). To find out more about how to run the tool, see Certora Prover CLI Options. 
 
 Congratulations! You have just completed a verification using Certora Prover.
 
