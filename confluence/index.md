@@ -7,14 +7,10 @@ getting-started.md
 options.md
 technology.md
 examples.md
+exercises/exercises.md
 ```
 
 ## Rest
- - [Specification By Example](Specification-By-Example_5243036.html)
-   - [The (Iterable) Map](41255215.html)
-     - [A Simple Map](A-Simple-Map_41124258.html)
-     - [An Iterable Map](An-Iterable-Map_41124276.html)
-       - [Verification with ghosts](Verification-with-ghosts_41124291.html)
  - [Exercises](Exercises_41255285.html)
    - [Writing Simple Rules](Writing-Simple-Rules_41157051.html)
    - [Understanding Counter-examples](Understanding-Counter-examples_41157061.html)
