@@ -1,9 +1,16 @@
 Certora Prover Documentation (from confluence)
 ==============================================
 
- - [Getting started](Getting-started_2916673.html)
-   - [Installation of Certora Prover](Installation-of-Certora-Prover_7274497.html)
-   - [Running The Certora Prover](Running-The-Certora-Prover_284360712.html)
+## Getting started
+
+```{toctree}
+
+install.md
+```
+
+ - [Running The Certora Prover](Running-The-Certora-Prover_284360712.html)
+
+## Rest
  - [Certora Prover CLI Options](Certora-Prover-CLI-Options_7340043.html)
  - [Technology Overview](Technology-Overview_41058586.html)
  - [Specification By Example](Specification-By-Example_5243036.html)
