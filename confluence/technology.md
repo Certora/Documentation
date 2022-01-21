@@ -16,3 +16,4 @@ must write rules that describe the high-level properties they wish to verify on
 their contracts. This user manual describes the different features of the
 specification language. Another primary goal is to help the reader learn how to
 think about and write high-level properties.
+

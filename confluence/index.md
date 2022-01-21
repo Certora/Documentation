@@ -6,6 +6,7 @@ Old Documentation
 getting-started.md
 options.md
 technology.md
+examples.md
 ```
 
 ## Rest
