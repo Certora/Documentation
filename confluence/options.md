@@ -10,7 +10,9 @@ certoraRun contractFile:contractName --verify contractName:specFile
 ```
 
 If `contractFile` is named `contractName.sol`, the run command can be simplified to  
-`certoraRun contractFile --verify contractName:specFile`
+```bash
+certoraRun contractFile --verify contractName:specFile
+```
 
 A short summary of these options can be seen by invoking `certoraRun --help`
 
@@ -29,8 +31,6 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:  
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-{ref}`Back to top <toc>`
-
 ### `--assert`
 
 **What does it do?**  
@@ -41,8 +41,6 @@ When you want to see if a suspect instruction can fail in the code, without writ
 **Example**  
 If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:  
 `certoraRun Bank.sol:Investor --assert Investor`
-
-{ref}`Back to top <toc>`
 
 Most Frequently Used Options
 ----------------------------
@@ -59,8 +57,6 @@ Adding a message makes it easier to track several runs. It is very useful if you
 To create the message above, we used  
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
-{ref}`Back to top <toc>`
-
 ### `--rule`
 
 **What does it do?**  
@@ -75,8 +71,6 @@ If `Bank.spec` includes the following properties:
 
 If we want to verify only `withdraw_succeeds`, we run  
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds`
-
-{ref}`Back to top <toc>`
 
 Options affecting the type of verification run
 ----------------------------------------------
@@ -118,8 +112,6 @@ When you have a rule with multiple assertions:
 
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
-{ref}`Back to top <toc>`
-
 ### `--rule_sanity`
 
 **What does it do?**  
@@ -139,8 +131,6 @@ We suggest using this option often - before each commit to changes of the source
 **Example**
 
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity`
-
-{ref}`Back to top <toc>`
 
 ### `--short_output`
 
