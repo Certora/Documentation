@@ -5,11 +5,10 @@ Old Documentation
 
 getting-started.md
 options.md
+technology.md
 ```
 
 ## Rest
- - [Certora Prover CLI Options](Certora-Prover-CLI-Options_7340043.html)
- - [Technology Overview](Technology-Overview_41058586.html)
  - [Specification By Example](Specification-By-Example_5243036.html)
    - [The Bank](The-Bank_7340088.html)
      - [Types](Types_7340101.html)
