@@ -54,9 +54,11 @@ On Terminal execute:
 pip3 install certora-cli
 ```
 
+```{caution}
 Note that the terminal may prompt you with a warning that some files, e.g.
 python3.x, are not included in the PATH, and should be added. Add these files
 to PATH to avoid errors.
+```
 
 The following section presents some, but maybe not all, possible warnings that
 can arise during installation and how to deal with them:
@@ -90,9 +92,11 @@ can arise during installation and how to deal with them:
 <details>
   <summary>macOS</summary>
 
-  WARNING: The script certoraRun is installed in
+  ```{caution}
+  The script certoraRun is installed in
   '/Users/user\_name/Library/Python/3.8/bin' which is not on PATH. Consider
   adding this directory to PATH
+  ```
 
   * Open a terminal and move to the `etc/paths.d` directory from root:
 
@@ -112,9 +116,9 @@ can arise during installation and how to deal with them:
     /specified/path/in/warning
     ```
 
-    * If needed, more than one path can be added on a single file, just separate the path with colon a (`:`).
+  * If needed, more than one path can be added on a single file, just separate the path with a colon (`:`).
 
-  * Quit the terminal to load the new addition to $PATH, and reopen to check that the $PATH was updated correctly:
+  * Quit the terminal to load the new addition to `$PATH`, and reopen to check that the `$PATH` was updated correctly:
 
     ```java
     echo $PATH
@@ -124,7 +128,9 @@ can arise during installation and how to deal with them:
 <details>
   <summary>Linux</summary>
 
+  ```{caution}
   Known warning - “The script certoraRun is installed in '`/home/user_name/.local/bin`' which is not on PATH. Consider adding this directory to PATH"
+  ```
 
   * Open a terminal and make sure you’re in the home directory:
 
@@ -150,7 +156,7 @@ can arise during installation and how to deal with them:
     nano .profile
     ```
 
-  * Make sure to apply the changes to the $PATH by executing the script:
+  * Make sure to apply the changes to the `$PATH` by executing the script:
 
     ```bash
     source .profile
@@ -316,7 +322,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
 
     * If needed, more than one path can be added on a single file, just separate the path with colon a (`:`).
 
-  * Quit the terminal to load the new addition to $PATH, and reopen to check that the $PATH was updated correctly:
+  * Quit the terminal to load the new addition to `$PATH`, and reopen to check that the `$PATH` was updated correctly:
 
     ```java
     echo $PATH
@@ -359,4 +365,4 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
 
 Congratulations! You have just completed Certora Prover’s installation and setup.
 
-**It's highly recommended to first try out the tool on basic examples to verify correct installation. You can follow the page** [**Running The Certora Prover**](Running-The-Certora-Prover_284360712.html) **for that purpose.**
+**It's highly recommended to first try out the tool on basic examples to verify correct installation. You can follow the page [Running The Certora Prover](running.md) for that purpose.**

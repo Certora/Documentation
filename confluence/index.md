@@ -6,9 +6,8 @@ Old Documentation
 ```{toctree}
 
 install.md
+running.md
 ```
-
- - [Running The Certora Prover](Running-The-Certora-Prover_284360712.html)
 
 ## Rest
  - [Certora Prover CLI Options](Certora-Prover-CLI-Options_7340043.html)
