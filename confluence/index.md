@@ -1,12 +1,10 @@
 Old Documentation
 =================
 
-## Getting started
-
 ```{toctree}
 
-install.md
-running.md
+getting-started.md
+options.md
 ```
 
 ## Rest
