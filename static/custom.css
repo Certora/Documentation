@@ -1,8 +1,28 @@
-
 details {
-    margin-bottom: 1em;
-    margin-left: 1em;
     border: .5px solid lightgray;
-    padding: 1ex;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+    margin: 1em;
 }
 
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+}
+
+details[open] {
+    padding: .5em;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+}
+  
+  
+  
+
+    
+    
+    
