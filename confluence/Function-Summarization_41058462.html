@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Function Summarization</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Advanced-Subjects_3080193.html">Advanced Subjects</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Method-Declarations_181960777.html">Method Declarations</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Function Summarization
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Or Pistiner</span> on Jul 29, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="FunctionSummarization-SummarizingSolidityFunctions"><strong>Summarizing Solidity Functions</strong></h1><p>Contracts often interact with other contracts, and by default, these interactions are abstracted away by the tool. Roughly, this means the Prover tool assumes any outcome is possible.‌</p><p>This document details the exact behavior of the Prover in different scenarios, and how these can be controlled in the specification.</p><h2 id="FunctionSummarization-Callsinsidethespecification"><strong>Calls inside the specification</strong></h2><p>Calls inside the specification are always inlined. They must refer either to the default contract (i.e., the one that the user indicated to be verified) or to one of the imported contracts.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">using OtherContractInstance as otherContractInstance​rule callFun {
+  uint x = fun1(); // inline fun1 of currentContract
+  uint y = currentContract.fun1(); // same as above
+  uint z = otherContractInstance.fun1(); // inline fun1 of otherContractInstance
+}</pre>
+</div></div><h2 id="FunctionSummarization-Callsinsidethecode"><strong>Calls inside the code</strong></h2><p>A call to an external contract that was not <em>linked</em> is abstracted. It means certain variables can be set to arbitrary values following this call. We often refer to this call as being <em>havoc'd</em>,<em> </em>and we use the same term for variables set to arbitrary values. For a havoc'd call:</p><ul><li><p>The return values (<code>returndata</code>) can take any value</p></li><li><p>The return code of the call can take any value</p></li><li><p>The state of the calling contract (<code>this</code>) may or may not become havoc'd.</p></li><li><p>The balances may become havoc'd in full or in part.</p></li></ul><p>A <a href="https://certora.atlassian.net/wiki/pages/resumedraft.action?draftId=181960777" rel="nofollow">method declaration</a> in the spec file can be associated with a <em>summary</em> that tells the prover how to handle a call to a non-linked external contract. Currently, the available summaries are <code>HAVOC_ALL</code>,<code>HAVOC_ECF</code>,<code>ALWAYS(n)</code>,<code>CONSTANT</code>, <code>PER_CALLEE_CONSTANT</code>, <code>NONDET</code>, <code>AUTO</code>, and <code>DISPATCHER</code>. The below table shows the differences between these summaries. Asterisks (*) indicate havocing.</p><div class="table-wrap"><table data-layout="default" class="confluenceTable"><colgroup><col style="width: 113.33px;"/><col style="width: 113.33px;"/><col style="width: 113.33px;"/><col style="width: 113.33px;"/><col style="width: 113.33px;"/><col style="width: 113.33px;"/></colgroup><tbody><tr><td class="confluenceTd"><p><strong>Summary</strong></p></td><td class="confluenceTd"><p><strong>Return value</strong></p></td><td class="confluenceTd"><p><strong>Return code</strong></p></td><td class="confluenceTd"><p><strong>Current contract state</strong></p></td><td class="confluenceTd"><p><strong>Other contracts states</strong></p></td><td class="confluenceTd"><p><strong>Balances</strong></p></td></tr><tr><td class="confluenceTd"><p><code>HAVOC_ALL</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td></tr><tr><td class="confluenceTd"><p><code>HAVOC_ECF</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>Havoc'd except for current contract's balance that may increase</p></td></tr><tr><td class="confluenceTd"><p><code>ALWAYS(n)</code></p></td><td class="confluenceTd"><p>n</p></td><td class="confluenceTd"><p>success (1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td></tr><tr><td class="confluenceTd"><p><code>CONSTANT</code></p></td><td class="confluenceTd"><p>Some constant <code>x</code> for all calls to the same method signature in any target contract</p></td><td class="confluenceTd"><p>success (1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td></tr><tr><td class="confluenceTd"><p><code>PER_CALLEE_CONSTANT</code></p></td><td class="confluenceTd"><p>Every target contract <code>c</code> will return the same constant <code>x_c</code> for all calls to the same method signature</p></td><td class="confluenceTd"><p>success (1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td></tr><tr><td class="confluenceTd"><p><code>DISPATCHER[(bool)]</code></p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td></tr><tr><td class="confluenceTd"><p><code>NONDET</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>success(1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged (up to current transfer)</p></td></tr><tr><td class="confluenceTd"><p><code>AUTO</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>Depends on call type*</p></td><td class="confluenceTd"><p>Depends on call type*</p></td><td class="confluenceTd"><p>Depends on call type*</p></td></tr></tbody></table></div><p>The <code>DISPATCHER</code><em> summary </em>handles each call to the declared method as if any method with the same signature in any target contract may be called. By default, in addition to calls to implementations in known target contracts, the <code>DISPATCHER</code>has a havoc'd call to an unknown, untrusted target contract. This havoc'd call is handled the same as in the <code>AUTO</code> summary (see below).</p><p>One can override the default mode of the<code>DISPATCHER</code> by enabling an <em>optimistic</em> mode. This mode assumes that only known contracts may be called. It is enabled by specifying <code>DISPATCHER(true)</code>. Note that either <code>DISPATCHER(false)</code>or <code>DISPATCHER</code> denote that the default mode is enabled.</p><p>The <code>AUTO</code> summary depends on the type of call, namely, the EVM opcode used by the call. Static calls (<code>STATICCALL</code>) don't havoc any contract's state. Regular calls and contract creations (<code>CALL</code>,<code>CREATE</code>) havoc all contracts' states except for the current contract's (like <code>HAVOC_ECF</code>). Library calls (<code>DELEGATECALL</code> and <code>CALLCODE</code>) havoc <em>only</em> the current contract's state.</p><p>Some of the summaries change the balances. While the <code>HAVOC_ALL</code> summary fully havocs the balances of the current contract and the target contract, other balance changing summaries partially havoc these balances as follows:</p><ul><li><p>The current contract's balance <code>x</code> will first be decreased by the transferred amount <code>t</code>. Then, the balance will be havoc'd to be at least <code>x-t</code>, i.e., in the end, it may not decrease by more than the transferred amount.</p></li><li><p>The target contract's balance will be incremented by exactly the transferred amount.</p></li></ul><div class="confluence-information-macro confluence-information-macro-information"><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>If the contract you are verifying relies heavily on modification of ETH balances, it's recommended to identify the balance-modifying functions and mark them <code>HAVOC_ALL</code> if necessary.</p></div></div><p><strong>A technical remark about </strong><code>returnsize</code><strong>:</strong> For <code>CONSTANT</code> and <code>PER_CALLEE</code> summaries, the summaries extend naturally to functions that return multiple return values. The assumption is that the return size in bytes is a multiple of 32 bytes (as standard in Solidity). The <code>returnsize</code> variable is updated accordingly and is determined by the size requested by the caller.</p><div class="confluence-information-macro confluence-information-macro-information"><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>If you do not trust the target contract to return exactly the number of arguments dictated by the Solidity-level interface, <strong>do not use</strong><code>CONSTANT</code> and <code>PER_CALLEE_CONSTANT</code>summaries.</p></div></div><p>In very special cases, one may set the <code>returnsize</code> optimistically even when havocing, based on information about the invoked function's signature and the available functions in the verification context, set with <code>-optimisticReturnsize</code>.</p><p>We present simple examples to illustrate the differences between the non-havocing summaries. We use a simple interface <code>IntGetter</code> that we will not assume anything about:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">interface IntGetter {
+  function get() external returns (uint)
+  function get2() external returns (uint)
+}</pre>
+</div></div><p><code>ALWAYS</code> <span class="inline-comment-marker" data-ref="390741b8-0a47-4f90-aa6e-65d99f073ead">summary:</span></p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">// code
+contract CallsExternalContracts {
+  IntGetter g1;
+  IntGetter g2;
+  
+  function getFromG() external returns (uint) { return g.get(); }
+  function getFromG2() external returns (uint) { return g.get2(); }
+}
+
+​// spec
+methods {
+  get() =&gt; ALWAYS(7)
+  getFromG() returns (uint256) envfree
+  getFromG2() returns (uint256) envfree
+}
+
+​rule check {
+  assert getFromG() == 7; // Should be verified
+  assert getFromG2() == 7; // Should be violated
+}</pre>
+</div></div><p>‌</p><p><code>ALWAYS</code> vs. <code>CONSTANT</code>:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">// code
+contract CallsExternalContracts {
+  IntGetter g1;
+  IntGetter g2;
+  
+  function getFromG() external returns (uint) { return g.get(); }
+  function getFromG2() external returns (uint) { return g.get2(); }
+}
+
+​// spec
+methods {
+  get() =&gt; ALWAYS(7)
+  get2() =&gt; CONSTANT
+  getFromG() returns (uint256) envfree
+  getFromG2() returns (uint256) envfree
+}
+
+​rule check {
+  assert getFromG() == 7; // Should be verified
+  assert getFromG2() == getFromG(); // Should be violated
+}</pre>
+</div></div><p><code>CONSTANT</code> vs. <code>NONDET</code>:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">// code
+contract CallsExternalContracts {
+  IntGetter g1;
+  IntGetter g2;
+  
+  function getFromG() external returns (uint) { return g.get(); }
+  function getFromG2() external returns (uint) { return g.get2(); }
+}
+
+​// spec
+methods {
+  get() =&gt; CONSTANT
+  get2() =&gt; NONDET
+  
+  getFromG() returns (uint256) envfree
+  getFromG2() returns (uint256) envfree
+}
+
+​rule check {
+  // Should be verified - two calls return the same value 
+  assert getFromG() == getFromG();
+  
+  // Should be violated - two calls may return different values
+  assert getFromG2() == getFromG2();
+}</pre>
+</div></div><p>How <code>PER_CALLEE_CONSTANT</code> works:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">// code
+contract CallsExternalContracts {
+  IntGetter g1;
+  IntGetter g2;
+  
+  function getFromG() external returns (uint) { return g.get(); }
+  function getFromG2() external returns (uint) { return g2.get(); }
+}​
+
+// spec
+methods {
+  get() =&gt; PER_CALLEE_CONSTANT
+  getFromG() returns (uint256) envfree
+  getFromG2() returns (uint256) envfree
+}​
+
+rule check {
+  assert getFromG() == getFromG(); // Should be verified
+  assert getFromG2() == getFromG2(); // Should be verified
+  assert getFromG() == getFromG2(); // Should be violated
+}</pre>
+</div></div><p />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

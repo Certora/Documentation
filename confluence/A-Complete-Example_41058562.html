@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : A Complete Example</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="The-Anatomy-of-a-Specification_238845999.html">The Anatomy of a Specification</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Ghosts_41156805.html">Ghosts</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : A Complete Example
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Shelly</span> on May 23, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>The following is a use case that uses most of the features presented in previous sections:</p><h3 id="ACompleteExample-AContractImplementingaLinkedList">A Contract Implementing a Linked List</h3><div class="ap-container" id="ap-confluence-prism__confluence-prism-macro4446429077451823420">
+
+  <div class="ap-content " id="embedded-confluence-prism__confluence-prism-macro4446429077451823420"></div>
+  <script class="ap-iframe-body-script">
+  (function(){
+    var data = {
+    "addon_key":"confluence-prism",
+    "uniqueKey":"confluence-prism__confluence-prism-macro4446429077451823420",
+    "key":"confluence-prism-macro",
+     "moduleType":"dynamicContentMacros",      "moduleLocation":"content",         "cp":"/wiki",
+            "general":"",
+    "w":"100%",
+    "h":"360px",
+    "url":"https://confluence-prism.weweave.net/macro?pageId=41058562&pageVersion=2&macroId=9892b6ad-f1c4-46e8-897a-c788ef6bfc0c&outputType=html_export&language=none&height=&limitHeight=&lineNumbers=&lineNumbersStart=&lineHighlight=&downloadFilename=&dialogTitle=&xdm_e=https%3A%2F%2Fcertora.atlassian.net&xdm_c=channel-confluence-prism__confluence-prism-macro4446429077451823420&cp=%2Fwiki&xdm_deprecated_addon_key_do_not_use=confluence-prism&lic=active&cv=1.1192.0&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiI0YWZlOGNiN2Q5Nzk0MDc0YjUxYTgwYzU5NTIxN2E0ZmIwYzVlZjMwYzkzNzRlNjZlZDU5ZTk0ZWFmZjVmMDU5IiwiaXNzIjoiZjA3Y2YyNDYtOTk1OS0zNzJlLWFlMzQtM2Y1ZmE5Njc3OTdhIiwiY29udGV4dCI6e30sImV4cCI6MTY0Mjc3NzQyMiwiaWF0IjoxNjQyNzc3MjQyfQ.3k0dwrOpw4BLXpcqyQ7hqv947hYj8J7daCJQ576deeE",
+     "contextJwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJjb250ZXh0LXFzaCIsImlzcyI6ImYwN2NmMjQ2LTk5NTktMzcyZS1hZTM0LTNmNWZhOTY3Nzk3YSIsImNvbnRleHQiOnsibGljZW5zZSI6eyJhY3RpdmUiOnRydWV9LCJjb25mbHVlbmNlIjp7ImVkaXRvciI6eyJ2ZXJzaW9uIjoiXCJ2MlwiIn0sIm1hY3JvIjp7Im91dHB1dFR5cGUiOiJodG1sX2V4cG9ydCIsImhhc2giOiI5ODkyYjZhZC1mMWM0LTQ2ZTgtODk3YS1jNzg4ZWY2YmZjMGMiLCJpZCI6Ijk4OTJiNmFkLWYxYzQtNDZlOC04OTdhLWM3ODhlZjZiZmMwYyJ9LCJjb250ZW50Ijp7InR5cGUiOiJwYWdlIiwidmVyc2lvbiI6IjIiLCJpZCI6IjQxMDU4NTYyIn0sInNwYWNlIjp7ImtleSI6IkNQRCIsImlkIjoiMjkxNjUyNSJ9fX0sImV4cCI6MTY0Mjc3ODE0MiwiaWF0IjoxNjQyNzc3MjQyfQ.9bqI9ufFHMACzZurmmzUSBmdwEf9eyTUqt1pe9X-bNI",    "structuredContext": "{\"license\":{\"active\":true},\"confluence\":{\"editor\":{\"version\":\"\\\"v2\\\"\"},\"macro\":{\"outputType\":\"html_export\",\"hash\":\"9892b6ad-f1c4-46e8-897a-c788ef6bfc0c\",\"id\":\"9892b6ad-f1c4-46e8-897a-c788ef6bfc0c\"},\"content\":{\"type\":\"page\",\"version\":\"2\",\"id\":\"41058562\"},\"space\":{\"key\":\"CPD\",\"id\":\"2916525\"}}}",
+    "contentClassifier":"content",
+    "productCtx":"{\"page.id\":\"41058562\",\"macro.hash\":\"9892b6ad-f1c4-46e8-897a-c788ef6bfc0c\",\"space.key\":\"CPD\",\"user.id\":\"60fc25d78b1a9b006f16abd0\",\"page.type\":\"page\",\"content.version\":\"2\",\"page.title\":\"A Complete Example\",\"macro.localId\":\"9560961d-5fe8-4f4e-ac39-19335afa5f33\",\"language\":\"none\",\"macro.body\":\"contract LinkedList {\\n  struct Element {\\n    bytes32 nextKey;\\n    uint256 exists;\\n  }\\n  \\n  struct List {\\n    bytes32 head;\\n    m\",\": = | RAW | = :\":\"language=none\",\"space.id\":\"2916525\",\"macro.truncated\":\"true\",\"content.type\":\"page\",\"output.type\":\"html_export\",\"page.version\":\"2\",\"user.key\":\"8a7f808a7ad469f9017ad8f4037a0390\",\"content.id\":\"41058562\",\"macro.id\":\"9892b6ad-f1c4-46e8-897a-c788ef6bfc0c\",\"editor.version\":\"\\\"v2\\\"\"}",
+    "timeZone":"US/Eastern",
+    "origin":"https://confluence-prism.weweave.net",
+    "hostOrigin":"https://certora.atlassian.net",
+    "sandbox":"allow-downloads allow-forms allow-modals allow-popups allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-storage-access-by-user-activation",            "apiMigrations": {
+        "gdpr": true
+    }
+}
+;
+    if(window.AP && window.AP.subCreate) {
+      window._AP.appendConnectAddon(data);
+    } else {
+      require(['ac/create'], function(create){
+        create.appendConnectAddon(data);
+      });
+    }
+  }());
+</script>
+</div>
+<h3 id="ACompleteExample-ASpecUsingaGhosttoComputeReachability">A Spec Using a Ghost to Compute Reachability</h3><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">methods {
+  insertAfter(bytes32, bytes32) envfree
+  getSucc(bytes32) returns (bytes32) envfree
+  contains(bytes32) returns (bool) envfree
+  head() returns (bytes32) envfree
+}
+
+sort Node;
+
+ghost toNode(bytes32) returns Node;
+ghost reach(Node, Node) returns bool {
+  axiom forall Node X. reach(X, X);
+  axiom forall Node X. forall Node Y.
+      reach(X, Y) &amp;&amp; reach(Y, X) =&gt; X == Y;
+  axiom forall Node X. forall Node Y. forall Node Z.
+      reach(X, Y) &amp;&amp; reach(Y, Z) =&gt; reach(X, Z);
+  axiom forall Node X. forall Node Y. forall Node Z.
+      reach(X, Y) &amp;&amp; reach(X, Z) =&gt; (reach(Y, Z) || reach(Z,Y));
+}
+
+definition isSucc(Node a, Node b) returns bool =
+    reach(a, b) &amp;&amp; a != b &amp;&amp;
+        (forall Node X. reach(a, X) &amp;&amp; reach(X, b) =&gt; (a == X || b == X));
+        
+definition updateSucc(Node a, Node b) returns bool =
+    forall Node X. forall Node Y. reach@new(X, Y) ==
+        (X == Y ||
+        (reach@old(X, Y) &amp;&amp; !(reach@old(X, a) &amp;&amp; a != Y &amp;&amp;
+            reach@old(a, Y))) ||
+        (reach@old(X, a) &amp;&amp; reach@old(b, Y)));
+        
+hook Sstore (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
+    bytes32 newNextKey STORAGE {
+  havoc reach assuming updateSucc(toNode(key), toNode(newNextKey));
+}
+
+hook Sload bytes32 nextKey (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
+    STORAGE {
+  require isSucc(toNode(key), toNode(nextKey));
+}
+
+rule checkGetSucc {
+  bytes32 key;
+  bytes32 afterKey = getSucc(key);
+  assert reach(toNode(key), toNode(afterKey));
+}
+
+// Rules for full correctness of API calls.
+rule checkInsertHead {
+  bytes32 key;
+  bytes32 afterKey;
+  bytes32 headKey = sinvoke head();
+  require !reach(toNode(key), toNode(afterKey));
+  // inserts at head
+  require afterKey == 0;
+  insertAfter@norevert(key, afterKey);
+  assert reach(toNode(key), toNode(headKey));
+}
+
+rule checkInsertSuccessor {
+  bytes32 key;
+  bytes32 afterKey;
+  require !reach(toNode(afterKey), toNode(key));
+  // do not insert at head
+  require afterKey != 0;
+  insertAfter@norevert(key, afterKey);
+  assert reach(toNode(afterKey), toNode(key));
+}
+
+rule checkInsert {
+  bytes32 key;
+  bytes32 afterKey;
+  bytes32 randoBoi;
+  bytes32 oldHeadKey = head@norevert();
+  require reach(toNode(oldHeadKey), toNode(randoBoi));    
+  // this could be replaced by a hook, but we need to be able to
+  // put invokes in hooks for that to work
+  require contains(key) &lt;=&gt; reach(toNode(oldHeadKey), toNode(key));
+  require contains(afterKey) &lt;=&gt; reach(toNode(oldHeadKey), toNode(afterKey));
+  insertAfter@norevert(key, afterKey);    bytes32 newHeadKey = head@norevert();
+  assert reach(toNode(newHeadKey), toNode(randoBoi));
+}</pre>
+</div></div><p />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Approximation</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Advanced-Subjects_3080193.html">Advanced Subjects</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Approximation
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified on May 21, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="Approximation-TheProblem">The Problem</h1><p>Many potential questions we may like to ask about programs in any language are inherently undecidable. For example, in general, it is impossible to know whether or not a program will halt (the &quot;Halting Problem&quot;). In the case of the Certora Prover, questions about nonlinear arithmetic tend to be very difficult to answer (nonlinear arithmetic is undecidable in general). Other questions, while not undecidable, get exponentially harder with the size of the program (TODO: example?). Ultimately this means that the Prover will spend forever trying to get an answer and will eventually time out.</p><h1 id="Approximation-Solution1:Overapproximation">Solution 1: Overapproximation</h1><p>In essence, overapproximation means that we consider <em>more</em> possible program states than are actually possible. Because this includes <em>all original behavior</em>, this approach is <strong>sound</strong>. That is to say, we will never falsely prove something correct when it is not. However, because we consider extra program behavior, there is a chance that we will find a bug in this extra program behavior that does not exist in the actual program.</p><p>Imagine we have the following Hoare logic (TODO: what is Hoare logic?) snippet:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">uint256 x;
+uint256 y;
+assume y &gt; 1;
+assume x &gt; 1;
+z := mul(x, y);
+assert z &gt; x &amp;&amp; z &gt; y;</pre>
+</div></div><p>We have to choose how we want the solver to model <code>mul</code>. The natural choice is to model it with ordinary integer arithmetic multiplication (i.e., <code>mul</code> will behave exactly as you expect). This choice means that the underlying solver will have to work within the restrictions of integer arithmetic multiplication to try to find a counterexample. Ultimately the solver would prove this program correct.</p><h2 id="Approximation-UninterpretedFunctionasanOverapproximation">Uninterpreted Function as an Overapproximation</h2><p>But suppose the solver timed out on this example. We might make a different choice in how we model <code>mul</code> using an uninterpreted function (see <a href="https://certora.atlassian.net/wiki/spaces/CPD/pages/3014665/Ghost+Functions#Uninterpreted-Functions" rel="nofollow">this section</a> for a brief description of uninterpreted functions). In essence, any time the solver sees an uninterpreted function, it knows &quot;any time this function receives the same values as arguments, it will produce the same output.&quot; Other than that, the solver has free reign to decide which outputs each input will produce. For example it could decide that <code>uninterp_mul(1, 5) -&gt; 22</code>. Or it could decide <code>uninterp_mul(1, 5) -&gt; 5</code>. Conversely, in if we had modeled multiplication as above, the solver would be forced to decide <code>integer_arithmetic_mul(1, 5) -&gt; 5</code>. </p><p>Notice that the solver could choose many behaviors for <code>uninterp_mul</code>, but <em>importantly</em> these behaviors <em>include</em><code>integer_arithmetic_mul</code>. This is what makes this an overapproximation--it considers program behavior that includes &quot;actual&quot; program behavior and more.</p><p>So what would the solver decide in this case? It would no longer prove the program correct and would give us a (seemingly nonsensical) counterexample, for example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">x = 5;
+y = 10;
+z = 5;
+mul = lambda(a, b) if (a == 5) 5 else 299</pre>
+</div></div><p>In this case we have a <em>spurious counterexample</em> caused by our overapproximation.</p><h2 id="Approximation-AxiomatizedUninterpretedFunctionasanOverapproximation">Axiomatized Uninterpreted Function as an Overapproximation</h2><p>There is a middle ground that we can take between precisely modeling program behavior and the above overapproximation. We can use uninterpreted functions and add axioms to them. In the above example, we let the solver decide everything about <code>uninterp_mul</code>. But it turns out we can give hints to the solver, to more closely approximate the behavior of <code>integer_arithmetic_mul</code></p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

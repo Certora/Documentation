@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Commands</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Specification-By-Example_5243036.html">Specification By Example</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="The-Bank_7340088.html">The Bank</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Commands
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Shelly</span> on Jul 25, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="Commands-CVLcommands">CVL commands</h1><ul><li><p><code>require exp</code> - assume that <code>exp</code> is true at this point (i.e., the tool will only consider executions in which <code>exp</code> holds). For example, <code>require e.msg.sender == admin</code> would ignore any cases where the caller is not the admin.</p></li><li><p><code>assert exp</code> - check if <code>exp</code> is true, and output a counterexample if there is an input for which it is false. For example, <code>assert newBalance == oldBalance + amount</code> will check that a balance always equals the correct value after a transfer (or will report an error, such as when an account transfers to itself and this assertion doesn't hold). The optional string argument is displayed when the assertion is violated. </p></li><li><p><code>foo@withrevert(args)</code> or <code>invoke foo(args)</code></p><p>- simulate a function named <code>foo</code> with arguments <code>args</code> allowing it to revert.</p></li><li><p><code>foo(args)</code>or <code>sinvoke foo(args)</code></p><p>- simulate a function named <code>foo</code> with arguments <code>args</code> and assume that it does not revert. This syntax is equivalent to:</p></li></ul><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">foo@withrevert(arg); // same as invoke foo(arg)
+require !lastReverted;</pre>
+</div></div><h3 id="Commands-BooleanoperatorsthatdonotexistinSolidity">Boolean operators that do not exist in Solidity</h3><ul><li><p>Implication: <code>=&gt;</code> <br/><code>A =&gt; B</code> evaluates to true if either <code>A</code> is false or <code>B</code> is true. For example, <code>assert e.sender != admin =&gt; lastReverted</code> could check that if the caller is not the admin, a given function must revert in all cases.</p></li><li><p>Bi-directional implication: <code>&lt;=&gt;</code><br/> <code>A &lt;=&gt; B</code> evaluates to true if and only if <code>A =&gt; B &amp;&amp; B =&gt; A</code>. For example,  <code>assert e.sender != admin &lt;=&gt; lastReverted</code> checks that if the caller is not the admin, a given function reverts and that if the function reverted, it must be the case that the sender was not the admin (basically saying that this is the only reason it would revert).</p></li></ul><h3 id="Commands-IfThenElse(ITE)expressions">If Then Else (ITE) expressions</h3><ul><li><p>CVL supports <em>If Then Else (ITE)</em> expressions that can be used at any place where an expression is expected (e.g., right-hand side of an assignment statement<em>).</em></p></li><li><p>It uses the syntax <code>cond ? e1 : e2 </code>where <code>cond</code> is a boolean expression and <code>e1</code> and <code>e2</code> are arbitrary expressions of the same type.</p></li><li><p>It is a type error if <code>cond</code> is <em><strong>not</strong></em> of type <code>bool</code> (e.g. <code>5 ? 1 : 0</code>) or if <code>e1</code> and <code>e2</code> are of <strong>different</strong> types (e.g. <code>true ? 1 : false</code>).</p></li><li><p>Here are a few examples showing the use of ITE expressions:</p></li></ul><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">methods {
+    inc() envfree
+    dec() envfree
+}
+// In definitions
+definition ABOVE_TEN(uint256 x) returns bool = x &gt; 10 ? true : false;
+definition SIGNED_INT_TO_MATHINT(uint256 x) returns mathint = x &gt;= 2^255 ? x - 2^256 : x;
+ 
+ 
+rule checkITE(mathint r) {
+	// In assignment expressions
+	uint x = 4 &gt; 5 ? 24 : 42; 
+	uint y = SIGNED_INT_TO_MATHINT(2^255);
+	bool f = ABOVE_TEN(10);
+	uint z = r &gt; 5 ? inc() : dec();
+	
+	// In assert
+	assert z == 11;
+  bool a;
+  bool b;
+  assert (z &gt; y ? 111 : 222) == ((a &amp;&amp; b) ? 333 : 111);
+ 
+ // In forall exp
+ assert forall uint256 x. ((a || b) ? 100 : 500) * x == 100 * x;
+}</pre>
+</div></div><p><strong>Note</strong>: When <code>cond</code> evaluates to <strong>true</strong>, <em>only</em> expression <code>e1</code> is executed, i.e., <em>only the <strong>then branch</strong> is executed </em>while <code>e2</code> is ignored<em>. </em>Similarly, when <code>cond</code> evaluates to <strong>false</strong>, <em>only</em> expression <code>e2</code> is executed, i.e., <em>only the <strong>else branch</strong> is executed.</em></p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

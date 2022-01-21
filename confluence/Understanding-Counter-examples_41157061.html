@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Understanding Counter-examples</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Exercises_41255285.html">Exercises</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Understanding Counter-examples
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Shelly</span> on May 22, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="UnderstandingCounter-examples-Warm-upExercise">Warm-up Exercise</h1><p>‌Start with <a href="https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/BallGame/BallGame.sol" class="external-link" rel="nofollow">Ball Game</a>, implementing a ball game with four players. Player 1 passes the ball to Player 2; Player 2 passes back to Player 1. Player 3 and 4 pass to each other. The ball starts at Player 1. Let's prove that the ball can never reach player 4.</p><ul><li><p>Run:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">certoraRun BallGame.sol --verify BallGame:BallGame.spec </pre>
+</div></div></li><li><p>Understand the counter-example</p></li><li><p>Fix the rule to avoid superfluous initial states</p></li></ul><p>We learn here that to prove the required property, we needed to prove a stronger invariant.</p><h1 id="UnderstandingCounter-examples-RealisticExercise">Realistic Exercise</h1><p>‌<a href="https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/Manager.sol" class="external-link" rel="nofollow">Manager</a> implements transferring of a management role of a fund. It is a requirement that an address can manage at most one fund. Let's try to prove this property.</p><p>‌<a href="https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/Manager.spec" class="external-link" rel="nofollow">Manager.spec</a> contains a typical parametric rule <code>uniqueManagerAsRule</code>.</p><ul><li><p>Run:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">certoraRun Manager.sol --verify Manager:Manager.spec </pre>
+</div></div></li><li><p>Understand the counter-examples.</p></li><li><p>Understand which additional properties are related and need to be proven together.</p></li><li><p>Fix the rule.</p></li><li><p>Check your rule as sometimes the rule is too strict, it limits the possible initial states or executions too much:</p><ul><li><p>Insert bugs to the code that you believe should be uncovered and re-run Certora Prover</p></li><li><p>Run on <a href="https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/ManagerBug1.sol" class="external-link" rel="nofollow">ManagerBug1</a> and <a href="https://github.com/Certora/CertoraProverSupplementary/blob/master/Tutorials/Lesson2/Manager/ManagerBug2.sol" class="external-link" rel="nofollow">ManagerBug2</a></p><p>To run on those files:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">certoraRun ManagerBug1.sol:Manager --verify Manager:Manager.spec --msg &quot;check for bug&quot;
+certoraRun ManagerBug2.sol:Manager --verify Manager:Manager.spec --msg &quot;check for bug&quot;</pre>
+</div></div><p>Did your rule find violations?</p></li></ul></li></ul>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

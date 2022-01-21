@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Running The Certora Prover</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Getting-started_2916673.html">Getting started</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Running The Certora Prover
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Michael Morami</span>, last modified on Jan 06, 2022
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h2 id="RunningTheCertoraProver-Downloadexamples">Download examples</h2><p>Basic examples are available in <a href="https://github.com/Certora/CertoraProverSupplementary" class="external-link" rel="nofollow">this repository</a>. The repository also includes syntax highlighting of specification files for common editors (VSCode, notepad++).</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">git clone git@github.com:Certora/CertoraProverSupplementary.git</pre>
+</div></div><p /><p>We start with a simple example. After cloning the <a href="https://github.com/Certora/CertoraProverSupplementary" class="external-link" rel="nofollow">examples repository</a>, open terminal and move to the specified directory:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: bash; gutter: false; theme: Confluence" data-theme="Confluence">cd CertoraProverSupplementary/Examples/Simple</pre>
+</div></div><p>Then run the following command to specify a verification job:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: bash; gutter: false; theme: Confluence" data-theme="Confluence">certoraRun CounterBroken.sol:Counter --verify Counter:Counter.spec</pre>
+</div></div><div class="confluence-information-macro confluence-information-macro-information"><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Windows users should run the tool with <code>certoraRun.exe</code></p></div></div><p>The above command will trigger the verification of the contract <code>Counter</code> located in the Solidity file <code>CounterBroken.sol</code>, using the rules defined in the specification file <code>Counter.spec</code>.</p><p>After authorizing the request based on the provided access key, the tool sends the job to Certora's server. Messages will be printed to the command line, informing about its progress. Note that even if you interrupt the process, the job continues to process. An email notification is sent when the verification is complete, containing links to the results.</p><p>If the CLI tool is not interrupted, the output will also contain the links to the results:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">Status page: https://prover.certora.com/jobStatus/...?anonymousKey={anonymousKey}
+Verification report: https://prover.certora.com/output/...?anonymousKey={anonymousKey}
+Full report: https://prover.certora.com/zipOutput/...?anonymousKey={anonymousKey}</pre>
+</div></div><p>Follow this link to view the results.</p><p>A verification report is an HTML file presenting a table with all the spec file rules. Each formally proved rule has a green color. Violated rules are colored red. The report will also include the call trace and the arguments that led to the violation. In this example, the Certora Prover finds a violation of the <code>monotone</code> rule. Click the rule to see the call trace and try to figure out the reason. </p><p>Need some help? Try to run another verification on <code>CounterFixed.sol</code> and see the difference.</p><p>‌An explanation of the results is briefly described <a href="#" rel="nofollow">here</a>. To find out more about how to run the tool, see Certora Prover CLI Options. </p><p>‌Congratulations! You have just completed a verification using Certora Prover.</p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

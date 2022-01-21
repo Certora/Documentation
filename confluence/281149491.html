@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Syntax update: Ghost Variables and Ghost Mappings</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="The-Anatomy-of-a-Specification_238845999.html">The Anatomy of a Specification</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Ghosts_41156805.html">Ghosts</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Syntax update: Ghost Variables and Ghost Mappings
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Alexander Nutz</span> on Dec 16, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h3 id="Syntaxupdate:GhostVariablesandGhostMappings-Variable-styledeclarations">Variable-style declarations</h3><p>CVL now allows for top-level declarations of ghosts that follow the common scheme for variable declarations. Ghost variables can be scalars (<code>uint</code> etc.) or mappings. </p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">ghost uint myGhost;
+ghost mapping(uint =&gt; uint) myGhostMapping;</pre>
+</div></div><p>Nested ghost mappings are not supported at this point.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">ghost mapping(uint =&gt; mapping(uint =&gt; uint)) notYet</pre>
+</div></div><p>Background: Semantically there is no difference between the new variable-style and the old function-style declarations. I.e., the declaration <code>ghost uint myGhost</code> creates the same semantic object as the declaration <code>ghost myGhost() returns uint</code> .</p><h3 id="Syntaxupdate:GhostVariablesandGhostMappings-Variable-styleaccess">Variable-style access</h3><p>Ghosts that have been declared as scalar variables are accessed like normal variables, e.g. : </p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">y = myGhost;
+myGhost = x;</pre>
+</div></div><p>Ghosts that have been declared as mapping variables are accessed like normal mappings:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">y = myGhostMapping[i]
+myGhostMapping[j] = x</pre>
+</div></div><h3 id="Syntaxupdate:GhostVariablesandGhostMappings-Mapping-styleupdates">Mapping-style updates</h3><p>The update syntax  <code>myGhostMapping[j] = x</code> can replace many uses of the <code>havoc .. assuming ..</code> syntax.</p><p>In particular, the old syntax </p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">havoc myGhostMapping assuming forall k. k = j ? 
+      myGhostMapping@new[k] = x : 
+      myGhostMapping@new[k] = myGhostMapping@old[k]</pre>
+</div></div><p>can be replaced by</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">myGhostMapping[j] = x</pre>
+</div></div><p>Note that this syntax avoids the quantifiers also internally, so it is strongly recommended to use it if possible.</p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

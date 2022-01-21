@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Types</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Specification-By-Example_5243036.html">Specification By Example</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="The-Bank_7340088.html">The Bank</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Types
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Aleksander Kryukov</span> on Dec 06, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="Types-Predefinedtypes">Predefined types</h1><ul><li><p><code>env</code> - represents the environment of the EVM during execution. For an instance <code>env e</code>, it contains the following fields:</p><ul><li><p><code>e.msg.address</code> - address of the contract being verified, e.g., <code>Bank</code></p></li><li><p><code>e.msg.sender</code> - address of the sender of the message </p></li><li><p><code>e.msg.value</code> - number of wei sent with the message</p></li><li><p><code>e.block.number</code> - current block number</p></li><li><p><code>e.block.timestamp</code> - current block's time stamp</p></li><li><p><code>e.tx.origin</code> - original message sender</p></li></ul></li><li><p><code>method</code> - represents methods and their attributes. This type contains the following fields for an instance <code>method m</code>:</p><ul><li><p><code>m.selector</code> - the hashcode of the method </p></li><li><p><code>m.isPure</code> - true when m is declared with the pure attribute</p></li><li><p><code>m.isView</code> - true when m is declared with the view attribute</p></li><li><p><code>m.numberOfArguments</code> - the number of arguments to method m</p></li></ul></li><li><p><code>mathint</code> - represents an integer, positive or negative, of any value. Namely, it is not bounded by the number of bits that represent it.</p></li></ul><h1 id="Types-EVMtypesvs.mathematicaltypes">EVM types vs. mathematical types</h1><p>In CVL, arithmetic operators (+, -, * and /) are overloaded: they could mean a machine-arithmetic operation that can overflow, or a mathematical operation that does not overflow. The default interpretation used in almost all cases is the mathematical one. Therefore, the assertion below holds:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">uint x;
+assert x + 1 &gt; x;</pre>
+</div></div><p>The syntax supports Solidity’s integer types (<code>uintXX</code> and <code>intXX</code>) as well as the CVL-only type <code>mathint</code> representing the domain of mathematical integers (ℤ). Using these types allows controlling how arithmetic operators such as +, -, and * are interpreted. Therefore, in the following variant on the above example, if we wish the + operation to be the overflowing variant, we can write the following:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">uint x;
+uint y = x + 1;
+assert y &gt; x;</pre>
+</div></div><p>The assertion here will fail with <code>x = MAX_INT</code>, since then y is equal to 0. If we write instead:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">uint x;
+mathint y = x + 1;
+assert y &gt; x;</pre>
+</div></div><p>The meaning is the same as in the first snippet since an assignment to a <code>mathint</code> variable allows non-overflowing interpretations of the arithmetic operators.</p><p>The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to functions, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if <code>mathint</code> variable is passed directly as a function argument.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">uint256 MAX_INT = 2^256 - 1;
+foo(MAX_INT + 1); // equivalent to invoking foo(0)
+assert MAX_INT + 1 == 0; // always false, because ‘+’ here is mathematical
+mathint x = MAX_INT + 1;
+foo(x); // error</pre>
+</div></div><h1 id="Types-Maximalvaluesoftypes">Maximal values of types</h1><p>Sometimes it is useful to bound a <code>mathint</code> variable to the ranges allowed by a Solidity type. The following keywords describe the maximal values of their respectively named Solidity types:</p><p /><ul><li><p><code>max_uint</code> and <code>max_uint256</code></p></li><li><p><code>max_uint160</code> and <code>max_address</code></p></li><li><p><code>max_uint128</code></p></li><li><p><code>max_uint96</code></p></li><li><p><code>max_uint64</code></p></li><li><p><code>max_uint32</code></p></li><li><p><code>max_uint16</code></p></li><li><p><code>max_uint8</code></p></li></ul><h1 id="Types-ArrayTypes">Array Types</h1><p>For all primitive types (<code>uint</code>, <code>address</code> and others) one can define in spec an array of either dynamic (using <code>T[]</code> where <code>T</code> is the type) or static (<code>T[n]</code> for <code>n</code> a numeric constant). One can get their length by accessing the <code>.length</code> field, and get the element at the <code>i</code>th index with <code>a[i]</code> where <code>a</code> is the array variable. One can pass arrays to Solidity functions the same way as primitive values.</p><p>Out of bounds access to arrays will result in a havoc, so the behavior of a spec such as:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule out_of_bounds {
+  uint[] a;
+  require a.length == 1;
+  assert a[2] == 0;
+}</pre>
+</div></div><p>is undefined, and expected to fail.</p><div class="confluence-information-macro confluence-information-macro-note"><span class="aui-icon aui-icon-small aui-iconfont-warning confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Currently, nested array types (e.g. <code>T[][]</code>) are not supported.</p></div></div><p /><h1 id="Types-CastOperations">Cast Operations</h1><h2 id="Types-ImplicitCasting">Implicit Casting</h2><p>Only the following <em>implicit</em> cast operations are supported in CVL: </p><ul><li><p><code>numberLiteral</code><em> </em>can implicitly cast to <code>int*</code> <code>uint*</code> <code>mathint</code> <code>address</code> and <code>bytesK</code> .</p><ul><li><p>Note, however, that before casting a <code>numberLiteral</code> to target type <code>int*</code> <code>uint*</code> <code>address</code> or <code>bytesK</code>, it is (statically) checked that the value of the <code>numberLiteral</code> is within the bounds for a safe cast to the target type (e.g. <code>numberLiteral &gt;= 0 &amp;&amp; numberLiteral &lt;= 2^256 - 1</code> for <code>uint256</code>). In case the value is out of bounds, an <em>explicit</em> cast is required. There is no bounds checking when target type is <code>mathint</code>.</p></li><li><p>Sometimes, even when the <code>numberLiteral</code> expression is within bounds, it is not possible to implicitly cast the expression to the target type when the value of expression cannot be determined statically (e.g. <code>uint256 uu = true ? 42 : 24</code>). In this case, an explicit cast is required.</p></li></ul></li><li><p>For <code>uint*</code> we have the following cases for implicit casts:</p><ul><li><p><code>uint_k1</code> can implicitly cast to <code>uint_k2</code> when <code>k1 &lt;= k2</code></p></li><li><p><code>uint_k1</code> can implicitly cast to <code>address</code> when <code>k1 &lt;= 160</code>. Moreover, <code>address</code> can implicitly cast to <code>uint256</code>, but <em>not </em>the other way around. (Note : This is different from earlier behavior because before, <code>uint256</code> and <code>address</code> were aliases. See the comments in this <a href="https://certora.atlassian.net/wiki/spaces/CER/pages/123568149" data-linked-resource-id="123568149" data-linked-resource-version="19" data-linked-resource-type="page">discussion</a> ).</p></li><li><p><code>uint*</code> can implicitly cast to <code>mathint</code>. (Note that there is a <strong>difference</strong> in implicit and explicit casts from <code>uint256</code> to <code>mathint</code> when the expression value is outside the range of a <code>uint256</code> variable. While in the implicit cast the <code>uint256</code> value remains unchanged when converted to <code>mathint</code>, the explicit cast takes a <em>mod</em> of the value with <code>2^256</code>. Again, this difference will be “visible” only when casting unsafely from a <code>uint</code> to <code>mathint</code>, i.e. when the <code>uint</code> value is greater than <code>2^256</code>)</p></li></ul></li><li><p>NOTE: When performing an <em>implicit</em> cast, the type of the expression being casted <em>changes</em> to the <code>targetType</code> except in the case when the expression is either a <em>variable</em> or a <em>ghostVariable</em>. In these two cases, it is only checked that the expression type is a <em>subtype</em> of the <code>targetType</code>. If the expression type is a subtype of the <code>targetType</code> the expression is successfully typechecked. Consider the following example:</p></li></ul><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">uint256 x;                         // x has type uint256     
+mathint m1;                        // m1 has type mathint
+mathint y = x + m1;                // check that x&#39;s type (uint256) is a subtype of targetType (mathint) -- true
+assert x &lt; max_uint                // x STILL has type uint256 </pre>
+</div></div><h2 id="Types-ExplicitCasting">Explicit Casting</h2><ul><li><p>An explicit cast operator tries to convert the type of an operand from its original type to the target type. The <em>conversion</em> below specifies how the original expression is modified to a value in the target type. Furthermore, <em>safe_cast_bounds </em>specify the range of values for the original expression under which the conversion to the target type is safe to perform (i.e. does not result in an <em>overflow</em>). When the value is out of safe bounds (say in case of <code>to_uint256(-1)</code>), it results in an <em>overflow</em>. Here are the rules for performing different cast operations:</p></li><li><p><strong>To Unsigned Int</strong></p><ul><li><p><strong>Syntax</strong>: <code>to_uint256(exp)</code></p></li><li><p><strong>Rules:</strong></p><ul><li><p>Mathint To UnsignedInt</p><ul><li><p>conversion: <code>exp mod 2^256</code></p></li><li><p>safe_cast_bounds for warning: <code>exp &gt;= 0 &amp;&amp; exp &lt;= 2^256 - 1</code></p></li></ul></li><li><p>SignedInt To UnsignedInt</p><ul><li><p>conversion: <code>exp</code></p></li><li><p>safe_cast_bounds: <code>None</code></p></li></ul></li><li><p>NumberLiteral to UnsignedInt</p><ul><li><p>conversion: <code>exp mod 2^256</code></p></li><li><p>safe_cast_bounds for warning: <code>exp &gt;= 0 &amp;&amp; exp &lt;= 2^256 - 1</code></p></li></ul></li><li><p>BytesK to UnsignedInt</p><ul><li><p>conversion: <code>exp</code></p></li><li><p>safe_cast_bounds for warning: <code>None</code></p></li></ul></li></ul></li></ul></li></ul><p> </p><ul><li><p><strong>To Signed Int</strong></p><ul><li><p><strong>Syntax</strong>: <code>to_int256(exp)</code></p></li><li><p><strong>Rules:</strong></p><ul><li><p>Mathint to SignedInt</p><ul><li><p>conversion: <code>exp mod 2^256</code></p></li><li><p>safe_cast_bounds for warning: <code>exp &gt;= -2^255 &amp;&amp; exp &lt;= 2^255 - 1</code></p></li></ul></li><li><p>UnsignedInt to SignedInt</p><ul><li><p>conversion: <code>exp</code></p></li><li><p>safe_cast_bounds for warning: <code>exp &lt;= 2^255 - 1</code></p></li></ul></li><li><p>NumberLiteral to SignedInt</p><ul><li><p>conversion: <code>exp</code></p></li><li><p>safe_cast_bounds for warning: <code>exp &lt;= 2^255 - 1</code></p></li></ul></li></ul></li></ul></li></ul><p> </p><ul><li><p><strong>To Mathint</strong></p><ul><li><p><strong>Syntax:</strong> <code>to_mathint(exp)</code></p></li><li><p><strong>Rules:</strong></p><ul><li><p>UnsignedInt to Mathint</p><ul><li><p>conversion: <code>exp</code></p></li><li><p>safe_cast_bounds: <code>None</code></p></li></ul></li><li><p>SignedInt to Mathint</p><ul><li><p>conversion: <code>exp &lt;= 2^255 - 1 ? exp : exp - 2^256</code></p></li><li><p>safe_cast_bounds: <code>None</code></p></li></ul></li><li><p>NumberLiteral to Mathint</p><ul><li><p>conversion: <code>exp</code></p></li><li><p>safe_cast_bounds: <code>None</code></p></li></ul></li></ul></li></ul></li></ul><p /><ul><li><p>When an overflow occurs (i.e. when the inner expression is out of safe cast bounds for a cast operator), a warning is displayed in the call trace:<br/></p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/7340101/195199109.png" data-image-src="attachments/7340101/195199109.png" data-height="218" data-width="1130" data-unresolved-comment-count="0" data-linked-resource-id="195199109" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-20210713-184449.png" data-base-url="https://certora.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="7340101" data-linked-resource-container-version="11" data-media-id="dc6c1c5b-7312-48db-9728-ea0953874cb6" data-media-type="file"></span></li></ul><p><strong>Important Note</strong>: This warning is displayed <em>only</em> when</p><ul><li><p>The rule does not pass and a counterexample is generated &amp;&amp;</p></li><li><p>The tool is able to statically determine the value of the inner expression (e.g. <code>m3</code> above) &amp;&amp;</p></li><li><p>The inner expression value is out of bounds for a safe cast</p></li></ul><p style="margin-left: 30.0px;">Thus, a rule such as</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">mathint x1 = -3;
+uint256 x2 = uint256(x1);
+assert x2 &gt; 0;
+</pre>
+</div></div><p>is <strong>not</strong> going to display the warning because the <em>rule passes (as per the conversion above </em><code>x2</code> is <code>-3 mod 2^256</code> which is <strong>positive</strong><em>)</em> and no counterexample is generated.</p><p />
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/7340101/195199109.png">image-20210713-184449.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

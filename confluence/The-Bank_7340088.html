@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : The Bank</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Specification-By-Example_5243036.html">Specification By Example</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : The Bank
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Shelly</span> on Jul 25, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="TheBank-RulesintheCertoraVerificationLanguage">Rules in the Certora Verification Language</h1><p>The Certora Prover verifies that a smart contract satisfies a set of rules written in a language called <em>Certora Verification Language (CVL)</em>. Each rule is checked on all possible inputs. Of course, this is not done by explicitly enumerating the inputs, but rather through symbolic techniques. Rules can check that a public contract method has the correct effects on the contract state or returns the correct value, etc... The syntax for expressing rules somewhat resembles Solidity, but also supports more features that are important for verification. </p><p>Consider the following contract interface to implement a simple bank:</p><div class="ap-container" id="ap-confluence-prism__confluence-prism-macro4501965719096121702">
+
+  <div class="ap-content " id="embedded-confluence-prism__confluence-prism-macro4501965719096121702"></div>
+  <script class="ap-iframe-body-script">
+  (function(){
+    var data = {
+    "addon_key":"confluence-prism",
+    "uniqueKey":"confluence-prism__confluence-prism-macro4501965719096121702",
+    "key":"confluence-prism-macro",
+     "moduleType":"dynamicContentMacros",      "moduleLocation":"content",         "cp":"/wiki",
+            "general":"",
+    "w":"100%",
+    "h":"360px",
+    "url":"https://confluence-prism.weweave.net/macro?pageId=7340088&pageVersion=4&macroId=388854d2-af14-4037-ad1e-9ffdd07ceaba&outputType=html_export&language=Solidity+%28Ethereum%29&height=&limitHeight=&lineNumbers=true&lineNumbersStart=&lineHighlight=&downloadFilename=&dialogTitle=&xdm_e=https%3A%2F%2Fcertora.atlassian.net&xdm_c=channel-confluence-prism__confluence-prism-macro4501965719096121702&cp=%2Fwiki&xdm_deprecated_addon_key_do_not_use=confluence-prism&lic=active&cv=1.1192.0&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJlZmRjMDM5MTdkY2VkYWI5ODhmZGQzNGJlMjAzNmVlZDNiYTVhYjQ2OTBlMDNkYTE3MmI3NGY3MjhhN2EwYmQ3IiwiaXNzIjoiZjA3Y2YyNDYtOTk1OS0zNzJlLWFlMzQtM2Y1ZmE5Njc3OTdhIiwiY29udGV4dCI6e30sImV4cCI6MTY0Mjc3NzQxOSwiaWF0IjoxNjQyNzc3MjM5fQ.TL68qJbUhhcwTU4CPBIwhTknhlHu1tCkglnkIS5g8AE",
+     "contextJwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJjb250ZXh0LXFzaCIsImlzcyI6ImYwN2NmMjQ2LTk5NTktMzcyZS1hZTM0LTNmNWZhOTY3Nzk3YSIsImNvbnRleHQiOnsibGljZW5zZSI6eyJhY3RpdmUiOnRydWV9LCJjb25mbHVlbmNlIjp7ImVkaXRvciI6eyJ2ZXJzaW9uIjoiXCJ2MlwiIn0sIm1hY3JvIjp7Im91dHB1dFR5cGUiOiJodG1sX2V4cG9ydCIsImhhc2giOiIzODg4NTRkMi1hZjE0LTQwMzctYWQxZS05ZmZkZDA3Y2VhYmEiLCJpZCI6IjM4ODg1NGQyLWFmMTQtNDAzNy1hZDFlLTlmZmRkMDdjZWFiYSJ9LCJjb250ZW50Ijp7InR5cGUiOiJwYWdlIiwidmVyc2lvbiI6IjQiLCJpZCI6IjczNDAwODgifSwic3BhY2UiOnsia2V5IjoiQ1BEIiwiaWQiOiIyOTE2NTI1In19fSwiZXhwIjoxNjQyNzc4MTM5LCJpYXQiOjE2NDI3NzcyMzl9.fd2R6reJCLIdt5Zbi3rZg1sZ1AvwFUFh0vBZiAaxIGo",    "structuredContext": "{\"license\":{\"active\":true},\"confluence\":{\"editor\":{\"version\":\"\\\"v2\\\"\"},\"macro\":{\"outputType\":\"html_export\",\"hash\":\"388854d2-af14-4037-ad1e-9ffdd07ceaba\",\"id\":\"388854d2-af14-4037-ad1e-9ffdd07ceaba\"},\"content\":{\"type\":\"page\",\"version\":\"4\",\"id\":\"7340088\"},\"space\":{\"key\":\"CPD\",\"id\":\"2916525\"}}}",
+    "contentClassifier":"content",
+    "productCtx":"{\"page.id\":\"7340088\",\"macro.hash\":\"388854d2-af14-4037-ad1e-9ffdd07ceaba\",\"lineNumbers\":\"true\",\"space.key\":\"CPD\",\"user.id\":\"60fc25d78b1a9b006f16abd0\",\"page.type\":\"page\",\"content.version\":\"4\",\"page.title\":\"The Bank\",\"macro.localId\":\"a78ef041-8b67-41e0-8138-b1a13c0fa717\",\"language\":\"Solidity (Ethereum)\",\"macro.body\":\"pragma solidity \u003e= 0.4.24 \u003c 0.8;\\ncontract Bank {\\n  mapping (address =\u003e uint) public funds;\\n  uint public totalFunds;\\n  // get th\",\": = | RAW | = :\":\"lineNumbers=true|language=Solidity (Ethereum)\",\"space.id\":\"2916525\",\"macro.truncated\":\"true\",\"content.type\":\"page\",\"output.type\":\"html_export\",\"page.version\":\"4\",\"user.key\":\"8a7f808a7ad469f9017ad8f4037a0390\",\"content.id\":\"7340088\",\"macro.id\":\"388854d2-af14-4037-ad1e-9ffdd07ceaba\",\"editor.version\":\"\\\"v2\\\"\"}",
+    "timeZone":"US/Eastern",
+    "origin":"https://confluence-prism.weweave.net",
+    "hostOrigin":"https://certora.atlassian.net",
+    "sandbox":"allow-downloads allow-forms allow-modals allow-popups allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-storage-access-by-user-activation",            "apiMigrations": {
+        "gdpr": true
+    }
+}
+;
+    if(window.AP && window.AP.subCreate) {
+      window._AP.appendConnectAddon(data);
+    } else {
+      require(['ac/create'], function(create){
+        create.appendConnectAddon(data);
+      });
+    }
+  }());
+</script>
+</div>
+<p>And here is a rule for verifying that withdraw either reverts or returns true.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule withdraw_succeeds {
+  /* The env type represents the EVM parameters passed in every
+  call (msg.*, tx.*, block.* variables in solidity 	 */
+  env e;
+  // Invoke function withdraw and assume it does not revert
+  /* For non-envfree methods, the environment is passed as the first argument*/
+  bool success = withdraw(e);
+  assert success, &quot;withdraw must succeed&quot;;
+}</pre>
+</div></div><p>The rule calls withdraw with an arbitrary EVM environment (<code>e</code>) in an arbitrary initial state. It assumes that the function does not revert. The assert command checks that success is true on all potential executions. Notice that each Solidity function has an extra argument, which is the EVM environment.</p><h1 id="TheBank-Parametricrules">Parametric rules</h1><p>To simulate the execution of all functions in the contract, you can define a method argument in the rule and use it in invocation statements. For example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule others_can_only_increase_my_balance() {
+  method f; // an arbitrary function in the contract
+  env e;  // the execution environment
+  address other;
+  // Assume the actor and the other address are distinct
+  require e.msg.sender != other;
+  // Get the balance of `other` before the invocation
+  uint256 _balance = getFunds(other);
+  calldataarg arg; // any argument
+  f(e, arg); // successful (potentially state-changing!)
+  // Get the balance of `other` after the invocation
+  uint256 balance_ = getFunds(other);
+  assert _balance &lt;= balance_, &quot;Reduced the balance of another address&quot;;
+}</pre>
+</div></div><p>The Prover verifies that the conditions hold against any function call with any arguments.</p><h1 id="TheBank-Invariants">Invariants</h1><p>Invariants are a specification of a condition that should always be true once an operation is concluded. Syntax:</p><ul><li><p><code>invariant invariantName(args_list) exp</code> - Assume <code>exp</code> holds before execution of any method and verify exp must hold afterwards. The invariant &quot;step&quot; case above is equivalent to a rule:</p></li></ul><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule invariantAsRule(method f) {
+  require exp;
+  calldataarg arg;
+  f(e,arg);
+  assert exp;
+}</pre>
+</div></div><p>Unlike a rule, the invariant also checks that <code>exp</code> holds right after the constructor of the code.</p><h2 id="TheBank-Declaringfunctionsusedintheinvariant">Declaring functions used in the invariant</h2><p>In the spec file, you need to define the Solidity functions used in the invariants. Here <code>env</code> ranges over all environments.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">methods {
+  getFunds(address) returns uint256
+}
+
+invariant address_zero_cannot_become_an_account(env e)
+  getFunds(e, 0) == 0</pre>
+</div></div><h2 id="TheBank-envfreefunctions">envfree functions</h2><p>When a function is not using the environment, it can be declared as <code>envfree</code> to omit the call’s <code>env</code> argument. For example, <code>getFunds</code> is not using any of the environment variables:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">methods {
+  getFunds(address) returns uint256 envfree
+}
+
+invariant address_zero_cannot_become_an_account()
+  getFunds(0) == 0</pre>
+</div></div><p>/p</p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

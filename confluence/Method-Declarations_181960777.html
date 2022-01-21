@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Method Declarations</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Advanced-Subjects_3080193.html">Advanced Subjects</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Method Declarations
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Or Pistiner</span>, last modified on Aug 03, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>A specification may have a <code>methods</code> block that consists of <em>method declarations</em>. Each declares a function signature either in the contract being verified or in <a href="Multicontract_41124333.html" data-linked-resource-id="41124333" data-linked-resource-version="1" data-linked-resource-type="page">other contracts in the verification context</a>.</p><h2 id="MethodDeclarations-UseCases">Use Cases</h2><p>In general, we can reference contract functions without declaring them in the specification. Still, however, we may opt to declare an <code>external</code> or <code>public</code> contract function in the following use cases:</p><ol><li><p><strong>Making the specification more self-contained and readable.</strong></p><ul><li><p>We can use the <code>methods</code> block to</p><ul><li><p>list all the contract functions that are expected to exist in verification context;</p></li><li><p>specify the contracts' interface against which the specification is written (e.g., ERC20).</p></li></ul></li></ul></li><li><p><strong>Reusing the specification against contracts that implement subsets of an interface (e.g., ERC20).</strong></p><ul><li><p>Without a corresponding method declaration, a rule that refers to a contract function whose implementation is not found in the verification context would not pass the syntax check.</p></li><li><p>Method declarations enable us to ignore rules that refer to functions not found in the current verification context and run the tool using only the relevant rules in the specification.</p></li></ul></li><li><p><span class="confluence-anchor-link" id="MethodDeclarations-envfree"><span class="confluence-anchor-link" id="envfree"></span></span><strong>Declaring that the function is </strong><code>envfree</code><strong>, i.e., that it does not access the </strong><a href="Types_7340101.html" data-linked-resource-id="7340101" data-linked-resource-version="11" data-linked-resource-type="page"><strong>execution environment of the EVM</strong></a><strong>, and, in particular, it is non-payable.</strong></p><ul><li><p>An <code>envfree</code> declaration allows the function to be referenced in either invoke commands or invoke expressions without giving an <code>env</code> type instance as the first input argument.</p></li><li><p>If an implementation of the function exists in the contract, the tool would automatically generate rules to check that this implementation is indeed <code>envfree</code>.</p></li></ul></li></ol><h2 id="MethodDeclarations-Syntax">Syntax</h2><p>We demonstrate the syntax of method declarations through the example <code>methods</code> block shown below.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">using B as b
+
+methods {
+    foo02(uint, uint) returns (uint)
+    
+    b.foo03(uint) returns (uint) envfree
+
+    foo01(uint x, uint y) returns (uint) envfree
+}</pre>
+</div></div><ul><li><p>Line 4 declares that a function whose signature is <code>foo02(uint, uint)</code> and whose return type is <code><span class="inline-comment-marker" data-ref="bb925dc5-f78d-4d36-adff-c7e6462915c6">uint</span></code> should exist in <code>currentContract</code>, i.e., the contract being verified.</p></li><li><p>Line 6 declares that a function whose signature is <code>foo03(uint)</code> should exist in the <a href="Multicontract_41124333.html" data-linked-resource-id="41124333" data-linked-resource-version="1" data-linked-resource-type="page">imported contract</a> <code>B</code> and have <code>uint</code> as its return type. Note that, in contrast to Line 4, it uses <a href="Multicontract_41124333.html" data-linked-resource-id="41124333" data-linked-resource-version="1" data-linked-resource-type="page">multi-contract</a> and, in addition, declares <code>b.foo03(uint)</code> as <a href="#envfree" rel="nofollow">envfree</a>.</p></li><li><p>Line 8 is similar to Line 6; the notable difference is that it declares a function in <code>currentContract</code>.</p></li></ul><h2 id="MethodDeclarations-SummaryDeclarations">Summary Declarations</h2><p>A <em>summary declaration</em> is a special case of a method declaration. It declares that a function signature should be summarized using the specified summary. For more details about summaries, see <a href="Function-Summarization_41058462.html" data-linked-resource-id="41058462" data-linked-resource-version="2" data-linked-resource-type="page">Function Summarization</a>.</p><p>As opposed to the declarations which we have considered thus far,  summary declarations always implicitly apply to functions' signatures in “any contract”. That is, the summary applies to <em>any</em> call, either external or internal, in the contracts being verified, such that (1) it calls to the declared signature (or <a href="https://docs.soliditylang.org/en/v0.8.6/abi-spec.html#function-selector" class="external-link" rel="nofollow"><span class="inline-comment-marker" data-ref="efda8624-0661-403b-803f-8b83ce8e5552">sighash</span></a>); and (2) satisfies the <a href="Function-Summarization_41058462.html" data-linked-resource-id="41058462" data-linked-resource-version="2" data-linked-resource-type="page">summary application policy</a> (i.e., either <code>ALL</code> or <code>UNRESOLVED</code>).</p><p>The example <code>methods</code> block shown below demonstrates the syntax of summary declarations.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">methods {
+    foo03(uint) =&gt; ALWAYS(3) ALL
+    
+    foo02(uint, uint) =&gt; ALWAYS(2) UNRESOLVED
+     
+    0xd634d50a =&gt; ALWAYS(3) ALL // The sighash of foo3(uint)
+    
+    foo01(uint x, uint y) returns (uint) envfree =&gt; ALWAYS(1)
+}</pre>
+</div></div><ul><li><p>Line 2 declares that any call to a function whose signature is <code>foo03(uint)</code> should be summarized as  <code>ALWAYS(3)</code> and according to an <code>ALL</code> policy.</p></li><li><p>Line 4 declares that any call to a function whose signature is <code>foo02(uint, uint)</code> should be summarized as  <code>ALWAYS(2)</code>and according to an <code>UNRESOLVED</code> policy.</p></li><li><p>Line 6 is similar to Lines 2 and 4. The notable difference is that it uses the sighash of the function rather than its signature.</p></li><li><p>Line 8 combines a summary declaration with an <code>envfree</code> declaration. It declares an <code>ALWAYS(1)</code> summary for the signature <code>foo01(uint x, uint y)</code> in <em>any</em> contract, whereas it declares that the function <code>foo01(uint x, uint y)</code> should exist in <code>currentContract</code> and its return type is <code>uint</code>.</p></li></ul><div class="confluence-information-macro confluence-information-macro-information"><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>As shown in Line 8, we can omit the summary application policy (i.e., either <code>ALL</code> or <code>UNRESOLVED</code>). In this case, the default policy would be used. See <a href="Function-Summarization_41058462.html" data-linked-resource-id="41058462" data-linked-resource-version="2" data-linked-resource-type="page">Function Summarization</a> for more details.</p></div></div><h2 id="MethodDeclarations-MethodDeclarationsandMulti-Contract">Method Declarations and Multi-Contract</h2><p>Finally, notice that the use of <a href="Multicontract_41124333.html" data-linked-resource-id="41124333" data-linked-resource-version="1" data-linked-resource-type="page">multi-contract</a> in method declarations has the following restrictions:</p><ol><li><p>Multi-contract must not be used in summary declarations. Recall that summaries always implicitly apply to &quot;any contract&quot;.</p></li><li><p>Multi-contract should only be used in declarations that are <em>not</em> summary declarations.</p></li><li><p>When a valid <code>envfree</code> declaration is also a summary declaration (and therefore does not use multi-contract), the summary applies to &quot;any contract&quot; whereas the <code>envfree</code> declaration applies to <code>currentContract</code>.</p></li></ol>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

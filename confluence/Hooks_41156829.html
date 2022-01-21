@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Hooks</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="The-Anatomy-of-a-Specification_238845999.html">The Anatomy of a Specification</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Ghosts_41156805.html">Ghosts</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Hooks
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Shelly</span> on Jun 28, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="Hooks-Motivation">Motivation</h1><p>The previous section described uninterpreted functions as they exist in CVT. But by themselves, these uninterpreted functions are pretty useless. They don't even seem to keep track of any &quot;ghost&quot; state, as there is no way to relate the uninterpreted functions to the state of the contract being analyzed. <em>Hooks</em> are the glue that pieces together program behavior and the uninterpreted functions by providing a way to <em>hook</em> into certain program behavior and <em>update</em> ghost relations to reflect that program behavior.</p><h2 id="Hooks-ProgramState">Program State</h2><p>Ghosts are used to represent some state of a smart contract that the contract itself doesn't necessarily explicitly express. Nonetheless, there is often a relationship between what we want to express as a ghost state and the actual state of the program. For this reason, the hooks that can be expressed in CVT are linked to changes in contract <code>storage</code>, the only place where persistent contract state lives.</p><h1 id="Hooks-TheAnatomyofaHook">The Anatomy of a Hook</h1><p>A hook is made up of two separate pieces.</p><ol><li><p>The <em>pattern</em>: describes what read or write pattern the CVT looks for</p></li><li><p>The <em>body</em>: a block of code for CVT to insert</p></li></ol><p>Inside each rule, CVT takes these hooks and looks for any reads or writes to storage that match the <em>pattern</em>. At each match, it will insert the <em>body</em> of the hook where the match was found.</p><h2 id="Hooks-HookPatterns">Hook Patterns</h2><h3 id="Hooks-SloadandSstore">Sload and Sstore</h3><p><code>Sload</code> and <code>Sstore</code> are two <code>TAC</code> primitives representing a <em>read</em> from storage and a <em>write</em> to storage, respectively. A pattern for an <code>Sload</code> will bind a variable to provide access to &quot;the value loaded&quot;, and a pattern for an <code>Sstore</code> will bind a variable both for &quot;the value stored&quot; and (optionally) &quot;the old value that was overwritten.&quot; For example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">hook Sload uint256 v &lt;pattern&gt; STORAGE {
+  // inside this block, &quot;v&quot; provides access to the value that was loaded
+  // by this command (i.e. the lhs of the Sload command). Another variable
+  // name other than &quot;v&quot; could have been used
+}
+
+hook Sstore &lt;pattern&gt; uint256 v STORAGE {
+  // inside this block, &quot;v&quot; provides access to the value that was written
+  // to storage by this command (i.e. the rhs of the Sload command) Another
+  // variable name other than &quot;v&quot; could have been used
+}
+
+hook Sstore &lt;pattern&gt; uint256 v (uint256 v_old) STORAGE {
+  // inside this block:
+  //  - &quot;v&quot; provides access to the value that was written to storage by
+  //    this command
+  //  - &quot;v_old&quot; provides access to the value that was overwritten by this
+  //    command
+}</pre>
+</div></div><p>In the last hook, CVT will generate an extra <code>Sload v_old &lt;pattern&gt;</code> before every matched <code>Sstore</code></p><h3 id="Hooks-SlotPatterns">Slot Patterns</h3><p>Slot patterns represent any access path that could represent a storage access to any of Solidity's data structures (struct, array, mapping). However, because the EVM view of storage is just of a flat array of 256 bit words, an inline assembly block can produce a storage access that is not expressible by our slot pattern (in which case the storage analysis will be unable to reason about it anyway). A slot pattern conforms to the following grammar:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">ap := id            // some storage variable declared in contract
+   |  (slot n)      // n words into storage array
+   |  ap.(offset n) // struct access n bytes from ap, where n is a multiple of 32
+   |  ap[KEY t k]   // mapping access into the mapping at ap with key k of type t
+   |  ap[INDEX t i] // array access into the array at ap with index i of type t
+   ;</pre>
+</div></div><div class="confluence-information-macro confluence-information-macro-note"><span class="aui-icon aui-icon-small aui-iconfont-warning confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Nested struct offsets (<code>ap.(offset n)</code>) will be flattened before matching with the storage analysis (which will also flatten struct accesses). So, for example, both <code>ap.(offset 5).(offset 3)</code>and <code>ap.(offset 4).(offset 4)</code> will compile to <code>ap.(offset 8)</code> and would match any struct access where <code>ap</code> matches the base and some sequence of struct dereferences adds up to <code>8</code> bytes.</p></div></div><p>These slot patterns provide a simple syntax to specify what storage slot to hook on directly based on the Solidity-level declarations of storage variables. The following are a few examples of Solidity-level declarations of storage variables and slot patterns that will match accesses to these</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">mapping(address =&gt; uint256) balances;
+balances[KEY address addr]
+
+MyStruct {
+  uint256 el_1;
+  address el_2;
+}
+MyStruct[] arr;
+arr[INDEX uint256 i].(offset 32) // an access to el_2 of some element of arr
+
+mapping(uint256 =&gt; MyStruct[]) map;
+map[KEY uint256 k][INDEX uint256 i].(offset 0) // an access to el_1 of some
+                                               // element of some value
+                                               // map‌</pre>
+</div></div><div class="confluence-information-macro confluence-information-macro-information"><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>The access pattern <code>(slot n)</code> requires an understanding of the storage layout of a contract. If you know where a top-level variable sits in the top-level storage array you can use this access pattern. Additionally, with <code>solc5.X</code> and older, you must use this pattern instead of storage variable identifiers since the storage layout is unavailable in versions older than <code>solc5.X</code></p></div></div><h2 id="Hooks-StructPatterns">Struct Patterns</h2><p>The storage analysis has a less than perfect view of structs which makes them relatively complicated. There are several important things to note:‌</p><ol><li><p>The storage analysis <strong>only</strong> reasons about 1 word/256 bit/32 byte slots,</p></li><li><p><strong>except</strong> for in static slots (i.e., not inside of a mapping or array)</p></li><li><p>It is possible to extract packed struct values, but it requires knowledge of how solidity packs structs</p></li></ol><p>We will examine these three cases in the following running example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">contract Test {
+  struct MyStruct {
+    uint256 first;
+    uint256 second;
+    uint256 third;
+  }
+  
+  struct MyPackedStruct {
+    uint128 first;
+    uint64 second;
+    uint64 third;
+  }
+
+  MyStruct s_1;
+  MyPackedStruct s_2;
+  mapping(uint256 =&gt; MyStruct) m_1;
+  mapping(uint256 =&gt; MyPackedStruct) m_2;
+  ...
+}</pre>
+</div></div><h3 id="Hooks-StructsinStaticSlots">Structs in Static Slots</h3><p>In static slots we can reason about packing from the hook pattern. For example, if we wanted to hook on a write to <code>s_1.second</code> we would write the following hook (remember offsets are in bytes):</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">hook Sstore s_1.(offset 16) uint64 second (uint64 old_second) STORAGE {
+  // hook body
+}</pre>
+</div></div><h3 id="Hooks-StructsinsideMappingsorArrays">Structs inside Mappings or Arrays</h3><p>When a struct is inside a mapping or an array, it becomes a bit trickier to reason about. However, 1 word/32 byte offsets are fine. So if we wanted to hook on a write to <code>m_1[k].third</code> we would write:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">hook Sstore m_1[KEY uint256 k].(offset 64) uint256 third STORAGE {
+  // hook body
+}</pre>
+</div></div><p>This is allowed only because the offset is <strong>32-byte aligned</strong>. Any non- 32-byte aligned offset will not typecheck. However, using a clever definition, we can still get values from within packed structs.</p><h3 id="Hooks-ManuallyUnpackingStructs">Manually Unpacking Structs</h3><p>Solidity packs structs in the order they're declared, starting from the least significant bit. So a word holding a <code>MyPackedStruct</code> would look like:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">//T=third         S=second        F=first
+0xTTTTTTTTTTTTTTTTSSSSSSSSSSSSSSSSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</pre>
+</div></div><p>‌</p><p>So we can write a definition that will unpack these bits:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">definition MyPackedStruct_first(uint256 s) returns uint256 =
+    s &amp; 0xffffffffffffffffffffffffffffffff;
+definition MyPackedStruct_second(uint256 s) returns uint256 =
+    (s &amp; 0xffffffffffffffff00000000000000000000000000000000) &gt;&gt;&gt; 128;
+definition MyPackedStruct_third(uint256 s) returns uint256 =
+    (s &amp; 0xffffffffffffffff000000000000000000000000000000000000000000000000) &gt;&gt;&gt; 192;</pre>
+</div></div><p>And so to write a hook to <code>m_2[k].{first, second, third}</code> we can write the following:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">hook Sstore m_2[KEY uint256 k].(offset 0) uint256 s STORAGE {
+  uint256 first   = MyPackedStruct_first(s);
+  uint256 second  = MyPackedStruct_second(s);
+  uint256 third   = MyPackedStruct_third(s);    
+  // body
+}</pre>
+</div></div><div class="confluence-information-macro confluence-information-macro-note"><span class="aui-icon aui-icon-small aui-iconfont-warning confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>This hook will be triggered on writes to all fields of the struct packed into the same slot‌.</p></div></div><h2 id="Hooks-PuttingitTogether">Putting it Together</h2><p>The combination of <code>Sload</code>/<code>Sstore</code> and the slot pattern combine to create a complete specification of a <strong>hook pattern</strong>. For example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
+  // inside this block:
+  //  - &quot;account&quot; provides access to the key into the mapping that was
+  //    was used in this storage access
+  //  - &quot;v&quot; provides access to the value that was written to storage by
+  //    this command
+  //  - &quot;v_old&quot; provides access to the value that was overwritten by this
+  //    command
+}</pre>
+</div></div><h2 id="Hooks-TheBodyofaHook">The Body of a Hook</h2><p>The body of a hook may include straight-line commands (i.e., <em>neither</em> if statements <em>nor</em> invocations of contract functions). Expressions in these commands may reference variables bound by the hook. For example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">ghost ghostBalances(address) returns uint256;
+hook Sload uint256 v balances[KEY address account] STORAGE {
+  require ghostBalances(account) == v;
+}‌</pre>
+</div></div><p>This would make sure that on every read, we make sure that <code>ghostBalances</code> matches <code>balances</code>. Often hook bodies only include a one-line update to a ghost function, but this doesn't necessarily need to be the case. A similar update to <code>ghostBalances</code> would be possible on an <code>Sstore</code> but requires understanding a <em>two-state context</em>.</p><h2 id="Hooks-TwoStateContext">Two State Context</h2><p>A two-state context is a scope in which two versions of a variable or ghost function are available, representing <em>two different</em> states of that variable/ghost function. If we are talking about the variable <code>my_var</code> then the <em>old</em> version would be accessed using <code>my_var@old</code>, and the new version would be accessed using <code>my_var@new</code>. For ghost functions, we annotate the ghost application. For example, an application of the <em>old</em> version might look like <code>my_ghost@old(x, y)</code>, and an application of the <em>new</em> version might look like <code>my_ghost@new(x, y)</code> .</p><p>But how is it that we would have <em>two</em> versions of a variable or ghost function? Currently, the <em>only</em> place that will <em>create</em>these two versions is a havoc-assuming statement.</p><h3 id="Hooks-HavocAssuming">Havoc Assuming</h3><p>Sometimes we want to forget everything we know about a variable and allow it to take any value from a certain program point onward. This is when we <em>havoc</em> a variable. For example:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule my_rule(uint256 x) {
+  require x == 2;
+  assert x == 2; // passes
+  havoc x;
+  assert x == 2; // fails
+}</pre>
+</div></div><p>Other times, we'd only like to forget certain things about a variable or ghost function, and sometimes we'd like to learn <em>new</em> things or constrain a variable based on its own value. This is where the <code>havoc assuming</code> statement becomes very useful. The following example should illustrate the idea:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule my_rule(uint256 x) {
+  require x &gt;= 2;
+  havoc x assuming x@new &gt; x@old;
+  assert x &gt; 2; // passes
+}</pre>
+</div></div><p>and a <code>havoc assuming</code> statement with a ghost function might look like the following:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">ghost contains(uint256 x) returns bool;
+
+rule my_rule(uint256 x, uint256 y, uint256 z) {
+  require contains(x);
+  // &quot;every input that used to return true should still return true
+  //  AND y should now return true as well&quot;
+  havoc contains assuming contains@new(y) &amp;&amp;
+      forall uint256 a. contains@old(a) =&gt; contains@new(a);
+      
+  assert contains(x) &amp;&amp; contains(y); // passes
+  assert contains(z);                // fails
+}</pre>
+</div></div><p>‌Finally, as shown in the section on <span class="inline-comment-marker" data-ref="ef2c923d-392c-41da-96d3-4806451514a2">definitions</span>, a definition with ghosts in two-state form may be used inside the two-state context of a <code>havoc assuming</code> statement.</p><h2 id="Hooks-AHookthatModifiesGhostState">A Hook that Modifies Ghost State</h2><p><a href="https://certora.atlassian.net/wiki/spaces/CPD/pages/41156829/Hooks#The-Body-of-a-Hook" rel="nofollow">Above</a> we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather <em>further constrained</em> it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a <code>havoc assuming</code> statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">ghost ghostBalances(address) returns uint256;
+
+hook Sstore balances[KEY address account] uint256 v STORAGE {
+  havoc ghostBalances assuming ghostBalances@new(account) == v &amp;&amp;
+    forall address a. a != account =&gt;
+        ghostBalances@new(a) == ghostBalances@old(a);
+}</pre>
+</div></div><div class="confluence-information-macro confluence-information-macro-note"><span class="aui-icon aui-icon-small aui-iconfont-warning confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>In <code>Sstore</code> hooks, the old value is read by means of generating an <code>Sload</code>. However, any hook that can be matched to the generated <code>Sload</code> <em>does not</em> apply within the <code>Sstore</code> hook.</p></div></div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

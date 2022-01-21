@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Linking contracts</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Advanced-Subjects_3080193.html">Advanced Subjects</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Linking contracts
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Shelly</span>, last modified on May 23, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>Suppose we have a contract <code>BankStorage</code>:</p><div class="ap-container" id="ap-confluence-prism__confluence-prism-macro6754947938319031819">
+
+  <div class="ap-content " id="embedded-confluence-prism__confluence-prism-macro6754947938319031819"></div>
+  <script class="ap-iframe-body-script">
+  (function(){
+    var data = {
+    "addon_key":"confluence-prism",
+    "uniqueKey":"confluence-prism__confluence-prism-macro6754947938319031819",
+    "key":"confluence-prism-macro",
+     "moduleType":"dynamicContentMacros",      "moduleLocation":"content",         "cp":"/wiki",
+            "general":"",
+    "w":"100%",
+    "h":"360px",
+    "url":"https://confluence-prism.weweave.net/macro?pageId=41255309&pageVersion=3&macroId=5b4fc983-11af-4b9b-a10d-6bd6f79d998b&outputType=html_export&language=none&height=&limitHeight=&lineNumbers=&lineNumbersStart=&lineHighlight=&downloadFilename=&dialogTitle=&xdm_e=https%3A%2F%2Fcertora.atlassian.net&xdm_c=channel-confluence-prism__confluence-prism-macro6754947938319031819&cp=%2Fwiki&xdm_deprecated_addon_key_do_not_use=confluence-prism&lic=active&cv=1.1192.0&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiIyN2FmNDg2ODMzNzRhMmE4M2RhYjI5OTdkMTdmNTBiMWNjNzEyZTViNjBhMzk3NzdiOTBjNmZmYjFhMjVmY2ViIiwiaXNzIjoiZjA3Y2YyNDYtOTk1OS0zNzJlLWFlMzQtM2Y1ZmE5Njc3OTdhIiwiY29udGV4dCI6e30sImV4cCI6MTY0Mjc3NzQyMiwiaWF0IjoxNjQyNzc3MjQyfQ.h9gNqUwGcIDTyMT3WTR5YMvMv25aSsr7CBGT6-4W1Ho",
+     "contextJwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJjb250ZXh0LXFzaCIsImlzcyI6ImYwN2NmMjQ2LTk5NTktMzcyZS1hZTM0LTNmNWZhOTY3Nzk3YSIsImNvbnRleHQiOnsibGljZW5zZSI6eyJhY3RpdmUiOnRydWV9LCJjb25mbHVlbmNlIjp7ImVkaXRvciI6eyJ2ZXJzaW9uIjoiXCJ2MlwiIn0sIm1hY3JvIjp7Im91dHB1dFR5cGUiOiJodG1sX2V4cG9ydCIsImhhc2giOiI1YjRmYzk4My0xMWFmLTRiOWItYTEwZC02YmQ2Zjc5ZDk5OGIiLCJpZCI6IjViNGZjOTgzLTExYWYtNGI5Yi1hMTBkLTZiZDZmNzlkOTk4YiJ9LCJjb250ZW50Ijp7InR5cGUiOiJwYWdlIiwidmVyc2lvbiI6IjMiLCJpZCI6IjQxMjU1MzA5In0sInNwYWNlIjp7ImtleSI6IkNQRCIsImlkIjoiMjkxNjUyNSJ9fX0sImV4cCI6MTY0Mjc3ODE0MiwiaWF0IjoxNjQyNzc3MjQyfQ.8IzncfvdPBzHSFxzuYH8oYBMAOFNt9dXoJCVT53Su7E",    "structuredContext": "{\"license\":{\"active\":true},\"confluence\":{\"editor\":{\"version\":\"\\\"v2\\\"\"},\"macro\":{\"outputType\":\"html_export\",\"hash\":\"5b4fc983-11af-4b9b-a10d-6bd6f79d998b\",\"id\":\"5b4fc983-11af-4b9b-a10d-6bd6f79d998b\"},\"content\":{\"type\":\"page\",\"version\":\"3\",\"id\":\"41255309\"},\"space\":{\"key\":\"CPD\",\"id\":\"2916525\"}}}",
+    "contentClassifier":"content",
+    "productCtx":"{\"page.id\":\"41255309\",\"macro.hash\":\"5b4fc983-11af-4b9b-a10d-6bd6f79d998b\",\"space.key\":\"CPD\",\"user.id\":\"60fc25d78b1a9b006f16abd0\",\"page.type\":\"page\",\"content.version\":\"3\",\"page.title\":\"Linking contracts\",\"macro.localId\":\"c1ec6220-053a-4246-b230-630f36b4fdde\",\"language\":\"none\",\"macro.body\":\"contract BankStorage {\\n    uint public total;\\n    mapping(address =\u003e uint) public balances;\\n    \\n    address owner;\\n    \\n    mod\",\": = | RAW | = :\":\"language=none\",\"space.id\":\"2916525\",\"macro.truncated\":\"true\",\"content.type\":\"page\",\"output.type\":\"html_export\",\"page.version\":\"3\",\"user.key\":\"8a7f808a7ad469f9017ad8f4037a0390\",\"content.id\":\"41255309\",\"macro.id\":\"5b4fc983-11af-4b9b-a10d-6bd6f79d998b\",\"editor.version\":\"\\\"v2\\\"\"}",
+    "timeZone":"US/Eastern",
+    "origin":"https://confluence-prism.weweave.net",
+    "hostOrigin":"https://certora.atlassian.net",
+    "sandbox":"allow-downloads allow-forms allow-modals allow-popups allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-storage-access-by-user-activation",            "apiMigrations": {
+        "gdpr": true
+    }
+}
+;
+    if(window.AP && window.AP.subCreate) {
+      window._AP.appendConnectAddon(data);
+    } else {
+      require(['ac/create'], function(create){
+        create.appendConnectAddon(data);
+      });
+    }
+  }());
+</script>
+</div>
+<p>‌<code>BankStorage</code> is used in a contract <code>Bank</code>:</p><div class="ap-container" id="ap-confluence-prism__confluence-prism-macro9033959848537674152">
+
+  <div class="ap-content " id="embedded-confluence-prism__confluence-prism-macro9033959848537674152"></div>
+  <script class="ap-iframe-body-script">
+  (function(){
+    var data = {
+    "addon_key":"confluence-prism",
+    "uniqueKey":"confluence-prism__confluence-prism-macro9033959848537674152",
+    "key":"confluence-prism-macro",
+     "moduleType":"dynamicContentMacros",      "moduleLocation":"content",         "cp":"/wiki",
+            "general":"",
+    "w":"100%",
+    "h":"360px",
+    "url":"https://confluence-prism.weweave.net/macro?pageId=41255309&pageVersion=3&macroId=2f670079-a432-4447-8018-2d50e4733c3a&outputType=html_export&language=none&height=&limitHeight=&lineNumbers=&lineNumbersStart=&lineHighlight=&downloadFilename=&dialogTitle=&xdm_e=https%3A%2F%2Fcertora.atlassian.net&xdm_c=channel-confluence-prism__confluence-prism-macro9033959848537674152&cp=%2Fwiki&xdm_deprecated_addon_key_do_not_use=confluence-prism&lic=active&cv=1.1192.0&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiI2NWEyMDQxMmNlMDA1ZDM0OTRjYmVhODMzZTQwMzNkZWQ1YTA5MGMzNzk1ZTIxMjE0YWFiZTg3NWMxYzI1NDBkIiwiaXNzIjoiZjA3Y2YyNDYtOTk1OS0zNzJlLWFlMzQtM2Y1ZmE5Njc3OTdhIiwiY29udGV4dCI6e30sImV4cCI6MTY0Mjc3NzQyMiwiaWF0IjoxNjQyNzc3MjQyfQ.vcayseqJ8ItGw512fa1DcnvYSkRC4EwSD9G75oi14BM",
+     "contextJwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJjb250ZXh0LXFzaCIsImlzcyI6ImYwN2NmMjQ2LTk5NTktMzcyZS1hZTM0LTNmNWZhOTY3Nzk3YSIsImNvbnRleHQiOnsibGljZW5zZSI6eyJhY3RpdmUiOnRydWV9LCJjb25mbHVlbmNlIjp7ImVkaXRvciI6eyJ2ZXJzaW9uIjoiXCJ2MlwiIn0sIm1hY3JvIjp7Im91dHB1dFR5cGUiOiJodG1sX2V4cG9ydCIsImhhc2giOiIyZjY3MDA3OS1hNDMyLTQ0NDctODAxOC0yZDUwZTQ3MzNjM2EiLCJpZCI6IjJmNjcwMDc5LWE0MzItNDQ0Ny04MDE4LTJkNTBlNDczM2MzYSJ9LCJjb250ZW50Ijp7InR5cGUiOiJwYWdlIiwidmVyc2lvbiI6IjMiLCJpZCI6IjQxMjU1MzA5In0sInNwYWNlIjp7ImtleSI6IkNQRCIsImlkIjoiMjkxNjUyNSJ9fX0sImV4cCI6MTY0Mjc3ODE0MiwiaWF0IjoxNjQyNzc3MjQyfQ.umwL8K_u9YYlZwH0RZhznm7FqmY3Vwri0wjV4XQtRi4",    "structuredContext": "{\"license\":{\"active\":true},\"confluence\":{\"editor\":{\"version\":\"\\\"v2\\\"\"},\"macro\":{\"outputType\":\"html_export\",\"hash\":\"2f670079-a432-4447-8018-2d50e4733c3a\",\"id\":\"2f670079-a432-4447-8018-2d50e4733c3a\"},\"content\":{\"type\":\"page\",\"version\":\"3\",\"id\":\"41255309\"},\"space\":{\"key\":\"CPD\",\"id\":\"2916525\"}}}",
+    "contentClassifier":"content",
+    "productCtx":"{\"page.id\":\"41255309\",\"macro.hash\":\"2f670079-a432-4447-8018-2d50e4733c3a\",\"space.key\":\"CPD\",\"user.id\":\"60fc25d78b1a9b006f16abd0\",\"page.type\":\"page\",\"content.version\":\"3\",\"page.title\":\"Linking contracts\",\"macro.localId\":\"bce6150d-0b92-4c6a-9f58-beaa2331bebd\",\"language\":\"none\",\"macro.body\":\"contract Bank {\\n    BankStorage s;\\n    \\n    function balanceOf(address who) public returns (uint) {\\n        return s.balanceOf(w\",\": = | RAW | = :\":\"language=none\",\"space.id\":\"2916525\",\"macro.truncated\":\"true\",\"content.type\":\"page\",\"output.type\":\"html_export\",\"page.version\":\"3\",\"user.key\":\"8a7f808a7ad469f9017ad8f4037a0390\",\"content.id\":\"41255309\",\"macro.id\":\"2f670079-a432-4447-8018-2d50e4733c3a\",\"editor.version\":\"\\\"v2\\\"\"}",
+    "timeZone":"US/Eastern",
+    "origin":"https://confluence-prism.weweave.net",
+    "hostOrigin":"https://certora.atlassian.net",
+    "sandbox":"allow-downloads allow-forms allow-modals allow-popups allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-storage-access-by-user-activation",            "apiMigrations": {
+        "gdpr": true
+    }
+}
+;
+    if(window.AP && window.AP.subCreate) {
+      window._AP.appendConnectAddon(data);
+    } else {
+      require(['ac/create'], function(create){
+        create.appendConnectAddon(data);
+      });
+    }
+  }());
+</script>
+</div>
+<p>If we check <code>Bank</code> on its own without knowing the code of <code>BankStorage</code>, the Certora Prover cannot guarantee that the code of <code>Bank</code> is correct. This is because the implementation of <code>BankStorage</code> may not behave as intended.</p><p>One way to overcome this problem is by <em>linking</em> the <code>Bank</code> contract to <code>BankStorage</code>. This is done as follows:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">certoraRun Bank.sol BankStorage.sol --link Bank:s=BankStorage --verify Bank:bank.spec</pre>
+</div></div><p />
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

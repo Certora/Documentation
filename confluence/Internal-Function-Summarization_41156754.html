@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Certora Prover Documentation : Internal Function Summarization</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Certora-Prover-Documentation_2916669.html">Certora Prover Documentation</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Advanced-Subjects_3080193.html">Advanced Subjects</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Method-Declarations_181960777.html">Method Declarations</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Function-Summarization_41058462.html">Function Summarization</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            Certora Prover Documentation : Internal Function Summarization
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> thomas</span>, last modified by <span class='editor'> Shelly</span> on May 23, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h1 id="InternalFunctionSummarization-SummariesAlwaysInserted">Summaries Always Inserted</h1><p>Summaries for<strong> external</strong> functions are only inserted when an implementation of that function cannot be found, and so we default to some summary that we, the verifier, sees fit. <em>However</em>, internal functions can always be found and so it only makes sense to force-replace the body of the function (as opposed to filling in for one that could not be found).‌</p><h1 id="InternalFunctionSummarization-FeatureLimitations:">Feature Limitations:</h1><ul><li><p>Function must have primitive parameter types and return types (<code>bool</code>, <code>address</code>, <code>uintX</code>, <code>bytesX</code>)</p></li><li><p>Functions must be pure</p></li></ul><h1 id="InternalFunctionSummarization-AllowedSummaries">Allowed Summaries</h1><p>Not all summaries make sense in the context of an internal function. Only the following summaries are allowed:</p><ul><li><p><code>ALWAYS(X)</code> the summary always returns <code>X</code> and has no side-effects</p></li><li><p><code>CONSTANT</code> the summary always returns the same constant and has no side effects</p></li><li><p><code>NONDET</code> the summary returns a havoc'd value</p></li><li><p><code>Ghost</code> the summary returns the value return by the given ghost function with the given arguments</p></li></ul><h1 id="InternalFunctionSummarization-Example">Example</h1><p>Consider the following toy contract where accounts earn continuously compounding interest. Balances are stored as &quot;day 0 principal&quot; and current balances are calculated from that principal using the function <code>continuous_interest</code> which implements the standard continuous interest formula.</p><div class="ap-container" id="ap-confluence-prism__confluence-prism-macro2609474161889802191">
+
+  <div class="ap-content " id="embedded-confluence-prism__confluence-prism-macro2609474161889802191"></div>
+  <script class="ap-iframe-body-script">
+  (function(){
+    var data = {
+    "addon_key":"confluence-prism",
+    "uniqueKey":"confluence-prism__confluence-prism-macro2609474161889802191",
+    "key":"confluence-prism-macro",
+     "moduleType":"dynamicContentMacros",      "moduleLocation":"content",         "cp":"/wiki",
+            "general":"",
+    "w":"100%",
+    "h":"360px",
+    "url":"https://confluence-prism.weweave.net/macro?pageId=41156754&pageVersion=3&macroId=cf3528db-1d0d-497c-9476-8bd04ccf2a05&outputType=html_export&language=none&height=&limitHeight=&lineNumbers=&lineNumbersStart=&lineHighlight=&downloadFilename=&dialogTitle=&xdm_e=https%3A%2F%2Fcertora.atlassian.net&xdm_c=channel-confluence-prism__confluence-prism-macro2609474161889802191&cp=%2Fwiki&xdm_deprecated_addon_key_do_not_use=confluence-prism&lic=active&cv=1.1192.0&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJlYzUwNGY5YWEyNmJmYzA1Y2NlNDlkMzlmZDQ5YTQ2ZTYxODhjMDc3M2U1NzAxZGZjOWQxZDkyOWUyZGYxZDVlIiwiaXNzIjoiZjA3Y2YyNDYtOTk1OS0zNzJlLWFlMzQtM2Y1ZmE5Njc3OTdhIiwiY29udGV4dCI6e30sImV4cCI6MTY0Mjc3NzQyMiwiaWF0IjoxNjQyNzc3MjQyfQ.7Kvvw_NxKB2lUL6VPYR-wY_JRak5unXwD5BssFVF3cc",
+     "contextJwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGZjMjVkNzhiMWE5YjAwNmYxNmFiZDAiLCJxc2giOiJjb250ZXh0LXFzaCIsImlzcyI6ImYwN2NmMjQ2LTk5NTktMzcyZS1hZTM0LTNmNWZhOTY3Nzk3YSIsImNvbnRleHQiOnsibGljZW5zZSI6eyJhY3RpdmUiOnRydWV9LCJjb25mbHVlbmNlIjp7ImVkaXRvciI6eyJ2ZXJzaW9uIjoiXCJ2MlwiIn0sIm1hY3JvIjp7Im91dHB1dFR5cGUiOiJodG1sX2V4cG9ydCIsImhhc2giOiJjZjM1MjhkYi0xZDBkLTQ5N2MtOTQ3Ni04YmQwNGNjZjJhMDUiLCJpZCI6ImNmMzUyOGRiLTFkMGQtNDk3Yy05NDc2LThiZDA0Y2NmMmEwNSJ9LCJjb250ZW50Ijp7InR5cGUiOiJwYWdlIiwidmVyc2lvbiI6IjMiLCJpZCI6IjQxMTU2NzU0In0sInNwYWNlIjp7ImtleSI6IkNQRCIsImlkIjoiMjkxNjUyNSJ9fX0sImV4cCI6MTY0Mjc3ODE0MiwiaWF0IjoxNjQyNzc3MjQyfQ.Z3dB5CuI53BLl1mgkz9__5hmfHpl5YQHlYKWLlopVk8",    "structuredContext": "{\"license\":{\"active\":true},\"confluence\":{\"editor\":{\"version\":\"\\\"v2\\\"\"},\"macro\":{\"outputType\":\"html_export\",\"hash\":\"cf3528db-1d0d-497c-9476-8bd04ccf2a05\",\"id\":\"cf3528db-1d0d-497c-9476-8bd04ccf2a05\"},\"content\":{\"type\":\"page\",\"version\":\"3\",\"id\":\"41156754\"},\"space\":{\"key\":\"CPD\",\"id\":\"2916525\"}}}",
+    "contentClassifier":"content",
+    "productCtx":"{\"page.id\":\"41156754\",\"macro.hash\":\"cf3528db-1d0d-497c-9476-8bd04ccf2a05\",\"space.key\":\"CPD\",\"user.id\":\"60fc25d78b1a9b006f16abd0\",\"page.type\":\"page\",\"content.version\":\"3\",\"page.title\":\"Internal Function Summarization\",\"macro.localId\":\"c614184d-aab5-40e6-8c06-4b4e625112bf\",\"language\":\"none\",\"macro.body\":\"contract Interest {\\n  uint256 days;\\n  uint256 interest;\\n  mapping(address =\u003e uint256) principals;\\n  // decimals 18\\n  public uint\",\": = | RAW | = :\":\"language=none\",\"space.id\":\"2916525\",\"macro.truncated\":\"true\",\"content.type\":\"page\",\"output.type\":\"html_export\",\"page.version\":\"3\",\"user.key\":\"8a7f808a7ad469f9017ad8f4037a0390\",\"content.id\":\"41156754\",\"macro.id\":\"cf3528db-1d0d-497c-9476-8bd04ccf2a05\",\"editor.version\":\"\\\"v2\\\"\"}",
+    "timeZone":"US/Eastern",
+    "origin":"https://confluence-prism.weweave.net",
+    "hostOrigin":"https://certora.atlassian.net",
+    "sandbox":"allow-downloads allow-forms allow-modals allow-popups allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-storage-access-by-user-activation",            "apiMigrations": {
+        "gdpr": true
+    }
+}
+;
+    if(window.AP && window.AP.subCreate) {
+      window._AP.appendConnectAddon(data);
+    } else {
+      require(['ac/create'], function(create){
+        create.appendConnectAddon(data);
+      });
+    }
+  }());
+</script>
+</div>
+<p>Now suppose we would like to prove that this balance calculation is monotonic with respect to time (as days go by, balance never decreases). The following spec would demonstrate this property.</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">rule yield_monotonic(address a, uint256 n) {
+  uint256 y1 = balance(a);
+  require n &gt;= 0;
+  advanceDays(n);
+  uint256 y2 = balance(a);
+  assert y2 &gt;= y1;
+}</pre>
+</div></div><p>Unfortunately, the function <code>continuous_interest</code> includes some arithmetic that is very difficult for the underlying SMT solver to reason about and two things may happen.</p><ol><li><p>The resulting formula may be cause the underlying SMT formula to time out which will result in an <code>unknown</code> result</p></li><li><p>The Prover will use &quot;overapproximations&quot; of the arithmetic operations in the resulting formula. Basically this means that we let allows some weird and unexpected behavior which <em>includes</em> the behavior of the function, but <em>also</em>includes more behavior. Basically, this means that a counterexample may not be a <em>real </em>counterexample (i.e. not actually possible program behavior). To understand this better see our section on <a href="https://certora.atlassian.net/wiki/spaces/CPD/pages/41255047/Approximation#Solution-1%3A-Overapproximation" rel="nofollow"><span class="inline-comment-marker" data-ref="67c5bef4-d68b-45b2-826d-7bb82d05546f">overapproximation</span></a><span class="inline-comment-marker" data-ref="67c5bef4-d68b-45b2-826d-7bb82d05546f">.</span></p></li></ol><p>It turns out that in this case, we run into problem (2) where the tool reports a violation which doesn't actually make sense. This is where function summarization becomes useful, since we get to decide how we would like to overapproximate our function! Suppose we would like to prove that, <em>assuming the equation we use to calculate continuously compounding interest is monotonic</em>, then it is also the case that the value of our principal is monotonically increasing over time. In this case we do the following:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence">methods {
+  // tell the tool to use a ghost function as the summary for the function
+  continuous_interest(uint256 p, uint256 r, uint256 t) =&gt;
+      ghost_interest(p, r, t)
+}
+
+// define the ghost function
+ghost ghost_interest(uint256,uint256,uint256) {
+  // add an axiom describing monotonicity of ghost_interest
+  axiom forall uint256 p. forall uint256 r. forall uint256 t1. forall uint256 t2.
+      t2 &gt;= t1 =&gt; ghost_interest(p,r,t2) &gt;= ghost_interest(p,r,t1);
+}
+
+rule yield_monotonic(address a, uint256 n) {
+  // internally, when this call continuous_interest, the function will
+  // be summarized as ghost_interest
+  uint256 y1 = balance(a);
+  require n &gt;= 0;
+  
+  advanceDays(n);
+  
+  // internally, when this call continuous_interest, the function will
+  // be summarized as ghost_interest
+  uint256 y2 = balance(a);
+  assert y2 &gt;= y1;
+}</pre>
+</div></div><p>By summarizing <code>continuous_interest</code> as a function who is monotonic with its last argument (time) we are able to prove the property.</p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Jan 21, 2022 10:00</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>
