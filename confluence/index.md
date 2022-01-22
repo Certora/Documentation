@@ -2,18 +2,17 @@ Old Documentation
 =================
 
 ```{toctree}
+:maxdepth: 2
 
 getting-started.md
 options.md
 technology.md
 examples.md
 exercises/exercises.md
+anatomy/index.md
 ```
 
 ## Rest
- - [Exercises](Exercises_41255285.html)
-   - [Writing Simple Rules](Writing-Simple-Rules_41157051.html)
-   - [Understanding Counter-examples](Understanding-Counter-examples_41157061.html)
  - [The Anatomy of a Specification](The-Anatomy-of-a-Specification_238845999.html)
    - [Rules](Rules_250871831.html)
    - [CVL Functions](CVL-Functions_238846033.html)
