@@ -19,7 +19,7 @@ foo@withrevert(arg); // same as invoke foo(arg)
 require !lastReverted;
 ```
 
-### Boolean operators that do not exist in Solidity
+## Boolean operators that do not exist in Solidity
 
 *   Implication: `=>`   
     `A => B` evaluates to true if either `A` is false or `B` is true. For example, `assert e.sender != admin => lastReverted` could check that if the caller is not the admin, a given function must revert in all cases.
@@ -28,7 +28,7 @@ require !lastReverted;
      `A <=> B` evaluates to true if and only if `A => B && B => A`. For example,  `assert e.sender != admin <=> lastReverted` checks that if the caller is not the admin, a given function reverts and that if the function reverted, it must be the case that the sender was not the admin (basically saying that this is the only reason it would revert).
     
 
-### If Then Else (ITE) expressions
+## If Then Else (ITE) expressions
 
 *   CVL supports _If Then Else (ITE)_ expressions that can be used at any place where an expression is expected (e.g., right-hand side of an assignment statement_)._
     

@@ -1,7 +1,7 @@
 Syntax Update: Ghost Variables and Ghost Mappings
 =================================================
 
-### Variable-style declarations
+## Variable-style declarations
 
 CVL now allows for top-level declarations of ghosts that follow the common scheme for variable declarations. Ghost variables can be scalars (`uint` etc.) or mappings.
 
@@ -18,7 +18,7 @@ ghost mapping(uint => mapping(uint => uint)) notYet
 
 Background: Semantically there is no difference between the new variable-style and the old function-style declarations. I.e., the declaration `ghost uint myGhost` creates the same semantic object as the declaration `ghost myGhost() returns uint` .
 
-### Variable-style access
+## Variable-style access
 
 Ghosts that have been declared as scalar variables are accessed like normal variables, e.g. :
 
@@ -34,7 +34,7 @@ y = myGhostMapping[i];
 myGhostMapping[j] = x;
 ```
 
-### Mapping-style updates
+## Mapping-style updates
 
 The update syntax `myGhostMapping[j] = x` can replace many uses of the `havoc .. assuming ..` syntax.
 

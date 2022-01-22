@@ -1,5 +1,5 @@
 Running the Certora Prover
---------------------------
+==========================
 
 Basic examples are available in [this repository](https://github.com/Certora/CertoraProverSupplementary). The repository also includes syntax highlighting of specification files for common editors (VSCode, notepad++).
 

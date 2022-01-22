@@ -1,7 +1,7 @@
 Overview
 ========
 
-A specification may have a `methods` block that consists of _method declarations_. Each declares a function signature either in the contract being verified or in [other contracts in the verification context](Multicontract_41124333.html).
+A specification may have a `methods` block that consists of _method declarations_. Each declares a function signature either in the contract being verified or in [other contracts in the verification context](multicontract.md).
 
 Use Cases
 ---------
@@ -22,7 +22,7 @@ In general, we can reference contract functions without declaring them in the sp
         
     *   Method declarations enable us to ignore rules that refer to functions not found in the current verification context and run the tool using only the relevant rules in the specification.
         
-3.  **Declaring that the function is** `envfree`**, i.e., that it does not access the** [**execution environment of the EVM**](Types_7340101.html)**, and, in particular, it is non-payable.**
+3.  **Declaring that the function is** `envfree`**, i.e., that it does not access the** [**execution environment of the EVM**](../bank/types.md)**, and, in particular, it is non-payable.**
     
     *   An `envfree` declaration allows the function to be referenced in either invoke commands or invoke expressions without giving an `env` type instance as the first input argument.
         
@@ -48,7 +48,7 @@ methods {
 
 *   Line 4 declares that a function whose signature is `foo02(uint, uint)` and whose return type is `uint` should exist in `currentContract`, i.e., the contract being verified.
     
-*   Line 6 declares that a function whose signature is `foo03(uint)` should exist in the [imported contract](Multicontract_41124333.html) `B` and have `uint` as its return type. Note that, in contrast to Line 4, it uses [multi-contract](Multicontract_41124333.html) and, in addition, declares `b.foo03(uint)` as [envfree](#envfree).
+*   Line 6 declares that a function whose signature is `foo03(uint)` should exist in the [imported contract](multicontract.md) `B` and have `uint` as its return type. Note that, in contrast to Line 4, it uses [multi-contract](multicontract.md) and, in addition, declares `b.foo03(uint)` as [envfree](#envfree).
     
 *   Line 8 is similar to Line 6; the notable difference is that it declares a function in `currentContract`.
     
@@ -56,9 +56,9 @@ methods {
 Summary Declarations
 --------------------
 
-A _summary declaration_ is a special case of a method declaration. It declares that a function signature should be summarized using the specified summary. For more details about summaries, see [Function Summarization](Function-Summarization_41058462.html).
+A _summary declaration_ is a special case of a method declaration. It declares that a function signature should be summarized using the specified summary. For more details about summaries, see [Function Summarization](summaries.md).
 
-As opposed to the declarations which we have considered thus far, summary declarations always implicitly apply to functions' signatures in “any contract”. That is, the summary applies to _any_ call, either external or internal, in the contracts being verified, such that (1) it calls to the declared signature (or [sighash](https://docs.soliditylang.org/en/v0.8.6/abi-spec.html#function-selector)); and (2) satisfies the [summary application policy](Function-Summarization_41058462.html) (i.e., either `ALL` or `UNRESOLVED`).
+As opposed to the declarations which we have considered thus far, summary declarations always implicitly apply to functions' signatures in “any contract”. That is, the summary applies to _any_ call, either external or internal, in the contracts being verified, such that (1) it calls to the declared signature (or [sighash](https://docs.soliditylang.org/en/v0.8.6/abi-spec.html#function-selector)); and (2) satisfies the [summary application policy](summaries.md) (i.e., either `ALL` or `UNRESOLVED`).
 
 The example `methods` block shown below demonstrates the syntax of summary declarations.
 

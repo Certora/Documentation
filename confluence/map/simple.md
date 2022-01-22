@@ -1,6 +1,7 @@
-### The SimpleMap contract
+A Simple Map
+============
 
-#### The code
+## The code
 
 The below code contains the implementation of a simple map data structure, holding `uint` keys, `uint` values, and assuming that the value `0` indicates a non-existent key. It is possible to get, insert, or remove a key from the map.
 
@@ -34,11 +35,11 @@ contract SimpleMap {
 
 In the next sections of the tutorial, we will generalize this trivial contract to support enumeration of the keys in the map.
 
-### Writing specs
+## Writing specs
 
 Writing rules requires us to consider what are the high-level properties our contract should satisfy. We show some simple and useful patterns for rules.
 
-#### Generalized unit tests
+### Generalized unit tests
 
 Rules that generalize unit tests focus on a single state-mutating function of the contract and ensure that the state is mutated as expected. The main benefits of these rules are that they are easy to develop due to their similarity to unit tests. The added advantage compared to unit tests is that they only use symbolic values, meaning that we check not a single set of concrete values in the unit test but _all_ possible values.
 
@@ -85,7 +86,7 @@ methods {
 
 Add an envfree declaration for the method `contains` too.
 
-#### Revert conditions
+### Revert conditions
 
 As noted before, by default, invocations are assuming only the non-reverting paths of the function. It is useful to precisely characterize all conditions that guarantee that the function would not revert. We can write such a rule for `insert`:
 
@@ -146,7 +147,7 @@ rule insertRevertConditions(uint key, uint value) {
 
 And finally our rule is successfully verified.
 
-#### Inverses
+### Inverses
 
 In some cases, we can reach wider coverage if we write rules that check the interaction of multiple functions with each other. In the map implementation, it is natural to check that insert and remove inverses of one another. Specifically, we'd like to check that:
 

@@ -1,5 +1,5 @@
 The IterableMap contract
-------------------------
+========================
 
 The `IterableMap` will maintain an internal array of the keys inserted to the map. In the next section, we will add an iteration function.
 
@@ -95,7 +95,7 @@ rule inverses(uint key, uint value) {
 
 (don't forget to add `numOfKeys` to our `envfree` declarations!)
 
-### Adding iteration
+## Adding iteration
 
 Our goal in adding the `keys` variable was to allow iteration over the keys. We start with an extremely simple example, that sets all keys' values to 100:
 

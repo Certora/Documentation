@@ -4,7 +4,7 @@ More Expressive Summaries
 Ghost Summaries
 ---------------
 
-What we refer to as [ghost functions](Ghost-Functions_3014665.html) are simply [uninterpreted functions](https://certora.atlassian.net/wiki/spaces/CPD/pages/3014665/Ghost+Functions#Uninterpreted-Functions) uninterpreted functions. Because these can be axiomatized, they can be used to express any number of [approximating](Approximation_41255047.html) semantics (rather than summarizing a function as simply a constant). For example, say we wanted to give some approximation for a multiplication function--this is an example of an operation that is very difficult for an SMT solver. Perhaps we only care about the monotonicity of this multiplication function. We may do something like the following:
+What we refer to as [ghost functions](../anatomy/ghostfunctions.md) are simply [uninterpreted functions](https://certora.atlassian.net/wiki/spaces/CPD/pages/3014665/Ghost+Functions#Uninterpreted-Functions) uninterpreted functions. Because these can be axiomatized, they can be used to express any number of [approximating](approximation.md) semantics (rather than summarizing a function as simply a constant). For example, say we wanted to give some approximation for a multiplication function--this is an example of an operation that is very difficult for an SMT solver. Perhaps we only care about the monotonicity of this multiplication function. We may do something like the following:
 
 ```java
 ghost ghost_multiplication(uint256,uint256) returns uint256 {
@@ -28,7 +28,7 @@ You may pass whichever parameters from the summarized function as arguments to t
 CVL Function Summaries
 ----------------------
 
-[CVL Functions](CVL-Functions_238846033.html) provide standard encapsulation of code within a spec file and allow for control flow, local variables etc. (but not loops). A subset of these are allowed as summaries, namely:
+[CVL Functions](../anatomy/functions.md) provide standard encapsulation of code within a spec file and allow for control flow, local variables etc. (but not loops). A subset of these are allowed as summaries, namely:
 
 1.  They do not contain methods as parameters
     
