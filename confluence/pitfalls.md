@@ -1,5 +1,8 @@
+Common Pitfalls
+===============
+
 Vacuity
-=======
+-------
 
 Vacuity refers to the state where we have a spec reported to be correct by the
 Prover, even for assertions that are obviously wrong. To be more precise, an
@@ -23,8 +26,7 @@ Vacuity is problematic because it indicates that the spec itself is wrong.
 Usually, vacuity is not as blatantly visible as in the above example, and thus
 we should take precautions to avoid writing vacuous specs.
 
-Basic vacuity checking‌
------------------------
+### Basic vacuity checking
 
 Run the `certora-cli` with the following additional option: `--rule_sanity` to
 run a basic vacuity check. This option will instruct the tool to prove each
@@ -37,8 +39,7 @@ run is meaningless.
 
 Below we present a few examples of vacuous specs.
 
-Raw arguments (soon to be solved!)
-----------------------------------
+### Raw arguments (soon to be solved!)
 
 The `calldataarg` type represents the full byte array passed as "calldata" to
 the EVM bytecode. It includes, in particular, the 4-byte sighash used by the
@@ -59,7 +60,7 @@ rule dontForgetThe4Bytes {
 cannot be used to run both.
 
 lastReverted updates
-====================
+--------------------
 
 The `lastReverted` keyword is updated every time a Solidity function is
 invoked. Therefore, it may be confusing what invocation `lastReverted` refers
