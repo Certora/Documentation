@@ -62,7 +62,5 @@ html_static_path = ['static']
 def setup(sphinx):
     sphinx.add_css_file('custom.css')
     from highlight import CVLLexer
-    sphinx.add_lexer("certora", CVLLexer)
     sphinx.add_lexer("cvl", CVLLexer)
-    sphinx.add_lexer("spec", CVLLexer)
 
