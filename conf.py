@@ -63,4 +63,6 @@ def setup(sphinx):
     sphinx.add_css_file('custom.css')
     from highlight import CVLLexer
     sphinx.add_lexer("cvl", CVLLexer)
+    from pygments_lexer_solidity import SolidityLexer
+    sphinx.add_lexer("solidity", SolidityLexer)
 
