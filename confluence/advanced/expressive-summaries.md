@@ -6,7 +6,7 @@ Ghost Summaries
 
 What we refer to as [ghost functions](../anatomy/ghostfunctions.md) are simply [uninterpreted functions](https://certora.atlassian.net/wiki/spaces/CPD/pages/3014665/Ghost+Functions#Uninterpreted-Functions) uninterpreted functions. Because these can be axiomatized, they can be used to express any number of [approximating](approximation.md) semantics (rather than summarizing a function as simply a constant). For example, say we wanted to give some approximation for a multiplication function--this is an example of an operation that is very difficult for an SMT solver. Perhaps we only care about the monotonicity of this multiplication function. We may do something like the following:
 
-```java
+```cvl
 ghost ghost_multiplication(uint256,uint256) returns uint256 {
   axiom forall uint256 x1. forall uint256 x2. forall uint256 y. 
       x1 > x2 => ghost_multiplication(x1, y) > ghost_multiplication(x2, y);
@@ -17,7 +17,7 @@ ghost ghost_multiplication(uint256,uint256) returns uint256 {
 
 Then we can summarize our multiplication function:
 
-```java
+```cvl
 methods {
   mul(uint256 x, uint256 y) => ghost_multiplication(x, y);
 }
@@ -37,7 +37,7 @@ CVL Function Summaries
 
 For example, say we want to summarize a multiplication function again, but this time we want to cut down the search space for the solver a bit. We might try something like the following:
 
-```java
+```cvl
 function easier_multiplication(uint256 x, uint256 y) returns uint256 {
   require(x < 1000 || y < 1000);
   return to_uint256(x * y);
@@ -46,7 +46,7 @@ function easier_multiplication(uint256 x, uint256 y) returns uint256 {
 
 and just as above we summarize the multiplication function in the methods block:
 
-```java
+```cvl
 methods {
   mul(uint256 x, uint256 y) => easier_multiplication(x, y);
 }

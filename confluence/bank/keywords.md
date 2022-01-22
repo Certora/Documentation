@@ -13,7 +13,7 @@ CVL language includes the following standard identifiers: 
 *   `storage lastStorage` - The current state of the contract. Useful for enforcing hyperproperties of smart contracts.
     
 
-```
+```cvl
 rule transfer_reverts() {
   // A rule with two free variables:
   //     - to - the address the transfer is passed to
