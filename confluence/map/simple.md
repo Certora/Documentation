@@ -44,7 +44,7 @@ Rules that generalize unit tests focus on a single state-mutating function of th
 
 Here is a simple rule for the `insert` function:
 
-```java
+```cvl
 rule checkInsert(uint key, uint value) {
     env e;
     insert(e, key, value);
@@ -63,7 +63,7 @@ After calling `insert`, we wish to examine if the mutated state is as expected.
 
 We are now ready to run our the tool: suppose the contract is saved in a file called `SimpleMap.sol`, and the spec is saved in a file `simpleMap.spec`, we can run the tool as follows:
 
-```java
+```bash
 certoraRun SimpleMap.sol --verify SimpleMap:simpleMap.spec
 ```
 
@@ -71,13 +71,13 @@ Which tells the tool to include the `SimpleMap` contract in its verification c
 
 Unfortunately, the tool outputs the following error:
 
-```java
+```
 [main] ERROR log.Logger - Syntax error in spec file (9:5): could not type expression "get(key)", message: Could not find an overloading of method get that matches the given arguments: uint. Method is not envfree; did you forget to provide the environment as the first function argument?
 ```
 
 The cause of the failure is that we did not pass an environment variable to the invocation of `get`. While it is possible to reuse `e` or even declare another environment variable, we note that `get` does not depend on any of the blockchain-related variables. Thus, we can tell the Prover to relieve us from specifying the environment by adding the following declaration to the top of the spec file:
 
-```java
+```cvl
 methods {
     get(uint) returns uint envfree
 }
@@ -89,7 +89,7 @@ Add an envfree declaration for the method `contains` too.
 
 As noted before, by default, invocations are assuming only the non-reverting paths of the function. It is useful to precisely characterize all conditions that guarantee that the function would not revert. We can write such a rule for `insert`:
 
-```java
+```cvl
 rule insertRevertConditions(uint key, uint value) {
     env e;
     insert@withrevert(e, key, value);
@@ -113,7 +113,7 @@ A hint towards what happened can be found in the `Variables` section. The valu
 
 We refine the rule as follows, and require that `e.msg.value` is 0:
 
-```java
+```certora
 rule insertRevertConditions(uint key, uint value) {
     env e;
     insert@withrevert(e, key, value);
@@ -131,7 +131,7 @@ We run the rule again, but it still fails:
 
 We get a call trace that tells us the most important operations performed by the bytecode of the contract, on which the Prover operates. The call trace tells us that we were reading from a storage slot the value 1. To assist us in identifying the issue, in parenthesis we get a reference to the matching source code, which is the load of `map[key]` in line 19, which is where the `contains` function is defined. We understand that we forgot to include the condition that the key does not already exist in the map. So we refine the code again:
 
-```java
+```spec
 rule insertRevertConditions(uint key, uint value) {
     env e;
     insert@withrevert(e, key, value);
@@ -157,7 +157,7 @@ In some cases, we can reach wider coverage if we write rules that check the inte
 
 The below rule shows how we can check these two assertions:
 
-```java
+```cvl
 rule inverses(uint key, uint value) {
     env e;
     insert(e, key, value);

@@ -120,7 +120,7 @@ can arise during installation and how to deal with them:
 
   * Quit the terminal to load the new addition to `$PATH`, and reopen to check that the `$PATH` was updated correctly:
 
-    ```java
+    ```bash
     echo $PATH
     ```
 </details>
@@ -208,7 +208,7 @@ follow the next steps:
 
   * Create a file with the name `.zshenv` and open it with your favorite text editor:
 
-    ```java
+    ```bash
     nano .zshenv
     ```
 
@@ -216,13 +216,13 @@ follow the next steps:
 
   * You can make sure that the file was created correctly by seeing it listed on the directory or by opening it again with the text editor:
 
-    ```java
+    ```bash
     ls -a
     ```
 
     OR
 
-    ```java
+    ```bash
     nano .zshenv
     ```
 
@@ -324,7 +324,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
 
   * Quit the terminal to load the new addition to `$PATH`, and reopen to check that the `$PATH` was updated correctly:
 
-    ```java
+    ```bash
     echo $PATH
     ```
 </details>

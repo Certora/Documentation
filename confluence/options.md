@@ -83,7 +83,7 @@ This mode checks each assertion statement that occurs in a rule, separately. The
 
 As an illustrative example, consider the following rule `R` that has two assertions:
 
-```java
+```cvl
 …
 assert a1
 …
