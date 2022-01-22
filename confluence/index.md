@@ -13,16 +13,6 @@ anatomy/index.md
 ```
 
 ## Rest
- - [The Anatomy of a Specification](The-Anatomy-of-a-Specification_238845999.html)
-   - [Rules](Rules_250871831.html)
-   - [CVL Functions](CVL-Functions_238846033.html)
-   - [Ghosts](Ghosts_41156805.html)
-     - [Ghost Functions](Ghost-Functions_3014665.html)
-     - [Hooks](Hooks_41156829.html)
-     - [Definitions](Definitions_41156868.html)
-     - [Multi Contract Hooks](Multi-Contract-Hooks_41124153.html)
-     - [A Complete Example](A-Complete-Example_41058562.html)
-     - [Syntax update: Ghost Variables and Ghost Mappings](281149491.html)
  - [Advanced Subjects](Advanced-Subjects_3080193.html)
    - [Method Declarations](Method-Declarations_181960777.html)
      - [Function Summarization](Function-Summarization_41058462.html)
