@@ -14,7 +14,7 @@ CVL commands
     \- simulate a function named `foo` with arguments `args` and assume that it does not revert. This syntax is equivalent to:
     
 
-```java
+```cvl
 foo@withrevert(arg); // same as invoke foo(arg)
 require !lastReverted;
 ```
@@ -39,7 +39,7 @@ require !lastReverted;
 *   Here are a few examples showing the use of ITE expressions:
     
 
-```java
+```cvl
 methods {
     inc() envfree
     dec() envfree

@@ -37,14 +37,14 @@ EVM types vs. mathematical types
 
 In CVL, arithmetic operators (+, -, \* and /) are overloaded: they could mean a machine-arithmetic operation that can overflow, or a mathematical operation that does not overflow. The default interpretation used in almost all cases is the mathematical one. Therefore, the assertion below holds:
 
-```java
+```cvl
 uint x;
 assert x + 1 > x;
 ```
 
 The syntax supports Solidity’s integer types (`uintXX` and `intXX`) as well as the CVL-only type `mathint` representing the domain of mathematical integers (ℤ). Using these types allows controlling how arithmetic operators such as +, -, and \* are interpreted. Therefore, in the following variant on the above example, if we wish the + operation to be the overflowing variant, we can write the following:
 
-```java
+```cvl
 uint x;
 uint y = x + 1;
 assert y > x;
@@ -52,7 +52,7 @@ assert y > x;
 
 The assertion here will fail with `x = MAX_INT`, since then y is equal to 0. If we write instead:
 
-```java
+```cvl
 uint x;
 mathint y = x + 1;
 assert y > x;
@@ -62,7 +62,7 @@ The meaning is the same as in the first snippet since an assignment to a `mathi
 
 The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to functions, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if `mathint` variable is passed directly as a function argument.
 
-```java
+```cvl
 uint256 MAX_INT = 2^256 - 1;
 foo(MAX_INT + 1); // equivalent to invoking foo(0)
 assert MAX_INT + 1 == 0; // always false, because ‘+’ here is mathematical
@@ -99,7 +99,7 @@ For all primitive types (`uint`, `address` and others) one can define in spec an
 
 Out of bounds access to arrays will result in a havoc, so the behavior of a spec such as:
 
-```java
+```cvl
 rule out_of_bounds {
   uint[] a;
   require a.length == 1;
@@ -137,7 +137,7 @@ Only the following _implicit_ cast operations are supported in CVL:
 *   NOTE: When performing an _implicit_ cast, the type of the expression being casted _changes_ to the `targetType` except in the case when the expression is either a _variable_ or a _ghostVariable_. In these two cases, it is only checked that the expression type is a _subtype_ of the `targetType`. If the expression type is a subtype of the `targetType` the expression is successfully typechecked. Consider the following example:
     
 
-```java
+```cvl
 uint256 x;                         // x has type uint256     
 mathint m1;                        // m1 has type mathint
 mathint y = x + m1;                // check that x's type (uint256) is a subtype of targetType (mathint) -- true
@@ -244,7 +244,7 @@ assert x < max_uint                // x STILL has type uint256
 
 Thus, a rule such as
 
-```java
+```cvl
 mathint x1 = -3;
 uint256 x2 = uint256(x1);
 assert x2 > 0;

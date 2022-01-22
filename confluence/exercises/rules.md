@@ -26,7 +26,7 @@ Let’s define another property and verify that after `deposit`, the `totalFunds
 
 _**P2: Sanity of deposit: total funds >= funds of the single user**_
 
-```java
+```cvl
 rule totalFundsAfterDeposit(uint256 amount) {
 	env e; 
 	

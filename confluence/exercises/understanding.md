@@ -8,7 +8,7 @@ Start with [Ball Game](https://github.com/Certora/CertoraProverSupplementary/blo
 
 *   Run:
     
-    ```java
+    ```bash
     certoraRun BallGame.sol --verify BallGame:BallGame.spec 
     ```
     
@@ -28,7 +28,7 @@ Realistic Exercise
 
 *   Run:
     
-    ```java
+    ```bash
     certoraRun Manager.sol --verify Manager:Manager.spec 
     ```
     
@@ -46,7 +46,7 @@ Realistic Exercise
         
         To run on those files:
         
-        ```java
+        ```bash
         certoraRun ManagerBug1.sol:Manager --verify Manager:Manager.spec --msg "check for bug"
         certoraRun ManagerBug2.sol:Manager --verify Manager:Manager.spec --msg "check for bug"
         ```

@@ -113,7 +113,7 @@ A hint towards what happened can be found in the `Variables` section. The valu
 
 We refine the rule as follows, and require that `e.msg.value` is 0:
 
-```certora
+```cvl
 rule insertRevertConditions(uint key, uint value) {
     env e;
     insert@withrevert(e, key, value);
@@ -131,7 +131,7 @@ We run the rule again, but it still fails:
 
 We get a call trace that tells us the most important operations performed by the bytecode of the contract, on which the Prover operates. The call trace tells us that we were reading from a storage slot the value 1. To assist us in identifying the issue, in parenthesis we get a reference to the matching source code, which is the load of `map[key]` in line 19, which is where the `contains` function is defined. We understand that we forgot to include the condition that the key does not already exist in the map. So we refine the code again:
 
-```spec
+```cvl
 rule insertRevertConditions(uint key, uint value) {
     env e;
     insert@withrevert(e, key, value);

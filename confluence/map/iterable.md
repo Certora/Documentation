@@ -56,7 +56,7 @@ Even then `inverses` still fails. Let's consider the call trace for this rule:
 
 We see that we were able to nullify the entry in the map, but the last operation that we see in the call trace under `remove` is that we load from `keys` a value of 0. It is known that the Solidity compiler associates the storage slot that of an array to its length. Here we see that the read length is 0. This means the `key` array is empty. However, it shouldn't have been empty after invoking `insert`. This is exactly the bug that we have in the code - we need to add the inserted key into the `keys` array:
 
-```java
+```cvl
 function insert(uint key, uint value) external {
     require(value != 0, "0 is not a valid value");
     require (!contains(key), "key already exists");
@@ -78,7 +78,7 @@ It is still reported that the length of `keys` is 0, but this is unexpected. We 
 
 We start by adding a simple assumption in the rule. (We will later replace it with an assumption of an invariant, that will also assert that reaching max `uint256` is infeasible.)
 
-```java
+```cvl
 rule inverses(uint key, uint value) {
     uint max_uint = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
     require numOfKeys() < max_uint;
@@ -99,7 +99,7 @@ rule inverses(uint key, uint value) {
 
 Our goal in adding the `keys` variable was to allow iteration over the keys. We start with an extremely simple example, that sets all keys' values to 100:
 
-```java
+```cvl
 function iterate() external {
     for (uint i = 0 ; i < keys.length ; i++) {
         uint key = keys[i];
@@ -114,7 +114,7 @@ function doSomething(uint key, uint value) virtual internal {
 
 We also want to add a basic check rule:
 
-```java
+```cvl
 rule checkIterate() {
     env e;
     iterate(e);
@@ -136,7 +136,7 @@ $$∀x.(map(x)≠0⟺∃i.0≤i≤keys.length∧keys[i]=x)$$
 
 This invariant can be encoded directly in the spec file, as follows (for convenience we assume `keys` is public and has a getter):
 
-```java
+```cvl
 invariant inMapIffInArray(uint x) 
     get(x) != 0 <=> 
         (exists uint i. 0 <= i && i < getNumOfKeys() && keys(i) == x)
@@ -155,7 +155,7 @@ ghost _map(uint) returns uint;
 
 The above declaration declares a _ghost function_. The ghost function takes a `uint` argument (representing a key in the map) and returns a `uint` value. We want `_map` to return for each given key the same value as the `map` in the code. We can state this property as an invariant:
 
-```java
+```cvl
 invariant checkMapGhost(uint someKey) get(someKey) == _map(someKey)
 ```
 
@@ -167,7 +167,7 @@ This is, in fact, unsurprising. There is nothing in the spec that links the valu
 
 For example, we can hook on `SSTORE` operations that write to the underlying map as follows:
 
-```java
+```cvl
 hook Sstore map[KEY uint k] uint v STORAGE {
     havoc _map assuming _map@new(k) == v &&
         (forall uint k2. k2 != k => _map@new(k2) == _map@old(k2));
@@ -180,7 +180,7 @@ If we run `checkMapGhost` with only the `SSTORE` hook, the rule will pass for al
 
 Similarly, one could define `SLOAD` hooks:
 
-```java
+```cvl
 hook Sload uint v map[KEY uint k] STORAGE {
     require _map(k) == v;
 }

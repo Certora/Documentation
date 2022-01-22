@@ -3,7 +3,7 @@ Hyperproperties
 
 It is possible to compare the effects of different transactions starting on the same state. The `additiveTransfer` rule checks that the transfer command is additive.
 
-```java
+```cvl
 rule additiveTransfer(uint256 amt1, uint256 amt2, address from, address to) {
   env e1;
   env e2;
