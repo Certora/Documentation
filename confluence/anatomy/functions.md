@@ -3,7 +3,7 @@ CVL Functions
 
 A CVL Function provides basic encapsulation for code reuse in a specification. If there is a common set of assumptions or assertions used in several rules, a CVL Function would be an apt place to group those together. Additionally they can be used for basic calculations.
 
-**Syntax:**
+## Syntax
 
 Function with no return:
 
@@ -26,6 +26,6 @@ function abs_value_difference(uint256 x, uint256 y) returns uint256 {
 }
 ```
 
-**Using a CVL Function:**
+## Using a CVL Function
 
 CVL Function may be called from within a **rule**, or from within another **CVL Function**.

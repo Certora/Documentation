@@ -149,7 +149,7 @@ A soft introduction to ghosts
 
 We will write the above invariant using ghost variables exclusively. First, we will declare ghost variables for the underlying map structure as a function mapping keys to values:
 
-```java
+```cvl
 ghost _map(uint) returns uint;
 ```
 

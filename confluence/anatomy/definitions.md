@@ -59,7 +59,9 @@ definition circular3(uint x) returns uint = circular1(x) + circular1(x);
 
 Definitions may reference ghost functions normally _or_ in a two state context.
 
+```{caution}
 This means that definitions are not always "pure" but can affect ghosts which are a "global" construct.
+```
 
 The following is an example of a ghost used in a definition:
 
@@ -92,4 +94,6 @@ rule rule_assuming_old_evens(uint256 x) {
 }
 ```
 
+```{note}
 The type checker will tell you if you have used a two-state version of a variable when you should not have
+```

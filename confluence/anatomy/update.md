@@ -30,8 +30,8 @@ myGhost = x;
 Ghosts that have been declared as mapping variables are accessed like normal mappings:
 
 ```cvl
-y = myGhostMapping[i]
-myGhostMapping[j] = x
+y = myGhostMapping[i];
+myGhostMapping[j] = x;
 ```
 
 ### Mapping-style updates
@@ -43,13 +43,13 @@ In particular, the old syntax
 ```cvl
 havoc myGhostMapping assuming forall k. k = j ? 
       myGhostMapping@new[k] = x : 
-      myGhostMapping@new[k] = myGhostMapping@old[k]
+      myGhostMapping@new[k] = myGhostMapping@old[k];
 ```
 
 can be replaced by
 
 ```cvl
-myGhostMapping[j] = x
+myGhostMapping[j] = x;
 ```
 
 Note that this syntax avoids the quantifiers also internally, so it is strongly recommended to use it if possible.

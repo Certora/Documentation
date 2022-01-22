@@ -66,7 +66,9 @@ ap := id            // some storage variable declared in contract
    ;
 ```
 
+```{note}
 Nested struct offsets (`ap.(offset n)`) will be flattened before matching with the storage analysis (which will also flatten struct accesses). So, for example, both `ap.(offset 5).(offset 3)`and `ap.(offset 4).(offset 4)` will compile to `ap.(offset 8)` and would match any struct access where `ap` matches the base and some sequence of struct dereferences adds up to `8` bytes.
+```
 
 These slot patterns provide a simple syntax to specify what storage slot to hook on directly based on the Solidity-level declarations of storage variables. The following are a few examples of Solidity-level declarations of storage variables and slot patterns that will match accesses to these
 
@@ -87,7 +89,9 @@ map[KEY uint256 k][INDEX uint256 i].(offset 0) // an access to el_1 of some
                                                // map‌
 ```
 
+```{note}
 The access pattern `(slot n)` requires an understanding of the storage layout of a contract. If you know where a top-level variable sits in the top-level storage array you can use this access pattern. Additionally, with `solc5.X` and older, you must use this pattern instead of storage variable identifiers since the storage layout is unavailable in versions older than `solc5.X`
+```
 
 Struct Patterns
 ---------------
@@ -178,7 +182,9 @@ hook Sstore m_2[KEY uint256 k].(offset 0) uint256 s STORAGE {
 }
 ```
 
+```{caution}
 This hook will be triggered on writes to all fields of the struct packed into the same slot‌.
+```
 
 Putting it Together
 -------------------
@@ -275,4 +281,7 @@ hook Sstore balances[KEY address account] uint256 v STORAGE {
 }
 ```
 
+```{caution}
 In `Sstore` hooks, the old value is read by means of generating an `Sload`. However, any hook that can be matched to the generated `Sload` _does not_ apply within the `Sstore` hook.
+```
+

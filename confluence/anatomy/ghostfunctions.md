@@ -9,8 +9,8 @@ CVT specifications support normal solidity primitives (`uint256`, `address` et
 While it can be useful to use interpreted sorts within uninterpreted functions, for reasons we won't get into here, sometimes it is easier to use an _uninterpreted sort_ that doesn't carry around all the "baggage," so to speak, associated with its interpretation. This is where uninterpreted sorts come in. In CVL an uninterpeted sort is simply declared at the top level of a specification. For example
 
 ```cvl
-Sort MyUninterpSort;
-Sort Foo;
+sort MyUninterpSort;
+sort Foo;
 
 rule myRule {    ...
 ```
@@ -27,7 +27,7 @@ rule myRule {    ...
 Putting these pieces together we might write the following useless, but demonstrative example:
 
 ```cvl
-Sort Foo;
+sort Foo;
 ghost bar(Foo, Foo) returns Foo;
 
 rule myRule {
@@ -45,7 +45,9 @@ Uninterpreted Functions
 
 Uninterpreted functions are called _uninterpreted_ because they have _no interpretation_ associated with them. In the example above, it is impossible to say what `bar(x, y)` _means_. Uninterpreted functions really only give us a single guarantee:
 
-`Any two applications of the same uninterpreted function with the same arguments will return the same value.`
+```{note}
+Any two applications of the same uninterpreted function with the same arguments will return the same value.
+```
 
 So for example:
 
@@ -77,11 +79,13 @@ ghost bar(uint256) returns uint256 {
 
 In any rule that uses `bar`, no application of `bar` could ever evaluate to a number less than or equal to 10. While this is not a very interesting axiom, we could imagine expressing more complicated functions, such as a reachability relation.
 
+```{caution}
 Axioms are **dangerous** and should be used **carefully** as they are a potential source of **vacuity bugs**. This can happen in two situations:
 
 1.  The axiom implies `false`
     
 2.  Somewhere in the program, we assume something about a ghost function that, when conjuncted with a ghost axiom, implies `false`
+```
     
 
 Initial Axioms for Uninterpreted Functions
