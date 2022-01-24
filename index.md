@@ -8,5 +8,6 @@ Certora Prover Documentation
 tutorial/index.md
 user-guide/index.md
 ref-manual/index.md
+confluence/index.md
 ```
 
