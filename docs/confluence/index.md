@@ -4,9 +4,8 @@ Old Documentation
 ```{toctree}
 :maxdepth: 2
 
-getting-started.md
-options.md
 technology.md
+options.md
 examples.md
 exercises/exercises.md
 anatomy/index.md
