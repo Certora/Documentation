@@ -5,9 +5,9 @@ Certora Prover Documentation
 :maxdepth: 3
 :caption: Contents
 
-tutorial/index.md
-user-guide/index.md
-ref-manual/index.md
-confluence/index.md
+docs/tutorial/index.md
+docs/user-guide/index.md
+docs/ref-manual/index.md
+docs/confluence/index.md
 ```
 
