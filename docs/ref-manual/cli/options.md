@@ -21,6 +21,7 @@ Modes of operation
 
 The Certora Prover has three modes of operation. The modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
 
+(--verify)=
 ### `--verify`
 
 **What does it do?**  
@@ -204,6 +205,7 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 Options regarding source code loops
 -----------------------------------
 
+(--optimistic_loop)=
 ### `--optimistic_loop`
 
 **What does it do?**
@@ -215,6 +217,7 @@ When you have loops in your code and are getting a counterexample labeled `loop 
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop`
 
+(--loop_iter)=
 ### `--loop_iter`
 
 **What does it do?**
