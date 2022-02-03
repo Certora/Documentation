@@ -73,7 +73,7 @@ too many times:
 
    Despite the unsoundness, optimistic mode is quite useful in practice.  For
    example, it allows us to document that `f` satisfies the specification given
-   in it's documentation:
+   in its documentation:
 
    ```cvl
    rule correct_rule(uint n) {
