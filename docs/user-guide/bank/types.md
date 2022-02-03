@@ -231,7 +231,7 @@ assert x < max_uint                // x STILL has type uint256
 
 *   When an overflow occurs (i.e. when the inner expression is out of safe cast bounds for a cast operator), a warning is displayed in the call trace:  
     
-    ![overflow example](../attachments/7340101/195199109.png)
+    ![overflow example](overflow.png)
 
 **Important Note**: This warning is displayed _only_ when
 

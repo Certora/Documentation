@@ -108,7 +108,7 @@ Here, we invoke `insert` but append to the function name the modifier `@withr
 
 Running the Prover on the new rule, it returns a failure. The failure is happening because `value` is non-zero yet the `insert` function reverted anyway.
 
-![call trace example](../attachments/41124258/41255230.png)
+![call trace example](insert_revert.png)
 
 A hint towards what happened can be found in the `Variables` section. The value of `e.msg.value` is indicating the `msg.value` used in `insert`. Since `insert` is not a payable function, it is expected to revert when `msg.value` is non-zero, which is indeed our case here.
 
@@ -128,7 +128,7 @@ rule insertRevertConditions(uint key, uint value) {
 
 We run the rule again, but it still fails:
 
-![call trace example - second failure](../attachments/41124258/41255240.png)
+![call trace example - second failure](iter_fail_2.png)
 
 We get a call trace that tells us the most important operations performed by the bytecode of the contract, on which the Prover operates. The call trace tells us that we were reading from a storage slot the value 1. To assist us in identifying the issue, in parenthesis we get a reference to the matching source code, which is the load of `map[key]` in line 19, which is where the `contains` function is defined. We understand that we forgot to include the condition that the key does not already exist in the map. So we refine the code again:
 

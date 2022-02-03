@@ -52,7 +52,7 @@ We can now run the original spec file on the new contract. Unfortunately, not al
 
 Even then `inverses` still fails. Let's consider the call trace for this rule:
 
-![](../attachments/41124276/41157020)
+![](failure_1.png)
 
 We see that we were able to nullify the entry in the map, but the last operation that we see in the call trace under `remove` is that we load from `keys` a value of 0. It is known that the Solidity compiler associates the storage slot that of an array to its length. Here we see that the read length is 0. This means the `key` array is empty. However, it shouldn't have been empty after invoking `insert`. This is exactly the bug that we have in the code - we need to add the inserted key into the `keys` array:
 
@@ -67,7 +67,7 @@ function insert(uint key, uint value) external {
 
 Oddly enough, the rule still fails:
 
-![](../attachments/41124276/41157027)
+![](failure_2.png)
 
 It is still reported that the length of `keys` is 0, but this is unexpected. We examine the operations performed by `insert`, and we see that it loaded a length of `ff....ff`, and then stored a length of 0. That is, our array filled-up and reached the length of max `uint256`. This may look absurd or unrealistic, but that's where the power of the Prover lies - it doesn't miss any edge case. If we believe it is unrealistic for the length of `keys` to reach the maximum value, we should:
 
@@ -126,7 +126,7 @@ rule checkIterate() {
 
 The rule fails with the following call trace:
 
-![](../attachments/41124276/41157033)
+![](iter_fail.png)
 
 Let's unpack what can be seen here. First, the length of the `keys` array is 1, and we read a key `22f2`. We then write `100` to it in the map and then `iterate` function is done. We then note that `someKey`, the key we want to check for, is not `22f2`, but rather `20c9`. While we assumed that it is contained in the map by using the `contains` function, it is not contained in the `keys` array. This is expected since the Prover's starting state can be completely arbitrary, subject to constraints that we specify on it. We wish to leave the `contains` function to be an `O(1)` complexity function, and rather provide the tool with the invariants that will allow it to see only states that "make sense", or in more precise terms, we only want to see states where the `keys` array contains exactly the same elements as the non-zero valued keys in the map.
 
@@ -161,7 +161,7 @@ invariant checkMapGhost(uint someKey) get(someKey) == _map(someKey)
 
 Currently, the rule fails for all state-mutating functions, and even in the contract's initial state after constructor (rule `checkMapGhost_instate`):
 
-![](../attachments/41124276/41157039)
+![](ghost_fail.png)
 
 This is, in fact, unsurprising. There is nothing in the spec that links the value of the ghost to its Solidity counterpart. To make that link, we write _hooks_. Hooks allow us to instrument the verified code, that is, to wrap a bytecode operation with our own code, defined in the spec file.
 

@@ -4,7 +4,6 @@ Old Documentation
 ```{toctree}
 :maxdepth: 2
 
-examples.md
 exercises/exercises.md
 anatomy/index.md
 advanced/index.md

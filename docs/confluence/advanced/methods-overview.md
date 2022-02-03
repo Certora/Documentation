@@ -22,7 +22,7 @@ In general, we can reference contract functions without declaring them in the sp
         
     *   Method declarations enable us to ignore rules that refer to functions not found in the current verification context and run the tool using only the relevant rules in the specification.
         
-3.  **Declaring that the function is** `envfree`**, i.e., that it does not access the** [**execution environment of the EVM**](../bank/types.md)**, and, in particular, it is non-payable.**
+3.  **Declaring that the function is** `envfree`**, i.e., that it does not access the** [**execution environment of the EVM**](/docs/user-guide/bank/types.md)**, and, in particular, it is non-payable.**
     
     *   An `envfree` declaration allows the function to be referenced in either invoke commands or invoke expressions without giving an `env` type instance as the first input argument.
         

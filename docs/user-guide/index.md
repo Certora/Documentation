@@ -5,6 +5,7 @@ Certora User's Guide
 :maxdepth: 2
 
 intro.md
+examples.md
 ```
 
 Getting started
