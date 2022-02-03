@@ -7,7 +7,7 @@ Certora Prover Reference Manual
 
 intro.md
 changelog.md
-/docs/user-guide/install.md
+/docs/user-guide/getting-started/install.md
 cvl/index.md
 approx/index.md
 cli/index.md

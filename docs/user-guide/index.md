@@ -5,17 +5,8 @@ Certora User's Guide
 :maxdepth: 2
 
 intro.md
+getting-started/index.md
 examples.md
-```
-
-Getting started
----------------
-
-```{toctree}
-
-install.md
-layout.md
-running.md
 ```
 
 Case studies
