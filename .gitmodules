@@ -1,0 +1,3 @@
+[submodule "EVMVerifier"]
+	path = EVMVerifier
+	url = https://github.com/Certora/EVMVerifier.git
