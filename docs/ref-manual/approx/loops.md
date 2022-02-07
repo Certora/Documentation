@@ -76,7 +76,7 @@ too many times:
    in its documentation:
 
    ```cvl
-   rule correct_rule(uint n) {
+   rule f_correct(uint n) {
        assert f(n) == n, "f(n) always returns n";
    }
    ```
