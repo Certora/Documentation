@@ -23,6 +23,8 @@ body:
 
 ```solidity
 function slow_copy_unrolled(uint n) returns uint {
+    uint j = 0;
+
     uint i = 0;
     if (i < n) {
         j++;
@@ -32,6 +34,7 @@ function slow_copy_unrolled(uint n) returns uint {
             i++;
         }
     }
+
     return j;
 }
 ```
