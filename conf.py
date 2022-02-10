@@ -60,6 +60,8 @@ html_static_path = ['static']
 
 # -- Custom setup ------------------------------------------------------------
 
+todo_include_todos = True
+
 def setup(sphinx):
     sphinx.add_css_file('custom.css')
     from highlight import CVLLexer
