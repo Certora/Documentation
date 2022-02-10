@@ -73,3 +73,10 @@ function foo() external returns (uint256) {
 ```
 ````
 
+### Other good features to know
+
+ - glossary
+ - references to other documents
+ - references to labeled sections
+ - todo
+
