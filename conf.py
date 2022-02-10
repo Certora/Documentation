@@ -34,6 +34,7 @@ import sphinx_rtd_theme
 extensions = [
     'myst_parser',
     'sphinx_rtd_theme',
+    'sphinx.ext.todo',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
