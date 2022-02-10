@@ -16,6 +16,7 @@ Common Syntactic Elements
 
 comments.md
 types.md
+mathops.md
 expr.md
 blocks.md
 ```
