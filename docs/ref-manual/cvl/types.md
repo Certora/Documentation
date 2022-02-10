@@ -21,9 +21,10 @@ cvl_type ::= basic_type
 
 The additional CVL types are:
  - {ref}`mathint` is an arbitrary precision integer that cannot overflow
- - {ref}`calldataarg <calldataarg>` and {ref}`method <method-type>` are used
+ - {ref}`method-type` are used
    to represent arbitrary methods and arguments of the contract under verification
- - {ref}`storage <storage-type>` is used to represent a snapshot of the entire EVM storage
+ - {ref}`storage-type` is used to represent a snapshot of the entire EVM storage
+ - {ref}`env` is used to represent the Solidity global variables `msg`, `block`, and `tx`
  - {ref}`sort` are used to represent unknown types
 
 
