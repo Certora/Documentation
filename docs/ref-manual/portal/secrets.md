@@ -4,7 +4,7 @@ Special Portal URLs
 When you run the Certora CLI, the tool outputs a link to the generated
 verification report.  By modifying this link, you can access additional files
 that the tool generates.  These are primarily intended for the tool developers,
-but they can be useful for users too in some cases.  This page lists these
+but they can also be helpful for users in some cases.  This page lists these
 outputs and explains how to read them.
 
 
@@ -31,12 +31,12 @@ https://vaas-stg.certora.com/jobStatus/65540/270dce9623d492937d82/?anonymousKey=
                              ─────────
 ```
 
-FinalResults.html and Results.txt
----------------------------------
+Additional Error Reports
+------------------------
 
 ```{note}
 The Certora team is actively working to improve the generated reports; we expect
-that in the near future, these `FinalResults.html` and `Results.txt` will be
+that in the near future, `FinalResults.html` and `Results.txt` will be
 obsolete.
 ```
 
@@ -70,12 +70,13 @@ https://vaas-stg.certora.com/output/65540/270dce9623d492937d82/Results.txt?anony
                                                               ─────────────
 ```
 
-Statsdata.json
---------------
+Timeout Analysis
+----------------
 
 The Certora Prover performs several different kinds of bytecode analysis to
 improve the running time of verifications.  Occasionally, some of these
-analyses fail, which can lead to timeouts.
+analyses fail, which can sometimes cause timeouts.
+
 
 The `statsdata.json` file contains a section called `ANALYSIS` that lists all
 of the analyses that are attempted, and whether they succeed or fail.  If you
@@ -84,12 +85,15 @@ ANALYSIS section to see if that method was correctly analyzed.  The analysis
 section should have a `true` for each successful analysis, and a `false` for
 each unsuccessful analysis.
 
+If `statsdata.json` indicates an analysis failure on a method that is
+consistently timing out, we encourage you to
+[contact Certora Support](https://forum.certora.com); our developers may be able
+to help resolve the issue.
+
 For example, the following shows that the `UNPACKING` analysis is failing on
 several fields:
 
-![example statsdata.json showing several unpacking failures][statsdata.png]
-
-If an analysis is failing and causing you timeouts, contact the Certora team.
+![example statsdata.json showing several unpacking failures](statsdata.png)
 
 These analyses only depend on the bytecode being verified (not the rules), so
 you should only need to recheck them if your contracts changes.
@@ -132,6 +136,7 @@ contained in the `TarName` directory, and the original contracts can be found
 in the `TarName/input/.certora_config` directory (the file names will be
 changed).
 
-Zip Outputs cannot be downloaded unless you have logged in to the portal with
-an appropriately authorized key.
+The zip output cannot be downloaded unless you have logged in to the portal with
+an appropriately authorized key.  If you receive a "Forbidden" error message,
+[log in][using.md] to the main Certora Portal page with your Certora key.
 
