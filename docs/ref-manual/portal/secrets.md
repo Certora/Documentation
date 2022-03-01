@@ -12,8 +12,8 @@ Job Status
 ----------
 
 The job status page contains information about the job, including the arguments
-that were passed to the command line, the job message, and the exact certora
-prover version.  It is created as soon as the job is submitted, and also shows
+that were passed to the command line, the job message, and the exact Certora
+Prover version.  It is created as soon as the job is submitted, and also shows
 the current status (whether the job has started or finished processing).
 
 To access the job status page, change the `output`  component of the URL to
@@ -132,9 +132,6 @@ contained in the `TarName` directory, and the original contracts can be found
 in the `TarName/input/.certora_config` directory (the file names will be
 changed).
 
-
-Other information
------------------
-
-Certora developers can access additional links; see [the internal documentation](https://certora.atlassian.net/wiki/spaces/CER/pages/278593893/Useful+Links+Certora+API)
+Zip Outputs cannot be downloaded unless you have logged in to the portal with
+an appropriately authorized key.
 
