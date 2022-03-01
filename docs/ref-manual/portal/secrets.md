@@ -34,6 +34,12 @@ https://vaas-stg.certora.com/jobStatus/65540/270dce9623d492937d82/?anonymousKey=
 FinalResults.html and Results.txt
 ---------------------------------
 
+```{note}
+The Certora team is actively working to improve the generated reports; we expect
+that in the near future, these `FinalResults.html` and `Results.txt` will be
+obsolete.
+```
+
 The `FinalResults.html` is an older version of the verification report, but
 occasionally contains more information than the newer report format, especially
 in cases where the tool encountered an internal error.  In certain cases, it
