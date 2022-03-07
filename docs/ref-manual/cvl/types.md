@@ -37,6 +37,9 @@ CVL currently supports the following [solidity types][]:
  * `address`
  * `string`, `bytes`, and the sized `bytes` variants (`bytes1` through `bytes32`)
  * Tuples and single-dimensional arrays (both statically- and dynamically-sized)
+ * Enum Types
+ * User Defined Value Types
+ * Struct Types
 
 The following are unsupported:
  * enums
@@ -87,6 +90,94 @@ multi-dimensional arrays
 
 ```{todo}
 reference types
+```
+
+Types Defined in Solidity Contracts
+-----------------------------------
+
+Solidity supports several user defined types:
+* Enums
+* User Defined Value Types (type aliases)
+* Structs
+
+These types can be accessed by referencing the contract where they are defined. To reference a contract remember to include `using ContractName as myLocalContractName`. The file containing the contract `ContractName` will have to be included in your build.
+
+User defined types may then be referenced from that contract: `myLocalContractName.myTypeName`. For types declared at the file level, any contract which imports that file may be used. Note that new user defined types may *not* be declared within a specification.
+
+### Enum Types
+Consider the following enum declaration and spec preamble:
+
+```
+contract TheContract {
+    enum MyEnum {
+        member1,
+        member2,
+        member3
+    }
+}
+...
+
+using TheContract as c
+```
+
+The following are available in the entire spec:
+* The Type: `c.MyEnum`
+* The values:
+    * `c.MyEnum.member1`
+    * `c.MyEnum.member2`
+    * `c.MyEnum.member3`
+
+
+
+### User Defined Value Types
+
+Consider the following user defined value type declaration and spec preamble:
+
+```
+contract TheContract {
+    type MyType is uint64;
+}
+...
+
+using TheContract as c
+```
+
+The type `c.MyType` is in scope everywhere in the spec.
+
+
+CVL Limitations: CVL treats user defined value types as their underlying representation (`wrap`, `unwrap` and any operators are unavailable from within a spec). However, any operator available for the underlying type in CVL will be available for the user defined value type.
+
+### Structs
+
+Consider the following struct declaration and spec preamble:
+
+```
+contract TheContract {
+    struct MyStruct {
+        uint256 member1,
+        bool member2,
+        int member3
+    }
+}
+...
+
+using TheContract as c
+```
+
+The following are available in the entire spec:
+* The Type: `c.MyStruct`
+* For an expression `exp` of type `c.MyStruct` the following:
+    * `exp.member1`
+    * `exp.member2`
+    * `exp.member3`
+
+CVL Limitations: Struct assignments are allowed only in very limited situations. Otherwise, structs should be declared and then constrained, for example:
+
+```
+c.MyStruct s;
+require s.member1 == x;
+require s.member2;
+require s.member3 != 0;
 ```
 
 
