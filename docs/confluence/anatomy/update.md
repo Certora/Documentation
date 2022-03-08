@@ -10,7 +10,7 @@ ghost uint myGhost;
 ghost mapping(uint => uint) myGhostMapping;
 ```
 
-Nested ghost mappings are not supported at this point.
+Nested (multi-dimensional) ghost mappings are supported, too.
 
 ```cvl
 ghost mapping(uint => mapping(uint => uint)) notYet
