@@ -142,48 +142,71 @@ invariant inMapIffInArray(uint x)
         (exists uint i. 0 <= i && i < getNumOfKeys() && keys(i) == x)
 ```
 
-It is not recommended to invoke the underlying contract directly within quantified expressions (such as `exists uint i. ...`). The complexity of the underlying bytecode might lead to timeouts, and thus it is recommended to move to _ghost variables_. Ghost variables, once properly instrumented, allow us to write specs that are separated from the many technicalities of low-level bytecode and are thus a powerful abstraction tool.
+It is not recommended to invoke the underlying contract directly within
+quantified expressions (such as `exists uint i. ...`). The complexity of the
+underlying bytecode might lead to timeouts, and thus it is recommended to move
+to _ghost variables_. Ghost variables, once properly instrumented, allow us to
+write specs that are separated from the many technicalities of low-level
+bytecode and are thus a powerful abstraction tool.
 
 A soft introduction to ghosts
 -----------------------------
 
-We will write the above invariant using ghost variables exclusively. First, we will declare ghost variables for the underlying map structure as a function mapping keys to values:
+We will write the above invariant using ghost variables exclusively (see
+{doc}`/ref-manual/cvl/ghosts` for complete information about ghosts). First, we
+will declare ghost variables for the underlying map structure.
 
 ```cvl
-ghost _map(uint) returns uint;
+ghost mapping(uint => uint) _map;
 ```
 
-The above declaration declares a _ghost function_. The ghost function takes a `uint` argument (representing a key in the map) and returns a `uint` value. We want `_map` to return for each given key the same value as the `map` in the code. We can state this property as an invariant:
+The above declaration declares a _ghost mapping_. The ghost mapping takes a
+`uint` argument (representing a key in the map) and returns a `uint` value. We
+want `_map` to return for each given key the same value as the `map` in the
+code. We can state this property as an invariant:
 
 ```cvl
-invariant checkMapGhost(uint someKey) get(someKey) == _map(someKey)
+invariant checkMapGhost(uint someKey) get(someKey) == _map[someKey]
 ```
 
 Currently, the rule fails for all state-mutating functions, and even in the contract's initial state after constructor (rule `checkMapGhost_instate`):
 
 ![](ghost_fail.png)
 
-This is, in fact, unsurprising. There is nothing in the spec that links the value of the ghost to its Solidity counterpart. To make that link, we write _hooks_. Hooks allow us to instrument the verified code, that is, to wrap a bytecode operation with our own code, defined in the spec file.
+This is, unsurprising. There is nothing in the spec that links the
+value of the ghost to its Solidity counterpart. To make that link, we write
+_hooks_. Hooks allow us to instrument the verified code, that is, to wrap a
+bytecode operation with our own code, defined in the spec file.
 
-For example, we can hook on `SSTORE` operations that write to the underlying map as follows:
+For example, we can hook on `SSTORE` operations that write to the underlying
+map as follows:
 
 ```cvl
 hook Sstore map[KEY uint k] uint v STORAGE {
-    havoc _map assuming _map@new(k) == v &&
-        (forall uint k2. k2 != k => _map@new(k2) == _map@old(k2));
+    _map[k] = v;
 }
 ```
 
-This hook will match every storage write to `map[k]`, denoting the written value by `v`. Optionally, and not shown in the syntax above, we can also specify the overwritten value of `map[k]`. The body of the hook is the injected code. It will apply `havoc` on the `_map` ghost, meaning that every key-value association it stored is "forgotten" by the prover and results in a completely new instance of `_map`. However, we restrict the new instance of `_map` using the old `_map` definition, with the `assuming ...` syntax. Under `assuming` we get a two-state context: we can see both old and new instances of `_map`, accessible with `_map@old` and `_map@new`. We require that `_map@old` and `_map@new` are the same for all keys except for `k`, the one we write to, and for `k` we require that `_map@new(k) == v`.
+This hook will match every storage write to `map[k]`, denoting the written
+value by `v`. Optionally, and not shown in the syntax above, we can also
+specify the overwritten value of `map[k]`. The body of the hook is the injected
+code. It will update the `_map` ghost.
 
-If we run `checkMapGhost` with only the `SSTORE` hook, the rule will pass for all functions but fail in the initial state, where no values were written. It is possible to specify initial state axioms on ghosts.
+If we run `checkMapGhost` with only the `SSTORE` hook, the rule will pass for
+all functions but fail in the initial state, where no values were written. It
+is possible to specify initial state axioms on ghosts.
 
 Similarly, one could define `SLOAD` hooks:
 
 ```cvl
 hook Sload uint v map[KEY uint k] STORAGE {
-    require _map(k) == v;
+    require _map[k] == v;
 }
 ```
 
-This hook says that every time the Prover encounters an `SLOAD` operation that reads the value `v` from `map[k]`, it will inject the code within the hook body after the `SLOAD`. This will make our `checkMapGhost` rule pass, but it's also become a tautology, because it's always true: by calling `get` we're already calling instrumented code that requires `_map(k) == v` whenever we load an arbitrary value `v` from the key `k`.
+This hook says that every time the Prover encounters an `SLOAD` operation that
+reads the value `v` from `map[k]`, it will inject the code within the hook body
+after the `SLOAD`. This will make our `checkMapGhost` rule pass, but it's also
+become a tautology, because it's always true: by calling `get` we're already
+calling instrumented code that requires `_map(k) == v` whenever we load an
+arbitrary value `v` from the key `k`.
