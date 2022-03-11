@@ -99,7 +99,6 @@ Initial state axioms
 --------------------
 
 
-
 ```{todo}
 
  - While verifying invariants, need to specify the initial state
@@ -119,12 +118,11 @@ See [ghost functions](/docs/confluence/anatomy/ghostfunctions.md)
 
 TODO: Ghost functions
 
-TODO Ghost axioms
+TODO: Ghost axioms
 
-TODO Havocing a ghost
+TODO: Havocing a ghost
 
  - Ghosts + axioms can be used for overapproximation
  - Axioms are required everywhere the ghost is used
 
 ```
-
