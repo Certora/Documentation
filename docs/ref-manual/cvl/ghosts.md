@@ -5,7 +5,7 @@ Ghosts are a way of defining global variables for use during verification.
 These variables are often used to communicate information between
 [rules](rules.md) and [hooks](hooks.md).
 
-```ebnf
+```
 ghost ::= "ghost" type id               (";" | "{" axioms "}")
         | "ghost" id "(" cvl_types ")"  (";" | "{" axioms "}")
 
@@ -37,7 +37,7 @@ ghost mapping(uint => mapping(uint => mathint)) delegations;
 while the following are invalid:
 
 ```cvl
-ghost (uint, uint) x; // tuples are not CVL types
+ghost (uint, uint) x;                              // tuples are not CVL types
 ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
 
@@ -100,6 +100,7 @@ Initial state axioms
 ```
 
 
+(ghost-axioms)=
 Deprecated features
 -------------------
 
@@ -108,13 +109,13 @@ Deprecated features
 Are these really deprecated?  Explanation of what they do, and what they're replaced
 by.
 
-See [ghost functions](/confluence/anatomy/ghostfunctions.md)
+See [ghost functions](/docs/confluence/anatomy/ghostfunctions.md)
 
-### Ghost functions
+TODO: Ghost functions
 
-### Ghost axioms
+TODO Ghost axioms
 
-### Havocing a ghost
+TODO Havocing a ghost
 
  - Ghosts + axioms can be used for overapproximation
  - Axioms are required everywhere the ghost is used
