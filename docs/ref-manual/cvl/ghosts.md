@@ -119,3 +119,5 @@ See [ghost functions](/confluence/anatomy/ghostfunctions.md)
  - Ghosts + axioms can be used for overapproximation
  - Axioms are required everywhere the ghost is used
 
+```
+
