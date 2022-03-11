@@ -16,7 +16,7 @@ evm_type ::= basic_type
 
 cvl_type ::= basic_type
            | "mathint" | "calldataarg" | "storage" | "env" | "method"
-           | id
+           | id | id.id
 ```
 
 The additional CVL types are:
@@ -37,15 +37,13 @@ CVL currently supports the following [solidity types][]:
  * `address`
  * `string`, `bytes`, and the sized `bytes` variants (`bytes1` through `bytes32`)
  * Tuples and single-dimensional arrays (both statically- and dynamically-sized)
- * Enum Types
- * User Defined Value Types
- * Struct Types
+ * Enum types
+ * User-defined Value types
+ * Struct types
 
 The following are unsupported:
- * enums
- * user-defined value types
  * function types
- * structs
+ * structs with array members
  * references
  * multi-dimensional arrays
  * mappings
@@ -96,8 +94,8 @@ Types Defined in Solidity Contracts
 -----------------------------------
 
 Solidity supports several user defined types:
-* Enums
-* User Defined Value Types (type aliases)
+* Enum types
+* User-defined Value types (type aliases)
 * Structs
 
 These types can be accessed by referencing the contract where they are defined. To reference a contract remember to include `using ContractName as myLocalContractName`. The file containing the contract `ContractName` will have to be included in your build.
@@ -107,7 +105,7 @@ User defined types may then be referenced from that contract: `myLocalContractNa
 ### Enum Types
 Consider the following enum declaration and spec preamble:
 
-```
+```solidity
 contract TheContract {
     enum MyEnum {
         member1,
@@ -115,7 +113,8 @@ contract TheContract {
         member3
     }
 }
-...
+```
+```cvl
 
 using TheContract as c
 ```
@@ -133,12 +132,13 @@ The following are available in the entire spec:
 
 Consider the following user defined value type declaration and spec preamble:
 
-```
+```solidity
 contract TheContract {
     type MyType is uint64;
 }
-...
+```
 
+```cvl
 using TheContract as c
 ```
 
@@ -151,7 +151,7 @@ CVL Limitations: CVL treats user defined value types as their underlying represe
 
 Consider the following struct declaration and spec preamble:
 
-```
+```solidity
 contract TheContract {
     struct MyStruct {
         uint256 member1,
@@ -159,8 +159,9 @@ contract TheContract {
         int member3
     }
 }
-...
+```
 
+```cvl
 using TheContract as c
 ```
 
