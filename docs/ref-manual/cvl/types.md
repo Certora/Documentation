@@ -39,14 +39,15 @@ CVL currently supports the following [solidity types][]:
  * `string`, `bytes`, and the sized `bytes` variants (`bytes1` through `bytes32`)
  * Tuples
  * {ref}`Single-dimensional arrays <arrays>` (both statically- and dynamically-sized)
- * Enum types, struct types, and type aliases
+ * {ref}`Enum types, struct types, and type aliases <user-types>`
 
 The following are unsupported:
- * function types
- * structs with array members
- * references
- * multi-dimensional arrays
- * mappings
+ * Function types
+ * Structs with array members
+ * References
+ * Multi-dimensional arrays
+ * Mappings
+ * Built-in solidity methods such as `address.balance(...)` and `array.push(...)`
 
 You can use [harnessing](../approx/harnessing) to work around these limitations.
 
@@ -68,12 +69,7 @@ CVL Arrays also have the following limitations:
  - The `push` and `pop` methods are not supported.
 You can use [harnessing](../approx/harnessing) to work around these limitations.
 
-### Methods on Solidity types
-
-Built-in solidity methods such as `address.balance(...)` and `array.push(...)`
-are not accessible in CVL.
-You can use [harnessing](../approx/harnessing) to work around these limitations.
-
+(user-types)=
 ### User-defined types
 
 Specifications can use structs, enums, or user-defined value types that are
