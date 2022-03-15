@@ -78,7 +78,7 @@ rule update_changes_user(address user) {
 
     do_update(user);
 
-    assert updated[user] == true;
+    assert updated[user] == true, "do_update(user) should affect user";
 }
 
 rule update_changes_no_other(address user, address other) {
@@ -91,8 +91,13 @@ rule update_changes_no_other(address user, address other) {
 }
 ```
 
+Here the `updated` ghost is used to communicate infromation from the `userInfo`
+hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
+
 Initial state axioms
 --------------------
+
+
 
 ```{todo}
 
