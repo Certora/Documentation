@@ -98,9 +98,15 @@ Solidity supports several user defined types:
 * User-defined Value types (type aliases)
 * Structs
 
-These types can be accessed by referencing the contract where they are defined. To reference a contract remember to include `using ContractName as myLocalContractName`. The file containing the contract `ContractName` will have to be included in your build.
+These types can be accessed by referencing the contract where they are defined.
+To reference a contract remember to include `using ContractName as
+myLocalContractName`. The file containing the contract `ContractName` will have
+to be included in your build.
 
-User defined types may then be referenced from that contract: `myLocalContractName.myTypeName`. For types declared at the file level, any contract which imports that file may be used. Note that new user defined types may *not* be declared within a specification.
+User defined types may then be referenced from that contract:
+`myLocalContractName.myTypeName`. For types declared at the file level, any
+contract which imports that file may be used. Note that new user defined types
+may *not* be declared within a specification.
 
 ### Enum Types
 Consider the following enum declaration and spec preamble:
@@ -145,7 +151,10 @@ using TheContract as c
 The type `c.MyType` is in scope everywhere in the spec.
 
 
-CVL Limitations: CVL treats user defined value types as their underlying representation (`wrap`, `unwrap` and any operators are unavailable from within a spec). However, any operator available for the underlying type in CVL will be available for the user defined value type.
+CVL Limitations: CVL treats user defined value types as their underlying
+representation (`wrap`, `unwrap` and any operators are unavailable from within
+a spec). However, any operator available for the underlying type in CVL will be
+available for the user defined value type.
 
 ### Structs
 
@@ -172,7 +181,9 @@ The following are available in the entire spec:
     * `exp.member2`
     * `exp.member3`
 
-CVL Limitations: Struct assignments are allowed only in very limited situations. Otherwise, structs should be declared and then constrained, for example:
+CVL Limitations: Struct assignments are allowed only in very limited
+situations. Otherwise, structs should be declared and then constrained, for
+example:
 
 ```
 c.MyStruct s;
