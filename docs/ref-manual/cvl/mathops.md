@@ -1,6 +1,24 @@
 Mathematical Operations
 =======================
 
+Notes:
+ - Add: Uint add
+ - IntAdd: mathint add
+ - Parsing produces Add AST nodes
+ - Transform only happens on declaration/definition
+ - AmbiguousArithmeticExprRes: if lhs type is not uint, replace (uint)Add with (mathint)IntAdd
+ - After typechecking convert types:
+    - try convert left to right
+    - try convert right to left
+ - Insert implicit conversions if possible to ensure LHS and RHS of binops are the same
+    - only one of tho operands changed
+    - fail if not possible
+ - Convert intadd expressions to mathint
+ - Tests: CVLSyntax/CastExpr
+    - castExprs: pass
+    - bad1-bad6: rule fails or syntax error
+
+
 This page describes the details of how different integer types are handled in
 CVL.  The exact rules for casting between `uint` and `mathint` types are
 described in detail.
