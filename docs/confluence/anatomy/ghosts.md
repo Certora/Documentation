@@ -4,7 +4,7 @@ Ghosts
 What are ghosts?
 ----------------
 
-At their core, ghosts are just [uninterpreted functions](https://certora.atlassian.net/wiki/spaces/CPD/pages/3014665/Ghost+Functions#Uninterpreted-Functions). These uninterpreted functions by themselves wouldn't really be "ghosts" per-se. However, along with **axioms** and **hooks**, these uninterpreted functions can be used to model some contract state that isn't explicitly in the contract (hence it is a “ghost” state). In our canonical example, we use ghosts to keep track of the sum of balances in a bank contract.
+At their core, ghosts are just {ref}`uninterpreted functions <uninterp-functions>`. These uninterpreted functions by themselves wouldn't really be "ghosts" per-se. However, along with **axioms** and **hooks**, these uninterpreted functions can be used to model some contract state that isn't explicitly in the contract (hence it is a “ghost” state). In our canonical example, we use ghosts to keep track of the sum of balances in a bank contract.
 
 A Simple Bank Example
 ---------------------

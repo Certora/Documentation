@@ -4,7 +4,7 @@ More Expressive Summaries
 Ghost Summaries
 ---------------
 
-What we refer to as [ghost functions](../anatomy/ghostfunctions.md) are simply [uninterpreted functions](https://certora.atlassian.net/wiki/spaces/CPD/pages/3014665/Ghost+Functions#Uninterpreted-Functions) uninterpreted functions. Because these can be axiomatized, they can be used to express any number of [approximating](approximation.md) semantics (rather than summarizing a function as simply a constant). For example, say we wanted to give some approximation for a multiplication function--this is an example of an operation that is very difficult for an SMT solver. Perhaps we only care about the monotonicity of this multiplication function. We may do something like the following:
+What we refer to as [ghost functions](../anatomy/ghostfunctions.md) are simply {ref}`uninterpreted functions <uninterp-functions>` uninterpreted functions. Because these can be axiomatized, they can be used to express any number of [approximating](approximation.md) semantics (rather than summarizing a function as simply a constant). For example, say we wanted to give some approximation for a multiplication function--this is an example of an operation that is very difficult for an SMT solver. Perhaps we only care about the monotonicity of this multiplication function. We may do something like the following:
 
 ```cvl
 ghost ghost_multiplication(uint256,uint256) returns uint256 {

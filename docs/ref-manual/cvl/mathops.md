@@ -98,7 +98,7 @@ Only the following _implicit_ cast operations are supported in CVL:
     
     *   `uint_k1` can implicitly cast to `uint_k2` when `k1 <= k2`
         
-    *   `uint_k1` can implicitly cast to `address` when `k1 <= 160`. Moreover, `address` can implicitly cast to `uint256`, but _not_ the other way around. (Note : This is different from earlier behavior because before, `uint256` and `address` were aliases. See the comments in this [discussion](https://certora.atlassian.net/wiki/spaces/CER/pages/123568149) ).
+    *   `uint_k1` can implicitly cast to `address` when `k1 <= 160`. Moreover, `address` can implicitly cast to `uint256`, but _not_ the other way around. (Note : This is different from earlier behavior because before, `uint256` and `address` were aliases).
         
     *   `uint*` can implicitly cast to `mathint`. (Note that there is a **difference** in implicit and explicit casts from `uint256` to `mathint` when the expression value is outside the range of a `uint256` variable. While in the implicit cast the `uint256` value remains unchanged when converted to `mathint`, the explicit cast takes a _mod_ of the value with `2^256`. Again, this difference will be “visible” only when casting unsafely from a `uint` to `mathint`, i.e. when the `uint` value is greater than `2^256`)
         
