@@ -40,6 +40,7 @@ rule myRule {
 
 This will generate an assertion violation. Behind the scenes the solver gets to generate any number of members of the sort `Foo`. So it can easily generate a counterexample by assigning `x` to one member and `y` to the other.
 
+(uninterp-functions)=
 Uninterpreted Functions
 -----------------------
 
