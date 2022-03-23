@@ -35,4 +35,15 @@ cvl_param ::= cvl_type [ id ]
 `envfree` methods
 -----------------
 
-TODO
+```{todo}
+Describe `envfree`
+```
+
+
+(havoc-summary)=
+Havoc Summaries
+---------------
+
+```{todo}
+Havoc method summaries
+```
