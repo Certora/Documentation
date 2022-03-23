@@ -5,6 +5,23 @@ This page describes the details of how different integer types are handled in
 CVL.  The exact rules for casting between `uint` and `mathint` types are
 described in detail.
 
+```{warning}
+The details of implicit and explicit casting between `uint*`, `int*`, and
+`mathint` in CVL are complicated, and depend not only on the expressions being
+casted but also on the context in which the resulting expressions are used.
+For example, assignment statements work differently than return statements.
+
+This document contains the best existing documentation for the current
+implementation, although it is missing some detail.  However, this portion of
+CVL is also in the process of being redefined and simplified.
+
+In the mean time, we recommend the following rules of thumb:
+ - where possible, use `mathint`
+ - use `uint` or `int` types only when you need to pass values to solidity
+   functions
+ - defer casting from `mathint` to `uint` until as late as possible.
+```
+
 ## Maximum values
 
 The maximum values of Solidity integer types are available as the following
