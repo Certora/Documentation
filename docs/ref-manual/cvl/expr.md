@@ -1,9 +1,16 @@
 Expressions
 ===========
 
-TODO: CVL expressions
+```{todo}
+organization
+```
 
-TODO: organization
+CVL Expressions
+---------------
+
+```{todo}
+List and descriptions of different CVL expressions
+```
 
 Built-in variables
 ------------------
