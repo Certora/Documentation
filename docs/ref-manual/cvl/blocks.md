@@ -16,7 +16,7 @@ Statements
 ### The `require` statement
 
 ```{todo}
-This section is incomplete.  See [the user guide](/docs/user-guide/bank/commands).
+This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/commands).
 ```
 
 (havoc-stmt)=

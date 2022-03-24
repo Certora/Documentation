@@ -47,6 +47,6 @@ the following items in any order:
  - **[Hooks](hooks):** Hooks allow the specification to instrument the contracts being
    verified to insert additional CVL code when various instructions are executed.
 
-The remainder of this section describes the syntax and semantics of a
+The remainder of this chapter describes the syntax and semantics of a
 specification file in detail.
 
