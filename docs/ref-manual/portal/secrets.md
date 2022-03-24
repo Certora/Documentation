@@ -90,10 +90,15 @@ consistently timing out, we encourage you to
 [contact Certora Support](https://forum.certora.com); our developers may be able
 to help resolve the issue.
 
-For example, the following shows that the `UNPACKING` analysis is failing on
-several fields:
+For example, the following shows that the `POINTSTO` analysis is failing on
+the `createMarket` method, which may cause verification of rules involving
+`createMarket` to take a long time:
 
-![example statsdata.json showing several unpacking failures](statsdata.png)
+![example statsdata.json showing false in createMarket](statsdata.png)
+
+Some analysis failures are expected.  In particular, analysis failures on
+constructors and the fallback method are expected and typically do not lead to
+problems.
 
 These analyses only depend on the bytecode being verified (not the rules), so
 you should only need to recheck them if your contracts changes.
