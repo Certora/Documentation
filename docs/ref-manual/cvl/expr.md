@@ -23,7 +23,7 @@ expr ::= literal
 
        | [ "invoke" | "sinvoke" ] [ id "." ] id [ "(" exprs ")" ] [ "@" id ]
        | [ id "." ] id
-         [ "@" ( "old" | "new" | "norevert" | withrevert" | "dontsummarize" ]
+         [ "@" ( "old" | "new" | "norevert" | "withrevert" | "dontsummarize" ]
          "(" exprs ")"
          [ "@" id ]
 
