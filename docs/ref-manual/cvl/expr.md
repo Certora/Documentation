@@ -60,7 +60,10 @@ Basic operations
 ----------------
 
 CVL provides the same basic arithmetic, comparison, bitwise, and logical
-operations for basic types that solidity does.
+operations for basic types that solidity does.  The [precedence and
+associativity rules][operators] are standard.
+
+[operators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#table
 
 ```{caution}
 One significant difference between CVL and Solidity is that in Solidity, `^`
