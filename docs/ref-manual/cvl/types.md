@@ -237,9 +237,10 @@ possible set of method arguments.
 Properties of methods can be extracted from methods using a field-like syntax. 
 The following fields are available on a method `m`:
 
-*   `m.selector` - the hashcode of the method 
-*   `m.isPure` - true when m is declared with the pure attribute
-*   `m.isView` - true when m is declared with the view attribute
+*   `m.selector`   - the hashcode of the method 
+*   `m.isPure`     - true when m is declared with the pure attribute
+*   `m.isView`     - true when m is declared with the view attribute
+*   `m.isFallback` - true when `m` is the fallback function
 *   `m.numberOfArguments` - the number of arguments to method m
 
 There is no way to examine the contents of a `calldataarg` variable, because

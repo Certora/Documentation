@@ -1,3 +1,4 @@
+(ghost-functions)=
 Ghosts
 ======
 
