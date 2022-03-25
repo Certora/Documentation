@@ -2,6 +2,11 @@ CVL Commands
 ============
 
 ```{todo}
+This document is incomplete.  See {doc}`/docs/confluence/anatomy/commands` for
+partial information
+```
+
+```{todo}
 syntax
 ```
 

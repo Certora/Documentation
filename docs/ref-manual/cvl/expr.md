@@ -1,15 +1,6 @@
 Expressions
 ===========
 
-```{todo}
-This page is incomplete.  For information on mathematical operations, see
-{doc}`mathops`.  For information on some of the built-in keywords and operators,
-see {doc}`/docs/confluence/anatomy/keywords` and
-{doc}`/docs/confluence/anatomy/commands`.  Some of the special fields are described
-in {doc}`types`, and some of the special syntax for calling methods and accessing
-ghosts are described in {doc}`/docs/confluence/advanced/index`.
-```
-
 ```
 expr ::= literal
        | unop expr
@@ -228,7 +219,7 @@ There are also several built-in variables:
  * `bool lastReverted` and `bool lastHasThrown` are boolean values that indicate whether
    the most recent contract function reverted or threw an exception.  They are
    only meaningful if the most recent contract function was called with `@withrevert`
-   (see {ref}`withrevert`).
+   (see {ref}`call-expr`).
  
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
@@ -247,6 +238,7 @@ CVL also has three built-in functions for casting mathematical types:
 `to_uint256`, `to_int256`, and `to_mathint`.  See {doc}`mathops` for details.
 
 
+(call-expr)=
 Calling contract functions
 --------------------------
 
@@ -255,7 +247,7 @@ There are many kinds of function-like things that can be called from CVL:
  * Contract functions
  * {ref}`ghost-functions`
  * {doc}`functions`
- * {doc}`definitions`
+ * {doc}`defs`
 
 There are several additional features that can be used when calling contract
 functions.
