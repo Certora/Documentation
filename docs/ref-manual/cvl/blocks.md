@@ -23,5 +23,12 @@ This section is incomplete.  See [the old documentation](/docs/confluence/anatom
 ### The `havoc ... assuming` statement
 
 ```{todo}
-This section is incomplete.  See
+This section is incomplete.
 ```
+
+```{todo}
+Be sure to document `@old` and `@new`.  They are not documented in {doc}`expr`
+because I think `havoc ... assuming ...` is the only place that they are
+available.
+```
+
