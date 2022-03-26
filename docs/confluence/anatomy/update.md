@@ -10,10 +10,10 @@ ghost uint myGhost;
 ghost mapping(uint => uint) myGhostMapping;
 ```
 
-Nested ghost mappings are not supported at this point.
+Nested (multi-dimensional) ghost mappings are supported, too.
 
 ```cvl
-ghost mapping(uint => mapping(uint => uint)) notYet
+ghost mapping(uint => mapping(uint => uint)) myTwoDimensionalGhostMapping
 ```
 
 Background: Semantically there is no difference between the new variable-style and the old function-style declarations. I.e., the declaration `ghost uint myGhost` creates the same semantic object as the declaration `ghost myGhost() returns uint` .

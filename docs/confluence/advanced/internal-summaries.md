@@ -72,7 +72,7 @@ Unfortunately, the function `continuous_interest` includes some arithmetic tha
 
 1.  The resulting formula may be cause the underlying SMT formula to time out which will result in an `unknown` result
     
-2.  The Prover will use "overapproximations" of the arithmetic operations in the resulting formula. Basically this means that we let allows some weird and unexpected behavior which _includes_ the behavior of the function, but _also_includes more behavior. Basically, this means that a counterexample may not be a _real_ counterexample (i.e. not actually possible program behavior). To understand this better see our section on [overapproximation](https://certora.atlassian.net/wiki/spaces/CPD/pages/41255047/Approximation#Solution-1%3A-Overapproximation).
+2.  The Prover will use "overapproximations" of the arithmetic operations in the resulting formula. Basically this means that we let allows some weird and unexpected behavior which _includes_ the behavior of the function, but _also_ includes more behavior. Basically, this means that a counterexample may not be a _real_ counterexample (i.e. not actually possible program behavior). To understand this better see our section on [overapproximation](approximation).
     
 
 It turns out that in this case, we run into problem (2) where the tool reports a violation which doesn't actually make sense. This is where function summarization becomes useful, since we get to decide how we would like to overapproximate our function! Suppose we would like to prove that, _assuming the equation we use to calculate continuously compounding interest is monotonic_, then it is also the case that the value of our principal is monotonically increasing over time. In this case we do the following:

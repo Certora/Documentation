@@ -9,6 +9,7 @@ additional types and is also missing support for some Solidity types.
 basic_type ::= "int*" | "uint*" | "address" | "bool"
              | "string" | "bytes*"
              | basic_type "[" [ number ] "]"
+             | id.id
 
 evm_type ::= basic_type
            | "(" evm_type { "," evm_type } ")"
@@ -36,24 +37,23 @@ CVL currently supports the following [solidity types][]:
  * `bool`, `int`, `uint`, and the sized variants such as `uint256` and `int8`.
  * `address`
  * `string`, `bytes`, and the sized `bytes` variants (`bytes1` through `bytes32`)
- * Tuples and single-dimensional arrays (both statically- and dynamically-sized)
+ * Tuples
+ * {ref}`Single-dimensional arrays <arrays>` (both statically- and dynamically-sized)
+ * {ref}`Enum types, struct types, and type aliases <user-types>`
 
 The following are unsupported:
- * enums
- * user-defined value types
- * function types
- * structs
- * references
- * multi-dimensional arrays
- * mappings
+ * Function types
+ * Structs with array members
+ * References
+ * Multi-dimensional arrays
+ * Mappings
+ * Built-in solidity methods such as `address.balance(...)` and `array.push(...)`
+
+You can use [harnessing](../approx/harnessing) to work around these limitations.
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
 
-```{todo}
-Is this the right place to describe basic operations and literal syntax, or does
-that go under expressions?
-```
-
+(arrays)=
 ### Array access
 
 Array accesses in CVL behave slightly differently from Solidity accesses.  In
@@ -67,28 +67,86 @@ values: if `i > a.length` then the prover considers every possible value for
 CVL Arrays also have the following limitations:
  - Only single dimensional arrays are supported
  - The `push` and `pop` methods are not supported.
+You can use [harnessing](../approx/harnessing) to work around these limitations.
 
-### Methods on Solidity types
+(user-types)=
+### User-defined types
 
-```{todo}
-address.balance, address.send, array.push, array.pop, etc.
+Specifications can use structs, enums, or user-defined value types that are
+defined in Solidity contracts.
+
+Struct types have the following limitations:
+ - CVL methods that return struct types are unsupported.
+ - Structs with array-typed fields are unsupported.
+ - Assignment to struct fields is unsupported.  You can achieve the same effect
+   using a {ref}`require <require>` statement.  For example, instead of `s.f = x;` you can
+   write `require s.f == x;`.
+
+Unlike Solidity, CVL treats user-defined value types are treated as aliases for
+their underlying type.  Wrapping and unwrapping operations are unnecessary and
+unavailable, and operations on the underlying type are allowed on the
+user-defined types as well.
+
+All user-defined type names (structs, enums, and user-defined values) must
+be explicitly qualified by a contract name that is introduced with a
+{doc}`using statement <using>`:
+
+ - For types defined within a contract, the named contract must be the contract
+   containing the type definition
+
+ - For types defined at the file level, the type definition must be in scope
+   for the named contract
+
+```{warning}
+If you do not qualify the type name with a contract name, the type name will be
+misinterpreted as a {ref}`sort <sort>`.
 ```
 
-### Handling unsupported Solidity types
+For example, consider the files `parent.sol` and `child.sol`, defined as follows:
 
-```{todo}
-Explain how to use `require` and `using` or other tricks for constraining
-return addresses.
+```{code-block} solidity
+---
+caption: parent.sol
+---
+type ParentFileType is uint64;
+
+contract Parent {
+    enum ParentContractType { member1, member2 }
+}
 ```
 
-```{todo}
-multi-dimensional arrays
+```{code-block} solidity
+---
+caption: child.sol
+---
+import 'parent.sol';
+
+type ChildFileType is bool;
+
+contract Child is Parent {
+    type alias ChildContractType is uint128;
+}
 ```
 
-```{todo}
-reference types
-```
+Given these definitions, types can be named as follows:
 
+```{code-block} cvl
+---
+caption: child.spec
+---
+
+using Child  as child;
+using Parent as parent;
+
+// valid types
+parent.ParentFileType     valid1;
+child .ParentFileType     valid2;
+parent.ParentContractType valid3;
+
+// invalid types
+child .ParentContractType invalid1; // struct types are not inherited
+parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
+```
 
 Additional CVL types
 --------------------
@@ -237,6 +295,6 @@ contract function call.
 ### Uninterpreted sorts
 
 ```{todo}
-Is this the only usage for the `type ::= id` production in the grammar?
+This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
 ```
 
