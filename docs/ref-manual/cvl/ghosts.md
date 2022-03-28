@@ -104,23 +104,15 @@ for information about initial state axioms.
 ```
 
 (ghost-axioms)=
-Deprecated features
--------------------
+Ghost functions
+---------------
+
+CVL also has support for "ghost functions".  These serve a different purpose
+from ghost variables, although they can be used in similar ways.
 
 ```{todo}
-
-Are these really deprecated?  Explanation of what they do, and what they're replaced
-by.
-
-See [ghost functions](/docs/confluence/anatomy/ghostfunctions.md)
-
-TODO: Ghost functions
-
-TODO: Ghost axioms
-
-TODO: Havocing a ghost
-
- - Ghosts + axioms can be used for overapproximation
- - Axioms are required everywhere the ghost is used
-
+This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions)
+for information about ghost functions and axioms.
 ```
+
+
