@@ -5,4 +5,7 @@ Uninterpreted Sorts
 sort ::= "sort" id ";"
 ```
 
-TODO: see [ghosts](/docs/confluence/anatomy/ghostfunctions)
+```{todo}
+This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
+```
+
