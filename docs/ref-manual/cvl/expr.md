@@ -99,8 +99,8 @@ Whether implications (and other boolean connectors) are short-circuiting is
 currently undocumented.
 ```
 
- * Similarly, an *if and only if* (also called a *bidirectional implication*)
-   expression `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
+ * Similarly, an *if and only if* expression (also called a *bidirectional implication*)
+   `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
    expressions and is itself a boolean expression.  `expr1 <=> expr2` evaluates
    to `true` if `expr1` and `expr2` evaluate to the same boolean value.
 
