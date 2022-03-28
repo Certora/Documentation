@@ -16,13 +16,16 @@ expr ::= literal
        | id [ "[" expr "]" { "[" expr "]" } ]
        | id "(" types ")"
 
+       | function_call
+
+       | expr "in" id
+
+function_call ::=
        | [ "invoke" | "sinvoke" ]
          [ id "." ] id
          [ "@" ( "norevert" | "withrevert" | "dontsummarize" ]
          "(" exprs ")"
          [ "at" id ]
-
-       | expr "in" id
 
 
 literal ::= "true" | "false" | number | string
@@ -270,6 +273,7 @@ There are many kinds of function-like things that can be called from CVL:
  * {ref}`ghost-functions`
  * {doc}`functions`
  * {doc}`defs`
+ * {ref}`Method variables <method-type>`
 
 There are several additional features that can be used when calling contract
 functions.
