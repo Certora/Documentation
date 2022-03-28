@@ -3,9 +3,7 @@ Syntax Update: Ghost Variables and Ghost Mappings
 
 ## Variable-style declarations
 
-CVL now allows for top-level declarations of ghosts that follow the common
-scheme for variable declarations. Ghost variables can be scalars (`uint` etc.)
-or mappings.
+CVL now allows for top-level declarations of ghosts that follow the common scheme for variable declarations. Ghost variables can be scalars (`uint` etc.) or mappings.
 
 ```cvl
 ghost uint myGhost;
@@ -18,10 +16,7 @@ Nested (multi-dimensional) ghost mappings are supported, too.
 ghost mapping(uint => mapping(uint => uint)) myTwoDimensionalGhostMapping
 ```
 
-Background: Semantically there is no difference between the new variable-style
-and the old function-style declarations. I.e., the declaration `ghost uint
-myGhost` creates the same semantic object as the declaration `ghost myGhost()
-returns uint` .
+Background: Semantically there is no difference between the new variable-style and the old function-style declarations. I.e., the declaration `ghost uint myGhost` creates the same semantic object as the declaration `ghost myGhost() returns uint` .
 
 ## Variable-style access
 
