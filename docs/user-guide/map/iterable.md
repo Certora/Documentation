@@ -153,7 +153,7 @@ A soft introduction to ghosts
 -----------------------------
 
 We will write the above invariant using ghost variables exclusively (see
-{doc}`/ref-manual/cvl/ghosts` for complete information about ghosts). First, we
+{doc}`/docs/ref-manual/cvl/ghosts` for complete information about ghosts). First, we
 will declare ghost variables for the underlying map structure.
 
 ```cvl
@@ -208,5 +208,5 @@ This hook says that every time the Prover encounters an `SLOAD` operation that
 reads the value `v` from `map[k]`, it will inject the code within the hook body
 after the `SLOAD`. This will make our `checkMapGhost` rule pass, but it's also
 become a tautology, because it's always true: by calling `get` we're already
-calling instrumented code that requires `_map(k) == v` whenever we load an
+calling instrumented code that requires `_map[k] == v` whenever we load an
 arbitrary value `v` from the key `k`.
