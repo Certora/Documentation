@@ -60,8 +60,9 @@ Basic operations
 ----------------
 
 CVL provides the same basic arithmetic, comparison, bitwise, and logical
-operations for basic types that solidity does.  The [precedence and
-associativity rules][operators] are standard.
+operations for basic types that solidity does, with a few differences listed
+in this section and the next.  The [precedence and associativity rules][operators]
+are standard.
 
 [operators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#table
 
@@ -101,7 +102,7 @@ currently undocumented.
  * Similarly, an *if and only if* (also called a *bidirectional implication*)
    expression `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
    expressions and is itself a boolean expression.  `expr1 <=> expr2` evaluates
-   to `true` if both `expr1 => expr2` and `expr2 => expr1` evaluate to `true`.
+   to `true` if `expr1` and `expr2` evaluate to the same boolean value.
 
    For example, the statement `assert balanceA > 0 <=> balanceB > 0;` will
    report a violation if exactly one of `balanceA` and `balanceB` is positive.
