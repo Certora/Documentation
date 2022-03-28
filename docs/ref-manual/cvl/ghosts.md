@@ -99,7 +99,7 @@ Initial state axioms
 --------------------
 
 ```{todo}
-This documentation is incomplete.  See [the old documentation](/docs/anatomy/ghostfunctions)
+This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions)
 for information about initial state axioms.
 ```
 
