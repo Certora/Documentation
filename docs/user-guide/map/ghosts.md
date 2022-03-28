@@ -17,7 +17,7 @@ with the hooks:
 
 ```cvl
 hook Sload uint v map[KEY uint k] STORAGE {
-    require _map(k) == v;
+    require _map[k] == v;
 }
 
 hook Sstore map[KEY uint k] uint v STORAGE {
@@ -36,7 +36,7 @@ We also define the hooks. For `array`:
 
 ```cvl
 hook Sload uint n keys[INDEX uint index] STORAGE {
-    require array(index) == n;
+    require array[index] == n;
 }
 
 hook Sstore keys[INDEX uint index] uint n STORAGE {
