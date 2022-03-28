@@ -5,6 +5,71 @@ This page describes the details of how different integer types are handled in
 CVL.  The exact rules for casting between `uint` and `mathint` types are
 described in detail.
 
+```{warning}
+The details of implicit and explicit casting between `uint*`, `int*`, and
+`mathint` in CVL are complicated, and depend not only on the expressions being
+casted but also on the context in which the resulting expressions are used.
+For example, assignment statements work differently than return statements.
+
+This document contains the best existing documentation for the current
+implementation, although it is missing some detail.  However, this portion of
+CVL is also in the process of being redefined and simplified.
+
+In the mean time, we recommend the following rules of thumb:
+ - where possible, use `mathint`
+ - use `uint` or `int` types only when you need to pass values to solidity
+   functions
+ - defer casting from `mathint` to `uint` until as late as possible.
+```
+
+Mathematical operations
+-----------------------
+
+In CVL, arithmetic operators (+, -, \* and /) are overloaded: they could mean a
+machine-arithmetic operation that can overflow, or a mathematical operation
+that does not overflow. The default interpretation used in almost all cases is
+the mathematical one. Therefore, the assertion below holds:
+
+```cvl
+uint x;
+assert x + 1 > x;
+```
+
+The syntax supports Solidity’s integer types (`uintXX` and `intXX`) as well as
+the CVL-only type `mathint` representing the domain of mathematical integers
+(ℤ). Using these types allows controlling how arithmetic operators such as +,
+-, and \* are interpreted. Therefore, in the following variant on the above
+example, if we wish the + operation to be the overflowing variant, we can write
+the following:
+
+```cvl
+uint x;
+uint y = x + 1;
+assert y > x;
+```
+
+The assertion here will fail with `x = MAX_INT`, since then y is equal to 0. If
+we write instead:
+
+```cvl
+uint x;
+mathint y = x + 1;
+assert y > x;
+```
+
+The meaning is the same as in the first snippet since an assignment to a `mathint` variable allows non-overflowing interpretations of the arithmetic operators.
+
+The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to functions, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if `mathint` variable is passed directly as a function argument.
+
+```cvl
+uint256 MAX_INT = 2^256 - 1;
+foo(MAX_INT + 1); // equivalent to invoking foo(0)
+assert MAX_INT + 1 == 0; // always false, because ‘+’ here is mathematical
+mathint x = MAX_INT + 1;
+foo(x); // error
+```
+
+
 ## Maximum values
 
 The maximum values of Solidity integer types are available as the following
