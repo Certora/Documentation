@@ -98,12 +98,10 @@ hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
 Initial state axioms
 --------------------
 
-
 ```{todo}
-
- - While verifying invariants, need to specify the initial state
+This documentation is incomplete.  See [the old documentation](/docs/anatomy/ghostfunctions)
+for information about initial state axioms.
 ```
-
 
 (ghost-axioms)=
 Deprecated features
