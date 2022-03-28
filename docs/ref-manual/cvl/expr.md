@@ -222,10 +222,25 @@ Several of the CVL types have special fields; see {doc}`types` (particularly
 
 There are also several built-in variables:
 
- * `bool lastReverted` and `bool lastHasThrown` are boolean values that indicate whether
-   the most recent contract function reverted or threw an exception.  They are
-   only meaningful if the most recent contract function was called with `@withrevert`
-   (see {ref}`call-expr`).
+ * `bool lastReverted` and `bool lastHasThrown` are boolean values that
+   indicate whether the most recent contract function reverted or threw an
+   exception.
+
+   ````{caution}
+   The variables `lastReverted` and `lastHasThrown` are updated after each
+   contract call, even those called without `@withrevert` (see {ref}`call-expr`).
+   This is a common source of errors.  For example, the following rule is
+   vacuous:
+   ```cvl
+   rule revert_if_paused() {
+     withdraw@withrevert();
+     assert isPaused() => lastReverted;
+   }
+   ```
+
+   In this rule, the call to `isPaused` will update `lastReverted` to `true`,
+   overwriting the value set by `withdraw`.
+   ````
  
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
