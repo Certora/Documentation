@@ -27,7 +27,7 @@ comments.md
 types.md
 mathops.md
 expr.md
-blocks.md
+statements.md
 ```
 
 Specification File Contents
