@@ -5,6 +5,20 @@ Like Solidity, CVL is a statically typed language.  There is overlap between
 the types supported by Solidity and the types supported by CVL, but CVL has some
 additional types and is also missing support for some Solidity types.
 
+The additional CVL types are:
+ - {ref}`mathint` is an arbitrary precision integer that cannot overflow
+ - {ref}`method-type` are used
+   to represent arbitrary methods and arguments of the contract under verification
+ - {ref}`storage-type` is used to represent a snapshot of the entire EVM storage
+ - {ref}`env` is used to represent the Solidity global variables `msg`, `block`, and `tx`
+ - {ref}`sort` are used to represent unknown types
+
+```{contents}
+```
+
+Syntax
+------
+
 ```
 basic_type ::= "int*" | "uint*" | "address" | "bool"
              | "string" | "bytes*"
@@ -19,14 +33,6 @@ cvl_type ::= basic_type
            | "mathint" | "calldataarg" | "storage" | "env" | "method"
            | id
 ```
-
-The additional CVL types are:
- - {ref}`mathint` is an arbitrary precision integer that cannot overflow
- - {ref}`method-type` are used
-   to represent arbitrary methods and arguments of the contract under verification
- - {ref}`storage-type` is used to represent a snapshot of the entire EVM storage
- - {ref}`env` is used to represent the Solidity global variables `msg`, `block`, and `tx`
- - {ref}`sort` are used to represent unknown types
 
 
 Solidity Types

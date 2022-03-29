@@ -4,6 +4,12 @@ Expressions
 A CVL expression is anything that represents a value.  This page documents all
 possible expressions in CVL and explains how they are evaluated.
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 expr ::= literal
        | unop expr
@@ -16,13 +22,16 @@ expr ::= literal
        | id [ "[" expr "]" { "[" expr "]" } ]
        | id "(" types ")"
 
+       | function_call
+
+       | expr "in" id
+
+function_call ::=
        | [ "invoke" | "sinvoke" ]
          [ id "." ] id
          [ "@" ( "norevert" | "withrevert" | "dontsummarize" ]
          "(" exprs ")"
          [ "at" id ]
-
-       | expr "in" id
 
 
 literal ::= "true" | "false" | number | string
@@ -60,8 +69,9 @@ Basic operations
 ----------------
 
 CVL provides the same basic arithmetic, comparison, bitwise, and logical
-operations for basic types that solidity does.  The [precedence and
-associativity rules][operators] are standard.
+operations for basic types that solidity does, with a few differences listed
+in this section and the next.  The [precedence and associativity rules][operators]
+are standard.
 
 [operators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#table
 
@@ -98,10 +108,10 @@ Whether implications (and other boolean connectors) are short-circuiting is
 currently undocumented.
 ```
 
- * Similarly, an *if and only if* (also called a *bidirectional implication*)
-   expression `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
+ * Similarly, an *if and only if* expression (also called a *bidirectional implication*)
+   `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
    expressions and is itself a boolean expression.  `expr1 <=> expr2` evaluates
-   to `true` if both `expr1 => expr2` and `expr2 => expr1` evaluate to `true`.
+   to `true` if `expr1` and `expr2` evaluate to the same boolean value.
 
    For example, the statement `assert balanceA > 0 <=> balanceB > 0;` will
    report a violation if exactly one of `balanceA` and `balanceB` is positive.
@@ -266,12 +276,13 @@ Calling contract functions
 There are many kinds of function-like things that can be called from CVL:
 
  * Contract functions
+ * {ref}`Method variables <method-type>`
  * {ref}`ghost-functions`
  * {doc}`functions`
  * {doc}`defs`
 
 There are several additional features that can be used when calling contract
-functions.
+functions (including calling them through method variables).
 
 A method invocation can optionally be prefixed by `invoke` or `sinvoke`,
 although this syntax is deprecated in favor of the `@norevert` and

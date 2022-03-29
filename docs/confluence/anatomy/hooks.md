@@ -217,6 +217,7 @@ hook Sload uint256 v balances[KEY address account] STORAGE {
 
 This would make sure that on every read, we make sure that `ghostBalances` matches `balances`. Often hook bodies only include a one-line update to a ghost function, but this doesn't necessarily need to be the case. A similar update to `ghostBalances` would be possible on an `Sstore` but requires understanding a _two-state context_.
 
+(two-state-old)=
 Two State Context
 -----------------
 

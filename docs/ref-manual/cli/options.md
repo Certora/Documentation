@@ -16,6 +16,9 @@ certoraRun contractFile --verify contractName:specFile
 
 A short summary of these options can be seen by invoking `certoraRun --help`
 
+```{contents} Overview
+```
+
 Modes of operation
 ------------------
 
