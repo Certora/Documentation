@@ -76,7 +76,9 @@ This feature is currently undocumented.  See {ref}`call-expr` for partial inform
 ------------------
 
 ```{todo}
-This section is currently incomplete.  See [the old documentation](/docs/confluence/anatomy/ghosts).
+This section is currently incomplete.  See
+[ghosts](/docs/confluence/anatomy/ghosts) and {ref}`two-state-old`
+for the old documentation.
 ```
 
 ```{todo}

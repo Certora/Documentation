@@ -7,7 +7,7 @@ loads and stores to specific storage slots.
 ```{todo}
 This documentation is incomplete.  See
 [the old documentation](/docs/confluence/anatomy/hooks)
-for partial information.
+for partial information.  See also {doc}`ghosts`.
 ```
 
 ```{contents}

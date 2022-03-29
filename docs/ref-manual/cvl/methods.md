@@ -52,8 +52,10 @@ cvl_param ::= cvl_type [ id ]
 ```
 
 ```{todo}
-This document is incomplete.  See [the old documentation](/docs/confluence/advanced/methods)
-for more information about the methods block.
+This document is incomplete.  See {doc}`/docs/confluence/advanced/methods-overview`,
+{doc}`/docs/confluence/advanced/summaries`, {doc}`/docs/confluence/advanced/internal-summaries`,
+and {doc}`/docs/confluence/advanced/expressive-summaries` for the old documentation
+about the methods block.
 ```
 
 ## Non-summary declarations
