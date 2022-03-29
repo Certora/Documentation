@@ -1,6 +1,27 @@
 The Methods Block
 =================
 
+The `methods` block contains declarations for contract methods.
+
+There are two kinds of declarations:
+
+* **Non-summary declarations** document the interface between the specification
+  and the contracts used during verification.  Non-summary declarations support
+  spec reuse by allowing specs written against a complete interface to be
+  checked against a contract that only implements part of the interface.
+
+* **Summary declarations** are used to replace _all_ calls to methods with the
+  given signature with something that is simpler for the prover to reason about.
+  Summaries allow the prover to reason about external contracts whose code is
+  unavailable.  They can also be useful to simplify the code being verified to
+  circumvent timeouts.
+
+```{contents}
+```
+
+Syntax
+------
+
 ```
 methods          ::= "methods" "{" { method_spec } "}"
 
@@ -30,20 +51,33 @@ cvl_param ::= cvl_type [ id ]
 
 ```
 
+```{todo}
+This document is incomplete.  See {doc}`/docs/confluence/advanced/methods-overview`,
+{doc}`/docs/confluence/advanced/summaries`, {doc}`/docs/confluence/advanced/internal-summaries`,
+and {doc}`/docs/confluence/advanced/expressive-summaries` for the old documentation
+about the methods block.
+```
+
+## Non-summary declarations
 
 (envfree)=
-`envfree` methods
------------------
+### The envfree modifier
 
-```{todo}
-Describe `envfree`
-```
+(summaries)=
+## Summary declarations
 
+### Application policies (UNRESOLVED or ALL)
+
+### `ALWAYS`, `CONSTANT`, `PER_CALLEE_CONSTANT`
 
 (havoc-summary)=
-Havoc Summaries
----------------
+### `HAVOC_ALL`, `HAVOC_ECF`
 
-```{todo}
-Havoc method summaries
-```
+### `DISPATCHER`
+
+### `AUTO`
+
+### expression and block summaries
+
+
+

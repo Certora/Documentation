@@ -1,8 +1,19 @@
 Import and Use Statements
 =========================
 
+Contents of additional spec files can be imported using the `import` command.
+Some parts of the imported spec files are implicitly included in the importing
+spec file, while others such as rules and invariants must be explicitly
+`use`d.
+
+```{todo}
+This feature is currently undocumented.
 ```
 
+Syntax
+------
+
+```
 import ::= "import" string
 
 use ::= "use" "rule" id
@@ -11,3 +22,4 @@ use ::= "use" "rule" id
       | "use" "invariant" id [ "{" { preserved_block } "}" ]
 
 ```
+

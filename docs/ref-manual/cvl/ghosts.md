@@ -6,6 +6,12 @@ Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to communicate information between
 [rules](rules.md) and [hooks](hooks.md).
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 ghost ::= "ghost" type id               (";" | "{" axioms "}")
         | "ghost" id "(" cvl_types ")"  (";" | "{" axioms "}")
@@ -111,8 +117,9 @@ CVL also has support for "ghost functions".  These serve a different purpose
 from ghost variables, although they can be used in similar ways.
 
 ```{todo}
-This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions)
-for information about ghost functions and axioms.
+This documentation is currently incomplete.  See [ghosts](/docs/confluence/anatomy/ghosts)
+and [ghost functions](/docs/confluence/anatomy/ghostfunctions) in the old documentation.
 ```
+
 
 
