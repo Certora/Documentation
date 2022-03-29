@@ -1,4 +1,4 @@
-Using The Certora Portal
+Using the Certora Portal
 ========================
 
 ```{toctree}
