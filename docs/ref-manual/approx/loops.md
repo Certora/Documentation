@@ -45,7 +45,7 @@ loop guard (`i < n` in the example) would still be true at the end of the loop.
 The Prover has two options for handling examples that would execute the loop
 too many times:
 
- * In **pessimistic mode** (the default), the prover will report an example
+ * In **pessimistic mode** (the default), the Prover will report an example
    that executes the loop too many times as a violation of the "loop unwinding
    condition" rule.  In pessimistic mode, any rule run on `slow_copy(n)` would
    report a violation with `n = 3`.
@@ -65,7 +65,7 @@ too many times:
    unwinding violation notifies the user that this rule might not hold.
 
  * In **optimistic mode** (enabled by passing the {ref}`--optimistic_loop` option),
-   the prover _ignores_ any examples that would cause the loop to execute
+   the Prover _ignores_ any examples that would cause the loop to execute
    too many times.  In optimistic mode, the rule `bogus_rule` above would be
    reported as passing.
 

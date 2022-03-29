@@ -15,7 +15,7 @@ The beginning of a spec file contains some header information:
    multiple contracts.
 
  - **[The methods block](methods):** This section contains information on how methods
-   should be summarized by the prover during verification
+   should be summarized by the Prover during verification
 
  - **[The events block](events):** This section is currently unused
 

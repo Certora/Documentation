@@ -67,7 +67,7 @@ Solidity, an out-of-bounds array access will result in an exception, causing the
 transaction to revert.
 
 By contrast, out-of-bounds array accesses in CVL are treated as undefined
-values: if `i > a.length` then the prover considers every possible value for
+values: if `i > a.length` then the Prover considers every possible value for
 `a[i]` when constructing counterexamples.
 
 CVL Arrays also have the following limitations:
@@ -250,7 +250,7 @@ The following fields are available on a method `m`:
 *   `m.numberOfArguments` - the number of arguments to method m
 
 There is no way to examine the contents of a `calldataarg` variable, because
-the type of its contents vary depending on which method the prover is checking.
+the type of its contents vary depending on which method the Prover is checking.
 The only thing you can do with it is pass it as an argument to a `method`
 variable.  It is possible to work around this limitation; see {ref}`partially
 parametric rules` for further details.

@@ -46,7 +46,7 @@ Step 1: Prerequisites
 Step 2: Install the Certora Prover package
 ------------------------------------------
 
-Execute the following command at the terminal to install the prover:
+Execute the following command at the terminal to install the Prover:
 
 ```bash
 pip3 install certora-cli

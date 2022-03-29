@@ -172,7 +172,7 @@ referred to as *quantified expressions*.
 `forall` and `exists` expressions are powerful and elegant ways to express rules
 and invariants, but they require the Prover to consider all possible values of
 a given type.  In some cases they can cause significant slowdowns for the
-prover.
+Prover.
 
 If you have rules or invariants using `exists` that are running slowly or
 timing out, you can remove the `exists` by manually computing the value that
