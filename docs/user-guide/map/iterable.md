@@ -173,7 +173,7 @@ Currently, the rule fails for all state-mutating functions, and even in the cont
 
 ![](ghost_fail.png)
 
-This is, unsurprising. There is nothing in the spec that links the
+This is unsurprising. There is nothing in the spec that links the
 value of the ghost to its Solidity counterpart. To make that link, we write
 _hooks_. Hooks allow us to instrument the verified code, that is, to wrap a
 bytecode operation with our own code, defined in the spec file.
