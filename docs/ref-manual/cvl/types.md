@@ -23,7 +23,7 @@ Syntax
 basic_type ::= "int*" | "uint*" | "address" | "bool"
              | "string" | "bytes*"
              | basic_type "[" [ number ] "]"
-             | id.id
+             | id "." id
 
 evm_type ::= basic_type
            | "(" evm_type { "," evm_type } ")"
