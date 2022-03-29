@@ -213,7 +213,7 @@ Options regarding source code loops
 
 **What does it do?**
 
-The Certora prover unrolls loops - if the loop should be executed three times, it will copy the code inside the loop three times. After we finish the loop's iterations, we add an assertion to verify we have actually finished running the loop. For example, in a `while (a < b)` loop, after the loop’s unrolling, we add `assert a >= b`. We call this assertion the _loop unwind condition_.  
+The Certora Prover unrolls loops - if the loop should be executed three times, it will copy the code inside the loop three times. After we finish the loop's iterations, we add an assertion to verify we have actually finished running the loop. For example, in a `while (a < b)` loop, after the loop’s unrolling, we add `assert a >= b`. We call this assertion the _loop unwind condition_.  
 This option changes the assertions of the loop unwind condition to requirements (in the case above `require a >= b`). That means, we ignore all the cases where the loop unwind condition does not hold, instead of considering them as a failure.  
 **When to use it?**  
 When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using [`--loop_iter](#loop_iter). Note that `--optimistic_loop` could cause [vacuous rules](#rule_sanity).  
@@ -225,7 +225,7 @@ When you have loops in your code and are getting a counterexample labeled `loop 
 
 **What does it do?**
 
-Sets the maximal number of loop iterations we verify for. The way the Certora prover handles loops is by unrolling them - if the loop should be executed three times, it will copy the code inside the loop three times. This option sets the number of unrolls. Be aware that the run time grows exponentially by the number of loop iterations.  
+Sets the maximal number of loop iterations we verify for. The way the Certora Prover handles loops is by unrolling them - if the loop should be executed three times, it will copy the code inside the loop three times. This option sets the number of unrolls. Be aware that the run time grows exponentially by the number of loop iterations.  
 **When to use it?**  
 The default number of loop iterations we unroll is one. However, in many cases, bugs only occur when there are several iterations. Common scenarios include iteration over list elements. Two, or in some cases three, is usually the most you will ever need to uncover bugs.  
 **Example**
@@ -260,7 +260,7 @@ By default, we do not use a cache. If you want to use a cache to speed up the bu
 
 **What does it do?**  
 Sets the maximal timeout for all the [SMT solvers](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories). Gets an integer input, which represents seconds.  
-The Certora prover generates a logical formula from the specification and source code. Then, it passes it on to an array of SMT solvers. The time it can take for the SMT solvers to solve the equation is highly variable, and could potentially be infinite. This is why they must be limited in run time.  
+The Certora Prover generates a logical formula from the specification and source code. Then, it passes it on to an array of SMT solvers. The time it can take for the SMT solvers to solve the equation is highly variable, and could potentially be infinite. This is why they must be limited in run time.  
 **When to use it?**  
 The default time out for the solvers is 600 seconds. There are two use cases for this option.  
 One is to decrease the timeout. This is useful for simple rules, that are solved quickly by the SMT solvers. Here, it is beneficial to reduce the timeout, so that when a new code breaks the specification, the tool will fail quickly. This is the more common use case.  
