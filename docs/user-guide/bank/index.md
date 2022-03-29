@@ -111,6 +111,7 @@ invariant address_zero_cannot_become_an_account()
   getFunds(0) == 0
 ```
 
+(user-guide-output)=
 Understanding the Results of the Certora Prover
 -----------------------------------------------
 
