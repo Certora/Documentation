@@ -13,8 +13,8 @@ Syntax
 ------
 
 ```
-ghost ::= "ghost" type id               (";" | "{" axioms "}")
-        | "ghost" id "(" cvl_types ")"  (";" | "{" axioms "}")
+ghost ::= "ghost" type id                             (";" | "{" axioms "}")
+        | "ghost" id "(" cvl_types ")" "returns" type (";" | "{" axioms "}")
 
 type ::= basic_type
        | "mapping" "(" cvl_type "=>" type ")"
