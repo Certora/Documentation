@@ -61,6 +61,7 @@ for more information about the methods block.
 (envfree)=
 ### The envfree modifier
 
+(summaries)=
 ## Summary declarations
 
 ### Application policies (UNRESOLVED or ALL)
