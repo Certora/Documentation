@@ -1,6 +1,10 @@
 Glossary
 ========
 
+```{todo}
+This document is incomplete.
+```
+
 ```{glossary}
 
 sound
