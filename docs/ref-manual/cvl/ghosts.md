@@ -2,7 +2,7 @@
 Ghosts
 ======
 
-Ghosts are a way of defining global variables for use during verification.
+Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to communicate information between
 [rules](rules.md) and [hooks](hooks.md).
 
