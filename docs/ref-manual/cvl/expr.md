@@ -282,7 +282,7 @@ There are many kinds of function-like things that can be called from CVL:
  * {doc}`defs`
 
 There are several additional features that can be used when calling contract
-functions (including calling them through method variables)
+functions (including calling them through method variables).
 
 A method invocation can optionally be prefixed by `invoke` or `sinvoke`,
 although this syntax is deprecated in favor of the `@norevert` and
