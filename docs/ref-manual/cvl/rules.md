@@ -3,6 +3,12 @@ Rules
 
 Rules (along with {doc}`invariants`) are the main entry points for the Prover.
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 rule ::= [ "rule" ]
          id

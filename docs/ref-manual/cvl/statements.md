@@ -6,6 +6,12 @@ This document is incomplete.  See {doc}`/docs/confluence/anatomy/commands` for
 partial information
 ```
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 statement ::= type id [ "=" expr ] ";"
 
@@ -43,8 +49,8 @@ This feature is currently undocumented.
 ```
 
 (require)=
-Assert and require
-------------------
+`assert` and `require`
+----------------------
 
 ```{todo}
 This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/commands).
@@ -66,8 +72,8 @@ This feature is currently undocumented.  See {ref}`call-expr` for partial inform
 ```
 
 (havoc-stmt)=
-Havoc statements
-----------------
+`havoc` statements
+------------------
 
 ```{todo}
 This section is currently incomplete.  See [the old documentation](/docs/confluence/anatomy/ghosts).

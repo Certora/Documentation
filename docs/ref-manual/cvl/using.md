@@ -11,6 +11,12 @@ The documentation for this feature is incomplete.  See
 for more information.
 ```
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 using ::= "using" id "as" id
 ```

@@ -4,6 +4,12 @@ Expressions
 A CVL expression is anything that represents a value.  This page documents all
 possible expressions in CVL and explains how they are evaluated.
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 expr ::= literal
        | unop expr

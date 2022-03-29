@@ -4,6 +4,13 @@ Invariants
 Invariants describe a property of the state of a contract that is always
 expected to hold.
 
+```{contents}
+```
+
+
+Syntax
+------
+
 ```
 invariant ::= "invariant" id
               [ "(" params ")" ]

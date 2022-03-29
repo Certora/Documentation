@@ -1,6 +1,21 @@
 Hooks
 =====
 
+Hooks are used to attach CVL code to certain low-level operations, such as
+loads and stores to specific storage slots.
+
+```{todo}
+This documentation is incomplete.  See
+[the old documentation](/docs/confluence/anatomy/hooks)
+for partial information.
+```
+
+```{contents}
+```
+
+Syntax
+------
+
 ```
 hook ::= store_hook | load_hook
 

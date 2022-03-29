@@ -16,6 +16,12 @@ There are two kinds of declarations:
   unavailable.  They can also be useful to simplify the code being verified to
   circumvent timeouts.
 
+```{contents}
+```
+
+Syntax
+------
+
 ```
 methods          ::= "methods" "{" { method_spec } "}"
 
