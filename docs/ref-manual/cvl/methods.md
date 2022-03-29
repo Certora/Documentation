@@ -10,7 +10,7 @@ There are two kinds of declarations:
   spec reuse by allowing specs written against a complete interface to be
   checked against a contract that only implements part of the interface.
 
-* **Summary declarations** are used to replace _all_ calls to methods with the
+* **Summary declarations** are used to replace _all_ calls to methods having the
   given signature with something that is simpler for the Prover to reason about.
   Summaries allow the Prover to reason about external contracts whose code is
   unavailable.  They can also be useful to simplify the code being verified to
