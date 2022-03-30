@@ -5,7 +5,7 @@ Glossary
 This document is incomplete.
 ```
 
-```{glossary}
+````{glossary}
 
 sound
 unsound
@@ -35,6 +35,11 @@ parametric rule
   generate a separate report for each possible instantiation of the method.
   See {ref}`parametric-rules` for more information.
 
-```
+sanity
+  ```{todo}
+  This section is incomplete.  See {ref}`--rule_sanity` for partial information.
+  ```
+
+````
 
 
