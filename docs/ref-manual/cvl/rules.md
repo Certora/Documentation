@@ -30,6 +30,21 @@ This documentation is incomplete.  See {doc}`/docs/user-guide/bank/index` for an
 overview of rules in CVL.
 ```
 
+How rules are verified
+----------------------
+
+```{todo}
+This feature is undocumented.
+```
+
+(parametric-rules)=
+Parametric rules
+----------------
+
+```{todo}
+This documentation is incomplete.  See {doc}`/docs/user-guide/bank/index`.
+```
+
 
 Filters
 -------

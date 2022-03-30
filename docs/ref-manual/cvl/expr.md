@@ -297,13 +297,15 @@ receiver.
 
 It is possible for multiple contract methods to match the method call.  This can
 happen in two ways:
- * The method to be called is a {ref}`method variable <method-type>`
- * The method to be called is overridden in the contract, and the method is
-   called with a {ref}`calldataarg <calldataarg>` argument.
+ 1. The method to be called is a {ref}`method variable <method-type>`
+ 2. The method to be called is overloaded in the contract (i.e. there are two
+   methods of the same name), and the method is called with a {ref}`calldataarg
+   <calldataarg>` argument.
+
 In either case, the Prover will consider every possible resolution of the method
 while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
-"parametric rules".
+{term}`parametric rule`s.
 
 
 After the function name, but before the arguments, you can write an optional

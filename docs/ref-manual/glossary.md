@@ -28,6 +28,13 @@ quantified expression
   and expressions of the form `forall type v . e` and `exist type v . e` are
   referred to as *quantified expressions*.  See {ref}`logic-exprs` for
   details about quantifiers in CVL.
+
+parametric rule
+  A parametric rule is a rule that calls an ambiguous method, either using a
+  method variable, or using an overloaded function name.  The prover will
+  generate a separate report for each possible instantiation of the method.
+  See {ref}`parametric-rules` for more information.
+
 ```
 
 
