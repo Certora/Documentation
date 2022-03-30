@@ -116,6 +116,7 @@ When you have a rule with multiple assertions:
 
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
+(--rule_sanity)=
 ### `--rule_sanity`
 
 **What does it do?**  

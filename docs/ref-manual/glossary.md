@@ -5,7 +5,7 @@ Glossary
 This document is incomplete.
 ```
 
-```{glossary}
+````{glossary}
 
 sound
 unsound
@@ -28,6 +28,12 @@ quantified expression
   and expressions of the form `forall type v . e` and `exist type v . e` are
   referred to as *quantified expressions*.  See {ref}`logic-exprs` for
   details about quantifiers in CVL.
-```
+
+sanity
+  ```{todo}
+  This section is incomplete.  See {ref}`--rule_sanity` for partial information.
+  ```
+
+````
 
 
