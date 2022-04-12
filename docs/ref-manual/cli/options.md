@@ -119,8 +119,10 @@ When you have a rule with multiple assertions:
 (--rule_sanity)=
 ### `--rule_sanity`
 
-**What does it do?**  
-This mode will check for each rule that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true.
+**What does it do?**
+This mode will do some sanity checks for each rule, based on the attached value, which is allowed to be one of the following: none, basic, advanced.
+There are 3 kinds of sanity checks:
+1. Reachability- checks that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true.
 
 An example of an “empty” rule:  
 `rule empty_rule() {`  
@@ -129,6 +131,15 @@ An example of an “empty” rule:
 `}`
 
 _We expect all rules to fail this check._ The exception is the fallback function, which might pass.
+
+2. Assert-Vacuity- checks for each assert command in the rule, whether the assert is vacuously true, namely, even if all the previous preconditions are removed, the assert is always evaluated to true.
+
+3. Require-Redundancy- checks for each require command in the rule, whether the require is redundant, namely, we could remove it without affecting the satisfiability of the rule.
+
+The rule_sanity flag accepts one of the following values: [none, basic, advanced], to control which sanity checks should be executed.
+The none keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
+The basic keyword is intended for running only the reachability check for all the rules and the assert-vacuity check, but only for invariants.
+Using the advanced keyword, all the sanity checks will be executed, for all the invariants/rules.
 
 **When to use it?**  
 We suggest using this option often - before each commit to changes of the source code or verification at the very least. Signs to suspect the rule is “empty“ is when it passes “too easily“ or too quickly.
