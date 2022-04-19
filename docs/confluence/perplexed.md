@@ -112,8 +112,12 @@ A counterexample that looks fishy does not rule out a potential bug that the rul
     
 2.  **Links are not applied as expected.** Note that if you use `--link` to link, you may sometimes need to require that the field is equal to the linked-to contract's address within the rule itself. (Dispatcher links do not have this issue.)
     
-3.  **Bitwise operations.** By default, the tool will overapproximate bitwise operations applied in a non-standard way (xor, or, and non 2^n-1 masks for and). Try to look over the dump and look for red-background lines. Report over at #bugs channel in Slack.
-    
+3.  **Bitwise operations.** By default, the tool will overapproximate bitwise
+    operations applied in a non-standard way (xor, or, and non 2^n-1 masks for
+    and). Try to look over the dump and look for red-background lines.  You may
+    be able to solve these by passing the `--settings -useBitVectorTheory` option
+    on the command line
+
 4.  **Math.** Sometimes the tool overapproximates math, in particular, multiplication by non-constant, division, and modulo operations. The development team tries to minimize the number of times it happens, but it could still happen. Follow guidelines for bitwise operations as stated above.
     
 5.  **Aliasing.** Be on the lookout if your environment’s `msg.sender` is the same as `currentContract` or any linked contract. The tool should report these more clearly but read the calltrace carefully. Also, note trivial assignments like 0.
