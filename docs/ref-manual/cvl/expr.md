@@ -88,6 +88,26 @@ The `>>>` operator is currently undocumented.
 See {doc}`mathops` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
 
+(string-interpolation)=
+String interpolation
+--------------------
+
+String literals that appear in assertion messages or rule descriptions can
+contain placeholders that are replaced by explicit values in the verification
+report.  A variable can be included by prefixing it with a `$`, while more
+complex expressions can be included by surrounding them with `${...}`.
+
+For example:
+
+```{cvl}
+rule example(method f, uint x)
+description "$f should output 0 on $x with ${e.msg.sender}"
+{
+    env e;
+    assert f(e,x) == 0, "failed with timestamp ${e.block.timestamp}";
+}
+```
+
 (logic-exprs)=
 Extended logical operations
 ---------------------------
