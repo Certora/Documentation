@@ -179,7 +179,7 @@ To support reasoning about multiple transactions, CVL groups some of the
 solidity global variables into an "environment": an object of the special type
 `env`.  Environments must be passed as the first argument of a call from CVL
 into a contract function (unless the contract function is declared
-{ref}`envfree`).
+{ref}`envfree <envfree>`).
 
 For example, to call a soldity function `deposit(uint amount)`, a spec must
 explicitly pass in an additional environment argument:
@@ -291,7 +291,7 @@ rule bigger_stake_more_earnings() {
     stake(e, more) at initial;
     earnings_more = earnings(e);
 
-    assert earnings1 < earnings2, "if you stake more, you earn more";
+    assert earnings_less < earnings_more, "if you stake more, you earn more";
 }
 ```
 

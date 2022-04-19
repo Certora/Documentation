@@ -284,7 +284,9 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 `IERC20 public underlyingToken;`
 
 We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:  
-`certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken:BankToken`
+`certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken`
+
+See {doc}`/docs/confluence/advanced/linking` for more information.
 
 ### `--address`
 
