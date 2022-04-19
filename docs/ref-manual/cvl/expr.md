@@ -99,7 +99,7 @@ complex expressions can be included by surrounding them with `${...}`.
 
 For example:
 
-```{cvl}
+```cvl
 rule example(method f, uint x)
 description "$f should output 0 on $x with ${e.msg.sender}"
 {

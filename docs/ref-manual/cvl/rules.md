@@ -2,7 +2,7 @@ Rules
 =====
 
 Rules (along with {doc}`invariants`) are the main entry points for the Prover.
-A rule defines a sequence of [commands](commands) that should be executed
+A rule defines a sequence of [commands](statements) that should be executed
 during verification.
 
 When the Prover is invoked with the {ref}`--verify` option, it generates a
@@ -99,7 +99,7 @@ a boolean expression that may refer to the variable `var`.  The filter may not
 refer to other method parameters or other variables defined in the rule.
 
 For example, the following filter is valid:
-```{cvl}
+```cvl
 rule r(method f, method g) filtered {
     f -> f.isView,
     g -> g.selector() != exampleMethod(uint,uint).selector
@@ -133,7 +133,7 @@ Rules may be annotated by writing `description` and/or `good_description` before
 the method body, followed by a string.  These strings are displayed in the
 verification report.
 
-The description strings can use {ref}`string interpolation`.
+The description strings can use {ref}`string interpolation <string-interpolation>`.
 
 (verification)=
 How rules are verified
