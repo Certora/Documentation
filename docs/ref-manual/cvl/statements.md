@@ -38,6 +38,7 @@ statement ::= type id [ "=" expr ] ";"
 lhs ::= id [ "[" expr "]" ] [ "," lhs ]
 ```
 
+(declarations)=
 Variable declarations
 ---------------------
 

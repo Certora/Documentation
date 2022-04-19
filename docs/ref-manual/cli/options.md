@@ -79,6 +79,7 @@ If we want to verify only `withdraw_succeeds`, we run
 Options affecting the type of verification run
 ----------------------------------------------
 
+(--multi_assert_check)=
 ### `--multi_assert_check`
 
 **What does it do?**
