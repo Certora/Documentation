@@ -103,6 +103,7 @@ For example, the following filter is valid:
 rule r(method f, method g) filtered {
     f -> f.isView,
     g -> g.selector() != exampleMethod(uint,uint).selector
+      && g.selector() != otherExample(address).selector
 } {
     // rule body
     ...
@@ -111,7 +112,9 @@ rule r(method f, method g) filtered {
 
 This rule has two filters.  The rule will only be verified with `f` instantiated
 by a view method, and `g` instantiated by a method other than
-`exampleMethod(uint,uint)`.
+`exampleMethod(uint,uint)` or `otherExample(address)`.
+
+See {ref}`method-type` for a list of the fields of the `method` type.
 
 Multiple assertions
 -------------------
