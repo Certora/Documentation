@@ -141,16 +141,16 @@ A `require` is considered to be redundant if it can be removed without affecting
 For example, each `require` with expression which is semanticly equivalant to tautology, will be considered as redundant.
 
 The `rule_sanity` flag accepts one of the following values: `none`, `basic`, `advanced`, to control which sanity checks should be executed.
-The none keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
-The basic keyword is intended for running only the reachability check for all the rules and the assert-vacuity check, but only for invariants.
-Using the advanced keyword, all the sanity checks will be executed, for all the invariants/rules.
+The `none` keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
+The `basic` keyword is intended for running only the reachability check for all the rules and the assert-vacuity check, but only for invariants.
+Using the `advanced` keyword, all the sanity checks will be executed, for all the invariants/rules.
 
 **When to use it?**  
 We suggest using this option often - before each commit to changes of the source code or verification at the very least. Signs to suspect the rule is “empty“ is when it passes “too easily“ or too quickly.
 
 **Example**
 
-`certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity`
+`certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
 
 ### `--short_output`
 
