@@ -120,7 +120,7 @@ When you have a rule with multiple assertions:
 ### `--rule_sanity`
 
 **What does it do?**
-This mode will do some sanity checks for each rule, based on the attached value, which is allowed to be one of the following: none, basic, advanced.
+This mode will do some sanity checks for each rule, based on the attached value, which is allowed to be one of the following: `none`, `basic`, `advanced`.
 There are 3 kinds of sanity checks:
 1. Reachability- checks that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true.
 
