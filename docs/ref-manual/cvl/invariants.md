@@ -5,8 +5,9 @@ Invariants describe a property of the state of a contract that is always
 expected to hold.
 
 ```{caution}
-Even if an invariant is verified, it may still be possible to violate it.  See
-{ref}`invariant-assumptions` for details.
+Even if an invariant is verified, it may still be possible to violate it.  This
+is a potential source of {term}`unsound`ness.  See {ref}`invariant-assumptions`
+for details.
 ```
 
 
@@ -69,10 +70,10 @@ the storage of the contract, we can prove the invariant by checking it after
 calling each of the contract methods.
 
 However, it is possible to write invariants whose value depends on things other
-than the contract's storage.  For example, whether an expression evaluates to
-`true` may depend on the state of other contracts or on the block timestamp.
-For these invariants, the expression can change from `true` to `false` without
-invoking a method on the main contract.
+than the contract's storage.  The truth of an expression may depend on the
+state of other contracts or on environment variables.  For these invariants,
+the expression can change from `true` to `false` without invoking a method on
+the main contract.
 
 For example, consider the following contract:
 
@@ -93,6 +94,9 @@ false:
 invariant time_is_now(env e)
     timestamp(e) == e.block.timestamp;
 ```
+
+The verification is successful because the action that falsifies the invariant
+is the passage of time, rather than the invocation of a contract method.
 
 Similarly, an invariant that depends on an external contract can become false
 by calling a method on the external contract.
