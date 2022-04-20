@@ -132,11 +132,15 @@ An example of an “empty” rule:
 
 _We expect all rules to fail this check._ The exception is the fallback function, which might pass.
 
-2. Assert-Vacuity- checks for each assert command in the rule, whether the assert is vacuously true, namely, even if all the previous preconditions are removed, the assert is always evaluated to true.
+2. Assert-Vacuity- checks for each `assert` command in the rule, whether the `assert` is vacuously true.
+An `assert` is considered to be vacuously true if even after all the previous preconditions are removed, the `assert` is always evaluated to true.
+For example, each `assert` with expression which is semanticly equivalant to tautology, will be considered as vacuosly true.
 
-3. Require-Redundancy- checks for each require command in the rule, whether the require is redundant, namely, we could remove it without affecting the satisfiability of the rule.
+3. Require-Redundancy- checks for each `require` command in the rule, whether the `require` is redundant.
+A `require` is considered to be redundant if it can be removed without affecting the satisfiability of the rule.
+For example, each `require` with expression which is semanticly equivalant to tautology, will be considered as redundant.
 
-The rule_sanity flag accepts one of the following values: [none, basic, advanced], to control which sanity checks should be executed.
+The `rule_sanity` flag accepts one of the following values: `none`, `basic`, `advanced`, to control which sanity checks should be executed.
 The none keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
 The basic keyword is intended for running only the reachability check for all the rules and the assert-vacuity check, but only for invariants.
 Using the advanced keyword, all the sanity checks will be executed, for all the invariants/rules.
