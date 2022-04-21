@@ -47,7 +47,8 @@ possible values of the parameters.
 While verifying an invariant, the Prover checks two things.  First, it checks
 that the invariant is established after the constructor.  Second, it checks
 that the invariant holds after the execution of any contract method, assuming
-that it held before the method was executed.
+that it held before the method was executed (if it does hold, we say the method
+*preserves* the invariant).
 
 If an invariant always holds at the beginning of every method call, it is
 always safe to assume that it is true.  The
@@ -104,9 +105,37 @@ used with care.
 Filters
 -------
 
-```{todo}
-This feature is currently undocumented.
+For performance reasons, you may want to avoid checking an invariant is
+preserved by a particular method or set of methods.  Invariant filters provide
+a method for skipping verification on a method-by-method basis.
+
+```{caution}
+Filtering out methods while checking invariants is {term}`unsound`.
 ```
+
+To filter out methods from an invariant, add a `filtered` block after the
+expression defining the invariant.  The body of the `filtered` block must
+contain a single filter of the form `var -> expr`, where `var` is a variable
+name, and `expr` is a boolean expression that may depend on `var`.
+
+If the expression evaluates to `false` with `var` replaced by a given method,
+the Prover will not check that the method preserves the invariant.  For example,
+the following invariant will not be checked on the `deposit(uint)`
+method:
+
+```cvl
+invariant balance_is_0(address a)
+    balanceOf(a) == 0
+    filtered {
+        f -> f.selector != deposit(uint).selector
+    }
+```
+
+In this example, when the variable `f` is bound to `deposit(uint)`, the
+expression `f.selector != deposit(uint).selector` evaluates to `false`, so the
+method will be skipped.
+
+See {ref}`method-type` for a list of the fields available on `method` objects.
 
 Preserved blocks
 ----------------
@@ -114,4 +143,9 @@ Preserved blocks
 ```{todo}
 This feature is currently undocumented.
 ```
+
+Writing an invariant as a rule
+------------------------------
+
+
 
