@@ -22,7 +22,7 @@ Syntax
 invariant ::= "invariant" id
               [ "(" params ")" ]
               expression
-              [ "filtered" "{" id "->" expression { "," id "->" expression } "}" ]
+              [ "filtered" "{" id "->" expression "}" ]
               [ "{" { preserved_block } "}" ]
 
 preserved_block ::= "preserved"
@@ -67,7 +67,7 @@ calling each of the contract methods.
 
 However, it is possible to write invariants whose value depends on things other
 than the contract's storage.  The truth of an expression may depend on the
-state of other contracts or on environment variables.  For these invariants,
+state of other contracts or on the {term}`environment`.  For these invariants,
 the expression can change from `true` to `false` without invoking a method on
 the main contract.
 
@@ -88,14 +88,32 @@ false:
 
 ```cvl
 invariant time_is_now(env e)
-    timestamp(e) == e.block.timestamp;
+    timestamp() == e.block.timestamp;
 ```
 
 The verification is successful because the action that falsifies the invariant
 is the passage of time, rather than the invocation of a contract method.
 
 Similarly, an invariant that depends on an external contract can become false
-by calling a method on the external contract.
+by calling a method on the external contract.  For example:
+
+```solidity
+contract SupplyTracker {
+    address token;
+    uint256 public supply;
+
+    constructor(address _token) {
+        token  = _token;
+        supply = token.totalSupply();
+    }
+}
+```
+
+As above, an invariant stating that `supply() == token.totalSupply()` would be
+verified, but a method on `token` might change the total supply without updating
+the `SupplyTracker` contract.  Since the Prover only checks the main contract's
+methods for preservation, it will not report that the invariant can be
+falsified.
 
 For this reason, invariants that depend on the environment or on the state of
 external contracts are a potential source of {term}`unsound`ness, and should be
@@ -195,14 +213,14 @@ invariant zero_address_has_no_balance_broken(env e)
 ```
 
 In this example, we require the `msg.sender` argument to `balanceOf` to be
-nonzero, but make no restrictions on the environment for the call to the method
+nonzero, but makes no restrictions on the environment for the call to the method
 we are checking for preservation.
 
 
 Writing an invariant as a rule
 ------------------------------
 
-Above we explained that an invariant causes two checks: an initial-state check
+Above we explained that verifying an invariant requires two checks: an initial-state check
 that the constructor establishes the invariant, and a preservation check that
 each method preserves the invariant.
 
