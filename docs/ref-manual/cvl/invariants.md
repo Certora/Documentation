@@ -282,7 +282,7 @@ filtered {
     }
 
     // post-state check
-    assert property_of(e2, arg);
+    assert property_of(e1, arg);
 }
 ```
 
