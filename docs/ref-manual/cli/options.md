@@ -124,21 +124,22 @@ This mode will do some sanity checks for each rule, based on the attached value,
 There are 3 kinds of sanity checks:
 1. Reachability- checks that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true.
 
-An example of an “empty” rule:  
-`rule empty_rule() {`  
-`require(x > x)`  
-`assert(y != y)`  
-`}`
+    An example of an “empty” rule:  
+    ```cvl
+    rule empty_rule() {
+      ...
+    }
+    ```
 
-_We expect all rules to fail this check._ The exception is the fallback function, which might pass.
+    _We expect all rules to fail this check._ The exception is the fallback function, which might pass.
 
 2. Assert-Vacuity- checks for each `assert` command in the rule, whether the `assert` is vacuously true.
 An `assert` is considered to be vacuously true if even after all the previous preconditions are removed, the `assert` is always evaluated to true.
-For example, each `assert` with expression which is semanticly equivalant to tautology, will be considered as vacuosly true.
+For example, each `assert` with expression which is semanticlly equivalant to tautology, will be considered as vacuosly true.
 
 3. Require-Redundancy- checks for each `require` command in the rule, whether the `require` is redundant.
 A `require` is considered to be redundant if it can be removed without affecting the satisfiability of the rule.
-For example, each `require` with expression which is semanticly equivalant to tautology, will be considered as redundant.
+For example, each `require` with expression which is semanticlly equivalant to tautology, will be considered as redundant.
 
 The `rule_sanity` flag accepts one of the following values: `none`, `basic`, `advanced`, to control which sanity checks should be executed.
 The `none` keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
