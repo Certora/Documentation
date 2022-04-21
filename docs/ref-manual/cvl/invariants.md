@@ -128,7 +128,7 @@ used with care.
 Filters
 -------
 
-For performance reasons, you may want to avoid checking an invariant is
+For performance reasons, you may want to avoid checking that an invariant is
 preserved by a particular method or set of methods.  Invariant filters provide
 a method for skipping verification on a method-by-method basis.
 
@@ -212,7 +212,7 @@ to an invariant and the `env` variables defined by the `with` declaration.
 Compare the following to the previous example:
 
 ```cvl
-invariant zero_address_has_no_balance_broken(env e)
+invariant zero_address_has_no_balance_v2(env e)
     balanceOf(e, 0) == 0
     { preserved { require e.msg.sender != 0; } }
 ```
