@@ -142,8 +142,8 @@ A `require` is considered to be redundant if it can be removed without affecting
 For example, each `require` with expression which is semanticlly equivalant to tautology, will be considered as redundant.
 
 The `rule_sanity` flag accepts one of the following values: `none`, `basic`, `advanced`, to control which sanity checks should be executed.
-The `none` keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
-The `basic` keyword is intended for running only the reachability check for all the rules and the assert-vacuity check, but only for invariants.
+The `none` keyword behaves the same as not mentioning the `rule_sanity` flag in the configuration at all. No sanity-checks will be executed.
+The `basic` keyword is intended for running only the reachability check for all the rules and the `assert-vacuity` check, but only for invariants.
 Using the `advanced` keyword, all the sanity checks will be executed, for all the invariants/rules.
 It is recommended to start with the `basic` mode, since using the `advanced` mode might results in some false positive alarms.
 
