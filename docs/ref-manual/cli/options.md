@@ -134,7 +134,7 @@ There are 3 kinds of sanity checks:
     _We expect all rules to fail this check._ The exception is the fallback function, which might pass.
 
 2. Assert-Vacuity- checks for each `assert` command in the rule, whether the `assert` is vacuously true.
-An `assert` is considered to be vacuously true if even after all the previous preconditions are removed, the `assert` is always evaluated to true.
+An `assert` is considered to be vacuously true if after all the previous preconditions (`requires` and `if` statements where the `assert` is nested in) are removed, it evaluates to true on every example that reaches it.
 For example, each `assert` with expression which is semanticlly equivalant to tautology, will be considered as vacuosly true.
 
 3. Require-Redundancy- checks for each `require` command in the rule, whether the `require` is redundant.
@@ -145,6 +145,7 @@ The `rule_sanity` flag accepts one of the following values: `none`, `basic`, `ad
 The `none` keyword behaves the same as not mentioning the rule_sanity flag in the configuration at all. No sanity-checks will be executed.
 The `basic` keyword is intended for running only the reachability check for all the rules and the assert-vacuity check, but only for invariants.
 Using the `advanced` keyword, all the sanity checks will be executed, for all the invariants/rules.
+It is recommended to start with the `basic` mode, since using the `advanced` mode might results in some false positive alarms.
 
 **When to use it?**  
 We suggest using this option often - before each commit to changes of the source code or verification at the very least. Signs to suspect the rule is “empty“ is when it passes “too easily“ or too quickly.
