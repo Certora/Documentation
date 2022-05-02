@@ -11,6 +11,8 @@ expected to hold.
 Syntax
 ------
 
+The syntax for invariants is given by the following [EBNF grammar](syntax):
+
 ```
 invariant ::= "invariant" id
               [ "(" params ")" ]
@@ -24,6 +26,9 @@ preserved_block ::= "preserved"
                     block
 
 ```
+
+See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
+production, and {doc}`statements` for the `block` production{doc}.
 
 Overview
 --------

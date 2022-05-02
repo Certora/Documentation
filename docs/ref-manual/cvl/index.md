@@ -18,7 +18,7 @@ Common Syntactic Elements
 ```{toctree}
 :maxdepth: 2
 
-comments.md
+basics.md
 types.md
 mathops.md
 expr.md
