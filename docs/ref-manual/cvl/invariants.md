@@ -136,6 +136,11 @@ expression defining the invariant.  The body of the `filtered` block must
 contain a single filter of the form `var -> expr`, where `var` is a variable
 name, and `expr` is a boolean expression that may depend on `var`.
 
+Before verifying that a method `m` preserves an invariant, the `expr` is
+evaluated with `var` bound to a `method` object.  This allows `expr` to refer
+to the fields of `var`, such as `var.selector` and `var.isView`.  See
+{ref}`method-type` for a list of the fields available on `method` objects.
+
 If the expression evaluates to `false` with `var` replaced by a given method,
 the Prover will not check that the method preserves the invariant.  For example,
 the following invariant will not be checked on the `deposit(uint)`
@@ -152,8 +157,6 @@ invariant balance_is_0(address a)
 In this example, when the variable `f` is bound to `deposit(uint)`, the
 expression `f.selector != deposit(uint).selector` evaluates to `false`, so the
 method will be skipped.
-
-See {ref}`method-type` for a list of the fields available on `method` objects.
 
 Preserved blocks
 ----------------
