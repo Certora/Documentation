@@ -12,6 +12,8 @@ These variables are often used to communicate information between
 Syntax
 ------
 
+The syntax for ghost declarations is given by the following [EBNF grammar](syntax):
+
 ```
 ghost ::= "ghost" type id                             (";" | "{" axioms "}")
         | "ghost" id "(" cvl_types ")" "returns" type (";" | "{" axioms "}")
@@ -21,6 +23,9 @@ type ::= basic_type
 
 axiom ::= [ "init_state" ] "axiom" expression ";"
 ```
+
+See {doc}`types` for the `type` and `cvl_type` productions, and {doc}`expr` for
+the `expression` syntax.
 
 Declaring ghost variables
 -------------------------

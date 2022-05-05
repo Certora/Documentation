@@ -16,6 +16,8 @@ for partial information.  See also {doc}`ghosts`.
 Syntax
 ------
 
+The syntax for hooks is given by the following [EBNF grammar](syntax):
+
 ```
 hook ::= store_hook | load_hook
 

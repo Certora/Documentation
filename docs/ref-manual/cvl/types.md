@@ -19,6 +19,8 @@ The additional CVL types are:
 Syntax
 ------
 
+The syntax for types in CVL is given by the following [EBNF grammar](syntax):
+
 ```
 basic_type ::= "int*" | "uint*" | "address" | "bool"
              | "string" | "bytes*"
@@ -27,12 +29,14 @@ basic_type ::= "int*" | "uint*" | "address" | "bool"
 
 evm_type ::= basic_type
            | "(" evm_type { "," evm_type } ")"
-           | evm_type "[" [number] "]"
+           | evm_type "[" [ number ] "]"
 
 cvl_type ::= basic_type
            | "mathint" | "calldataarg" | "storage" | "env" | "method"
            | id
 ```
+
+See {doc}`basics` for the `id` and `number` productions.
 
 
 Solidity Types
