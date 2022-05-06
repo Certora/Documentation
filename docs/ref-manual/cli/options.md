@@ -61,12 +61,13 @@ Adding a message makes it easier to track several runs. It is very useful if you
 To create the message above, we used  
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
-### `--rule (alternatively: --rules)`
+### `--rule`
+### `--rules`
 
 **What does it do?**  
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.  
 **When to use it?**  
-This option saves a lot of run time. Use it whenever you care about only a specific subset of a specification's total properties. The most common case is when you add a new rule to an existing specification. The other is when code changes cause a specific rule to fail; in the process of fixing the code, updating the rule, and understanding counterexamples, you likely want to verify only that specific rule.  
+This option saves a lot of run time. Use it whenever you care about only a specific subset of a specification's properties. The most common case is when you add a new rule to an existing specification. The other is when code changes cause a specific rule to fail; in the process of fixing the code, updating the rule, and understanding counterexamples, you likely want to verify only that specific rule.  
 **Example**  
 If `Bank.spec` includes the following properties:  
 `invariant address_zero_cannot_become_an_account()`
@@ -80,7 +81,7 @@ If we want to verify only `withdraw_succeeds`, we run
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run  
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
 
-Note that --rules (plural) may be used alternatively to --rule. The two options are identical, but --rules may feel more natual when more than one rule is specified. 
+Note that --rules (plural) may be used alternatively to --rule. The two options are identical, but --rules may feel more natural when more than one rule is specified. 
 
 
 Options affecting the type of verification run
