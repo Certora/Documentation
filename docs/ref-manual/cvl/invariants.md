@@ -163,6 +163,12 @@ In this example, when the variable `f` is bound to `deposit(uint)`, the
 expression `f.selector != deposit(uint).selector` evaluates to `false`, so the
 method will be skipped.
 
+```{note}
+If there is a {ref}`preserved block <preserved>` for a method it will be
+verified even if it should be filtered out.
+```
+
+(preserved)=
 Preserved blocks
 ----------------
 
