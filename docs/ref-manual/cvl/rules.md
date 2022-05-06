@@ -95,10 +95,19 @@ statement to ignore counterexamples for a method.
 
 The `filtered` block consists of zero or more filters of the form `var -> expr`.
 `var` must match one of the `method` parameters to the rule, and `expr` must be
-a boolean expression that may refer to the variable `var`.  The filter may not
-refer to other method parameters or other variables defined in the rule.
+a boolean expression that may refer to the variable `var`.  The filter
+expression may not refer to other method parameters or any variables defined in
+the rule.
 
-For example, the following filter is valid:
+Before verifying that a method `m` satisfies a parametric rule, the `expr` is
+evaluated with `var` bound to a `method` object.  This allows `expr` to refer
+to the fields of `var`, such as `var.selector` and `var.isView`.  See
+{ref}`method-type` for a list of the fields available on `method` objects.
+
+For example, the following rule has two filters.  The rule will only be
+verified with `f` instantiated by a view method, and `g` instantiated by a
+method other than `exampleMethod(uint,uint)` or `otherExample(address)`:
+
 ```cvl
 rule r(method f, method g) filtered {
     f -> f.isView,
@@ -109,10 +118,6 @@ rule r(method f, method g) filtered {
     ...
 }
 ```
-
-This rule has two filters.  The rule will only be verified with `f` instantiated
-by a view method, and `g` instantiated by a method other than
-`exampleMethod(uint,uint)` or `otherExample(address)`.
 
 See {ref}`method-type` for a list of the fields of the `method` type.
 
