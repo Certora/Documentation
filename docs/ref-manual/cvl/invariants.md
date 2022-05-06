@@ -61,6 +61,12 @@ always safe to assume that it is true.  The
 assumption to another rule, and is a quick way to rule out counterexamples that
 start in impossible states.  See also {doc}`/docs/user-guide/patterns/safe-assum`.
 
+```{note}
+Invariants are intended to describe the state of a contract at a particular
+point in time.  Therefore, you should only use view functions inside of an
+invariant.  Non-view functions are allowed, but the behavior is undefined.
+```
+
 (invariant-assumptions)=
 Assumptions made while checking invariants
 ------------------------------------------
