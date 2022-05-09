@@ -18,6 +18,8 @@ these features.
 Syntax
 ------
 
+The syntax for rules is given by the following [EBNF grammar](syntax):
+
 ```
 rule ::= [ "rule" ]
          id
@@ -30,6 +32,10 @@ rule ::= [ "rule" ]
 params ::= cvl_type [ id ] { "," cvl_type [ id ] }
 
 ```
+
+See {doc}`basics` for the `id` and `string` productions; see {doc}`expr` for the `expression`
+production; see {doc}`types` for the `cvl_type` production.
+
 
 Overview
 --------

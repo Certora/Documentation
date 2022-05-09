@@ -10,6 +10,8 @@ possible expressions in CVL and explains how they are evaluated.
 Syntax
 ------
 
+The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
+
 ```
 expr ::= literal
        | unop expr
@@ -62,8 +64,10 @@ special_functions ::=
            | "to_uint256" | "to_int256" | "to_mathint"
 
 contract ::= id | "currentContract"
-
 ```
+
+See {doc}`basics` for the `id`, `number`, and `string` productions.
+See {doc}`types` for the `type` production.
 
 Basic operations
 ----------------

@@ -12,6 +12,8 @@ partial information
 Syntax
 ------
 
+The syntax for statements in CVL is given by the following [EBNF grammar](syntax):
+
 ```
 statement ::= type id [ "=" expr ] ";"
 
@@ -37,6 +39,9 @@ statement ::= type id [ "=" expr ] ";"
 
 lhs ::= id [ "[" expr "]" ] [ "," lhs ]
 ```
+
+See {doc}`basics` for the `id` and `string` productions.  See {doc}`types` for
+the `type` production.  See {doc}`expr` for the `expr` and `function_call` productions.
 
 (declarations)=
 Variable declarations

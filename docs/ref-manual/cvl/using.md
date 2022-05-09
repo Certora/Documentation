@@ -17,6 +17,11 @@ for more information.
 Syntax
 ------
 
+The syntax for `using` statements is given by the following [EBNF grammar](syntax):
+
 ```
 using ::= "using" id "as" id
 ```
+
+See {ref}`identifiers` for the `id` production.
+
