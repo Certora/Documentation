@@ -179,6 +179,8 @@ The variables defined as parameters to the invariant are also available in
 preserved blocks, which allows restricting the arguments that are considered
 when checking that a method preserves an invariant.
 
+````{caution}
+
 A common source of confusion is the difference between `env` parameters
 to an invariant and the `env` variables defined by the `with` declaration.
 Compare the following to the previous example:
@@ -192,6 +194,16 @@ invariant zero_address_has_no_balance_v2(env e)
 In this example, we require the `msg.sender` argument to `balanceOf` to be
 nonzero, but makes no restrictions on the environment for the call to the method
 we are checking for preservation.
+
+To see why this is not the desired behavior, consider a `deposit` method that
+increases the message sender's balance.  When the
+`zero_address_has_no_balance_v2` invariant is checked on `deposit`, the Prover
+will report a violation with the `msg.sender` set to 0 in the call to `deposit`
+and set to a nonzero value in the calls to `balanceOf`.  This counterexample is
+not ruled out by the `preserved` block because the `preserved` block only
+places restrictions on the environment passed to `balanceOf`.
+
+````
 
 Filters
 -------
