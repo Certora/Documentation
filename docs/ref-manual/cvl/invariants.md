@@ -201,7 +201,10 @@ preserved by a particular method or set of methods.  Invariant filters provide
 a method for skipping verification on a method-by-method basis.
 
 ```{caution}
-Filtering out methods while checking invariants is {term}`unsound`.
+Filtering out methods while checking invariants is {term}`unsound`.  If you are
+filtering out a method because the invariant doesn't pass, consider using a
+`preserved` block instead; this allows you to add assumptions in a fine-grained
+way.
 ```
 
 To filter out methods from an invariant, add a `filtered` block after the
