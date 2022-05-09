@@ -2,7 +2,7 @@ Rules
 =====
 
 Rules (along with {doc}`invariants`) are the main entry points for the Prover.
-A rule defines a sequence of [commands](statements) that should be executed
+A rule defines a sequence of [commands](statements) that should be simulated
 during verification.
 
 When the Prover is invoked with the {ref}`--verify` option, it generates a
@@ -34,7 +34,7 @@ params ::= cvl_type [ id ] { "," cvl_type [ id ] }
 Overview
 --------
 
-A rule defines a sequence of commands that should be executed during
+A rule defines a sequence of commands that should be simulated during
 verification.  These commands may be non-deterministic: they may contain
 {ref}`unassigned variables <declarations>` whose value is not specified.  The
 state of storage at the beginning of a rule is also unspecified.  Rules may also
@@ -42,7 +42,7 @@ be declared with a set of parameters; these parameters are treated the same way
 as undeclared variables.
 
 In principal, the Prover will generate every possible combination of values for
-the undefined variables, and execute the commands in the rule using those
+the undefined variables, and simulate the commands in the rule using those
 values.  A particular combination of values is referred to as an *example* or a
 *model*.  There are often an infinite number of models for a given rule; see
 {ref}`verification` for a brief explanation of how the Prover considers all of
