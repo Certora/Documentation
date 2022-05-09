@@ -7,6 +7,13 @@ This document is incomplete.
 
 ````{glossary}
 
+environment
+  The environment of a method call refers to the global variables that solidity
+  provides, including `msg`, `block`, and `tx`.  CVL represents these variables
+  in a structure of type {ref}`env <env>`.  The environment does *not* include
+  the contract state or the state of other contracts --- these are referred to
+  as the {ref}`storage <storage-type>`.
+
 sound
 unsound
   Soundness means that any rule violations in the code being verified are
@@ -21,6 +28,11 @@ havoc
   have an arbitrary effect on the state of a third contract.  In this case, we
   say that the variable was "havoced".  See {ref}`havoc-summary` and
   {ref}`havoc-stmt` for more details.
+
+parametric rule
+  ```{todo}
+  This section is incomplete.
+  ```
 
 quantifier
 quantified expression

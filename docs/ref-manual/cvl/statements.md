@@ -62,6 +62,13 @@ This feature is currently undocumented.
 This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/commands).
 ```
 
+(requireInvariant)=
+`requireInvariant` statements
+-----------------------------
+
+```{todo}
+This feature is currently undocumented.
+```
 
 Solidity-like statements
 ------------------------
