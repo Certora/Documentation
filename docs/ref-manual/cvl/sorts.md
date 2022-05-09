@@ -8,7 +8,11 @@ This documentation is incomplete.  See [the old documentation](/docs/confluence/
 Syntax
 ------
 
+The syntax for `sort` declarations is given by the following [EBNF grammar](syntax):
+
 ```
 sort ::= "sort" id ";"
 ```
+
+See {ref}`identifiers` for the `id` production.
 
