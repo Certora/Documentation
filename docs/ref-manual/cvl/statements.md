@@ -43,6 +43,7 @@ lhs ::= id [ "[" expr "]" ] [ "," lhs ]
 See {doc}`basics` for the `id` and `string` productions.  See {doc}`types` for
 the `type` production.  See {doc}`expr` for the `expr` and `function_call` productions.
 
+(declarations)=
 Variable declarations
 ---------------------
 
@@ -76,6 +77,7 @@ Solidity-like statements
 This feature is currently undocumented.
 ```
 
+(withrevert)=
 Function calls
 --------------
 

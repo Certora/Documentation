@@ -87,6 +87,7 @@ Note that --rules (plural) may be used alternatively to --rule. The two options 
 Options affecting the type of verification run
 ----------------------------------------------
 
+(--multi_assert_check)=
 ### `--multi_assert_check`
 
 **What does it do?**

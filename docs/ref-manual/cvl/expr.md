@@ -92,6 +92,26 @@ The `>>>` operator is currently undocumented.
 See {doc}`mathops` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
 
+(string-interpolation)=
+String interpolation
+--------------------
+
+String literals that appear in assertion messages or rule descriptions can
+contain placeholders that are replaced by explicit values in the verification
+report.  A variable can be included by prefixing it with a `$`, while more
+complex expressions can be included by surrounding them with `${...}`.
+
+For example:
+
+```cvl
+rule example(method f, uint x)
+description "$f should output 0 on $x with ${e.msg.sender}"
+{
+    env e;
+    assert f(e,x) == 0, "failed with timestamp ${e.block.timestamp}";
+}
+```
+
 (logic-exprs)=
 Extended logical operations
 ---------------------------
@@ -286,9 +306,9 @@ There are many kinds of function-like things that can be called from CVL:
  * {doc}`defs`
 
 There are several additional features that can be used when calling contract
-functions (including calling them through method variables).
+functions (including calling them through {ref}`method variables <method-type>`).
 
-A method invocation can optionally be prefixed by `invoke` or `sinvoke`,
+A contract method invocation can optionally be prefixed by `invoke` or `sinvoke`,
 although this syntax is deprecated in favor of the `@norevert` and
 `@withrevert` syntax described below.  Verification of a method called with
 `invoke` will not report a counterexample if the contract method reverts, while
@@ -297,6 +317,20 @@ although this syntax is deprecated in favor of the `@norevert` and
 The method name can optionally be prefixed by a contract name.  If a contract is
 not explicitly named, the method will be called with `currentContract` as the
 receiver.
+
+
+It is possible for multiple contract methods to match the method call.  This can
+happen in two ways:
+ 1. The method to be called is a {ref}`method variable <method-type>`
+ 2. The method to be called is overloaded in the contract (i.e. there are two
+   methods of the same name), and the method is called with a {ref}`calldataarg
+   <calldataarg>` argument.
+
+In either case, the Prover will consider every possible resolution of the method
+while verifying the rule, and will provide a separate verification report for
+each checked method.  Rules that use this feature are referred to as
+{term}`parametric rule`s.
+
 
 After the function name, but before the arguments, you can write an optional
 method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
