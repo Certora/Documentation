@@ -129,7 +129,7 @@ When you have a rule with multiple assertions:
 ### `--rule_sanity`
 
 **What does it do?**
-This option enables sanity checking for rules.  The `--rule_sanity` option must
+This option enables sanity checking for rules.  The `--rule_sanity` option may
 be followed by one of `none`, `basic`, or `advanced`; these are described below.
 See {doc}`../checking/sanity` for more information about sanity checks.
 
@@ -195,9 +195,9 @@ There are 3 kinds of sanity checks:
    In this example, the second requirement is redundant, since any `x` greater
    than 3 will also be greater than 2.
 
-The `rule_sanity` flag must be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
- * With `--rule_sanity none`, no sanity checks are performed; this is the default behavior
- * With `--rule_sanity basic`, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
+The `rule_sanity` flag may be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
+ * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity checks are performed.
+ * With `--rule_sanity basic` or just `--rule_sanity`, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
  * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
 
 We recommend starting with the `basic` mode, since not all rules flagged by the
