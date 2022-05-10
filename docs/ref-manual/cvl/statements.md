@@ -12,6 +12,8 @@ partial information
 Syntax
 ------
 
+The syntax for statements in CVL is given by the following [EBNF grammar](syntax):
+
 ```
 statement ::= type id [ "=" expr ] ";"
 
@@ -38,6 +40,10 @@ statement ::= type id [ "=" expr ] ";"
 lhs ::= id [ "[" expr "]" ] [ "," lhs ]
 ```
 
+See {doc}`basics` for the `id` and `string` productions.  See {doc}`types` for
+the `type` production.  See {doc}`expr` for the `expr` and `function_call` productions.
+
+(declarations)=
 Variable declarations
 ---------------------
 
@@ -56,6 +62,13 @@ This feature is currently undocumented.
 This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/commands).
 ```
 
+(requireInvariant)=
+`requireInvariant` statements
+-----------------------------
+
+```{todo}
+This feature is currently undocumented.
+```
 
 Solidity-like statements
 ------------------------
@@ -64,6 +77,7 @@ Solidity-like statements
 This feature is currently undocumented.
 ```
 
+(withrevert)=
 Function calls
 --------------
 

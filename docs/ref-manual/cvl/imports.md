@@ -1,3 +1,4 @@
+(use)=
 Import and Use Statements
 =========================
 
@@ -13,6 +14,8 @@ This feature is currently undocumented.
 Syntax
 ------
 
+The syntax for `import` and `use` statements is given by the following [EBNF grammar](syntax):
+
 ```
 import ::= "import" string
 
@@ -22,4 +25,7 @@ use ::= "use" "rule" id
       | "use" "invariant" id [ "{" { preserved_block } "}" ]
 
 ```
+
+See {doc}`basics` for the `string` and `id` productions, {doc}`expr` for the
+`expression` production, and {doc}`invariants` for the `preserved_block` production.
 

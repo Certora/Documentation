@@ -7,6 +7,13 @@ This document is incomplete.
 
 ````{glossary}
 
+environment
+  The environment of a method call refers to the global variables that solidity
+  provides, including `msg`, `block`, and `tx`.  CVL represents these variables
+  in a structure of type {ref}`env <env>`.  The environment does *not* include
+  the contract state or the state of other contracts --- these are referred to
+  as the {ref}`storage <storage-type>`.
+
 sound
 unsound
   Soundness means that any rule violations in the code being verified are
@@ -28,6 +35,12 @@ quantified expression
   and expressions of the form `forall type v . e` and `exist type v . e` are
   referred to as *quantified expressions*.  See {ref}`logic-exprs` for
   details about quantifiers in CVL.
+
+parametric rule
+  A parametric rule is a rule that calls an ambiguous method, either using a
+  method variable, or using an overloaded function name.  The prover will
+  generate a separate report for each possible instantiation of the method.
+  See {ref}`parametric-rules` for more information.
 
 sanity
   ```{todo}

@@ -22,6 +22,8 @@ There are two kinds of declarations:
 Syntax
 ------
 
+The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
+
 ```
 methods          ::= "methods" "{" { method_spec } "}"
 
@@ -42,7 +44,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "NONDET"
                    | "HAVOC_ECF"
                    | "HAVOC_ALL"
-                   | "DISPATCHER" [ "(" bool ")" ]
+                   | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
                    | [ "with" "(" cvl_params ")" ] block
                    | [ "with" "(" cvl_params ")" ] expression
@@ -50,6 +52,10 @@ method_summary   ::= "ALWAYS" "(" value ")"
 cvl_param ::= cvl_type [ id ]
 
 ```
+
+See {doc}`types` for the `evm_type` and `cvl_type` productions.  See {doc}`basics`
+for the `id` production.  See {doc}`statements` for the `block` production, and
+{doc}`expr` for the `expression` production.
 
 ```{todo}
 This document is incomplete.  See {doc}`/docs/confluence/advanced/methods-overview`,
