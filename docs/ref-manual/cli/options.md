@@ -81,7 +81,7 @@ If we want to verify only `withdraw_succeeds`, we run
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run  
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
 
-Note that --rules (plural) may be used alternatively to --rule. The two options are identical, but --rules may feel more natural when more than one rule is specified. 
+Note that `--rules` (plural) may be used alternatively to `--rule`. The two options are identical, but `--rules` may feel more natural when more than one rule is specified. 
 
 
 Options affecting the type of verification run
