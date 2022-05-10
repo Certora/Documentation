@@ -190,6 +190,7 @@ There are 3 kinds of sanity checks:
      uint x;
      require x > 3;
      require x > 2;
+     assert f(x) == 2, "f must return 2";
    }
    ```
    In this example, the second requirement is redundant, since any `x` greater
@@ -197,7 +198,7 @@ There are 3 kinds of sanity checks:
 
 The `rule_sanity` flag may be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
  * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity checks are performed.
- * With `--rule_sanity basic` or just `--rule_sanity`, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
+ * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
  * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
 
 We recommend starting with the `basic` mode, since not all rules flagged by the
