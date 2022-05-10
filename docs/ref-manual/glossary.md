@@ -29,11 +29,6 @@ havoc
   say that the variable was "havoced".  See {ref}`havoc-summary` and
   {ref}`havoc-stmt` for more details.
 
-parametric rule
-  ```{todo}
-  This section is incomplete.
-  ```
-
 quantifier
 quantified expression
   The symbols `forall` and `exist` are sometimes referred to as *quantifiers*,
