@@ -129,35 +129,83 @@ When you have a rule with multiple assertions:
 ### `--rule_sanity`
 
 **What does it do?**
-This mode will do some sanity checks for each rule, based on the attached value, which is allowed to be one of the following: `none`, `basic`, `advanced`.
+This option enables sanity checking for rules.  The `--rule_sanity` option must
+be followed by one of `none`, `basic`, or `advanced`; these are described below.
+
 There are 3 kinds of sanity checks:
-1. Reachability- checks that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true.
 
-    An example of an “empty” rule:  
-    ```cvl
-    rule empty_rule() {
-      ...
-    }
-    ```
+1. **Reachability** checks that even when ignoring all the user-provided
+   assertions, the end of the rule is reachable. This check ensures that that
+   the combination of `require` statements does not rule out all possible
+   counterexamples.
 
-    _We expect all rules to fail this check._ The exception is the fallback function, which might pass.
+   For example, the following rule would be flagged by the reachability check:
+   ```cvl
+   rule vacuous {
+     uint x;
+     require x > 2;
+     require x < 1;
+     assert f(x) == 2, "f must return 2";
+   }
+   ```
+   Since there are no models satisfying both `x > 2` and `x < 1`, this rule
+   will always pass, regardless of the behavior of the contract.  This is an
+   example of a *vacuous* rule - one that passes only because the preconditions
+   are contradictory.
 
-2. Assert-Vacuity- checks for each `assert` command in the rule, whether the `assert` is vacuously true.
-An `assert` is considered to be vacuously true if after all the previous preconditions (`requires` and `if` statements where the `assert` is nested in) are removed, it evaluates to true on every example that reaches it.
-For example, each `assert` with expression which is semantically equivalant to tautology, will be considered as vacuosly true.
+   ```{caution}
+   The reachability check will *pass* on vacuous rules and *fail* on correct
+   rules.  A passing reachability check indicates a potential error in the rule.
+   
+   The exception is when a {term}`parametric rule` is checked on the default
+   fallback function: The default fallback function should always revert, so
+   there are no examples that can reach the end of the rule.
+   ```
 
-3. Require-Redundancy- checks for each `require` command in the rule, whether the `require` is redundant.
-A `require` is considered to be redundant if it can be removed without affecting the satisfiability of the rule.
-For example, each `require` with expression which is semantically equivalant to tautology, will be considered as redundant.
+2. **Assert-Vacuity** checks that individual `assert` statements are not
+   tautologies.  A tautology is a statement that is true on all examples, even
+   if all the `require` and `if` conditions are removed.
 
-The `rule_sanity` flag accepts one of the following values: `none`, `basic`, `advanced`, to control which sanity checks should be executed.
-The `none` keyword behaves the same as not mentioning the `rule_sanity` flag in the configuration at all. No sanity-checks will be executed.
-The `basic` keyword is intended for running only the reachability check for all the rules and the `assert-vacuity` check, but only for invariants.
-Using the `advanced` keyword, all the sanity checks will be executed, for all the invariants/rules.
-It is recommended to start with the `basic` mode, since using the `advanced` mode might results in some false positive alarms.
+   For example, the following rule would be flagged by the assert-vacuity check:
+   ```cvl
+   rule tautology {
+     uint x; uint y;
+     require x != y;
+     ...
+     assert x < 2 || x >= 2,
+      "x must be smaller than 2 or greater then or equal to 2";
+   }
+   ```
+   Since every `uint` satisfies the assertion, the assertion is tautological,
+   which is likely to be an error in the specification.
+
+3. **Require-Redundancy** checks for redundant `require` statements.
+   A `require` is considered to be redundant if it can be removed without
+   affecting the satisfiability of the rule.
+
+   For example, the require-redundancy check would flag the following rule:
+   ```cvl
+   rule require_redundant {
+     uint x;
+     require x > 3;
+     require x > 2;
+   }
+   ```
+   In this example, the second requirement is redundant, since any `x` greater
+   than 3 will also be greater than 2.
+
+The `rule_sanity` flag must be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
+ * With `--rule_sanity none`, no sanity checks are performed; this is the default behavior
+ * With `--rule_sanity basic`, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
+ * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
+
+We recommend starting with the `basic` mode, since not all rules flagged by the
+`advanced` mode are incorrect.
 
 **When to use it?**  
-We suggest using this option often - before each commit to changes of the source code or verification at the very least. Signs to suspect the rule is “empty“ is when it passes “too easily“ or too quickly.
+
+We suggest using this option routinely while developing rules.  It is also a
+useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
 
