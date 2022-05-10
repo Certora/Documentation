@@ -131,6 +131,7 @@ When you have a rule with multiple assertions:
 **What does it do?**
 This option enables sanity checking for rules.  The `--rule_sanity` option must
 be followed by one of `none`, `basic`, or `advanced`; these are described below.
+See {doc}`../checking/sanity` for more information about sanity checks.
 
 There are 3 kinds of sanity checks:
 
