@@ -88,7 +88,8 @@ method that violates the rule, and will indicate if some contract methods
 always satisfy the rule.
 
 Rules that contain undefined `method` variables are sometimes called
-{term}`parametric rule`s.
+{term}`parametric rule`s.  See {ref}`method-type` for more details about
+how to use method variables.
 
 
 Filters
