@@ -35,7 +35,7 @@ preserved_block ::= "preserved"
 ```
 
 See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
-production, and {doc}`statements` for the `block` production{doc}.
+production, and {doc}`statements` for the `block` production.
 
 Overview
 --------
