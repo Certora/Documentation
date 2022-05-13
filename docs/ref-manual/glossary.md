@@ -29,6 +29,12 @@ havoc
   say that the variable was "havoced".  See {ref}`havoc-summary` and
   {ref}`havoc-stmt` for more details.
 
+hyperproperty
+  A hyperproperty describes a relationship between two hypothetical sequences
+  of operations starting from the same initial state.  For example, a statement
+  like "two small deposits will have the same effect as one large deposit" is a
+  hyperproperty.  See {ref}`storage-type` for more details.
+
 quantifier
 quantified expression
   The symbols `forall` and `exist` are sometimes referred to as *quantifiers*,
