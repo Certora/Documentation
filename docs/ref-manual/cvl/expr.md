@@ -284,7 +284,7 @@ There are also several built-in variables:
    ```
 
  * You can use the variable `_` as a placeholder for a value you are not
-   interested in._
+   interested in.
 
  * The maximum values for the different integer types are available as the
    variables `max_uint`, `max_address`, `max_uint8`, `max_uint16` etc.
