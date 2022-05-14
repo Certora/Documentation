@@ -113,7 +113,6 @@ function calls.  The available types are described in the following sections:
  * {ref}`havoc-summary`
  * {ref}`dispatcher`
  * {ref}`auto-summary`
- * {ref}`ghost-summary`
  * {ref}`function-summary`
 
 The application policy determines which function calls are replaced by
@@ -178,6 +177,14 @@ of any contract.  They differ in the assumptions made about the return value:
 
  * The `NONDET` approximation makes no assumptions about the return values; each
    call to the summarized method may return a different result.
+
+```{todo}
+The old documentation seems to imply that the ETH balances for calls to
+`ALWAYS`, `CONSTANT`, and `PER_CALLEE_CONSTANT` do not account for the ETH value
+passed in the function call, while `NONDET` does.
+
+This seems like the wrong behavior?
+```
 
 ```{todo}
 The following note from the old documentation needs clarification:
@@ -252,6 +259,9 @@ of the unknown contract is determined by the optional boolean argument to the
 
 The most commonly used option is `DISPATCHER(true)`, because in most cases the
 behavior of `DISPATCHER(false)` is equivalent to that of `AUTO`.
+`DISPATCHER(false)` only behaves differently from `AUTO` when one of the known
+contracts exhibits behavior that `AUTO` assumes is impossible (such as
+reentrancy).
 
 (auto-summary)=
 ### `AUTO` summaries
@@ -269,6 +279,16 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
    arbitrary way, but are assumed to leave the state of other contracts
    unchanged.
 
+```{todo}
+The effect of library calls on the current contract's ETH balance is unclear.
+
+The following comment from the old docs should be clarified:
+
+If the contract you are verifying relies heavily on modification of ETH
+balances, it's recommended to identify the balance-modifying functions and mark
+them `HAVOC_ALL` if necessary.
+```
+
 [^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
   opcode used to make the call: calls made using the `STATICCALL` opcode use
   the `NONDET` summary, calls using `CALL` or `CREATE` opcode use the `HAVOC_ECF`
@@ -279,17 +299,17 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
   in the Solidity manual for more details.
 
-(ghost-summary)=
-### Ghost summaries
-
-```{todo}
-This feature is currently undocumented.
-```
-
 (function-summary)=
 ### Function summaries
 
 ```{todo}
 This feature is currently undocumented.
+```
+
+### Undocumented summaries
+
+```{todo}
+Block summaries are undocumented.  Expression summaries other than function
+summaries are undocumented.
 ```
 
