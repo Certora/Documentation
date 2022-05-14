@@ -1,221 +1,17 @@
 Method declarations
 ===================
 
-A specification may have a `methods` block that consists of _method
-declarations_. Each declares a function signature either in the contract being
-verified or in [other contracts in the verification context](multicontract.md).
-
-Use Cases
----------
-
-In general, we can reference contract functions without declaring them in the
-specification. Still, however, we may opt to declare an `external` or `public`
-contract function in the following use cases:
-
-1.  **Making the specification more self-contained and readable.**
-    
-    *   We can use the `methods` block to
-        
-        *   list all the contract functions that are expected to exist in
-            verification context;
-            
-        *   specify the contracts' interface against which the specification is
-            written (e.g., ERC20).
-            
-2.  **Reusing the specification against contracts that implement subsets of an
-interface (e.g., ERC20).**
-    
-    *   Without a corresponding method declaration, a rule that refers to a
-        contract function whose implementation is not found in the verification
-        context would not pass the syntax check.
-        
-    *   Method declarations enable us to ignore rules that refer to functions
-        not found in the current verification context and run the tool using
-        only the relevant rules in the specification.
-        
-3.  **Declaring that the function is** `envfree`**, i.e., that it does not
-    access the** [**execution environment of the
-    EVM**](/docs/ref-manual/cvl/types.md)**, and, in particular, it is
-    non-payable.**
-    
-    *   An `envfree` declaration allows the function to be referenced in either
-        invoke commands or invoke expressions without giving an `env` type
-        instance as the first input argument.
-        
-    *   If an implementation of the function exists in the contract, the tool
-        would automatically generate rules to check that this implementation is
-        indeed `envfree`.
-
-Syntax
-------
-
-We demonstrate the syntax of method declarations through the example `methods`
-block shown below.
-
-```cvl
-using B as b
-
-methods {
-    foo02(uint, uint) returns (uint)
-    
-    b.foo03(uint) returns (uint) envfree
-
-    foo01(uint x, uint y) returns (uint) envfree
-}
-```
-
-*   Line 4 declares that a function whose signature is `foo02(uint, uint)` and
-    whose return type is `uint` should exist in `currentContract`, i.e., the
-    contract being verified.
-    
-*   Line 6 declares that a function whose signature is `foo03(uint)` should
-    exist in the [imported contract](multicontract.md) `B` and have `uint` as
-    its return type. Note that, in contrast to Line 4, it uses
-    [multi-contract](multicontract.md) and, in addition, declares
-    `b.foo03(uint)` as [envfree](#envfree).
-    
-*   Line 8 is similar to Line 6; the notable difference is that it declares a
-    function in `currentContract`.
-
-Summary Declarations
---------------------
-
-A _summary declaration_ is a special case of a method declaration. It declares
-that a function signature should be summarized using the specified summary. For
-more details about summaries, see {ref}`Function Summarization <summaries-sec>`.
-
-As opposed to the declarations which we have considered thus far, summary
-declarations always implicitly apply to functions' signatures in “any
-contract”. That is, the summary applies to _any_ call, either external or
-internal, in the contracts being verified, such that (1) it calls to the
-declared signature (or
-[sighash](https://docs.soliditylang.org/en/v0.8.6/abi-spec.html#function-selector));
-and (2) satisfies the {ref}`summary application policy <summaries>` (i.e., either
-`ALL` or `UNRESOLVED`).
-
-The example `methods` block shown below demonstrates the syntax of summary
-declarations.
-
-```cvl
-methods {
-    foo03(uint) => ALWAYS(3) ALL
-    
-    foo02(uint, uint) => ALWAYS(2) UNRESOLVED
-     
-    0xd634d50a => ALWAYS(3) ALL // The sighash of foo3(uint)
-    
-    foo01(uint x, uint y) returns (uint) envfree => ALWAYS(1)
-}
-```
-
-*   Line 2 declares that any call to a function whose signature is
-    `foo03(uint)` should be summarized as `ALWAYS(3)` and according to an `ALL`
-    policy.
-    
-*   Line 4 declares that any call to a function whose signature is `foo02(uint,
-    uint)` should be summarized as `ALWAYS(2)`and according to an `UNRESOLVED`
-    policy.
-    
-*   Line 6 is similar to Lines 2 and 4. The notable difference is that it uses
-    the sighash of the function rather than its signature.
-    
-*   Line 8 combines a summary declaration with an `envfree` declaration. It
-    declares an `ALWAYS(1)` summary for the signature `foo01(uint x, uint y)`
-    in _any_ contract, whereas it declares that the function `foo01(uint x,
-    uint y)` should exist in `currentContract` and its return type is `uint`.
-    
-
-```{note}
-As shown in Line 8, we can omit the summary application policy (i.e., either
-`ALL` or `UNRESOLVED`). In this case, the default policy would be used. See
-{ref}`Function Summarization <summaries>` for more details.
-```
-
-Method Declarations and Multi-Contract
---------------------------------------
-
-Finally, notice that the use of [multi-contract](multicontract.md) in method
-declarations has the following restrictions:
-
-1.  Multi-contract must not be used in summary declarations. Recall that
-    summaries always implicitly apply to "any contract".
-    
-2.  Multi-contract should only be used in declarations that are _not_ summary
-    declarations.
-    
-3.  When a valid `envfree` declaration is also a summary declaration (and
-    therefore does not use multi-contract), the summary applies to "any
-    contract" whereas the `envfree` declaration applies to `currentContract`.
-
-
 (summaries-sec)=
 Summarizing Solidity Functions
 ==============================
 
-Contracts often interact with other contracts, and by default, these
-interactions are abstracted away by the tool. Roughly, this means the Prover
-tool assumes any outcome is possible.‌
-
-This document details the exact behavior of the Prover in different scenarios,
-and how these can be controlled in the specification.
-
-Calls inside the specification
-------------------------------
-
-Calls inside the specification are always inlined. They must refer either to
-the default contract (i.e., the one that the user indicated to be verified) or
-to one of the imported contracts.
-
-```cvl
-using OtherContractInstance as otherContractInstance​rule callFun {
-  uint x = fun1(); // inline fun1 of currentContract
-  uint y = currentContract.fun1(); // same as above
-  uint z = otherContractInstance.fun1(); // inline fun1 of otherContractInstance
-}
-```
-
 Calls inside the code
 ---------------------
 
-A call to an external contract that was not _linked_ is abstracted. It means
-certain variables can be set to arbitrary values following this call. We often
-refer to this call as being _havoc'd_, and we use the same term for variables
-set to arbitrary values. For a havoc'd call:
-
-*   The return values (`returndata`) can take any value
-    
-*   The return code of the call can take any value
-    
-*   The state of the calling contract (`this`) may or may not become havoc'd.
-    
-*   The balances may become havoc'd in full or in part.
-    
-
-A [method declaration](/docs/ref-manual/cvl/methods) in the spec file can be
-associated with a _summary_ that tells the Prover how to handle a call to a
-non-linked external contract. Currently, the available summaries are
-`HAVOC_ALL`,`HAVOC_ECF`,`ALWAYS(n)`,`CONSTANT`, `PER_CALLEE_CONSTANT`,
-`NONDET`, `AUTO`, and `DISPATCHER`. The below table shows the differences
-between these summaries. Asterisks (\*) indicate havocing.
+The below table shows the differences between these summaries. Asterisks (\*)
+indicate havocing.
 
 <table data-layout="default" class="confluenceTable"><colgroup><col style="width: 113.33px;"><col style="width: 113.33px;"><col style="width: 113.33px;"><col style="width: 113.33px;"><col style="width: 113.33px;"><col style="width: 113.33px;"></colgroup><tbody><tr><td class="confluenceTd"><p><strong>Summary</strong></p></td><td class="confluenceTd"><p><strong>Return value</strong></p></td><td class="confluenceTd"><p><strong>Return code</strong></p></td><td class="confluenceTd"><p><strong>Current contract state</strong></p></td><td class="confluenceTd"><p><strong>Other contracts states</strong></p></td><td class="confluenceTd"><p><strong>Balances</strong></p></td></tr><tr><td class="confluenceTd"><p><code>HAVOC_ALL</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td></tr><tr><td class="confluenceTd"><p><code>HAVOC_ECF</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>Havoc'd except for current contract's balance that may increase</p></td></tr><tr><td class="confluenceTd"><p><code>ALWAYS(n)</code></p></td><td class="confluenceTd"><p>n</p></td><td class="confluenceTd"><p>success (1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td></tr><tr><td class="confluenceTd"><p><code>CONSTANT</code></p></td><td class="confluenceTd"><p>Some constant <code>x</code> for all calls to the same method signature in any target contract</p></td><td class="confluenceTd"><p>success (1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td></tr><tr><td class="confluenceTd"><p><code>PER_CALLEE_CONSTANT</code></p></td><td class="confluenceTd"><p>Every target contract <code>c</code> will return the same constant <code>x_c</code> for all calls to the same method signature</p></td><td class="confluenceTd"><p>success (1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td></tr><tr><td class="confluenceTd"><p><code>DISPATCHER[(bool)]</code></p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td><td class="confluenceTd"><p>See below</p></td></tr><tr><td class="confluenceTd"><p><code>NONDET</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>success(1)</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged</p></td><td class="confluenceTd"><p>Unchanged (up to current transfer)</p></td></tr><tr><td class="confluenceTd"><p><code>AUTO</code></p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>*</p></td><td class="confluenceTd"><p>Depends on call type*</p></td><td class="confluenceTd"><p>Depends on call type*</p></td><td class="confluenceTd"><p>Depends on call type*</p></td></tr></tbody></table>
-
-The `DISPATCHER` _summary_ handles each call to the declared method as if any
-method with the same signature in any target contract may be called. By
-default, in addition to calls to implementations in known target contracts, the
-`DISPATCHER`has a havoc'd call to an unknown, untrusted target contract. This
-havoc'd call is handled the same as in the `AUTO` summary (see below).
-
-One can override the default mode of the`DISPATCHER` by enabling an
-_optimistic_ mode. This mode assumes that only known contracts may be called.
-It is enabled by specifying `DISPATCHER(true)`. Note that either
-`DISPATCHER(false)`or `DISPATCHER` denote that the default mode is enabled.
-
-The `AUTO` summary depends on the type of call, namely, the EVM opcode used by
-the call. Static calls (`STATICCALL`) don't havoc any contract's state. Regular
-calls and contract creations (`CALL`,`CREATE`) havoc all contracts' states
-except for the current contract's (like `HAVOC_ECF`). Library calls
-(`DELEGATECALL` and `CALLCODE`) havoc _only_ the current contract's state.
 
 Some of the summaries change the balances. While the `HAVOC_ALL` summary fully
 havocs the balances of the current contract and the target contract, other
@@ -233,21 +29,6 @@ balance changing summaries partially havoc these balances as follows:
 If the contract you are verifying relies heavily on modification of ETH
 balances, it's recommended to identify the balance-modifying functions and mark
 them `HAVOC_ALL` if necessary.
-
-**A technical remark about** `returnsize`**:** For `CONSTANT` and `PER_CALLEE`
-summaries, the summaries extend naturally to functions that return multiple
-return values. The assumption is that the return size in bytes is a multiple of
-32 bytes (as standard in Solidity). The `returnsize` variable is updated
-accordingly and is determined by the size requested by the caller.
-
-If you do not trust the target contract to return exactly the number of
-arguments dictated by the Solidity-level interface, **do not use**`CONSTANT`
-and `PER_CALLEE_CONSTANT`summaries.
-
-In very special cases, one may set the `returnsize` optimistically even when
-havocing, based on information about the invoked function's signature and the
-available functions in the verification context, set with
-`-optimisticReturnsize`.
 
 We present simple examples to illustrate the differences between the
 non-havocing summaries. We use a simple interface `IntGetter` that we will not
@@ -440,7 +221,7 @@ contract Interest {
   
   function continuous_interest(uint256 p, uint256 r, uint256 t)
       internal pure returns (uint256) {
-    return p * e ^ (r * t);
+    return p * e ** (r * t);
   }
 }
 ```
