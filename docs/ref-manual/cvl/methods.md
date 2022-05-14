@@ -1,20 +1,29 @@
 The Methods Block
 =================
 
-The `methods` block contains declarations for contract methods.
+The `methods` block contains declarations of contract methods.  Although CVL is
+able to call contract functions even if they are not declared in the methods
+block, the methods block allows users to specify additional information about
+contract methods, and can help document the expected interface of the contract.
 
 There are two kinds of declarations:
 
 * **Non-summary declarations** document the interface between the specification
-  and the contracts used during verification.  Non-summary declarations support
-  spec reuse by allowing specs written against a complete interface to be
-  checked against a contract that only implements part of the interface.
+  and the contracts used during verification.  Non-summary declarations also
+  support spec reuse by allowing specs written against a complete interface to
+  be checked against a contract that only implements part of the interface.
 
-* **Summary declarations** are used to replace _all_ calls to methods having the
+* **Summary declarations** are used to replace calls to methods having the
   given signature with something that is simpler for the Prover to reason about.
   Summaries allow the Prover to reason about external contracts whose code is
   unavailable.  They can also be useful to simplify the code being verified to
   circumvent timeouts.
+
+```{caution}
+Summary declarations change the way that some function calls are interpreted,
+and are therefore {term}`unsound` (with the exception of `HAVOC_ALL` summaries,
+which are always sound).
+```
 
 ```{contents}
 ```
@@ -27,7 +36,7 @@ The syntax for the `methods` block is given by the following [EBNF grammar](synt
 ```
 methods          ::= "methods" "{" { method_spec } "}"
 
-method_spec      ::= ( hash | [ id "." ] id "(" evm_params ")" )
+method_spec      ::= ( sighash | [ id "." ] id "(" evm_params ")" )
                      [ "returns" types ]
                      [ "envfree" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
@@ -46,10 +55,8 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | [ "with" "(" cvl_params ")" ] block
-                   | [ "with" "(" cvl_params ")" ] expression
-
-cvl_param ::= cvl_type [ id ]
+                   | [ "with" "(" "env" id ")" ] block
+                   | [ "with" "(" "env" id ")" ] expression
 
 ```
 
@@ -57,33 +64,179 @@ See {doc}`types` for the `evm_type` and `cvl_type` productions.  See {doc}`basic
 for the `id` production.  See {doc}`statements` for the `block` production, and
 {doc}`expr` for the `expression` production.
 
-```{todo}
-This document is incomplete.  See {doc}`/docs/confluence/advanced/methods-overview`,
-{doc}`/docs/confluence/advanced/summaries`, {doc}`/docs/confluence/advanced/internal-summaries`,
-and {doc}`/docs/confluence/advanced/expressive-summaries` for the old documentation
-about the methods block.
-```
-
-## Non-summary declarations
-
 (envfree)=
-### The envfree modifier
+Entries in the `methods` block
+------------------------------
+
+Each entry in the methods block denotes either the sighash or the ABI signature
+for a contract method.  Methods of contracts that are introduced by {doc}`using
+statements <using>` can also be described by prefixing the method name with
+the contract variable name.  For example, if contract `C` is introduced by the
+statement `using C as c`, then the method `f(uint)` of contract `c` can be
+referred to as `c.f(uint)`.
+
+It is possible for a method signature to appear in the `methods` block but not
+in the contract being verified.  In this case, the prover will skip any rules
+that mention the missing method, rather than reporting an error.  This behavior
+allows reusing specifications on contracts that only support part of an
+interface: only the supported methods will be verified.
+
+Following the method signature is an optional `returns` clause.  If a method
+declaration contains a `returns` clause, the declared return type must match
+the contract method's return type.  If the `returns` clause is omitted, the
+return type is taken from the contract method's return type.
+
+Following the `returns` clause is an optional `envfree` tag.  Marking a method
+with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
+from CVL do not need to explicitly pass an {term}`environment` value as the
+first argument.  Second, the prover will verify that the method's behavior does
+not depend on any of the environment variables.
+
+Finally, the method entry may contain an optional summarization (indicated by
+`=>` followed by the summary type and an optional application policy).  A
+summarized declaration indicates that the prover should replace some calls to
+the summarized function by an approximation.  This is an important technique
+for working around prover timeouts and also for working with external contracts
+whose implementation is not fixed at verification time.
+
+The summary type determines what type of approximation is used to replace the
+function calls.  The available types are described in the following sections:
+
+ * {ref}`const-summary`
+ * {ref}`havoc-summary`
+ * {ref}`dispatcher`
+ * {ref}`auto-summary`
+ * {ref}`ghost-summary`
+ * {ref}`function-summary`
+
+The application policy determines which function calls are replaced by
+approximations.  See {ref}`summaries` for details.
 
 (summaries)=
-## Summary declarations
+Summarized function calls
+-------------------------
 
-### Application policies (UNRESOLVED or ALL)
+Whether a function call is replaced by an approximation depends on the context
+in which the function is called in addition to the application policy for its
+signature.  If present, the application policy must be either `ALL` or
+`UNRESOLVED`; the default policy is TODO.  The decision is made as follows:
 
-### `ALWAYS`, `CONSTANT`, `PER_CALLEE_CONSTANT`
+ * If the function is called from CVL rather than from contract code then it is
+   never replaced by a summary.
+
+ * If the code for the function is known at verification time, either because
+   it is a method of `currentContract` or because the receiver contract is
+   {ref}`linked <linking>`, then the function is only summarized if the
+   resolution type is `ALL`.
+
+ * If the code for the function is not known at verification time, then the
+   function call must be summarized.  If no summary is given, the default summary
+   type is {ref}`AUTO <auto-summary>`, whose behavior is determined by the type of
+   function call.  In this case, the verification report will contain a contract
+   call resolution warning.
+
+```{todo}
+The default application policy is currently undocumented.
+```
+
+Method summaries apply to all calls, regardless of the receiver address.  There
+is currently no way to apply different summaries to different contracts or to
+summarize some calls and not others to methods with the same ABI signature.
+For this reason, it is not possible to specify a summary for a method that is
+qualified by a contract name.
+
+Summary types
+-------------
+
+(const-summary)=
+### View summaries: `ALWAYS`, `CONSTANT`, `PER_CALLEE_CONSTANT`, and `NONDET`
+
+These four summary types treat the summarized methods as view methods: the
+summarized methods are replaced by approximations that do not update the state
+of any contract.  They differ in the assumptions made about the return value:
+
+ * The `ALWAYS(v)` approximation assumes that the method always returns `v`
+
+ * The `CONSTANT` approximation assumes that all calls to methods with the given
+   signature always return the same result.
+
+ * The `PER_CALLEE_CONSTANT` approximation assumes that all calls to the method
+   on a given receiver contract must return the same result, but that the
+   returned value may be different for different receiver contracts.
+
+ * The `NONDET` approximation makes no assumptions about the return values; each
+   call to the summarized method may return a different result.
+
+```{todo}
+The following note from the old documentation needs clarification:
+
+**A technical remark about `returnsize`:** For `CONSTANT` and `PER_CALLEE`
+summaries, the summaries extend naturally to functions that return multiple
+return values. The assumption is that the return size in bytes is a multiple of
+32 bytes (as standard in Solidity). The `returnsize` variable is updated
+accordingly and is determined by the size requested by the caller.
+
+If you do not trust the target contract to return exactly the number of
+arguments dictated by the Solidity-level interface, **do not use** `CONSTANT`
+and `PER_CALLEE_CONSTANT`summaries.
+
+In very special cases, one may set the `returnsize` optimistically even when
+havocing, based on information about the invoked function's signature and the
+available functions in the verification context, set with
+`-optimisticReturnsize`.
+```
 
 (havoc-summary)=
-### `HAVOC_ALL`, `HAVOC_ECF`
+### Havoc summaries: `HAVOC_ALL` and `HAVOC_ECF`
 
-### `DISPATCHER`
+```{todo}
+This feature is currently undocumented.
+```
 
-### `AUTO`
+(dispatcher)=
+### `DISPATCHER` summaries
 
-### expression and block summaries
+```{todo}
+This feature is currently undocumented.
+```
 
+(auto-summary)=
+### `AUTO` summaries
 
+The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
+
+ * Calls to non-library `view` and `pure` methods use the `NONDET` approximation:
+   they keep all state unchanged.
+
+ * Normal calls and constructors use the `HAVOC_ECF` approximation: they are
+   assumed to change the state of external contracts arbitrarily but to leave
+   the caller's state unchanged.
+
+ * Calls to library methods are assumed to change the caller's state in an
+   arbitrary way, but are assumed to leave the state of other contracts
+   unchanged.
+
+[^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
+  opcode used to make the call: calls made using the `STATICCALL` opcode use
+  the `NONDET` summary, calls using `CALL` or `CREATE` opcode use the `HAVOC_ECF`
+  summary, and calls using the `DELEGATECALL` and `CALLCODE` opcodes havoc the
+  current contract only.
+  Modern Solidity versions output opcodes that are consistent with the above
+  description, but older versions behave differently.  See
+  [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
+  in the Solidity manual for more details.
+
+(ghost-summary)=
+### Ghost summaries
+
+```{todo}
+This feature is currently undocumented.
+```
+
+(function-summary)=
+### Function summaries
+
+```{todo}
+This feature is currently undocumented.
+```
 

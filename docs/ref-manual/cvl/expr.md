@@ -344,10 +344,18 @@ method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
    The `@dontsummarize` tag is currently undocumented.
    ```
 
-After the method tag, the method arguments are provided, as usual.
+After the method tag, the method arguments are provided.  Unless the method
+is declared {ref}`envfree <envfree>`, the first argument must be an
+{ref}`environment value <env>`.  The remaining arguments must either be a
+single {ref}`calldataarg value <calldataarg>`, or the same types of arguments
+that would normally be passed to the contract method.
 
 After the method arguments, a method invocation can optionally include `at s`
 where `s` is a {ref}`storage variable <storage-type>`.  This indicates that
 before the method is executed, the EVM state should be restored to the saved
 state `s`.
+
+```{todo}
+Unresolved method calls
+```
 
