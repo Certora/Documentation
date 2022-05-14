@@ -89,8 +89,15 @@ return type is taken from the contract method's return type.
 Following the `returns` clause is an optional `envfree` tag.  Marking a method
 with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
 from CVL do not need to explicitly pass an {term}`environment` value as the
-first argument.  Second, the prover will verify that the method's behavior does
-not depend on any of the environment variables.
+first argument.  Second, the prover will verify that the method implementation
+in the contract being verified does not depend on any of the environment
+variables.  The results of this check are displayed on the verification report
+as a separate rule called `envfreeFuncsStaticCheck`.
+
+```{todo}
+There is a separate check called `envfreeFuncsAreNonpayable`.  Why is this
+necessary?
+```
 
 Finally, the method entry may contain an optional summarization (indicated by
 `=>` followed by the summary type and an optional application policy).  A
@@ -137,6 +144,11 @@ signature.  If present, the application policy must be either `ALL` or
 
 ```{todo}
 The default application policy is currently undocumented.
+```
+
+```{todo}
+The old documentation is ambiguous about the behavior of `UNRESOLVED` summaries
+for internal methods.
 ```
 
 Method summaries apply to all calls, regardless of the receiver address.  There
@@ -189,16 +201,57 @@ available functions in the verification context, set with
 (havoc-summary)=
 ### Havoc summaries: `HAVOC_ALL` and `HAVOC_ECF`
 
-```{todo}
-This feature is currently undocumented.
-```
+The most conservative summary type is `HAVOC_ALL`.  This summary makes no
+assumptions at all about the called function: it is allowed to have arbitrary
+side effects on the state of any contract (including the calling contract), and
+may return any value.  It can also change any contract's ETH balance in an
+arbitrary way.  In effect, calling a method that is summarized by `HAVOC_ALL`
+obliterates all knowlege that the prover has about the state of the contract
+before the call.
+
+The `HAVOC_ALL` approximation is {term}`sound`, but it can be overly
+restrictive in practice.  In reality, a contract's state cannot be changed in
+arbitrary ways, but only according to the contract's methods.  However, the
+Prover does not currently have support for more fine-grained reasoning about
+the side effects of unknown methods.
+
+A useful middle ground is the `HAVOC_ECF` summary type.  A `HAVOC_ECF`
+summarization for a method encodes the assumption that the called method is not
+reentrant.  This summarization approximates a method call by assuming it can
+have arbitrary effects on contracts other than the contract being verified, but
+that it can neither change the current contract's state nor decrease its ETH
+balance (aside from value transferred by the method call itself).
 
 (dispatcher)=
 ### `DISPATCHER` summaries
 
-```{todo}
-This feature is currently undocumented.
-```
+The `DISPATCHER` summary type provides a useful approximation for methods of
+interfaces that are implemented by multiple contracts.  For example, the
+methods defined by the ERC20 specification are often summarized using the
+`DISPATCHER` summary type.
+
+If a function with a `DISPATCHER` summary is called, the Prover will assume
+that the receiver of the call is one of the known contract implementations
+containing the given signature; the call will then behave the same way that a
+normal method call on the receiver would.  The prover will consider examples
+with every possible implementing contract, but multiple `DISPATCHER` method
+calls on the same receiver address in the same example will use the same
+receiver contract.
+
+The set of contract implementations that the prover chooses from contains
+the set of contracts passed as [arguments to the CLI](../cli/options).
+In addition, the prover may consider an unknown target contract whose methods
+are all interpreted using the {ref}`AUTO summary <auto-summary>`.  The presence
+of the unknown contract is determined by the optional boolean argument to the
+`DISPATCHER` summary:
+
+ * With `DISPATCHER(false)` or just `DISPATCHER`, the unknown contract is
+   considered as a possiblity
+
+ * With `DISPATCHER(true)`, only the known contract instances are considered
+
+The most commonly used option is `DISPATCHER(true)`, because in most cases the
+behavior of `DISPATCHER(false)` is equivalent to that of `AUTO`.
 
 (auto-summary)=
 ### `AUTO` summaries
