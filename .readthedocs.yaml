@@ -6,7 +6,7 @@ python:
     - requirements: requirements.txt
 
 sphinx:
-  builder: html
+  builder: spelling html
   configuration: conf.py
   fail_on_warning: true
 
