@@ -57,7 +57,14 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "AUTO"
                    | [ "with" "(" "env" id ")" ] block
                    | [ "with" "(" "env" id ")" ] expression
+                   | [ "with" "(" "env" id ")" ] id "(" [ id { "," id } ] ")"
 
+```
+
+```{todo}
+The `with(env id) block` and `with(env id) expression` productions come from
+the grammar, but I suspect the only valid block/expression summary is the third
+option (function/ghost summaries).  See last section of this document.
 ```
 
 See {doc}`types` for the `evm_type` and `cvl_type` productions.  See {doc}`basics`
@@ -297,19 +304,31 @@ them `HAVOC_ALL` if necessary.
   Modern Solidity versions output opcodes that are consistent with the above
   description, but older versions behave differently.  See
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
-  in the Solidity manual for more details.
+  in the Solidity manual for details.
 
 (function-summary)=
 ### Function summaries
 
-```{todo}
-This feature is currently undocumented.
-```
+Contract methods can also be summarized using CVL {doc}`functions` or
+{ref}`ghost-axioms` as approximations.  Contract calls to the summarized method
+are replaced by calls to the specified CVL functions.
+
+To use a CVL function or ghost as a summary, use a call to the function in
+place of the summary type.  You may also write `with(env e)` before the call to
+the CVL function to make the environment `e` available to the function call.
+The function call can only refer directly to the environment and variables
+defined as arguments in the summary declarations; expressions involving those
+variables are not supported.
+
+Functions used as summaries are not allowed to call contract functions.  They
+may only accept parameter types that are expressible in solidity; extended CVL
+types like `method` and `mathint` cannot be passed as arguments.
 
 ### Undocumented summaries
 
 ```{todo}
 Block summaries are undocumented.  Expression summaries other than function
-summaries are undocumented.
+summaries are also undocumented.  These are possible to write according to the
+parser, but I'm not sure if function summaries are the only supported ones.
 ```
 
