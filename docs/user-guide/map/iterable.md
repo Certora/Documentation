@@ -1,4 +1,4 @@
-The IterableMap contract
+The IterableMap Contract
 ========================
 
 The `IterableMap` will maintain an internal array of the keys inserted to the map. In the next section, we will add an iteration function.

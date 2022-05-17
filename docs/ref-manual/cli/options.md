@@ -46,7 +46,7 @@ When you want to see if a suspect instruction can fail in the code, without writ
 If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:  
 `certoraRun Bank.sol:Investor --assert Investor`
 
-Most Frequently Used Options
+Most frequently used options
 ----------------------------
 
 ### `--msg`

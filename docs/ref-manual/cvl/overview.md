@@ -1,4 +1,5 @@
-# Specification files
+Specification Files
+-------------------
 
 The Certora Prover verifies that a smart contract satisfies a set of rules
 written in a language called Certora Verification Language (CVL).  The syntax

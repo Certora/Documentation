@@ -87,7 +87,7 @@ variables in CVL:
 *   `max_uint16`
 *   `max_uint8`
 
-## Implicit Casting
+## Implicit casting
 
 Only the following _implicit_ cast operations are supported in CVL:
 
@@ -115,7 +115,7 @@ mathint y = x + m1;                // check that x's type (uint256) is a subtype
 assert x < max_uint                // x STILL has type uint256 
 ```
 
-## Explicit Casting
+## Explicit casting
 
 *   An explicit cast operator tries to convert the type of an operand from its original type to the target type. The _conversion_ below specifies how the original expression is modified to a value in the target type. Furthermore, _safe\_cast\_bounds_ specify the range of values for the original expression under which the conversion to the target type is safe to perform (i.e. does not result in an _overflow_). When the value is out of safe bounds (say in case of `to_uint256(-1)`), it results in an _overflow_. Here are the rules for performing different cast operations:
     

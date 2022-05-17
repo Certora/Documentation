@@ -1,5 +1,5 @@
 (partially parametric rules)=
-Partially parametric rules
+Partially Parametric Rules
 ==========================
 
 ````{todo}

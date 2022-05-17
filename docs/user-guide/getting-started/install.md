@@ -1,7 +1,7 @@
 Installation
 ============
 
-Step 1: Prerequisites
+Step 1: prerequisites
 ---------------------
 
 <details>
@@ -262,8 +262,8 @@ follow the next steps:
     ```
 </details>
 
-Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
--------------------------------------------------------------------------
+Step 4: Add the Solidity compiler (solc) executable's folder to your `PATH`
+---------------------------------------------------------------------------
 
 <details>
   <summary>Windows</summary>
