@@ -118,7 +118,7 @@ https://vaas-stg.certora.com/output/65540/270dce9623d492937d82/statsdata.json?an
                                                               ────────────────
 ```
 
-Zip Ouptut
+Zip Output
 ----------
 
 When a job is submitted, all of the input and output are stored.  You can
@@ -143,5 +143,5 @@ changed).
 
 The zip output cannot be downloaded unless you have logged in to the portal with
 an appropriately authorized key.  If you receive a "Forbidden" error message,
-[log in][using.md] to the main Certora Portal page with your Certora key.
+[log in](using) to the main Certora Portal page with your Certora key.
 

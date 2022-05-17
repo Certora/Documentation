@@ -84,7 +84,7 @@ methods {
 }
 ```
 
-Add an envfree declaration for the method `contains` too.
+Add an `envfree` declaration for the method `contains` too.
 
 ### Revert conditions
 
