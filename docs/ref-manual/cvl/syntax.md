@@ -1,5 +1,5 @@
 Syntactic conventions
----------------------
+=====================
 
 Many of the pages in this guide describe the syntax of parts of the Certora
 Verification Language using a modified version of the [EBNF format][EBNF].
