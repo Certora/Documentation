@@ -55,16 +55,8 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | [ "with" "(" "env" id ")" ] block
-                   | [ "with" "(" "env" id ")" ] expression
-                   | [ "with" "(" "env" id ")" ] id "(" [ id { "," id } ] ")"
+                   | id "(" [ id { "," id } ] ")"
 
-```
-
-```{todo}
-The `with(env id) block` and `with(env id) expression` productions come from
-the grammar, but I suspect the only valid block/expression summary is the third
-option (function/ghost summaries).  See last section of this document.
 ```
 
 See {doc}`types` for the `evm_type` and `cvl_type` productions.  See {doc}`basics`
@@ -132,7 +124,9 @@ Summarized function calls
 Whether a function call is replaced by an approximation depends on the context
 in which the function is called in addition to the application policy for its
 signature.  If present, the application policy must be either `ALL` or
-`UNRESOLVED`; the default policy is TODO.  The decision is made as follows:
+`UNRESOLVED`; the default policy is `ALL` with the exception of `DISPATCHER`
+summaries, which have a default of `UNRESOLVED`.  The decision is made as
+follows:
 
  * If the function is called from CVL rather than from contract code then it is
    never replaced by a summary.
@@ -148,15 +142,6 @@ signature.  If present, the application policy must be either `ALL` or
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
 
-```{todo}
-The default application policy is currently undocumented.
-```
-
-```{todo}
-The old documentation is ambiguous about the behavior of `UNRESOLVED` summaries
-for internal methods.
-```
-
 Method summaries apply to all calls, regardless of the receiver address.  There
 is currently no way to apply different summaries to different contracts or to
 summarize some calls and not others to methods with the same ABI signature.
@@ -171,7 +156,8 @@ Summary types
 
 These four summary types treat the summarized methods as view methods: the
 summarized methods are replaced by approximations that do not update the state
-of any contract.  They differ in the assumptions made about the return value:
+of any contract (aside from any balances transferred with the method call
+itself).  They differ in the assumptions made about the return value:
 
  * The `ALWAYS(v)` approximation assumes that the method always returns `v`
 
@@ -184,14 +170,6 @@ of any contract.  They differ in the assumptions made about the return value:
 
  * The `NONDET` approximation makes no assumptions about the return values; each
    call to the summarized method may return a different result.
-
-```{todo}
-The old documentation seems to imply that the ETH balances for calls to
-`ALWAYS`, `CONSTANT`, and `PER_CALLEE_CONSTANT` do not account for the ETH value
-passed in the function call, while `NONDET` does.
-
-This seems like the wrong behavior?
-```
 
 ```{todo}
 The following note from the old documentation needs clarification:
@@ -282,9 +260,9 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
    assumed to change the state of external contracts arbitrarily but to leave
    the caller's state unchanged.
 
- * Calls to library methods are assumed to change the caller's state in an
-   arbitrary way, but are assumed to leave the state of other contracts
-   unchanged.
+ * Calls to library methods and `delegatecall`s are assumed to change
+   the caller's storage in an arbitrary way, but are assumed to leave ETH
+   balances and the storage of other contracts unchanged.
 
 ```{todo}
 The effect of library calls on the current contract's ETH balance is unclear.
@@ -323,12 +301,4 @@ variables are not supported.
 Functions used as summaries are not allowed to call contract functions.  They
 may only accept parameter types that are expressible in solidity; extended CVL
 types like `method` and `mathint` cannot be passed as arguments.
-
-### Undocumented summaries
-
-```{todo}
-Block summaries are undocumented.  Expression summaries other than function
-summaries are also undocumented.  These are possible to write according to the
-parser, but I'm not sure if function summaries are the only supported ones.
-```
 
