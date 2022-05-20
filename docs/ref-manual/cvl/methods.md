@@ -117,15 +117,6 @@ function calls.  The available types are described in the following sections:
 The application policy determines which function calls are replaced by
 approximations.  See {ref}`summaries` for details.
 
-```{todo}
- - in Solidity, finer-grained method resolution for internal functions than for
-   external functions
- - we can only do the disambiguation available for external calls
-
- - we take internal functions, convert them to sighashes, if ambiguous, we give
-   an error, otherwise we use the sighash for summarization matching.
-```
-
 (summaries)=
 Which function calls are summarized
 -----------------------------------
