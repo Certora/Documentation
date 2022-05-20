@@ -117,9 +117,39 @@ function calls.  The available types are described in the following sections:
 The application policy determines which function calls are replaced by
 approximations.  See {ref}`summaries` for details.
 
+```{todo}
+ - in Solidity, finer-grained method resolution for internal functions than for
+   external functions
+ - we can only do the disambiguation available for external calls
+
+ - we take internal functions, convert them to sighashes, if ambiguous, we give
+   an error, otherwise we use the sighash for summarization matching.
+```
+
 (summaries)=
 Which function calls are summarized
 -----------------------------------
+
+Method summaries apply to all calls with the matching ABI signature, including
+internal methods and external methods on all contracts.  There is currently no
+way to apply different summaries to different contracts or to summarize some
+calls and not others to methods with the same ABI signature.  For this reason,
+it is not possible to specify a summary for a method that is qualified by a
+contract name.
+
+The Solidity compiler allows internal functions to have richer type
+specifications than just ABI specifications, but the prover only considers the
+ABI encoding to determine whether a method call should be summarized.  For
+example, internal functions can accept struct arguments, but the structs are
+replaced by tuples in the ABI signature.  If the generated ABI signature of an
+internal method call matches the ABI signature specified in the methods block,
+it will be a candidate for summarization even if the declared argument types in
+the Solidity function don't exactly match the declared argument types in the
+`methods` block.
+
+If there are multiple internal functions that have the same
+ABI signature, and that signature is summarized, the Prover will report an
+error.
 
 Whether a function call is replaced by an approximation depends on the context
 in which the function is called in addition to the application policy for its
@@ -142,11 +172,6 @@ follows:
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
 
-Method summaries apply to all calls, regardless of the receiver address.  There
-is currently no way to apply different summaries to different contracts or to
-summarize some calls and not others to methods with the same ABI signature.
-For this reason, it is not possible to specify a summary for a method that is
-qualified by a contract name.
 
 Summary types
 -------------
@@ -162,33 +187,18 @@ itself).  They differ in the assumptions made about the return value:
  * The `ALWAYS(v)` approximation assumes that the method always returns `v`
 
  * The `CONSTANT` approximation assumes that all calls to methods with the given
-   signature always return the same result.
+   signature always return the same result.  If the summarized method is
+   expected to return multiple values, the returned value is assumed to have
+   the correct size.
 
  * The `PER_CALLEE_CONSTANT` approximation assumes that all calls to the method
    on a given receiver contract must return the same result, but that the
    returned value may be different for different receiver contracts.
 
  * The `NONDET` approximation makes no assumptions about the return values; each
-   call to the summarized method may return a different result.
-
-```{todo}
-The following note from the old documentation needs clarification:
-
-**A technical remark about `returnsize`:** For `CONSTANT` and `PER_CALLEE`
-summaries, the summaries extend naturally to functions that return multiple
-return values. The assumption is that the return size in bytes is a multiple of
-32 bytes (as standard in Solidity). The `returnsize` variable is updated
-accordingly and is determined by the size requested by the caller.
-
-If you do not trust the target contract to return exactly the number of
-arguments dictated by the Solidity-level interface, **do not use** `CONSTANT`
-and `PER_CALLEE_CONSTANT`summaries.
-
-In very special cases, one may set the `returnsize` optimistically even when
-havocing, based on information about the invoked function's signature and the
-available functions in the verification context, set with
-`-optimisticReturnsize`.
-```
+   call to the summarized method may return a different result.  The number of
+   returned values is *not* assumed to match the requested number, unless
+   {ref}`-optimisticReturnsize` is specified.
 
 (havoc-summary)=
 ### Havoc summaries: `HAVOC_ALL` and `HAVOC_ECF`
@@ -213,6 +223,12 @@ reentrant.  This summarization approximates a method call by assuming it can
 have arbitrary effects on contracts other than the contract being verified, but
 that it can neither change the current contract's state nor decrease its ETH
 balance (aside from value transferred by the method call itself).
+
+The prover makes no assumptions about the return value of a havoc summary.  For
+methods that return multiple values, the approximations are allowed to return
+the incorrect number of results.  In most cases, this will cause the calling
+method to revert.  If you want to ignore this particular revert condition, you
+can pass the {ref}`-optimisticReturnsize` option.
 
 (dispatcher)=
 ### `DISPATCHER` summaries
