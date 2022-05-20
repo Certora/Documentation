@@ -91,12 +91,12 @@ from CVL do not need to explicitly pass an {term}`environment` value as the
 first argument.  Second, the prover will verify that the method implementation
 in the contract being verified does not depend on any of the environment
 variables.  The results of this check are displayed on the verification report
-as a separate rule called `envfreeFuncsStaticCheck`.
+as separate rules called `envfreeFuncsStaticCheck` and
+`envfreeFuncsAreNonpayable`[^envfree_nonpayable].
 
-```{todo}
-There is a separate check called `envfreeFuncsAreNonpayable`.  Why is this
-necessary?
-```
+[^envfree_nonpayable]: The effect of payable functions on the contract's
+  balance depends on the message value, so payable functions also require an
+  `env`.
 
 Finally, the method entry may contain an optional summarization (indicated by
 `=>` followed by the summary type and an optional application policy).  A
@@ -118,8 +118,8 @@ The application policy determines which function calls are replaced by
 approximations.  See {ref}`summaries` for details.
 
 (summaries)=
-Summarized function calls
--------------------------
+Which function calls are summarized
+-----------------------------------
 
 Whether a function call is replaced by an approximation depends on the context
 in which the function is called in addition to the application policy for its
@@ -263,16 +263,6 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
  * Calls to library methods and `delegatecall`s are assumed to change
    the caller's storage in an arbitrary way, but are assumed to leave ETH
    balances and the storage of other contracts unchanged.
-
-```{todo}
-The effect of library calls on the current contract's ETH balance is unclear.
-
-The following comment from the old docs should be clarified:
-
-If the contract you are verifying relies heavily on modification of ETH
-balances, it's recommended to identify the balance-modifying functions and mark
-them `HAVOC_ALL` if necessary.
-```
 
 [^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
   opcode used to make the call: calls made using the `STATICCALL` opcode use
