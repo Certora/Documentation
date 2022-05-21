@@ -163,6 +163,10 @@ follows:
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
 
+```{todo}
+The `@dontsummarize` tag on method calls is currently undocumented but likely
+affects the summarization behavior.  See {ref}`call-expr`.
+```
 
 Summary types
 -------------
@@ -179,12 +183,14 @@ itself).  They differ in the assumptions made about the return value:
 
  * The `CONSTANT` approximation assumes that all calls to methods with the given
    signature always return the same result.  If the summarized method is
-   expected to return multiple values, the returned value is assumed to have
-   the correct size.
+   expected to return multiple results, the approximation returns the correct
+   number of values.
 
  * The `PER_CALLEE_CONSTANT` approximation assumes that all calls to the method
    on a given receiver contract must return the same result, but that the
-   returned value may be different for different receiver contracts.
+   returned value may be different for different receiver contracts.  If the
+   summarized method is expected to return multiple results, the approximation
+   returns the correct number of values.
 
  * The `NONDET` approximation makes no assumptions about the return values; each
    call to the summarized method may return a different result.  The number of
