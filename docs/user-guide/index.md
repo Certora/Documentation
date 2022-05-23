@@ -7,6 +7,7 @@ Certora User's Guide
 intro.md
 getting-started/index.md
 examples.md
+properties/index.md
 patterns/index.md
 ```
 
