@@ -25,6 +25,25 @@ To build the documentation, run `make` in the current directory; this will
 generate the html output in `_build/html/index.html`.  `make help` will list
 other options for compiling the documentation.
 
+Style guide
+-----------
+
+ - Use "Title Case" for document headings (that appear in the TOC on the left)
+ - Use "Sentence case" for section headings
+ - Run `make spelling` and fix warnings before submitting a PR
+ - Use the `term` feature when referring to a new term for the first time, this
+   links to the glossary. 
+   
+ - In the reference manual, prefer descriptions over examples; use examples to
+   help when the descriptions are not entirely clear.  Descriptions can outline
+   the entire space of correct and incorrect behavior, while it is not always
+   clear how to generalize from examples.
+
+   In the future, we should probably prepare copious examples and attach them,
+   but our overreliance on examples in earlier docs has left a lot of things
+   underspecified.
+
+
 Myst markdown
 -------------
 
