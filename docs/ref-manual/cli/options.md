@@ -174,7 +174,7 @@ There are 3 kinds of sanity checks:
      require x != y;
      ...
      assert x < 2 || x >= 2,
-      "x must be smaller than 2 or greater then or equal to 2";
+      "x must be smaller than 2 or greater than or equal to 2";
    }
    ```
    Since every `uint` satisfies the assertion, the assertion is tautological,
