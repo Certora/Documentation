@@ -121,33 +121,33 @@ approximations.  See {ref}`summaries` for details.
 Which function calls are summarized
 -----------------------------------
 
-Method summaries apply to all calls with the matching ABI signature, including
+To decide whether to summarize a given internal or external function call, the
+prover first determines whether it matches any of the declarations in the
+methods block, and then uses the declaration and the calling context to
+determine whether the call should be replaced by an approximation.
+
+To determine whether a call matches a declaration, the tool computes an ABI
+signature for both the call and the method summary.  This ABI signature may be
+simpler than the declaration in Solidity or the `methods` block, because
+ABI signatures are less expressive than Solidity type signatures.  In
+particular, structs are converted into tuples and location annotations such as
+`memory` or `calldata` are dropped.  If there are multiple internal functions or
+method summaries that are converted to the same summarized ABI signature, the
+Prover will report an error.
+
+Method summaries match all calls with the matching ABI signature, including
 internal methods and external methods on all contracts.  There is currently no
 way to apply different summaries to different contracts or to summarize some
 calls and not others to methods with the same ABI signature.  For this reason,
 it is not possible to specify a summary for a method that is qualified by a
 contract name.
 
-The Solidity compiler allows internal functions to have richer type
-specifications than just ABI specifications, but the prover only considers the
-ABI encoding to determine whether a method call should be summarized.  For
-example, internal functions can accept struct arguments, but the structs are
-replaced by tuples in the ABI signature.  If the generated ABI signature of an
-internal method call matches the ABI signature specified in the methods block,
-it will be a candidate for summarization even if the declared argument types in
-the Solidity function don't exactly match the declared argument types in the
-`methods` block.
-
-If there are multiple internal functions that have the same
-ABI signature, and that signature is summarized, the Prover will report an
-error.
-
-Whether a function call is replaced by an approximation depends on the context
-in which the function is called in addition to the application policy for its
-signature.  If present, the application policy must be either `ALL` or
-`UNRESOLVED`; the default policy is `ALL` with the exception of `DISPATCHER`
-summaries, which have a default of `UNRESOLVED`.  The decision is made as
-follows:
+To determine whether a function call is replaced by an approximation, the
+Prover considers the context in which the function is called in addition to the
+application policy for its signature.  If present, the application policy must
+be either `ALL` or `UNRESOLVED`; the default policy is `ALL` with the exception
+of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.  The decision
+to replace a call by an approximation is made as follows:
 
  * If the function is called from CVL rather than from contract code then it is
    never replaced by a summary.
