@@ -67,7 +67,7 @@ for the `id` production.  See {doc}`statements` for the `block` production, and
 Entries in the `methods` block
 ------------------------------
 
-Each entry in the methods block denotes either the sighash or the ABI signature
+Each entry in the methods block denotes either the sighash or the type signature
 for a contract method.  Methods of contracts that are introduced by {doc}`using
 statements <using>` can also be described by prefixing the method name with
 the contract variable name.  For example, if contract `C` is introduced by the
@@ -132,8 +132,8 @@ simpler than the declaration in Solidity or the `methods` block, because
 ABI signatures are less expressive than Solidity type signatures.  In
 particular, structs are converted into tuples and location annotations such as
 `memory` or `calldata` are dropped.  If there are multiple internal functions or
-method summaries that are converted to the same summarized ABI signature, the
-Prover will report an error.
+multiple method summaries that are converted to the same summarized ABI
+signature, the Prover will report an error.
 
 Method summaries match all calls with the matching ABI signature, including
 internal methods and external methods on all contracts.  There is currently no
