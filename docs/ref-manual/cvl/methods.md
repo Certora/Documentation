@@ -255,11 +255,10 @@ of the unknown contract is determined by the optional boolean argument to the
 
  * With `DISPATCHER(true)`, only the known contract instances are considered
 
-The most commonly used option is `DISPATCHER(true)`, because in most cases the
-behavior of `DISPATCHER(false)` is equivalent to that of `AUTO`.
-`DISPATCHER(false)` only behaves differently from `AUTO` when one of the known
-contracts exhibits behavior that `AUTO` assumes is impossible (such as
-reentrancy).
+```{note}
+The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
+all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
+```
 
 (auto-summary)=
 ### `AUTO` summaries
