@@ -21,8 +21,9 @@ There are two kinds of declarations:
 
 ```{caution}
 Summary declarations change the way that some function calls are interpreted,
-and are therefore {term}`unsound` (with the exception of `HAVOC_ALL` summaries,
-which are always sound).
+and are therefore {term}`unsound` (with the exception of `HAVOC_ALL` summaries
+which are always sound, and `NONDET` summaries which are sound for `view`
+functions).
 ```
 
 ```{contents}
