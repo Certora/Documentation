@@ -296,8 +296,8 @@ are replaced by calls to the specified CVL functions.
 
 To use a CVL function or ghost as a summary, use a call to the function in
 place of the summary type.  The function call can only refer directly to the
-environment and variables defined as arguments in the summary declarations;
-expressions involving those variables are not supported.
+variables defined as arguments in the summary declarations; expressions
+that combine those variables are not supported.
 
 Functions used as summaries are not allowed to call contract functions.  They
 may only accept parameter types that are expressible in solidity; extended CVL
