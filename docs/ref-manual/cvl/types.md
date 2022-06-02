@@ -281,7 +281,7 @@ stake more, you earn more":
 
 ```cvl
 rule bigger_stake_more_earnings() {
-    storage initial;
+    storage initial = lastStorage;
     env e;
 
     uint less; uint more;
