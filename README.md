@@ -3,7 +3,7 @@ Certora public documentation
 
 This repository contains the public documentation for the Certora Prover.
 
-The documentation is hosted by [readthedocs.com](rtd)
+The documentation is hosted by [readthedocs.com][rtd]
 at [docs.certora.com](docs).  It is generated using the [Sphinx](sphinx)
 documentation system and the [myst markdown parser](myst).
 
