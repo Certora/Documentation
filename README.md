@@ -3,9 +3,9 @@ Certora public documentation
 
 This repository contains the public documentation for the Certora Prover.
 
-The documentation is hosted by [readthedocs.com](rtd)
-at [docs.certora.com](docs).  It is generated using the [Sphinx](sphinx)
-documentation system and the [myst markdown parser](myst).
+The documentation is hosted by [readthedocs.com][rtd]
+at [docs.certora.com][docs].  It is generated using the [Sphinx][sphinx]
+documentation system and the [myst markdown parser][myst].
 
 To update the documentation, please submit a PR.  The documentation group will
 review and provide feedback.  In order for the PR to be accepted, the
@@ -57,7 +57,7 @@ File structure
 
 Most of the documentation is stored in markdown files.  The markdown syntax is
 extended with features of ReStructuredText (rst) using the
-[Myst Parser](myst).
+[Myst Parser][myst].
 
 The root of the document tree is `index.md`; it includes a table of contents that
 references the remainder of the documentation (see {ref}`toc` below)
@@ -89,7 +89,7 @@ Myst markdown
 -------------
 
 The following formatting features are of particular note if you are already
-familiar with markdown but not RST.  For full details, see the [Myst documentation](myst).
+familiar with markdown but not RST.  For full details, see the [Myst documentation][myst].
 
 (toc)=
 ### Table of contents tree
