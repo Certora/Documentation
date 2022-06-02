@@ -22,7 +22,7 @@ envfree
 executable
 executables
 getter
-getter
+getters
 hashcode
 havoc
 havoced
