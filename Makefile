@@ -8,7 +8,7 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = build
 
-default: html
+default: spelling html
 
 # Put it first so that "make" without argument is like "make help".
 help:

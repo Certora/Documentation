@@ -185,7 +185,7 @@ solidity global variables into an "environment": an object of the special type
 into a contract function (unless the contract function is declared
 {ref}`envfree <envfree>`).
 
-For example, to call a soldity function `deposit(uint amount)`, a spec must
+For example, to call a Solidity function `deposit(uint amount)`, a spec must
 explicitly pass in an additional environment argument:
 
 ```cvl
@@ -202,7 +202,7 @@ environment `e`:
 
 * `e.msg.address` - address of the contract being verified, e.g., `Bank`
 * `e.msg.sender` - address of the sender of the message 
-* `e.msg.value` - number of wei sent with the message
+* `e.msg.value` - number of Wei sent with the message
 * `e.block.number` - current block number
 * `e.block.timestamp` - current block's time stamp
 * `e.tx.origin` - original message sender
@@ -247,7 +247,7 @@ possible set of method arguments.
 Properties of methods can be extracted from methods using a field-like syntax. 
 The following fields are available on a method `m`:
 
-*   `m.selector`   - the hashcode of the method 
+*   `m.selector`   - the ABI signature of the method 
 *   `m.isPure`     - true when m is declared with the pure attribute
 *   `m.isView`     - true when m is declared with the view attribute
 *   `m.isFallback` - true when `m` is the fallback function

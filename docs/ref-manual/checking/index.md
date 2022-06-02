@@ -1,4 +1,4 @@
-Checking specifications
+Checking Specifications
 =======================
 
 Verification is only as good as the specifications.  Bugs in specifications can

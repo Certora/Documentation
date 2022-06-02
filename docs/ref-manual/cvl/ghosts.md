@@ -103,7 +103,7 @@ rule update_changes_no_other(address user, address other) {
 }
 ```
 
-Here the `updated` ghost is used to communicate infromation from the `userInfo`
+Here the `updated` ghost is used to communicate information from the `userInfo`
 hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
 
 Initial state axioms

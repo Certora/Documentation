@@ -4,9 +4,9 @@ Ghost Functions
 Uninterpreted Sorts
 -------------------
 
-CVT specifications support normal solidity primitives (`uint256`, `address` etc.) in addition to some of it's own (for example `mathint`). These types are _interpreted_ meaning that their values are ascribed some sort of semantics (for example a bitvector of width 256 can be used inside arithmetic operations or comparison operations and has specific semantics associated i.e. `2 + 2 = 4` or `x = y => z + x = z + y` etc.).
+CVT specifications support normal solidity primitives (`uint256`, `address` etc.) in addition to some of it's own (for example `mathint`). These types are _interpreted_ meaning that their values are ascribed some sort of semantics (for example a bit vector of width 256 can be used inside arithmetic operations or comparison operations and has specific semantics associated i.e. `2 + 2 = 4` or `x = y => z + x = z + y` etc.).
 
-While it can be useful to use interpreted sorts within uninterpreted functions, for reasons we won't get into here, sometimes it is easier to use an _uninterpreted sort_ that doesn't carry around all the "baggage," so to speak, associated with its interpretation. This is where uninterpreted sorts come in. In CVL an uninterpeted sort is simply declared at the top level of a specification. For example
+While it can be useful to use interpreted sorts within uninterpreted functions, for reasons we won't get into here, sometimes it is easier to use an _uninterpreted sort_ that doesn't carry around all the "baggage," so to speak, associated with its interpretation. This is where uninterpreted sorts come in. In CVL an uninterpreted sort is simply declared at the top level of a specification. For example
 
 ```cvl
 sort MyUninterpSort;
