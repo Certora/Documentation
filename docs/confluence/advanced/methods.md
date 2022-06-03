@@ -16,24 +16,6 @@ indicate havocing.
 Internal Function Summaries
 ===========================
 
-Summaries Always Inserted
--------------------------
-
-Summaries for **external** functions are only inserted when an implementation
-of that function cannot be found, and so we default to some summary that we,
-the verifier, sees fit. _However_, internal functions can always be found and
-so it only makes sense to force-replace the body of the function (as opposed to
-filling in for one that could not be found).‌
-
-Feature Limitations:
---------------------
-
-*   Function must have primitive parameter types and return types (`bool`,
-    `address`, `uintX`, `bytesX`)
-    
-*   Functions must be pure
-    
-
 Allowed Summaries
 -----------------
 
