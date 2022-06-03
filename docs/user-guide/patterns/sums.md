@@ -1,4 +1,4 @@
-Tracking sums
+Tracking Sums
 =============
 
 ```{todo}

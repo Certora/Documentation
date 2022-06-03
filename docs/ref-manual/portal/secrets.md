@@ -8,7 +8,7 @@ but they can also be helpful for users in some cases.  This page lists these
 outputs and explains how to read them.
 
 
-Job Status
+Job status
 ----------
 
 The job status page contains information about the job, including the arguments
@@ -31,7 +31,7 @@ https://vaas-stg.certora.com/jobStatus/65540/270dce9623d492937d82/?anonymousKey=
                              ─────────
 ```
 
-Additional Error Reports
+Additional error reports
 ------------------------
 
 ```{note}
@@ -70,7 +70,7 @@ https://vaas-stg.certora.com/output/65540/270dce9623d492937d82/Results.txt?anony
                                                               ─────────────
 ```
 
-Timeout Analysis
+Timeout analysis
 ----------------
 
 The Certora Prover performs several different kinds of bytecode analysis to
@@ -118,7 +118,7 @@ https://vaas-stg.certora.com/output/65540/270dce9623d492937d82/statsdata.json?an
                                                               ────────────────
 ```
 
-Zip Ouptut
+Zip output
 ----------
 
 When a job is submitted, all of the input and output are stored.  You can
@@ -143,5 +143,5 @@ changed).
 
 The zip output cannot be downloaded unless you have logged in to the portal with
 an appropriately authorized key.  If you receive a "Forbidden" error message,
-[log in][using.md] to the main Certora Portal page with your Certora key.
+[log in](using) to the main Certora Portal page with your Certora key.
 

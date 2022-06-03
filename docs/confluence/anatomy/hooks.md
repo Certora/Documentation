@@ -25,7 +25,7 @@ Inside each rule, CVT takes these hooks and looks for any reads or writes to sto
 Hook Patterns
 -------------
 
-### Sload and Sstore
+### `Sload` and `Sstore`
 
 `Sload` and `Sstore` are two `TAC` primitives representing a _read_ from storage and a _write_ to storage, respectively. A pattern for an `Sload` will bind a variable to provide access to "the value loaded", and a pattern for an `Sstore` will bind a variable both for "the value stored" and (optionally) "the old value that was overwritten." For example:
 
@@ -149,7 +149,7 @@ hook Sstore m_1[KEY uint256 k].(offset 64) uint256 third STORAGE {
 }
 ```
 
-This is allowed only because the offset is **32-byte aligned**. Any non- 32-byte aligned offset will not typecheck. However, using a clever definition, we can still get values from within packed structs.
+This is allowed only because the offset is **32-byte aligned**. Any non- 32-byte aligned offset will not type-check. However, using a clever definition, we can still get values from within packed structs.
 
 ### Manually Unpacking Structs
 

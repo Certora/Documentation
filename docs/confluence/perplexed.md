@@ -43,12 +43,16 @@ SMT is the hardest nut to crack! There could be so many reasons that they occur.
 Those would show up if the code is inherently complex. Red flags to look for:
 
 1.  **Tool analyses failing.** Open the `statsdata.json` file. For example, if you have a link  
-    https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc  
+    ```
+    https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc
+    ```
     then the file would be in  
+    ```
     https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/**statsdata.json**?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc  
+    ```
     Look at the `ANALYSIS` key. If you see any `false` entries on keys that are not `constructor()` or `ecrecover` - report in #bugs.
     
-2.  **A non-empty “Call Resolution” warnings table.** Delegatecalls could be tricky and invalidate some of the Prover’s optimizations that were built to avoid timeouts. If such appear, try to scope out the verification to ignore the delegatecalls. Check with a security person, a more experienced user, or even the customer if you’re not sure if it’s safe to ignore.
+2.  **A non-empty “Call Resolution” warnings table.** Delegate calls could be tricky and invalidate some of the Prover’s optimizations that were built to avoid timeouts. If such appear, try to scope out the verification to ignore the `delegatecall`s. Check with a security person, a more experienced user, or even the customer if you’re not sure if it’s safe to ignore.
     
 3.  **Complex data types.** As of today, passing around complex structs and arrays between contracts and within internal functions could be complicated for the tool. Try to harness those.
     
@@ -79,16 +83,20 @@ At this point, if sanity passed and in reasonable times (not more than 1-2 minut
 Errors
 ------
 
-### OOM - Out of Memory
+### Out of Memory (OOM)
 
 Report immediately to the development team in Slack on the #bugs channel, along with the zip file for the run. Context-switch to another contract or rule if you can. If you are aware of a complex library or function in the code - try to remove it. Also, try to understand where the tool OOM’d - follow the process described in the global timeout section.
 
 ### Opaque errors in the output page
 
 Jump to `FinalResults.html` to get more information. For example, if you have a link  
-https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc  
+```
+https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc
+```
 then the file would be in  
+```
 https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/**FinalResults.html**?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc
+```
 
 Share the results with the development team in the #bugs channel on slack. The comment could still help you get started on debugging.
 
@@ -96,7 +104,7 @@ Share the results with the development team in the #bugs channel on slack. The c
 
 One of the most common reasons for hooks failing is that the storage analysis failed. Potential causes:
 
-1.  You have an unresolved library call in the contract. This could be seen from the Call Resolution Warnings table. Essentially, an unknown delegatecall can freely modify the contract's storage and violate any storage layout defined by the main contract we verify. So the storage analysis fails because it can be unsound to infer anything about the storage.
+1.  You have an unresolved library call in the contract. This could be seen from the Call Resolution Warnings table. Essentially, an unknown `delegatecall` can freely modify the contract's storage and violate any storage layout defined by the main contract we verify. So the storage analysis fails because it can be unsound to infer anything about the storage.
     
 2.  Your code is compiled with optimizations. Solidity's optimizations are notoriously hard to process sometimes. Report in #bugs and try to run without them (some codes will fail to compile, in which case a more complicated solution should be devised, ideally in cooperation with another team member or even the customer).
     
@@ -120,14 +128,14 @@ A counterexample that looks fishy does not rule out a potential bug that the rul
 
 4.  **Math.** Sometimes the tool overapproximates math, in particular, multiplication by non-constant, division, and modulo operations. The development team tries to minimize the number of times it happens, but it could still happen. Follow guidelines for bitwise operations as stated above.
     
-5.  **Aliasing.** Be on the lookout if your environment’s `msg.sender` is the same as `currentContract` or any linked contract. The tool should report these more clearly but read the calltrace carefully. Also, note trivial assignments like 0.
+5.  **Aliasing.** Be on the lookout if your environment’s `msg.sender` is the same as `currentContract` or any linked contract. The tool should report these more clearly but read the call trace carefully. Also, note trivial assignments like 0.
     
-6.  **Correct storage modeling.** Suppose you have a rule that calls some getter, then you call a function that’s expected to affect the results of that getter, but in the counterexample it stays the same. It could be that the code invoked is not reaching the expected write to the relevant storage slot, or it computed the slot’s address differently. The deepest level in the calltrace for stores and loads will show the actual number used for the slot’s address, so you can find-in-page the slot number from the getter and see if you find any match for it inside the function.
+6.  **Correct storage modeling.** Suppose you have a rule that calls some getter, then you call a function that’s expected to affect the results of that getter, but in the counterexample it stays the same. It could be that the code invoked is not reaching the expected write to the relevant storage slot, or it computed the slot’s address differently. The deepest level in the call trace for stores and loads will show the actual number used for the slot’s address, so you can find-in-page the slot number from the getter and see if you find any match for it inside the function.
     
 
 ### Known issues
 
-All of these issues already appear in our todo-list, but it takes time to handle them.
+All of these issues already appear in our to-do list, but it takes time to handle them.
 
 1.  There is no support for structs in CVL. Struct return types can be handled as tuples, but this will work only for simple types.
     

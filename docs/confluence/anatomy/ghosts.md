@@ -4,7 +4,7 @@ Ghosts
 What are ghosts?
 ----------------
 
-At their core, ghosts are just {ref}`uninterpreted functions <uninterp-functions>`. These uninterpreted functions by themselves wouldn't really be "ghosts" per-se. However, along with **axioms** and **hooks**, these uninterpreted functions can be used to model some contract state that isn't explicitly in the contract (hence it is a “ghost” state). In our canonical example, we use ghosts to keep track of the sum of balances in a bank contract.
+At their core, ghosts are just {ref}`uninterpreted functions <uninterp-functions>`. These uninterpreted functions by themselves wouldn't really be "ghosts" per se. However, along with **axioms** and **hooks**, these uninterpreted functions can be used to model some contract state that isn't explicitly in the contract (hence it is a “ghost” state). In our canonical example, we use ghosts to keep track of the sum of balances in a bank contract.
 
 A Simple Bank Example
 ---------------------
@@ -69,7 +69,13 @@ There are a few things going on here.
     
 2.  We declared a `hook`. This hook tells the tool to analyze the rule and find every `Sstore` (write) to an entry in `balances`. It binds the _stored value_ to the name `balance` and the _old value_ to the name `old_balance`.
     
-3.  We defined a _ghost update_ inside the _body_ of the hook. We used a `havoc assuming` statement to mutate the ghost function. The `havoc assuming` statement --- in this case `havoc ghostSupply assuming` binds `ghostSupply@new()`, the havoc'd version, and `ghostSupply@old()` the pre-havoc version. `ghostSupply` does not exist to the right of `assuming`. We then constrain the new version in terms of the old.
+3.  We defined a _ghost update_ inside the _body_ of the hook. We used a `havoc
+    assuming` statement to mutate the ghost function. The `havoc
+    assuming` statement --- in this case `havoc ghostSupply
+    assuming` binds `ghostSupply@new()`, the havoced version,
+    and `ghostSupply@old()` the previous version. `ghostSupply` does not exist
+    to the right of `assuming`. We then constrain the new version in terms of
+    the old.
     
 
 When all of these work in conjunction, CVT successfully proves the rule `totalSupplyInvariant`.

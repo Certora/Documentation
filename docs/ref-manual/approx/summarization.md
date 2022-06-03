@@ -1,4 +1,4 @@
-Method summarization
+Method Summarization
 ====================
 
 ```{todo}
