@@ -118,6 +118,11 @@ function calls.  The available types are described in the following sections:
 The application policy determines which function calls are replaced by
 approximations.  See {ref}`summaries` for details.
 
+```{todo}
+Some of the method summary types are unsupported for methods having certain
+argument or return types.  The exact limitations are currently undocumented.
+```
+
 (summaries)=
 Which function calls are summarized
 -----------------------------------
@@ -299,7 +304,7 @@ place of the summary type.  The function call can only refer directly to the
 variables defined as arguments in the summary declarations; expressions
 that combine those variables are not supported.
 
-Functions used as summaries are not allowed to call contract functions.  They
-may only accept parameter types that are expressible in solidity; extended CVL
-types like `method` and `mathint` cannot be passed as arguments.
+There are a few restrictions on the functions that can be used as approximations:
+ - Functions used as summaries are not allowed to call contract functions.
+ - Functions used as summaries may not have accept arguments or return values that have struct or array types.
 
