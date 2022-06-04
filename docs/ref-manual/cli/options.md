@@ -1,7 +1,7 @@
 Certora Prover CLI Options
 ==========================
 
-The `certoraRun` utility invokes the Solidity compiler and afterwards sends the job to Certora’s servers. 
+The `certoraRun` utility invokes the Solidity compiler and afterwards sends the job to Certora's servers. 
 
 The most commonly used command is:
 
@@ -46,7 +46,7 @@ When you want to see if a suspect instruction can fail in the code, without writ
 If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:  
 `certoraRun Bank.sol:Investor --assert Investor`
 
-Most Frequently Used Options
+Most frequently used options
 ----------------------------
 
 ### `--msg`
@@ -258,7 +258,7 @@ When different contracts have to be compiled for different Solidity versions.
 ### `--path`
 
 **What does it do?**  
-Use the given path as the root of the source tree instead of the root of the filesystem.  
+Use the given path as the root of the source tree instead of the root of the file system.  
 **When to use it?**  
 By default, we use `$PWD/contracts` if exists, else `$PWD`. If the root of the source tree is not the default, you must use `--path`.  
 Example  
@@ -290,12 +290,14 @@ Options regarding source code loops
 
 **What does it do?**
 
-The Certora Prover unrolls loops - if the loop should be executed three times, it will copy the code inside the loop three times. After we finish the loop's iterations, we add an assertion to verify we have actually finished running the loop. For example, in a `while (a < b)` loop, after the loop’s unrolling, we add `assert a >= b`. We call this assertion the _loop unwind condition_.  
+The Certora Prover unrolls loops - if the loop should be executed three times, it will copy the code inside the loop three times. After we finish the loop's iterations, we add an assertion to verify we have actually finished running the loop. For example, in a `while (a < b)` loop, after the loop's unrolling, we add `assert a >= b`. We call this assertion the _loop unwind condition_.  
 This option changes the assertions of the loop unwind condition to requirements (in the case above `require a >= b`). That means, we ignore all the cases where the loop unwind condition does not hold, instead of considering them as a failure.  
 **When to use it?**  
-When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using [`--loop_iter](#loop_iter). Note that `--optimistic_loop` could cause [vacuous rules](#rule_sanity).  
+When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using [`--loop_iter`](#loop_iter). Note that `--optimistic_loop` could cause [vacuous rules](#rule_sanity).  
 **Example**  
-`certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
+```
 
 (--loop_iter)=
 ### `--loop_iter`
@@ -307,7 +309,9 @@ Sets the maximal number of loop iterations we verify for. The way the Certora Pr
 The default number of loop iterations we unroll is one. However, in many cases, bugs only occur when there are several iterations. Common scenarios include iteration over list elements. Two, or in some cases three, is usually the most you will ever need to uncover bugs.  
 **Example**
 
-`certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
+```
 
 Options that help reduce the running time
 -----------------------------------------
@@ -316,7 +320,7 @@ Options that help reduce the running time
 
 **What does it do?**
 
-Parametric rules will only verify the method with the given signature, instead of all public and external methods of the contract. Note that you will need to wrap the method’s signature with quotes, as the shell doesn’t interpret parenthesis correctly otherwise.
+Parametric rules will only verify the method with the given signature, instead of all public and external methods of the contract. Note that you will need to wrap the method's signature with quotes, as the shell doesn't interpret parenthesis correctly otherwise.
 
 **When to use it?**  
 When you are trying to solve/understand a counterexample of a parametric rule on a specific method.
@@ -327,7 +331,7 @@ When you are trying to solve/understand a counterexample of a parametric rule on
 ### `--cache`
 
 **What does it do?**  
-A cache in the cloud for optimizing the pre-analysis before running the SMT solvers. The cache used is the argument this option gets. If a cache with this name does not exist, it creates one with this name.  
+A cache in the cloud for optimizing the analysis before running the SMT solvers. The cache used is the argument this option gets. If a cache with this name does not exist, it creates one with this name.  
 **When to use it?**  
 By default, we do not use a cache. If you want to use a cache to speed up the building process, use this option.  
 **Example**  
@@ -341,7 +345,7 @@ The Certora Prover generates a logical formula from the specification and source
 **When to use it?**  
 The default time out for the solvers is 600 seconds. There are two use cases for this option.  
 One is to decrease the timeout. This is useful for simple rules, that are solved quickly by the SMT solvers. Here, it is beneficial to reduce the timeout, so that when a new code breaks the specification, the tool will fail quickly. This is the more common use case.  
-The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn’t solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.  
+The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.  
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`  
 
@@ -421,10 +425,10 @@ When you suspect you have an old installation. To install the newest version, us
 ### `--typecheck_only`
 
 **What does it do?**  
-Stops after running the Solidity compiler and typechecking of the spec, before submitting the verification task.
+Stops after running the Solidity compiler and type checking of the spec, before submitting the verification task.
 
 **When to use it?**  
-If you want only to check your spec, or include it in an automated task (e.g., a git pre-commit hook).  
+If you want only to check your spec, or include it in an automated task (e.g., a git `pre-commit` hook).  
 **Example**
 
 `certoraRun Bank.sol --verify Bank:bank.spec --typecheck_only`
@@ -458,4 +462,21 @@ When you want to run the same configuration, but save some run-time (for example
 `certoraRun Bank.sol --verify Bank:bank.spec --settings -saveRerunData`
 
 `certoraRun Bank.sol --verify Bank:bank.spec --rerun_verification rerun_checkBank.rerunbin`
+
+(--settings)=
+### `--settings`
+
+The `--settings` option allows you to provide fine-grained tuning options to the
+Prover.  `--settings` should be followed by a comma-separated list of options.
+
+```{todo}
+This list is incomplete.
+```
+
+(-optimisticReturnsize)=
+#### `--settings -optimisticReturnsize`
+
+This option determines whether {ref}`havoc summaries <havoc-summary>` assume
+that the called method returns the correct number of return values.
+
 

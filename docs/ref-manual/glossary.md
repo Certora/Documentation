@@ -29,7 +29,7 @@ hyperproperty
 
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
-  method variable, or using an overloaded function name.  The prover will
+  method variable, or using an overloaded function name.  The Prover will
   generate a separate report for each possible instantiation of the method.
   See {ref}`parametric-rules` for more information.
 

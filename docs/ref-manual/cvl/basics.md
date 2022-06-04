@@ -1,4 +1,4 @@
-Basic syntax
+Basic Syntax
 ============
 
 Comments
@@ -16,7 +16,7 @@ Identifiers in CVL have the same format as Solidity identifiers.
 Literals
 --------
 
-CVL supports integer literals in decimal or hexidecimal.  CVL does not support
+CVL supports integer literals in decimal or hexadecimal.  CVL does not support
 Solidity units or rational literals.
 
 CVL also supports string literals.

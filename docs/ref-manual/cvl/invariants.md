@@ -6,7 +6,7 @@ expected to hold.
 
 ```{caution}
 Even if an invariant is verified, it may still be possible to violate it.  This
-is a potential source of {term}`unsound`ness.  See {ref}`invariant-assumptions`
+is a potential source of {term}`unsoundness <unsound>`.  See {ref}`invariant-assumptions`
 for details.
 ```
 
@@ -128,7 +128,7 @@ methods for preservation, it will not report that the invariant can be
 falsified.
 
 For this reason, invariants that depend on the environment or on the state of
-external contracts are a potential source of {term}`unsound`ness, and should be
+external contracts are a potential source of {term}`unsoundness <unsound>`, and should be
 used with care.
 
 
@@ -142,14 +142,14 @@ external assumption about the system.  These assumptions can be written in
 
 ```{caution}
 Adding `require` statements to preserved blocks can be a source of
-{term}`unsound`ness, since the invariants are only guaranteed to hold if the
+{term}`unsoundness <unsound>`, since the invariants are only guaranteed to hold if the
 requirements are true for every method invocation.
 ```
 
 Recall that the Prover checks that a method preserves an invariant by first
-requiring the invariant (the pre-state check), then executing the method, and
-then asserting the invariant (the post-state check).  Preserved blocks are
-executed after the pre-state check but before executing the method.  They
+requiring the invariant (the prestate check), then executing the method, and
+then asserting the invariant (the poststate check).  Preserved blocks are
+executed after the prestate check but before executing the method.  They
 usually consist of `require` or `requireInvariant` statements, although other
 commands are also possible.
 
