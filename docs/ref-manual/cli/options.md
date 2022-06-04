@@ -463,3 +463,20 @@ When you want to run the same configuration, but save some run-time (for example
 
 `certoraRun Bank.sol --verify Bank:bank.spec --rerun_verification rerun_checkBank.rerunbin`
 
+(--settings)=
+### `--settings`
+
+The `--settings` option allows you to provide fine-grained tuning options to the
+Prover.  `--settings` should be followed by a comma-separated list of options.
+
+```{todo}
+This list is incomplete.
+```
+
+(-optimisticReturnsize)=
+#### `--settings -optimisticReturnsize`
+
+This option determines whether {ref}`havoc summaries <havoc-summary>` assume
+that the called method returns the correct number of return values.
+
+
