@@ -29,10 +29,11 @@ invariant ::= "invariant" id
 
 preserved_block ::= "preserved"
                     [ method_signature ]
-                    [ "fallback()" ]
                     [ "with" "(" params ")" ]
                     block
 
+method_signature ::= id "(" [ evm_type [ id ] { "," evm_type [ id ] } ] ")"
+                     | "fallback" "(" ")"
 ```
 
 See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
@@ -155,15 +156,14 @@ commands are also possible.
 
 Preserved blocks are listed after the invariant expression (and after the filter
 block, if any), inside a set of curly braces (`{ ... }`).  Each preserved block
-consists of the keyword `preserved` followed by an optional method signature 
-(or `fallback()`), an optional `with` declaration, and finally the block of commands 
-to execute.
+consists of the keyword `preserved` followed by an optional method signature, 
+an optional `with` declaration, and finally the block of commands to execute.
 
-If a preserved block specifies a method signature, the signature should
+If a preserved block specifies a method signature, the signature either be `fallback()` or should
 match one of the contract methods, and the preserved block only applies when
-checking preservation of that contract method.  The fallback() preserved block
+checking preservation of that contract method.  The `fallback()` preserved block
 applies only to the `fallback()` function that should be defined in the contract.
-The arguments of the method arein scope within the preserved block.  
+The arguments of the method are in scope within the preserved block.  
 If there is no method signature, the preserved is a default block that applies to 
 all methods that don't have a specific preserved block, including the `fallback()` method.
 
