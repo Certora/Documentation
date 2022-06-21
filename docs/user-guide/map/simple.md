@@ -62,7 +62,7 @@ Note that by default, the invocation of a function is assumed to succeed. That i
 
 After calling `insert`, we wish to examine if the mutated state is as expected. Therefore, we assert that calling `get(key)` is returning the value `value` inserted. It is possible to add an explanation string to the assertion, which may help in finding out which assertion was violated if a rule contains more than one assertion.
 
-We are now ready to run our the tool: suppose the contract is saved in a file called `SimpleMap.sol`, and the spec is saved in a file `simpleMap.spec`, we can run the tool as follows:
+We are now ready to run the tool: suppose the contract is saved in a file called `SimpleMap.sol`, and the spec is saved in a file `simpleMap.spec`, we can run the tool as follows:
 
 ```bash
 certoraRun SimpleMap.sol --verify SimpleMap:simpleMap.spec
@@ -149,7 +149,7 @@ And finally our rule is successfully verified.
 
 ### Inverses
 
-In some cases, we can reach wider coverage if we write rules that check the interaction of multiple functions with each other. In the map implementation, it is natural to check that insert and remove inverses of one another. Specifically, we'd like to check that:
+In some cases, we can reach wider coverage if we write rules that check the interaction of multiple functions with each other. In the map implementation, it is natural to check that insert and remove are inverses of one another. Specifically, we'd like to check that:
 
 *   Invoking `remove` after a successful `insert` must succeed too.
     
