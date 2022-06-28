@@ -16,5 +16,6 @@ that they can cause real bugs to be overlooked by the Prover.
 loops.md
 summarization.md
 harnessing.md
+array-hashes.md
 ```
 
