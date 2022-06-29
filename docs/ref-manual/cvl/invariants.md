@@ -159,7 +159,7 @@ block, if any), inside a set of curly braces (`{ ... }`).  Each preserved block
 consists of the keyword `preserved` followed by an optional method signature, 
 an optional `with` declaration, and finally the block of commands to execute.
 
-If a preserved block specifies a method signature, the signature either be `fallback()` or should
+If a preserved block specifies a method signature, the signature must either be `fallback()` or
 match one of the contract methods, and the preserved block only applies when
 checking preservation of that contract method.  The `fallback()` preserved block
 applies only to the `fallback()` function that should be defined in the contract.
