@@ -6,11 +6,11 @@ Repo Setup
 
 ### New Project
 
-For a new project, create a fork the customer's repository in the Certora GitHub.
+For a new project, create a fork of the customer's repository in the Certora GitHub.
 
-Create and switch to a new branch for the project, naming the branch to indicate the scope of the project with the scheme `certora/projectscope` e.g. `certora/governance` or `certora/erc1155`. This is the branch where most of the verification work will take place.
+Create and switch to a new branch for the project, naming the branch to indicate the scope of the project with the scheme `certora/projectscope`, e.g. `certora/governance` or `certora/erc1155`. This is the branch where most of the verification work will take place.
 
-If the project is the beginning of a planned multipart project with the same customer repository, it may make more sense to use the branch name to indicate the project start month e.g. `certora/march2022`. This branch naming scheme may also be helpful if the scope of the project isn't easy to label succinctly.
+If the project is the beginning of a planned multipart project with the same customer repository, it may make more sense to use the branch name to indicate the project start month, e.g. `certora/march2022`. This branch naming scheme may also be helpful if the scope of the project isn't easy to label succinctly.
 
 ### Existing Project
 
@@ -37,7 +37,7 @@ TODO: This directory is in the templates directory for the certora folder. Shoul
 
 ##### `harnesses/`
 
-Houses solidity files which serve as an interface between the Certora Prover and copies of the customer solidity files in the `munged/` directory. It is generally preferable to alter files through a harness rather than via munging. A guide to harnessing best-practices is available [here](). TODO: link to harnessing guide
+Houses solidity files which serve as an interface between the Certora Prover and copies of the customer solidity files in the `munged/` directory. It is generally preferable to alter files through a harness rather than via munging, discussed below. A guide to harnessing best-practices is available [here](). TODO: link to harnessing guide
 
 ##### `helpers/`
 
@@ -59,7 +59,7 @@ May also contain a subdirectory of scripts for use in continuous integration (CI
 
 ##### `specs/`
 
-Houses specification files written in the [Certora Verification Language](), or CVL. There is generally a single `.spec` file per contract under verification, although some files may verify multiple contracts. A tutorial on how to write spec files and run the Certora Prover is available [here](). TODO: link to tutorial. link to CVL documentation.
+Houses specification files written in the [Certora Verification Language](), or CVL. There is generally a single `.spec` file per contract under verification, although some files may verify multiple contracts. A tutorial on how to write specification files and run the Certora Prover is available [here](). TODO: link to tutorial. link to CVL documentation.
 
 #### Files
 
