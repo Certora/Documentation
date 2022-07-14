@@ -200,7 +200,6 @@ The value of the Solidity global variables can be extracted from the `env`
 object using a field-like syntax.  The following fields are available on an
 environment `e`:
 
-* `e.msg.address` - address of the contract being verified, e.g., `Bank`
 * `e.msg.sender` - address of the sender of the message 
 * `e.msg.value` - number of Wei sent with the message
 * `e.block.number` - current block number
