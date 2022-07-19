@@ -76,7 +76,7 @@ statement `using C as c`, then the method `f(uint)` of contract `c` can be
 referred to as `c.f(uint)`.
 
 It is possible for a method signature to appear in the `methods` block but not
-in the contract being verified.  In this case, the prover will skip any rules
+in the contract being verified.  In this case, the Prover will skip any rules
 that mention the missing method, rather than reporting an error.  This behavior
 allows reusing specifications on contracts that only support part of an
 interface: only the supported methods will be verified.
@@ -89,7 +89,7 @@ return type is taken from the contract method's return type.
 Following the `returns` clause is an optional `envfree` tag.  Marking a method
 with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
 from CVL do not need to explicitly pass an {term}`environment` value as the
-first argument.  Second, the prover will verify that the method implementation
+first argument.  Second, the Prover will verify that the method implementation
 in the contract being verified does not depend on any of the environment
 variables.  The results of this check are displayed on the verification report
 as separate rules called `envfreeFuncsStaticCheck` and
@@ -101,9 +101,9 @@ as separate rules called `envfreeFuncsStaticCheck` and
 
 Finally, the method entry may contain an optional summarization (indicated by
 `=>` followed by the summary type and an optional application policy).  A
-summarized declaration indicates that the prover should replace some calls to
+summarized declaration indicates that the Prover should replace some calls to
 the summarized function by an approximation.  This is an important technique
-for working around prover timeouts and also for working with external contracts
+for working around Prover timeouts and also for working with external contracts
 whose implementation is not fixed at verification time.
 
 The summary type determines what type of approximation is used to replace the
@@ -128,7 +128,7 @@ Which function calls are summarized
 -----------------------------------
 
 To decide whether to summarize a given internal or external function call, the
-prover first determines whether it matches any of the declarations in the
+Prover first determines whether it matches any of the declarations in the
 methods block, and then uses the declaration and the calling context to
 determine whether the call should be replaced by an approximation.
 
@@ -211,7 +211,7 @@ assumptions at all about the called function: it is allowed to have arbitrary
 side effects on the state of any contract (including the calling contract), and
 may return any value.  It can also change any contract's ETH balance in an
 arbitrary way.  In effect, calling a method that is summarized by `HAVOC_ALL`
-obliterates all knowlege that the prover has about the state of the contract
+obliterates all knowledge that the Prover has about the state of the contract
 before the call.
 
 The `HAVOC_ALL` approximation is {term}`sound`, but it can be overly
@@ -227,7 +227,7 @@ have arbitrary effects on contracts other than the contract being verified, but
 that it can neither change the current contract's state nor decrease its ETH
 balance (aside from value transferred by the method call itself).
 
-The prover makes no assumptions about the return value of a havoc summary.  For
+The Prover makes no assumptions about the return value of a havoc summary.  For
 methods that return multiple values, the approximations are allowed to return
 the incorrect number of results.  In most cases, this will cause the calling
 method to revert.  If you want to ignore this particular revert condition, you
@@ -244,20 +244,20 @@ methods defined by the ERC20 specification are often summarized using the
 If a function with a `DISPATCHER` summary is called, the Prover will assume
 that the receiver of the call is one of the known contract implementations
 containing the given signature; the call will then behave the same way that a
-normal method call on the receiver would.  The prover will consider examples
+normal method call on the receiver would.  The Prover will consider examples
 with every possible implementing contract, but multiple `DISPATCHER` method
 calls on the same receiver address in the same example will use the same
 receiver contract.
 
-The set of contract implementations that the prover chooses from contains
+The set of contract implementations that the Prover chooses from contains
 the set of contracts passed as [arguments to the CLI](../cli/options).
-In addition, the prover may consider an unknown target contract whose methods
+In addition, the Prover may consider an unknown target contract whose methods
 are all interpreted using the {ref}`AUTO summary <auto-summary>`.  The presence
 of the unknown contract is determined by the optional boolean argument to the
 `DISPATCHER` summary:
 
  * With `DISPATCHER(false)` or just `DISPATCHER`, the unknown contract is
-   considered as a possiblity
+   considered as a possibility
 
  * With `DISPATCHER(true)`, only the known contract instances are considered
 
