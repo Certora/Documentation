@@ -203,6 +203,7 @@ hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
 }
 ```
 
+(hook-body)=
 The Body of a Hook
 ------------------
 
@@ -270,7 +271,7 @@ Finally, as shown in the section on definitions, a definition with ghosts in t
 A Hook that Modifies Ghost State
 --------------------------------
 
-[Above](#The-Body-of-a-Hook) we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather _further constrained_ it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:
+{ref}`Above <hook-body>` we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather _further constrained_ it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:
 
 ```cvl
 ghost ghostBalances(address) returns uint256;
