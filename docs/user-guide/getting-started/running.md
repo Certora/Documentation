@@ -37,7 +37,7 @@ Full report: https://prover.certora.com/zipOutput/...?anonymousKey={anonymousKey
 
 Follow this link to view the results.
 
-A verification report is an HTML file presenting a table with all the spec file rules. Each formally proved rule has a green color. Violated rules are colored red. The report will also include the call trace and the arguments that led to the violation. In this example, the Certora Prover finds a violation of the `monotone` rule. Click the rule to see the call trace and try to figure out the reason. 
+A verification report is an HTML file presenting a table with all the spec file rules. Each formally proved rule has a green color. Violated rules are colored red. The report will also include the call trace and the arguments that led to the violation. In this example, the Certora Prover finds a violation of the `monotone` rule (when run with solidity before 0.8.0). Click the rule to see the call trace and try to figure out the reason. 
 
 Need some help? Try to run another verification on `CounterFixed.sol` and see the difference.
 
