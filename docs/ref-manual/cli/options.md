@@ -378,6 +378,7 @@ The second use is when the solvers can prove the property, they just need more t
 Options to set addresses and link contracts
 -------------------------------------------
 
+(--link)=
 ### `--link`
 
 **What does it do?**  

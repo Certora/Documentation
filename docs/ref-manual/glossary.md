@@ -45,6 +45,10 @@ sanity
   This section is incomplete.  See {ref}`--rule_sanity` for partial information.
   ```
 
+scene
+  The *scene* refers to the set of contract instances that the Prover knows
+  about.
+
 sound
 unsound
   Soundness means that any rule violations in the code being verified are
