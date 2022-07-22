@@ -1,4 +1,4 @@
-Working with multiple contracts
+Working with Multiple Contracts
 ===============================
 
 In the previous chapter, we focused on rules describing the behavior of a
@@ -83,8 +83,8 @@ for reasoning about the open-ended set of possible `FlashLoanReceiver`
 implementations.
 
 
-How the tool handles unresolved method calls
---------------------------------------------
+Handling unresolved method calls
+--------------------------------
 
 To start, let's write a basic property of the pool and run the Prover on the
 `Pool` contract to see how it handles calls to unknown code.
