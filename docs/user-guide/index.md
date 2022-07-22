@@ -9,6 +9,7 @@ getting-started/index.md
 examples.md
 properties/index.md
 patterns/index.md
+multicontract/index.md
 ```
 
 Case Studies
