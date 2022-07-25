@@ -213,8 +213,74 @@ shows that the `integrityOfDeposit` rule now passes.
 (using-example)=
 ### Accessing additional contracts from CVL
 
-```{todo}
-`using`
+When a contract instance is added to the scene, it is also possible to call
+methods on that contract directly from CVL.  To do so, you need to introduce
+a variable name for the contract instance using
+{ref}`the using statement <using-stmt>`.  In our running example, we can create
+a variable `underlying` to refer to the `Asset` contract instance[^using-position].
+
+[^using-position]: `using` statements must appear after the `import` statements
+  (if any) and before the `methods` block (if any).
+
+```cvl
+using Asset for underlying
+using Pool  for pool
+```
+
+We can then call methods on the contract `underlying`.  For example, instead of
+adding a special method `assetBalance` to the `Pool` contract to call
+`asset.balanceOf` for us, we can call it directly from the spec:
+
+```cvl
+/// `deposit` must increase the pool's underlying asset balance
+rule integrityOfDeposit {
+
+    env e1;
+    uint balance_before = underlying.balanceOf(e1, pool);
+
+    env e; uint256 amount;
+    deposit(e, amount);
+
+    env e2;
+    uint balance_after = underlying.balanceOf(e2, pool);
+
+    assert balance_after == balance_before + amount;
+}
+```
+
+We can simplify this rule in two ways.  First, we can declare the
+`underlying.balanceOf` method `envfree` to avoid explicitly passing in `env`
+variables.  This works the same way as `envfree` {ref}`declarations for the
+main contract <envfree>`, except that you must indicate that the method is for
+the `underlying` contract instance:
+
+```cvl
+methods {
+    ...
+
+    underlying.balanceOf(address) returns(uint256) envfree
+}
+```
+
+The second simplification is that we can use the special variable
+`currentContract` to refer to the main contract being verified (the one passed
+to {ref}`--verify`), so we don't need to add the `using` statement for `Pool`.
+With these changes, the rule looks as follows:
+
+```cvl
+/// `deposit` must increase the pool's underlying asset balance
+rule integrityOfDeposit {
+
+    uint balance_before = underlying.balanceOf(currentContract);
+
+    env e; uint256 amount;
+    deposit(e, amount);
+
+    env e2;
+    uint balance_after = underlying.balanceOf(currentContract);
+
+    assert balance_after == balance_before + amount;
+}
 ```
 
 (unknown-contracts)=
