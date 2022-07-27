@@ -66,10 +66,12 @@ struct
 structs
 subgraph
 summarization
+summarizable
 traceback
 tracebacks
 uninterpreted
 unsatisfiable
+unsummarized
 untrusted
 verifications
 verifier

@@ -104,7 +104,15 @@ Finally, the method entry may contain an optional summarization (indicated by
 summarized declaration indicates that the Prover should replace some calls to
 the summarized function by an approximation.  This is an important technique
 for working around Prover timeouts and also for working with external contracts
-whose implementation is not fixed at verification time.
+whose implementation is not fixed at verification time[^internalSummaryCaveat].
+
+[^internalSummaryCaveat]: Because the internal method calls are not explicit in
+  the compiled bytecode, the Prover needs to use heuristics to determine where
+  internal methods are called in order to summarize them.  Occasionally, these
+  heuristics are unable to locate an internal method call, and therefore they
+  remain unsummarized.  The {ref}`-showInternalFunctions` option can aid in
+  determining whether the Prover was able to identify a specific internal
+  function call or not.
 
 The summary type determines what type of approximation is used to replace the
 function calls.  The available types are described in the following sections:

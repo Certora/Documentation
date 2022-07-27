@@ -337,11 +337,16 @@ By default, we do not use a cache. If you want to use a cache to speed up the bu
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
 
+(--smt_timeout)=
 ### `--smt_timeout`
 
 **What does it do?**  
 Sets the maximal timeout for all the [SMT solvers](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories). Gets an integer input, which represents seconds.  
 The Certora Prover generates a logical formula from the specification and source code. Then, it passes it on to an array of SMT solvers. The time it can take for the SMT solvers to solve the equation is highly variable, and could potentially be infinite. This is why they must be limited in run time.  
+
+Note that the SMT timeout applies separately to each individual rule (or each method
+for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`.
+
 **When to use it?**  
 The default time out for the solvers is 600 seconds. There are two use cases for this option.  
 One is to decrease the timeout. This is useful for simple rules, that are solved quickly by the SMT solvers. Here, it is beneficial to reduce the timeout, so that when a new code breaks the specification, the tool will fail quickly. This is the more common use case.  
@@ -479,4 +484,23 @@ This list is incomplete.
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 
+(-showInternalFunctions)=
+#### `--settings -showInternalFunctions`
+
+This option causes the Prover to output a list of all the potentially
+summarizable internal functions.  In some cases the Prover is unable to locate
+all internal functions, and so summaries may not be applied.  This option can
+be useful to determine whether summary is applied or not.
+
+(-globalTimeout)=
+#### `--settings -globalTimeout=<seconds>`
+
+This option sets the global timeout in seconds.  By default, there is no global
+timeout.
+
+The global timeout is different from the {ref}`--smt_timeout` option: the
+`--smt_timeout` flag constrains the amount of time allocated to the processing
+of each individual rule, while the `-globalTimeout` flag constrains the
+processing of the entire job, including static analysis and other
+preprocessing.
 
