@@ -514,3 +514,6 @@ of each individual rule, while the `-globalTimeout` flag constrains the
 processing of the entire job, including static analysis and other
 preprocessing.
 
+Jobs that exceed the global timeout will simply be terminated, so the result
+reports may not be generated.
+
