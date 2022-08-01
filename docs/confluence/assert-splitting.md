@@ -199,7 +199,7 @@ You can think of assert splitting as generating the following rules:
       calldataarg arg;
       f(e, arg);
       bool b = false;
-      if (!f.isSelector && !(f.selector == foo().selector)) {
+      if (!f.isFallback && !(f.selector == foo().selector)) {
         assert b;
       } else {
         assert true;
