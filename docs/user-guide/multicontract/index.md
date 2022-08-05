@@ -14,11 +14,9 @@ Example protocol
 
 To demonstrate these concepts, we work with a simplified liquidity pool called
 `Pool`.  You can download the solidity files and specifications for this
-example [here](https://github.com/Certora/LiquidityPoolExample).  The
-[completed specification](https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool.spec)
+example [here][example-repo].  The [completed specification][pool-spec].
 is in `certora/specs/pool.spec` and the
-[final run script](https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh)
-is in `certora/scripts/verifyPool.spec`.
+[final run script][pool-script] is in `certora/scripts/verifyPool.spec`.
 
 The liquidity pool allows users to deposit and withdraw a single fixed type of
 ERC20 token (the `asset`).  The liquidity pool itself also acts as an ERC20
@@ -89,7 +87,7 @@ Handling unresolved method calls
 To start, let's write a basic property of the pool and run the Prover on the
 `Pool` contract to see how it handles calls to unknown code.
 
-Here is a simple property from `certora/specs/pool_no_summary.spec`:
+Here is a simple property from [`certora/specs/pool_havoc.spec`]:
 
 ```cvl
 /// `deposit` must increase the pool's underlying asset balance
@@ -117,8 +115,9 @@ they can do almost anything -- we say that the Prover "{term}`havocs <havoc>`"
 some part of the state.  The part of the state that is havoced depends on the
 type of call: calls to view functions are allowed to return any value but can
 not affect storage, while calls to non-view functions are allowed to change the
-storage of all other contracts in the system[^reentrancy].  See
-{ref}`auto-summary` in the reference manual for complete details.
+storage of all contracts in the system *besides the calling
+contract*[^reentrancy].  See {ref}`auto-summary` in the reference manual for
+complete details.
 
 [^reentrancy]: The Prover assumes that the external calls do not modify the
   storage of the calling contract.  This assumption comes from an assumption
@@ -156,7 +155,8 @@ the Prover[^resolutionWarnings]:
 
 [^resolutionWarnings]: Unresolved calls that are not explicitly handled are
   considered warnings; in this case there are three unresolved calls, which is
-  why there is a red 3 on the call resolution tab.
+  why there is a red 3 on the call resolution tab.  In general, it is good
+  practice to explicitly resolve all calls.
 
 Here we see that the call from `Pool.deposit` to `balanceOf` is summarized by
 havocing only the return value (since `balanceOf` is a view method), while the
@@ -177,7 +177,7 @@ to `certoraRun`.  The Prover creates a contract instance (with a corresponding
 address) in the scene for each source contract provided on the command line:
 
 ```bash
-$ certoraRun contracts/Pool.sol contracts/Asset.sol --verify Pool:certora/specs/pool_no_summary.spec
+$ certoraRun contracts/Pool.sol contracts/Asset.sol --verify Pool:certora/specs/pool_havoc.spec
 ```
 
 Adding `Asset.sol` to the scene makes the Prover aware of it, but it does not
@@ -191,7 +191,7 @@ To reconnect the `Asset` code to the `Pool.asset` field, we can use the
 
 ```bash
 $ certoraRun contracts/Pool.sol contracts/Asset.sol \
-    --verify Pool:certora/specs/pool_no_summary.spec \
+    --verify Pool:certora/specs/pool_havoc.spec \
     --link   Pool:asset=Asset
 ```
 
@@ -201,7 +201,7 @@ contract instance in the scene.  With this information, the Prover is able to
 resolve the calls to the methods on `Pool.asset` using the code in `Asset.sol`.
 
 With this option, the Prover is no longer able to construct a counterexample to
-the `integrityOfDeposit` rule ([see script](https://github.com/Certora/blob/main/certora/scripts/verifyWithLink.sh)).
+the `integrityOfDeposit` rule ([see script][pool-link-script]).
 Running
 
 ```bash
@@ -265,7 +265,7 @@ methods {
 The second simplification is that we can use the special variable
 `currentContract` to refer to the main contract being verified (the one passed
 to {ref}`--verify`), so we don't need to add the `using` statement for `Pool`.
-With these changes, the rule looks as follows:
+With these changes, the rule looks as follows ([spec file][pool-link], [run script][pool-link-script]):
 
 ```cvl
 /// `deposit` must increase the pool's underlying asset balance
@@ -276,7 +276,6 @@ rule integrityOfDeposit {
     env e; uint256 amount;
     deposit(e, amount);
 
-    env e2;
     uint balance_after = underlying.balanceOf(currentContract);
 
     assert balance_after == balance_before + amount;
@@ -290,4 +289,11 @@ Working with unknown contracts
 ```{todo}
 Dispatcher
 ```
+
+[example-repo]:     https://github.com/Certora/LiquidityPoolExample
+[pool-spec]:        https://github.com/Certora/LiquidityPoolExample/certora/specs/pool.spec
+[pool-script]:      https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh
+[pool-havoc]:       https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_havoc.spec
+[pool-link]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_link.spec
+[pool-link-script]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyWithLinking.sh
 
