@@ -15,7 +15,8 @@ Example protocol
 To demonstrate these concepts, we work with a simplified liquidity pool called
 `Pool`.  You can download the solidity files and specifications for this
 example [here][example-repo].  The [completed specification][pool-spec].
-is in `certora/specs/pool.spec` and the
+is in `certora/specs/pool.spec` (although this guide only discusses the
+`integrityOfDeposit` and `flashLoanIncreasesBalance` properties) and the
 [final run script][pool-script] is in `certora/scripts/verifyPool.spec`.
 
 The liquidity pool allows users to deposit and withdraw a single fixed type of
@@ -302,33 +303,22 @@ address refers to.  For example:
    implementations.
 
 In this case, the only option is to {term}`summarize` the unknown code for the
-Prover.  There are a few commonly used summary types for this situation:
+Prover.  Although there are many available types of summaries, the ones most
+commonly used for unknown code are {ref}`dispatcher`.
 
- - The safest option is to use a {ref}`HAVOC_ALL summary <multicontract-havoc>`
-   (or a `NONDET` summary for a view method).
+The `DISPATCHER` summary resolves calls by assuming that the receiver address
+is one of the contracts in the scene that implements the called method.  It will
+try every implementing method, and if any of them can cause a counterexample,
+it will report the counterexample.
 
- - The most flexible and most commonly used option is to use a
-   {ref}`DISPATCHER summary <multicontract-dispatcher>`.
-
-The remainder of this section describes the pros and cons of these options,
-using the `FlashLoanReceiver.executeOperation` method as an example.
-
-(multicontract-havoc)=
-### Havoc summaries
-
-As described above, a havoc summary instructs the Prover to make no assumptions
-about the missing code.
-
-The `HAVOC_ALL` summary means that the provided code is allowed to change any
-state in an arbitrary way, including the state of the calling contract.  This
-is {term}`sound`, but it makes it difficult to prove anything.
-
-For example, we might like to show that flash loans can only increase the
-underlying balance of the pool.  We actually need to be a bit careful because a
-user with a balance could withdraw their own tokens during a flash loan
-operation without causing a problem.  For simplicity, we'll assume the user has
-no balance at the beginning of the transaction (we'll see later that even this
-assumption is not strong enough).
+To demonstrate the `DISPATCHER` summary, let us prove a basic property about
+flash loans.  For example, we might like to show that flash loans can only
+increase the underlying balance of the pool.  We actually need to be a bit
+careful because a user with a balance could withdraw their own tokens during a
+flash loan operation, which would decrease the pool's balance without causing a
+problem.  For simplicity, we'll try to rule this out by assuming that the user
+has no balance at the beginning of the transaction (we'll see later that even
+this assumption is not strong enough).
 
 We can write the property as follows:
 
@@ -349,47 +339,63 @@ rule flashLoanIncreasesBalance {
 }
 ```
 
-To use a `HAVOC_ALL` summary for the `executeOperation` method, we add it to
-the `methods` block:
+To use a `DISPATCHER` summary for the `executeOperation` method, we add it to
+the `methods` block[^optimistic-dispatcher]:
 
 ```cvl
 methods {
-    executeOperation(uint256,uint256,address) returns (bool) => HAVOC_ALL
+    executeOperation(uint256,uint256,address) returns (bool) => DISPATCHER(true)
 }
 ```
 
-We can run this [spec][flash-loan-havoc] (see [script][flash-loan-havoc-script]),
-and we see that the rule fails.  The reason is similar to the first version of
-the `integrityOfDeposit` rule above failed: the Prover allows the call from
-`flashLoan` to `executeOperation` to have arbitrary side effects.
-
-In this case, the Prover chose a somewhat silly counterexample.  We see that
-the first time the Prover reads the `asset` field, it gets the address of the
-`Asset` contract (as it should, since we linked it).  However, after the return
-from the summarized `executeOperation`, loading from `asset` gives a different
-address:
-
-![Call trace showing execution of `flashLoan`.  Inside `Pool.flashLoan`, the trace shows two reads from `asset` with different values.](havoc-all.png)
-
-The Prover assumed that the unknown `executeOperation` could change the `asset`
-field within the `Pool` contract.  This is clearly an overapproximation, since
-the only way for the `asset` field to change is if the `Pool` contract changes
-it, and the `Pool` contract has no methods that change it.  Nevertheless, with
-a `HAVOC_ALL` summary, the Prover conservatively assumes that anything can
-happen.
-
-For this reason, the `HAVOC_ALL` summary, although safe, is rarely used.
-
-(multicontract-dispatcher)=
-### Dispatcher summaries
-
-
+[^optimistic-dispatcher]: The `true` in `DISPATCHER(true)` tells the Prover to
+  use "optimistic dispatch mode".  Optimistic mode is almost always the right
+  choice; see {ref}`dispatcher` in the reference manual for full details.
 
 ```{todo}
-Dispatcher
+Finish
 ```
 
-### Other options
+% We can run this [spec][flash-loan-havoc] (see [script][flash-loan-havoc-script]),
+% and we see that the rule fails.  The reason is similar to the first version of
+% the `integrityOfDeposit` rule above failed: the Prover allows the call from
+% `flashLoan` to `executeOperation` to have arbitrary side effects.
+% 
+% In this case, the Prover chose a somewhat silly counterexample.  We see that
+% the first time the Prover reads the `asset` field, it gets the address of the
+% `Asset` contract (as it should, since we linked it).  However, after the return
+% from the summarized `executeOperation`, loading from `asset` gives a different
+% address:
+% 
+% ![Call trace showing execution of `flashLoan`.  Inside `Pool.flashLoan`, the trace shows two reads from `asset` with different values.](havoc-all.png)
+% 
+% The Prover assumed that the unknown `executeOperation` could change the `asset`
+% field within the `Pool` contract.  This is clearly an overapproximation, since
+% the only way for the `asset` field to change is if the `Pool` contract changes
+% it, and the `Pool` contract has no methods that change it.  Nevertheless, with
+% a `HAVOC_ALL` summary, the Prover conservatively assumes that anything can
+% happen.
+% 
+% For this reason, the `HAVOC_ALL` summary, although safe, is rarely used.
+% 
+% (multicontract-dispatcher)=
+% ### Dispatcher summaries
+
+### The dangers of `DISPATCHER`
+
+```{todo}
+Show that the DISPATCHER summary misses a counterexample
+```
+
+```{todo}
+Show how to write a dispatcher that calls different contract methods
+```
+
+### Using `DISPATCHER` for ERC20 contracts
+
+```{todo}
+Describe `helpers/erc20.spec` and the DummyERC20 contracts.
+```
 
 TODO: Footnotes:
 
