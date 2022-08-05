@@ -93,14 +93,15 @@ Here is a simple property from [`certora/specs/pool_havoc.spec`]:
 /// `deposit` must increase the pool's underlying asset balance
 rule integrityOfDeposit {
 
-    uint balance_before = assetBalance();
+    mathint balance_before = assetBalance();
 
     env e; uint256 amount;
     deposit(e, amount);
 
-    uint balance_after = assetBalance();
+    mathint balance_after = assetBalance();
 
-    assert balance_after == balance_before + amount;
+    assert balance_after == balance_before + amount,
+        "deposit must increase the underlying balance of the pool";
 }
 ```
 
@@ -236,15 +237,16 @@ adding a special method `assetBalance` to the `Pool` contract to call
 rule integrityOfDeposit {
 
     env e1;
-    uint balance_before = underlying.balanceOf(e1, pool);
+    mathint balance_before = underlying.balanceOf(e1, pool);
 
     env e; uint256 amount;
     deposit(e, amount);
 
     env e2;
-    uint balance_after = underlying.balanceOf(e2, pool);
+    mathint balance_after = underlying.balanceOf(e2, pool);
 
-    assert balance_after == balance_before + amount;
+    assert balance_after == balance_before + amount,
+        "deposit must increase the underlying balance of the pool";
 }
 ```
 
@@ -271,14 +273,15 @@ With these changes, the rule looks as follows ([spec file][pool-link], [run scri
 /// `deposit` must increase the pool's underlying asset balance
 rule integrityOfDeposit {
 
-    uint balance_before = underlying.balanceOf(currentContract);
+    mathint balance_before = underlying.balanceOf(currentContract);
 
     env e; uint256 amount;
     deposit(e, amount);
 
-    uint balance_after = underlying.balanceOf(currentContract);
+    mathint balance_after = underlying.balanceOf(currentContract);
 
-    assert balance_after == balance_before + amount;
+    assert balance_after == balance_before + amount,
+        "deposit must increase the underlying balance of the pool";
 }
 ```
 
@@ -286,9 +289,109 @@ rule integrityOfDeposit {
 Working with unknown contracts
 ------------------------------
 
+Linking is appropriate for situations when we know the specific contracts that
+a field points to.  In many cases, however, we *don't* know what contract an
+address refers to.  For example:
+
+ - A contract may call a method on a contract address passed in by the user.  In
+   our running example, the user may provide any `FlashLoanReceiver`
+   implementation they want to.
+
+ - A contract may be designed to work with many instances of the same interface.
+   For example, a pool might be designed to work with arbitrary ERC20
+   implementations.
+
+In this case, the only option is to {term}`summarize` the unknown code for the
+Prover.  There are a few commonly used summary types for this situation:
+
+ - The safest option is to use a {ref}`HAVOC_ALL summary <multicontract-havoc>`
+   (or a `NONDET` summary for a view method).
+
+ - The most flexible and most commonly used option is to use a
+   {ref}`DISPATCHER summary <multicontract-dispatcher>`.
+
+The remainder of this section describes the pros and cons of these options,
+using the `FlashLoanReceiver.executeOperation` method as an example.
+
+(multicontract-havoc)=
+### Havoc summaries
+
+As described above, a havoc summary instructs the Prover to make no assumptions
+about the missing code.
+
+The `HAVOC_ALL` summary means that the provided code is allowed to change any
+state in an arbitrary way, including the state of the calling contract.  This
+is {term}`sound`, but it makes it difficult to prove anything.
+
+For example, we might like to show that flash loans can only increase the
+underlying balance of the pool.  We actually need to be a bit careful because a
+user with a balance could withdraw their own tokens during a flash loan
+operation without causing a problem.  For simplicity, we'll assume the user has
+no balance at the beginning of the transaction (we'll see later that even this
+assumption is not strong enough).
+
+We can write the property as follows:
+
+```cvl
+rule flashLoanIncreasesBalance {
+    address receiver; uint256 amount; env e;
+
+    require balanceOf(receiver) == 0;
+
+    mathint balance_before = underlying.balanceOf(currentContract);
+
+    flashLoan(e, receiver, amount);
+
+    mathint balance_after = underlying.balanceOf(currentContract);
+
+    assert balance_after >= balance_before,
+        "flash loans must not decrease the contract's underlying balance";
+}
+```
+
+To use a `HAVOC_ALL` summary for the `executeOperation` method, we add it to
+the `methods` block:
+
+```cvl
+methods {
+    executeOperation(uint256,uint256,address) returns (bool) => HAVOC_ALL
+}
+```
+
+We can run this [spec][flash-loan-havoc] (see [script][flash-loan-havoc-script]),
+and we see that the rule fails.  The reason is similar to the first version of
+the `integrityOfDeposit` rule above failed: the Prover allows the call from
+`flashLoan` to `executeOperation` to have arbitrary side effects.
+
+In this case, the Prover chose a somewhat silly counterexample.  We see that
+the first time the Prover reads the `asset` field, it gets the address of the
+`Asset` contract (as it should, since we linked it).  However, after the return
+from the summarized `executeOperation`, loading from `asset` gives a different
+address:
+
+![Call trace showing execution of `flashLoan`.  Inside `Pool.flashLoan`, the trace shows two reads from `asset` with different values.](havoc-all.png)
+
+The Prover assumed that the unknown `executeOperation` could change the `asset`
+field within the `Pool` contract.  This is clearly an overapproximation, since
+the only way for the `asset` field to change is if the `Pool` contract changes
+it, and the `Pool` contract has no methods that change it.  Nevertheless, with
+a `HAVOC_ALL` summary, the Prover conservatively assumes that anything can
+happen.
+
+For this reason, the `HAVOC_ALL` summary, although safe, is rarely used.
+
+(multicontract-dispatcher)=
+### Dispatcher summaries
+
+
+
 ```{todo}
 Dispatcher
 ```
+
+### Other options
+
+TODO: Footnotes:
 
 [example-repo]:     https://github.com/Certora/LiquidityPoolExample
 [pool-spec]:        https://github.com/Certora/LiquidityPoolExample/certora/specs/pool.spec
@@ -296,4 +399,6 @@ Dispatcher
 [pool-havoc]:       https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_havoc.spec
 [pool-link]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_link.spec
 [pool-link-script]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyWithLinking.sh
+[flash-loan-havoc]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/flashLoan_havoc.spec
+[flash-loan-havoc-script]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanHavoc.sh
 

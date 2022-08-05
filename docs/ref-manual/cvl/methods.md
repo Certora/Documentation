@@ -117,7 +117,7 @@ whose implementation is not fixed at verification time[^internalSummaryCaveat].
 The summary type determines what type of approximation is used to replace the
 function calls.  The available types are described in the following sections:
 
- * {ref}`const-summary`
+ * {ref}`view-summary`
  * {ref}`havoc-summary`
  * {ref}`dispatcher`
  * {ref}`auto-summary`
@@ -185,7 +185,7 @@ affects the summarization behavior.  See {ref}`call-expr`.
 Summary types
 -------------
 
-(const-summary)=
+(view-summary)=
 ### View summaries: `ALWAYS`, `CONSTANT`, `PER_CALLEE_CONSTANT`, and `NONDET`
 
 These four summary types treat the summarized methods as view methods: the
