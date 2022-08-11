@@ -409,6 +409,34 @@ proved; the next section shows that we shouldn't rest easy yet.
 (dispatcher-danger)=
 ### The dangers of `DISPATCHER`
 
+What we have proved so far is that *if* the only possible `FlashLoanReceiver`
+is `TrivialReceiver`, *then* the pool's underlying balance doesn't decrease.
+However, we have not proved that the underlying balance *never* decreases after
+a flash loan.
+
+In fact, we can easily construct a flash loan receiver that decreases the
+Pool's underlying balance.  Remember that our rule required that the message
+sender has no pool balance so that they couldn't withdraw underlying tokens
+that they owned before the loan.  This shouldn't be enough, because there
+are valid ways for the receiver to get pool tokens while executing the flash
+loan. For example, if they have an approval from another user then they could
+first transfer those tokens to themselves and then withdraw them.  We can write
+such a [receiver][transfer-receiver]:
+
+```solidity
+contract TransferReceiver is IFlashLoanReceiver {
+    address donor;
+    uint    transfer_amount;
+    Pool    pool;
+
+    function executeOperation(...) ... {
+        pool.transferFrom(donor, address(this), transfer_amount);
+        pool.withdraw(transfer_amount);
+    }
+}
+```
+
+
 
 ```{todo}
 Show that the DISPATCHER summary misses a counterexample
@@ -434,4 +462,5 @@ Describe `helpers/erc20.spec` and the DummyERC20 contracts.
 [flashloan-dispatcher]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/flashLoan_dispatcher.spec
 [trivial-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TrivialReceiver.sol
 [trivial-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTrivial.sh
+[transfer-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TransferReceiver.sol
 
