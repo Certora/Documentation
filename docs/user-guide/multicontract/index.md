@@ -116,10 +116,10 @@ By default, the Prover will handle calls to unresolved functions by assuming
 they can do almost anything -- we say that the Prover "{term}`havocs <havoc>`"
 some part of the state.  The part of the state that is havoced depends on the
 type of call: calls to view functions are allowed to return any value but can
-not affect storage, while calls to non-view functions are allowed to change the
-storage of all contracts in the system *besides the calling
-contract*[^reentrancy].  See {ref}`auto-summary` in the reference manual for
-complete details.
+not affect storage (a `NONDET` summary), while calls to non-view functions are
+allowed to change the storage of all contracts in the system *besides the
+calling contract*[^reentrancy] (a `HAVOC_ECF` summary).  See
+{ref}`auto-summary` in the reference manual for complete details.
 
 [^reentrancy]: The Prover assumes that the external calls do not modify the
   storage of the calling contract.  This assumption comes from an assumption
@@ -128,10 +128,10 @@ complete details.
   summary; see {ref}`havoc-summary` for details.
 
 We can see this behavior by verifying the `integrityOfDeposit` rule against the
-`Pool` contract without giving the Prover access to the `Asset` contract ([see script](https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyJustPool.sh)):
+`Pool` contract without giving the Prover access to the `Asset` contract ([full script][havoc-script]):
 
-```bash
-$ sh certora/scripts/verifyJustPool.sh
+```sh
+$ certoraRun contracts/Pool.sol --verify Pool:certora/specs/pool_havoc.spec ...
 ```
 
 In this case, the `integrityOfDeposit` rule fails.  To understand why, we can
@@ -178,8 +178,8 @@ can add a contract to the scene by passing the solidity source as a
 to `certoraRun`.  The Prover creates a contract instance (with a corresponding
 address) in the scene for each source contract provided on the command line:
 
-```bash
-$ certoraRun contracts/Pool.sol contracts/Asset.sol --verify Pool:certora/specs/pool_havoc.spec
+```sh
+$ certoraRun contracts/Pool.sol contracts/Asset.sol --verify Pool:certora/specs/pool_havoc.spec ...
 ```
 
 Adding `Asset.sol` to the scene makes the Prover aware of it, but it does not
@@ -191,7 +191,7 @@ bytecode the field is just treated as an `address`.
 To reconnect the `Asset` code to the `Pool.asset` field, we can use the
 {ref}`--link` option:
 
-```bash
+```sh
 $ certoraRun contracts/Pool.sol contracts/Asset.sol \
     --verify Pool:certora/specs/pool_havoc.spec \
     --link   Pool:asset=Asset
@@ -206,7 +206,7 @@ With this option, the Prover is no longer able to construct a counterexample to
 the `integrityOfDeposit` rule ([see script][pool-link-script]).
 Running
 
-```bash
+```sh
 $ sh certora/scripts/verifyWithLink.sh
 ```
 
@@ -307,9 +307,15 @@ Prover.  Although there are many available types of summaries, the ones most
 commonly used for unknown code are {ref}`dispatcher`.
 
 The `DISPATCHER` summary resolves calls by assuming that the receiver address
-is one of the contracts in the scene that implements the called method.  It will
-try every implementing method, and if any of them can cause a counterexample,
-it will report the counterexample.
+is one of the contracts in the scene that implements the called method.  It
+will try every option, and if any of them can cause a counterexample, it will
+report a counterexample.
+
+```{warning}
+The `DISPATCHER` summary is {term}`unsound`, meaning that using it can cause you
+to hide bugs in your contracts.  Therefore, you should make sure you understand
+the risks before using them.  See {ref}`dispatcher-danger` below.
+```
 
 To demonstrate the `DISPATCHER` summary, let us prove a basic property about
 flash loans.  For example, we might like to show that flash loans can only
@@ -327,6 +333,7 @@ rule flashLoanIncreasesBalance {
     address receiver; uint256 amount; env e;
 
     require balanceOf(receiver) == 0;
+    require e.msg.sender != currentContract;
 
     mathint balance_before = underlying.balanceOf(currentContract);
 
@@ -338,6 +345,13 @@ rule flashLoanIncreasesBalance {
         "flash loans must not decrease the contract's underlying balance";
 }
 ```
+
+Verifying this rule without any summarization will fail, for the same reasons
+that the first run of `integrityOfDeposit` above failed:  the `flashLoan`
+method calls `executeOperation` on an unknown contract, and the Prover
+constructs a counterexample where `executeOperation` changes the underlying
+balance.  This is possible because the default `HAVOC_ECF` summary allows
+`executeOperation` to do anything to the `underlying` contract.
 
 To use a `DISPATCHER` summary for the `executeOperation` method, we add it to
 the `methods` block[^optimistic-dispatcher]:
@@ -352,36 +366,49 @@ methods {
   use "optimistic dispatch mode".  Optimistic mode is almost always the right
   choice; see {ref}`dispatcher` in the reference manual for full details.
 
-```{todo}
-Finish
+This summary means that when the Prover encounters an external call to
+`receiver.executeOperation(...)`, it will try to construct counterexamples
+where the `receiver` contract is any of the contracts in the scene that
+implement the `executeOperation` method.
+
+So far, there are no contracts in the scene that implement the
+`executeOperation` method, so the Prover will conservatively use a havoc
+summary for the call, and the rule will still fail.  To make use of the
+dispatcher summary, we need to add a contract to the scene that implements the
+method.
+
+Let's start by adding a trivial receiver
+(in [`certora/harness/TrivialReceiver.sol`][trivial-receiver])
+that implements `executeOperation` but does nothing:
+
+```solidity
+contract TrivialReceiver is IFlashLoanReceiver {
+    function executeOperation(...) ... {
+        // do nothing
+    }
+}
 ```
 
-% We can run this [spec][flash-loan-havoc] (see [script][flash-loan-havoc-script]),
-% and we see that the rule fails.  The reason is similar to the first version of
-% the `integrityOfDeposit` rule above failed: the Prover allows the call from
-% `flashLoan` to `executeOperation` to have arbitrary side effects.
-% 
-% In this case, the Prover chose a somewhat silly counterexample.  We see that
-% the first time the Prover reads the `asset` field, it gets the address of the
-% `Asset` contract (as it should, since we linked it).  However, after the return
-% from the summarized `executeOperation`, loading from `asset` gives a different
-% address:
-% 
-% ![Call trace showing execution of `flashLoan`.  Inside `Pool.flashLoan`, the trace shows two reads from `asset` with different values.](havoc-all.png)
-% 
-% The Prover assumed that the unknown `executeOperation` could change the `asset`
-% field within the `Pool` contract.  This is clearly an overapproximation, since
-% the only way for the `asset` field to change is if the `Pool` contract changes
-% it, and the `Pool` contract has no methods that change it.  Nevertheless, with
-% a `HAVOC_ALL` summary, the Prover conservatively assumes that anything can
-% happen.
-% 
-% For this reason, the `HAVOC_ALL` summary, although safe, is rarely used.
-% 
-% (multicontract-dispatcher)=
-% ### Dispatcher summaries
+Adding `TrivialReceiver.sol` to the scene allows the Prover to dispatch to it
+([spec file][flashloan-dispatcher], [full script][trivial-script]):
 
+```sh
+$ certoraRun contracts/Pool.sol certora/harness/TrivialReceiver.sol ...
+```
+
+With this dispatcher in place, the rule passes.  Examining the call resolution
+tab shows that the Prover used the dispatcher summary for `executeOperation`
+and considered only `TrivialReceiver.executeOperation` as a possible
+implementation:
+
+![Call resolution tab showing `Pool.flashLoan` summarized with a Dispatcher.  The "alternatives" list contains `[TrivialReceiver.executeOperation]`](trivial-resolution.png)
+
+Although the rule passes, it is important to pause and think about what we have
+proved; the next section shows that we shouldn't rest easy yet.
+
+(dispatcher-danger)=
 ### The dangers of `DISPATCHER`
+
 
 ```{todo}
 Show that the DISPATCHER summary misses a counterexample
@@ -397,14 +424,14 @@ Show how to write a dispatcher that calls different contract methods
 Describe `helpers/erc20.spec` and the DummyERC20 contracts.
 ```
 
-TODO: Footnotes:
-
 [example-repo]:     https://github.com/Certora/LiquidityPoolExample
 [pool-spec]:        https://github.com/Certora/LiquidityPoolExample/certora/specs/pool.spec
 [pool-script]:      https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh
 [pool-havoc]:       https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_havoc.spec
+[havoc-script]:     https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyJustPool.sh
 [pool-link]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_link.spec
 [pool-link-script]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyWithLinking.sh
-[flash-loan-havoc]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/flashLoan_havoc.spec
-[flash-loan-havoc-script]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanHavoc.sh
+[flashloan-dispatcher]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/flashLoan_dispatcher.spec
+[trivial-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TrivialReceiver.sol
+[trivial-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTrivial.sh
 
