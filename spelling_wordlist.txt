@@ -16,6 +16,8 @@ bytecode
 conjuncted
 dereference
 dereferences
+dispatchee
+dispatchees
 enum
 enums
 envfree

@@ -88,7 +88,7 @@ Handling unresolved method calls
 To start, let's write a basic property of the pool and run the Prover on the
 `Pool` contract to see how it handles calls to unknown code.
 
-Here is a simple property from [`certora/specs/pool_havoc.spec`]:
+Here is a simple property ([full spec][pool-havoc]):
 
 ```cvl
 /// `deposit` must increase the pool's underlying asset balance
@@ -113,7 +113,7 @@ giving the Prover access to the `Asset` code, the call to `transferFrom(...)`
 will be unresolved.
 
 By default, the Prover will handle calls to unresolved functions by assuming
-they can do almost anything -- we say that the Prover "{term}`havocs <havoc>`"
+they can do almost anything &mdash; we say that the Prover "{term}`havocs <havoc>`"
 some part of the state.  The part of the state that is havoced depends on the
 type of call: calls to view functions are allowed to return any value but can
 not affect storage (a `NONDET` summary), while calls to non-view functions are
@@ -189,12 +189,13 @@ solidity compiler erases that information from the bytecode; in the compiled
 bytecode the field is just treated as an `address`.
 
 To reconnect the `Asset` code to the `Pool.asset` field, we can use the
-{ref}`--link` option:
+{ref}`--link` option ([full script][pool-link-script]):
 
 ```sh
 $ certoraRun contracts/Pool.sol contracts/Asset.sol \
     --verify Pool:certora/specs/pool_havoc.spec \
-    --link   Pool:asset=Asset
+    --link   Pool:asset=Asset \
+    ...
 ```
 
 The `--link Pool:asset=Asset` option tells the Prover to assume that the `asset`
@@ -203,14 +204,7 @@ contract instance in the scene.  With this information, the Prover is able to
 resolve the calls to the methods on `Pool.asset` using the code in `Asset.sol`.
 
 With this option, the Prover is no longer able to construct a counterexample to
-the `integrityOfDeposit` rule ([see script][pool-link-script]).
-Running
-
-```sh
-$ sh certora/scripts/verifyWithLink.sh
-```
-
-shows that the `integrityOfDeposit` rule now passes.
+the `integrityOfDeposit` rule, so the rule passes.
 
 (using-example)=
 ### Accessing additional contracts from CVL
@@ -319,20 +313,13 @@ the risks before using them.  See {ref}`dispatcher-danger` below.
 
 To demonstrate the `DISPATCHER` summary, let us prove a basic property about
 flash loans.  For example, we might like to show that flash loans can only
-increase the underlying balance of the pool.  We actually need to be a bit
-careful because a user with a balance could withdraw their own tokens during a
-flash loan operation, which would decrease the pool's balance without causing a
-problem.  For simplicity, we'll try to rule this out by assuming that the user
-has no balance at the beginning of the transaction (we'll see later that even
-this assumption is not strong enough).
-
-We can write the property as follows:
+increase the underlying balance of the pool.  We can write the property as
+follows:
 
 ```cvl
 rule flashLoanIncreasesBalance {
     address receiver; uint256 amount; env e;
 
-    require balanceOf(receiver) == 0;
     require e.msg.sender != currentContract;
 
     mathint balance_before = underlying.balanceOf(currentContract);
@@ -385,6 +372,7 @@ that implements `executeOperation` but does nothing:
 contract TrivialReceiver is IFlashLoanReceiver {
     function executeOperation(...) ... {
         // do nothing
+        return true;
     }
 }
 ```
@@ -414,38 +402,104 @@ is `TrivialReceiver`, *then* the pool's underlying balance doesn't decrease.
 However, we have not proved that the underlying balance *never* decreases after
 a flash loan.
 
+Since the `DISPATCHER` summary only considers the contracts you provide as
+possible implementations, it forces you to think about a threat model: the set
+of behaviors that you want to protect against.  If there is a clever way to
+construct a receiver contract that violates the rule, but you don't think of
+it, the Prover won't be able to find it.  So far, we were able to prove the
+rule, but only with a very weak threat model: we assume that the flash loan
+receiver does nothing.
+
 In fact, we can easily construct a flash loan receiver that decreases the
-Pool's underlying balance.  Remember that our rule required that the message
-sender has no pool balance so that they couldn't withdraw underlying tokens
-that they owned before the loan.  This shouldn't be enough, because there
-are valid ways for the receiver to get pool tokens while executing the flash
-loan. For example, if they have an approval from another user then they could
-first transfer those tokens to themselves and then withdraw them.  We can write
-such a [receiver][transfer-receiver]:
+pool's underlying balance.  For example, if the receiver somehow got an
+approval to transfer underlying tokens away from the pool, it could just
+transfer them, thereby decreasing the underlying balance of the pool.
+We can write such a [receiver][transfer-receiver]:
 
 ```solidity
 contract TransferReceiver is IFlashLoanReceiver {
-    address donor;
+    address underlying;
     uint    transfer_amount;
-    Pool    pool;
+    address pool;
 
     function executeOperation(...) ... {
-        pool.transferFrom(donor, address(this), transfer_amount);
-        pool.withdraw(transfer_amount);
+        underlying.transferFrom(pool, address(this), transfer_amount);
+        return true;
     }
 }
 ```
 
+Note that this isn't a complete working example; we haven't provided a
+constructor, or linked the `pool` address to the actual pool, or any way to
+ensure that the pool has given the receiver an allowance.  Nevertheless, if we
+add it to the scene, the Prover is able to use it to construct a
+counterexample.  Since the Prover explores every possible value of the `pool`
+variable, and every possible value for the underlying's allowances, it is able
+to set up the details of the counterexample automatically.
 
+We do need to do one more piece of setup to get this receiver to work the way
+we'd like.  If we just add `TransferReceiver` to the scene, the Prover will not
+be able to resolve its call to `transferFrom`.  This will cause the same kind
+of havoc we saw above.  We could remedy this using a `DISPATCHER` summary for
+`transferFrom` (see {ref}`erc20-dispatcher`), but for now, we'll simply
+link the `underlying` variable to the `Asset` contract instance
+([full script][transfer-script]):
+
+```sh
+certoraRun contracts/Pool.sol \
+           certora/harness/TrivialReceiver.sol \
+           certora/harness/TransferReceiver.sol \
+           --link TransferReceiver:underlying=Asset \
+           ...
+```
+
+With the additional receiver implementation on the scene, we see that the Prover
+considers both alternatives for the `executeOperation` call:
+
+![Call resolution tab showing unresolved call from `Pool.flashLoan` to
+  `executeOperation`, with the "alternatives" set containing both
+  `TransferReceiver.executeOperation` and `TrivialReceiver.executeOperation`](transfer-resolution.png)
+
+And we also see that it was able to use the `TransferReceiver` to construct a
+counterexample:
+
+![Partial call trace showing `executeOperation` dispatched to
+  `TransferReceiver.executeOperation`, which calls
+  `transferFrom(Pool,TransferReceiver,2)`](transfer-trace.png)
+
+As we expected, the dispatcher for `executeOperation` chooses
+`TransferReceiver.executeOperation` as the receiver, which in turn calls
+`underlying.transferFrom(Pool, ..., 2)`.  If we expand the call trace further,
+we see that the Prover chose the pool's allowance for the recipient to be
+`MAX_UINT256`:
+
+![Call trace entry showing a load from `_allowance[*][*]` returning `MAX_UINT256`](transfer-allowance.png)
+
+It turns out that this particular violation can't actually happen, because the
+pool contract never approves any other contract to transfer its funds.  We
+could prove an invariant to this effect and add it to our rule using
+{ref}`requireInvariant`.  We won't describe this here, but it is implemented in
+the [final spec][pool-spec] for this example.
 
 ```{todo}
-Show that the DISPATCHER summary misses a counterexample
+Once there is a user guide page on `requireInvariant`, link to it.
 ```
+
+```{todo}
+Make sure it is actually implemented in the final pool spec
+```
+
+Nevertheless, this example shows that having too small a set of dispatchees can
+cause a rule to pass, even though the property it describes is not true in all
+situations.
+
+### Designing flexible dispatchees
 
 ```{todo}
 Show how to write a dispatcher that calls different contract methods
 ```
 
+(erc20-dispatcher)=
 ### Using `DISPATCHER` for ERC20 contracts
 
 ```{todo}
@@ -453,7 +507,7 @@ Describe `helpers/erc20.spec` and the DummyERC20 contracts.
 ```
 
 [example-repo]:     https://github.com/Certora/LiquidityPoolExample
-[pool-spec]:        https://github.com/Certora/LiquidityPoolExample/certora/specs/pool.spec
+[pool-spec]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool.spec
 [pool-script]:      https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh
 [pool-havoc]:       https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_havoc.spec
 [havoc-script]:     https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyJustPool.sh
@@ -463,4 +517,5 @@ Describe `helpers/erc20.spec` and the DummyERC20 contracts.
 [trivial-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TrivialReceiver.sol
 [trivial-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTrivial.sh
 [transfer-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TransferReceiver.sol
+[transfer-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTransfer.sh
 
