@@ -619,8 +619,26 @@ will find.
 (erc20-dispatcher)=
 ### Using `DISPATCHER` for ERC20 contracts
 
-```{todo}
-Describe `helpers/erc20.spec` and the DummyERC20 contracts.
+One very common use case for the material discussed in this chapter is when a
+contract is designed to work with arbitrary ERC20 tokens.  In this case, it is
+common to summarize all of the ERC20 methods using `DISPATCHER` summaries, and
+to provide several ERC20 implementations to the Prover.
+
+To facilitate this, the [`helpers` directory of the example code][helpers]
+contains a [spec file][erc20] called `erc20.spec` as well as a variety of ERC20
+token implementations (inside `tokens/`).  The `erc20.spec` file simply contains
+a methods block that summarizes all of the ERC20 methods as `DISPATCHER`.  You
+can use an {doc}`import statement </docs/ref-manual/cvl/imports>` to include this in your spec ([full spec][pool-spec]):
+
+```cvl
+import "../helpers/erc20.spec"
+```
+
+This gives a concise way to handle this situation.  Be sure to include the
+tokens in the scene ([full script][pool-script])!
+
+```sh
+certoraRun certora/helpers/tokens/* ...
 ```
 
 [example-repo]:     https://github.com/Certora/LiquidityPoolExample
@@ -637,4 +655,6 @@ Describe `helpers/erc20.spec` and the DummyERC20 contracts.
 [transfer-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTransfer.sh
 [flexible-contract]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/FlexibleReceiver.sol
 [flexible-linked]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlexibleLinked.sh
+[helpers]:           https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/
+[erc20]:             https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/erc20.spec
 
