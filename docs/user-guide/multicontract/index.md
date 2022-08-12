@@ -14,7 +14,7 @@ Example protocol
 
 To demonstrate these concepts, we work with a simplified liquidity pool called
 `Pool`.  You can download the solidity files and specifications for this
-example [here][example-repo].  The [completed specification][pool-spec].
+example [here][example-repo].  The [completed specification][pool-spec]
 is in `certora/specs/pool.spec` (although this guide only discusses the
 `integrityOfDeposit` and `flashLoanIncreasesBalance` properties) and the
 [final run script][pool-script] is in `certora/scripts/verifyPool.spec`.
@@ -144,10 +144,10 @@ Here we see that the calls to `transferFrom` and `balanceOf` are marked with
 `transferFrom` to change the balances any way it likes.  In fact, calls to
 `asset.balanceOf(...)` are also unresolved, so the Prover can choose any return
 value that causes a counterexample.  In this case, we can see that the Prover
-chose `0` for the first return value of `balanceOf` and `1` for the last return
-value of `balanceOf`:
+chose `3` for the first return value of `balanceOf` and `9`
+for the last return value of `balanceOf`:
 
-![Variables for `integrityOfDeposit` on `Pool` showing `balance_before = 0` and `balance_after = 1`](no-link-variables.png)
+![Call trace for `integrityOfDeposit` on `Pool` showing call to `assetBalance` with internal havoced call to `balanceOf`, returning 3 in once place and 9 in another](no-link-variables.png)
 
 The "Call Resolution" tab on the report provides more information about all of
 the unresolved method calls within the contract and how they are resolved by
