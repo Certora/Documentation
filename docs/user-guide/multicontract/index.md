@@ -6,6 +6,15 @@ single contract.  In practice, most protocols consist of multiple interacting
 contracts.  In this chapter, we discuss techniques for verifying protocols
 involving multiple contracts.
 
+We begin by walking through a running example protocol and explaining the
+Prover's default behavior when it encounters calls from one contract to
+another.  We then show how to handle a protocol consisting of multiple
+contracts whose implementation is known.  After that, we discuss dispatcher
+summaries, an important technique for handling contracts whose implementation
+is not known at verification time.  Finally, we give a concrete and reusable
+setup for a very common case: a contract that can work with arbitrary ERC20
+implementations.
+
 ```{contents}
 ```
 
@@ -15,7 +24,7 @@ Example protocol
 To demonstrate these concepts, we work with a simplified liquidity pool called
 `Pool`.  You can download the solidity files and specifications for this
 example [here][example-repo].  The [completed specification][pool-spec]
-is in `certora/specs/pool.spec` (although this guide only discusses the
+is in `certora/specs/pool.spec` (although this chapter only discusses the
 `integrityOfDeposit` and `flashLoanIncreasesBalance` properties) and the
 [final run script][pool-script] is in `certora/scripts/verifyPool.spec`.
 
