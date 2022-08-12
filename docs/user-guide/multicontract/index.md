@@ -32,10 +32,10 @@ To demonstrate these concepts, we work with a simplified liquidity pool called
 The liquidity pool allows users to deposit and withdraw a single fixed type of
 ERC20 token (the `asset`).  The liquidity pool itself also acts as an ERC20
 token; depositing assets into the pool increases the user's balance, while
-withdrawing decreases their balance.
+withdrawing decreases their balance ([full contract][pool]).
 
 ```solidity
-contract LiquidityPool
+contract Pool
       is ERC20
 {
     IERC20 public immutable asset;
@@ -656,6 +656,7 @@ bugs that those implementations don't trigger.  However, we have seen a useful
 technique that can explore a wide range of behaviors with little effort.
 
 [example-repo]:     https://github.com/Certora/LiquidityPoolExample
+[pool]:             https://github.com/Certora/LiquidityPoolExample/blob/main/contracts/Pool.sol
 [pool-spec]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool.spec
 [pool-script]:      https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh
 [pool-havoc]:       https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_havoc.spec
