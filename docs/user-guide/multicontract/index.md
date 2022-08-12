@@ -12,7 +12,7 @@ another.  We then show how to handle a protocol consisting of multiple
 contracts whose implementation is known.  After that, we discuss dispatcher
 summaries, an important technique for handling contracts whose implementation
 is not known at verification time.  Finally, we give a concrete and reusable
-setup for a very common case: a contract that can work with arbitrary ERC20
+setup for a very common case: a contract that can work with many different ERC20
 implementations.
 
 The entire running example for this chapter can be found [here][example-repo].
@@ -57,7 +57,7 @@ returns the pool's balance of the underlying asset (we'll see
 {ref}`later <using-example>` that this is not necessary):
 
 ```solidity
-function assetBalance() public returns (uint256) {
+function assetBalance() public view returns (uint256) {
   return asset.balanceOf(this);
 }
 ```
@@ -499,15 +499,122 @@ Once there is a user guide page on `requireInvariant`, link to it.
 Make sure it is actually implemented in the final pool spec
 ```
 
-Nevertheless, this example shows that having too small a set of dispatchees can
-cause a rule to pass, even though the property it describes is not true in all
-situations.
+Nevertheless, this example shows that having too few dispatchees can cause a
+rule to pass, even though the property it describes is not necessarily true in
+all situations.
 
 ### Designing flexible dispatchees
 
-```{todo}
-Show how to write a dispatcher that calls different contract methods
+The `TransferReceiver` described in the previous section is fairly targeted: we
+thought of a way to violate the rule, and then designed a receiver contract to
+cause the violation.  However, one of the main benefits of the Prover is that
+you don't have to know in advance the attacks you're trying to prevent, and
+this approach to creating dispatchees loses that benefit.
+
+There is a clever trick you can use to write flexible dispatchees that can
+cover a broad range of potential attacks.  The trick relies on the fact that the
+Prover will consider all possible values for contract fields when trying to
+produce a counterexample.
+
+Suppose we wanted to reason about the possibility that a flash loan receiver
+could make non-view calls back to the pool from `executeOperation`.  We could
+write a separate receiver contract for each method which just calls that method,
+and add them all to the scene as potential dispatchees.  However, this can
+become cumbersome, especially if there are multiple methods that need to be
+implemented.
+
+Instead, we can write a single receiver that simulates all of these potential
+method calls.  Let's start by getting a list of the external methods of the
+contract.  The Prover helpfully provides such a list whenever we verify a rule[^noview]:
+
+!["Contract list" tab (next to the "Results" tab) showing the `Pool` contract
+  and all of its methods](pool-methods.png)
+
+[^noview]: The Prover doesn't identify the view functions, so we have to look at
+  the source code to determine which ones are non-view functions.
+
+Now, we can write an `executeOperation` method that could call any of the
+non-view functions.  We can do this with a big `if`-`then`-`else` statement ([full contract][flexible-contract]):
+
+```solidity
+contract FlexibleReceiver is IFlashLoanReceiver {
+    IPool token;
+    uint  callbackChoice;
+
+    function executeOperation(...) ... {
+        if (callbackChoice == 0)
+            token.deposit(...);
+        else if (callbackChoice == 1)
+            token.transferFrom(...);
+        else if (callbackChoice == 2)
+            token.withdraw(...);
+        ...
+        else
+            assert(false, "invalid callbackChoice value");
+
+        return true;
+    }
+}
 ```
+
+The value of the `callbackChoice` variable determines which `Pool` method
+`executeOperation` will call.  Since the Prover considers every possible value
+of the `callbackChoice` field, this means that the Prover will consider cases
+where the receiver calls each of the pool's methods.
+
+For this to be valid solidity code, we need to pass arguments for all of these
+method calls, but we can use the same trick: add some fields and let the Prover
+choose values for them ([full contract][flexible-contract])[^no-recursion]:
+
+```solidity
+contract FlexibleReceiver is IFlashLoanReceiver {
+    ...
+
+    uint    arbitraryUint;
+    address arbitraryAddress1;
+    address arbitraryAddress2;
+
+    function executeOperation(...) ... {
+        if (callbackChoice == 0)
+            token.deposit(arbitraryUint);
+        else if (callbackChoice == 1)
+            token.transferFrom(arbitraryAddress1, arbitraryAddress2, arbitraryUint);
+        else if (callbackChoice == 2)
+            token.withdraw(arbitraryUint);
+        ...
+        else
+            assert(false, "invalid callbackChoice value");
+
+        return true;
+    }
+}
+```
+
+[^no-recursion]: We don't include a call to `token.flashLoan` since this will
+  cause potentially infinite recursion, which will cause the Prover to fail.
+
+As with the `callbackChoice` variable, the Prover will consider every possible
+value for the `arbitraryUint`, `arbitraryAddress1`, and `arbitraryAddress2`
+fields, so this code has the effect of calling an arbitrary method on `pool`
+with arbitrary arguments.
+
+This approach still doesn't give perfect coverage.  For example, the
+`FlexibleReceiver` will only call one contract method, while a real attack may
+require two or more calls.  If the contract calls the `executeOperation` more
+than once it will always have the same effect (although this can be changed by
+making the arbitrary fields into mappings).
+
+In addition, if the `token` field is linked to the pool, it will only call
+methods on the pool.  In fact, this receiver will miss the violation that the
+`TransferReceiver` uncovered, because that requires calling `transferFrom` on
+the `Asset` rather than the `Pool` ([full script][flexible-linked]), although
+this particular shortcoming can be addressed by
+{ref}`using a dispatcher for the ERC20 methods <erc20-dispatcher>`
+instead of linking to the pool.
+
+Nevertheless, this technique is a useful way to build dispatchers that get
+pretty good coverage without requiring too much prediction of the bugs they
+will find.
 
 (erc20-dispatcher)=
 ### Using `DISPATCHER` for ERC20 contracts
@@ -528,4 +635,6 @@ Describe `helpers/erc20.spec` and the DummyERC20 contracts.
 [trivial-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTrivial.sh
 [transfer-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TransferReceiver.sol
 [transfer-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTransfer.sh
+[flexible-contract]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/FlexibleReceiver.sol
+[flexible-linked]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlexibleLinked.sh
 
