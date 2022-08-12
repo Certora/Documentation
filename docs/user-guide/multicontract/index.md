@@ -641,6 +641,20 @@ tokens in the scene ([full script][pool-script])!
 certoraRun certora/helpers/tokens/* ...
 ```
 
+Conclusion
+----------
+
+In this chapter, we've seen several techniques for handling inter-contract
+calls.  Linking allows us to give the source code for a contract referenced by
+a particular field.  `DISPATCHER` summaries instruct the Prover to consider
+several possible implementations of a contract, and can be used when we don't
+know exactly which contract an address will refer to.
+
+We've seen that `DISPATCHER` summaries are not completely safe &mdash; they
+constrain the possible implementations of external contracts, so they may miss
+bugs that those implementations don't trigger.  However, we have seen a useful
+technique that can explore a wide range of behaviors with little effort.
+
 [example-repo]:     https://github.com/Certora/LiquidityPoolExample
 [pool-spec]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool.spec
 [pool-script]:      https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh
