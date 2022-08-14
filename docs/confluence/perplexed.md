@@ -29,7 +29,7 @@ As you can see there’s a ~2 hours difference between “Queue Time” and “F
     
 2.  If the problem is preprocessing, first try to run with `-enableEqualitySaturation=false`, and if that does not help try in addition `-simplificationDepth=10`. If both don't help, please report to Certora.
 
-3.  If you’re blocked on this contract, try to make progress by manually removing parts of the code. The code may contain libraries that add to the complication, so try to “erase” those parts of the code first and re-run.
+3.  If you’re blocked on this contract, try to make progress by either summarization, or manually removing parts of the code. The code may contain libraries that add to the complication, so try to “erase” those parts of the code first and re-run. If it works, it's better to undo the changes and apply summarizations.
     
 4.  Otherwise, if rules are already starting to process, check how long approximately preprocessing took. You can measure that using the “Ping” messages. A ping message is printed every minute. If preprocessing took more than 30 minutes, report to Certora like in step 2, and either you can try removing parts of the code or just run 1 rule instead of all rules.
     
@@ -79,7 +79,7 @@ At this point, if sanity passed and in reasonable times (not more than 1-2 minut
     
 5.  Check one rule at a time and try to increase `-depth=15`. This could help if the code contains many branches.
     
-6.  It could be that internal function summaries were not applied, so if you provided those and there is no change in run times, please report to Certora.
+6.  It could be that internal function summaries were not applied. You can check this with the `-showInternalMethods` option that prints the internal functions detected. If you provided such summaries and there is no change in run times, please report to Certora.
 
 7. If your rule or code is heavy with bitwise operations, run with `-useBitVectorTheory`.
 
