@@ -399,6 +399,53 @@ Where `TokenPair` is
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:  
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --structLink Bank:0=BankToken Bank:1=LoanToken`
 
+Options for controlling contract creation
+-----------------------------------------
+
+### `--dynamic_bound`
+
+**What does it do?**
+If set to zero (the default) dynamic creation will not be modeled. If non-zero, then dynamic contract creation will be modeled with cloning, where each contract will be cloned at most n times.
+**When to use it?**
+When you wish to model contract creation as a non-havoc.
+**Example**
+Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
+`certoraRun C.sol Foo.sol --dynamic_bound 1`
+
+### `--dynamic_dispatch`
+
+**What does it do?**
+If false (the default), then all contract method invocations on newly created instances on spec must be modeled with explicit DISPATCHER summaries. 
+If true, then Prover will, on a best effort basis, automatically apply the DISPATCHER summary for call-sites that must be with a newly created contract as a receiver.
+**When to use it?**
+When you prefer not to add explicit `DISPATCHER` summaries to methods invoked by the created contract.
+**Example**
+Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site, 
+and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
+`certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch true`
+
+### `--prototype`
+
+**What does it do?**
+Instructs the Prover to consider an hexadecimal string passed into a `create` or `create2` call as returning an instance of a specific contract.
+**When to use it?**
+If you have contract creation that uses low level calls to `create` or `create2`.
+**Example**
+Suppose you have a contract `C` that creates another contract `Foo` like this:
+```
+assembly {
+     let ptr := mload(0x40)
+     mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
+     mstore(add(ptr, 0x14), shl(0x60, implementation))
+     mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
+     instance := create(0, ptr, 0x37)
+}
+```
+Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`. 
+The Prover will then be able to create a new instance of `Foo` at the point where the code creates it:
+`certoraRun C.sol Foo.sol --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1`
+Note: this argument has no effect if the dyanmic_bound is zero.
+
 Debugging options
 -----------------
 
