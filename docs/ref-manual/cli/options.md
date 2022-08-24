@@ -490,7 +490,7 @@ Note: this argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` 
 Also note that the hex string must be: 
 - a strict prefix of the memory region passed to the create command
 - must be unique within each invocation of the tool
-- must not contain gaps, i.e., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will
+- must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will
 
 
 Debugging options
