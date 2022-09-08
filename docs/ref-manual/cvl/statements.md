@@ -70,6 +70,10 @@ This section is incomplete.  See [the old documentation](/docs/confluence/anatom
 This feature is currently undocumented.
 ```
 
+```{todo}
+`requireInvariant` is always safe, even in `preserved` blocks; see {ref}`invariant-induction`.
+```
+
 Solidity-like statements
 ------------------------
 
