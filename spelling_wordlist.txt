@@ -76,6 +76,7 @@ traceback
 tracebacks
 underapproximation
 uninterpreted
+unlinked
 unsatisfiable
 unsummarized
 untrusted
