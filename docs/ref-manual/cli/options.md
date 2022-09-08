@@ -396,6 +396,7 @@ We have a contract `BankToken.sol`, and `underlyingToken` should be its address.
 
 See {doc}`/docs/confluence/advanced/linking` for more information.
 
+(--address)=
 ### `--address`
 
 **What does it do?**  

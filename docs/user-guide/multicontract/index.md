@@ -160,8 +160,8 @@ for the last return value of `balanceOf`:
 ![Call trace for `integrityOfDeposit` on `Pool` showing call to `assetBalance` with internal havoced call to `balanceOf`, returning 3 in once place and 9 in another](no-link-variables.png)
 
 The "Call Resolution" tab on the report provides more information about all of
-the unresolved method calls within the contract and how they are resolved by
-the Prover[^resolutionWarnings]:
+the unlinked external method calls within the contract and how they are
+resolved by the Prover[^resolutionWarnings]:
 
 ![Call resolution for `integrityOfDeposit` showing havocs of return values for `balanceOf` and all variables of external contracts for `transferFrom`](no-link-call-resolution.png)
 
@@ -186,11 +186,14 @@ the Prover knows about.  This set of contracts is called the {term}`scene`.  You
 can add a contract to the scene by passing the solidity source as a
 [command line argument](/docs/ref-manual/cli/options.md)
 to `certoraRun`.  The Prover creates a contract instance (with a corresponding
-address) in the scene for each source contract provided on the command line:
+address[^addressOption]) in the scene for each source contract provided on the command line:
 
 ```sh
 $ certoraRun contracts/Pool.sol contracts/Asset.sol --verify Pool:certora/specs/pool_havoc.spec ...
 ```
+
+[^addressOption]: You can control the address chosen for the contract instance
+using the {ref}`--address` option.
 
 Adding `Asset.sol` to the scene makes the Prover aware of it, but it does not
 connect the `asset` field of the pool to the `Asset` contract.  Although
@@ -214,7 +217,9 @@ contract instance in the scene.  With this information, the Prover is able to
 resolve the calls to the methods on `Pool.asset` using the code in `Asset.sol`.
 
 With this option, the Prover is no longer able to construct a counterexample to
-the `integrityOfDeposit` rule, so the rule passes.
+the `integrityOfDeposit` rule, so the rule passes.  Note that the external calls
+to the `Asset` contract no longer appear in the "Call Resolution" tab, because
+the Prover does not report linked calls here.
 
 (using-example)=
 ### Accessing additional contracts from CVL
