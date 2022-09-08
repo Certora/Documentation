@@ -324,3 +324,140 @@ filtered {
 }
 ```
 
+(invariant-induction)=
+Invariants and induction
+------------------------
+
+This section describes the logical justification for invariant checks.  You do
+not need to understand this section to use the Prover correctly, but it helps
+explain the connection between the invariant checks and mathematical proofs for
+those who are familiar with writing proofs.  This section also justifies the
+safety of arbitrary `requireInvariant` statements in `preserved` blocks.
+
+This section assumes familiarity with basic proofs by induction.  We use the
+symbols {math}`∀`, {math}`⇒`, and {math}`∧` to stand for "for all", "implies",
+and "and" respectively.
+
+Consider an invariant `i(x)` that is verified by the Prover.  For the moment,
+let's assume that `i(x)` has no `preserved` blocks. We will prove that for all
+reachable states of the contract, `i(x)` is `true`.
+
+A state `s` is reachable if we can start with an uninitialized state, apply any
+constructor, and then call any number of contract methods to produce `s`.
+
+Let {math}`P_i(x,n)` be the statement "if we start from the uninitialized
+state, apply any constructor, and then call {math}`n` contract methods, then
+the resulting state satisfies `i(x)`."  Our goal is then to prove
+{math}`∀ n, ∀ x, P_i(x,n)`.  We will prove this by induction on {math}`n`.
+
+In the base case we want to show that for any {math}`x`, if we apply any
+constructor to the uninitialized contract, that the resulting state satisfies
+`i(x)`.  This is exactly what the Prover verifies in the initial state check.
+In other words, the initial state check proves that {math}`∀ x, P_i(x,0)`.
+
+For the inductive step, we assume that any {math}`n` contract calls produce a
+state that satisfies `i(x)`, and we want to show that a state produced after
+{math}`n+1` calls also satisfies `i(x)`.  This is exactly what the prover
+verifies in the preservation check: that if the state before the last method
+call satisfies `i(x)` then after the last method call it still satisfies
+`i(x)`.  In other words, the preservation check proves that
+{math}`∀ n, ∀ x, P_i(x,n) ⇒ P_i(x, n+1)`.
+
+This completes the proof that together, the initial state check and the
+preservation check ensure that the invariant `i` holds on all reachable states.
+
+Now, let us consider preserved blocks.  Adding `require` statements to a
+`preserved` block for invariant `i` adds an additional assumption `Q` to the
+preservation check.  Now, instead of
+
+```{math}
+∀ n, ∀ x, P_i(x,n) ⇒ P_i(x, n+1),
+```
+
+the preservation check only proves
+
+```{math}
+∀ n, ∀ x, P_i(x,n) {\bf ∧ Q} ⇒ P_i(x, n+1).
+```
+
+The addition of the assumption {math}`Q` invalidates the above proof if we don't
+have reason to believe that {math}`Q` actually holds, which is why we caution
+against adding `require` statements to `preserved` blocks.
+
+However, it is important to note that adding `requireInvariant j(y)` to a
+`preserved` block is safe, even if the `preserved` block for `j` requires the
+invariant `i`.  To demonstrate this, we consider three examples.
+
+For the first example, consider the spec
+
+```cvl
+invariant i(uint x) ... { preserved { requireInvariant i(x); } }
+```
+
+Although this may seem like circular logic (we require `i` in the proof of
+`i`), it is not.  The verification of the preservation check for `i` proves the
+statement
+
+```{math}
+∀ n, ∀ x, P_i(x, n) ∧ P_i(x, n) ⇒ P_i(x, n+1),
+```
+which is logically equivalent
+to the preservation check without the `preserved` block (since {math}`P_i(x,n) ∧ P_i(x,n)`
+is equivalent to just {math}`P_i(x,n)`).
+
+For the second example, consider the following spec:
+
+```cvl
+invariant i(uint x) ...  { preserved { requireInvariant j(x); } }
+
+invariant j(uint x) ...  { preserved { requireInvariant i(x); } }
+```
+
+Verifying these invariants gives us the preservation check for `i`:
+
+```{math}
+∀ n, ∀ x, P_i(x, n) ∧ P_j(x, n) ⇒ P_i(x, n + 1)
+```
+and for `j`:
+```{math}
+∀ n, ∀ x, P_j(x, n) ∧ P_i(x, n) ⇒ P_j(x, n + 1)
+```
+
+Putting these together allows us to conclude
+```{math}
+∀ n, ∀ x, P_i(x,n) ∧ P_j(x,n) ⇒ P_i(x,n+1) ∧ P_j(x,n+1)
+```
+which is exactly what we need for an inductive proof of the the statement
+{math}`∀ n, ∀ x, P_i(x,n) ∧ P_j(x,n)`.  This statement then shows that both
+`i(x)` and `j(x)` are true in all reachable states.
+
+For the third example, consider the following spec:
+```cvl
+invariant i(uint x) ... { preserved { requireInvariant i(f(x)); } }
+```
+
+The preservation check now proves
+```{math}
+∀ n, ∀ x, P_i(x,n) ∧ P_i(f(x), n) ⇒ P_i(x, n+1).
+```
+
+Seeing that this gives us enough to write an inductive proof that
+{math}`∀ n, ∀ x, P_i(x,n)` takes a little more effort, but it only requires a
+simple trick.  Let {math}`Q(n)` be the statement {math}`∀ x, P_i(x,n)`.  We
+prove {math}`∀ n, Q(n)` by induction.
+
+The base case comes directly from the initial state check for `i`.
+
+For the inductive step, choose an arbitrary {math}`n` and assume {math}`Q(n)`.
+We want to show {math}`Q(n+1)`, i.e. that {math}`∀ x, P_i(x, n+1)`.  Fix an
+arbitrary {math}`x`.  We can apply {math}`Q(n)` to {math}`x` to conclude
+{math}`P_i(x,n)`.  We can also apply {math}`Q(n)` to {math}`f(x)` to conclude
+{math}`P_i(f(x), n)`.  These facts together with the preservation check show
+{math}`P_i(x, n+1)`.  Since {math}`x` was arbitrary, we can conclude
+{math}`∀ x, P(x, n+1)`, which is {math}`Q(n+1)`.  This completes the inductive
+step, and thus the proof.
+
+The techniques used in these three examples can be used to demonstrate that it
+is always logically sound to add a `requireInvariant` to a `preserved` block,
+even for complicated interdependent invariants.
+
