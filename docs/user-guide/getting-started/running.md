@@ -5,3 +5,5 @@ See [Lesson 1 of the tutorial](https://github.com/Certora/Tutorials/tree/master/
 for a detailed walkthrough of how to write a basic property, verify it using
 the Certora Prover, and understand the verification results.
 
+Feel free to post questions at [forum.certora.com](https://forum.certora.com).
+
