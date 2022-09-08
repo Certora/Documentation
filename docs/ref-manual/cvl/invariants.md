@@ -357,7 +357,7 @@ In other words, the initial state check proves that {math}`∀ x, P_i(x,0)`.
 
 For the inductive step, we assume that any {math}`n` contract calls produce a
 state that satisfies `i(x)`, and we want to show that a state produced after
-{math}`n+1` calls also satisfies `i(x)`.  This is exactly what the prover
+{math}`n+1` calls also satisfies `i(x)`.  This is exactly what the Prover
 verifies in the preservation check: that if the state before the last method
 call satisfies `i(x)` then after the last method call it still satisfies
 `i(x)`.  In other words, the preservation check proves that
