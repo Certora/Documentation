@@ -539,14 +539,15 @@ contract.  The Prover helpfully provides such a list whenever we verify a rule[^
   the source code to determine which ones are non-view functions.
 
 Now, we can write an `executeOperation` method that could call any of the
-non-view functions.  We can do this with a big `if`-`then`-`else` statement ([full contract][flexible-contract]):
+non-view functions.  We can do this with a big `if`-`then`-`else` statement ([full contract][flexible-contract])[^no-recursion]:
 
 ```solidity
 contract FlexibleReceiver is IFlashLoanReceiver {
     IPool token;
-    uint  callbackChoice;
 
     function executeOperation(...) ... {
+        uint  callbackChoice = ...;
+
         if (callbackChoice == 0)
             token.deposit(...);
         else if (callbackChoice == 1)
@@ -557,40 +558,7 @@ contract FlexibleReceiver is IFlashLoanReceiver {
         else
             assert(false, "invalid callbackChoice value");
 
-        return true;
-    }
-}
-```
-
-The value of the `callbackChoice` variable determines which `Pool` method
-`executeOperation` will call.  Since the Prover considers every possible value
-of the `callbackChoice` field, this means that the Prover will consider cases
-where the receiver calls each of the pool's methods.
-
-For this to be valid solidity code, we need to pass arguments for all of these
-method calls, but we can use the same trick: add some fields and let the Prover
-choose values for them ([full contract][flexible-contract])[^no-recursion]:
-
-```solidity
-contract FlexibleReceiver is IFlashLoanReceiver {
-    ...
-
-    uint    arbitraryUint;
-    address arbitraryAddress1;
-    address arbitraryAddress2;
-
-    function executeOperation(...) ... {
-        if (callbackChoice == 0)
-            token.deposit(arbitraryUint);
-        else if (callbackChoice == 1)
-            token.transferFrom(arbitraryAddress1, arbitraryAddress2, arbitraryUint);
-        else if (callbackChoice == 2)
-            token.withdraw(arbitraryUint);
-        ...
-        else
-            assert(false, "invalid callbackChoice value");
-
-        return true;
+        return ...;
     }
 }
 ```
@@ -598,28 +566,118 @@ contract FlexibleReceiver is IFlashLoanReceiver {
 [^no-recursion]: We don't include a call to `token.flashLoan` since this will
   cause potentially infinite recursion, which will cause the Prover to fail.
 
-As with the `callbackChoice` variable, the Prover will consider every possible
-value for the `arbitraryUint`, `arbitraryAddress1`, and `arbitraryAddress2`
-fields, so this code has the effect of calling an arbitrary method on `pool`
-with arbitrary arguments.
+The value of the `callbackChoice` variable determines which `Pool` method
+`executeOperation` will call.  We would like the Prover to consider every
+possible value of the `callbackChoice` field, so that it can choose to call any
+of the pool's methods.  We would also like the Prover to consider every choice
+of arguments to these method calls.
 
-This approach still doesn't give perfect coverage.  For example, the
-`FlexibleReceiver` will only call one contract method, while a real attack may
-require two or more calls.  If the contract calls the `executeOperation` more
-than once it will always have the same effect (although this can be changed by
-making the arbitrary fields into mappings).
+For this to be valid solidity code, we need to actually give values to the
+`callbackChoice` and the arguments to the called methods.  To do this, we use a
+clever trick.  Since the Prover considers every possible value for storage
+variables, we can simply use a storage variable for `callbackChoice` and for
+the arguments.  For example, we could write
 
-In addition, if the `token` field is linked to the pool, it will only call
-methods on the pool.  In fact, this receiver will miss the violation that the
-`TransferReceiver` uncovered, because that requires calling `transferFrom` on
-the `Asset` rather than the `Pool` ([full script][flexible-linked]), although
-this particular shortcoming can be addressed by
-{ref}`using a dispatcher for the ERC20 methods <erc20-dispatcher>`
+```solidity
+contract FlexibleReceiver is IFlashLoanReceiver {
+    ...
+
+    uint arbitraryCallback;
+    function executeOperation(...) ... {
+        uint  callbackChoice = arbitraryCallback;
+
+        ...
+    }
+}
+```
+
+The Prover will consider cases where `arbitraryCallback` can have any possible
+value at the beginning of the rule, and we can use this arbitrary value to fill
+in `callbackChoice`[^arbitrary-constructor].
+
+One potential drawback of this choice is that the receiver contract will make
+the same callback every time `executeOperation` is called within a rule.  We can
+relax this restriction by using a mapping of arbitrary values instead of a
+single callback:
+
+```solidity
+contract FlexibleReceiver is IFlashLoanReceiver {
+    ...
+
+    uint counter;
+    mapping(uint => uint) arbitraryCallbacks;
+
+    function executeOperation(...) ... {
+        uint  callbackChoice = arbitraryCallbacks[counter++];
+
+        ...
+    }
+}
+```
+
+With this version, the Prover is able to choose a new value of
+`arbitraryCallbacks[i]` for each `i`; since the `counter` variable is updated
+on each call, this means that it can choose a different value of
+`callbackChoice` for each call.
+
+The abstract contract `ArbitraryValues` ([source][arbitrary-values]) makes this
+simple.  For each value type, it provides an `arbitraryType()` method that
+returns an undefined value that the Prover can fill in arbitrarily as it is
+constructing counterexamples.  For example, the `arbitraryInt192()` method
+returns a newly selected `int192` each time it called.  In this case, we can
+use the `arbitraryUint` and `arbitraryAddress` methods to choose the callback
+and the arguments
+([full source][flexible-contract], [run script][flexible-linked]):
+
+```solidity
+contract FlexibleReceiver is IFlashLoanReceiver, ArbitraryValues {
+    ...
+
+    function executeOperation(...) ... {
+        uint callbackChoice = arbitraryUint();
+
+        if (callbackChoice == 0)
+            token.deposit(arbitraryUint());
+        else if (callbackChoice == 1)
+            token.transferFrom(arbitraryAddress(), arbitraryAddress(), arbitraryUint());
+        else if (callbackChoice == 2)
+            token.withdraw(arbitraryUint());
+        ...
+        else
+            assert(false, "invalid callbackChoice value");
+
+        return arbitraryBool();
+    }
+}
+```
+
+With this implementation, the Prover will consider every possible value for
+`callbackChoice` as well as for the arguments to the methods, which has the
+effect of calling an arbitrary non-view method on `pool` with arbitrary
+arguments.
+
+This approach still doesn't give perfect coverage.  If the `token` field is
+linked to the pool, it will only call methods on the pool.  In fact, this
+receiver will miss the violation that the `TransferReceiver` uncovered, because
+that requires calling `transferFrom` on the `Asset` rather than the `Pool`
+([full script][flexible-linked]), although this particular shortcoming can be
+addressed by {ref}`using a dispatcher for the ERC20 methods <erc20-dispatcher>`
 instead of linking to the pool.
+
+Another important caveat is that this technique does not work for initial state
+checks for invariants.  In this case, the Prover does not choose arbitrary
+values for storage variables, since it knows that storage variables are all
+initialized to 0 before the constructor call.  Therefore, the `arbitraryType()`
+methods will always return 0.
+
+A third shortcoming with this implementation is that it only makes one
+reentrant call to the `token` contract.  Vulnerabilities that require two or
+more callbacks from the `FlashLoanReceiver` to exploit will not be detected.
 
 Nevertheless, this technique is a useful way to build dispatchers that get
 pretty good coverage without requiring too much prediction of the bugs they
-will find.
+will find.  The `ArbitraryValues` helper contract makes this pattern easy to
+implement.
 
 (erc20-dispatcher)=
 ### Using `DISPATCHER` for ERC20 contracts
@@ -673,6 +731,7 @@ technique that can explore a wide range of behaviors with little effort.
 [trivial-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTrivial.sh
 [transfer-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TransferReceiver.sol
 [transfer-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTransfer.sh
+[arbitrary-values]:  https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/ArbitraryValues.sol
 [flexible-contract]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/FlexibleReceiver.sol
 [flexible-linked]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlexibleLinked.sh
 [helpers]:           https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/
