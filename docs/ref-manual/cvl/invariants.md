@@ -385,8 +385,9 @@ have reason to believe that {math}`Q` actually holds, which is why we caution
 against adding `require` statements to `preserved` blocks.
 
 However, it is important to note that adding `requireInvariant j(y)` to a
-`preserved` block is safe, even if the `preserved` block for `j` requires the
-invariant `i`.  To demonstrate this, we consider three examples.
+`preserved` block is safe (assuming that `j` is verified), even if the
+`preserved` block for `j` requires the invariant `i`.  To demonstrate this, we
+consider three examples.
 
 For the first example, consider the spec
 
@@ -459,5 +460,6 @@ step, and thus the proof.
 
 The techniques used in these three examples can be used to demonstrate that it
 is always logically sound to add a `requireInvariant` to a `preserved` block,
-even for complicated interdependent invariants.
+even for complicated interdependent invariants (as long as the required
+invariants have been verified).
 
