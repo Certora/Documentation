@@ -30,6 +30,8 @@ havocing
 havocs
 hyperproperties
 hyperproperty
+immutable
+immutables
 inlined
 instantiation
 invariant
@@ -67,8 +69,10 @@ structs
 subgraph
 summarization
 summarizable
+summarizations
 traceback
 tracebacks
+underapproximation
 uninterpreted
 unsatisfiable
 unsummarized
