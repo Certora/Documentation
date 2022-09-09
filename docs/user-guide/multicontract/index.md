@@ -595,6 +595,10 @@ The Prover will consider cases where `arbitraryCallback` can have any possible
 value at the beginning of the rule, and we can use this arbitrary value to fill
 in `callbackChoice`[^arbitrary-constructor].
 
+[^arbitrary-constructor]: This trick doesn't work during the initial state
+  checks for invariants, since storage is always initialized to zero at the
+  start of a constructor.
+
 One potential drawback of this choice is that the receiver contract will make
 the same callback every time `executeOperation` is called within a rule.  We can
 relax this restriction by using a mapping of arbitrary values instead of a
