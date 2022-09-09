@@ -505,8 +505,8 @@ reported under the entry for `f`.
 (-globalTimeout)=
 #### `--settings -globalTimeout=<seconds>`
 
-This option sets the global timeout in seconds.  By default, there is no global
-timeout.
+This option sets the global timeout in seconds.  By default, the global timeout
+is two hours.  Values larger than two hours (7200 seconds) are ignored.
 
 The global timeout is different from the {ref}`--smt_timeout` option: the
 `--smt_timeout` flag constrains the amount of time allocated to the processing
