@@ -588,10 +588,17 @@ that the called method returns the correct number of return values.
 (-showInternalFunctions)=
 #### `--settings -showInternalFunctions`
 
+**What does it do?**
+
 This option causes the Prover to output a list of all the potentially
-summarizable internal function calls.  In some cases the Prover is unable to
-locate all internal function calls, and so summaries may not be applied.  This
-option can be useful to determine whether summary is applied or not.
+summarizable internal function calls on the command line.  The output is also
+visible in the log file that you can download from the report.
+
+**When to use it?**
+
+In some cases the Prover is unable to locate all internal function calls, and
+so summaries may not be applied.  This option can be useful to determine
+whether summary is applied or not.
 
 The Prover's ability to locate a summarizable call depends on the call site,
 rather than the method declaration.  In particular, it is possible that the
@@ -602,6 +609,12 @@ The list that is output by this setting is grouped under the public and external
 methods of the contract.  If an external method `f` calls an internal method `g`
 which in turn calls another internal method `h`, then both `g` and `h` will be
 reported under the entry for `f`.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --settings -showInternalFunctions
+```
 
 (-globalTimeout)=
 #### `--settings -globalTimeout=<seconds>`
