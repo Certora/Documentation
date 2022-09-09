@@ -1,15 +1,12 @@
 Certora Prover Tutorial
 =======================
 
-```{todo}
-This tutorial is under development.
-```
+The Certora Tutorial is a series of guided lessons that covers installation and
+basic usage of the Certora Prover.
 
-Secureum Bootcamp Notes
------------------------
+It is available [on github](https://github.com/Certora/Tutorials#certora-tutorials).
 
-The best existing tutorial for the Certora Prover is the
-[lecture notes](https://github.com/Certora/Tutorials#certora-onboarding)
-for our 2022 Secureum Bootcamp.  To follow the tutorial, see the `README` files
-in each directory.
+The Tutorial is organized as a series of lessons and exercises.  You are
+encouraged to clone the git repository and work through the exercises yourself.
+Each directory has a `README` file that explains the lesson.
 
