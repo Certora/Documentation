@@ -501,10 +501,6 @@ the [final spec][pool-spec] for this example.
 Once there is a user guide page on `requireInvariant`, link to it.
 ```
 
-```{todo}
-Make sure it is actually implemented in the final pool spec
-```
-
 Nevertheless, this example shows that having too few dispatchees can cause a
 rule to pass, even though the property it describes is not necessarily true in
 all situations.
