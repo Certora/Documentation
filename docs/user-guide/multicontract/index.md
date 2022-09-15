@@ -199,9 +199,10 @@ Adding `Asset.sol` to the scene makes the Prover aware of it, but it does not
 connect the `asset` field of the pool to the `Asset` contract.  Although
 `Pool.asset` is declared to have type `Asset` in the solidity source, the
 solidity compiler erases that information from the bytecode; in the compiled
-bytecode the field is just treated as an `address`.
+bytecode the field is just treated as an `address`, and at run time the field
+could point to any contract.
 
-To reconnect the `Asset` code to the `Pool.asset` field, we can use the
+To connect the `Asset` code to the `Pool.asset` field, we can use the
 {ref}`--link` option ([full script][pool-link-script]):
 
 ```sh
@@ -317,7 +318,7 @@ commonly used for unknown code are {ref}`dispatcher`.
 
 The `DISPATCHER` summary resolves calls by assuming that the receiver address
 is one of the contracts in the scene that implements the called method.  It
-will try every option, and if any of them can cause a counterexample, it will
+will try every option, and if any of them can cause a violation, it will
 report a counterexample.
 
 ```{warning}
