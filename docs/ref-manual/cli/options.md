@@ -368,7 +368,7 @@ Note that the SMT timeout applies separately to each individual rule (or each me
 for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`.
 
 **When to use it?**  
-The default time out for the solvers is 600 seconds. There are two use cases for this option.  
+The default time out for the solvers is 300 seconds. There are two use cases for this option.  
 One is to decrease the timeout. This is useful for simple rules, that are solved quickly by the SMT solvers. Here, it is beneficial to reduce the timeout, so that when a new code breaks the specification, the tool will fail quickly. This is the more common use case.  
 The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.  
 
