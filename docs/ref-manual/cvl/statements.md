@@ -71,7 +71,8 @@ This feature is currently undocumented.
 ```
 
 ```{todo}
-`requireInvariant` is always safe, even in `preserved` blocks; see {ref}`invariant-induction`.
+`requireInvariant` is always safe for invariants that have been proved, even in
+`preserved` blocks; see {ref}`invariant-induction` for a detailed explanation.
 ```
 
 Solidity-like statements
