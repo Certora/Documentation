@@ -16,6 +16,8 @@ bytecode
 conjuncted
 dereference
 dereferences
+dispatchee
+dispatchees
 enum
 enums
 envfree
@@ -68,12 +70,15 @@ struct
 structs
 subgraph
 summarization
+summarizable
 summarizations
 traceback
 tracebacks
 underapproximation
 uninterpreted
+unlinked
 unsatisfiable
+unsummarized
 untrusted
 verifications
 verifier

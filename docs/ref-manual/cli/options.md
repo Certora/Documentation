@@ -351,14 +351,24 @@ By default, we do not use a cache. If you want to use a cache to speed up the bu
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
 
-### `--smt_timeout`
+(--smt_timeout)=
+### `--smt_timeout <seconds>`
 
 **What does it do?**  
-Sets the maximal timeout for all the [SMT solvers](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories). Gets an integer input, which represents seconds.  
-The Certora Prover generates a logical formula from the specification and source code. Then, it passes it on to an array of SMT solvers. The time it can take for the SMT solvers to solve the equation is highly variable, and could potentially be infinite. This is why they must be limited in run time. 
+Sets the maximal timeout for all the
+[SMT solvers](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories).
+Gets an integer input, which represents seconds.  
+
+The Certora Prover generates a logical formula from the specification and
+source code. Then, it passes it on to an array of SMT solvers. The time it can
+take for the SMT solvers to solve the equation is highly variable, and could
+potentially be infinite. This is why they must be limited in run time.
+
+Note that the SMT timeout applies separately to each individual rule (or each method
+for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`.
 
 **When to use it?**  
-The default time out for the solvers is 600 seconds. There are two use cases for this option.  
+The default time out for the solvers is 300 seconds. There are two use cases for this option.  
 One is to decrease the timeout. This is useful for simple rules, that are solved quickly by the SMT solvers. Here, it is beneficial to reduce the timeout, so that when a new code breaks the specification, the tool will fail quickly. This is the more common use case.  
 The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.  
 
@@ -368,6 +378,7 @@ The second use is when the solvers can prove the property, they just need more t
 Options to set addresses and link contracts
 -------------------------------------------
 
+(--link)=
 ### `--link`
 
 **What does it do?**  
@@ -385,6 +396,7 @@ We have a contract `BankToken.sol`, and `underlyingToken` should be its address.
 
 See {doc}`/docs/confluence/advanced/linking` for more information.
 
+(--address)=
 ### `--address`
 
 **What does it do?**  
@@ -575,4 +587,49 @@ This list is incomplete.
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 
+(-showInternalFunctions)=
+#### `--settings -showInternalFunctions`
+
+**What does it do?**
+
+This option causes the Prover to output a list of all the potentially
+summarizable internal function calls on the command line.  The output is also
+visible in the log file that you can download from the report.
+
+**When to use it?**
+
+In some cases the Prover is unable to locate all internal function calls, and
+so summaries may not be applied.  This option can be useful to determine
+whether summary is applied or not.
+
+The Prover's ability to locate a summarizable call depends on the call site,
+rather than the method declaration.  In particular, it is possible that the
+same internal function is called from two different contract functions, but
+only one of those calls is summarizable.
+
+The list that is output by this setting is grouped under the public and external
+methods of the contract.  If an external method `f` calls an internal method `g`
+which in turn calls another internal method `h`, then both `g` and `h` will be
+reported under the entry for `f`.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --settings -showInternalFunctions
+```
+
+(-globalTimeout)=
+#### `--settings -globalTimeout=<seconds>`
+
+This option sets the global timeout in seconds.  By default, the global timeout
+is two hours.  Values larger than two hours (7200 seconds) are ignored.
+
+The global timeout is different from the {ref}`--smt_timeout` option: the
+`--smt_timeout` flag constrains the amount of time allocated to the processing
+of each individual rule, while the `-globalTimeout` flag constrains the
+processing of the entire job, including static analysis and other
+preprocessing.
+
+Jobs that exceed the global timeout will simply be terminated, so the result
+reports may not be generated.
 
