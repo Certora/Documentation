@@ -342,8 +342,9 @@ Consider an invariant `i(x)` that is verified by the Prover.  For the moment,
 let's assume that `i(x)` has no `preserved` blocks. We will prove that for all
 reachable states of the contract, `i(x)` is `true`.
 
-A state `s` is reachable if we can start with an uninitialized state, apply any
-constructor, and then call any number of contract methods to produce `s`.
+A state `s` is reachable if we can start with an uninitialized state (that is,
+where all storage variables are 0), apply any constructor, and then call any
+number of contract methods to produce `s`.
 
 Let {math}`P_i(x,n)` be the statement "if we start from the uninitialized
 state, apply any constructor, and then call {math}`n` contract methods, then
