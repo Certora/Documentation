@@ -264,8 +264,8 @@ When different contracts have to be compiled for different Solidity versions.
 ### `--path`
 
 **What does it do?**  
-Passes the value of this option as it to the solc option `--allow-paths`
-see [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
+Passes the value of this option as is to the solidity compiler's option `--allow-paths`.
+See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
 
 **When to use it?**  
 When we want for security reasons to limit the locations for loaded sources to specific directories
