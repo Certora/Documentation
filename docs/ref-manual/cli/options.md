@@ -264,11 +264,13 @@ When different contracts have to be compiled for different Solidity versions.
 ### `--path`
 
 **What does it do?**  
-Use the given path as the root of the source tree instead of the root of the file system.  
+Passes the value of this option as it to the solc option `--allow-paths`
+see [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
 
 **When to use it?**  
-By default, we use `$PWD/contracts` if exists, else `$PWD`. If the root of the source tree is not the default, you must use `--path`.  
-Example  
+When we want for security reasons to limit the locations for loaded sources to specific directories
+
+**Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --path ~/Projects/Bank`
 
 ### `--packages_path`
