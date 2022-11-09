@@ -1,4 +1,4 @@
-Certora Complexity Scores
+The Certora Complexity Check
 =========================
 
 ```{todo}

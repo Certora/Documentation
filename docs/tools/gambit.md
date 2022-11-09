@@ -1,5 +1,5 @@
-Mutation Testing with Gambit
-============================
+The Certora Mutation Tester
+===========================
 
 ```{todo}
 Gambit is currently undocumented.

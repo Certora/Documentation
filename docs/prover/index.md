@@ -1,5 +1,5 @@
-Certora Prover Reference Manual
-===============================
+The Certora Prover
+==================
 
 ```{note}
 The reference manual is currently being heavily edited and reorganized.
