@@ -1,5 +1,5 @@
 Changelog
-=========
+==========
 
 Prod version March 21, 2022
 ---------------------------
@@ -14,11 +14,11 @@ Prod version March 21, 2022
     
 *   Added buttons leading to the older report and the logs (`Results.txt`) in the current verification report.
     
-*   Present a friendlier error message when trying to invoke solidity calls from within an init\_state axiom.
+*   Present a friendlier error message when trying to invoke solidity calls from within an `init_state` axiom.
     
 *   Allow multiple contracts that have the same struct name locally.
     
-*   Preliminary fixes of calltrace generation failures.
+*   Preliminary fixes of call trace generation failures.
     
 *   Fix for supporting struct types in preserved blocks.
     
@@ -42,7 +42,7 @@ Prod version March 6, 2022 \[MAJOR\]
     
 *   Improving internal error messages.
     
-*   Fix reverting of transfer via a low level call where rc is not propagated as a revert of the caller.
+*   Fix reverting of transfer via a low level call where `rc` is not propagated as a revert of the caller.
     
 *   Fixing application of CVL functions within expressions in case the CVL function contains parametric method calls.
     
@@ -50,7 +50,7 @@ Prod version March 6, 2022 \[MAJOR\]
 Prod version February 24, 2022
 ------------------------------
 
-*   Fixing loading of expected file option from conf file run.
+*   Fixing loading of expected file option from configuration file run.
     
 *   Fixing an unsound application of constant propagation.
     
@@ -58,7 +58,7 @@ Prod version February 24, 2022
     
 *   Increasing timeout of string unpacking checker.
     
-*   Removed a redundant print from the stdout of certora-cli.
+*   Removed a redundant print from the `stdout` of `certora-cli`.
     
 *   Reducing LIA axioms that are unnecessary.
     
@@ -70,11 +70,11 @@ Prod version February 24, 2022
     
 *   Fixing internal links in verification report.
     
-*   Performance improvements through more efficient modelling of machine arithmetic, enabled by default.
+*   Performance improvements through more efficient modeling of machine arithmetic, enabled by default.
     
 *   Dump reproduction files on all runs.
     
-*   Simplification of auto-safemath code in solidity 0.8.
+*   Simplification of automatic safe math code in solidity 0.8.
     
 *   Fixing splitting of storage variables in constructor code.
     
@@ -112,7 +112,7 @@ Prod version January 30, 2022
     
 *   Adding a missing case of handling of array total length vs. length
     
-*   Making sure false warnings don’t show up in console
+*   Making sure false warnings don't show up in console
     
 *   Improving robustness of path enumeration mode
     
@@ -152,19 +152,19 @@ Prod version January 1st, 2022
         
     2.  Displaying of special values for every EVM type (max/min values).
         
-    3.  Values of EVM types address/bytesK will be displayed in hexadecimal.  
+    3.  Values of EVM types `address/bytesK` will be displayed in hexadecimal.  
         Values greater than 1000 will also be displayed in hexadecimal.
         
 *   Displaying of returned values of internal functions.
     
 *   Displaying of summarized functions' results.
     
-*   Prefix of ret\_k/arg\_k for the k’th argument/returned value of a function, in cases where the values  
-    are not displayed sequently, to clarify the order of arguments/returned values.  
+*   Prefix of `ret_k/arg_k` for the `k`th argument/returned value of a function, in cases where the values  
+    are not displayed in sequence, to clarify the order of arguments/returned values.  
     For example, if we are missing the second argument out of 3 arguments of a function, we will display  
-    something like arg2=\[value2\].
+    something like `arg2=[value2]`.
     
-*   Fix bitvector hash bound causing an exception
+*   Fix bit vector hash bound causing an exception
     
 *   Solve size limit issue when uploading tasks to the cloud
     
@@ -176,7 +176,7 @@ Prod version December 19, 2021
 
 *   Bug fix in decompiler
     
-*   Adding option for highly optimistic handling of return size in havocd calls `-superOptimisticReturnsize`
+*   Adding option for highly optimistic handling of return size in havoced calls `-superOptimisticReturnsize`
     
 *   Bug fix in registration of axioms
     
@@ -196,7 +196,7 @@ Prod version December 19, 2021
     
 *   Fix unpack analysis on storage delete commands
     
-*   Improved statsdata for solver races
+*   Improved `statsdata.json` for solver races
     
 
 Prod version December 12, 2021
@@ -222,7 +222,7 @@ Prod version December 12, 2021
 Prod version December 4, 2021
 -----------------------------
 
-*   Can now add an env variable to generic preserved block via the syntax preserved `with (env e) {...}`
+*   Can now add an `env` variable to generic preserved block via the syntax preserved `with (env e) {...}`
     
 *   When a user needs to update `certora-cli`, we give installation instructions to both `pip` and `pip3`
     
@@ -256,7 +256,7 @@ Prod version November 15, 2021
     
 *   Fix to allow havoc assuming in non-hook context
     
-*   Improved calldata splitting
+*   Improved `calldata` splitting
     
 *   More efficient axiom instantiation
     
@@ -266,15 +266,15 @@ Prod version November 15, 2021
 Prod version November 7, 2021
 -----------------------------
 
-*   Fix to handling of mulmod instruction
+*   Fix to handling of `mulmod` instruction
     
 *   Command summaries
     
 *   Recursive dispatcher calls now leading to assert false instead of tool error
     
-*   Fixing bwand axiomatization failure in unreachable div by 0 code segments
+*   Fixing `bwand` axiomatization failure in unreachable division by 0 code segments
     
-*   Handle unpacking of packed ints in structs
+*   Handle unpacking of packed `int`s in structs
     
 *   Support for `BASEFEE` instruction
     
@@ -284,7 +284,7 @@ Prod version November 7, 2021
     
 *   Added a new tool option `--send_only` that sends the verification but does not wait for results
     
-*   In the calltrace special values are now shown with both a string and the concrete value
+*   In the call trace special values are now shown with both a string and the concrete value
     
 *   Support `bytes` in preserved blocks together with referring to any other parameters in the preserved block
     
@@ -310,7 +310,7 @@ Prod version October 3, 2021
     
 *   Support for `bytes` and `bytes[]` in CVL
     
-*   Ensure `delegatecall` modeling preserves `msg.value` in callee without transfering either in call or in revert paths
+*   Ensure `delegatecall` modeling preserves `msg.value` in callee without transferring either in call or in revert paths
     
 *   Support computation of storage references via `abi.encode` calls and direct access via inline assembly
     
@@ -354,7 +354,7 @@ Prod version August 29th, 2021
     
 *   Proper type checking of `requireInvariant`
     
-*   Added mode for typechecking only - `--typecheck_only`
+*   Added mode for type checking only - `--typecheck_only`
     
 
 Prod version August 8th, 2021
@@ -388,7 +388,7 @@ Prod version August 8th, 2021
     
 *   Prettier error message when the `certora-cli` package version is not found
     
-*   Support for ecrecover precompiled
+*   Support for `ecrecover` precompiled
     
 *   Bug fix for very big statically sized arrays in storage
     
@@ -404,7 +404,7 @@ Prod version August 8th, 2021
 Prod version July 18, 2021
 --------------------------
 
-*   Fix to calltrace generation when having reverts in internal functions
+*   Fix to call trace generation when having reverts in internal functions
     
 *   Auto-enable CI mode in GitHub Actions
     
@@ -442,11 +442,11 @@ Prod version July 12, 2021
     
 *   Better error messages. If there was a typo in a contract name, we provide suggestions to which contract name it should be.
     
-*   Fixed Sload hooks for simple splitted primitive storage variables
+*   Fixed `Sload` hooks for simple split primitive storage variables
     
 *   Support for arrays in CVL
     
-*   New axiomatization for hash function applications that is compatible with bitvector logics
+*   New axiomatization for hash function applications that is compatible with bit vector logics
     
 *   Package version validation now happens before local type checking, so an incompatible package version message will be printed even if local type checking fails (say, as a result of new syntax)
     
@@ -454,11 +454,11 @@ Prod version July 12, 2021
     
 *   Set `isConvertibleToArithmeticType()` to true for type `bytes32` - Allows for operands of bitwise operations to be `bytes32`
     
-*   Make more ghosts appear in calltrace
+*   Make more ghosts appear in call trace
     
 *   Validation of `--rule` (or `--settings -rule`) is now more precise, and will not match rule names in comments
     
-*   Allow ite-expressions in hooks
+*   Allow if/then/else expressions in hooks
     
 *   Fixed bug with ghost handling in reverts
     
@@ -472,7 +472,7 @@ Prod version July 12, 2021
 Prod version June 14th, 2021
 ----------------------------
 
-*   We now only print trackbacks of Python exceptions when we are in debug mode.
+*   We now only print tracebacks of Python exceptions when we are in debug mode.
     
 *   We check the validity of --method argument locally. We give appropriate messages if the method is private or internal, or if just the arguments are wrong. If the name is wrong, we suggest other closely named existing methods.
     
@@ -496,7 +496,7 @@ Prod version June 13th, 2021
     
 *   Fixes the memory splitter
     
-*   More optimization rounds to BW-Ands and path pruning
+*   More optimization rounds to bitwise and expressions and path pruning
     
 *   Remove unnecessary internal annotations
     

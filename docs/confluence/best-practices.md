@@ -4,9 +4,9 @@ Best Practices
 When to use the environment argument?
 -------------------------------------
 
-*   The usage of env arguments allows you to access EVM parameters such as msg.sender.
+*   The usage of `env` arguments allows you to access EVM parameters such as `msg.sender`.
     
-*   env arguments can describe the behavior of multiple EVM transactions. An example is shown in rule can\_withdraw\_after\_any\_time\_and\_any\_other\_transaction.
+*   `env` arguments can describe the behavior of multiple EVM transactions. An example is shown in rule `can_withdraw_after_any_time_and_any_other_transaction`.
     
 
 ```cvl

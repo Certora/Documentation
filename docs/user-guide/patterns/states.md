@@ -1,4 +1,4 @@
-Writing state-based invariants
+Writing State-Based Invariants
 ==============================
 
 ```{todo}

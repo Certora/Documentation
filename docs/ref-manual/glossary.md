@@ -36,7 +36,7 @@ counterexample
 
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
-  method variable, or using an overloaded function name.  The prover will
+  method variable, or using an overloaded function name.  The Prover will
   generate a separate report for each possible instantiation of the method.
   See {ref}`parametric-rules` for more information.
 
@@ -52,6 +52,10 @@ sanity
   This section is incomplete.  See {ref}`--rule_sanity` for partial information.
   ```
 
+scene
+  The *scene* refers to the set of contract instances that the Prover knows
+  about.
+
 sound
 unsound
   Soundness means that any rule violations in the code being verified are
@@ -60,6 +64,13 @@ unsound
   missed by the Prover, and should therefore be used with caution.  See
   {doc}`approx/index` for more details.
 
+summary
+summarize
+  A method summary is a user-provided approximation of the behavior of a
+  contract method.  Summaries are useful if the implementation of a method is
+  not available or if the implementation is too complex for the Prover to
+  analyze without timing out.  See {doc}`/docs/ref-manual/cvl/methods` for
+  complete information on different types of method summaries.
 ````
 
 

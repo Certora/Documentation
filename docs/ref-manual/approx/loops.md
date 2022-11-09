@@ -1,4 +1,4 @@
-Loop unrolling
+Loop Unrolling
 ==============
 
 One of the approximations applied by the Certora Prover is loop unrolling.

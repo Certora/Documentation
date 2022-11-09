@@ -25,7 +25,7 @@ Inside each rule, CVT takes these hooks and looks for any reads or writes to sto
 Hook Patterns
 -------------
 
-### Sload and Sstore
+### `Sload` and `Sstore`
 
 `Sload` and `Sstore` are two `TAC` primitives representing a _read_ from storage and a _write_ to storage, respectively. A pattern for an `Sload` will bind a variable to provide access to "the value loaded", and a pattern for an `Sstore` will bind a variable both for "the value stored" and (optionally) "the old value that was overwritten." For example:
 
@@ -149,7 +149,7 @@ hook Sstore m_1[KEY uint256 k].(offset 64) uint256 third STORAGE {
 }
 ```
 
-This is allowed only because the offset is **32-byte aligned**. Any non- 32-byte aligned offset will not typecheck. However, using a clever definition, we can still get values from within packed structs.
+This is allowed only because the offset is **32-byte aligned**. Any non- 32-byte aligned offset will not type-check. However, using a clever definition, we can still get values from within packed structs.
 
 ### Manually Unpacking Structs
 
@@ -203,6 +203,7 @@ hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
 }
 ```
 
+(hook-body)=
 The Body of a Hook
 ------------------
 
@@ -270,7 +271,7 @@ Finally, as shown in the section on definitions, a definition with ghosts in t
 A Hook that Modifies Ghost State
 --------------------------------
 
-[Above](#The-Body-of-a-Hook) we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather _further constrained_ it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:
+{ref}`Above <hook-body>` we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather _further constrained_ it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:
 
 ```cvl
 ghost ghostBalances(address) returns uint256;

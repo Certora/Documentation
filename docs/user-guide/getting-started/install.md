@@ -1,7 +1,7 @@
 Installation
 ============
 
-Step 1: Prerequisites
+Step 1: prerequisites
 ---------------------
 
 <details>
@@ -36,11 +36,11 @@ Step 1: Prerequisites
 
   * If you use a specific version of Solidity in your contract, download the
     needed Solidity compiler from the [official Solidity repository](https://github.com/ethereum/solidity/releases)
-    on Github. Make sure to place all the compilers that you download in the same
+    on GitHub. Make sure to place all the compilers that you download in the same
     path.
 
   * Certora employees can clone the `CVT_Executables` repository suitable for
-    their OS from [Github](https://github.com/orgs/Certora/repositories).
+    their OS from [GitHub](https://github.com/orgs/Certora/repositories).
 </details>
 
 Step 2: Install the Certora Prover package
@@ -64,19 +64,19 @@ can arise during installation and how to deal with them:
 <details>
   <summary>Windows</summary>
 
-  So far we haven’t encountered any warnings at installation that's needed to be
-  resolved to use the tool freely, however it doesn’t mean that you won’t
+  So far we haven't encountered any warnings at installation that's needed to be
+  resolved to use the tool freely, however it doesn't mean that you won't
   encounter one.
 
   If you do encounter a warning try the following solutions in descending order:
 
-  * Follow the warning’s instructions.
+  * Follow the warning's instructions.
 
-  * If you do not understand the warning and don’t know how to fix it, try to
+  * If you do not understand the warning and don't know how to fix it, try to
     compare it to the warning of the other OS and follow their instructions.
    * The warnings in the other OS suggest to add the installation folder to the PATH.
 
-   * To get the location of the certora-cli installation re-execute on cmd:
+   * To get the location of the `certora-cli` installation re-execute on `cmd`:
 
      ```bash
      pip install certora-cli
@@ -91,7 +91,7 @@ can arise during installation and how to deal with them:
   <summary>macOS</summary>
 
   ```{caution}
-  The script certoraRun is installed in
+  The script `certoraRun` is installed in
   '/Users/user\_name/Library/Python/3.8/bin' which is not on PATH. Consider
   adding this directory to PATH
   ```
@@ -102,7 +102,7 @@ can arise during installation and how to deal with them:
     cd /etc/paths.d
     ```
 
-  * Use root privileges to create a file with an informative name such as “PythonForProver”, and open it with your favorite text editor:
+  * Use root privileges to create a file with an informative name such as `PythonForProver`, and open it with your favorite text editor:
 
     ```bash
     sudo nano PythonForProver
@@ -127,10 +127,10 @@ can arise during installation and how to deal with them:
   <summary>Linux</summary>
 
   ```{caution}
-  Known warning - “The script certoraRun is installed in '`/home/user_name/.local/bin`' which is not on PATH. Consider adding this directory to PATH"
+  Known warning - “The script `certoraRun` is installed in '`/home/user_name/.local/bin`' which is not on PATH. Consider adding this directory to PATH"
   ```
 
-  * Open a terminal and make sure you’re in the home directory:
+  * Open a terminal and make sure you're in the home directory:
 
     ```bash
     cd ~
@@ -198,7 +198,7 @@ follow the next steps:
 <details>
   <summary>macOS</summary>
 
-  * Open a terminal and make sure you’re in the home directory:
+  * Open a terminal and make sure you're in the home directory:
 
     ```bash
     cd ~
@@ -210,7 +210,7 @@ follow the next steps:
     nano .zshenv
     ```
 
-  * Write the export command from the beginning of step 3, save and quit (`ctrl+x` on nano).
+  * Write the export command from the beginning of step 3, save and quit (`ctrl+x` on `nano`).
 
   * You can make sure that the file was created correctly by seeing it listed on the directory or by opening it again with the text editor:
 
@@ -224,7 +224,7 @@ follow the next steps:
     nano .zshenv
     ```
 
-  * Make sure to apply the environment variable you’ve just created by executing the script:
+  * Make sure to apply the environment variable you've just created by executing the script:
 
     ```bash
     source .zshenv
@@ -235,7 +235,7 @@ follow the next steps:
 <details>
   <summary>Linux</summary>
 
-  * Open a terminal and make sure you’re in the home directory:
+  * Open a terminal and make sure you're in the home directory:
 
     ```bash
     cd ~
@@ -247,7 +247,7 @@ follow the next steps:
     nano .profile
     ```
 
-  * At the bottom of the file, under the `PATH="..."` insert the export command from the beginning of step 3, save and quit (`ctrl+x` on nano).
+  * At the bottom of the file, under the `PATH="..."` insert the export command from the beginning of step 3, save and quit (`ctrl+x` on `nano`).
 
   * You can make sure that the file was modified correctly by opening it again with the text editor:
 
@@ -255,15 +255,15 @@ follow the next steps:
     nano .profile
     ```
 
-  * Make sure to apply the environment variable you’ve just created by executing the script:
+  * Make sure to apply the environment variable you've just created by executing the script:
 
     ```bash
     source .profile
     ```
 </details>
 
-Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
--------------------------------------------------------------------------
+Step 4: Add the Solidity compiler (`solc`) executable's folder to your `PATH`
+---------------------------------------------------------------------------
 
 <details>
   <summary>Windows</summary>
@@ -282,7 +282,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
 
   * In the Environment Variables window, highlight the Path variable in the System variables section and click the Edit button.
 
-  * Add the full path to the directory that contains the solc executables, e.g.:
+  * Add the full path to the directory that contains the `solc` executables, e.g.:
 
     ```bash
     C:\full\path\to\solc\executable\folder
@@ -306,7 +306,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
     cd /etc/paths.d
     ```
 
-  * Use root privileges to create a file with an informative name such as “SolidityCertoraProver”, and open it with your favorite text editor:
+  * Use root privileges to create a file with an informative name such as `SolidityCertoraProver`, and open it with your favorite text editor:
 
     ```bash
     sudo nano SolidityCertoraProver
@@ -330,7 +330,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
 <details>
   <summary>Linux</summary>
 
-  * Open a terminal and make sure you’re in the home directory:
+  * Open a terminal and make sure you're in the home directory:
 
     ```bash
     cd ~
@@ -361,7 +361,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your PATH
     ```
 </details>
 
-Congratulations! You have just completed Certora Prover’s installation and setup.
+Congratulations! You have just completed Certora Prover's installation and setup.
 
 ```{caution}
 We strongly recommend trying the tool on basic examples to verify correct installation.  See {doc}`running` for a detailed walkthrough.

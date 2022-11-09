@@ -1,10 +1,10 @@
 (partially parametric rules)=
-Partially parametric rules
+Partially Parametric Rules
 ==========================
 
 ````{todo}
 
-Write a function that applies a method with some arguments arbitrary and others
+Write a function that applies a method with some arbitrary arguments and others
 passed in, and uses method otherwise.
 
 ```cvl

@@ -1,6 +1,23 @@
 Mathematical Operations
 =======================
 
+% Notes:
+%  - Add: Uint add
+%  - IntAdd: mathint add
+%  - Parsing produces Add AST nodes
+%  - Transform only happens on declaration/definition
+%  - AmbiguousArithmeticExprRes: if lhs type is not uint, replace (uint)Add with (mathint)IntAdd
+%  - After typechecking convert types:
+%     - try convert left to right
+%     - try convert right to left
+%  - Insert implicit conversions if possible to ensure LHS and RHS of binops are the same
+%     - only one of tho operands changed
+%     - fail if not possible
+%  - Convert intadd expressions to mathint
+%  - Tests: CVLSyntax/CastExpr
+%     - castExprs: pass
+%     - bad1-bad6: rule fails or syntax error
+
 This page describes the details of how different integer types are handled in
 CVL.  The exact rules for casting between `uint` and `mathint` types are
 described in detail.
@@ -8,7 +25,7 @@ described in detail.
 ```{warning}
 The details of implicit and explicit casting between `uint*`, `int*`, and
 `mathint` in CVL are complicated, and depend not only on the expressions being
-casted but also on the context in which the resulting expressions are used.
+cast but also on the context in which the resulting expressions are used.
 For example, assignment statements work differently than return statements.
 
 This document contains the best existing documentation for the current
@@ -87,7 +104,7 @@ variables in CVL:
 *   `max_uint16`
 *   `max_uint8`
 
-## Implicit Casting
+## Implicit casting
 
 Only the following _implicit_ cast operations are supported in CVL:
 
@@ -105,7 +122,7 @@ Only the following _implicit_ cast operations are supported in CVL:
         
     *   `uint*` can implicitly cast to `mathint`. (Note that there is a **difference** in implicit and explicit casts from `uint256` to `mathint` when the expression value is outside the range of a `uint256` variable. While in the implicit cast the `uint256` value remains unchanged when converted to `mathint`, the explicit cast takes a _mod_ of the value with `2^256`. Again, this difference will be “visible” only when casting unsafely from a `uint` to `mathint`, i.e. when the `uint` value is greater than `2^256`)
         
-*   NOTE: When performing an _implicit_ cast, the type of the expression being casted _changes_ to the `targetType` except in the case when the expression is either a _variable_ or a _ghostVariable_. In these two cases, it is only checked that the expression type is a _subtype_ of the `targetType`. If the expression type is a subtype of the `targetType` the expression is successfully typechecked. Consider the following example:
+*   NOTE: When performing an _implicit_ cast, the type of the expression being cast _changes_ to the `targetType` except in the case when the expression is either a _variable_ or a _ghostVariable_. In these two cases, it is only checked that the expression type is a _subtype_ of the `targetType`. If the expression type is a subtype of the `targetType` the expression is successfully type checked. Consider the following example:
     
 
 ```cvl
@@ -115,7 +132,7 @@ mathint y = x + m1;                // check that x's type (uint256) is a subtype
 assert x < max_uint                // x STILL has type uint256 
 ```
 
-## Explicit Casting
+## Explicit casting
 
 *   An explicit cast operator tries to convert the type of an operand from its original type to the target type. The _conversion_ below specifies how the original expression is modified to a value in the target type. Furthermore, _safe\_cast\_bounds_ specify the range of values for the original expression under which the conversion to the target type is safe to perform (i.e. does not result in an _overflow_). When the value is out of safe bounds (say in case of `to_uint256(-1)`), it results in an _overflow_. Here are the rules for performing different cast operations:
     
@@ -125,13 +142,13 @@ assert x < max_uint                // x STILL has type uint256
         
     *   **Rules:**
         
-        *   Mathint To UnsignedInt
+        *   `mathint` to `uint`
             
             *   conversion: `exp mod 2^256`
                 
             *   safe\_cast\_bounds for warning: `exp >= 0 && exp <= 2^256 - 1`
                 
-        *   SignedInt To UnsignedInt
+        *   Signed `int` To unsigned `uint`
             
             *   conversion: `exp`
                 
@@ -143,7 +160,7 @@ assert x < max_uint                // x STILL has type uint256
                 
             *   safe\_cast\_bounds for warning: `exp >= 0 && exp <= 2^256 - 1`
                 
-        *   BytesK to UnsignedInt
+        *   `bytesK` to UnsignedInt
             
             *   conversion: `exp`
                 
@@ -156,7 +173,7 @@ assert x < max_uint                // x STILL has type uint256
         
     *   **Rules:**
         
-        *   Mathint to SignedInt
+        *   `mathint` to SignedInt
             
             *   conversion: `exp mod 2^256`
                 
@@ -175,25 +192,25 @@ assert x < max_uint                // x STILL has type uint256
             *   safe\_cast\_bounds for warning: `exp <= 2^255 - 1`
                 
 
-*   **To Mathint**
+*   **To `mathint`**
     
     *   **Syntax:** `to_mathint(exp)`
         
     *   **Rules:**
         
-        *   UnsignedInt to Mathint
+        *   UnsignedInt to `mathint`
             
             *   conversion: `exp`
                 
             *   safe\_cast\_bounds: `None`
                 
-        *   SignedInt to Mathint
+        *   SignedInt to `mathint`
             
             *   conversion: `exp <= 2^255 - 1 ? exp : exp - 2^256`
                 
             *   safe\_cast\_bounds: `None`
                 
-        *   NumberLiteral to Mathint
+        *   NumberLiteral to `mathint`
             
             *   conversion: `exp`
                 

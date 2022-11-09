@@ -9,9 +9,10 @@ getting-started/index.md
 examples.md
 properties/index.md
 patterns/index.md
+multicontract/index.md
 ```
 
-Case studies
+Case Studies
 ------------
 
 ### Liquidity pools
@@ -19,7 +20,7 @@ Case studies
 #### Balancer
 #### Euler
 
-### Options markets
+### Options Markets
 
 #### SirenMarkets
 
@@ -30,8 +31,8 @@ Case studies
 General Rules
 -------------
 
-### solvency rules
-### Valid states and transitions
+### Solvency Rules
+### Valid States and Transitions
 ### Rules for ERC20
 
 Managing Timeouts

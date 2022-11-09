@@ -101,6 +101,11 @@ Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 This feature is currently undocumented.
 ```
 
+```{todo}
+`requireInvariant` is always safe for invariants that have been proved, even in
+`preserved` blocks; see {ref}`invariant-induction` for a detailed explanation.
+```
+
 (control-flow)=
 Solidity-like statements
 ------------------------

@@ -1,4 +1,4 @@
-Managing timeouts
+Managing Timeouts
 =================
 
 TODO

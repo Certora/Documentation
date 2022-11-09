@@ -1,6 +1,6 @@
-Method summarization
+Method Summarization
 ====================
 
 ```{todo}
-This documentation is incomplete.  See {doc}`/docs/confluence/advanced/summaries` for more information.
+This documentation is incomplete.  See {doc}`/docs/ref-manual/cvl/methods` for more information.
 ```

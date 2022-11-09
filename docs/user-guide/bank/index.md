@@ -98,7 +98,7 @@ invariant address_zero_cannot_become_an_account(env e)
   getFunds(e, 0) == 0
 ```
 
-### envfree functions
+### `envfree` functions
 
 When a function is not using the environment, it can be declared as `envfree` to omit the call’s `env` argument. For example, `getFunds` is not using any of the environment variables:
 
@@ -112,7 +112,7 @@ invariant address_zero_cannot_become_an_account()
 ```
 
 (user-guide-output)=
-Understanding the Results of the Certora Prover
+Understanding the results of the Certora Prover
 -----------------------------------------------
 
 The Certora Prover produces a table with the verification results as a web

@@ -1,4 +1,4 @@
-The IterableMap contract
+The IterableMap Contract
 ========================
 
 The `IterableMap` will maintain an internal array of the keys inserted to the map. In the next section, we will add an iteration function.
@@ -48,13 +48,22 @@ contract IterableMap {
 }
 ```
 
-We can now run the original spec file on the new contract. Unfortunately, not all rules are passing. The `inverses` rule is failing. The assertion message tells us `Unwinding condition in a loop`. It is the output whenever we encounter a loop that cannot be finitely unrolled. To avoid misdetections of bugs, the Prover outputs an assertion error in the loop's stop condition. We can control how many times the loops are unrolled, and in the future, the Prover will also support specification of inductive invariants for full loop coverage. In our example, we can start by simply assuming loops can be fully unrolled even if only unrolled once by specifying `--optimistic_loop` in the command line for running the Prover.‌
+We can now run the original spec file on the new contract. Unfortunately, not
+all rules are passing. The `inverses` rule is failing. The assertion message
+tells us `Unwinding condition in a loop`. It is the output whenever we
+encounter a loop that cannot be finitely unrolled. To prevent missed bugs, the
+Prover outputs an assertion error in the loop's stop condition. We
+can control how many times the loops are unrolled, and in the future, the
+Prover will also support the specification of inductive invariants for full loop
+coverage. In our example, we can start by simply assuming loops can be fully
+unrolled even if only unrolled once by specifying `--optimistic_loop` in the
+command line for running the Prover.
 
 Even then `inverses` still fails. Let's consider the call trace for this rule:
 
 ![](failure_1.png)
 
-We see that we were able to nullify the entry in the map, but the last operation that we see in the call trace under `remove` is that we load from `keys` a value of 0. It is known that the Solidity compiler associates the storage slot that of an array to its length. Here we see that the read length is 0. This means the `key` array is empty. However, it shouldn't have been empty after invoking `insert`. This is exactly the bug that we have in the code - we need to add the inserted key into the `keys` array:
+We see that we were able to nullify the entry in the map, but the last operation that we see in the call trace under `remove` is that we load from `keys` a value of 0. It is known that the Solidity compiler associates the storage slot of an array to its length. Here we see that the read length is 0. This means the `key` array is empty. However, it shouldn't have been empty after invoking `insert`. This is exactly the bug that we have in the code - we need to add the inserted key into the `keys` array:
 
 ```cvl
 function insert(uint key, uint value) external {
