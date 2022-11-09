@@ -18,10 +18,3 @@ faq.md
 glossary.md
 ```
 
-General Rules
--------------
-
-### Solvency Rules
-### Valid States and Transitions
-### Rules for ERC20
-
