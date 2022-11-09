@@ -60,7 +60,7 @@ possible value of the undefined variable.
 Undefined variables in CVL behave the same way as {ref}`rule parameters
 <rule-overview>`.
 
-When the Prover reports a conterexample that violates a rule, the values of the
+When the Prover reports a counterexample that violates a rule, the values of the
 variables declared in the rule are displayed in the report.  Variables declared
 in CVL functions are not currently visible in the report.
 
@@ -73,7 +73,7 @@ in Solidity.  The `require` statement is used to specify the preconditions for
 a rule, while the `assert` statement is used to specify the expected behavior
 of contract functions.
 
-During verification, the Prover will ignore any {ref}`model` that causes the
+During verification, the Prover will ignore any {term}`model` that causes the
 `require` expressions to evaluate to false.  Unlike Solidity, the `require`
 statement does not contain a descriptive message, because the Prover will never
 consider an example where the `require` statement evaluates to `false`.

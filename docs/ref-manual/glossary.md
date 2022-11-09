@@ -30,7 +30,7 @@ hyperproperty
 model
 example
 counterexample
-  The terms "model", "example", and "counterexample" are used interchangably.
+  The terms "model", "example", and "counterexample" are used interchangeably.
   They all refer to an assignment of values to all of the CVL variables and
   contract storage.  See {ref}`rule-overview`.
 
