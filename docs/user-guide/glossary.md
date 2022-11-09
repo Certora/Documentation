@@ -55,14 +55,14 @@ unsound
   guaranteed to be reported by the Prover.  Unsound approximations such as
   loop unrolling or certain kinds of harnessing may cause real bugs to be
   missed by the Prover, and should therefore be used with caution.  See
-  {doc}`approx/index` for more details.
+  {doc}`/docs/prover/approx/index` for more details.
 
 summary
 summarize
   A method summary is a user-provided approximation of the behavior of a
   contract method.  Summaries are useful if the implementation of a method is
   not available or if the implementation is too complex for the Prover to
-  analyze without timing out.  See {doc}`/docs/ref-manual/cvl/methods` for
+  analyze without timing out.  See {doc}`/docs/cvl/methods` for
   complete information on different types of method summaries.
 ````
 

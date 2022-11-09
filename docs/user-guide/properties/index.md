@@ -1,5 +1,5 @@
-Designing Specifications
-========================
+Designing Good Specifications
+=============================
 
 This chapter describes several methods for thinking systematically about
 specifications.

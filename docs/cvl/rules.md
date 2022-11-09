@@ -9,7 +9,7 @@ When the Prover is invoked with the {ref}`--verify` option, it generates a
 report for each rule and invariant present in the spec file (as well as any
 {ref}`imported rules <use>`).
 
-See {doc}`/docs/user-guide/bank/index` for an example demonstrating some of
+See {doc}`/docs/confluence/bank/index` for an example demonstrating some of
 these features.
 
 ```{contents}

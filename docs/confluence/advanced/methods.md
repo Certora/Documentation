@@ -33,6 +33,7 @@ following summaries are allowed:
     with the given arguments
     
 
+(old-summary-example)=
 Example
 -------
 

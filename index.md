@@ -5,9 +5,14 @@ Certora Prover Documentation
 :maxdepth: 3
 :caption: Contents
 
-docs/tutorial/index.md
+docs/whitepaper.md
 docs/user-guide/index.md
-docs/ref-manual/index.md
+docs/cvl/index.md
+docs/prover/index.md
+docs/tools/gambit.md
+docs/tools/fuzzer.md
+docs/tools/complexity.md
+docs/tools/vscode.md
 docs/confluence/index.md
 ```
 

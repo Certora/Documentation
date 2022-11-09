@@ -59,7 +59,7 @@ The following are unsupported:
  * Mappings
  * Built-in solidity methods such as `address.balance(...)` and `array.push(...)`
 
-You can use [harnessing](../approx/harnessing) to work around these limitations.
+You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
 
@@ -77,7 +77,7 @@ values: if `i > a.length` then the Prover considers every possible value for
 CVL Arrays also have the following limitations:
  - Only single dimensional arrays are supported
  - The `push` and `pop` methods are not supported.
-You can use [harnessing](../approx/harnessing) to work around these limitations.
+You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
 
 (user-types)=
 ### User-defined types

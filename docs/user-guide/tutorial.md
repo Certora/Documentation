@@ -1,5 +1,5 @@
-Certora Prover Tutorial
-=======================
+Tutorial
+========
 
 The Certora Tutorial is a series of guided lessons that covers installation and
 basic usage of the Certora Prover.
