@@ -5,8 +5,7 @@ Certora User's Guide
 :maxdepth: 2
 
 intro.md
-tutorial.md
-workshops.md
+tutorials.md
 getting-started/index.md
 basics/index.md
 properties/index.md
