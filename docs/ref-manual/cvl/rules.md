@@ -37,6 +37,7 @@ See {doc}`basics` for the `id` and `string` productions; see {doc}`expr` for the
 production; see {doc}`types` for the `cvl_type` production.
 
 
+(rule-overview)=
 Overview
 --------
 
@@ -49,8 +50,8 @@ as undeclared variables.
 
 In principal, the Prover will generate every possible combination of values for
 the undefined variables, and simulate the commands in the rule using those
-values.  A particular combination of values is referred to as an *example* or a
-*model*.  There are often an infinite number of models for a given rule; see
+values.  A particular combination of values is referred to as an {term}`example` or a
+{term}`model`.  There are often an infinite number of models for a given rule; see
 {ref}`verification` for a brief explanation of how the Prover considers all of
 them.
 
