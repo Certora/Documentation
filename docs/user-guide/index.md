@@ -6,6 +6,7 @@ Certora User's Guide
 
 intro.md
 tutorial.md
+workshops.md
 getting-started/index.md
 basics/index.md
 properties/index.md
