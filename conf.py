@@ -51,7 +51,7 @@ exclude_patterns = [
     'old',
     'README.md',
     'EVMVerifier',
-    'docs/ref-manual/cvl/Test/*',
+    'docs/cvl/Test/*',
     'docs/user-guide/multicontract/LiquidityPoolExample',
     ]
 

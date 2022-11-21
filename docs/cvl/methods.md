@@ -258,7 +258,7 @@ calls on the same receiver address in the same example will use the same
 receiver contract.
 
 The set of contract implementations that the Prover chooses from contains
-the set of contracts passed as [arguments to the CLI](../cli/options).
+the set of contracts passed as [arguments to the CLI](/docs/prover/cli/options).
 In addition, the Prover may consider an unknown target contract whose methods
 are all interpreted using the {ref}`AUTO summary <auto-summary>`.  The presence
 of the unknown contract is determined by the optional boolean argument to the

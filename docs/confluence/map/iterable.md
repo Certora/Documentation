@@ -162,7 +162,7 @@ A soft introduction to ghosts
 -----------------------------
 
 We will write the above invariant using ghost variables exclusively (see
-{doc}`/docs/ref-manual/cvl/ghosts` for complete information about ghosts). First, we
+{doc}`/docs/cvl/ghosts` for complete information about ghosts). First, we
 will declare ghost variables for the underlying map structure.
 
 ```cvl

@@ -1,5 +1,5 @@
-Certora Prover Reference Manual
-===============================
+The Certora Prover
+==================
 
 ```{note}
 The reference manual is currently being heavily edited and reorganized.
@@ -13,12 +13,10 @@ each topic.
 
 intro.md
 /docs/user-guide/getting-started/install.md
-cvl/index.md
 approx/index.md
 checking/index.md
 cli/index.md
 portal/using.md
-glossary.md
 changelog.md
 ```
 

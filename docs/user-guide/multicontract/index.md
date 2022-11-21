@@ -184,7 +184,7 @@ we would like the Prover to model the `asset` contract using the `Asset` code.
 To do so, we must first add the `Asset` contract to the set of contracts that
 the Prover knows about.  This set of contracts is called the {term}`scene`.  You
 can add a contract to the scene by passing the solidity source as a
-[command line argument](/docs/ref-manual/cli/options.md)
+[command line argument](/docs/prover/cli/options.md)
 to `certoraRun`.  The Prover creates a contract instance (with a corresponding
 address[^addressOption]) in the scene for each source contract provided on the command line:
 
@@ -692,7 +692,7 @@ To facilitate this, the [`helpers` directory of the example code][helpers]
 contains a [spec file][erc20] called `erc20.spec` as well as a variety of ERC20
 token implementations (inside `tokens/`).  The `erc20.spec` file simply contains
 a methods block that summarizes all of the ERC20 methods as `DISPATCHER`.  You
-can use an {doc}`import statement </docs/ref-manual/cvl/imports>` to include this in your spec ([full spec][pool-spec]):
+can use an {doc}`import statement </docs/cvl/imports>` to include this in your spec ([full spec][pool-spec]):
 
 ```cvl
 import "../helpers/erc20.spec"
