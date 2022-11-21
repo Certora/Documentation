@@ -27,6 +27,13 @@ hyperproperty
   like "two small deposits will have the same effect as one large deposit" is a
   hyperproperty.  See {ref}`storage-type` for more details.
 
+model
+example
+counterexample
+  The terms "model", "example", and "counterexample" are used interchangeably.
+  They all refer to an assignment of values to all of the CVL variables and
+  contract storage.  See {ref}`rule-overview`.
+
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
   method variable, or using an overloaded function name.  The Prover will
