@@ -12,3 +12,10 @@ the basics of the Certora Prover:
 ```
 
 [videos]: https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA "Certora workshop playlist"
+
+The entire running example for this chapter can be found [here][erc20example].
+
+```{contents}
+```
+
+[erc20example]: https://github.com/Certora/ERC20Example
