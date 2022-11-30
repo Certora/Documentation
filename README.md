@@ -1,11 +1,11 @@
 Certora public documentation
 ============================
 
-This repository contains the public documentation for the Certora Prover.
+This repository contains the public documentation for the Certora Prover.  The
+generated documentation is available at [docs.certora.com][docs].
 
-The documentation is hosted by [readthedocs.com][rtd]
-at [docs.certora.com][docs].  It is generated using the [Sphinx][sphinx]
-documentation system and the [myst markdown parser][myst].
+The documentation is hosted by [readthedocs.com][rtd].  It is generated using
+the [Sphinx][sphinx] documentation system and the [myst markdown parser][myst].
 
 To update the documentation, please submit a PR.  The documentation group will
 review and provide feedback.  In order for the PR to be accepted, the
@@ -13,7 +13,7 @@ documentation must build without warnings.  To build the documentation locally,
 run `make` in the top level directory.
 
 [rtd]: https://readthedocs.com/projects/certora-certora-prover-documentation/
-[docs]: https://docs.certora.com/
+[docs]: https://docs.certora.com/en/latest/docs/user-guide/intro.html
 [sphinx]: https://www.sphinx-doc.org/en/master/
 [myst]: https://myst-parser.readthedocs.io/en/latest/sphinx/intro.html
 
@@ -59,8 +59,9 @@ Most of the documentation is stored in markdown files.  The markdown syntax is
 extended with features of ReStructuredText (rst) using the
 [Myst Parser][myst].
 
-The root of the document tree is `index.md`; it includes a table of contents that
-references the remainder of the documentation (see {ref}`toc` below)
+The root of the document tree is `index.md`; it includes a table of contents
+that references the remainder of the documentation (see {ref}`toc` below).  All
+of the actual documentation is contained in the `docs` directory.
 
 To build the documentation, run `make` in the current directory; this will
 generate the html output in `_build/html/index.html`.  `make help` will list
@@ -74,6 +75,8 @@ Style guide
  - Run `make spelling` and fix warnings before submitting a PR
  - Use the `term` feature when referring to a new term for the first time, this
    links to the glossary. 
+
+ - Use a line width of 80-characters in the markdown files
    
  - In the reference manual, prefer descriptions over examples; use examples to
    help when the descriptions are not entirely clear.  Descriptions can outline
