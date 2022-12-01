@@ -1,6 +1,8 @@
 Certora User's Guide
 ====================
 
+anthr spelling error
+
 ```{toctree}
 :maxdepth: 2
 
