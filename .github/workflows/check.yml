@@ -13,10 +13,10 @@ jobs:
         cache: 'pip'
     - run: sudo apt-get install libenchant-2-2
     - run: pip3 install -r requirements.txt
+    - run: make spelling
     - run: |
-        make spelling
         find build/spelling -type f | xargs cat > errors.txt
-        [[ ! $(cat errors.txt) ]] || (echo "errors:" && cat errors.txt && false)
+        [[ ! $(cat errors.txt) ]] || (echo && echo "errors:" && cat errors.txt && false)
     - run: |
-        make linkcheck || (echo "errors:" && cat build/linkcheck/output.txt && false)
+        make linkcheck || (echo && echo "errors:" && cat build/linkcheck/output.txt && false)
 
