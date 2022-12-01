@@ -7,9 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: ammaraskar/sphinx-action@master
+    - uses: actions/setup-python@v4
       with:
-        docs-folder: "."
-        pre-build-command: "apt install enchant-2"
-        build-command: "make spelling linkcheck"
+        cache: 'pip'
+    - run: |
+        apt install libenchant-2-2
+        pip install -r
+        make spelling linkcheck
 
