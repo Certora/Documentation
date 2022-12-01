@@ -1,4 +1,4 @@
-name: "Pull Request Docs Check"
+name: "spell and link check"
 
 on: [ pull_request ]
 
@@ -13,5 +13,7 @@ jobs:
         cache: 'pip'
     - run: sudo apt-get install libenchant-2-2
     - run: pip3 install -r requirements.txt
-    - run: make spelling linkcheck
+    - run: make spelling
+    - run: make linkcheck
+    - run: echo "errors:" && cat build/linkcheck/output.txt
 
