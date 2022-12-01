@@ -10,7 +10,7 @@ We assume readers are familiar with the basic ideas of smart contracts. More det
 
 Certora offers a suite of tools for auditing smart contracts, including both the detection of vulnerabilities and the generation of assurances that essential properties always hold.
 
-The core of the tool suite is the Certora Prover, a verification tool that takes a low-level [EVM bytecode program](https://ethereum.github.io/yellowpaper/paper.pdf) and a specification written in [CVL (Certora Verification Language)](https://docs.certora.com/en/latest/docs/ref-manual/cvl/index.html).[^1] The Prover analyzes the code and the spec together to identify scenarios where the code deviates from the specification.
+The core of the tool suite is the Certora Prover, a verification tool that takes a low-level [EVM bytecode program](https://ethereum.github.io/yellowpaper/paper.pdf) and a specification written in [CVL (Certora Verification Language)](/docs/cvl/index.md).[^1] The Prover analyzes the code and the spec together to identify scenarios where the code deviates from the specification.
 
 The technology automatically locates critical vulnerabilities that even the best auditor may miss and increases confidence in code security by proving that certain key properties are satisfied.
 
@@ -151,7 +151,9 @@ This property was written in CVL (see later sections in "Rules" for more details
 require(msg.sender != address(this));
 ```
 
-More details can be found in our [verification report](https://www.certora.com/wp-content/uploads/2022/02/KashiLendingMar2021.pdf).
+More details can be found in our [verification report][kashi-report].
+
+[kashi-report]: http://www.certora.com/wp-content/uploads/2022/02/KashiLendingMar2021.pdf
 
 #### Maker DAO
 [The Maker protocol](https://makerdao.com/en/) consists of the smart contracts that create and sustain the DAI stablecoin.  DAI is backed by _debt_. Debt is either assigned to a _Vault_, meaning it is associated with a lien against some collateral asset, or it is “unbacked”, meaning it is the protocol’s (i.e., MKR holders’) responsibility. These two sources of debt, when added, should equal the sum of all DAI balances. This crucial invariant is called the “Fundamental Equation of DAI” (FEoD):
@@ -160,7 +162,7 @@ dai == vice + sumOfVaultDebt
 ```
 where `dai` is the sum over all DAI balances and `vice` is the total unbacked debt. The FEoD is the most famous Multi-Collateral DAI “invariant”, known since at least 2018, and until recently it was believed to be mathematically provable. The Maker team together with Certora wrote down this invariant in CVL and used the Certora Prover to prove it.
 
-Surprisingly, the Prover found a violation of this invariant and generated a concrete counterexample showing that the property did not hold after the execution of the so-called `init()` function. Crucially, the counterexample showed that the property was true in the "prestate" (before `init()` was invoked) but it was no longer true in the "post-state" (after `init()`'s execution). Such a counterexample is known as a counterexample to induction, i.e., it shows a scenario in which the system transitioned from a state where the property was true to a state where it is not true (see [later sections](https://hackmd.io/LXHq2fo5QbePYaTuKWZVWw?both#Technical-Details) for more details on invariants). It is possible that the counterexample is not a "true" counterexample, i.e., the starting state of the "bad" transition may not actually be reachable. This happens if the invariant's definition failed to account for some system property. This was however not the case here. The Maker team in fact identified a [sequence of function invocations](https://github.com/makerdao/xdomain-dss/issues/2) that could lead to this violation in practice.
+Surprisingly, the Prover found a violation of this invariant and generated a concrete counterexample showing that the property did not hold after the execution of the so-called `init()` function. Crucially, the counterexample showed that the property was true in the "prestate" (before `init()` was invoked) but it was no longer true in the "post-state" (after `init()`'s execution). Such a counterexample is known as a counterexample to induction, i.e., it shows a scenario in which the system transitioned from a state where the property was true to a state where it is not true (see {ref}`later sections <whitepaper-technical>` for more details on invariants). It is possible that the counterexample is not a "true" counterexample, i.e., the starting state of the "bad" transition may not actually be reachable. This happens if the invariant's definition failed to account for some system property. This was however not the case here. The Maker team in fact identified a [sequence of function invocations](https://github.com/makerdao/xdomain-dss/issues/2) that could lead to this violation in practice.
 
 The next deployment of the protocol will have a fix to ensure that the invariant is satisfied. More details including the CVL features used in writing the specification can be found in a recent [blog post](https://hackmd.io/Vd4zcN_VTNSzqvaxYbdEdA?view).
 
@@ -203,13 +205,14 @@ However, certain features of Solidity are harder to express, e.g., access to pri
 Chandra: commenting this out. We already discussed ghosts, parametric rules, etc. under "Key Features".
 -->
 
+(whitepaper-technical)=
 ## Technical Details
 
 This section provides more details about how properties are specified and checked using the Certora tool suite.
 
 ### Formal Specification
 
-One of the biggest challenges in software development is specifying the intended behavior of the program. Developers often use unit tests to specify the expected outputs for given inputs, but unit tests can only enumerate a finite number of input scenarios to be tested. In contrast to unit tests, specifications in CVL describe the expected output for _every_ possible input. Since this article describes only some of the mechanisms used in CVL specifications; we refer readers to the [reference manual](https://docs.certora.com/) that contains complete details.
+One of the biggest challenges in software development is specifying the intended behavior of the program. Developers often use unit tests to specify the expected outputs for given inputs, but unit tests can only enumerate a finite number of input scenarios to be tested. In contrast to unit tests, specifications in CVL describe the expected output for _every_ possible input. Since this article describes only some of the mechanisms used in CVL specifications; we refer readers to the [reference manual](/docs/user-guide/intro) that contains complete details.
 
 ### Inductive Invariants
 
@@ -218,13 +221,13 @@ A program is a description of a state transition system. A specification of a pr
 Inductive invariants are invariants that are preserved by arbitrary executions. An inductive invariant must hold at all initial states of the transition system. Additionally, when a transition is executed in an arbitrary state, `s`, that satisfies the invariant, and `s` steps to state, `s'`, the invariant must hold at `s'`. Inductive invariants can guarantee that a program is correct irrespective of the number of instructions executed. A counterexample to induction is a transition from a state satisfying the invariant into a bad state violating the invariant.
 <!-- For example, the invariant that the balance in every address in an ERC20 is less than or equal to the total balance is correct but _not_ inductive. -->
 
-Unlike a regular counterexample described earlier, a counterexample to induction _does not_ necessarily indicate that the program has a vulnerability, because it may reflect a state that may be impossible for the program to reach; it may only indicate that the specification is not inductive. Such specifications can be made inductive by _strengthening_. This mimics proofs by induction. To learn more about inductive invariants, we refer the reader to the presentation [Inductive Reasoning about Smart Contracts Safety](https://www.youtube.com/watch?v=30BspXZs7q8). You can learn more about invariants in CVL in the [documentation](https://docs.certora.com/en/latest/docs/ref-manual/cvl/invariants.html).
+Unlike a regular counterexample described earlier, a counterexample to induction _does not_ necessarily indicate that the program has a vulnerability, because it may reflect a state that may be impossible for the program to reach; it may only indicate that the specification is not inductive. Such specifications can be made inductive by _strengthening_. This mimics proofs by induction. To learn more about inductive invariants, we refer the reader to the presentation [Inductive Reasoning about Smart Contracts Safety](https://www.youtube.com/watch?v=30BspXZs7q8). You can learn more about invariants in CVL in the [documentation](/docs/cvl/invariants).
 
 ### Rules
 
 <!-- _Not clear what a rule is: applies to every transition independent of code location?_ -->
 
-A [rule](https://docs.certora.com/en/latest/docs/ref-manual/cvl/rules.html) in CVL describes properties of possible transitions of the system. In smart contracts, such transitions can be made by invoking functions. A rule can therefore be viewed as a "wrapper" around functions invoked from the smart contract being verified. The call is "wrapped" by predicates that must hold before and after the function call is made. A rule must describe: (1) the state before the transition, (2) the transition, (3) and the state after the transition. Describing a state means setting requirements on the set of possible states. Describing a transition means specifying which function is invoked and what conditions the inputs satisfy. Using the notation of [Hoare triples](https://en.wikipedia.org/wiki/Hoare_logic), a rule can be written as:
+A [rule](/docs/cvl/rules) in CVL describes properties of possible transitions of the system. In smart contracts, such transitions can be made by invoking functions. A rule can therefore be viewed as a "wrapper" around functions invoked from the smart contract being verified. The call is "wrapped" by predicates that must hold before and after the function call is made. A rule must describe: (1) the state before the transition, (2) the transition, (3) and the state after the transition. Describing a state means setting requirements on the set of possible states. Describing a transition means specifying which function is invoked and what conditions the inputs satisfy. Using the notation of [Hoare triples](https://en.wikipedia.org/wiki/Hoare_logic), a rule can be written as:
 ```
 { state before };
 f(function inputs);
@@ -260,12 +263,12 @@ Given a loop free program and an assertion about it, one can verify the assertio
 Notice how this formula compactly defines 4 paths of the program. The SAT solver identifies that for `a = 0` and `b = 1`, the values of `x` and `y` are `0` and `1` respectively, which shows a violation of the assertion. 
 
 
-![](https://hackmd.io/_uploads/HySlnlRgo.gif)
+![](sat-example.gif)
 Figure 1: A program's control flow with an assertion `X == Y` that is not always true.
 
 Modern SAT solvers can also determine that formulas are not satisfiable, often in clever ways without enumerating all values. They enable formally verifying the program on all paths. For example, Figure 2 shows a code fragment with a valid assertion.
 
-![](https://hackmd.io/_uploads/SyHbhlCeo.jpg)
+![](unsat-example.jpeg)
 
 Figure 2: An example with a valid assertion.
 
@@ -320,7 +323,7 @@ The Certora Prover implements a sophisticated tool chain for verifying low level
 
 Figure 1 depicts the Certora Prover architecture. It operates on EVM bytecode which is a stack-based language. A decompiler maps each stack location into a symbolic value, called a register, and then converts the bytecode instructions into instructions over registers. A similar technique was implemented in [Soot](http://soot-oss.github.io/soot/). A static analysis algorithm then infers sound invariants about the code, drastically simplifying the verification task. Then, the VC generator outputs a set of mathematical constraints which describes the conditions under which the program can violate the rules. Finally, the Certora Prover invokes off-the-shelf SMT solvers that automatically search for solutions to the mathematical constraints which represent violations of the rules. As described earlier, this is an undecidable problem and these solvers _can_ fail in certain cases by timing out with an inconclusive answer. The Certora Prover takes the result from the solver, processes it to generate a detailed report, and presents it to the client/user of the Prover.
 
-![](https://hackmd.io/_uploads/SJ7Zuxm45.png)
+![](pipeline.png)
 Figure 3: The Certora Prover Architecture
 
 ## Related Tools and Other Approaches

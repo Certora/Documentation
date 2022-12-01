@@ -5,7 +5,7 @@ Certora Prover Documentation
 :maxdepth: 3
 :caption: Contents
 
-docs/whitepaper.md
+docs/whitepaper/index.md
 docs/user-guide/index.md
 docs/cvl/index.md
 docs/prover/index.md

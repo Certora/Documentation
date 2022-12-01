@@ -735,6 +735,6 @@ technique that can explore a wide range of behaviors with little effort.
 [arbitrary-values]:  https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/ArbitraryValues.sol
 [flexible-contract]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/FlexibleReceiver.sol
 [flexible-linked]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlexibleLinked.sh
-[helpers]:           https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/
+[helpers]:           https://github.com/Certora/LiquidityPoolExample/tree/main/certora/helpers/
 [erc20]:             https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/erc20.spec
 

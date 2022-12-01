@@ -186,7 +186,7 @@ Prod version December 19, 2021
     
 *   Optimizing decompilation cleanup
     
-*   Support for new variables-style ghost syntax, see [https://certora.atlassian.net/l/c/U6d2u7jF](https://certora.atlassian.net/l/c/U6d2u7jF) for documentation.
+*   Support for new [variables-style ghost syntax](/docs/cvl/ghosts).
     
 *   Making sure the total length in bytes and number of elements of an array declared in CVL agree
     
