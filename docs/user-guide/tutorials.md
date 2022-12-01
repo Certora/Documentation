@@ -14,7 +14,7 @@ The Tutorial is organized as a series of lessons and exercises.  You are
 encouraged to clone the git repository and work through the exercises yourself.
 Each directory has a `README` file that explains the lesson.
 
-[tutorial]: https://github.com/Certora/Tutorials#certora-tutorials
+[tutorial]: https://github.com/Certora/Tutorials/blob/master/README.md
 
 (workshops)=
 Recorded Workshops
