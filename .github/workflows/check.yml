@@ -10,5 +10,6 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "."
+        pre-build-command: "apt install enchant"
         build-command: "make spelling linkcheck"
 
