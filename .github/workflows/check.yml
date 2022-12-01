@@ -9,6 +9,5 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ammaraskar/sphinx-action@master
       with:
-        docs-folder: "docs/"
-        build-command: "make -C Documentation"
+        build-command: "make"
 
