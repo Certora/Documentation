@@ -11,7 +11,7 @@ jobs:
       with:
         cache: 'pip'
     - run: |
-        apt install libenchant-2-2
+        sudo apt-get install libenchant-2-2
         pip install -r requirements.txt
         make spelling linkcheck
 
