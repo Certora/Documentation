@@ -13,7 +13,9 @@ jobs:
         cache: 'pip'
     - run: sudo apt-get install libenchant-2-2
     - run: pip3 install -r requirements.txt
-    - run: make spelling
-    - run: make linkcheck
-    - run: echo "errors:" && cat build/linkcheck/output.txt
+    - run: |
+        make spelling
+        [[ ! $(find build/spelling -type f) ]]
+    - run: |
+        make linkcheck || (echo "errors:" && cat build/linkcheck/output.txt && false)
 
