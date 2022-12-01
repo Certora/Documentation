@@ -1,8 +1,6 @@
 Certora Prover Documentation
 ============================
 
-splling error
-
 ```{toctree}
 :maxdepth: 3
 :caption: Contents
