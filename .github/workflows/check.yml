@@ -10,5 +10,5 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-        build-command: "echo $(PWD)"
+        build-command: "make"
 
