@@ -143,3 +143,27 @@ function foo() external returns (uint256) {
  - references to labeled sections
  - todo
 
+Moving pages and redirects
+--------------------------
+
+If you move a page, you should create a redirect for it on
+[the readthedocs.com redirects page][redirects].
+
+[redirects]: https://readthedocs.com/dashboard/certora-certora-prover-documentation/redirects/
+
+If the source URL ends with `$rest` then it redirects everything in that
+directory.  Be careful: redirects are considered first to last, so if you are
+doing whole-directory redirects but want to override it for specific files, the
+specific files come first.  Note that when you "edit" a redirect on this page,
+it moves it to the top of the list (AFAICT this is the only way to reorder them).
+
+See also [the RTD documentation on redirects][rtd-redirect].
+
+[rtd-redirect]: https://docs.readthedocs.io/en/stable/user-defined-redirects.html
+
+Note: you can get a list of all the files that ever existed using
+
+```
+git log --name-only --pretty="format:" docs
+```
+
