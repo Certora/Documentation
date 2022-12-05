@@ -1,5 +1,5 @@
-Certora Prover Reference Manual
-=======================
+Certora Prover CLI
+==================
 
 ```{toctree}
 :maxdepth: 2

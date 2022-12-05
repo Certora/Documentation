@@ -23,6 +23,8 @@ Harnessing by munging
 
 ```{todo}
 This technique is currently undocumented.  See our [OpenZeppelin verification
-project](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/certora#adapting-to-changes-in-the-contracts) for an example.
+project][oz-readme] for an example.
 ```
+
+[oz-readme]: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/certora/README.md
 
