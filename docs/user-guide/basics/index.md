@@ -40,9 +40,9 @@ Certora Conference Day 1 Introduction
 
 14:15 Motivation - property that is most interesting for DeFi is solvency
 
-15:45 How is the prover performing compared to other techniques
+15:45 How is the `prover` performing compared to other techniques
 
-17:15 truefi chart who found what
+17:15 `truefi` chart who found what
 
 17:55 MakerDAO example, using our technology not our people, finding bug
 
@@ -67,7 +67,7 @@ Certora Conference Day 1 Setup and Rules
 --Invariants
 --Ghosts
 Day 2
---How the prover works
+--How the `prover` works
 --Intro to AAVE governance token
 --systematic specification design
 
@@ -75,7 +75,7 @@ Day 2
 
 19:10 ERC20 Example start
 
-19:50 transferSpec rule
+19:50 `transferSpec` rule
 
 22:10 introducing notion of environment
 
@@ -85,32 +85,32 @@ Day 2
 
 30:10 Modifying rule to exclude same address
 
-31:00 There is no calltrace when a rule passes bc calltrace is for a particular counterexample
+31:00 There is no `calltrace` when a rule passes because `calltrace` is for a particular counterexample
 
 31:10 Difference from fuzzer
 
-32:25 default of ignoring reverting paths, @withrevert lastReverted
+32:25 default of ignoring reverting paths, `@withrevert` `lastReverted`
 
-35:15 warning about lastReverted
+35:15 warning about `lastReverted`
 
-35:50 liveness property
+35:50 `liveness` property
 
 41:15 Summary
 --writing rules is like writing unit tests...
---use mathint to avoid overflow
+--use `mathint` to avoid overflow
 --...
 
-42:40 exercise intro writing transferFromSpec
+42:40 exercise intro writing `transferFromSpec`
 
 44:15 work time / break
 
-44:45 --rule ruleName
+44:45 --rule `ruleName`
 
 47:30 how to generalize rules parametric rules intro
 
 54:00 Starting parametric example
 
-54:40 calldataarg
+54:40 `calldataarg`
 
 59:05 method selector
 
@@ -160,9 +160,20 @@ Certora Conference Day 2 AAVE Token
 
 
 Certora Conference Day 2 Properties
----------------------------------------
+-----------------------------------
 
 
+
+Example Section Header
+----------------------
+
+This is equivalent to starting a markdown line with `##`
+
+For smaller subheadings, add additional hashes `###`
+
+```{todo}
+Things to do here
+```
 
 
 
