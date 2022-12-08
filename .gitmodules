@@ -4,3 +4,6 @@
 [submodule "docs/user-guide/multicontract/LiquidityPoolExample"]
 	path = docs/user-guide/multicontract/LiquidityPoolExample
 	url = https://github.com/Certora/LiquidityPoolExample.git
+[submodule "docs/user-guide/multicontract/ERC20Example"]
+	path = docs/user-guide/basics/ERC20Example
+	url = https://github.com/Certora/ERC20Example.git
