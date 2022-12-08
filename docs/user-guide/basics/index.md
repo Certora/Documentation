@@ -18,6 +18,64 @@ The entire running example for this chapter can be found [here][erc20example].
 ```{contents}
 ```
 
+The ERC20 Example
+=================
+
+Rules in the Certora Verification Language
+------------------------------------------------
+
+The Certora Prover verifies that a smart contract satisfies a set of rules written in a language called _Certora Verification Language (CVL)_. Each rule is checked on all possible inputs. Of course, this is not done by explicitly enumerating the inputs, but rather through symbolic techniques. Rules can check that a public contract method has the correct effects on the contract state or returns the correct value, etc... The syntax for expressing rules somewhat resembles Solidity, but also supports more features that are important for verification. 
+
+Basic Rules for ERC20 Contracts
+-------------------------------
+
+Most people reading this will be familiar with the basics of an [ERC20 contract][eip-20]. For an ERC20 contract to be implemented correctly, a number of properties must be true of that contract. If clear documentation is available for a contract or protocol, that documentation can be a good place to start when designing a specification. In our case, the first properties we would like to test with the Certora Prover are described in the IERC20 interface.
+
+Consider the following excerpt from the contract interface to implement a simple ERC20:
+
+```solidity
+/**
+ * Interface of the ERC20 standard as defined in the EIP.
+ */
+interface IERC20 {
+
+    /**
+     * @dev Moves `amount` tokens from the caller's account to `recipient`.
+     */
+    function transfer(address recipient, uint256 amount)
+        external
+        returns (bool);
+
+    /**
+     * @dev Returns the amount of tokens owned by `account`.
+     */
+    function balanceOf(address account) external view returns (uint256);
+}
+```
+
+As described, a correctly working transfer function should move a certain amount of tokens from the caller's account to the account of the recipient. Let's write our first rule to specify that property: 
+
+```cvl
+///Transfer must move `amount` tokens from the caller's account to `recipient`
+rule transferSpec {
+    address sender; address recip; uint amount;
+    env e;
+    require e.msg.sender == sender;
+    mathint balance_sender_before = balanceOf(sender);
+    mathint balance_recip_before = balanceOf(recip);
+    transfer(e, recip, amount);
+    mathint balance_sender_after = balanceOf(sender);
+    mathint balance_recip_after = balanceOf(recip);
+    require sender != recip;
+    assert balance_sender_after == balance_sender_before - amount,
+        "transfer must decrease sender's balance by amount";
+    assert balance_recip_after == balance_recip_before + amount,
+        "transfer must increase recipient's balance by amount";
+}
+```
+
+The rule calls withdraw with an arbitrary EVM environment (`e`) in an arbitrary initial state. It assumes that the function does not revert. The assert command checks that success is true on all potential executions. Notice that each Solidity function has an extra argument, which is the EVM environment.
+
 Certora Conference Day 1 Introduction
 -------------------------------------
 6:30 What does Certora do?
@@ -178,3 +236,4 @@ Things to do here
 
 
 [erc20example]: https://github.com/Certora/ERC20Example
+[eip-20]: https://eips.ethereum.org/EIPS/eip-20
