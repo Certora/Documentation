@@ -171,8 +171,8 @@ currently undocumented.
    ```cvl
    require (forall address user . balance(user) <= balance(biggestUser));
    ```
-   will ensure that every other user has a balance that is less than
-   `biggestUser`.
+   will ensure that every other user has a balance that is less than or equal
+   to the balance of `biggestUser`.
 
  * Like a universal expression, an *existential* expression of the form
    `exists t v . expr` requires `t` to be a [type](types) and `v` to be a
