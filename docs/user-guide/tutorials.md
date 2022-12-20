@@ -23,18 +23,18 @@ Stanford DeFi Security Summit
 covers basic Prover usage with several hands-on examples.  It covers the
 following topics:
 
-| Video | Slides | Notes |
-| ----- | ------ | ----- |
-| [Overview                   ](https://youtu.be/1bbI-i2Y0BA) | | |
-| [Installation and setup     ](https://youtu.be/siEDkMNbl5o) | ({download}`slides <basics/stanford/02-setup.pdf>`)           | |
-| [Writing basic rules        ](https://youtu.be/siEDkMNbl5o?t=1076) | ({download}`slides <basics/stanford/03-rules.pdf>`)           | |
-| [Writing parametric rules   ](https://youtu.be/siEDkMNbl5o?t=2840) | ({download}`slides <basics/stanford/04-parametric.pdf>`)      | |
-| [Invariants                 ](https://youtu.be/gkK3KeD7AQw) | ({download}`slides <basics/stanford/05-invariants.pdf>`)      | |
-| Ghosts and hooks ([part 1](https://youtu.be/gkK3KeD7AQw?t=2993), [part 2](https://youtu.be/fHHVoRNocdE)) | ({download}`slides <basics/stanford/06-ghosts.pdf>`)          | |
-| [Hyperproperties            ](https://youtu.be/DcbBSab3s3E?t=80) | ({download}`slides <basics/stanford/07-hyperproperties.pdf>`) | |
-| [Designing specifications   ](https://youtu.be/DcbBSab3s3E?t=374) | ({download}`slides <basics/stanford/08-design.pdf>`)          | |
-| [The Certora Prover pipeline](https://youtu.be/vg6da3A7lSs) | ({download}`slides <basics/stanford/09-pipeline.pdf>`)        | |
-| [SMT solvers                ](https://youtu.be/9QuS_8cL91w) | ({download}`slides <basics/stanford/10-smt.pdf>`)             | Guest: Clark Barrett, Stanford |
+| Video | Slides |
+| ----- | ------ |
+| [Overview                   ](https://youtu.be/1bbI-i2Y0BA) | |
+| [Installation and setup     ](https://youtu.be/siEDkMNbl5o) | ({download}`slides <basics/stanford/02-setup.pdf>`)           |
+| [Writing basic rules        ](https://youtu.be/siEDkMNbl5o?t=1076) | ({download}`slides <basics/stanford/03-rules.pdf>`)           |
+| [Writing parametric rules   ](https://youtu.be/siEDkMNbl5o?t=2840) | ({download}`slides <basics/stanford/04-parametric.pdf>`)      |
+| [Invariants                 ](https://youtu.be/gkK3KeD7AQw) | ({download}`slides <basics/stanford/05-invariants.pdf>`)      |
+| Ghosts and hooks ([part 1](https://youtu.be/gkK3KeD7AQw?t=2993), [part 2](https://youtu.be/fHHVoRNocdE)) | ({download}`slides <basics/stanford/06-ghosts.pdf>`)          |
+| [Hyperproperties            ](https://youtu.be/DcbBSab3s3E?t=80) | ({download}`slides <basics/stanford/07-hyperproperties.pdf>`) |
+| [Designing specifications   ](https://youtu.be/DcbBSab3s3E?t=374) | ({download}`slides <basics/stanford/08-design.pdf>`)          |
+| [The Certora Prover pipeline](https://youtu.be/vg6da3A7lSs) | ({download}`slides <basics/stanford/09-pipeline.pdf>`)        |
+| [SMT solvers                ](https://youtu.be/9QuS_8cL91w) | ({download}`slides <basics/stanford/10-smt.pdf>`)             |
 
 The covered examples are available on [github][examples].
 
