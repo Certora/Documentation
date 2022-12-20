@@ -5,9 +5,7 @@ Specification By Example
 This chapter is incomplete.  The following resources are available for learning
 the basics of the Certora Prover:
 
- - The {ref}`tutorial` contain a series of small examples and exercises.
- - The [Certora Workshop][videos] is a recorded two-day workshop that covers basic usage of the Prover ({download}`slides <stanford.pdf>`).
- 
+ - {doc}`../tutorials` lists workshops and tutorials that cover basic Prover usage
  - The [old documentation](/docs/confluence/examples.md) introduces Prover features by walking through some examples.
 ```
 

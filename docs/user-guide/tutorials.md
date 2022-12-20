@@ -23,13 +23,28 @@ Recorded Workshops
 Certora has presented a number of hands-on workshops on how to use the Prover.
 Recordings of these workshops are available:
 
+```{todo}
+The links are to the playlists instead of the timestamps
+```
+
  - [Stanford Defi Security Summit, August 2022][stanford] is a 2-day workshop
-   that covers basic Prover usage with several hands-on examples ({download}`slides <basics/stanford.pdf>`).
+   that covers basic Prover usage with several hands-on examples.  It covers the
+   following topics:
+      - ({download}`slides <basics/stanford/01-intro.pdf>`)           [Overview                    ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/02-setup.pdf>`)           [Workshop setup              ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/03-rules.pdf>`)           [Writing basic rules         ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/04-parametric.pdf>`)      [Writing parametric rules    ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/05-invariants.pdf>`)      [Invariants                  ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/06-ghosts.pdf>`)          [Ghosts and hooks            ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/07-hyperproperties.pdf>`) [Hyperproperties             ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/08-design.pdf>`)          [Designing specifications    ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/09-pipeline.pdf>`)        [The Certora Prover pipeline ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
+      - ({download}`slides <basics/stanford/10-smt.pdf>`)             [SMT Solvers                 ](https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA)
 
  - [EthCC Paris, July 2022][ethcc] is an earlier 3-day workshop in a similar
-   style that covers the same material and a few additional topics
-   ([multicontract verification][ethcc-multi] and
-   [checking the spec][ethcc-check]).
+   style that covers the same material and a few additional topics, including:
+      - [multicontract verification][ethcc-multi]
+      - [checking the spec][ethcc-check]
 
  - [Aave Community Day, April 2022][aave] is a condensed 3-hour workshop with
    fewer exercises.
