@@ -27,7 +27,7 @@ To demonstrate these concepts, we work with a simplified liquidity pool called
 `Pool`.  The [completed specification][pool-spec] is in
 `certora/specs/pool.spec` (although this chapter only discusses the
 `integrityOfDeposit` and `flashLoanIncreasesBalance` properties) and the
-[final run script][pool-script] is in `certora/scripts/verifyPool.spec`.
+[final run script][pool-script] is in `certora/scripts/verifyPool.sh`.
 
 The liquidity pool allows users to deposit and withdraw a single fixed type of
 ERC20 token (the `asset`).  The liquidity pool itself also acts as an ERC20
