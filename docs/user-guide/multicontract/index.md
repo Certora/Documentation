@@ -235,8 +235,8 @@ a variable `underlying` to refer to the `Asset` contract instance[^using-positio
   (if any) and before the `methods` block (if any).
 
 ```cvl
-using Asset for underlying
-using Pool  for pool
+using Asset as underlying
+using Pool  as pool
 ```
 
 We can then call methods on the contract `underlying`.  For example, instead of
