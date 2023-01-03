@@ -16,7 +16,7 @@ methods {
 }
 
 definition MAX_UINT256() returns uint256 = 0xffffffffffffffffffffffffffffffff;
-definition is_even(uint256 x) returns bool = exists y. 2 * y == x;​
+definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;​
 
 rule my_rule(uint256 x) {
   require is_even(x) && x <= MAX_UINT256();
@@ -34,7 +34,7 @@ There can be arbitrarily deep nesting, however there must not be a circular depe
 
 ```cvl
 definition MAX_UINT256() returns uint256 = 0xffffffffffffffffffffffffffffffff;
-definition is_even(uint256 x) returns bool = exists y. 2 * y == x;
+definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
 definition is_odd(uint256 x) returns bool = !is_even(x);
 definition is_odd_no_overflow(uint256 x) returns bool =
     is_odd(x) && x <= MAX_UINT256();
@@ -68,7 +68,7 @@ The following is an example of a ghost used in a definition:
 ```cvl
 ghost foo(uint256 x) returns uint256;​
 
-definition is_even(uint256 x) returns bool = exists y. 2 * y == x;
+definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
 definition foo_is_even_at(uint256 x) = is_even(foo(x));​
 
 rule rule_assuming_foo_is_even_at(uint256 x) {
@@ -82,7 +82,7 @@ More interestingly, we can use the two-context version of ghosts in a definition
 ```cvl
 ghost foo(uint256 x) returns uint256;​
 
-definition is_even(uint256 x) returns bool = exists y. 2 * y == x;
+definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
 definition foo_add_even(uint256 x) returns bool = is_even(foo@new(x)) &&
     forall uint256 a. is_even(foo@old(x)) => is_even(foo@new(x));
     
