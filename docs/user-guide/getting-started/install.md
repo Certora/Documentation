@@ -24,7 +24,7 @@ Step 1: prerequisites
 
   Check your Java version by executing the following command on the terminal:
   ```bash
-  java --version
+  java -version
   ```
 
   If the version is < 11, download and install Java version 11 or later from

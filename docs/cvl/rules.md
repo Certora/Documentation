@@ -119,8 +119,8 @@ method other than `exampleMethod(uint,uint)` or `otherExample(address)`:
 ```cvl
 rule r(method f, method g) filtered {
     f -> f.isView,
-    g -> g.selector() != exampleMethod(uint,uint).selector
-      && g.selector() != otherExample(address).selector
+    g -> g.selector != exampleMethod(uint,uint).selector
+      && g.selector != otherExample(address).selector
 } {
     // rule body
     ...
