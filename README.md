@@ -17,6 +17,14 @@ run `make` in the top level directory.
 [sphinx]: https://www.sphinx-doc.org/en/master/
 [myst]: https://myst-parser.readthedocs.io/en/latest/sphinx/intro.html
 
+Building the documentation
+--------------------------
+
+ - Install `make` (TODO: instructions for windows)
+ - Install relevant python packages `pip install -r requirements.txt`
+ - Install additional dependencies for `pyenchant` ([instructions](https://pyenchant.github.io/pyenchant/install.html))
+ - Run `make` in the top level directory
+
 Documentation organization
 --------------------------
 
