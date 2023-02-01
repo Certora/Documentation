@@ -35,6 +35,7 @@ instantiation
 invariant
 invariants
 iterable
+Keccak
 logics
 macOS
 modularity
