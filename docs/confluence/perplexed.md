@@ -27,11 +27,13 @@ As you can see there’s a ~2 hours difference between “Queue Time” and “F
 1.  Figure out if the problem happened due to having too many rules and SMT taking too long, or if preprocessing has failed to complete in time. Therefore, open the linked-to **zip file**, extract it, and look into `Reports/Results.txt`. If there is no message “Has CVL checks” or “Starting to run on rule ….” then there is a good chance that preprocessing took too long.  
     If you did not even see a message “The scene contains … contracts” it means that even the first step of preprocessing took too long.
     
-2.  If the problem is preprocessing, share the zip file in the #bugs channel over slack ASAP. If you’re blocked on this contract, try to make progress by manually removing parts of the code. The code may contain libraries that add to the complication, so try to “erase” those parts of the code first and re-run.
+2.  If the problem is preprocessing, first try to run with `-enableEqualitySaturation=false`, and if that does not help try in addition `-simplificationDepth=10`. If both don't help, please report to Certora.
+
+3.  If you’re blocked on this contract, try to make progress by either summarization, or manually removing parts of the code. The code may contain libraries that add to the complication, so try to “erase” those parts of the code first and re-run. If it works, it's better to undo the changes and apply summarizations.
     
-3.  Otherwise, if rules are already starting to process, check how long approximately preprocessing took. You can measure that using the “Ping” messages. A ping message is printed every minute. If preprocessing took more than 30 minutes, report to #bugs like in step 2, and either you can try removing parts of the code or just run 1 rule instead of all rules.
+4.  Otherwise, if rules are already starting to process, check how long approximately preprocessing took. You can measure that using the “Ping” messages. A ping message is printed every minute. If preprocessing took more than 30 minutes, report to Certora like in step 2, and either you can try removing parts of the code or just run 1 rule instead of all rules.
     
-4.  If there are many rules, you could also try to set -depth=1. This implies there will be fewer SMT solver instances run per each rule. (default is 10, so 3 or 5 could also work.) It may work better with even reduced timeouts: -t=60 (default is 300.)
+5.  If there are many rules, you could also try to set -depth=1. This implies there will be fewer SMT solver instances run per each rule. (default is 10, so 3 or 5 could also work.) It may work better with even reduced timeouts: -t=60 (default is 300.)
     
 
 #### SMT timeouts
@@ -50,7 +52,7 @@ Those would show up if the code is inherently complex. Red flags to look for:
     ```
     https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/**statsdata.json**?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc  
     ```
-    Look at the `ANALYSIS` key. If you see any `false` entries on keys that are not `constructor()` or `ecrecover` - report in #bugs.
+    Look at the `ANALYSIS` key. If you see any `false` entries on keys that are not `constructor()` or `ecrecover` - report to Certora.
     
 2.  **A non-empty “Call Resolution” warnings table.** Delegate calls could be tricky and invalidate some of the Prover’s optimizations that were built to avoid timeouts. If such appear, try to scope out the verification to ignore the `delegatecall`s. Check with a security person, a more experienced user, or even the customer if you’re not sure if it’s safe to ignore.
     
@@ -77,7 +79,21 @@ At this point, if sanity passed and in reasonable times (not more than 1-2 minut
     
 5.  Check one rule at a time and try to increase `-depth=15`. This could help if the code contains many branches.
     
-6.  It could be that internal function summaries were not applied, so if you provided those and there is no change in run times, it could be there’s a muted error there. ([thomas](https://certora.atlassian.net/wiki/people/60919dc2c87b550069bccbd4?ref=confluence) can you say how to debug this?)
+6.  It could be that internal function summaries were not applied. You can check this with the `-showInternalMethods` option that prints the internal functions detected. If you provided such summaries and there is no change in run times, please report to Certora.
+
+7. If your rule or code is heavy with bitwise operations, run with `-useBitVectorTheory`.
+
+8. Set `-smt_hashingScheme` to either `Legacy` or `PlainInjectivity`. Default option is `Datatypes`.
+
+9. Set `-mediumTimeout` to a value above 10.
+
+10. Set the Prover to check every assert individually, by setting `-multiAssertCheck`.
+
+11. If your rule or code contain divisions, see if underapproximation helps (underapproximation means a counterexample is valid but a proof is not), by using either `-divideByConstants=true` or `-divideNoRemainder=true`.
+
+12. Make sure you set the unroll factor `--loop_iter` to the minimum that is still sound (passing sanity rule). Another option to experiment with regarding loops is `-copyLoopUnroll` (default 4, one may attempt to decrease).
+
+13. Enable CEGAR (advanced solving mode) with `-cegar=true`.
     
 
 Errors
@@ -85,7 +101,7 @@ Errors
 
 ### Out of Memory (OOM)
 
-Report immediately to the development team in Slack on the #bugs channel, along with the zip file for the run. Context-switch to another contract or rule if you can. If you are aware of a complex library or function in the code - try to remove it. Also, try to understand where the tool OOM’d - follow the process described in the global timeout section.
+Report to Certora, along with the zip file for the run. Context-switch to another contract or rule if you can. If you are aware of a complex library or function in the code - try to remove it. Also, try to understand where the tool OOM’d - follow the process described in the global timeout section.
 
 ### Opaque errors in the output page
 
@@ -98,7 +114,7 @@ then the file would be in
 https://vaas-stg.certora.com/output/43260/dafd64136c1d71ba882c/**FinalResults.html**?anonymousKey=a8e7a2b10c4f9f74ea55624c166d7edee8f1e2bc
 ```
 
-Share the results with the development team in the #bugs channel on slack. The comment could still help you get started on debugging.
+Share the results with Certora. The comment could still help you get started on debugging.
 
 ### Failures to apply hooks and ghosts
 
@@ -106,7 +122,7 @@ One of the most common reasons for hooks failing is that the storage analysis fa
 
 1.  You have an unresolved library call in the contract. This could be seen from the Call Resolution Warnings table. Essentially, an unknown `delegatecall` can freely modify the contract's storage and violate any storage layout defined by the main contract we verify. So the storage analysis fails because it can be unsound to infer anything about the storage.
     
-2.  Your code is compiled with optimizations. Solidity's optimizations are notoriously hard to process sometimes. Report in #bugs and try to run without them (some codes will fail to compile, in which case a more complicated solution should be devised, ideally in cooperation with another team member or even the customer).
+2.  Your code is compiled with optimizations. Solidity's optimizations are notoriously hard to process sometimes. Report to Certora and try to run without them (some codes will fail to compile, in which case a more complicated solution should be devised, ideally in cooperation with another team member or even the customer).
     
 
 Understanding counter-examples

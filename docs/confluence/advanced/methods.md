@@ -27,12 +27,13 @@ following summaries are allowed:
 *   `CONSTANT` the summary always returns the same constant and has no side
     effects
     
-*   `NONDET` the summary returns a havoc'd value
+*   `NONDET` the summary returns a havoced value
     
 *   `Ghost` the summary returns the value return by the given ghost function
     with the given arguments
     
 
+(old-summary-example)=
 Example
 -------
 

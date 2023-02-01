@@ -1,11 +1,11 @@
 Certora public documentation
 ============================
 
-This repository contains the public documentation for the Certora Prover.
+This repository contains the public documentation for the Certora Prover.  The
+generated documentation is available at [docs.certora.com][docs].
 
-The documentation is hosted by [readthedocs.com][rtd]
-at [docs.certora.com][docs].  It is generated using the [Sphinx][sphinx]
-documentation system and the [myst markdown parser][myst].
+The documentation is hosted by [readthedocs.com][rtd].  It is generated using
+the [Sphinx][sphinx] documentation system and the [myst markdown parser][myst].
 
 To update the documentation, please submit a PR.  The documentation group will
 review and provide feedback.  In order for the PR to be accepted, the
@@ -13,9 +13,17 @@ documentation must build without warnings.  To build the documentation locally,
 run `make` in the top level directory.
 
 [rtd]: https://readthedocs.com/projects/certora-certora-prover-documentation/
-[docs]: https://docs.certora.com/
+[docs]: https://docs.certora.com/en/latest/docs/user-guide/intro.html
 [sphinx]: https://www.sphinx-doc.org/en/master/
 [myst]: https://myst-parser.readthedocs.io/en/latest/sphinx/intro.html
+
+Building the documentation
+--------------------------
+
+ - Install `make` (TODO: instructions for windows)
+ - Install relevant python packages `pip install -r requirements.txt`
+ - Install additional dependencies for `pyenchant` ([instructions](https://pyenchant.github.io/pyenchant/install.html))
+ - Run `make` in the top level directory
 
 Documentation organization
 --------------------------
@@ -59,8 +67,9 @@ Most of the documentation is stored in markdown files.  The markdown syntax is
 extended with features of ReStructuredText (rst) using the
 [Myst Parser][myst].
 
-The root of the document tree is `index.md`; it includes a table of contents that
-references the remainder of the documentation (see {ref}`toc` below)
+The root of the document tree is `index.md`; it includes a table of contents
+that references the remainder of the documentation (see {ref}`toc` below).  All
+of the actual documentation is contained in the `docs` directory.
 
 To build the documentation, run `make` in the current directory; this will
 generate the html output in `_build/html/index.html`.  `make help` will list
@@ -74,6 +83,8 @@ Style guide
  - Run `make spelling` and fix warnings before submitting a PR
  - Use the `term` feature when referring to a new term for the first time, this
    links to the glossary. 
+
+ - Use a line width of 80-characters in the markdown files
    
  - In the reference manual, prefer descriptions over examples; use examples to
    help when the descriptions are not entirely clear.  Descriptions can outline
@@ -139,4 +150,28 @@ function foo() external returns (uint256) {
  - references to other documents
  - references to labeled sections
  - todo
+
+Moving pages and redirects
+--------------------------
+
+If you move a page, you should create a redirect for it on
+[the readthedocs.com redirects page][redirects].
+
+[redirects]: https://readthedocs.com/dashboard/certora-certora-prover-documentation/redirects/
+
+If the source URL ends with `$rest` then it redirects everything in that
+directory.  Be careful: redirects are considered first to last, so if you are
+doing whole-directory redirects but want to override it for specific files, the
+specific files come first.  Note that when you "edit" a redirect on this page,
+it moves it to the top of the list (AFAICT this is the only way to reorder them).
+
+See also [the RTD documentation on redirects][rtd-redirect].
+
+[rtd-redirect]: https://docs.readthedocs.io/en/stable/user-defined-redirects.html
+
+Note: you can get a list of all the files that ever existed using
+
+```
+git log --name-only --pretty="format:" docs
+```
 

@@ -9,10 +9,10 @@ passed in, and uses method otherwise.
 
 ```cvl
 function applyToUser(method f, env e, address user) {
-    if (f.selector() == balanceOf(address).selector()) {
+    if (f.selector == balanceOf(address).selector) {
         return balanceOf(e, user);
     }
-    if (f.selector() == transfer(address,address).selector()) {
+    if (f.selector == transfer(address,address).selector) {
         address other;
         return transfer(e, user, other);
     }

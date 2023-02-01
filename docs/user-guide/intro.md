@@ -5,7 +5,7 @@ This User Guide contains information about the Certora Prover and Certora
 Verification Language.  It is intended to explain how to use the Prover to
 verify smart contracts.  It is organized by topic and focuses on the most
 useful features instead of including comprehensive details.  For details, see
-the {doc}`/docs/ref-manual/index`.
+the {doc}`/docs/cvl/index`.
 
 ```{todo}
 This documentation is currently undergoing significant reorganization and

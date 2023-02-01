@@ -24,7 +24,7 @@ Step 1: prerequisites
 
   Check your Java version by executing the following command on the terminal:
   ```bash
-  java --version
+  java -version
   ```
 
   If the version is < 11, download and install Java version 11 or later from
@@ -262,7 +262,7 @@ follow the next steps:
     ```
 </details>
 
-Step 4: Add the Solidity compiler (solc) executable's folder to your `PATH`
+Step 4: Add the Solidity compiler (`solc`) executable's folder to your `PATH`
 ---------------------------------------------------------------------------
 
 <details>
@@ -282,7 +282,7 @@ Step 4: Add the Solidity compiler (solc) executable's folder to your `PATH`
 
   * In the Environment Variables window, highlight the Path variable in the System variables section and click the Edit button.
 
-  * Add the full path to the directory that contains the solc executables, e.g.:
+  * Add the full path to the directory that contains the `solc` executables, e.g.:
 
     ```bash
     C:\full\path\to\solc\executable\folder

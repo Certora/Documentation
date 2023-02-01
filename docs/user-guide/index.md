@@ -5,40 +5,16 @@ Certora User's Guide
 :maxdepth: 2
 
 intro.md
+tutorials.md
 getting-started/index.md
-examples.md
+basics/index.md
 properties/index.md
 patterns/index.md
-```
-
-Case Studies
-------------
-
-### Liquidity pools
-
-#### Balancer
-#### Euler
-
-### Options Markets
-
-#### SirenMarkets
-
-### Governance Systems
-
-#### OpenZeppelin Governance
-
-General Rules
--------------
-
-### Solvency Rules
-### Valid States and Transitions
-### Rules for ERC20
-
-Managing Timeouts
------------------
-
-```{toctree}
-
+multicontract/index.md
 timeouts.md
+checking.md
+troubleshooting.md
+faq.md
+glossary.md
 ```
 
