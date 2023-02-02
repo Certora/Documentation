@@ -340,7 +340,7 @@ Options regarding hashing of unbounded data
 
 **When to use it?**  
 
-When the assertion regarding unbounded hashing is thrown, but it is ok for the prover to ignore cases where the length hashed values exceeds the current bound.
+When the assertion regarding unbounded hashing is thrown, but it is acceptable for the prover to ignore cases where the length hashed values exceeds the current bound.
 
 **Example**
 

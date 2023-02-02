@@ -7,45 +7,59 @@ Modeling of Hashing in CVT
 The Keccak hash function is used heavily by Solidity smart contracts. 
 Most prominently, all unbounded data structures in storage (arrays, mappings) receive their storage addresses as values of the Keccak function.
 
-<!---
-Solidity makes intensive use of the Keccak hash function in order to create
-its storage layout.
+The Certora Prover does not operate with an actual implementation of the Keccak hash function, since this would make most verification intractable and provide no benefits in all practical cases we are aware of so far.
+Instead, the Keccak hash function is modeled as an arbitrary function that is _injective with large gaps_. 
+
+The hash function `hash` being injective with large gaps means that on distinct inputs `x` and `y`
+  - the hashes `hash(x)` and `hash(y)` are also distict, and
+  - the gap between `hash(x)` and `hash(y)` is large enough that every additive term `hash(x) + o` that occurs in the program is also distinct from `hash(y)`.
+
+## Background: The Solidity Storage Model
+
 For instance consider this contract:
 ```solidity
-contract A {
-  mapping(uint => uint) m; // first field of A -- gets slot 0
-
-  function setMTo0(uint i) {
-    m[i] = 0
+contract C {
+  uint i;                  // slot 0
+  uint[] a;                // slot 1
+  mapping(uint => uint) m; // slot 2
+  …
+  function foo() {
+	...
+	i = u;    // sstore(0, u)
+    ... 
+    a[j] = w; // sstore(hash(1) + j, w)
+    ... 
+    m[k] = v; // sstore(hash(2, k), v)
+    ... 
   }
 }
-
 ```
-In order to determine the storage address of `m[i]`, solidity 
-computes this hash: `keccak(0, i)` (the first argument is 0 because mapping `m` 
-is the first field in contract `A`).
 
-This means that non-collision of hashes is crucial for storage integrity, since 
-a collision means that writes to different solidity variables interfere with 
-each other.
+Here we can see how storage is laid out by solidity.
+The occurrences of `sstore(x, y)` in the line comments above denote a storage update of storage address `x` to value `y`.
+The scalar `i` is stored at storage address `0`, which is derived from it's slot number in the contract (slots are numbered in order of appearance in the source code).
+The array `a` is stored contiguously, starting from slot `hash(1)`.
+The entries of mapping `m` are spread out over storage; their locations are computed as the hash of the mapping's storage slot and the key at which the mapping is being accessed; thus the storage slot used for the entry of `m` under key `k` is computed as `hash(2, k)`.
 
+We can see that non-collision of hashes is essential for storage integrity. E.g., if `hash(1) + j` equalled `hash(2, k)` then the operations on `a` an `m` would interfere with each other.
 
---->
+Also note that the initial storage slots are reserved, i.e., we make sure that no hash value ends up colliding with slots 0 to 10000.
+
 
 ## Modeling the Keccak Function (bounded case)
 
 The Certora Prover models the Keccak hash function as an arbitrary function that is _injective with large gaps_.
 That means that if `x != y` then `hash(x) != hash(y)`, but also that for all additive offsets `o` that actually occur in the program `hash(x) + o != hash(y)`.
 
-These constraints are enough for the solidity storage model to work as expected. However when hashes are compared, they might show different behaviour from the actual Keccak function (e.g. `hash(x) > hash(y)` is always true or false for given `x` and `y`, but in our formulas, the SMT solver is free to choose a function for `hash` that makes the formula satisfiable.). 
+These constraints are enough for the solidity storage model to work as expected. However when hashes are compared, they might show different behavior from the actual Keccak function (e.g. `hash(x) > hash(y)` is always true or false for given `x` and `y`, but in our formulas, the SMT solver is free to choose a function for `hash` that makes the formula satisfiable.). 
 We have not observed a practical use case yet where the numeric values of the hash function play a role, thus we chose this modeling for tractability reasons.
 
 
-### Example
+### Example (Imprecision of Modelling)
 
-Whichever distinct values we chose for `x` and `y` in the example below, on the real keccak function one rule would be violated and one rule would not. In the modeling of the Certora prover, both rules are always violated, since the prover is allowed to "invent" a hash function for each rule and will choose one that violates the property.
+Whichever distinct values we chose for `x` and `y` in the example below, on the real Keccak function one rule would be violated and one rule would not. In the modeling of the Certora Prover, both rules are violated, since the prover is allowed to "invent" a hash function for each rule and will choose one that violates the property.
 
-```
+```solidity
 // CVL:
 methods { hash(uint) returns (uint) envfree; }
 
@@ -76,9 +90,86 @@ contract C {
 
 ## Hashing of Unbounded Data
 
-In the discussion so far we only hashed data whose length is already known before program execution (e.g. a `uint` variable always has 256 bit). Hashing of unbounded data (typically unbounded arrays, like `bytes`, `uint[]`, etc.) is trickier, since their implementation requires loops and the the Certora Prover reduces all loops to other constructs in oder to achieve better tractability and robustness.
+In the discussion so far we only considered hashes of data whose length is already known before program execution (e.g. a `uint` variable always has 256 bit). Hashing of unbounded data (typically unbounded arrays, like `bytes`, `uint[]`, etc.) requires some extra measures, since their implementation requires loops and the the Certora Prover internally eliminates all loops to other constructs in order to achieve better tractability.
 
 The Certora Prover models unbounded hashing similar to how it eliminates loops. The user specifies an upper length bound up to which unbounded hashing should be modeled precisely (using the CLI option {ref}`--hashing_length_bound`) as well as whether this bound is to be assumed or to be verified (using the CLI option {ref}`--optimistic_hashing`).
+
+We demonstrate how these flags work using the following program snippet.
+
+```solidity
+contract C {
+	mapping(bytes => uint) m;
+	bytes b1, b2, b3;
+	uint u, v, w;
+	...
+		require b1.length < 224;
+		m[b1] = u;
+	...
+		// no constraints on b2.length
+		m[b2] = v; 
+	...
+		m[b3] = v;
+	    assert(b3.length > 300, "we expect b3 to be at least 300 bytes long, but it is not")
+	...
+}
+```
+
+Let us a ssume that the `--hashing_length_bound` flag is set to 224 (which corresponds to 7 machine words).
+Then, the first hash operation, triggered by the mapping access `m[b1]`, behaves like the hash of a bounded data chunk. The `--optimstic_hashing` flag has no impact on this hash operation.
+Behavior of the second hash operation, triggered by the mapping access `m[b2]`, depends on whether `--optimistic_hashing` is set. 
+If the `--optimistic_hashing` flag is not set, the violation of an internal assertion will be reported by the prover, stating that an chunk of data is being hashed that may exceed the given bound of 224.
+If the `--optimistic_hashing` flag is set, the prover will internally impose an assumption (like a `require` statement) on `b2` stating that its length cannot exceed 224 bytes.
+The third operation behaves like the second, since also no length constraint on `b3` is made by the program. However, we can see the impact of the `--optimistic_hashing` flag on the `assert` command that follows the hash operation: When the flag is set, the assertion will be shown as not violated even though nothing in the program itself prevents `b3` from being longer than 300 bytes. This is an example of potential unsoundness coming from "optimistic" assumptions.
+(When `--optimistic_hashing` is not set, then we get a violation from any or all assertions, depending on the configuration of Certora Prover.)
+
+
+
+
+
+
+### Examples for Unbounded Hashing
+
+The following collection snippet illustrates the most common use cases for hashing of data that has unbounded length.
+
+
+```solidity
+contract C {
+	mapping(bytes => uint) m; 
+	uint x, y, z, start, len;
+    ... 
+		m[b] = v
+    ... 
+		keccak256(abi.encode(x, y, z))
+    ... 
+		keccak256(abi.encodePacked(x, y, z))
+	...
+		assembly {
+			keccak(start, len)
+		}
+	...
+}
+
+```
+
+Probably the most common use case is the use of mappings whose keys are an unbounded array (`bytes`, `string`, `uint[]`, etc.); any access to such a mapping induces a hash of the corresponding array whose length is often unknown and unbounded.
+
+Further use cases include direct calls of the keccak function, either directly on solidity or inside an inline assembly snippet.
+
+Note that Certora Prover's static analysis is a ware of the abi encoder. Thus, in many cases, it can figure out that when `x, y, z` are scalars that `keccak256(abi.encode(x, y, z))` is actually a bounded hash of the form `hash(x, y, z)` as opposed to an unbounded hash of the `bytes` array that is the result of the `encode` function.
+
+
+
+
+## Conclusion
+
+To summarize, Certora Prover handles hashing in a way such that for the vast majority of hashes it will behave as expected. 
+
+However, it is good to be aware of limitations of the modelling; i.e. that not all properties of the actual Keccak function are preserved but only the ones that are crucial for practical use cases, which are covered by the "injectivity with large gaps" property.
+
+Furthermore, special attention may be necessary when hashing of unbounded data is required. For this case, Certora Prover relies on user-controlled approximations that are analogous to its handling of loops.
+
+
+
 
 
 <!---
