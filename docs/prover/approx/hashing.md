@@ -109,7 +109,7 @@ contract C {
 		m[b2] = v; 
 	...
 		m[b3] = v;
-	    assert(b3.length > 300, "we expect b3 to be at least 300 bytes long, but it is not")
+	    assert(b3.length > 300, "b3 is less than 300 bytes long, unexpectedly")
 	...
 }
 ```
