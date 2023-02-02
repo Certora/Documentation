@@ -70,7 +70,8 @@ For implementation details regarding the generation of mutants, refer to the ope
 
 The mutation verification results are
   summarized in an user-friendly visualization.
-[Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) is an example summary for the [Borda example](https://demo.certora.com/?Borda).
+[Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) is an example summary
+  for the [Borda example](https://github.com/Certora/CodeExamples/tree/master/Borda).
 Rules are represented by the green outer circles
   and the mutants are represented by the gray dots.
 Selecting a rule shows which mutants it killed
