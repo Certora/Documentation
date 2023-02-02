@@ -1,12 +1,12 @@
 # Certora Solidity Mutation Tester
 
-This project is a mutation tester which
+This is a mutation tester which
  checks that variants of the original
  solidity program do not pass the specification.
 If a mutated program passes the specification,
 it may indicate that the specification is vacuous or not rigorous enough.
 
-# Running the Mutation Tester
+## Running the Mutation Tester
 
 - Example:
 ```
@@ -66,7 +66,7 @@ Expects a boolean and defaults to `false`.
 
 For implementation details regarding the generation of mutants, refer to the open source repository for Gambit.
 
-# Visualization
+## Visualization
 
 The mutation verification results are
   summarized in an user-friendly visualization.
@@ -81,7 +81,7 @@ The coverage metric is computed as the fraction
 Clicking on a mutant's patch also shows the
   diff with respect to the original program.
 
-# Implementation Details
+## Implementation Details
 
 The mutation tester invokes Gambit using the provided Gambit configuration
 JSON, adding randomly generated mutants to the (possibly empty) collection of
