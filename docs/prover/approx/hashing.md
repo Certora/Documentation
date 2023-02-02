@@ -101,16 +101,16 @@ contract C {
 	mapping(bytes => uint) m;
 	bytes b1, b2, b3;
 	uint u, v, w;
-	...
+	// ...
 		require b1.length < 224;
 		m[b1] = u;
-	...
+	// ...
 		// no constraints on b2.length
 		m[b2] = v; 
-	...
+	// ...
 		m[b3] = v;
 	    assert(b3.length > 300, "b3 is less than 300 bytes long, unexpectedly")
-	...
+	// ...
 }
 ```
 
@@ -164,7 +164,7 @@ Note that Certora Prover's static analysis is aware of the ABI encoder. Thus, in
 
 To summarize, Certora Prover handles hashing in a way such that for the vast majority of hashes it will behave as expected. 
 
-However, it is good to be aware of limitations of the modelling; i.e. that not all properties of the actual Keccak function are preserved but only the ones that are crucial for practical use cases, which are covered by the "injectivity with large gaps" property.
+However, it is good to be aware of limitations of the modeling; i.e. that not all properties of the actual Keccak function are preserved but only the ones that are crucial for practical use cases, which are covered by the "injectivity with large gaps" property.
 
 Furthermore, special attention may be necessary when hashing of unbounded data is required. For this case, Certora Prover relies on user-controlled approximations that are analogous to its handling of loops.
 
