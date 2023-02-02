@@ -62,10 +62,12 @@ You can print log messages by setting the environment variable `RUST_LOG` (e.g.,
 
 
 ### Output of Gambit
-Gambit produces a set of uniquely mutated solidity source files which are, by default, dumped in
+Gambit produces a set of uniquely mutated solidity source
+  files which are, by default, dumped in
   the `out/` directory.
 Each mutant file has a comment that describes the exact mutation that was done.
-For example, one of the mutant files for `benchmarks/10Power/TenPower.sol` that Gambit generated contains:
+For example, one of the mutant files for
+  `benchmarks/10Power/TenPower.sol` that Gambit generated contains:
 ```
 /// SwapArgumentsOperatorMutation of: uint256 res = a ** decimals;
 uint256 res = decimals ** a;
