@@ -118,4 +118,5 @@ verifications
 verifier
 walkthrough
 whitespace
+unary
 Unary
