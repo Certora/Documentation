@@ -39,6 +39,7 @@ Examples of some configuration files can be found under `benchmarks/config-jsons
 - For projects that have complex dependencies and imports, you will likely need to:
    * pass the `--base-path` argument for `solc` like so: `cargo gambit path/to/file.sol --solc-basepath base/path/dir/.`
    * or remappings like so: `cargo gambit path/to/file.sol --solc-remapping @openzepplin=... --solc-remapping ...`
+  * or the `--allow-paths` argument like so: `cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...`
 
 If you are using a configuration file, you can also pass these argument there as a field, e.g.,
 ```
@@ -53,6 +54,16 @@ or
     "filename": "path/to/file.sol",
     "remappings": [
         "@openzeppelin=PATH/TO/node_modules/@openzeppelin"
+    ]
+}
+```
+or
+```
+{
+    "filename": "path/to/file.sol",
+    "solc-allowpaths": [
+        "path1",
+        "path2"
     ]
 }
 ```
