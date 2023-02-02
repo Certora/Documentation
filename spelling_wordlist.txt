@@ -55,6 +55,8 @@ hyperproperties
 hyperproperty
 immutable
 immutables
+injective
+injectivity
 inlined
 instantiation
 invariant
