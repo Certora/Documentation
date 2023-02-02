@@ -52,17 +52,19 @@ Required Keys for the JSON Configuration File:
 or the explicit JSON element contained therein. Refer to the open source Gambit repository for more details regarding Gambit configuration files.
 
 Optional Keys for the JSON Configuration File:
-- `"staging"` : the branch name for running mutant verification on `--staging`. We support `"staging" : true` as an
-alternative to `"staging" : "master"`. Omitting this key will cause verification to run locally.
 - `"num_threads"` : the maximum number of threads to use for verification, as an integer
 - `"manual_mutations"` : optionally supplement the random mutant generation with your own manually-written mutants.
 Expects a JSON object whose keys are the paths to the original files and whose values are paths to directories containing
 manually-written mutants as `.sol` files. **IMPORTANT:** any manual mutations files provided must follow the naming
 convention `OriginalFileName.<unique-name>.sol`, where `unique-name` is a string ID unique with respect to the other
 manual mutants. It is recommended to use `mN` for brevity, where `N` is a unique integer.
-- `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
+
+Additional Optional Flags for Debugging
+- `"staging"` : the branch name for running mutant verification on `--staging`. We support `"staging" : true` as an
+alternative to `"staging" : "master"`. Omitting this key will cause verification to run locally.
+- `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
 
 For implementation details regarding the generation of mutants, refer to the open source repository for Gambit.
 
