@@ -1,12 +1,16 @@
-# Certora Solidity Mutation Tester
+# Solidity Mutation Verifier Based on Gambit
 
-This is a mutation tester which
+This is a mutation verifier which
  checks that variants of the original
  solidity program do not pass the specification.
 If a mutated program passes the specification,
 it may indicate that the specification is vacuous or not rigorous enough.
+It uses mutations from the [Gambit](https://github.com/Certora/gambit)
+  mutation generator.
+In the rest of the document,
+  we refer to both the mutation generator and the verifier as Gambit.
 
-## Running the Mutation Tester
+## Running the Mutation Verifier
 
 - Example:
 ```
@@ -66,7 +70,9 @@ Additional Optional Flags for Debugging
 alternative to `"staging" : "master"`. Omitting this key will cause verification to run locally.
 - `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
 
-For implementation details regarding the generation of mutants, refer to the open source repository for Gambit.
+For implementation details regarding the generation of mutants,
+  refer to the open source repository
+  for [Gambit](https://github.com/Certora/gambit).
 
 ## Visualization
 
