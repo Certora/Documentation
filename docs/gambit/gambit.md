@@ -15,7 +15,7 @@ Gambit takes as input a solidity source file (or a configuration file as you can
 
 ## Installing Gambit
 
-- Gambit is implemented in Rust which you can download from [here](https://www.rust-lang.org/tools/install).
+- Gambit is implemented in Rust which you can download [here](https://www.rust-lang.org/tools/install).
 - To run Gambit, do the following:
    - `git clone git@github.com:Certora/gambit.git`
    - Follow the directions in the following sections.
