@@ -635,3 +635,16 @@ preprocessing.
 Jobs that exceed the global timeout will simply be terminated, so the result
 reports may not be generated.
 
+(-solver)=
+#### `--settings -solver=<solver spec>`
+
+This option sets the SMT solvers being used within the Prover.  By default, a
+portfolio of various different solvers is used.  It can be useful to use specify
+only a subset of these to save on computation time.  In rare cases, solver
+specific options can improve performance as well.
+
+The `solver spec` can be a single solver (`-solver=z3`) or a list of solvers
+(`-solver=[cvc5,z3]`), where each such solver can be further modified.  For
+example, `cvc5` refers to the default configuration of `cvc5` whereas
+`cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
+via `z3{randomSeed=17}`.
