@@ -36,8 +36,10 @@ Furthermore, the initial storage slots are reserved, i.e., we make sure that no
 hash value ends up colliding with slots 0 to 10000.
 
 These constraints are enough for the solidity storage model to work as expected.
-However when hashes are compared, they might show different behavior from the 
-actual Keccak function (for examples see the next subsection). 
+However this modeling allows Certora Prover to pick hash functions that show 
+different behavior from the actual Keccak function, for instance it is unlikely 
+that the individual numeric values or their ordering matches that of the Keccak
+function. We present some examples in the following subsection.
 We have not observed a practical use case yet where the numeric values of the 
 hash function play a role, thus we chose this modeling for tractability reasons.
 
