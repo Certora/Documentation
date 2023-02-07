@@ -1,6 +1,8 @@
 Modeling of Hashing in CVT
 ==========================
 
+In this document we present how the Keccak hash function is modeled in the
+Certora Prover and how that impacts smart contract verification.
 
 ## Introduction
 
@@ -14,8 +16,15 @@ a solidity builtin function and through inline assembly.
 The Certora Prover does not operate with an actual implementation of the Keccak
 hash function, since this would make most verification intractable and provide 
 no practical benefits.
-Instead, the Keccak hash function is modeled as an arbitrary function that is 
-_injective with large gaps_. 
+Instead, the Certora Prover models the properties of the the Keccak hash 
+function that are crucial for the function of the smart contracts under 
+verification while abstracting away from implementation details of the actual
+hash function.
+
+## Modeling the Keccak Function (bounded case)
+
+The Certora Prover models the Keccak hash function as an arbitrary function that
+is _injective with large gaps_.
 
 The hash function `hash` being injective with large gaps means that on distinct
 inputs `x` and `y`
@@ -23,17 +32,8 @@ inputs `x` and `y`
   - the gap between `hash(x)` and `hash(y)` is large enough that every additive 
     term `hash(x) + i` that occurs in the program is also distinct from `hash(y)`.
 
-
-## Modeling the Keccak Function (bounded case)
-
-The Certora Prover models the Keccak hash function as an arbitrary function that
-is _injective with large gaps_.
-That means that if `x != y` then `hash(x) != hash(y)`, but also that for all 
-additive offsets `i` that actually occur in the program 
-`hash(x) + i != hash(y)`.
-
-Also note that the initial storage slots are reserved, i.e., we make sure that
-no hash value ends up colliding with slots 0 to 10000.
+Furthermore, the initial storage slots are reserved, i.e., we make sure that no
+hash value ends up colliding with slots 0 to 10000.
 
 These constraints are enough for the solidity storage model to work as expected.
 However when hashes are compared, they might show different behavior from the 
