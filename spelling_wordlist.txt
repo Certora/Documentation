@@ -3,6 +3,7 @@ ABI
 Balancer
 CVL
 Certora
+config
 Devcon
 Ethereum
 FEoD
@@ -116,6 +117,7 @@ unsummarized
 untrusted
 verifications
 verifier
+verifiers
 walkthrough
 whitespace
 unary

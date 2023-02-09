@@ -87,7 +87,7 @@ manual mutants (for example you might name them `OriginalFileName.m1.sol`, `Orig
 ### Additional Optional Flags for Certora Internal Use
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
-- `"staging"` : if your run script does not already have {ref}`--staging`, you can also add it to Gambit.
+- `"staging"` : if your run script does not already have `--staging`, you can also add it to Gambit.
   Similar to CVT, you can provide the
   branch name for running mutant verification on `--staging`.
 We support `"staging" : true` as an alternative to `"staging" : "master"`.

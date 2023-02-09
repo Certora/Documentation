@@ -114,6 +114,7 @@ cargo gambit path/to/file.sol --solc-remapping @openzepplin=node_modules/@openze
    ```
 [allowed]: ttps://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
+(gambit-config)=
 #### Running Gambit Through a Configuration File.
 This is the recommended way to run Gambit.
 This approach allows you to control and localize
@@ -140,8 +141,8 @@ to `gambit benchmarks/10Power/TenPower.sol --solc-remapping @openzepplin=node_mo
 ```
 
 In addition to the specifying the command line arguments, you can list the
-specific {ref}`types of mutations <mutation-list>` that you want to apply, the
-specific functions you wish to mutate, and more.  See {ref}`config-options` for
+specific {ref}`types of mutations <mutation-types>` that you want to apply, the
+specific functions you wish to mutate, and more.  See {ref}`gambit-config` for
 more details, and [`benchmark/config-jsons` directory][config-examples] for
 examples.
 
@@ -195,7 +196,7 @@ For example, one of the mutant files for
 uint256 res = decimals ** a;
 ```
 
-(mutations-types)=
+(mutation-types)=
 ## Mutation Types
 At the moment, Gambit implements the following mutations:
 - Binary Operator Mutation: change a binary operator like `+, -, <` to a different operator. For example:
