@@ -25,14 +25,18 @@ java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/Exampl
 
 - **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
 
-- Gambit supports `--staging`!
+```{info}
+Gambit supports {ref}`--staging`.
 
-**However, Gambit currently has trouble with
-`--send_only` and `--cloud` in the run scripts.
-If you have these flags, please remove them for now.**
+However, Gambit currently has trouble with
+{ref}`--send_only` and {ref}`--cloud` in the run scripts.
+If you have these flags, please remove them for now.
 Apologies for the temporary inconvenience!
+```
 
-The tool expects a configuration file (extension `.conf` is required)
+(gambit-prover-config)=
+## Configuration
+The tool expects a configuration file (extension `.conf` is required).
 which is a JSON object.
 Here is an example configuration file:
 
@@ -53,24 +57,24 @@ Here is an example configuration file:
 }
 ```
 
-Required Keys for the JSON Configuration File:
+### Required Keys for the JSON Configuration File:
 - `"project_directory"` : the directory containing the original CVT project on which to perform mutation testing
 - `"run_script"` : the bash script used to run verification on the original project, usually `project_directory/run.sh` or similar
 - `"gambit"` : the JSON configuration element for invoking Gambit. May be a path to a gambit configuration file
-or the explicit JSON element contained therein. Refer to the open source Gambit repository for more details regarding Gambit configuration files.
+or the explicit JSON element contained therein.  See {ref}`gambit-config` for more information about the gambit configuration.
 
-Optional Keys for the JSON Configuration File:
+### Optional Keys for the JSON Configuration File
 - `"num_threads"` : the maximum number of threads to use for verification, as an integer
 - `"manual_mutations"` : optionally supplement the random mutant generation with your own manually-written mutants.
 Expects a JSON object whose keys are the paths to the original files and whose values are paths to directories containing
 manually-written mutants as `.sol` files. **IMPORTANT:** any manual mutations files provided must follow the naming
-convention `OriginalFileName.<unique-name>.sol`, where `unique-name` is a string ID unique with respect to the other
-manual mutants. It is recommended to use `mN` for brevity, where `N` is a unique integer.
+convention `OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
+manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
 
-Additional Optional Flags for Debugging
-- `"staging"` : if your run script does not already have `--staging`, you can also add it to Gambit.
+### Additional Optional Flags for Certora Internal Use
+- `"staging"` : if your run script does not already have {ref}`--staging`, you can also add it to Gambit.
   Similar to CVT, you can provide the
   branch name for running mutant verification on `--staging`.
 We support `"staging" : true` as an alternative to `"staging" : "master"`.
@@ -78,9 +82,6 @@ Omitting this key will cause verification to run locally
   (unless the run script has it).
 - `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
 
-For implementation details regarding the generation of mutants,
-  refer to the open source repository
-  for [Gambit](https://github.com/Certora/gambit).
 
 ## Visualization
 
@@ -90,10 +91,10 @@ The mutation verification results are
   for the [Borda example](https://demo.certora.com/?Borda).
 Rules are represented by the green outer circles
   and the mutants are represented by the gray dots.
-Selecting a rule shows which mutants it killed
-  and selecting a mutant shows which rules killed it.
+Selecting a rule shows which mutants it detected
+  and selecting a mutant shows which rules detected it.
 The coverage metric is computed as the fraction
-  of total generated mutants that were killed.
+  of total generated mutants that were detected.
 Clicking on a mutant's patch also shows the
   diff with respect to the original program.
 
