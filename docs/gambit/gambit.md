@@ -2,19 +2,18 @@
 
 This is a mutation generator for Solidity.
 It takes as input a solidity source file (or a configuration file as you can see below)
-  and produces a set of uniquely mutated solidity source files which are, by default, dumped in
-  the `out/` directory.
+  and produces a set of uniquely mutated solidity source files which are output in the `out/` directory by default.
 The source is [publicly available](https://github.com/Certora/gambit).
 
 ## Installing Gambit
-- Gambit is implemented in Rust which you can download [here](https://www.rust-lang.org/tools/install).
+- Gambit is implemented in Rust, which you can download [here](https://www.rust-lang.org/tools/install).
 - To run Gambit, do the following:
    - `git clone git@github.com:Certora/gambit.git`
    - Install by running `cargo install --path .` from the `gambit/` directory after you clone the repository. This will add the Gambit binary to your `.cargo` directory.
    - Alternatively, you can also build Gambit by running `cargo build --release` from the `gambit/` directory.
 - You will need OS specific binaries for various versions of Solidity. You can download them [here](https://github.com/ethereum/solc-bin). Make sure you add them to your `PATH`.
 
-## Users
+## Usage
 - If you installed Gambit using `cargo install --path .` described above,
   you can learn how to use Gambit by running `gambit mutate -h`.
 - If you went for a local build, you can run `cargo gambit-help` for help.
@@ -28,7 +27,7 @@ Some of the simple arguments are `num-mutants (default 5)`
   the `seed (default 0)` that controls
   the randomization of the generated mutants,
   and `outdir (default out)` that lets you choose
-  where you want to dump the mutant files.
+  where you want to output the mutant files.
 
 ```
 Command line arguments for running Gambit. Following are the main ways to run it.
@@ -80,7 +79,7 @@ Options:
 These flags are explained in the following section.
 
 ### Examples of How to Run Gambit
-You can run Gambit on a single file with various additional arguments.
+You can run Gambit on a single solidity file with various additional arguments.
 Gambit also accepts a configuration file as input where you can
   specify which files you want to mutate and using which mutations.
 You can also control which functions and contracts you want to mutate.
@@ -93,55 +92,60 @@ We recommend this approach only when you have a simple project with few files
 - `cargo gambit benchmarks/RequireMutation/RequireExample.sol` is an example
   of how to run with a single Solidity file.
 - For projects that have complex dependencies and imports, you will likely need to:
-   * pass the `--base-path` argument for `solc` like so: `cargo gambit path/to/file.sol --solc-basepath base/path/dir/.`
-   * or remappings like so: `cargo gambit path/to/file.sol --solc-remapping @openzepplin=... --solc-remapping ...`
+   * To specify the solidity [base path][basepath], pass the `--base-path` argument.  For example
+   ```bash
+   cargo gambit path/to/file.sol --solc-basepath base/path/dir/.
+   ```
+[basepath]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#base-path-and-include-paths
+To indicate where solidity should find libraries, you provide an [import remapping][remapping] to `solc` using the `--solc-remapping` argument.  For example:
+```bash
+cargo gambit path/to/file.sol --solc-remapping @openzepplin=node_modules/@openzeppelin --solc-remapping ...`
+```
+[remapping]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#import-remapping
    * or the `--allow-paths` argument like so: `cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...`
 
 
 #### Running Gambit Through a Configuration File.
 This is the recommended way to run Gambit.
 This approach allows you to control and localize
-  mutation generation and is much easier
-  to use than passing too many command line flags.
+  mutation generation and is easier
+  to use than passing many command line flags.
 
-- `cargo gambit-cfg benchmarks/config-jsons/test1.json`  -
-  this is how you run the tool if you want to use Gambit's
-  configuration file option that lets you control how the mutants are generated.
-  Examples of some configuration files can be
-  found under `benchmarks/config-jsons`.
+To run gambit with a configuration file, simply pass the name of the `json` file:
+```bash
+cargo gambit-cfg benchmarks/config-jsons/test1.json`
+```
 
-- If you are using a configuration file, you can also pass various Solidity arguments as fields, e.g.,
-```
+The configuration file is a [json][json-spec] file containing the command line
+arguments for `gambit` and additional configuration options.
+For [example][test6], the following config is equivalent
+to `gambit benchmarks/10Power/TenPower.sol --solc-remapping @openzepplin=node_modules/@openzeppelin`:
+
+```json
 {
-  "filename": "path/to/file.sol",
-  "solc-basepath": "base/path/dir/."
-}
-```
-or
-```
-{
-    "filename": "path/to/file.sol",
-    "remappings": [
-        "@openzeppelin=PATH/TO/node_modules/@openzeppelin"
+    "filename": "benchmarks/10Power/TenPower.sol",
+    "remappings: [
+        "@openzeppelin=node_modules/@openzeppelin"
     ]
 }
 ```
-or
-```
-{
-    "filename": "path/to/file.sol",
-    "solc-allowpaths": [
-        "path1",
-        "path2"
-    ]
-}
-```
+
+In addition to the specifying the command line arguments, you can list the
+specific {ref}`types of mutations <mutation-list>` that you want to apply, the
+specific functions you wish to mutate, and more.  See {ref}`config-options` for
+more details, and [`benchmark/config-jsons` directory][config-examples] for
+examples.
+
+[json-spec]: https://json.org/
+[examples]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/
+[test6]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/test6.json
+
 
 #### Configuring the Set of Mutations, Functions, and Contracts
 If you are using Gambit through a configuration file,
   you can localize the mutations to some
   functions and contracts.
-You can also choose which mutations you want.
+You can also choose which mutations you want (see {ref}`mutation-types` for the list of possible mutations).
 Here is an example that shows how to configure these options.
 ```
 [
@@ -182,6 +186,7 @@ For example, one of the mutant files for
 uint256 res = decimals ** a;
 ```
 
+(mutations-types)=
 ## Mutation Types
 At the moment, Gambit implements the following mutations:
 - Binary Operator Mutation: change a binary operator `bop` to `bop'`
@@ -202,5 +207,3 @@ As you can imagine, many of these mutations may lead to invalid mutants
 At the moment, Gambit simply compiles the mutants and only keeps valid ones --
   we are working on using additional type information to reduce the generation of
   invalid mutants by constructions.
-You can see the implementation details
-  in [mutation.rs](https://github.com/Certora/gambit/blob/master/src/mutation.rs).
