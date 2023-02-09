@@ -20,7 +20,7 @@ Installation instructions can be found [here](https://www.java.com/en/download/h
 
 - Example:
 ```
-java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/Example.conf
+java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/example.conf
 ```
 
 - **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
@@ -57,23 +57,36 @@ Here is an example configuration file:
 }
 ```
 
+Note: This configuration is separate from CVT's `.conf` file and also from the
+  configuration file of the mutation generator ({ref}`gambit-config`).
+Importantly, notice that to use this tool, you can embed the configuration
+for generating the mutants in this `.conf` file; you don't need to write
+  two separate configurations.
+
 ### Required Keys for the JSON Configuration File:
 - `"project_directory"` : the directory containing the original CVT project on which to perform mutation testing
-- `"run_script"` : the bash script used to run verification on the original project, usually `project_directory/run.sh` or similar
+- `"run_script"` : the bash script used to run verification on the original project, usually `project_directory/run.sh` or similar.
+  Gambit will pull the configuration for `certoraRun` from this shell script and verify each mutant using this configuration.
 - `"gambit"` : the JSON configuration element for invoking Gambit. May be a path to a gambit configuration file
 or the explicit JSON element contained therein.  See {ref}`gambit-config` for more information about the gambit configuration.
+The `solc` specific arguments (including the version of the compiler) should be provided here
+  even if they are present in the `run_script`.
 
 ### Optional Keys for the JSON Configuration File
 - `"num_threads"` : the maximum number of threads to use for verification, as an integer
 - `"manual_mutations"` : optionally supplement the random mutant generation with your own manually-written mutants.
 Expects a JSON object whose keys are the paths to the original files and whose values are paths to directories containing
-manually-written mutants as `.sol` files. **IMPORTANT:** any manual mutations files provided must follow the naming
+manually-written mutants as `.sol` files.
+
+```{info}
+Any manual mutations files provided must follow the naming
 convention `OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
 manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
-- `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
-Expects a boolean and defaults to `false`.
+```
 
 ### Additional Optional Flags for Certora Internal Use
+- `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
+Expects a boolean and defaults to `false`.
 - `"staging"` : if your run script does not already have {ref}`--staging`, you can also add it to Gambit.
   Similar to CVT, you can provide the
   branch name for running mutant verification on `--staging`.

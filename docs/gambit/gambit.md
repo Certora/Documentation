@@ -10,8 +10,11 @@ The source is [publicly available](https://github.com/Certora/gambit).
 - To run Gambit, do the following:
    - `git clone git@github.com:Certora/gambit.git`
    - Install by running `cargo install --path .` from the `gambit/` directory after you clone the repository. This will add the Gambit binary to your `.cargo` directory.
-   - Alternatively, you can also build Gambit by running `cargo build --release` from the `gambit/` directory.
-- You will need OS specific binaries for various versions of Solidity. You can download them [here](https://github.com/ethereum/solc-bin). Make sure you add them to your `PATH`.
+   - If you prefer to run Gambit without installing, you can also build it by running `cargo build --release` from the `gambit/` directory.
+- You will need OS specific binaries for various versions of Solidity.
+    The version of the binary will depend on your Solidity project.
+    You can download them
+    [here](https://github.com/ethereum/solc-bin). Make sure you add them to your `PATH`.
 
 ## Usage
 - If you installed Gambit using `cargo install --path .` described above,
@@ -19,6 +22,7 @@ The source is [publicly available](https://github.com/Certora/gambit).
 - If you went for a local build, you can run `cargo gambit-help` for help.
 - You can print log messages by setting the environment variable
   `RUST_LOG` (e.g., `RUST_LOG=info cargo gambit ...`).
+  This will show colored diffs of the mutants on your standard output.
 
 `cargo gambit-help` will show you the following message
   that lists all the command line arguments that Gambit accepts.
@@ -97,13 +101,18 @@ We recommend this approach only when you have a simple project with few files
    cargo gambit path/to/file.sol --solc-basepath base/path/dir/.
    ```
 [basepath]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#base-path-and-include-paths
-To indicate where solidity should find libraries, you provide an [import remapping][remapping] to `solc` using the `--solc-remapping` argument.  For example:
+   * To indicate where solidity should find libraries, you provide an [import remapping][remapping] to `solc` using the `--solc-remapping` argument.  For example:
 ```bash
 cargo gambit path/to/file.sol --solc-remapping @openzepplin=node_modules/@openzeppelin --solc-remapping ...`
 ```
 [remapping]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#import-remapping
-   * or the `--allow-paths` argument like so: `cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...`
-
+   * To include additional allowed paths,
+   you provide solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
+   For example:
+   ```bash
+   cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...
+   ```
+[allowed]: ttps://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
 #### Running Gambit Through a Configuration File.
 This is the recommended way to run Gambit.
@@ -118,7 +127,7 @@ cargo gambit-cfg benchmarks/config-jsons/test1.json`
 
 The configuration file is a [json][json-spec] file containing the command line
 arguments for `gambit` and additional configuration options.
-For [example][test6], the following config is equivalent
+For example, the following configuration is equivalent
 to `gambit benchmarks/10Power/TenPower.sol --solc-remapping @openzepplin=node_modules/@openzeppelin`:
 
 ```json
@@ -189,21 +198,51 @@ uint256 res = decimals ** a;
 (mutations-types)=
 ## Mutation Types
 At the moment, Gambit implements the following mutations:
-- Binary Operator Mutation: change a binary operator `bop` to `bop'`
-- Unary Operator Mutation: change a unary operator, `uop` to `uop'`
-- Require Condition Mutation: negate the condition
-- Assignment Mutation: change the RHS
-- Delete Expression Mutation: comment out some expression
-- Function Call Mutation: randomly replace a function call with one of its operands
-- If Statement Mutation:  negate the condition
-- Swap Function Arguments Mutation: swap the arguments to a function
-- Swap Operator Arguments Mutation: swap the operands of a binary operator
-- Swap Lines Mutation: swap two lines
-- Eliminate Delegate Mutation: replace a delegate call by `call`
+- Binary Operator Mutation: change a binary operator like `+, -, <` to a different operator. For example:
+  `x = y + z - 8` might become `x = y * z - 8`.
 
-You can see simple examples of them [here](https://github.com/Certora/gambit/tree/master/benchmarks).
+- Unary Operator Mutation: change a unary operator like `++, --` to a different operator. For example:
+   `x++` might become `x--`.
+
+- Require Condition Mutation: negate or change the condition. For example:
+  `require (x + y > 6)` might become `require (true)` or `require (!(x + y > 6))`.
+
+- Assignment Mutation: change the right hand side of an assignment. For example,
+`x = true;` might become `x = false`.
+- Delete Expression Mutation: comment out some expression. For example,
+`for (uint256 i = 0; i < x; i++)` might become `for (uint256 i = 0; i < x; /* i++ */)`
+- Function Call Mutation: randomly replace a function call with one of its operands. For example
+  `return foo(x, y)` might become `return y`.
+- If Statement Mutation: change the condition. For example,
+   `if (cond)` might become `if (false)`.
+- Swap Function Arguments Mutation: swap the arguments to a function. For example
+`foo(a, b)` might become `foo(b, a)`.
+- Swap Operator Arguments Mutation: swap the operands of a non-commutative
+  binary operator. For example,
+    `a - b` might become `b - a`.
+- Swap Lines Mutation: swap two lines. For example,
+```
+x = foo (y, z);
+x += 2;
+```
+might become
+```
+x += 2;
+x = foo (y, z);
+```
+- Eliminate Delegate Mutation: replace a delegate call by `call`. For example,
+```
+_contract.delegatecall(abi.encodeWithSignature("setVars(uint256)", _num)
+```
+might become
+```
+_contract.call(abi.encodeWithSignature("setVars(uint256)", _num)
+```
+
 As you can imagine, many of these mutations may lead to invalid mutants
   that do not compile.
 At the moment, Gambit simply compiles the mutants and only keeps valid ones --
   we are working on using additional type information to reduce the generation of
   invalid mutants by constructions.
+Gambit does not apply any mutations to libraries unless they are
+  explicitly passed to it.
