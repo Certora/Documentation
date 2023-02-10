@@ -3,7 +3,7 @@
 This is the mutation verifier which
  checks that variants of the original
  solidity program do not pass the specification.
-It uses mutations from the [Gambit](https://github.com/Certora/gambit)
+It uses mutations from the {doc}`Gambit <gambit>`
   mutation generator.
 It also allows users to include manually generated mutants.
 If a mutated program passes the specification,
@@ -40,7 +40,7 @@ The tool expects a configuration file (extension `.conf` is required).
 which is a JSON object.
 Here is an example configuration file:
 
-```
+```json
 {
     "project_folder" : "Test/10Power",
     "run_script" : "Test/10Power/runDefault.sh",
@@ -51,9 +51,9 @@ Here is an example configuration file:
     "staging" : "master",
     "manual_mutations" : {
         "path/to/original/file.sol" : "path/to/manual/mutations/",
-        ...
+        "...": "..."
     },
-    ...
+    "...": "..."
 }
 ```
 
@@ -80,7 +80,8 @@ manually-written mutants as `.sol` files.
 
 ```{note}
 Any manual mutations files provided must follow the naming
-convention `OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
+convention  
+`OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
 manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
 ```
 

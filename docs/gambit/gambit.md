@@ -89,7 +89,7 @@ Gambit also accepts a configuration file as input where you can
 You can also control which functions and contracts you want to mutate.
 **Configuration files are the recommended way for using Gambit.**
 
-#### Running Gambit on a Single Solidity File.
+#### Running Gambit on a Single Solidity File
 We recommend this approach only when you have a simple project with few files
   and no complex dependencies or mutation requirements.
 
@@ -118,7 +118,7 @@ We recommend this approach only when you have a simple project with few files
 [allowed]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
 (gambit-config)=
-#### Running Gambit Through a Configuration File.
+#### Running Gambit Through a Configuration File
 This is the recommended way to run Gambit.
 This approach allows you to control and localize
   mutation generation and is easier
