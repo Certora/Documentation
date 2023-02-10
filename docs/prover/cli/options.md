@@ -89,6 +89,21 @@ If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 
 Note that `--rules` (plural) may be used alternatively to `--rule`. The two options are identical, but `--rules` may feel more natural when more than one rule is specified. 
 
+(--send_only)=
+### `--send_only`
+
+**What does it do?**
+Causes the CLI to exit immediately when the job is submitted, rather than waiting
+for it to complete.
+
+**When to use it?**
+When you want to run many jobs concurrently in a script, or otherwise want the
+CLI to not block the terminal.
+
+**Example**
+```sh
+certoraRun Example.sol --verify Example:Example.spec --send_only
+```
 
 Options affecting the type of verification run
 ----------------------------------------------
@@ -545,6 +560,30 @@ If you want only to check your spec, or include it in an automated task (e.g., a
 
 Advanced options
 ----------------
+
+(--cloud)=
+### `--cloud`
+
+**What does it do?**
+
+Runs the Prover on the cloud.  Note that for non-Certora users, `--cloud` is
+the default, so this option does nothing.
+
+**When to use it?**
+
+If you are a Certora employee who usually runs the Prover locally, but want to
+run on the cloud instead.
+
+(--staging)=
+### `--staging [branch]`
+
+**What does it do?**
+
+Runs a non-standard version of the Prover.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
 
 ### `--javaArgs`
 

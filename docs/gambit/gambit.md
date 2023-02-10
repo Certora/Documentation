@@ -112,7 +112,7 @@ cargo gambit path/to/file.sol --solc-remapping @openzepplin=node_modules/@openze
    ```bash
    cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...
    ```
-[allowed]: ttps://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
+[allowed]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
 (gambit-config)=
 #### Running Gambit Through a Configuration File.
