@@ -25,7 +25,7 @@ java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/exampl
 
 - **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
 
-```{info}
+```{note}
 Gambit supports {ref}`--staging`.
 
 However, Gambit currently has trouble with
@@ -78,7 +78,7 @@ The `solc` specific arguments (including the version of the compiler) should be 
 Expects a JSON object whose keys are the paths to the original files and whose values are paths to directories containing
 manually-written mutants as `.sol` files.
 
-```{info}
+```{note}
 Any manual mutations files provided must follow the naming
 convention `OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
 manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
