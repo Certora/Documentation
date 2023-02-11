@@ -678,7 +678,7 @@ reports may not be generated.
 #### `--settings -solver=<solver spec>`
 
 This option sets the SMT solvers being used within the Prover.  By default, a
-portfolio of various different solvers is used.  It can be useful to use specify
+portfolio of various different solvers is used.  It can be useful to specify
 only a subset of these to save on computation time.  In rare cases, solver
 specific options can improve performance as well.
 
