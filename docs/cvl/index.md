@@ -10,6 +10,7 @@ and semantics of CVL Specifications.
 
 overview.md
 syntax.md
+cvl4/index.md
 ```
 
 Common Syntactic Elements
