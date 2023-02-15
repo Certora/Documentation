@@ -304,6 +304,12 @@ finish
 If you do not change this, you will see the following error:
 ```
 
+### Conversion between `bytes<k>`, `address`, and integer types
+
+```{todo}
+finish
+```
+
 Removed features
 ----------------
 
@@ -354,3 +360,12 @@ finish
 If you do not change this, you will see the following error:
 ```
 
+### Destructuring syntax for struct returns
+
+```{todo}
+finish
+```
+
+```{todo}
+If you do not change this, you will see the following error:
+```
