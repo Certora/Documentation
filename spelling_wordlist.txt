@@ -1,9 +1,8 @@
-Aave
 ABI
+Aave
 Balancer
 CVL
 Certora
-config
 Devcon
 Ethereum
 FEoD
@@ -14,6 +13,7 @@ Prover
 Secureum
 Solana
 Todo
+Unary
 Vyper
 axiomatization
 axiomatized
@@ -28,6 +28,7 @@ bytecodes
 callee
 changelog
 codebase
+config
 conjuncted
 decompilation
 decompiler
@@ -101,12 +102,15 @@ structs
 subgraph
 subproblems
 subtype
+subtypes
 summarizable
 summarization
 summarizations
+supertype
 th
 traceback
 tracebacks
+unary
 unbacked
 underapproximation
 uninterpreted
@@ -115,10 +119,9 @@ unroller
 unsatisfiable
 unsummarized
 untrusted
+upcast
 verifications
 verifier
 verifiers
 walkthrough
 whitespace
-unary
-Unary

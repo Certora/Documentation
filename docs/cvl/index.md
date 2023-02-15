@@ -10,7 +10,6 @@ and semantics of CVL Specifications.
 
 overview.md
 syntax.md
-cvl4/index.md
 ```
 
 Common Syntactic Elements
@@ -47,3 +46,11 @@ defs.md
 hooks.md
 ```
 
+
+CVL Version 4
+-------------
+
+```{toctree}
+cvl4/changes.md
+cvl4/migration.md
+```
