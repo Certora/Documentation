@@ -209,11 +209,11 @@ a brief description and the `diff` between the mutant and the original file. For
 [
   {
     "description": "<brief summary of mutant>",
-    "diff": "<stdout of `diff` command on the mutant and original file>"
+    "diff": "<stdout of `diff` command on the mutant and original file>",
     "id": "0",
     "name": "out/path/to/mutant.sol"
   },
-  ...
+  "..."
 ]
 ```
 
