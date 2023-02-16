@@ -23,6 +23,7 @@ blockchains
 boolean
 booleans
 bootcamp
+boundedness
 bytecode
 bytecodes
 callee
@@ -55,11 +56,14 @@ hyperproperties
 hyperproperty
 immutable
 immutables
+injective
+injectivity
 inlined
 instantiation
 invariant
 invariants
 iterable
+Keccak
 lifecycle
 logics
 macOS
@@ -83,6 +87,7 @@ precompiled
 preprocess
 preprocessing
 prestate
+prover
 reachability
 reentrancy
 reentrant
