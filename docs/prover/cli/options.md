@@ -89,6 +89,21 @@ If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 
 Note that `--rules` (plural) may be used alternatively to `--rule`. The two options are identical, but `--rules` may feel more natural when more than one rule is specified. 
 
+(--send_only)=
+### `--send_only`
+
+**What does it do?**
+Causes the CLI to exit immediately when the job is submitted, rather than waiting
+for it to complete.
+
+**When to use it?**
+When you want to run many jobs concurrently in a script, or otherwise want the
+CLI to not block the terminal.
+
+**Example**
+```sh
+certoraRun Example.sol --verify Example:Example.spec --send_only
+```
 
 Options affecting the type of verification run
 ----------------------------------------------
@@ -595,6 +610,30 @@ If you want only to check your spec, or include it in an automated task (e.g., a
 Advanced options
 ----------------
 
+(--cloud)=
+### `--cloud`
+
+**What does it do?**
+
+Runs the Prover on the cloud.  Note that for non-Certora users, `--cloud` is
+the default, so this option does nothing.
+
+**When to use it?**
+
+If you are a Certora employee who usually runs the Prover locally, but want to
+run on the cloud instead.
+
+(--staging)=
+### `--staging [branch]`
+
+**What does it do?**
+
+Runs a non-standard version of the Prover.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
+
 ### `--javaArgs`
 
 **What does it do?**
@@ -684,3 +723,16 @@ preprocessing.
 Jobs that exceed the global timeout will simply be terminated, so the result
 reports may not be generated.
 
+(-solver)=
+#### `--settings -solver=<solver spec>`
+
+This option sets the SMT solvers being used within the Prover.  By default, a
+portfolio of various different solvers is used.  It can be useful to specify
+only a subset of these to save on computation time.  In rare cases, solver
+specific options can improve performance as well.
+
+The `solver spec` can be a single solver (`-solver=z3`) or a list of solvers
+(`-solver=[cvc5,z3]`), where each such solver can be further modified.  For
+example, `cvc5` refers to the default configuration of `cvc5` whereas
+`cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
+via `z3{randomSeed=17}`.
