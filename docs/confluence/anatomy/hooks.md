@@ -4,23 +4,23 @@ Hooks
 Motivation
 ----------
 
-The previous section described uninterpreted functions as they exist in CVT. But by themselves, these uninterpreted functions are pretty useless. They don't even seem to keep track of any "ghost" state, as there is no way to relate the uninterpreted functions to the state of the contract being analyzed. _Hooks_ are the glue that pieces together program behavior and the uninterpreted functions by providing a way to _hook_ into certain program behavior and _update_ ghost relations to reflect that program behavior.
+The previous section described uninterpreted functions as they exist in the Prover. But by themselves, these uninterpreted functions are pretty useless. They don't even seem to keep track of any "ghost" state, as there is no way to relate the uninterpreted functions to the state of the contract being analyzed. _Hooks_ are the glue that pieces together program behavior and the uninterpreted functions by providing a way to _hook_ into certain program behavior and _update_ ghost relations to reflect that program behavior.
 
 ### Program State
 
-Ghosts are used to represent some state of a smart contract that the contract itself doesn't necessarily explicitly express. Nonetheless, there is often a relationship between what we want to express as a ghost state and the actual state of the program. For this reason, the hooks that can be expressed in CVT are linked to changes in contract `storage`, the only place where persistent contract state lives.
+Ghosts are used to represent some state of a smart contract that the contract itself doesn't necessarily explicitly express. Nonetheless, there is often a relationship between what we want to express as a ghost state and the actual state of the program. For this reason, the hooks that can be expressed in CVL are linked to changes in contract `storage`, the only place where persistent contract state lives.
 
 The Anatomy of a Hook
 ---------------------
 
 A hook is made up of two separate pieces.
 
-1.  The _pattern_: describes what read or write pattern the CVT looks for
+1.  The _pattern_: describes what read or write pattern the Prover looks for
     
-2.  The _body_: a block of code for CVT to insert
+2.  The _body_: a block of code for Prover to insert
     
 
-Inside each rule, CVT takes these hooks and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
+Inside each rule, Prover takes these hooks and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
 
 Hook Patterns
 -------------
@@ -51,7 +51,7 @@ hook Sstore <pattern> uint256 v (uint256 v_old) STORAGE {
 }
 ```
 
-In the last hook, CVT will generate an extra `Sload v_old <pattern>` before every matched `Sstore`
+In the last hook, the Prover will generate an extra `Sload v_old <pattern>` before every matched `Sstore`
 
 ### Slot Patterns
 
