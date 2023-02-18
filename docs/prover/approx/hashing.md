@@ -1,4 +1,4 @@
-Modeling of Hashing in CVT
+Modeling of Hashing in the Prover
 ==========================
 
 In this document we present how the Keccak hash function is modeled in the
@@ -16,7 +16,7 @@ a solidity builtin function and through inline assembly.
 The Certora Prover does not operate with an actual implementation of the Keccak
 hash function, since this would make most verification intractable and provide 
 no practical benefits.
-Instead, the Certora Prover models the properties of the the Keccak hash 
+Instead, the Certora Prover models the properties of the Keccak hash 
 function that are crucial for the function of the smart contracts under 
 verification while abstracting away from implementation details of the actual
 hash function.
@@ -123,7 +123,7 @@ In the discussion so far we only considered hashes of data whose length is
 already known before program execution (e.g. a `uint` variable always has 256 
 bits). Hashing of unbounded data (typically unbounded arrays, like `bytes`, 
 `uint[]`, etc.) requires some extra measures, since their implementation 
-requires loops and the the Certora Prover 
+requires loops and the Certora Prover 
 {doc}`internally eliminates all loops <loops>` in order to achieve better 
 tractability.
 
