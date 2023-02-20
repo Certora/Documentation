@@ -26,10 +26,10 @@ java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/exampl
 - **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
 
 ```{note}
-Gambit supports {ref}`--staging`.
+Gambit supports {ref}`--staging` and {ref}`--cloud`.
 
 However, Gambit currently has trouble with
-{ref}`--send_only` and {ref}`--cloud` in the run scripts.
+{ref}`--send_only` in the run scripts.
 If you have these flags, please remove them for now.
 Apologies for the temporary inconvenience!
 ```
