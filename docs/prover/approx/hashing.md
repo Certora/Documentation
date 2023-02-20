@@ -35,7 +35,7 @@ inputs `x` and `y`
 Furthermore, the initial storage slots are reserved, i.e., we make sure that no
 hash value ends up colliding with slots 0 to 10000.
 
-These constraints are enough for the solidity storage model to work as expected.
+These constraints are enough for the Solidity storage model to work as expected.
 However this modeling allows Certora Prover to pick hash functions that show 
 different behavior from the actual Keccak function, for instance it is unlikely 
 that the individual numeric values or their ordering matches that of the Keccak
@@ -147,42 +147,45 @@ contract C {
 		// no constraints on b2.length
 		m[b2] = v; 
 	// ...
+		// no constraints on b3.length
 		m[b3] = v;
-		assert(b3.length > 300, "b3 is less than 300 bytes long, unexpectedly")
+		assert(b3.length < 300, "b3 is more than 300 bytes long, unexpectedly")
 	// ...
 }
 ```
 
 Let us assume that the `--hashing_length_bound` flag is set to 224 (which 
 corresponds to 7 machine words).
+
 Then, the first hash operation, triggered by the mapping access `m[b1]`, behaves
 like the hash of a bounded data chunk. The `--optimstic_hashing` flag has no 
 impact on this hash operation.
+
 Behavior of the second hash operation, triggered by the mapping access `m[b2]`,
 depends on whether `--optimistic_hashing` is set. 
 
-If the `--optimistic_hashing` flag is not set, the violation of an internal 
+ - If the `--optimistic_hashing` flag is not set, the violation of an internal 
 assertion will be reported by the prover, stating that an chunk of data is being
 hashed that may exceed the given bound of 224.
 The reported message will look like this:
-```
+```text
 Trying to hash a non-constant length array whose length may exceed the bound 
 (set in option "--hashing_length_bound", current value is 224). 
 Optimistic unbounded hashing is currently deactivated (can be activated via 
 option "--optimistic_hashing").
 ```
 
-If the `--optimistic_hashing` flag is set, the prover will internally impose an
-assumption (like a `require` statement) on `b2` stating that its length cannot
+ - If the `--optimistic_hashing` flag is set, the prover will internally make an
+assumption (equivalent to a `require` statement) on `b2` stating that its length cannot
 exceed 224 bytes.
 
-The third operation behaves like the second, since also no length constraint on
-`b3` is made by the program. However, we can see the impact of the 
-`--optimistic_hashing` flag on the `assert` command that follows the hash 
-operation: When the flag is set, the assertion will be shown as not violated
+The third operation, triggered by the mapping access `m[b3]` behaves like the second, 
+since also no length constraint on `b3` is made by the program. 
+However, we can see the impact of the `--optimistic_hashing` flag on the `assert` 
+command that follows the hash operation: 
+When the flag is set, the assertion will be shown as not violated
 even though nothing in the program itself prevents `b3` from being longer than 
-300 bytes. This is an example of potential unsoundness coming from "optimistic"
-assumptions.
+300 bytes. This is an example of unsoundness coming from "optimistic" assumptions.
 (When `--optimistic_hashing` is not set, then we get a violation from any or all
 assertions, depending on the configuration of Certora Prover.)
 
@@ -217,7 +220,7 @@ mapping induces a hash of the corresponding array whose length is often unknown
 and unbounded.
 
 Further use cases include direct calls of the Keccak function, either directly
-on solidity or inside an inline assembly snippet.
+on Solidity or inside an inline assembly snippet.
 
 Note that Certora Prover's static analysis is aware of the ABI encoder. Thus,
 in many cases, it can figure out that when `x, y, z` are scalars that 
@@ -264,7 +267,7 @@ rule storageIntegrity {
 ```
 
 The comments of the function `foo` illustrate how storage is laid out by 
-solidity.
+Solidity.
 The occurrences of `sstore(x, y)` in the line comments above denote a storage
 update of storage address `x` to value `y`.
 The scalar `i` is stored at storage address `0`, which is derived from it's 
