@@ -489,7 +489,7 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 `TokenPair public tokenPair;`
 
 Where `TokenPair` is  
-```
+```solidity
 struct TokenPair {
     IERC20 tokenA;
     IERC20 tokenB;
