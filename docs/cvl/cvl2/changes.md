@@ -394,9 +394,8 @@ If you do not change this, you will see the following error:
 
 ### `static_assert` and `static_require`
 
-```{todo}
-finish
-```
+These deprecated aliases for `assert` and `require` are being removed; replace
+them with `assert` and `require`.
 
 ```{todo}
 If you do not change this, you will see the following error:

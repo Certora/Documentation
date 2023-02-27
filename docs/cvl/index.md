@@ -47,10 +47,10 @@ hooks.md
 ```
 
 
-CVL Version 4
+CVL Version 2
 -------------
 
 ```{toctree}
-cvl4/changes.md
-cvl4/migration.md
+cvl2/changes.md
+cvl2/migration.md
 ```
