@@ -3,7 +3,7 @@ Rule Sanity Checks
 
 The {ref}`--rule_sanity` option enables some automatic checks that can warn you
 about certain classes of mistakes in specifications. The `—rule_sanity` options 
-may be followed by one of `none`, `basic`, or `advanced`.
+may be followed by one of `none`, `basic`, or `advanced` options.
 
 There are 3 kinds of sanity checks:
 
@@ -57,10 +57,12 @@ There are 3 kinds of sanity checks:
    
    **Checking vacuity for invariants**
    
-   For invariant, vacuity is checked by converting it into a rule without any requires.
+   For invariants, vacuity is checked by converting it into a rule that asserts the invariant expression without any require statements. Since a rule would check the assertion for all arbitrary starting states, if the rule passes, it means that the expression being asserted is a tautology. The invariant, which checks the expression for a smaller set of states, would also be a tautology.
+   
+   The `sanityCheck` contract below has two state variables `address root` and `uint a`. Due to the zero address checks in the `constructor` and the `changeRoot` function, the root address can never be zero. The `rootNonZero` invariant asserts that the root address is never zero. When we run this invariant with the `--rule_sanity` `advanced` or `basic` options, the prover creates a rule similar to the `rootNonZeroRule` below. This rule would fail since the tool could assume a starting state where the `root` is 0. This means that the invariant expression is not a tautology and the invariant passes. On the other hand the `aGE0` invariant, when run without the `--rule_sanity` option, will pass [view report](https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e) but when we run it with the `--rule_sanity` `advanced` or `basic` options, the prover creates a rule similar to the `aGE0Rule` below. This rule passes, indicating that the invariant expression is a tautology. The verification report shows that the invariant failed vacuity check [view report](https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8). 
 
     ```solidity
-     contract temp{
+     contract sanityCheck{
      address root;
      uint a;
      constructor(address _root){
@@ -81,7 +83,7 @@ There are 3 kinds of sanity checks:
       invariant rootNonZero()
          root() != 0
 
-      rule rootNonZeroRule(){
+      rule rootNonZero(){
          assert root() != 0;
       }
 
@@ -105,7 +107,7 @@ There are 3 kinds of sanity checks:
     
       Given a rule with an `assert p => q` we perform two checks:
     
-      1. `assert(!p)`
+      1. Implication hypothesis: `assert(!p)`
        
       If the hypothesis part is always false then the assertion is a tautology.
       
@@ -128,7 +130,7 @@ There are 3 kinds of sanity checks:
       ```
       
         
-    2. `assert(q)`
+    2. Implication conclusion: `assert(q)`
        
        If the conclusion part is always true regardless of the hypothesis then the
        assertion is a tautology
@@ -137,7 +139,7 @@ There are 3 kinds of sanity checks:
           rule testSanity{
           uint a;
           uint b;
-          assert a>10 => b>0;
+          assert a>10 => b>=0;
           }
         ```
         
@@ -152,7 +154,7 @@ There are 3 kinds of sanity checks:
      
      Given a rule with an assert p <=> q we perform two checks:
      
-     1. `assert(!p && !q)`
+     1. Double implication, both false: `assert(!p && !q)`
          If this passes then the assertion is a tautology since both conditions are always false.
 
            ```cvl
@@ -170,7 +172,7 @@ There are 3 kinds of sanity checks:
            to !a < 0 && !b < 0 because both a < 0 and b < 0 are always false
       ```
            
-      2. `assert(p && q)`
+      2. Double implication, both true: `assert(p && q)`
       
           If this passes then the is a tautology since both conditions are always true.
       
@@ -193,7 +195,7 @@ There are 3 kinds of sanity checks:
    
       Given a rule with an assert p || q we perform two checks:
       
-      1. `assert(p)`
+      1. Disjunction always true: `assert(p)`
           If this passes then the assertion is a tautology since the first expression is always true.
 
             ```cvl
@@ -210,7 +212,7 @@ There are 3 kinds of sanity checks:
             assert-tautology check FAILED: sanity.spec:41:5the expression `a >= 0` is always true
       ```
             
-      2. `assert(q)`
+      2. Disjunction always true: `assert(q)`
           
           If this passes then the assertion is a tautology since the second expression is always true.
           
@@ -227,10 +229,6 @@ There are 3 kinds of sanity checks:
       ```cvl
             assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
       ```
-            
-   **Other advance checks for rules currently unavailable**
-      1. havoc state changing expression and check if assert still hold
-      2. Check internal expression in the assert (inner expressions )
 
       
        
