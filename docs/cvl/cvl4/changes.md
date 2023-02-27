@@ -15,7 +15,7 @@ This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 Superficial syntax changes
 --------------------------
 
-There are several changes to make the syntax rhyme better with Solidity, they are
+There are several changes to make the syntax rhyme better with Solidity.
 
 ### `function` and `;` required for methods block entries
 Methods block entries must now start with `function` and end with `;`.  For
@@ -26,8 +26,9 @@ balanceOf(address) returns(uint) envfree
 ```
 will become
 ```cvl
-function balanceOf(address) returns(uint) envfree;
+function balanceOf(address) external returns(uint) envfree;
 ```
+(note also the addition of `external`, see {ref}`described below <cvl2-visibility>`).
 
 This is also true for entries with summaries:
 ```cvl
@@ -35,7 +36,7 @@ _setManagedBalance(address,uint256) => NONDET
 ```
 will become
 ```cvl
-function _setManagedBalance(address,uint256) => NONDET;
+function _setManagedBalance(address,uint256) internal => NONDET;
 ```
 
 ```{todo}
@@ -95,6 +96,7 @@ block entries often had several different functions and meanings:
 
 With these changes, these different uses are more explicit.
 
+(cvl2-visibility)=
 ### `internal` and `external`
 
 Every methods block entry must be marked either `internal` or `external`.  The
@@ -184,9 +186,26 @@ any entry without a `_` will only apply to a single contract!
 
 ### Requirements on `returns`
 
-```{todo}
-finish
-```
+In CVL 2, methods block entries require a `returns` clause in the following
+situations:
+
+ - The method is not a wildcard entry and the contract function returns a value.
+   In this case, the methods block entry must match the contract function's
+   return type.
+
+   ```{todo}
+   Error message
+   ```
+
+ - The method is a wildcard entry that is summarized with a ghost or CVL
+   function summary.  In this case, the return type from the CVL function must
+   be compatible with the declared return type for the method.
+
+   ```{todo}
+   Error message
+   ```
+
+In all other situations, a `returns` clause is forbidden.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -236,6 +255,37 @@ assert to_mathint(balanceOf(user)) == initial + deposit;
 
 Note that in this example, we do not need to cast the right hand side, since
 the result of `+` is always of type `mathint`.
+
+````{todo}
+When should you not simply cast to `mathint`?  We have one example: consider the
+following code:
+
+```cvl
+ghost uint256 sum;
+
+hook ... {
+    havoc sum assuming sum@new == sum@old + newBalance - oldBalance;
+}
+```
+
+Simply casting to `mathint` will turn overflows into vacuity.  It's not clear
+how to generalize from this example.
+
+In this particular example, the right solution is to declare `sum` to be a
+`mathint` instead of a `uint`.  Note that with the more "modern" update syntax,
+this isn't a problem:
+
+```cvl
+ghost uint256 sum;
+
+hook ... {
+    sum = sum + newBalance - oldBalance;
+}
+```
+will say that the right-hand side is a `mathint` which can't be assigned to a
+`uint`.
+
+````
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -322,9 +372,9 @@ Certora support.
 
 ### Methods entries for sighashes
 
-```{todo}
-finish
-```
+In CVL 1, you could write a sighash instead of a method identifier in the
+`methods` block.  This feature is no longer supported.  You will need to have
+the name and argument types of the called method in order to provide an entry.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -332,9 +382,10 @@ If you do not change this, you will see the following error:
 
 ### `invoke`, `sinvoke`, and `call`
 
-```{todo}
-finish
-```
+Older versions of CVL had special syntax for calling contract functions:
+ - `invoke f(args);` should be replaced with `f(args);`.
+ - `sinvoke f(args);` should be replaced with `f@withrevert(args);`
+ - `call f(args)` should be replaced with `f(args)`.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -352,9 +403,19 @@ If you do not change this, you will see the following error:
 
 ### Havocing `calldataarg` variables
 
-```{todo}
-finish
+In CVL 1, you could write the following:
+
+```cvl
+calldataarg args; env e;
+f(e, args);
+
+havoc args;
+g(e, args);
 ```
+
+You can no longer write `havoc x` where `x` is any variable of type `calldataarg`.
+
+Instead, replace the havoced variable with a new variable.
 
 ```{todo}
 If you do not change this, you will see the following error:
