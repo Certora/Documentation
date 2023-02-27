@@ -15,7 +15,8 @@ This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 Superficial syntax changes
 --------------------------
 
-There are several changes to make the syntax rhyme better with Solidity.
+There are several simple changes to the syntax to make specs more uniform and
+consistent, and to reduce the superficial differences with Solidity.
 
 ### `function` and `;` required for methods block entries
 Methods block entries must now start with `function` and end with `;`.  For
