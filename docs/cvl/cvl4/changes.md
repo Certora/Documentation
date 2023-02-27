@@ -1,13 +1,13 @@
-Syntax changes introduced in CVL 4
+Syntax changes introduced in CVL 2
 ==================================
 
-CVL 4.0 (the CVL rewrite) is a major overhaul to the type system of CVL.  Many
+CVL 2.0 (the CVL rewrite) is a major overhaul to the type system of CVL.  Many
 of the changes are internal, but we also wanted to take this opportunity to
 introduce a few improvements to the syntax.  The general goal of these changes
 is to make the behavior of CVL more explicit and predictable, and to bring the
 syntax more in line with solidity's syntax.
 
-This document summarizes the changes to CVL syntax introduced by CVL 4.0.
+This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 
 ```{contents}
 ```
@@ -68,7 +68,7 @@ argument types.  For example, you might write
 require f.selector == balanceOf(address).selector;
 ```
 
-In this example, `balanceOf(address)` is a *method literal*.  In CVL 4.0,
+In this example, `balanceOf(address)` is a *method literal*.  In CVL 2,
 these methods literals must now start with `sig:`.  For example, the above
 would become:
 
@@ -85,7 +85,7 @@ Changes to methods block entries
 --------------------------------
 
 In addition to the superficial changes listed above, there are some changes that
-change the way that methods block entries can be written.  In CVL 3, `methods`
+change the way that methods block entries can be written.  In CVL 1, `methods`
 block entries often had several different functions and meanings:
 
  - They are used to indicate targets for summarization
@@ -114,14 +114,14 @@ If you do not change this, you will see the following error:
 
 ### `optional` methods entries
 
-In CVL 3, you could write an entry in the methods block for a method that does
+In CVL 1, you could write an entry in the methods block for a method that does
 not exist in the contract; rules that would call the non-existent method are
 skipped during verification.
 
 This behavior can lead to confusion, because typos or name changes could silently
 cause a rule to be skipped.
 
-In CVL 4, this behavior is still available, but the methods entry must contain
+In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
@@ -132,7 +132,7 @@ in the contract, you will receive the following error message:
 
 ### Location modifiers
 
-In CVL 4, methods entries for internal functions must contain either `calldata`,
+In CVL 2, methods entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
 
@@ -146,7 +146,7 @@ If you do not change this, you will see the following error:
 
 ### Summaries only apply to one contract by default
 
-In CVL 3, a summary in the `methods` block applied to all methods with the
+In CVL 1, a summary in the `methods` block applied to all methods with the
 given signature.  Entries that had both an explicit receiver and a summary,
 such as the following, were disallowed:
 
@@ -158,7 +158,7 @@ methods {
 }
 ```
 
-In CVL 4, summaries only apply to a single contract, unless the old behavior is
+In CVL 2, summaries only apply to a single contract, unless the old behavior is
 explicitly requested by using `_` as the receiver.  If no contract is specified,
 the default is `currentContract`.
 
@@ -178,7 +178,7 @@ summary, and a call to `h(uint)` on any contract will use a `NONDET` summary.
 
 
 ```{warning}
-The meaning of your summarizations will change from CVL 3 to CVL 4.  In CVL 4,
+The meaning of your summarizations will change from CVL 1 to CVL 2.  In CVL 2,
 any entry without a `_` will only apply to a single contract!
 ```
 
@@ -195,7 +195,7 @@ If you do not change this, you will see the following error:
 Changes to integer types
 ------------------------
 
-In CVL 3, the rules for casting between integer types were complex; CVL 4
+In CVL 1, the rules for casting between integer types were complex; CVL 2
 simplifies them somewhat.
 
 The general rule of thumb is that you should use `mathint` for all function
@@ -206,16 +206,16 @@ operations are exact.
 
 ### Mathematical operations return `mathint`
 
-In CVL 4, the result of all arithmetic operators have type `mathint`,
+In CVL 2, the result of all arithmetic operators have type `mathint`,
 regardless of the input types.  Arithmetic operators include `+`,
 `*`, `-`, `/`, `^`, and `%`, but not bitwise operators like `<<`, `xor`, and `|`
-(changes to bitwise operators are described {ref}`below <cvl4-bitwise>`).
+(changes to bitwise operators are described {ref}`below <cvl2-bitwise>`).
 
 The primary impact of this change is that you may need to declare more of your
 variables as `mathint` instead of `uint`.  If you are performing arithmetic
 operations and integers that you are passing to specs, you will need to be more
 explicit about the overflow behavior by using the {ref}`new casting operators
-<cvl4-casting>`.
+<cvl2-casting>`.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -223,9 +223,9 @@ If you do not change this, you will see the following error:
 
 ### Comparisons require identical types
 
-When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 4 will
+When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
 require both sides of the equation to have identical types, and {ref}`implicit
-casts <cvl4-casting>` will not be used.
+casts <cvl2-casting>` will not be used.
 
 If you do not have identical types, the best solution is to use the special
 `to_mathint` operator to convert both sides to `mathint`.  For example:
@@ -241,7 +241,7 @@ the result of `+` is always of type `mathint`.
 If you do not change this, you will see the following error:
 ```
 
-(cvl4-casting)=
+(cvl2-casting)=
 ### Implicit and explicit casting
 
 If every number that can be represented by one type can also be represented by
@@ -255,7 +255,7 @@ subtype of `uint16`.  An `int16` can also store any value between `0` and
 All integer types are subtypes of `mathint`, since any integer can be
 represented by a `mathint`.
 
-In CVL 4, with one exception, you can always use a subtype whenever the
+In CVL 2, with one exception, you can always use a subtype whenever the
 supertype is accepted.  For example, you can always use a `uint8` where an
 `int16` is expected.
 
@@ -266,10 +266,10 @@ you can simply use any number when a `mathint` is expected (since all integer
 types are subtypes of `mathint`).
 
 In order to convert from a supertype to a subtype, you must use an explicit
-cast.  In CVL 3, the syntax for casting to a subtype was `to_<subtype>(value)`,
+cast.  In CVL 1, the syntax for casting to a subtype was `to_<subtype>(value)`,
 for example `to_uint256(x)`.
 
-In CVL 4, there are now two casting operators: `assert_<type>(value)` and
+In CVL 2, there are now two casting operators: `assert_<type>(value)` and
 `require_<type>(value)` (for example: `assert_uint8(x)` or `require_uint8(x)`).
 Each of these cases checks that the value is in range; the `assert` cast will
 report a counterexample if the value is out of range, while the `require` cast
@@ -293,7 +293,7 @@ finish
 If you do not change this, you will see the following error:
 ```
 
-(cvl4-bitwise)=
+(cvl2-bitwise)=
 ### Changes for bitwise operations
 
 ```{todo}
@@ -313,7 +313,7 @@ finish
 Removed features
 ----------------
 
-As part of the transition to CVL 4.0, we have removed several language features
+As part of the transition to CVL 2.0, we have removed several language features
 that are no longer used.
 
 We have removed these features because we think they are no longer used and no
