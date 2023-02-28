@@ -328,7 +328,7 @@ In CVL 2, with one exception, you can always use a subtype whenever the
 supertype is accepted.  For example, you can always use a `uint8` where an
 `int16` is expected.
 
-The one exception is comparison operators; as mentioned above, you must add ans
+The one exception is comparison operators; as mentioned above, you must add an
 explicit conversion if you want to compare two numbers with different types.
 The `to_mathint` operator exists solely for this purpose; in all other contexts
 you can simply use any number when a `mathint` is expected (since all integer
