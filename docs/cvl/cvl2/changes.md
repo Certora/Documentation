@@ -183,13 +183,20 @@ using C as c;
 methods {
     function f(uint)   => NONDET;
     function c.g(uint) => ALWAYS(4);
+    function h(uint)   => ALWAYS(1);
     function _.h(uint) => NONDET;
 }
 ```
 
 In this example, `currentContract.f` has a `NONDET` summary, `c.g` has an `ALWAYS`
-summary, and a call to `h(uint)` on any contract will use a `NONDET` summary.
+summary, a call to `currentContact.h` has an `ALWAYS` summary and a call to
+`h(uint)` on any other contract will use a `NONDET` summary.
 
+Summaries for specific contract methods (including the default
+`currentContract`) always override wildcard summaries.
+
+Wildcard entries cannot be declared `optional` or `envfree`, since these
+annotations only make sense for specific contract methods.
 
 ```{warning}
 The meaning of your summarizations will change from CVL 1 to CVL 2.  In CVL 2,
