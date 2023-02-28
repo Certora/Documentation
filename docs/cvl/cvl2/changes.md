@@ -85,8 +85,8 @@ If you do not change this, you will see the following error:
 ### Stricter ordering on method annotations
 
 In CVL 2, the order of the annotations must be visibility modifiers (`internal` or `external`),
-followed by `returns` clause (if any), follwed by `optional` or `envfree` in either order (if any),
-follwed by a summary (if any).
+followed by `returns` clause (if any), followed by `optional` or `envfree` in either order (if any),
+followed by a summary (if any).
 
 CVL 1 was less strict about the order.
 
