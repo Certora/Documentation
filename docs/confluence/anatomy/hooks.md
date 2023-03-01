@@ -17,10 +17,10 @@ A hook is made up of two separate pieces.
 
 1.  The _pattern_: describes what read or write pattern the Prover looks for
     
-2.  The _body_: a block of code for Prover to insert
+2.  The _body_: a block of code for the Prover to insert
     
 
-Inside each rule, Prover takes these hooks and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
+Inside each rule, the Prover takes these hooks and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
 
 Hook Patterns
 -------------

@@ -57,7 +57,7 @@ Here is an example configuration file:
 }
 ```
 
-Note: This configuration is separate from Prover's `.conf` file and also from the
+Note: This configuration is separate from the Prover's `.conf` file and also from the
   configuration file of the mutation generator ({ref}`gambit-config`).
 Importantly, notice that to use this tool, you can embed the configuration
 for generating the mutants in this `.conf` file; you don't need to write
@@ -89,7 +89,7 @@ manual mutants (for example you might name them `OriginalFileName.m1.sol`, `Orig
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
 - `"staging"` : if your run script does not already have `--staging`, you can also add it to Gambit.
-  Similar to Prover, you can provide the
+  Similar to the Prover, you can provide the
   branch name for running mutant verification on `--staging`.
 We support `"staging" : true` as an alternative to `"staging" : "master"`.
 Omitting this key will cause verification to run locally
