@@ -441,10 +441,43 @@ If you do not change this, you will see the following error:
 
 ### Destructuring syntax for struct returns
 
-```{todo}
-finish
+In CVL 1, if a contract function returned a struct, you could use a
+destructuring syntax to get the return value in your spec.  For example,
+consider the following contract:
+
+```solidity
+contract Example {
+    struct S {
+        uint firstField;
+        uint secondField;
+        bool thirdField;
+    }
+
+    function f() returns(S) { ... }
+}
+```
+
+To access the return value of `f` in CVL 1, you could write the following:
+
+```cvl
+uint x; uint y; bool z;
+x, y, z = f();
+```
+
+This syntax is no longer supported.  Instead, you should declare a variable with
+the struct type:
+
+```cvl
+Example.S result = f();
+uint x = result.firstField;
 ```
 
 ```{todo}
 If you do not change this, you will see the following error:
+```
+
+### `bytes[]` and `string[]`
+
+```{todo}
+Finish
 ```
