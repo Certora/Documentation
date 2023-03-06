@@ -352,7 +352,7 @@ will say that the right-hand side is a `mathint` which can't be assigned to a
 
 We hope that security engineers will think carefully about these changes and let
 us know of any other situations where the right thing is not simply casting to
-mathint.
+`mathint`.
 ````
 
 ```{todo}
