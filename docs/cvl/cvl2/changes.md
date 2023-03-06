@@ -495,6 +495,16 @@ them with `assert` and `require`.
 If you do not change this, you will see the following error:
 ```
 
+### `invoke_fallback`
+
+The `invoke_fallback` syntax is no longer supported; there is no longer a way
+to directly invoke the fallback method.
+
+```{todo}
+If you do not change this, you will see the following error:
+```
+
+
 ### Havocing `calldataarg` variables
 
 In CVL 1, you could write the following:
