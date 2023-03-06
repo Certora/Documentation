@@ -144,7 +144,7 @@ block entries often had several different functions and meanings:
 With these changes, these different uses are more explicit.
 
 (cvl2-visibility)=
-### `internal` and `external`
+### Required `internal` or `external` annotation
 
 Every methods block entry must be marked either `internal` or `external`.  The
 annotation must come after the argument list and before the `returns` clause.
@@ -189,7 +189,7 @@ If you forget to declare a method as a `library` method, you will receive the
 following error message:
 ```
 
-### Location modifiers
+### Required `calldata`, `memory`, or `storage` annotations for reference types
 
 In CVL 2, methods entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
