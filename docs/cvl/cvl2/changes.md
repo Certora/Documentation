@@ -46,7 +46,7 @@ If you do not change this, you will see the following error:
 
 ### Required `;` in more places
 
-`using`, `pragma`, and `import` statements all require a `;` at the end.  For
+`using`, `pragma`, `import`, and `use` statements all require a `;` at the end.  For
 example,
 
 ```cvl
@@ -57,6 +57,9 @@ becomes
 ```cvl
 using C as c;
 ```
+
+Note: `use` statements do not require (and may not have) a semicolon if they
+are followed by a `preserved` or `filtered` block.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -85,13 +88,45 @@ If you do not change this, you will see the following error:
 ### Stricter ordering on method annotations
 
 In CVL 2, the order of the annotations must be visibility modifiers (`internal` or `external`),
-followed by `returns` clause (if any), followed by `optional` or `envfree` in either order (if any),
+followed by `returns` clause (if any), followed by `optional`, `library`, or `envfree` in any order (if any),
 followed by a summary (if any).
 
 CVL 1 was less strict about the order.
 
 ```{todo}
 If you do not change this, you will see the following error:
+```
+
+### Use of contract name instead of `using` variable
+
+In CVL 1, the only way to refer to a contract on the scene was to first
+introduce a variable with a `using` statement, and then use that variable.  For
+example, to access a struct type `S` defined in `Example.sol`, you would need
+to write
+
+```cvl
+using Example as c;
+
+rule example {
+    c.S x = getAnS();
+}
+```
+
+In CVL 2, you must now use the name of the contract, rather than the variable,
+when referring to user-defined types.  The above example would now be written
+
+```cvl
+rule example {
+    Example.S x = getAnS();
+}
+```
+
+There is no need for a `using` statement in this example.
+
+`using` statements are still required to call methods on secondary contracts.
+
+```{todo}
+Error message
 ```
 
 Changes to methods block entries
@@ -142,6 +177,16 @@ summarization (if any).
 ```{todo}
 If a methods block contains a non-optional entry for a method that doesn't exist
 in the contract, you will receive the following error message:
+```
+
+### `library` annotations
+
+In CVL 2, contract functions declared as library functions must be annotated
+with `library` in the `methods` block.
+
+```{todo}
+If you forget to declare a method as a `library` method, you will receive the
+following error message:
 ```
 
 ### Location modifiers
@@ -263,7 +308,8 @@ If you do not change this, you will see the following error:
 
 When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
 require both sides of the equation to have identical types, and {ref}`implicit
-casts <cvl2-casting>` will not be used.
+casts <cvl2-casting>` will not be used.  Comparisons with number literals (e.g.
+`0` or `1`) are allowed for any integer type.
 
 If you do not have identical types, the best solution is to use the special
 `to_mathint` operator to convert both sides to `mathint`.  For example:
@@ -304,6 +350,9 @@ hook ... {
 will say that the right-hand side is a `mathint` which can't be assigned to a
 `uint`.
 
+We hope that security engineers will think carefully about these changes and let
+us know of any other situations where the right thing is not simply casting to
+mathint.
 ````
 
 ```{todo}
@@ -324,9 +373,15 @@ subtype of `uint16`.  An `int16` can also store any value between `0` and
 All integer types are subtypes of `mathint`, since any integer can be
 represented by a `mathint`.
 
+In CVL 1, the rules for converting between supertypes and subtypes were
+complicated; they depended not only on the types involved, but on the context
+in which the conversion happened.  CVL 2 simplifies these rules and improves the
+clarity and predictability of casts.
+
 In CVL 2, with one exception, you can always use a subtype whenever the
 supertype is accepted.  For example, you can always use a `uint8` where an
-`int16` is expected.
+`int16` is expected.  We say that the subtype can be "implicitly cast" to the
+supertype.
 
 The one exception is comparison operators; as mentioned above, you must add an
 explicit conversion if you want to compare two numbers with different types.
@@ -352,10 +407,25 @@ is it an error to use an explicit cast for an upcast?
 If you do not change this, you will see the following error:
 ```
 
-### Support for `bytes<K>`
+### Modulo operator `%` returns negative values for negative inputs
+
+As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
+
+### Support for `bytes1`...`bytes32`
+
+CVL 2 supports the types `bytes1`, `bytes2`, ..., `bytes32`, as in Solidity.
+Number literals must be explicitly cast to these types using `to_bytesN`; for
+example:
+
+```cvl
+bytes32 x = to_bytes32(0);
+```
+
+There is no way to convert between these types and integer types (except for
+literals as just mentioned).
 
 ```{todo}
-finish
+Update this if we add casting between `uint256` and `bytes32`.
 ```
 
 ```{todo}
@@ -365,13 +435,19 @@ If you do not change this, you will see the following error:
 (cvl2-bitwise)=
 ### Changes for bitwise operations
 
-```{todo}
-finish
-```
+The exact details for bitwise operations (such as `&`, `|`, and `<<`) were not
+completely specified, especially for negative integers.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+In CVL 2, all bitwise operations (`&`, `|`, `~`, `>>`, `>>>`, `<<`, and `xor`)
+first convert to `uint256`, then perform the operations on the full 256-bit
+word, then convert back to the expected type.  Signed integer types use
+twos-complement encoding.
+
+The two right-shifts differ in how they treat signed integers.  `>>` is an
+arithmetic shift; it preserves the sign bit.  `>>>` is a logical shift; it pads
+the shifted word with zero.
+
+Bitwise operations cannot be performed on `mathint` values.
 
 ### Conversion between `bytes<k>`, `address`, and integer types
 
@@ -478,6 +554,20 @@ If you do not change this, you will see the following error:
 
 ### `bytes[]` and `string[]`
 
+In CVL 1, you could declare variables of type `string[]` and `bytes[]`.  You can
+no longer use these types in CVL.
+
+You can still declare contract methods that use these types in the `methods`
+block.  However, you can only call methods that take one of these types as an
+argument by passing a `calldataarg` variable, and you cannot access the return
+value of a method that returns one of these types.
+
 ```{todo}
-Finish
+Determine whether you can call with `_`.
 ```
+
+```{todo}
+If you do not change this, you will see the following error:
+```
+
+
