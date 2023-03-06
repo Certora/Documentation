@@ -1,11 +1,11 @@
 Syntax changes introduced in CVL 2
 ==================================
 
-CVL 2.0 (the CVL rewrite) is a major overhaul to the type system of CVL.  Many
+CVL 2.0 is a major overhaul to the type system of CVL.  Many
 of the changes are internal, but we also wanted to take this opportunity to
 introduce a few improvements to the syntax.  The general goal of these changes
 is to make the behavior of CVL more explicit and predictable, and to bring the
-syntax more in line with solidity's syntax.
+syntax more in line with Solidity's syntax.
 
 This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 
@@ -149,7 +149,7 @@ With these changes, these different uses are more explicit.
 Every methods block entry must be marked either `internal` or `external`.  The
 annotation must come after the argument list and before the `returns` clause.
 
-If a function is declared `public` in solidity, then the solidity compiler
+If a function is declared `public` in Solidity, then the Solidity compiler
 creates an internal implementation method, and an external wrapper method that
 calls the internal implementation.  Therefore, you can summarize a `public`
 method by marking the summarization `internal`.
@@ -279,7 +279,7 @@ Changes to integer types
 ------------------------
 
 In CVL 1, the rules for casting between integer types were complex; CVL 2
-simplifies them somewhat.
+simplifies them.
 
 The general rule of thumb is that you should use `mathint` for all function
 outputs, and the appropriate `int` or `uint` type for all function inputs.
@@ -435,7 +435,7 @@ If you do not change this, you will see the following error:
 (cvl2-bitwise)=
 ### Changes for bitwise operations
 
-The exact details for bitwise operations (such as `&`, `|`, and `<<`) were not
+In CVL1, the exact details for bitwise operations (such as `&`, `|`, and `<<`) were not
 completely specified, especially for negative integers.
 
 In CVL 2, all bitwise operations (`&`, `|`, `~`, `>>`, `>>>`, `<<`, and `xor`)
