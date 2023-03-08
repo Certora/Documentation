@@ -18,9 +18,11 @@ Installation instructions can be found [here](https://www.java.com/en/download/h
 
 ## Running the Mutation Verifier
 
-- Example:
+You will need to update your `certora-cli-alpha-master` installation using `pip` to get the relevant
+dependencies. Then you can run Gambit like so:
+
 ```
-java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/example.conf
+mutationTest path/to/config/file/Example.conf
 ```
 
 - **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
@@ -30,7 +32,7 @@ Gambit supports {ref}`--staging` and {ref}`--cloud`.
 
 However, Gambit currently has trouble with
 {ref}`--send_only` in the run scripts.
-If you have these flags, please remove them for now.
+If you have this flag, please remove it for now.
 Apologies for the temporary inconvenience!
 ```
 
@@ -94,6 +96,7 @@ Expects a boolean and defaults to `false`.
 We support `"staging" : true` as an alternative to `"staging" : "master"`.
 Omitting this key will cause verification to run locally
   (unless the run script has it).
+- `"cloud"` : if you instead want to run on the cloud environment you can provide the `--cloud` flag. You can also add the name of a specific branch.
 - `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
 
 
