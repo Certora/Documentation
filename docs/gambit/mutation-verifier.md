@@ -15,27 +15,25 @@ In the rest of the document,
 
 To use the mutation verifier,
   you will need to {ref}`install the Certora Prover and its dependencies <installation>`.
-  Mutation verification currently requires
-  the `alpha-master` version of the Certora CLI.
 To install it, run
 
 ```sh
-pip install certora-cli-alpha-master
+pip install certora-cli
 ```
 
-If you already have `certora-cli-alpha-master` installed and
+If you already have `certora-cli` installed and
   the `mutationTest` command is not available,
   you may need to update to a newer version by running
 
 ```sh
-pip install --upgrade certora-cli-alpha-master
+pip install --upgrade certora-cli
 ```
 
 
 ## Running the Mutation Verifier
 
-You will need to update your `certora-cli-alpha-master` installation using `pip` to get the relevant
-dependencies. Then you can run Gambit from the command line:
+Once you have updated your `certora-cli` installation using `pip` to get the relevant
+dependencies, you can run Gambit from the command line:
 
 ```
 mutationTest path/to/config/file/Example.conf
