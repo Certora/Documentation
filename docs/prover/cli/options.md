@@ -671,8 +671,14 @@ Prover.  `--settings` should be followed by a comma-separated list of options.
 This list is incomplete.
 ```
 
+(-optimisticFallback)=
+#### `--settings -optimisticFallback=true`
+
+This option determines whether to optimistically assume unresolved fallback 
+functions do not havoc state.
+
 (-optimisticReturnsize)=
-#### `--settings -optimisticReturnsize`
+#### `--settings -optimisticReturnsize=true`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
