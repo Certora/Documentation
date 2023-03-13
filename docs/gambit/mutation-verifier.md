@@ -15,7 +15,8 @@ In the rest of the document,
 
 To use the mutation verifier,
   you will need to {ref}`install the Certora Prover and its dependencies <installation>`.
-  Mutation verification currently requires the `alpha-master` version of the Certora CLI.
+  Mutation verification currently requires
+  the `alpha-master` version of the Certora CLI.
 To install it, run
 
 ```sh
