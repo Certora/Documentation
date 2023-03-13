@@ -19,7 +19,7 @@ Installation instructions can be found [here](https://www.java.com/en/download/h
 ## Running the Mutation Verifier
 
 You will need to update your `certora-cli-alpha-master` installation using `pip` to get the relevant
-dependencies. Then you can run Gambit like so:
+dependencies. Then you can run Gambit from the command line:
 
 ```
 mutationTest path/to/config/file/Example.conf
