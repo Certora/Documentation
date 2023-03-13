@@ -13,8 +13,23 @@ In the rest of the document,
 
 ## Installations and Setup
 
-You will require java to run the mutation testing jar.
-Installation instructions can be found [here](https://www.java.com/en/download/help/download_options.html).
+To use the mutation verifier,
+  you will need to {ref}`install the Certora Prover and its dependencies <installation>`.
+  Mutation verification currently requires the `alpha-master` version of the Certora CLI.
+To install it, run
+
+```sh
+pip install certora-cli-alpha-master
+```
+
+If you already have `certora-cli-alpha-master` installed and
+  the `mutationTest` command is not available,
+  you may need to update to a newer version by running
+
+```sh
+pip install --upgrade certora-cli-alpha-master
+```
+
 
 ## Running the Mutation Verifier
 
@@ -23,17 +38,6 @@ dependencies. Then you can run Gambit from the command line:
 
 ```
 mutationTest path/to/config/file/Example.conf
-```
-
-- **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
-
-```{note}
-Gambit supports {ref}`--staging` and {ref}`--cloud`.
-
-However, Gambit currently has trouble with
-{ref}`--send_only` in the run scripts.
-If you have this flag, please remove it for now.
-Apologies for the temporary inconvenience!
 ```
 
 (gambit-prover-config)=
@@ -82,12 +86,22 @@ manually-written mutants as `.sol` files.
 
 ```{note}
 Any manual mutations files provided must follow the naming
-convention  
+convention
 `OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
 manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
 ```
 
-### Additional Optional Flags for Certora Internal Use
+### Additional Optional Flags
+
+```{note}
+Gambit supports {ref}`--staging` and {ref}`--cloud`.
+
+However, Gambit currently has trouble with
+{ref}`--send_only` in the run scripts.
+If you have this flag, please remove it for now.
+Apologies for the temporary inconvenience!
+```
+
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
 - `"staging"` : if your run script does not already have `--staging`, you can also add it to Gambit.
