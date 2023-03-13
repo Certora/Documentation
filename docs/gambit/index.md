@@ -1,3 +1,4 @@
+(gambit-intro)=
 Gambit: Mutation Generator for Solidity
 =================================
 
