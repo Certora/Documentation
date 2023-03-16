@@ -36,7 +36,7 @@ Once you have updated your `certora-cli` installation using `pip` to get the rel
 dependencies, you can run Gambit from the command line:
 
 ```
-mutationTest path/to/config/file/Example.conf
+certoraMutate path/to/config/file/Example.conf
 ```
 
 (gambit-prover-config)=
