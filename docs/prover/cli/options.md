@@ -674,8 +674,7 @@ This list is incomplete.
 (-optimisticFallback)=
 #### `--settings -optimisticFallback=true`
 
-This option determines whether to optimistically assume unresolved fallback 
-functions do not havoc state.
+This option determines whether to optimistically assume unresolved external calls can make arbitrary changes to all states. When false an unresolved external call will havoc all states, when enabled it will only havoc states of external contracts. Enabling this is safe when invariants/parametric rules are used and therefore all of the functions of the current contract are checked independently.
 
 (-optimisticReturnsize)=
 #### `--settings -optimisticReturnsize=true`
