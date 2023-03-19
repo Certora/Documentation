@@ -112,7 +112,7 @@ We recommend this approach only when you have a simple project with few files
     you provide Solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
     For example:
     ```bash
-    cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...
+    cargo gambit path/to/file.sol --solc-allowpaths path1 --solc-allowpaths path2
     ```
 
 [remapping]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#import-remapping
@@ -138,10 +138,25 @@ to `gambit benchmarks/10Power/TenPower.sol --solc-remapping @openzepplin=node_mo
 
 ```json
 {
-    "filename": "benchmarks/10Power/TenPower.sol",
+    "filename": "benchmarks/10Power/src/TenPower.sol",
     "remappings": [
         "@openzeppelin=node_modules/@openzeppelin"
     ]
+}
+```
+A more elaborate configuration file for a complex project can look like:
+
+```json
+{
+    "filename": "benchmarks/10Power/src/TenPower.sol",
+    "remappings": [
+        "@openzeppelin=node_modules/@openzeppelin"
+    ],
+    "solc-basepath": "benchmarks/10Power/.",
+    "solc-allowpaths": [
+      "benchmarks/10Power/src/contracts/."
+      "benchmarks/10Power/src/helpers/."
+    ],
 }
 ```
 
