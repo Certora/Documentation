@@ -378,7 +378,7 @@ or [navigate there directly](https://marketplace.visualstudio.com/items?itemName
 and follow the prompts to install the extension.
 
 Instructions on how to use the Certora IDE extension are available directly from 
-the extension's marketplace page or from the [extension repository](https://github.com/Certora/vscode-certora-prover).
+the extension's marketplace page.
 
 Congratulations! You have just completed Certora Prover's installation and setup.
 
