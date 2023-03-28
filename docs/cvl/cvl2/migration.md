@@ -52,6 +52,30 @@ forall uint x. forall uint y. to_mathint(y) == x+1 => a[y] == 0
 CVL2 does not allow you to refer to the fallback function explicitly as it was seldom used and not well-defined. The most common use case for having to refer to the fallback was to check if a parametric method is the fallback function.
 For that, one can use `.isFallback` field of any variable of type `method`.
 
+### External summaries require wildcard receivers
+
+A new requirement is for external methods that are summarized to be denoted with a wildcard receiver, i.e. `_`.
+
+Instead of:
+```cvl
+using OtherContract as other;
+methods {
+    myFunc(uint) external returns (uint256) => NONDET
+    other.otherFunc() external returns (uint256) => CONST
+}
+```
+
+One should write:
+```cvl
+methods {
+    _.myFunc(uint) external returns (uint256) => NONDET
+    _.otherFunc() external returns (uint256) => CONST
+}
+```
+
+As it does not make sense to specify a summary for a known call to the current contract (e.g. to `myFunc`) or a known call to `other` (e.g. to `otherFunc`)
+
+(TODO: SG: I'm not sure this makes 100% sense, but maybe I miss something: what if we want to summarize forcibly `myFunc` for external calls to the current contract, but not to other contracts?)
 
 ```{todo}
 This is incomplete
