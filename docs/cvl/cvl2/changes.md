@@ -275,6 +275,9 @@ In all other situations, a `returns` clause is forbidden.
 If you do not change this, you will see the following error:
 ```
 
+In particular, one cannot specify return types for wildcard entries, as different 
+contracts could declare the same method signature with different return types.
+
 Changes to integer types
 ------------------------
 
