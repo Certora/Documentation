@@ -8,8 +8,10 @@ CVL 2.
 You can find the migration script at TODO.
 You can run it on a directory containing spec files as follows:
 ```
-todo
+python3 CVL1_to_CVL2.0_syntax_update.py -d . -r
 ```
+
+Run `python3 CVL1_to_CVL2.0_syntax_update.py --help` for further instructions.
 
 Note that the migration script only helps deal with common use-cases where the migration is straight-forward. Some manual work and adjustment may be needed after running the script. The script may also make odd mistakes. 
 
