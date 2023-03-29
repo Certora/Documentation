@@ -3,6 +3,7 @@ ABI
 Balancer
 CVL
 Certora
+CertoraMutate
 config
 Devcon
 Ethereum
@@ -93,6 +94,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+runscript
 satisfiability
 satisfiable
 scalable
