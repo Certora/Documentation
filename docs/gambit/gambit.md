@@ -6,7 +6,7 @@ It takes as input a Solidity source file (or a configuration file as you can see
 In addition to the mutated source files, Gambit also produces a JSON report of the mutants produced,
 which can be found in `out/results.json`.
 The source is [publicly available](https://github.com/Certora/gambit).
-**Note that we currently only support MacOS and Linux. We have not tested on Windows machines. **
+**Note that we currently only support MacOS and Linux. Windows platform is currently unsupported. **
 
 ## Installing Gambit
 - Gambit is implemented in Rust, which you can download [here](https://www.rust-lang.org/tools/install).
