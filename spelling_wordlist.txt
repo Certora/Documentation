@@ -3,6 +3,7 @@ ABI
 Balancer
 CVL
 Certora
+CertoraMutate
 config
 Devcon
 Ethereum
@@ -27,6 +28,7 @@ boundedness
 bytecode
 bytecodes
 callee
+certoraMutate
 changelog
 codebase
 conjuncted
@@ -93,6 +95,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+runscript
 satisfiability
 satisfiable
 scalable

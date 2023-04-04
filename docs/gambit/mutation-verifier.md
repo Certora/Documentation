@@ -14,31 +14,29 @@ In the rest of the document,
 ## Installations and Setup
 
 To use the mutation verifier,
-  you will need to {ref}`install the Certora Prover and its dependencies <installation>`.
-  Mutation verification currently requires
-  the `alpha-master` version of the Certora CLI.
+  first {ref}`install the Certora Prover and its dependencies <installation>`.
 To install it, run
 
 ```sh
-pip install certora-cli-alpha-master
+pip install certora-cli
 ```
 
-If you already have `certora-cli-alpha-master` installed and
+If you already have `certora-cli` installed and
   the `mutationTest` command is not available,
   you may need to update to a newer version by running
 
 ```sh
-pip install --upgrade certora-cli-alpha-master
+pip install --upgrade certora-cli
 ```
 
 
 ## Running the Mutation Verifier
 
-You will need to update your `certora-cli-alpha-master` installation using `pip` to get the relevant
-dependencies. Then you can run Gambit from the command line:
+Once you have updated your `certora-cli` installation using `pip` to get the relevant
+dependencies, run Gambit from the command line:
 
 ```
-mutationTest path/to/config/file/Example.conf
+certoraMutate path/to/config/file/Example.conf
 ```
 
 (gambit-prover-config)=
@@ -112,8 +110,18 @@ We support `"staging" : true` as an alternative to `"staging" : "master"`.
 Omitting this key will cause verification to run locally
   (unless the run script has it).
 - `"cloud"` : if you instead want to run on the cloud environment you can provide the `--cloud` flag. You can also add the name of a specific branch.
-- `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
+- `"use_certora_run_py"` : Use `certoraRun.py` rather than `certoraRun`. Expects a boolean and defaults to `false`.
 
+
+### Troubleshooting
+
+At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
+
+- Make sure the runscript you use to run the prover does not have the `--send_only` flag or any commented out (using `#`) lines.
+- Since Gambit requires you to provide the solidity compiler flags to compile the mutants, sometimes it might be useful to first identify what those flags should be. See {ref}`gambit-config` for more information. A strategy you can adopt is
+  * first run `gambit` without going through certoraMutate (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
+  * Make a `foo.json` file and copy the content of the `"gambit":` field in it.
+  * Run `gambit-OS mutate --json foo.json` to identify the issue.
 
 ## Visualization
 
