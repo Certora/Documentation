@@ -6,6 +6,7 @@ It takes as input a Solidity source file (or a configuration file as you can see
 In addition to the mutated source files, Gambit also produces a JSON report of the mutants produced,
 which can be found in `out/results.json`.
 The source is [publicly available](https://github.com/Certora/gambit).
+**Note that we currently only support MacOS and Linux. We have not tested on Windows machines. **
 
 ## Installing Gambit
 - Gambit is implemented in Rust, which you can download [here](https://www.rust-lang.org/tools/install).
@@ -109,8 +110,8 @@ We recommend this approach only when you have a simple project with few files
       --solc-remapping ...
     ```
   * To include additional allowed paths,
-    you provide Solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
-    For example:
+    provide Solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
+    Example:
     ```bash
     cargo gambit path/to/file.sol --solc-allowpaths path1 --solc-allowpaths path2
     ```
