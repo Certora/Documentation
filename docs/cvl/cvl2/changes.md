@@ -332,7 +332,7 @@ annotations only make sense for specific contract methods.
 
 ```{warning}
 The meaning of your summarizations will change from CVL 1 to CVL 2.  In CVL 2,
-any entry without a `_` will only apply to a single contract!
+any entry without an `_` will only apply to a single contract!
 ```
 
 (cvl2-returns)=
