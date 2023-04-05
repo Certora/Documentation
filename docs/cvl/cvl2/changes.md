@@ -29,7 +29,7 @@ will become
 ```cvl
 function balanceOf(address) external returns(uint) envfree;
 ```
-(note also the addition of `external`, see {ref}`described below <cvl2-visibility>`).
+(note also the addition of `external`, {ref}`described below <cvl2-visibility>`).
 
 This is also true for entries with summaries:
 ```cvl
