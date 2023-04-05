@@ -59,7 +59,13 @@ using C as c;
 ```
 
 Note: `use` statements do not require (and may not have) a semicolon if they
-are followed by a `preserved` or `filtered` block.
+are followed by a `preserved` or `filtered` block.  For example:
+
+```cvl
+use rule tree_isImmutable filtered {
+    f -> !excludeFromProver(f)
+}
+```
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -99,7 +105,7 @@ If you do not change this, you will see the following error:
 
 ### Use of contract name instead of `using` variable
 
-In CVL 1, the only way to refer to a contract on the scene was to first
+In CVL 1, the only way to refer to a contract on the {term}`scene` was to first
 introduce a variable with a `using` statement, and then use that variable.  For
 example, to access a struct type `S` defined in `Example.sol`, you would need
 to write
@@ -149,12 +155,12 @@ In addition to the superficial changes listed above, there are some changes that
 change the way that methods block entries can be written.  In CVL 1, `methods`
 block entries often had several different functions and meanings:
 
- - They are used to indicate targets for summarization
- - They are used to write generic specs that could apply to contracts with
+ - They were used to indicate targets for summarization
+ - They were used to write generic specs that could apply to contracts with
    missing methods
- - They are used to declare targets `envfree`
+ - They were used to declare targets `envfree`
 
-With these changes, these different uses are more explicit.
+The changes described in this section make these different uses more explicit.
 
 ### All Solidity types allowed as arguments
 
@@ -253,7 +259,7 @@ block.
 If you do not change this, you will see the following error:
 ```
 
-### `optional` methods entries
+### `optional` methods block entries
 
 In CVL 1, you could write an entry in the methods block for a method that does
 not exist in the contract; rules that would call the non-existent method were
@@ -283,7 +289,7 @@ following error message:
 
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
-In CVL 2, methods entries for internal functions must contain either `calldata`,
+In CVL 2, methods block entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
 
@@ -412,7 +418,7 @@ operations are exact.
 
 ### Mathematical operations return `mathint`
 
-In CVL 2, the result of all arithmetic operators have type `mathint`,
+In CVL 2, the results of all arithmetic operators have type `mathint`,
 regardless of the input types.  Arithmetic operators include `+`,
 `*`, `-`, `/`, `^`, and `%`, but not bitwise operators like `<<`, `xor`, and `|`
 (changes to bitwise operators are described {ref}`below <cvl2-bitwise>`).
@@ -522,11 +528,12 @@ Each of these cases checks that the value is in range; the `assert` cast will
 report a counterexample if the value is out of range, while the `require` cast
 will ignore counterexamples where the cast value is out of range.
 
-CVL 2 supports assert and require casts on all numeric types.
-
-```{todo}
-is it an error to use an explicit cast for an upcast?
+```{warning}
+As with normal `require` statements, require casts can cause vacuity and should
+be used with care.
 ```
+
+CVL 2 supports assert and require casts on all numeric types.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -610,7 +617,7 @@ If you do not change this, you will see the following error:
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
-them with `assert` and `require`.
+them with `assert` and `require` respectively.
 
 ```{todo}
 If you do not change this, you will see the following error:
