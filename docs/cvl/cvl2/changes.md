@@ -203,6 +203,7 @@ is `calldata` actually one of the options?
 If you do not change this, you will see the following error:
 ```
 
+(cvl2-wildcards)=
 ### Summaries only apply to one contract by default
 
 In CVL 1, a summary in the `methods` block applied to all methods with the
@@ -226,16 +227,17 @@ Consider the following example:
 using C as c;
 
 methods {
-    function f(uint)   => NONDET;
-    function c.g(uint) => ALWAYS(4);
-    function h(uint)   => ALWAYS(1);
-    function _.h(uint) => NONDET;
+    function f(uint)   internal => NONDET;
+    function c.g(uint) internal => ALWAYS(4);
+    function h(uint)   internal => ALWAYS(1);
+    function _.h(uint) internal => NONDET;
 }
 ```
 
-In this example, `currentContract.f` has a `NONDET` summary, `c.g` has an `ALWAYS`
-summary, a call to `currentContact.h` has an `ALWAYS` summary and a call to
-`h(uint)` on any other contract will use a `NONDET` summary.
+In this example, the internal function `currentContract.f` has a `NONDET`
+summary, `c.g` has an `ALWAYS` summary, a call to `currentContact.h` has an
+`ALWAYS` summary and a call to `h(uint)` on any other contract will use a
+`NONDET` summary.
 
 Summaries for specific contract methods (including the default
 `currentContract`) always override wildcard summaries.
@@ -248,35 +250,48 @@ The meaning of your summarizations will change from CVL 1 to CVL 2.  In CVL 2,
 any entry without a `_` will only apply to a single contract!
 ```
 
+(cvl2-returns)=
 ### Requirements on `returns`
 
-In CVL 2, methods block entries require a `returns` clause in the following
-situations:
+In CVL 1, the `returns` clause on methods block entries was optional.
+CVL 2 has stricter requirements on the declared return types.
 
- - The method is not a wildcard entry and the contract function returns a value.
-   In this case, the methods block entry must match the contract function's
-   return type.
+Entries that apply to specific contracts (i.e. those that don't use the
+`_.f` {ref}`syntax <cvl2-wildcards>`) must include a `returns` clause if the
+contract method returns a value.  A specific-contract entry may only omit the
+`returns` clause if the contract method does not return a value.
 
-   ```{todo}
-   Error message
-   ```
-
- - The method is a wildcard entry that is summarized with a ghost or CVL
-   function summary.  In this case, the return type from the CVL function must
-   be compatible with the declared return type for the method.
-
-   ```{todo}
-   Error message
-   ```
-
-In all other situations, a `returns` clause is forbidden.
+The Prover will report an error if the contract method's return type differs
+from the type declared in the `methods` block entry.
 
 ```{todo}
-If you do not change this, you will see the following error:
+Error message
 ```
 
-In particular, one cannot specify return types for wildcard entries, as different 
-contracts could declare the same method signature with different return types.
+Wildcard entries must not declare return types, because they may apply to
+multiple methods that return different types.
+
+```{todo}
+Error message
+```
+
+If a wildcard entry has a ghost or function summary, the user must explicitly
+provide an `expect` clause to the summary.  The `expect` clause tells the
+prover how to encode the value returned by the summary.  For example:
+
+```cvl
+methods {
+    function _.foo() internal => expect uint256 fooImpl() ALL;
+}
+```
+
+This entry will replace any call to any internal function `f()` with a call to
+the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
+`uint256`.
+
+```{todo}
+Error message
+```
 
 Changes to integer types
 ------------------------
