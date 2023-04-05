@@ -394,7 +394,7 @@ hook ... {
 will say that the right-hand side is a `mathint` which can't be assigned to a
 `uint`.
 
-We hope that security engineers will think carefully about these changes and let
+We hope that specification writers will think carefully about these changes and let
 us know of any other situations where the right thing is not simply casting to
 `mathint`.
 ````
