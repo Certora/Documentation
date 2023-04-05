@@ -256,7 +256,7 @@ If you do not change this, you will see the following error:
 ### `optional` methods entries
 
 In CVL 1, you could write an entry in the methods block for a method that does
-not exist in the contract; rules that would call the non-existent method are
+not exist in the contract; rules that would call the non-existent method were
 skipped during verification.
 
 This behavior can lead to confusion, because typos or name changes could silently
@@ -288,10 +288,6 @@ In CVL 2, methods entries for internal functions must contain either `calldata`,
 as arrays).
 
 ```{todo}
-is `calldata` actually one of the options?
-```
-
-```{todo}
 If you do not change this, you will see the following error:
 ```
 
@@ -299,16 +295,7 @@ If you do not change this, you will see the following error:
 ### Summaries only apply to one contract by default
 
 In CVL 1, a summary in the `methods` block applied to all methods with the
-given signature.  Entries that had both an explicit receiver and a summary,
-such as the following, were disallowed:
-
-```cvl
-using C as c
-
-methods {
-    c.f(uint) => NONDET
-}
-```
+given signature.
 
 In CVL 2, summaries only apply to a single contract, unless the old behavior is
 explicitly requested by using `_` as the receiver.  If no contract is specified,
@@ -416,8 +403,9 @@ Changes to integer types
 In CVL 1, the rules for casting between integer types were complex; CVL 2
 simplifies them.
 
-The general rule of thumb is that you should use `mathint` for all function
-outputs, and the appropriate `int` or `uint` type for all function inputs.
+The general rule of thumb is that you should use `mathint` for all data that is
+returned from contract functions, and the appropriate `int` or `uint` type for
+all data that will be passed as input to contract functions.
 
 It is now impossible for CVL math expressions to cause overflow - all integer
 operations are exact.
@@ -572,7 +560,7 @@ In CVL1, the exact details for bitwise operations (such as `&`, `|`, and `<<`) w
 completely specified, especially for negative integers.
 
 In CVL 2, all bitwise operations (`&`, `|`, `~`, `>>`, `>>>`, `<<`, and `xor`)
-first convert to `uint256`, then perform the operations on the full 256-bit
+first convert to a 256 bit word, then perform the operations on the full 256-bit
 word, then convert back to the expected type.  Signed integer types use
 twos-complement encoding.
 
@@ -637,7 +625,7 @@ to directly invoke the fallback method.
 If you do not change this, you will see the following error:
 ```
 
-### Havocing `calldataarg` variables
+### Havocing local variables
 
 In CVL 1, you could write the following:
 
@@ -649,9 +637,8 @@ havoc args;
 g(e, args);
 ```
 
-You can no longer write `havoc x` where `x` is any variable of type `calldataarg`.
-
-Instead, replace the havoced variable with a new variable.
+In CVL 2, you can no longer `havoc` local variables.  Instead, replace the
+havoced variable with a new variable.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -672,6 +659,7 @@ contract Example {
     }
 
     function f() returns(S) { ... }
+    function g() returns(uint, uint) { ... }
 }
 ```
 
@@ -690,6 +678,13 @@ Example.S result = f();
 uint x = result.firstField;
 ```
 
+Destructuring assignments are still allowed for functions that return multiple
+values:
+
+```cvl
+uint x, uint y = g();
+```
+
 ```{todo}
 If you do not change this, you will see the following error:
 ```
@@ -703,10 +698,6 @@ You can still declare contract methods that use these types in the `methods`
 block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
-
-```{todo}
-Determine whether you can call with `_`.
-```
 
 ```{todo}
 If you do not change this, you will see the following error:
