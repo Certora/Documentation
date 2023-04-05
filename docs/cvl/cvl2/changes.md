@@ -123,7 +123,20 @@ rule example {
 
 There is no need for a `using` statement in this example.
 
-`using` statements are still required to call methods on secondary contracts.
+`using` statements are still required to call methods on secondary contracts:
+
+```cvl
+using Example as c;
+
+rule example {
+    ...
+    c.balanceOf(a);
+    ...
+}
+```
+
+Entries in the `methods` block may use either the contract name or the instance
+variable.
 
 ```{todo}
 Error message
@@ -143,6 +156,50 @@ block entries often had several different functions and meanings:
 
 With these changes, these different uses are more explicit.
 
+### All Solidity types allowed as arguments
+
+CVL 1 had some restrictions on the types of arguments allowed in `methods` block
+entries.  For example, it was impossible to add entries for functions that
+accept arguments with user-defined types (such as enums and structs).
+
+CVL 2 `methods` block entries may use any Solidity types for arguments and
+return values.
+
+To work around the missing types, CVL 1 allowed users to encode some
+user-defined types as primitive types in the `methods` block; these workarounds
+are no longer allowed in CVL 2.  For example, consider the following solidity
+function:
+
+```solidity
+contract Example {
+    enum Permission { READ, WRITE };
+
+    function f(Permission p) internal { ... }
+}
+```
+
+In CVL 1, a methods block entry for `f` would need to declare that it takes a
+`uint8` argument:
+
+```cvl
+methods {
+    f(uint8 permission) => NONDET
+}
+```
+
+In CVL 2, the methods block entry should use the same type as Solidity:
+
+```cvl
+methods {
+    function f(Example.Permission p) internal => NONDET;
+}
+```
+
+```{todo}
+Unlike Solidity, CVL 2 treats some types as aliases for each other.  In
+particular, CVL 2 allows `address` in place of any contract type.
+```
+
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
 
@@ -154,8 +211,43 @@ creates an internal implementation method, and an external wrapper method that
 calls the internal implementation.  Therefore, you can summarize a `public`
 method by marking the summarization `internal`.
 
-If you want to summarize both the internal implementation and the external
-wrapper, you need to add two separate entries to the `methods` block.
+```{warning}
+The behavior of `internal` vs. `external` summarization for public methods can
+be confusing, especially because functions called directly from CVL are not
+summarized.
+
+Consider a public function `f`.  Suppose we provide an `internal` summary for
+`f`:
+
+ - Calls from CVL to `f` *will* effectively be summarized, because CVL will call
+   the external function, which will then call the internal implementation, and
+   the internal implementation will be summarized.
+
+ - Calls from another contract to `f` (or calls to `this.f` from `f`'s contract)
+   *will* effectively be summarized, again because the external function
+   immediately calls the summarized internal implementation.
+
+ - Internal calls to `f` will be summarized.
+
+On the other hand, suppose we provide an `external` summary for `f`.  In this
+case:
+
+ - Calls from CVL to `f` *will not* be summarized, because direct calls from
+   CVL to contract functions do not use summaries.
+
+ - Internal calls to `f` *will not* be summarized - they will use the original
+   implementation.
+
+ - External calls to `f` (from Solidity code that calls `this.f` or `c.f`) will
+   be summarized
+
+In most cases, public functions should use an `internal` summary, since this
+effectively summarizes both internal and external calls to the function.
+```
+
+If the rare case that you want to summarize both the internal implementation
+and the external wrapper, you can add two separate entries to the `methods`
+block.
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -277,17 +369,20 @@ Error message
 
 If a wildcard entry has a ghost or function summary, the user must explicitly
 provide an `expect` clause to the summary.  The `expect` clause tells the
-prover how to encode the value returned by the summary.  For example:
+Prover how to encode the value returned by the summary.  For example:
 
 ```cvl
 methods {
-    function _.foo() internal => expect uint256 fooImpl() ALL;
+    function _.foo() internal => fooImpl() expect uint256 ALL;
 }
 ```
 
 This entry will replace any call to any internal function `f()` with a call to
 the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
 `uint256`.
+
+If a function does not return any value, the summary should be declared with
+`expect void`.
 
 ```{todo}
 Error message
@@ -311,13 +406,9 @@ function bar() internal {
 
 In this case, the Prover would encode the value returned by `fooImpl()` as a
 `uint256`, and the `bar` method would then attempt to decode this value as an
-`address`.  This will cause undefined behavior, and the Prover will not be able
-to detect the error.
+`address`.  This will cause undefined behavior, and in some cases the Prover
+will not be able to detect the error.
 ````
-
-```{todo}
-Make sure the above warning is accurate.
-```
 
 Changes to integer types
 ------------------------
@@ -434,14 +525,16 @@ you can simply use any number when a `mathint` is expected (since all integer
 types are subtypes of `mathint`).
 
 In order to convert from a supertype to a subtype, you must use an explicit
-cast.  In CVL 1, the syntax for casting to a subtype was `to_<subtype>(value)`,
-for example `to_uint256(x)`.
+cast.  In CVL 1, only a few casting operators (such as `to_uint256`) were
+supported.
 
-In CVL 2, there are now two casting operators: `assert_<type>(value)` and
+CVL 2 replaces these casting operators with two new casting operators: `assert_<type>(value)` and
 `require_<type>(value)` (for example: `assert_uint8(x)` or `require_uint8(x)`).
 Each of these cases checks that the value is in range; the `assert` cast will
 report a counterexample if the value is out of range, while the `require` cast
 will ignore counterexamples where the cast value is out of range.
+
+CVL 2 supports assert and require casts on all numeric types.
 
 ```{todo}
 is it an error to use an explicit cast for an upcast?
@@ -467,10 +560,6 @@ bytes32 x = to_bytes32(0);
 
 There is no way to convert between these types and integer types (except for
 literals as just mentioned).
-
-```{todo}
-Update this if we add casting between `uint256` and `bytes32`.
-```
 
 ```{todo}
 If you do not change this, you will see the following error:
@@ -547,7 +636,6 @@ to directly invoke the fallback method.
 ```{todo}
 If you do not change this, you will see the following error:
 ```
-
 
 ### Havocing `calldataarg` variables
 
