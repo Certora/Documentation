@@ -293,6 +293,32 @@ the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
 Error message
 ```
 
+````{warning}
+The Prover is unable to check that the return type declared in the `expect`
+clause matches the return type that the contract expects.  Continuing the above
+example, suppose the contract being verified declared a method `foo()` that
+returns a type other than `uint256`:
+
+```solidity
+function foo() internal returns(address) {
+    ...
+}
+
+function bar() internal {
+    address x = foo();
+}
+```
+
+In this case, the Prover would encode the value returned by `fooImpl()` as a
+`uint256`, and the `bar` method would then attempt to decode this value as an
+`address`.  This will cause undefined behavior, and the Prover will not be able
+to detect the error.
+````
+
+```{todo}
+Make sure the above warning is accurate.
+```
+
 Changes to integer types
 ------------------------
 
