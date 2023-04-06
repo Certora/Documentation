@@ -169,7 +169,7 @@ entries.  For example, it was impossible to add entries for functions that
 accept arguments with user-defined types (such as enums and structs).
 
 CVL 2 `methods` block entries may use any Solidity types for arguments and
-return values, except for [function types][sol-fn-types].
+return values, except for [function types][sol-fn-types], which are not supported.
 
 [sol-fn-types]: https://docs.soliditylang.org/en/v0.8.17/types.html#function-types
 
@@ -201,6 +201,12 @@ implementations[^contract-types]:
 ```cvl
 methods {
     function f(Example.Permission p) internal => NONDET;
+}
+```
+The method can be called from CVL as follows:
+```cvl
+rule example {
+    f(Example.Permission.READ);
 }
 ```
 
@@ -416,7 +422,9 @@ all data that will be passed as input to contract functions.
 
 It is now impossible for CVL math expressions to cause overflow - all integer
 operations are exact.
+The remainder of this section describes the changes in detail.
 
+(cvl2-mathops-return-mathint)=
 ### Mathematical operations return `mathint`
 
 In CVL 2, the results of all arithmetic operators have type `mathint`,
@@ -463,8 +471,7 @@ hook ... {
 }
 ```
 
-Simply casting to `mathint` will turn overflows into vacuity.  It's not clear
-how to generalize from this example.
+Simply casting to `mathint` will turn overflows into vacuity.
 
 In this particular example, the right solution is to declare `sum` to be a
 `mathint` instead of a `uint`.  Note that with the more "modern" update syntax,
@@ -476,13 +483,6 @@ ghost uint256 sum;
 hook ... {
     sum = sum + newBalance - oldBalance;
 }
-```
-will say that the right-hand side is a `mathint` which can't be assigned to a
-`uint`.
-
-We hope that specification writers will think carefully about these changes and let
-us know of any other situations where the right thing is not simply casting to
-`mathint`.
 ````
 
 ```{todo}
@@ -513,7 +513,7 @@ supertype is accepted.  For example, you can always use a `uint8` where an
 `int16` is expected.  We say that the subtype can be "implicitly cast" to the
 supertype.
 
-The one exception is comparison operators; as mentioned above, you must add an
+The one exception is comparison operators; as mentioned {ref}`above <cvl2-mathops-return-mathint>`, you must add an
 explicit conversion if you want to compare two numbers with different types.
 The `to_mathint` operator exists solely for this purpose; in all other contexts
 you can simply use any number when a `mathint` is expected (since all integer
@@ -523,9 +523,9 @@ In order to convert from a supertype to a subtype, you must use an explicit
 cast.  In CVL 1, only a few casting operators (such as `to_uint256`) were
 supported.
 
-CVL 2 replaces these casting operators with two new casting operators: `assert_<type>(value)` and
-`require_<type>(value)` (for example: `assert_uint8(x)` or `require_uint8(x)`).
-Each of these cases checks that the value is in range; the `assert` cast will
+CVL 2 replaces these casting operators with two new casting operators: *assert casts*
+such as `assert_uint8(x)` or `assert_int256(x)`, and *require casts* such as `require_uint8(x)` or `require_int256(x)`.
+Each of these casts checks that the value is in range; the `assert` cast will
 report a counterexample if the value is out of range, while the `require` cast
 will ignore counterexamples where the cast value is out of range.
 

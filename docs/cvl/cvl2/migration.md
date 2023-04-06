@@ -15,7 +15,7 @@ Run `python3 CVL1_to_CVL2.0_syntax_update.py --help` for further instructions.
 
 Note that the migration script only helps deal with common use-cases where the migration is straight-forward. Some manual work and adjustment may be needed after running the script. The script may also make odd mistakes. 
 
-In particular, as the script only consumes spec files, there are decisions that it cannot do, as they are based on the Solidity code. Some of those are listed here.
+In particular, as the script only consumes spec files, there are decisions that it cannot make, as they are based on the Solidity code. Some of those are listed here.
 
 ## Method declarations
 
@@ -52,7 +52,7 @@ forall uint x. forall uint y. to_mathint(y) == x+1 => a[y] == 0
 ## Use `f.isFallback` instead of comparing to `certorafallback().selector`
 
 CVL2 does not allow you to refer to the fallback function explicitly as it was seldom used and not well-defined. The most common use case for having to refer to the fallback was to check if a parametric method is the fallback function.
-For that, one can use `.isFallback` field of any variable of type `method`.
+For that, one can use the `.isFallback` field of any variable of type `method`.
 
 ## External summaries require wildcard receivers
 
