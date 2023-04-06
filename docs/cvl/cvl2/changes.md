@@ -416,9 +416,9 @@ Changes to integer types
 In CVL 1, the rules for casting between integer types were complex; CVL 2
 simplifies them.
 
-The general rule of thumb is that you should use `mathint` for all data that is
-returned from contract functions, and the appropriate `int` or `uint` type for
-all data that will be passed as input to contract functions.
+The general rule of thumb is that you should use `mathint` whenever possible;
+only use `uint` or `int` types for data that will be passed as input to
+contract functions.
 
 It is now impossible for CVL math expressions to cause overflow - all integer
 operations are exact.
