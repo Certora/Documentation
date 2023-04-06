@@ -114,7 +114,10 @@ traceback
 tracebacks
 unary
 unbacked
+underapproximated
+underapproximates
 underapproximation
+underapproximations
 uninterpreted
 unlinked
 unroller

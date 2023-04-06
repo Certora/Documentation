@@ -687,3 +687,12 @@ The `solver spec` can be a single solver (`-solver=z3`) or a list of solvers
 example, `cvc5` refers to the default configuration of `cvc5` whereas
 `cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
 via `z3{randomSeed=17}`.
+
+(-useBitVectorTheory)=
+#### `--settings -useBitVectorTheory`
+
+This option reduces the Prover {term}`overapproximation`s used for bitwise
+operations.  It is useful when the Prover reports a counterexample caused by
+incorrect modeling of bitwise operations, but can dramatically increase the
+time taken for verification.
+
