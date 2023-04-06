@@ -169,7 +169,9 @@ entries.  For example, it was impossible to add entries for functions that
 accept arguments with user-defined types (such as enums and structs).
 
 CVL 2 `methods` block entries may use any Solidity types for arguments and
-return values.
+return values, except for [function types][sol-fn-types].
+
+[sol-fn-types]: https://docs.soliditylang.org/en/v0.8.17/types.html#function-types
 
 To work around the missing types, CVL 1 allowed users to encode some
 user-defined types as primitive types in the `methods` block; these workarounds
@@ -193,7 +195,8 @@ methods {
 }
 ```
 
-In CVL 2, the methods block entry should use the same type as Solidity:
+In CVL 2, the methods block entry should use the same type as the Solidity
+implementations[^contract-types]:
 
 ```cvl
 methods {
@@ -201,10 +204,8 @@ methods {
 }
 ```
 
-```{todo}
-Unlike Solidity, CVL 2 treats some types as aliases for each other.  In
-particular, CVL 2 allows `address` in place of any contract type.
-```
+[^contract-types]: There is one place where the types do not need to match exactly:
+  `address` and specific contract types (such as `IERC20`) are interchangeable.
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
@@ -251,8 +252,8 @@ In most cases, public functions should use an `internal` summary, since this
 effectively summarizes both internal and external calls to the function.
 ```
 
-If the rare case that you want to summarize both the internal implementation
-and the external wrapper, you can add two separate entries to the `methods`
+If the rare case that you want to summarize the internal implementation and the
+external wrapper differently, you can add two separate entries to the `methods`
 block.
 
 ```{todo}
@@ -535,6 +536,9 @@ be used with care.
 
 CVL 2 supports assert and require casts on all numeric types.
 
+Casts between `address`, `bytes1`...`bytes32`, and integer types are not
+supported.
+
 ```{todo}
 If you do not change this, you will see the following error:
 ```
@@ -577,10 +581,13 @@ the shifted word with zero.
 
 Bitwise operations cannot be performed on `mathint` values.
 
-### Conversion between `bytes<k>`, `address`, and integer types
+```{note}
+By default, bitwise operators are {term}`overapproximated <overapproximation>`,
+so you may see counterexamples that incorrectly compute the results of bitwise
+operations.
 
-```{todo}
-finish
+The {ref}`-useBitVectorTheory` flag makes the Prover's reasoning about bitwise
+operations more precise, but this flag is experimental in CVL 2.
 ```
 
 Removed features
@@ -605,7 +612,7 @@ If you do not change this, you will see the following error:
 
 ### `invoke`, `sinvoke`, and `call`
 
-Older versions of CVL had special syntax for calling contract functions:
+Older versions of CVL had special syntax for calling contract and CVL functions:
  - `invoke f(args);` should be replaced with `f(args);`.
  - `sinvoke f(args);` should be replaced with `f@withrevert(args);`
  - `call f(args)` should be replaced with `f(args)`.
@@ -686,10 +693,11 @@ uint x = result.firstField;
 ```
 
 Destructuring assignments are still allowed for functions that return multiple
-values:
+values; the following is valid:
 
 ```cvl
-uint x, uint y = g();
+uint x; uint y;
+x, y = g();
 ```
 
 ```{todo}
