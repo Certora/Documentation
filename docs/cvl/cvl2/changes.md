@@ -58,7 +58,7 @@ becomes
 using C as c;
 ```
 
-Note: `use` statements do not require (and may not have) a semicolon if they
+`use` statements do not require (and may not have) a semicolon if they
 are followed by a `preserved` or `filtered` block.  For example:
 
 ```cvl
