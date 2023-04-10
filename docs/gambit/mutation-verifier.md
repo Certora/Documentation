@@ -13,25 +13,30 @@ In the rest of the document,
 
 ## Installations and Setup
 
-You will require java to run the mutation testing jar.
-Installation instructions can be found [here](https://www.java.com/en/download/help/download_options.html).
+To use the mutation verifier,
+  first {ref}`install the Certora Prover and its dependencies <installation>`.
+To install it, run
+
+```sh
+pip install certora-cli
+```
+
+If you already have `certora-cli` installed and
+  the `mutationTest` command is not available,
+  you may need to update to a newer version by running
+
+```sh
+pip install --upgrade certora-cli
+```
+
 
 ## Running the Mutation Verifier
 
-- Example:
+Once you have updated your `certora-cli` installation using `pip` to get the relevant
+dependencies, run Gambit from the command line:
+
 ```
-java -ea -jar $CERTORA/certora_jars/MutationTest.jar /path/to/config/file/example.conf
-```
-
-- **NOTE: if a path has spaces, put quotes around it to ensure correct parsing by Kotlin's libraries**
-
-```{note}
-Gambit supports {ref}`--staging`.
-
-However, Gambit currently has trouble with
-{ref}`--send_only` and {ref}`--cloud` in the run scripts.
-If you have these flags, please remove them for now.
-Apologies for the temporary inconvenience!
+certoraMutate path/to/config/file/Example.conf
 ```
 
 (gambit-prover-config)=
@@ -80,12 +85,22 @@ manually-written mutants as `.sol` files.
 
 ```{note}
 Any manual mutations files provided must follow the naming
-convention  
+convention
 `OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
 manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
 ```
 
-### Additional Optional Flags for Certora Internal Use
+### Additional Optional Flags
+
+```{note}
+Gambit supports {ref}`--staging` and {ref}`--cloud`.
+
+However, Gambit currently has trouble with
+{ref}`--send_only` in the run scripts.
+If you have this flag, please remove it for now.
+Apologies for the temporary inconvenience!
+```
+
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
 - `"staging"` : if your run script does not already have `--staging`, you can also add it to Gambit.
@@ -94,8 +109,19 @@ Expects a boolean and defaults to `false`.
 We support `"staging" : true` as an alternative to `"staging" : "master"`.
 Omitting this key will cause verification to run locally
   (unless the run script has it).
-- `"use_cli_certora_run"` : Use CLI `certoraRun` rather than `certoraRun.py`. Expects a boolean and defaults to `false`.
+- `"cloud"` : if you instead want to run on the cloud environment you can provide the `--cloud` flag. You can also add the name of a specific branch.
+- `"use_certora_run_py"` : Use `certoraRun.py` rather than `certoraRun`. Expects a boolean and defaults to `false`.
 
+
+### Troubleshooting
+
+At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
+
+- Make sure the runscript you use to run the prover does not have the `--send_only` flag or any commented out (using `#`) lines.
+- Since Gambit requires you to provide the solidity compiler flags to compile the mutants, sometimes it might be useful to first identify what those flags should be. See {ref}`gambit-config` for more information. A strategy you can adopt is
+  * first run `gambit` without going through certoraMutate (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
+  * Make a `foo.json` file and copy the content of the `"gambit":` field in it.
+  * Run `gambit-OS mutate --json foo.json` to identify the issue.
 
 ## Visualization
 

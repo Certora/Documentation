@@ -6,6 +6,7 @@ It takes as input a Solidity source file (or a configuration file as you can see
 In addition to the mutated source files, Gambit also produces a JSON report of the mutants produced,
 which can be found in `out/results.json`.
 The source is [publicly available](https://github.com/Certora/gambit).
+**Note that we currently only support MacOS and Linux. Windows platform is currently unsupported. **
 
 ## Installing Gambit
 - Gambit is implemented in Rust, which you can download [here](https://www.rust-lang.org/tools/install).
@@ -109,10 +110,10 @@ We recommend this approach only when you have a simple project with few files
       --solc-remapping ...
     ```
   * To include additional allowed paths,
-    you provide Solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
-    For example:
+    provide Solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
+    Example:
     ```bash
-    cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...
+    cargo gambit path/to/file.sol --solc-allowpaths path1 --solc-allowpaths path2
     ```
 
 [remapping]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#import-remapping
@@ -138,10 +139,25 @@ to `gambit benchmarks/10Power/TenPower.sol --solc-remapping @openzepplin=node_mo
 
 ```json
 {
-    "filename": "benchmarks/10Power/TenPower.sol",
+    "filename": "benchmarks/10Power/src/TenPower.sol",
     "remappings": [
         "@openzeppelin=node_modules/@openzeppelin"
     ]
+}
+```
+A more elaborate configuration file for a complex project can look like:
+
+```json
+{
+    "filename": "benchmarks/10Power/src/TenPower.sol",
+    "remappings": [
+        "@openzeppelin=node_modules/@openzeppelin"
+    ],
+    "solc-basepath": "benchmarks/10Power/.",
+    "solc-allowpaths": [
+      "benchmarks/10Power/src/contracts/."
+      "benchmarks/10Power/src/helpers/."
+    ],
 }
 ```
 
