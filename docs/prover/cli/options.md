@@ -675,14 +675,19 @@ This list is incomplete.
 #### `--settings -optimisticFallback=true`
 
 This option determines whether to optimistically assume unresolved external
-calls can make arbitrary changes to all states. By default unresolved external
+calls can make arbitrary changes to all states. It makes changes to how 
+{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
 calls will havoc all states. When `-optimisticFallback` is enabled, only the
 states of contracts that are external to the calling contract (not necessarily
 `currentContract`) will be havoced.
 
-Enabling this option is safe when checking invariants and parametric rules are
-used and therefore all of the functions of the current contract are checked
-independently.
+Enabling this option can be safe when checking invariants and parametric rules 
+as all of the functions of the current contract are checked independently on
+arbitrary state, and therefore a reentered function call is covered. The one 
+case where this is not true is if the contract's function puts the contract's 
+state into a state we assume is not possible and then makes an external call 
+which reenters. This case introduces an additional attack vectors that users 
+should be aware of when using this flag.
 
 (-optimisticReturnsize)=
 #### `--settings -optimisticReturnsize=true`
