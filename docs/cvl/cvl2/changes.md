@@ -16,7 +16,7 @@ differences [here][cvl2-diff], our you can clone [the
 repository][migration-repo] and compare the `cvl1` and `cvl2` branches using
 your favorite tools.
 
-[cvl2-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2
+[cvl2-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split
 [migration-repo]: https://github.com/Certora/CVL2Migration
 
 
