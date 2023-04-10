@@ -9,6 +9,17 @@ syntax more in line with Solidity's syntax.
 
 This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 
+The `CVLMigration` repository contains examples demonstrating each of the
+changes; the `cvl1` branch contains the examples in valid CVL 1 syntax, while
+the `cvl2` branch contains the same examples in CVL 2 syntax.  You can see the
+differences [here][cvl2-diff], our you can clone [the
+repository][migration-repo] and compare the `cvl1` and `cvl2` branches using
+your favorite tools.
+
+[cvl2-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2
+[migration-repo]: https://github.com/Certora/CVL2Migration
+
+
 ```{contents}
 ```
 
