@@ -63,8 +63,8 @@ using C as c;
 are followed by a `preserved` or `filtered` block.  For example:
 
 ```cvl
-use rule tree_isImmutable filtered {
-    f -> !excludeFromProver(f)
+use rule poolSolvency filtered {
+    f -> !isEmergencyWithdrawal(f)
 }
 ```
 
