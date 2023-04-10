@@ -19,8 +19,9 @@ There are several simple changes to the syntax to make specs more uniform and
 consistent, and to reduce the superficial differences with Solidity.
 
 ### `function` and `;` required for methods block entries
-Methods block entries must now start with `function` and end with `;`.  For
-example:
+
+In CVL 2, methods block entries must now start with `function` and end with
+`;` (semicolons were optional in CVL 1).  For example:
 
 ```cvl
 balanceOf(address) returns(uint) envfree
@@ -93,9 +94,9 @@ If you do not change this, you will see the following error:
 
 ### Stricter ordering on method annotations
 
-In CVL 2, the order of the annotations must be visibility modifiers (`internal` or `external`),
-followed by `returns` clause (if any), followed by `optional`, `library`, or `envfree` in any order (if any),
-followed by a summary (if any).
+In CVL 2, the order of the annotations must be visibility modifiers (`internal`
+or `external`), followed by `returns` clause (if any), followed by `optional`,
+`library`, or `envfree` in any order (if any), followed by a summary (if any).
 
 CVL 1 was less strict about the order.
 
@@ -105,10 +106,10 @@ If you do not change this, you will see the following error:
 
 ### Use of contract name instead of `using` variable
 
-In CVL 1, the only way to refer to a contract on the {term}`scene` was to first
-introduce a variable with a `using` statement, and then use that variable.  For
-example, to access a struct type `S` defined in `Example.sol`, you would need
-to write
+In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
+introduce a contract instance variable with a `using` statement, and then use
+that variable.  For example, to access a struct type `S` defined in
+`Example.sol`, you would need to write
 
 ```cvl
 using Example as c;
@@ -118,8 +119,9 @@ rule example {
 }
 ```
 
-In CVL 2, you must now use the name of the contract, rather than the variable,
-when referring to user-defined types.  The above example would now be written
+In CVL 2, you must now use the name of the contract, rather than the instance
+variable, when referring to user-defined types.  The above example would now be
+written
 
 ```cvl
 rule example {
@@ -129,7 +131,8 @@ rule example {
 
 There is no need for a `using` statement in this example.
 
-`using` statements are still required to call methods on secondary contracts:
+Calling methods on secondary contracts still requires using a contract instance
+variable:
 
 ```cvl
 using Example as c;
@@ -142,7 +145,17 @@ rule example {
 ```
 
 Entries in the `methods` block may use either the contract name or the instance
-variable.
+variable:
+
+```cvl
+using Example as c;
+
+methods {
+    //// both are valid:
+    function c.balanceOf(address) external returns(uint) envfree;
+    function Example.transfer(address,uint) external envfree;
+}
+```
 
 ```{todo}
 Error message
@@ -151,16 +164,23 @@ Error message
 Changes to methods block entries
 --------------------------------
 
-In addition to the superficial changes listed above, there are some changes that
-change the way that methods block entries can be written.  In CVL 1, `methods`
-block entries often had several different functions and meanings:
+In addition to the superficial changes listed above, there are some changes to
+the way that methods block entries can be written (there are also a
+{ref}`few instances <cvl2-wildcards>` where the meanings of entries has
+changed).  In CVL 1, `methods` block entries often had several different
+functions and meanings:
 
  - They were used to indicate targets for summarization
  - They were used to write generic specs that could apply to contracts with
    missing methods
  - They were used to declare targets `envfree`
 
-The changes described in this section make these different uses more explicit.
+The changes described in this section make these different uses more explicit:
+
+```{contents}
+:local:
+:depth: 1
+```
 
 ### All Solidity types allowed as arguments
 
@@ -377,7 +397,7 @@ methods {
 }
 ```
 
-This entry will replace any call to any internal function `f()` with a call to
+This entry will replace any call to any internal function `foo()` with a call to
 the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
 `uint256`.
 
@@ -433,9 +453,9 @@ regardless of the input types.  Arithmetic operators include `+`,
 (changes to bitwise operators are described {ref}`below <cvl2-bitwise>`).
 
 The primary impact of this change is that you may need to declare more of your
-variables as `mathint` instead of `uint`.  If you are performing arithmetic
-operations and integers that you are passing to specs, you will need to be more
-explicit about the overflow behavior by using the {ref}`new casting operators
+variables as `mathint` instead of `uint`.  If you are passing the results of
+arithmetic operations to contract functions, you will need to be more explicit
+about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
 ```{todo}
@@ -474,7 +494,7 @@ hook ... {
 Simply casting to `mathint` will turn overflows into vacuity.
 
 In this particular example, the right solution is to declare `sum` to be a
-`mathint` instead of a `uint`.  Note that with the more "modern" update syntax,
+`mathint` instead of a `uint`.  Note that with the more recent update syntax,
 this isn't a problem:
 
 ```cvl
@@ -582,9 +602,11 @@ the shifted word with zero.
 Bitwise operations cannot be performed on `mathint` values.
 
 ```{note}
-By default, bitwise operators are {term}`overapproximated <overapproximation>`,
-so you may see counterexamples that incorrectly compute the results of bitwise
-operations.
+By default, bitwise operators are {term}`overapproximated <overapproximation>`
+(in both CVL 1 and CVL 2), so you may see counterexamples that incorrectly
+compute the results of bitwise operations.  The approximations are still
+{term}`sound`: the Prover will not report a rule as verified if the original
+code does not satisfy the rule.
 
 The {ref}`-useBitVectorTheory` flag makes the Prover's reasoning about bitwise
 operations more precise, but this flag is experimental in CVL 2.
@@ -613,8 +635,8 @@ If you do not change this, you will see the following error:
 ### `invoke`, `sinvoke`, and `call`
 
 Older versions of CVL had special syntax for calling contract and CVL functions:
- - `invoke f(args);` should be replaced with `f(args);`.
- - `sinvoke f(args);` should be replaced with `f@withrevert(args);`
+ - `invoke f(args);` should be replaced with `f@withrevert(args);`.
+ - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
 ```{todo}
@@ -651,8 +673,17 @@ havoc args;
 g(e, args);
 ```
 
-In CVL 2, you can no longer `havoc` local variables.  Instead, replace the
-havoced variable with a new variable.
+In CVL 2, you can only `havoc` ghost variables and ghost functions.  Instead of
+havocing a local variable, replace the havoced variable with a new variable. For
+example, you should replace the above with
+
+```cvl
+calldataarg args; env e;
+f(e,args);
+
+calldataarg args2;
+g(e,args2);
+```
 
 ```{todo}
 If you do not change this, you will see the following error:

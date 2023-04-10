@@ -41,7 +41,9 @@ underapproximation
   called an "overapproximation"; if it does not then it is called an
   "underapproximation".  For example, a {ref}`NONDET <view-summary>` summary is
   an overapproximation because every possible value that the original
-  implementation could return is considered by the Prover.
+  implementation could return is considered by the Prover, while an
+  {ref}`ALWAYS <view-summaries>` summary is an underapproximation if the
+  summarized method could return more than one value.
 
   Proofs on overapproximated programs are {term}`sound`, but there may be
   spurious {term}`counterexample`s caused by behavior that the original code
