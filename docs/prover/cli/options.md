@@ -681,14 +681,6 @@ calls will havoc all states. When `-optimisticFallback` is enabled, only the
 states of contracts that are external to the calling contract (not necessarily
 `currentContract`) will be havoced.
 
-Enabling this option can be safe when checking invariants and parametric rules 
-as all of the functions of the current contract are checked independently on
-arbitrary state, and therefore a reentered function call is covered. The one 
-case where this is not true is if the contract's function puts the contract's 
-state into a state we assume is not possible and then makes an external call 
-which reenters. This case introduces an additional attack vectors that users 
-should be aware of when using this flag.
-
 (-optimisticReturnsize)=
 #### `--settings -optimisticReturnsize=true`
 
