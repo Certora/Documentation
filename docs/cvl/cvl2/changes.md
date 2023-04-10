@@ -29,6 +29,10 @@ Superficial syntax changes
 There are several simple changes to the syntax to make specs more uniform and
 consistent, and to reduce the superficial differences with Solidity.
 
+See [`SyntaxExamples.spec` diff][SyntaxExamples.spec].
+
+[SyntaxExamples.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-4581e72f4b3f00f8d784df0e14f8b5804c16412d7346befab5ce42a7e8a7b632
+
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
@@ -206,8 +210,10 @@ return values, except for [function types][sol-fn-types], which are not supporte
 
 To work around the missing types, CVL 1 allowed users to encode some
 user-defined types as primitive types in the `methods` block; these workarounds
-are no longer allowed in CVL 2.  For example, consider the following solidity
-function:
+are no longer allowed in CVL 2.  For example, consider the following [solidity
+function][types-example]:
+
+[types-example]: https://TODO/
 
 ```solidity
 contract Example {
@@ -227,7 +233,9 @@ methods {
 ```
 
 In CVL 2, the methods block entry should use the same type as the Solidity
-implementations[^contract-types]:
+implementations[^contract-types] ([compare files][MethodsBlockTypes.spec]):
+
+[MethodsBlockTypes.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8
 
 ```cvl
 methods {
