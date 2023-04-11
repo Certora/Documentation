@@ -691,8 +691,8 @@ via `z3{randomSeed=17}`.
 (-useBitVectorTheory)=
 #### `--settings -useBitVectorTheory`
 
-This option uses fewer {term}`overapproximation`s for bitwise
-operations.  It is useful when the Prover reports a counterexample caused by
-incorrect modeling of bitwise operations, but can dramatically increase the
-time taken for verification.
+This option models bitwise operations exactly instead of using the default
+{term}`overapproximation`s.  It is useful when the Prover reports a
+counterexample caused by incorrect modeling of bitwise operations, but can
+dramatically increase the time taken for verification.
 
