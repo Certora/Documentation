@@ -41,10 +41,6 @@ will become
 function _setManagedBalance(address,uint256) internal => NONDET;
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### Required `;` in more places
 
 `using`, `pragma`, `import`, and `use` statements all require a `;` at the end.  For
@@ -88,10 +84,6 @@ would become:
 require f.selector == sig:balanceOf(address).selector;
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### Stricter ordering on method annotations
 
 In CVL 2, the order of the annotations must be visibility modifiers (`internal`
@@ -99,10 +91,6 @@ or `external`), followed by `returns` clause (if any), followed by `optional`,
 `library`, or `envfree` in any order (if any), followed by a summary (if any).
 
 CVL 1 was less strict about the order.
-
-```{todo}
-If you do not change this, you will see the following error:
-```
 
 ### Use of contract name instead of `using` variable
 
@@ -155,10 +143,6 @@ methods {
     function c.balanceOf(address) external returns(uint) envfree;
     function Example.transfer(address,uint) external envfree;
 }
-```
-
-```{todo}
-Error message
 ```
 
 Changes to methods block entries
@@ -299,11 +283,6 @@ In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
-```{todo}
-If a methods block contains a non-optional entry for a method that doesn't exist
-in the contract, you will receive the following error message:
-```
-
 ### `library` annotations
 
 In CVL 2, contract functions declared as library functions must be annotated
@@ -376,10 +355,6 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-```{todo}
-Error message
-```
-
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
 
@@ -404,11 +379,6 @@ the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
 If a function does not return any value, the summary should be declared with
 `expect void`.
 
-```{todo}
-Error message
-```
-
-````{warning}
 The Prover is unable to check that the return type declared in the `expect`
 clause matches the return type that the contract expects.  Continuing the above
 example, suppose the contract being verified declared a method `foo()` that
@@ -457,10 +427,6 @@ variables as `mathint` instead of `uint`.  If you are passing the results of
 arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
-
-```{todo}
-If you do not change this, you will see the following error:
-```
 
 ### Comparisons require identical types
 
@@ -559,10 +525,6 @@ CVL 2 supports assert and require casts on all numeric types.
 Casts between `address`, `bytes1`...`bytes32`, and integer types are not
 supported.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### Modulo operator `%` returns negative values for negative inputs
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
@@ -639,27 +601,15 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
  - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### `invoke_fallback`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
 to directly invoke the fallback method.
-
-```{todo}
-If you do not change this, you will see the following error:
-```
 
 ### Havocing local variables
 
@@ -683,10 +633,6 @@ f(e,args);
 
 calldataarg args2;
 g(e,args2);
-```
-
-```{todo}
-If you do not change this, you will see the following error:
 ```
 
 ### Destructuring syntax for struct returns
@@ -731,10 +677,6 @@ uint x; uint y;
 x, y = g();
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### `bytes[]` and `string[]`
 
 In CVL 1, you could declare variables of type `string[]` and `bytes[]`.  You can
@@ -744,9 +686,5 @@ You can still declare contract methods that use these types in the `methods`
 block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
-
-```{todo}
-If you do not change this, you will see the following error:
-```
 
 
