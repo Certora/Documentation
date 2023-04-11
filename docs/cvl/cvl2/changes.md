@@ -43,6 +43,10 @@ function _setManagedBalance(address,uint256) internal => NONDET;
 
 ### Required `;` in more places
 
+```{todo}
+we're removing pragma
+```
+
 `using`, `pragma`, `import`, and `use` statements all require a `;` at the end.  For
 example,
 
@@ -216,6 +220,10 @@ rule example {
 
 [^contract-types]: There is one place where the types do not need to match exactly:
   `address` and specific contract types (such as `IERC20`) are interchangeable.
+
+```{todo}
+Contract names not supported, use `address`
+```
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
