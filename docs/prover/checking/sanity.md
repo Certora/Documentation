@@ -102,7 +102,9 @@ There are 3 kinds of sanity checks:
     
     **Checking vacuity for rules**
     
-    For rules, checking for tautology requires checking each assertion to see if 
+When working with rules, checking for tautology requires inspecting each assertion to see if
+it’s meaningful. To do this, we employ a few different checks depending
+on the syntax of the assertion expression.
     it’s meaningful. In order to do this, we employ few different checks depending
     on the syntax of the assertion expression.
     
