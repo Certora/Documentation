@@ -198,7 +198,7 @@ on the syntax of the assertion expression.
             
    *Case 3: Disjunction*
    
-      Given a rule with an assert p || q we perform two checks:
+      Given a rule with an `assert p || q` we perform two checks:
       
       1. Disjunction always true: `assert(p)`
           If this passes then the assertion is a tautology since the first expression is always true.
@@ -219,7 +219,7 @@ on the syntax of the assertion expression.
             
       2. Disjunction always true: `assert(q)`
           
-          If this passes then the assertion is a tautology since the second expression is always true.
+          If this passes then the assertion is a tautology since the second expression of the disjunction is always true.
           
             ```cvl
               rule sanityDisjunction2{
@@ -235,9 +235,25 @@ on the syntax of the assertion expression.
             assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
       ```
 
-      
-       
+3. **Require-Redundancy** checks for redundant `require` statements.
+   A `require` is considered to be redundant if it can be removed without
+   affecting the satisfiability of the rule.
 
+   For example, the require-redundancy check would flag the following rule:
+   ```cvl
+   rule require_redundant {
+     uint x;
+     require x > 3;
+     require x > 2;
+     assert f(x) == 2, "f must return 2";
+   }
+   ```
+   In this example, the second requirement is redundant, since any `x` greater
+   than 3 will also be greater than 2.
+       
+```{todo}
+Add details of specific Require-Redundancy checks if helpful
+```
      
         
         
