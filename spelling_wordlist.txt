@@ -37,6 +37,8 @@ decompiler
 dereference
 dereferences
 diagnosability
+disjunction
+disjunctions
 dispatchee
 dispatchees
 eBPF

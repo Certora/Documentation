@@ -1,13 +1,15 @@
 Rule Sanity Checks
 ==================
-The {ref}`--rule_sanity` option enables some automatic checks that can warn you
+The {ref}`--rule_sanity` option enables some automatic checks that can warn users
 about certain classes of mistakes in specifications.
 
-There are 3 kinds of sanity checks:
+There are several kinds of sanity checks:
 
-```{contents}
-:depth: 1
-```
+ * {ref}`sanity-reachability` checks whether there are any {term}`model`s that are not
+   ignored.
+ * {ref}`sanity-assert-vacuity` checks whether individual `assert` statements are {term}`vacuous`.
+ * {ref}`sanity-assert-tautology` checks whether individual `assert` statements are {term}`tautologies <tautology>`.
+ * {ref}`sanity-redundant-require` checks whether individual `require` statements rule out any examples.
 
 The `—rule_sanity` option may be followed by one of `none`, `basic`, or
 `advanced` options to control which sanity checks should be executed:
@@ -33,6 +35,7 @@ of the failure:
 
 The remainder of this document describes these checks in detail.
 
+(sanity-reachability)=
 Reachability checks
 -------------------
 
@@ -56,6 +59,7 @@ will always pass, regardless of the behavior of the contract.  This is an
 example of a *vacuous* rule - one that passes only because the preconditions
 are contradictory.
 
+(sanity-assert-vacuity)=
 Assert vacuity checks
 ---------------------
 
@@ -103,7 +107,7 @@ invariant expression is a tautology. The verification report shows that the
 invariant failed vacuity check ([view report][sanity-report]).
 
 [aGE0-report]: https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e
-[sanity-report]: https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8). 
+[sanity-report]: https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8
 
 ```solidity
 contract sanityCheck{
@@ -141,6 +145,10 @@ contract sanityCheck{
 
 ```
     
+(sanity-assert-tautology)=
+Assert tautology checks
+-----------------------
+
 ### Checking vacuity for rules
     
 For rules, checking for tautology requires checking each assertion to see if 
@@ -268,4 +276,14 @@ Given a rule with an assert `p || q` we perform two checks:
    ```
    assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
    ```
+
+
+(sanity-redundant-require)=
+Redundant require checks
+------------------------
+
+```{todo}
+Finish
+```
+
 
