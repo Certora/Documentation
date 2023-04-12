@@ -3,7 +3,10 @@ Rule Sanity Checks
 
 The {ref}`--rule_sanity` option enables some automatic checks that can warn you
 about certain classes of mistakes in specifications. The `—rule_sanity` options 
-may be followed by one of `none`, `basic`, or `advanced` options.
+may be followed by one of `none`, `basic`, or `advanced` options to control which sanity checks should be executed.
+ * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity checks are performed.
+ * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
+ * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
 
 There are 3 kinds of sanity checks:
 
