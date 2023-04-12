@@ -82,7 +82,7 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-### Checking vacuity for invariants
+### Vacuity checking for invariants
    
 For invariants, vacuity is checked by converting it into a rule that asserts
 the invariant expression without any require statements. Since a rule would
@@ -104,6 +104,10 @@ option, will pass ([view report][aGE0-report]) but when we run it with the
 similar to the `aGE0Rule` below. This rule passes, indicating that the
 invariant expression is a tautology. The verification report shows that the
 invariant failed vacuity check ([view report][sanity-report]).
+
+```{todo}
+Link to production, rather than staging.
+```
 
 [aGE0-report]: https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e
 [sanity-report]: https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8
@@ -148,14 +152,15 @@ contract sanityCheck{
 Assert tautology checks
 -----------------------
 
-### Checking vacuity for rules
+### Vacuity checking for rules
     
 For rules, checking for tautology requires checking each assertion to see if 
 it’s meaningful. In order to do this, we employ few different checks depending
 on the syntax of the assertion expression.
 
 #### Tautology checking for implications
-Given a rule with an `assert p => q` we perform two checks:
+
+Given a rule with an `assert p => q`, we perform two checks:
 
 1. Implication hypothesis: `assert(!p)`
  
@@ -169,7 +174,8 @@ Given a rule with an `assert p => q` we perform two checks:
    }
    ```
 
-   Error message
+   If this check fails then the Prover will report a message like the following:
+
    ```
    assert-vacuity check FAILED: sanity.spec:11:5
    assert-tautology check FAILED: sanity.spec:11:5'a < 0 => b < 10' is a vacuous 
@@ -211,7 +217,7 @@ Given a rule with an assert p <=> q we perform two checks:
    }
    ```
      
-   Error message
+   If this check fails then the Prover will report a message like the following:
       
    ```
    assert-tautology check FAILED: sanity.spec:26:5'a < 0 <=> b < 0' could be rewritten 
@@ -220,7 +226,8 @@ Given a rule with an assert p <=> q we perform two checks:
            
 2. Double implication, both true: `assert(p && q)`
 
-   If this passes then the is a tautology since both conditions are always true.
+   If this passes then the original assertion is a tautology since both
+   conditions are always true.
 
    ```cvl
    rule sanityDoubleImplication2{
@@ -230,8 +237,8 @@ Given a rule with an assert p <=> q we perform two checks:
    }
    ```
            
-   Error message
-            
+   If this check fails then the Prover will report a message like the following:
+
    ```
    assert-tautology check FAILED: sanity.spec:33:5'a >= 0 <=> b >= 0' could be rewritten
    to a >= 0 && b >= 0 because both a >= 0 and b >= 0 are always true
@@ -239,10 +246,11 @@ Given a rule with an assert p <=> q we perform two checks:
             
 #### Tautology checking for disjunctions
 
-Given a rule with an assert `p || q` we perform two checks:
+Given a rule with an `assert p || q`, we perform two checks:
       
 1. Disjunction always true: `assert(p)`
-   If this passes then the assertion is a tautology since the first expression is always true.
+   If this passes then the assertion is a tautology since the first expression
+   of the disjunction is always true.
 
    ```cvl
    rule sanityDisjunction1{
@@ -252,7 +260,7 @@ Given a rule with an assert `p || q` we perform two checks:
    }
    ```
 
-   Error message
+   If this check fails then the Prover will report a message like the following:
 
    ```
    assert-tautology check FAILED: sanity.spec:41:5the expression `a >= 0` is always true
@@ -260,7 +268,7 @@ Given a rule with an assert `p || q` we perform two checks:
 
 2. Disjunction always true: `assert(q)`
 
-   If this passes then the assertion is a tautology since the second expression is always true.
+   If this passes then the assertion is a tautology since the second expression of the disjunction is always true.
 
    ```cvl
    rule sanityDisjunction2{
@@ -270,7 +278,7 @@ Given a rule with an assert `p || q` we perform two checks:
    }
    ```
             
-   Error message
+   If this check fails then the Prover will report a message like the following:
             
    ```
    assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
