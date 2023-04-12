@@ -675,12 +675,10 @@ This list is incomplete.
 #### `--settings -optimisticFallback=true`
 
 This option determines whether to optimistically assume unresolved external
-calls can make arbitrary changes to all states. It makes changes to how 
+calls with 0 calldata can make arbitrary changes to all states. It makes changes to how 
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls will {term}`havoc` all the storage state of all contracts. When
-`-optimisticFallback` is enabled, only the states of contracts that are
-external to the calling contract (not necessarily `currentContract`) will be
-havoced.
+calls with 0 calldata will {term}`havoc` all the storage state of external contracts. When
+`-optimisticFallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 (-optimisticReturnsize)=
 #### `--settings -optimisticReturnsize=true`
