@@ -677,9 +677,10 @@ This list is incomplete.
 This option determines whether to optimistically assume unresolved external
 calls can make arbitrary changes to all states. It makes changes to how 
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls will havoc all states. When `-optimisticFallback` is enabled, only the
-states of contracts that are external to the calling contract (not necessarily
-`currentContract`) will be havoced.
+calls will {term}`havoc` all the storage state of all contracts. When
+`-optimisticFallback` is enabled, only the states of contracts that are
+external to the calling contract (not necessarily `currentContract`) will be
+havoced.
 
 (-optimisticReturnsize)=
 #### `--settings -optimisticReturnsize=true`
