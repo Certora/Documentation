@@ -155,7 +155,7 @@ Assert tautology checks
 ### Vacuity checking for rules
     
 For rules, checking for tautology requires checking each assertion to see if 
-it’s meaningful. In order to do this, we employ few different checks depending
+it’s meaningful. In order to do this, we employ a few different checks depending
 on the syntax of the assertion expression.
 
 #### Tautology checking for implications
@@ -164,7 +164,8 @@ Given a rule with an `assert p => q`, we perform two checks:
 
 1. Implication hypothesis: `assert(!p)`
  
-   If the hypothesis part is always false then the assertion is a tautology.
+   If the hypothesis part is always false then the implication must always be
+   true, so the assertion is a tautology.
    
    ```cvl
    rule testSanity{
@@ -184,8 +185,8 @@ Given a rule with an `assert p => q`, we perform two checks:
 
 2. Implication conclusion: `assert(q)`
    
-   If the conclusion part is always true regardless of the hypothesis then the
-   assertion is a tautology
+   If the conclusion is true regardless of the hypothesis then the implication
+   is always true, and therefore the assertion is a tautology.
    
    ```cvl
    rule testSanity{
@@ -204,10 +205,11 @@ Given a rule with an `assert p => q`, we perform two checks:
         
 #### Tautology checks for double implication
 
-Given a rule with an assert p <=> q we perform two checks:
+Given a rule with an `assert p <=> q` we perform two checks:
      
 1. Double implication, both false: `assert(!p && !q)`
-   If this passes then the assertion is a tautology since both conditions are always false.
+   If both `p` and `q` are always false then the assertion condition `p <=> q`
+   is always true and is therefore a tautology.
 
    ```cvl
    rule sanityDoubleImplication1{
