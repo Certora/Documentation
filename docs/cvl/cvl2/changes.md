@@ -490,7 +490,8 @@ require both sides of the equation to have identical types, and {ref}`implicit
 casts <cvl2-casting>` will not be used.  Comparisons with number literals (e.g.
 `0` or `1`) are allowed for any integer type.
 
-If you do not have identical types, the best solution is to use the special
+If you do not have identical types (and cannot change one of your variables to
+a `mathint`), the best solution is to use the special
 `to_mathint` operator to convert both sides to `mathint`.  For example:
 
 ```cvl
