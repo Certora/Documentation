@@ -8,6 +8,13 @@ may be followed by one of `none`, `basic`, or `advanced` options to control whic
  * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
  * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
 
+When the Prover is run with any of these options, it first checks that the rule
+passes; if it does pass then the sanity checks are performed.  If the sanity
+checks also pass, the rule is marked as verified with a green checkmark; if the
+sanity check fails, the rule is marked with a yellow symbol:
+
+![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
+
 There are 3 kinds of sanity checks:
 
 1. **Reachability** checks that even when ignoring all the user-provided
@@ -29,15 +36,6 @@ There are 3 kinds of sanity checks:
    example of a *vacuous* rule - one that passes only because the preconditions
    are contradictory.
 
-   ```{caution}
-   The reachability check will *pass* on vacuous rules and *fail* on correct
-   rules.  A passing reachability check indicates a potential error in the rule.
-   
-   The exception is when a {term}`parametric rule` is checked on the default
-   fallback function: The default fallback function should always revert, so
-   there are no examples that can reach the end of the rule.
-   ```
-   
 2. **Assert-Vacuity** checks that individual `assert` statements are not
    tautologies.  A tautology is a statement that is true on all examples, even
    if all the `require` and `if` conditions are removed.
@@ -62,7 +60,7 @@ There are 3 kinds of sanity checks:
    
    For invariants, vacuity is checked by converting it into a rule that asserts the invariant expression without any require statements. Since a rule would check the assertion for all arbitrary starting states, if the rule passes, it means that the expression being asserted is a tautology. The invariant, which checks the expression for a smaller set of states, would also be a tautology.
    
-   The `sanityCheck` contract below has two state variables `address root` and `uint a`. Due to the zero address checks in the `constructor` and the `changeRoot` function, the root address can never be zero. The `rootNonZero` invariant asserts that the root address is never zero. When we run this invariant with the `--rule_sanity` `advanced` or `basic` options, the prover creates a rule similar to the `rootNonZeroRule` below. This rule would fail since the tool could assume a starting state where the `root` is 0. This means that the invariant expression is not a tautology and the invariant passes. On the other hand the `aGE0` invariant, when run without the `--rule_sanity` option, will pass [view report](https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e) but when we run it with the `--rule_sanity` `advanced` or `basic` options, the prover creates a rule similar to the `aGE0Rule` below. This rule passes, indicating that the invariant expression is a tautology. The verification report shows that the invariant failed vacuity check [view report](https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8). 
+   The `sanityCheck` contract below has two state variables `address root` and `uint a`. Due to the zero address checks in the `constructor` and the `changeRoot` function, the root address can never be zero. The `rootNonZero` invariant asserts that the root address is never zero. When we run this invariant with the `--rule_sanity` `advanced` or `basic` options, the Prover creates a rule similar to the `rootNonZeroRule` below. This rule would fail since the tool could assume a starting state where the `root` is 0. This means that the invariant expression is not a tautology and the invariant passes. On the other hand the `aGE0` invariant, when run without the `--rule_sanity` option, will pass [view report](https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e) but when we run it with the `--rule_sanity` `advanced` or `basic` options, the Prover creates a rule similar to the `aGE0Rule` below. This rule passes, indicating that the invariant expression is a tautology. The verification report shows that the invariant failed vacuity check [view report](https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8). 
 
     ```solidity
      contract sanityCheck{
