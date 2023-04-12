@@ -5,11 +5,11 @@ about certain classes of mistakes in specifications.
 
 There are several kinds of sanity checks:
 
- * {ref}`sanity-reachability` checks whether there are any {term}`model`s that are not
+ * {ref}`sanity-reachability` determine whether there are any {term}`model`s that are not
    ignored.
- * {ref}`sanity-assert-vacuity` checks whether individual `assert` statements are {term}`vacuous`.
- * {ref}`sanity-assert-tautology` checks whether individual `assert` statements are {term}`tautologies <tautology>`.
- * {ref}`sanity-redundant-require` checks whether individual `require` statements rule out any examples.
+ * {ref}`sanity-assert-vacuity` determine whether individual `assert` statements are {term}`vacuous`.
+ * {ref}`sanity-assert-tautology` determine whether individual `assert` statements are {term}`tautologies <tautology>`.
+ * {ref}`sanity-redundant-require` determine whether individual `require` statements rule out any models.
 
 The `—rule_sanity` option may be followed by one of `none`, `basic`, or
 `advanced` options to control which sanity checks should be executed:
@@ -56,8 +56,8 @@ rule vacuous {
 
 Since there are no models satisfying both `x > 2` and `x < 1`, this rule
 will always pass, regardless of the behavior of the contract.  This is an
-example of a *vacuous* rule - one that passes only because the preconditions
-are contradictory.
+example of a {term}`vacuous` rule &mdash; one that passes only because the
+preconditions are contradictory.
 
 (sanity-assert-vacuity)=
 Assert vacuity checks
@@ -79,9 +79,8 @@ rule tautology {
 }
 ```
 
-
-Since every `uint` satisfies the assertion, the assertion is tautological,
-which is likely to be an error in the specification.
+Since every `uint` satisfies the assertion, the assertion is tautological, which
+may indicate an error in the specification.
 
 ### Checking vacuity for invariants
    
