@@ -89,6 +89,21 @@ If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 
 Note that `--rules` (plural) may be used alternatively to `--rule`. The two options are identical, but `--rules` may feel more natural when more than one rule is specified. 
 
+(--send_only)=
+### `--send_only`
+
+**What does it do?**
+Causes the CLI to exit immediately when the job is submitted, rather than waiting
+for it to complete.
+
+**When to use it?**
+When you want to run many jobs concurrently in a script, or otherwise want the
+CLI to not block the terminal.
+
+**Example**
+```sh
+certoraRun Example.sol --verify Example:Example.spec --send_only
+```
 
 Options affecting the type of verification run
 ----------------------------------------------
@@ -328,6 +343,55 @@ The default number of loop iterations we unroll is one. However, in many cases, 
 certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 ```
 
+Options regarding hashing of unbounded data
+-------------------------------------------
+
+(--optimistic_hashing)=
+### `--optimistic_hashing`
+
+**What does it do?**
+
+ When hashing data of potentially unbounded length (including unbounded arrays, like `bytes`, `uint[]`, etc.), assume that its length is bounded by the value set through the `--hashing_length_bound` option. If this is not set, and the length can be exceeded by the input program, the prover reports an assertion violation. I.e., when this option is set, the boundedness of the hashed data assumed checked by the prover, when this option is set that boundedness is assumed instead.
+
+See {doc}`../approx/hashing` for more details.
+
+
+**When to use it?**  
+
+When the assertion regarding unbounded hashing is thrown, but it is acceptable for the prover to ignore cases where the length hashed values exceeds the current bound.
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
+```
+
+(--hashing_length_bound)=
+### `--hashing_length_bound`
+
+**What does it do?**
+
+Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the prover, depending on whether `--optimistic_hashing` has been set. The bound is specified as a number of bytes. 
+
+The default value of this option is 224 (224 bytes correspond to 7 EVM machine words as 7 * 32 == 224).
+
+**When to use it?**  
+Reason to lower this value:
+
+Lowering potentially improves SMT performance, especially if there are many occurrences of unbounded hashing in the program. 
+
+Reasons to raise this value:
+
+ - when `--optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `--optimistic_hashing` being not set)
+ - when `--optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
+```
+
+
 Options that help reduce the running time
 -----------------------------------------
 
@@ -425,12 +489,12 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 `TokenPair public tokenPair;`
 
 Where `TokenPair` is  
-`struct TokenPair {`  
-`IERC20 tokenA;`
-
-`IERC20 tokenB;`
-
-`}`
+```solidity
+struct TokenPair {
+    IERC20 tokenA;
+    IERC20 tokenB;
+}
+```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:  
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --structLink Bank:0=BankToken Bank:1=LoanToken`
@@ -546,6 +610,30 @@ If you want only to check your spec, or include it in an automated task (e.g., a
 Advanced options
 ----------------
 
+(--cloud)=
+### `--cloud`
+
+**What does it do?**
+
+Runs the Prover on the cloud.  Note that for non-Certora users, `--cloud` is
+the default, so this option does nothing.
+
+**When to use it?**
+
+If you are a Certora employee who usually runs the Prover locally, but want to
+run on the cloud instead.
+
+(--staging)=
+### `--staging [branch]`
+
+**What does it do?**
+
+Runs a non-standard version of the Prover.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
+
 ### `--javaArgs`
 
 **What does it do?**
@@ -635,3 +723,16 @@ preprocessing.
 Jobs that exceed the global timeout will simply be terminated, so the result
 reports may not be generated.
 
+(-solver)=
+#### `--settings -solver=<solver spec>`
+
+This option sets the SMT solvers being used within the Prover.  By default, a
+portfolio of various different solvers is used.  It can be useful to specify
+only a subset of these to save on computation time.  In rare cases, solver
+specific options can improve performance as well.
+
+The `solver spec` can be a single solver (`-solver=z3`) or a list of solvers
+(`-solver=[cvc5,z3]`), where each such solver can be further modified.  For
+example, `cvc5` refers to the default configuration of `cvc5` whereas
+`cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
+via `z3{randomSeed=17}`.
