@@ -157,10 +157,10 @@ on the syntax of the assertion expression.
         
    *Case 2: Double Implication*
      
-     Given a rule with an assert p <=> q we perform two checks:
+     Given a rule with an `assert p <=> q` we perform two checks:
      
      1. Double implication, both false: `assert(!p && !q)`
-         If this passes then the assertion is a tautology since both conditions are always false.
+         If this passes then the assertion is a tautology since both conditions are always false leaving no way for the biconditional statement to evaluate to false.
 
            ```cvl
              rule sanityDoubleImplication1{
@@ -179,7 +179,7 @@ on the syntax of the assertion expression.
            
       2. Double implication, both true: `assert(p && q)`
       
-          If this passes then the is a tautology since both conditions are always true.
+          If this passes then the rule is a tautology since both conditions are always true and the biconditional statement can never be false.
       
             ```cvl
               rule sanityDoubleImplication2{
@@ -201,7 +201,7 @@ on the syntax of the assertion expression.
       Given a rule with an `assert p || q` we perform two checks:
       
       1. Disjunction always true: `assert(p)`
-          If this passes then the assertion is a tautology since the first expression is always true.
+          If this passes then the assertion is a tautology since the first expression of the disjunction is always true.
 
             ```cvl
               rule sanityDisjunction1{
@@ -229,7 +229,7 @@ on the syntax of the assertion expression.
               }
             ```
             
-      Error message
+      Failing a check of this kind will yield an error message like the following:
             
       ```cvl
             assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
