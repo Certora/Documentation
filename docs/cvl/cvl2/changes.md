@@ -56,9 +56,16 @@ will become
 function _setManagedBalance(address,uint256) internal => NONDET;
 ```
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Error: Test CVL:2:4: Syntax error: unexpected token near ID(_setManagedBalance)
+Error: Test CVL:2:4: Couldn't repair and continue parse unexpected token near ID(_setManagedBalance)
+Error: CVL parser failed with exception. Exception message: "Failed to parse {spec file}. Exiting."
+```
+
+````
 
 ### Required `;` in more places
 
@@ -103,9 +110,15 @@ would become:
 require f.selector == sig:balanceOf(address).selector;
 ```
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Error: Syntax error in spec file (Test CVL:6:3): Variable address is undefined (first instance only reported)
+Error: Syntax error in spec file (Test CVL:6:29): could not type expression "address", message: unknown variable "address"
+```
+
+````
 
 ### Stricter ordering on method annotations
 
@@ -115,9 +128,16 @@ or `external`), followed by `returns` clause (if any), followed by `optional`,
 
 CVL 1 was less strict about the order.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Error: Test CVL:2:35: Syntax error: unexpected token near PRE_RETURN_QUALIFIER(external)
+Error: Test CVL:2:35: Couldn't repair and continue parse unexpected token near PRE_RETURN_QUALIFIER(external)
+Error: CVL parser failed with exception. Exception message: "Failed to parse {spec file name}. Exiting."
+```
+
+````
 
 ### Use of contract name instead of `using` variable
 
@@ -172,9 +192,14 @@ methods {
 }
 ```
 
-```{todo}
+````{todo}
 Error message
+
 ```
+Error: Syntax error in spec file (Test CVL:4:47): Contract name c does not exist in the scene. Make sure you are using a contract name and not a contract instance name.
+```
+
+````
 
 Changes to methods block entries
 --------------------------------
@@ -337,10 +362,15 @@ In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
-```{todo}
+````{todo}
 If a methods block contains a non-optional entry for a method that doesn't exist
 in the contract, you will receive the following error message:
+
 ```
+Error: Syntax error in spec file (Test CVL:2:2): External method declaration for test.foo3(uint256 i) returns (uint256) does not correspond to any known declaration. Did you mean to add optional?
+```
+
+````
 
 ### `library` annotations
 
@@ -417,9 +447,13 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-```{todo}
+````{todo}
 Error message
+
 ```
+Error: Syntax error in spec file (Test CVL:2:2): Cannot merge "test.foo(uint256 i)" and "test.foo(uint256 i) returns (uint256)" - they have incompatible return values: Different arities (0 vs 1)
+```
+````
 
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
@@ -445,9 +479,12 @@ the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
 If a function does not return any value, the summary should be declared with
 `expect void`.
 
-```{todo}
+````{todo}
 Error message
 ```
+Error: Syntax error in spec file (Test CVL:3:5): Wildcard method entry with summary fooImpl() must include an expected return type
+```
+````
 
 ````{warning}
 The Prover is unable to check that the return type declared in the `expect`
@@ -499,9 +536,14 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Error: Syntax error in spec file (Test CVL:6:5): could not type expression "foo(i + 1)", message: Could not find an overloading of method test.foo that matches the given arguments: mathint.
+```
+
+````
 
 ### Comparisons require identical types
 
@@ -607,9 +649,14 @@ CVL 2 supports assert and require casts on all numeric types.
 Casts between `address`, `bytes1`...`bytes32`, and integer types are not
 supported.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Error: Syntax error in spec file (Test CVL:3:12): could not type expression "i == j", message: Comparison of uint256 and mathint failed. Explicitly cast one type to the other (e.g. i == assert_uint256(j))
+```
+
+````
 
 ### Modulo operator `%` returns negative values for negative inputs
 
@@ -690,27 +737,40 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
  - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Error: Test CVL:5:13: Syntax error: unexpected token near
+```
+````
 
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
 ```
+Error: Syntax error in spec file (Test CVL:2:5): could not type expression "static_require(2 > 1)", message: No function-like entry for static_require was found in the symbol table. Perhaps something was misspelled?
+Error: Syntax error in spec file (Test CVL:3:5): could not type expression "static_assert(false)", message: No function-like entry for static_assert was found in the symbol table. Perhaps something was misspelled?
+```
+
+````
 
 ### `invoke_fallback`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
 to directly invoke the fallback method.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
 ```
+No function-like entry for invoke_fallback was found in the symbol table. Perhaps something was misspelled?
+```
+
+````
 
 ### Havocing local variables
 
@@ -736,9 +796,13 @@ calldataarg args2;
 g(e,args2);
 ```
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
 ```
+Only havocing of ghosts is allowed
+```
+
+````
 
 ### Destructuring syntax for struct returns
 
@@ -782,9 +846,14 @@ uint x; uint y;
 x, y = g();
 ```
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+Cannot assign S to uint256, S cannot be represented using type uint256
+```
+
+````
 
 ### `bytes[]` and `string[]`
 
@@ -796,9 +865,15 @@ block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
 
-```{todo}
+````{todo}
 If you do not change this, you will see the following error:
+
 ```
+An array with an element of type bytes is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
+An array with an element of type string is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
+```
+
+````
 
 ### `pragma`
 
