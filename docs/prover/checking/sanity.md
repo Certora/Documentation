@@ -44,12 +44,13 @@ counterexamples.
 For example, the following rule would be flagged by the reachability check:
 ```cvl
 rule vacuous {
-  uint x;
-  require x > 2;
-  require x < 1;
-  assert f(x) == 2, "f must return 2";
+    uint x;
+    require x > 2;
+    require x < 1;
+    assert f(x) == 2, "f must return 2";
 }
 ```
+
 Since there are no models satisfying both `x > 2` and `x < 1`, this rule
 will always pass, regardless of the behavior of the contract.  This is an
 example of a *vacuous* rule - one that passes only because the preconditions
@@ -80,9 +81,29 @@ which is likely to be an error in the specification.
 
 ### Checking vacuity for invariants
    
-For invariants, vacuity is checked by converting it into a rule that asserts the invariant expression without any require statements. Since a rule would check the assertion for all arbitrary starting states, if the rule passes, it means that the expression being asserted is a tautology. The invariant, which checks the expression for a smaller set of states, would also be a tautology.
+For invariants, vacuity is checked by converting it into a rule that asserts
+the invariant expression without any require statements. Since a rule would
+check the assertion for all arbitrary starting states, if the rule passes, it
+means that the expression being asserted is a tautology. The invariant, which
+checks the expression for a smaller set of states, would also be a tautology.
 
-The `sanityCheck` contract below has two state variables `address root` and `uint a`. Due to the zero address checks in the `constructor` and the `changeRoot` function, the root address can never be zero. The `rootNonZero` invariant asserts that the root address is never zero. When we run this invariant with the `--rule_sanity` `advanced` or `basic` options, the Prover creates a rule similar to the `rootNonZeroRule` below. This rule would fail since the tool could assume a starting state where the `root` is 0. This means that the invariant expression is not a tautology and the invariant passes. On the other hand the `aGE0` invariant, when run without the `--rule_sanity` option, will pass [view report](https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e) but when we run it with the `--rule_sanity` `advanced` or `basic` options, the Prover creates a rule similar to the `aGE0Rule` below. This rule passes, indicating that the invariant expression is a tautology. The verification report shows that the invariant failed vacuity check [view report](https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8). 
+The `sanityCheck` contract below has two state variables `address root` and
+`uint a`. Due to the zero address checks in the `constructor` and the
+`changeRoot` function, the root address can never be zero. The `rootNonZero`
+invariant asserts that the root address is never zero. When we run this
+invariant with the `--rule_sanity` `advanced` or `basic` options, the Prover
+creates a rule similar to the `rootNonZeroRule` below. This rule would fail
+since the tool could assume a starting state where the `root` is 0. This means
+that the invariant expression is not a tautology and the invariant passes. On
+the other hand the `aGE0` invariant, when run without the `--rule_sanity`
+option, will pass ([view report][aGE0-report]) but when we run it with the
+`--rule_sanity` `advanced` or `basic` options, the Prover creates a rule
+similar to the `aGE0Rule` below. This rule passes, indicating that the
+invariant expression is a tautology. The verification report shows that the
+invariant failed vacuity check ([view report][sanity-report]).
+
+[aGE0-report]: https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e
+[sanity-report]: https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8). 
 
 ```solidity
 contract sanityCheck{
@@ -125,131 +146,126 @@ contract sanityCheck{
 For rules, checking for tautology requires checking each assertion to see if 
 it’s meaningful. In order to do this, we employ few different checks depending
 on the syntax of the assertion expression.
-    
-      *Case 1: Implication*
-    
-      Given a rule with an `assert p => q` we perform two checks:
-    
-      1. Implication hypothesis: `assert(!p)`
-       
-      If the hypothesis part is always false then the assertion is a tautology.
-      
-      ```cvl
-              rule testSanity{
-              uint a;
-              uint b;
-              assert a<0 => b<10;
-              }
-      ```
-         
-        
-      Error message
-        
-      ```cvl
-            assert-vacuity check FAILED: sanity.spec:11:5
-            assert-tautology check FAILED: sanity.spec:11:5'a < 0 => b < 10' is a vacuous 
-            implication. It could be rewritten to !a < 0 because a < 0 is always false
-            
-      ```
-      
-        
-    2. Implication conclusion: `assert(q)`
-       
-       If the conclusion part is always true regardless of the hypothesis then the
-       assertion is a tautology
-       
-        ```cvl
-          rule testSanity{
-          uint a;
-          uint b;
-          assert a>10 => b>=0;
-          }
-        ```
-        
-      Error Message
-        
-      ```cvl
-              assert-tautology check FAILED: sanity.spec:21:5conclusion `b >= 0` is always true 
-              regardless of the hypothesis
-      ```
-        
-   *Case 2: Double Implication*
-     
-     Given a rule with an assert p <=> q we perform two checks:
-     
-     1. Double implication, both false: `assert(!p && !q)`
-         If this passes then the assertion is a tautology since both conditions are always false.
 
-           ```cvl
-             rule sanityDoubleImplication1{
-             uint a;
-             uint b;
-             assert a<0 <=> b<0;
-             }
-           ```
-          
-      Error message
-           
-      ```cvl
-           assert-tautology check FAILED: sanity.spec:26:5'a < 0 <=> b < 0' could be rewritten 
-           to !a < 0 && !b < 0 because both a < 0 and b < 0 are always false
-      ```
-           
-      2. Double implication, both true: `assert(p && q)`
-      
-          If this passes then the is a tautology since both conditions are always true.
-      
-            ```cvl
-              rule sanityDoubleImplication2{
-              uint a;
-              uint b;
-              assert a>=0 <=> b>=0;
-              }
-            ```
-           
-     Error message
-            
-     ```cvl
-            assert-tautology check FAILED: sanity.spec:33:5'a >= 0 <=> b >= 0' could be rewritten
-            to a >= 0 && b >= 0 because both a >= 0 and b >= 0 are always true
-     ```
-            
-   *Case 3: Disjunction*
+#### Tautology checking for implications
+Given a rule with an `assert p => q` we perform two checks:
+
+1. Implication hypothesis: `assert(!p)`
+ 
+   If the hypothesis part is always false then the assertion is a tautology.
    
-      Given a rule with an assert p || q we perform two checks:
-      
-      1. Disjunction always true: `assert(p)`
-          If this passes then the assertion is a tautology since the first expression is always true.
+   ```cvl
+   rule testSanity{
+       uint a;
+       uint b;
+       assert a<0 => b<10;
+   }
+   ```
 
-            ```cvl
-              rule sanityDisjunction1{
-              uint a;
-              uint b;
-              assert a>=0 || b>10;
-              }
-            ```
+   Error message
+   ```
+   assert-vacuity check FAILED: sanity.spec:11:5
+   assert-tautology check FAILED: sanity.spec:11:5'a < 0 => b < 10' is a vacuous 
+   implication. It could be rewritten to !a < 0 because a < 0 is always false
+   ```
+
+2. Implication conclusion: `assert(q)`
+   
+   If the conclusion part is always true regardless of the hypothesis then the
+   assertion is a tautology
+   
+   ```cvl
+   rule testSanity{
+       uint a;
+       uint b;
+       assert a>10 => b>=0;
+   }
+   ```
+    
+   Error Message
+    
+   ```
+   assert-tautology check FAILED: sanity.spec:21:5conclusion `b >= 0` is always true 
+   regardless of the hypothesis
+   ```
+        
+#### Tautology checks for double implication
+
+Given a rule with an assert p <=> q we perform two checks:
+     
+1. Double implication, both false: `assert(!p && !q)`
+   If this passes then the assertion is a tautology since both conditions are always false.
+
+   ```cvl
+   rule sanityDoubleImplication1{
+       uint a;
+       uint b;
+       assert a<0 <=> b<0;
+   }
+   ```
+     
+   Error message
+      
+   ```
+   assert-tautology check FAILED: sanity.spec:26:5'a < 0 <=> b < 0' could be rewritten 
+   to !a < 0 && !b < 0 because both a < 0 and b < 0 are always false
+   ```
            
-      Error message
+2. Double implication, both true: `assert(p && q)`
+
+   If this passes then the is a tautology since both conditions are always true.
+
+   ```cvl
+   rule sanityDoubleImplication2{
+       uint a;
+       uint b;
+       assert a>=0 <=> b>=0;
+   }
+   ```
+           
+   Error message
             
-      ```cvl
-            assert-tautology check FAILED: sanity.spec:41:5the expression `a >= 0` is always true
-      ```
+   ```
+   assert-tautology check FAILED: sanity.spec:33:5'a >= 0 <=> b >= 0' could be rewritten
+   to a >= 0 && b >= 0 because both a >= 0 and b >= 0 are always true
+   ```
             
-      2. Disjunction always true: `assert(q)`
-          
-          If this passes then the assertion is a tautology since the second expression is always true.
-          
-            ```cvl
-              rule sanityDisjunction2{
-              uint a;
-              uint b;
-              assert a>10 || b>=0;
-              }
-            ```
+#### Tautology checking for disjunctions
+
+Given a rule with an assert `p || q` we perform two checks:
+      
+1. Disjunction always true: `assert(p)`
+   If this passes then the assertion is a tautology since the first expression is always true.
+
+   ```cvl
+   rule sanityDisjunction1{
+       uint a;
+       uint b;
+       assert a>=0 || b>10;
+   }
+   ```
+
+   Error message
+
+   ```
+   assert-tautology check FAILED: sanity.spec:41:5the expression `a >= 0` is always true
+   ```
+
+2. Disjunction always true: `assert(q)`
+
+   If this passes then the assertion is a tautology since the second expression is always true.
+
+   ```cvl
+   rule sanityDisjunction2{
+       uint a;
+       uint b;
+       assert a>10 || b>=0;
+   }
+   ```
             
-      Error message
+   Error message
             
-      ```cvl
-            assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
-      ```
+   ```
+   assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
+   ```
 
