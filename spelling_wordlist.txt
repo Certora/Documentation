@@ -3,8 +3,7 @@ ABI
 Balancer
 CVL
 Certora
-CertoraMutate
-config
+Disjunction
 Devcon
 Ethereum
 FEoD
@@ -30,6 +29,7 @@ bytecodes
 callee
 certoraMutate
 changelog
+checkmark
 codebase
 conjuncted
 decompilation
