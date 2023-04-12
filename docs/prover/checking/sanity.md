@@ -137,8 +137,8 @@ on the syntax of the assertion expression.
         
     2. Implication conclusion: `assert(q)`
        
-       If the conclusion part is always true regardless of the hypothesis then the
-       assertion is a tautology
+       If the conclusion is always true regardless of the hypothesis then the
+       implication can never evaluate to false and the assertion is a tautology.
        
         ```cvl
           rule testSanity{
@@ -148,7 +148,7 @@ on the syntax of the assertion expression.
           }
         ```
         
-      Error Message
+      Failing a check of this kind will yield an error message like the following:
         
       ```cvl
               assert-tautology check FAILED: sanity.spec:21:5conclusion `b >= 0` is always true 
@@ -170,7 +170,7 @@ on the syntax of the assertion expression.
              }
            ```
           
-      Error message
+      Failing a check of this kind will yield an error message like the following:
            
       ```cvl
            assert-tautology check FAILED: sanity.spec:26:5'a < 0 <=> b < 0' could be rewritten 
@@ -189,7 +189,7 @@ on the syntax of the assertion expression.
               }
             ```
            
-     Error message
+     Failing a check of this kind will yield an error message like the following:
             
      ```cvl
             assert-tautology check FAILED: sanity.spec:33:5'a >= 0 <=> b >= 0' could be rewritten
@@ -211,7 +211,7 @@ on the syntax of the assertion expression.
               }
             ```
            
-      Error message
+      Failing a check of this kind will yield an error message like the following:
             
       ```cvl
             assert-tautology check FAILED: sanity.spec:41:5the expression `a >= 0` is always true
