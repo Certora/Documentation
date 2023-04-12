@@ -62,7 +62,7 @@ If you do not change this, you will see the following error:
 
 ### Required `;` in more places
 
-`using`, `pragma`, `import`, and `use` statements all require a `;` at the end.  For
+`using`, `import`, and `use` statements all require a `;` at the end.  For
 example,
 
 ```cvl
@@ -78,8 +78,8 @@ using C as c;
 are followed by a `preserved` or `filtered` block.  For example:
 
 ```cvl
-use rule tree_isImmutable filtered {
-    f -> !excludeFromProver(f)
+use rule poolSolvency filtered {
+    f -> !isEmergencyWithdrawal(f)
 }
 ```
 
@@ -197,14 +197,15 @@ The changes described in this section make these different uses more explicit:
 :depth: 1
 ```
 
-### All Solidity types allowed as arguments
+### Most Solidity types allowed as arguments
 
 CVL 1 had some restrictions on the types of arguments allowed in `methods` block
-entries.  For example, it was impossible to add entries for functions that
-accept arguments with user-defined types (such as enums and structs).
+entries.  For example, user-defined types (such as enums and structs) were not
+fully supported.
 
 CVL 2 `methods` block entries may use any Solidity types for arguments and
-return values, except for [function types][sol-fn-types], which are not supported.
+return values, except for [function types][sol-fn-types] and contract or
+interface types.
 
 [sol-fn-types]: https://docs.soliditylang.org/en/v0.8.17/types.html#function-types
 
@@ -233,7 +234,8 @@ methods {
 ```
 
 In CVL 2, the methods block entry should use the same type as the Solidity
-implementations[^contract-types] ([compare files][MethodsBlockTypes.spec]):
+implementations[^contract-types] ([compare files][MethodsBlockTypes.spec]),
+except for function types and contract or interface types:
 
 [MethodsBlockTypes.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8
 
@@ -249,8 +251,25 @@ rule example {
 }
 ```
 
-[^contract-types]: There is one place where the types do not need to match exactly:
-  `address` and specific contract types (such as `IERC20`) are interchangeable.
+Contract functions that take or return contract or interface types should
+instead use `address` in the `methods` block declaration.  For example, if the
+contract contains the following function:
+
+```solidity
+function listToken(IERC20 token) internal
+```
+
+the `methods` block should use `address` for the `token` argument:
+
+```cvl
+methods {
+    function listToken(IERC20 address) internal
+}
+```
+
+Contract functions that take or return function types are not currently
+supported.  Users can use {ref}`munging <munging>` to work around this
+limitation.
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
@@ -352,6 +371,9 @@ given signature.
 In CVL 2, summaries only apply to a single contract, unless the old behavior is
 explicitly requested by using `_` as the receiver.  If no contract is specified,
 the default is `currentContract`.
+
+Entries that use `_` as the receiver are called {term}`wildcard entries <wildcard>`, summaries
+that do not are called {term}`exact entries <exact>`.
 
 Consider the following example:
 ```cvl
@@ -488,7 +510,8 @@ require both sides of the equation to have identical types, and {ref}`implicit
 casts <cvl2-casting>` will not be used.  Comparisons with number literals (e.g.
 `0` or `1`) are allowed for any integer type.
 
-If you do not have identical types, the best solution is to use the special
+If you do not have identical types (and cannot change one of your variables to
+a `mathint`), the best solution is to use the special
 `to_mathint` operator to convert both sides to `mathint`.  For example:
 
 ```cvl
@@ -498,7 +521,7 @@ assert to_mathint(balanceOf(user)) == initial + deposit;
 Note that in this example, we do not need to cast the right hand side, since
 the result of `+` is always of type `mathint`.
 
-````{todo}
+````{note}
 When should you not simply cast to `mathint`?  We have one example: consider the
 following code:
 
@@ -514,7 +537,8 @@ Simply casting to `mathint` will turn overflows into vacuity.
 
 In this particular example, the right solution is to declare `sum` to be a
 `mathint` instead of a `uint`.  Note that with the more recent update syntax,
-this isn't a problem:
+this problem will correctly be reported as an error.  For example, if you
+mistakenly write the following:
 
 ```cvl
 ghost uint256 sum;
@@ -522,6 +546,11 @@ ghost uint256 sum;
 hook ... {
     sum = sum + newBalance - oldBalance;
 }
+```
+
+then the Prover will again report a type error, but the only available solutions
+are to change `sum` to a `mathint` (which would prevent the vacuity) or write
+an explicit `assert` or `require` cast (which would make the vacuity explicit).
 ````
 
 ```{todo}
@@ -596,6 +625,9 @@ example:
 bytes32 x = to_bytes32(0);
 ```
 
+Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
+or padded to the correct length.
+
 There is no way to convert between these types and integer types (except for
 literals as just mentioned).
 
@@ -610,9 +642,9 @@ In CVL1, the exact details for bitwise operations (such as `&`, `|`, and `<<`) w
 completely specified, especially for negative integers.
 
 In CVL 2, all bitwise operations (`&`, `|`, `~`, `>>`, `>>>`, `<<`, and `xor`)
-first convert to a 256 bit word, then perform the operations on the full 256-bit
-word, then convert back to the expected type.  Signed integer types use
-twos-complement encoding.
+on integer types first convert to a 256 bit word, then perform the operations
+on the full 256-bit word, then convert back to the expected type.  Signed
+integer types use twos-complement encoding.
 
 The two right-shifts differ in how they treat signed integers.  `>>` is an
 arithmetic shift; it preserves the sign bit.  `>>>` is a logical shift; it pads
@@ -768,4 +800,12 @@ value of a method that returns one of these types.
 If you do not change this, you will see the following error:
 ```
 
+### `pragma`
+
+CVL 1 had a `pragma` command for specifying the CVL version, but this feature
+was not used.  It has been removed in CVL 2.
+
+```{todo}
+If you do not change this, you will see the following error:
+```
 
