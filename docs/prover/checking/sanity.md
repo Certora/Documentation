@@ -5,20 +5,18 @@ about certain classes of mistakes in specifications.
 
 There are several kinds of sanity checks:
 
- * {ref}`sanity-reachability` determine whether there are any {term}`model`s that are not
-   ignored.
- * {ref}`sanity-trivial-invariant` determine whether invariants hold in all states, rather than reachable states.
- * {ref}`sanity-assert-vacuity` determine whether individual `assert` statements are {term}`vacuous`.
+ * {ref}`sanity-reachability` determine whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
  * {ref}`sanity-assert-tautology` determine whether individual `assert` statements are {term}`tautologies <tautology>`.
- * {ref}`sanity-redundant-require` determine whether individual `require` statements rule out any models.
+ * {ref}`sanity-trivial-invariant` detect invariants that hold in all states, rather than just reachable states.
+ * {ref}`sanity-assert-structure` detect unnecessarily complex `assert` statements.
+ * {ref}`sanity-redundant-require` detect unnecessary `require` statements.
 
 The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 `advanced` options to control which sanity checks should be executed:
  * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity
    checks are performed.
  * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the
-   reachability check is performed for all rules and invariants, and the
-   assert-vacuity check is performed for invariants.
+   reachability check and the trivial invariant check are performed.
  * With `--rule_sanity advanced`, all the sanity checks will be performed for
    all invariants and rules.
 
@@ -43,10 +41,10 @@ The remainder of this document describes these checks in detail.
 Reachability checks
 -------------------
 
-**Reachability** checks that even when ignoring all the user-provided
-assertions, the end of the rule is reachable. This check ensures that that
-the combination of `require` statements does not rule out all possible
-counterexamples.
+The **reachability** sanity rule checks that even when ignoring all the
+user-provided assertions, the end of the rule is reachable. This check ensures
+that that the combination of `require` statements does not rule out all
+possible counterexamples.
 
 For example, the following rule would be flagged by the reachability check:
 ```cvl
@@ -63,13 +61,42 @@ will always pass, regardless of the behavior of the contract.  This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
 
-(sanity-assert-vacuity)=
-Assert vacuity checks
+The reachability check also flags situations where counterexamples are ruled
+out for reasons other than `require` statements.  A common example comes from
+reusing `env` variables.  Consider the following poorly-written rule:
+
+```cvl
+env e; uint amount; address recipient;
+
+require balanceOf(recipient) == 0;
+require amount > 0;
+
+deposit(e, amount);
+transfer(e, recipient, amount);
+
+assert balanceOf(recipient) > 0,
+    "depositing and then transferring makes recipient's balance positive";
+```
+
+Although it looks like this rule is reasonable, it may actually be vacuous.
+The problem is that the environment `e` is reused, and in particular
+`e.msg.value` is the same in the calls to `deposit` and `transfer`.  Since
+`transfer` is not payable, it will always revert.  If `deposit` always reverts
+when `e.msg.value == 0`, then there are no models that reach the `assert`
+statement.
+
+(sanity-assert-tautology)=
+Assert tautology checks
 ---------------------
 
-**Assert-Vacuity** checks that individual `assert` statements are not
-tautologies.  A tautology is a statement that is true on all examples, even
-if all the `require` and `if` conditions are removed.
+The **assert tautology** sanity rule checks that individual `assert` statements
+are not {term}`tautologies <tautology>`.  A tautology is a statement that is
+true on all examples, even if all the `require` and `if` conditions are
+removed.
+
+```{note}
+This check is currently called **assert vacuity**
+```
 
 For example, the following rule would be flagged by the assert-vacuity check:
 
@@ -86,12 +113,26 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-(sanity-trivial-invariant)=
-Checking for trivial invariants
--------------------------------
+```{todo}
+Does the tautology check also consider the bodies of contract functions?  For
+example, is `assert square(x) >= 0;` a tautology if `square` is a contract
+function that squares its input?
+```
 
+(sanity-trivial-invariant)=
+Trivial invariant checks
+------------------------
+
+The **Trivial invariant** sanity rule checks that invariants are not trivial.
 A trivial invariant is one that holds in all possible states, not just in
-reachable states.  For example, the following invariant is trivial:
+reachable states.
+
+```{note}
+This check is currently called **assert-vacuity**
+```
+
+
+For example, the following invariant is trivial:
 
 ```cvl
 invariant squaresNonNeg(int x)
@@ -111,152 +152,70 @@ The rule version is more efficient because it can do a single check in an
 arbitrary state rather than separately checking states after arbitrary method
 invocations.
 
-(sanity-assert-tautology)=
-Assert tautology checks
------------------------
+(sanity-assert-structure)=
+Assertion structure checks
+--------------------------
 
-### Vacuity checking for rules
-    
-For rules, checking for tautology requires checking each assertion to see if 
-it’s meaningful. In order to do this, we employ a few different checks depending
-on the syntax of the assertion expression.
+The **assertion structure** sanity rule checks that complex assert statements
+can't be replaced with simpler ones.
 
-#### Tautology checking for implications
+```{note}
+This check is currently called **assert-tautology**
+```
 
-Given a rule with an `assert p => q`, we perform two checks:
+If an assertion expression is more complex than necessary, it can pass for
+misleading reasons.  For example, consider the following assertion:
 
-1. Implication hypothesis: `assert(!p)`
- 
-   If the hypothesis part is always false then the implication must always be
-   true, so the assertion is a tautology.
-   
-   ```cvl
-   rule testSanity{
-       uint a;
-       uint b;
-       assert a<0 => b<10;
-   }
-   ```
+```cvl
+uint x;
+assert (x > 5) => (x >= 0);
+```
 
-   If this check fails then the Prover will report a message like the following:
+In this case, the assertion is true, but only because `x` is a `uint` and is
+therefore *always* non-negative.  The fact that `x >= 0` has nothing to do with
+the fact that `x > 5`.  Therefore this complex assertion could be replaced with
+the more informative assertion `assert x >= 0;`.
 
-   ```
-   assert-vacuity check FAILED: sanity.spec:11:5
-   assert-tautology check FAILED: sanity.spec:11:5'a < 0 => b < 10' is a vacuous 
-   implication. It could be rewritten to !a < 0 because a < 0 is always false
-   ```
+Similarly, if the premise of the assertion is always false, then the implication
+is {term}`vacuously <vacuous>` true.  For example:
 
-2. Implication conclusion: `assert(q)`
-   
-   If the conclusion is true regardless of the hypothesis then the implication
-   is always true, and therefore the assertion is a tautology.
-   
-   ```cvl
-   rule testSanity{
-       uint a;
-       uint b;
-       assert a>10 => b>=0;
-   }
-   ```
-    
-   Error Message
-    
-   ```
-   assert-tautology check FAILED: sanity.spec:21:5conclusion `b >= 0` is always true 
-   regardless of the hypothesis
-   ```
-        
-#### Tautology checks for double implication
+```cvl
+uint x;
+assert (x < 0) => (x >= 5);
+```
 
-Given a rule with an `assert p <=> q` we perform two checks:
-     
-1. Double implication, both false: `assert(!p && !q)`
-   If both `p` and `q` are always false then the assertion condition `p <=> q`
-   is always true and is therefore a tautology.
+This assertion will pass, but only because the unsigned integer `x` is never
+negative.  This may mislead the user into thinking that they have checked that
+`x >= 5` in some interesting situation, when in fact they have not.  The simpler
+assertion `assert x >= 0;` is more accurate.
 
-   ```cvl
-   rule sanityDoubleImplication1{
-       uint a;
-       uint b;
-       assert a<0 <=> b<0;
-   }
-   ```
-     
-   If this check fails then the Prover will report a message like the following:
-      
-   ```
-   assert-tautology check FAILED: sanity.spec:26:5'a < 0 <=> b < 0' could be rewritten 
-   to !a < 0 && !b < 0 because both a < 0 and b < 0 are always false
-   ```
-           
-2. Double implication, both true: `assert(p && q)`
+Overly complex assertions like this may indicate a mistake in the rule.  In this
+case, for example, the fact that the user was checking that `x >= 0` may
+indicate that they should have declared `x` as an `int` instead of a `uint`.
 
-   If this passes then the original assertion is a tautology since both
-   conditions are always true.
+The "assert tautology" check tries to prove some complex logical statements by
+breaking them into simpler parts.  The following situations are reported by the
+"assert tautology" check:
 
-   ```cvl
-   rule sanityDoubleImplication2{
-       uint a;
-       uint b;
-       assert a>=0 <=> b>=0;
-   }
-   ```
-           
-   If this check fails then the Prover will report a message like the following:
+* `assert p => q;` is reported as a sanity violation if `p` is always false (in
+  which case the simpler assertion `assert !p;` will pass), or if `q` is always
+  true (in which case `assert q;` will suffice).
 
-   ```
-   assert-tautology check FAILED: sanity.spec:33:5'a >= 0 <=> b >= 0' could be rewritten
-   to a >= 0 && b >= 0 because both a >= 0 and b >= 0 are always true
-   ```
-            
-#### Tautology checking for disjunctions
+* `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
+  both always true (in which case the simpler assertions `assert p; assert q;` will
+  suffice), or if neither `p` nor `q` are ever true (in which case
+  `assert !p; assert !q;` will suffice).
 
-Given a rule with an `assert p || q`, we perform two checks:
-      
-1. Disjunction always true: `assert(p)`
-   If this passes then the assertion is a tautology since the first expression
-   of the disjunction is always true.
-
-   ```cvl
-   rule sanityDisjunction1{
-       uint a;
-       uint b;
-       assert a>=0 || b>10;
-   }
-   ```
-
-   If this check fails then the Prover will report a message like the following:
-
-   ```
-   assert-tautology check FAILED: sanity.spec:41:5the expression `a >= 0` is always true
-   ```
-
-2. Disjunction always true: `assert(q)`
-
-   If this passes then the assertion is a tautology since the second expression of the disjunction is always true.
-
-   ```cvl
-   rule sanityDisjunction2{
-       uint a;
-       uint b;
-       assert a>10 || b>=0;
-   }
-   ```
-            
-   If this check fails then the Prover will report a message like the following:
-            
-   ```
-   assert-tautology check FAILED: sanity.spec:47:5the expression `b >= 0` is always true
-   ```
-
+* `assert p || q;` is reported as a sanity violation if either `p` is always true
+  (in which case `assert p;` suffices) or if `q` is always true (in which case
+  `assert q;` suffices).
 
 (sanity-redundant-require)=
 Redundant require checks
 ------------------------
 
-**Require-Redundancy** checks for redundant `require` statements.
-A `require` is considered to be redundant if it can be removed without
-affecting the satisfiability of the rule.
+The **require redundancy** sanity rule checks for redundant `require` statements.
+A `require` is considered to be redundant if it does not rule out any {term}`models <model>`.
 
 For example, the require-redundancy check would flag the following rule:
 ```cvl
@@ -267,11 +226,7 @@ rule require_redundant {
   assert f(x) == 2, "f must return 2";
 }
 ```
+
 In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
-       
-```{todo}
-Add details of specific Require-Redundancy checks if helpful
-```
-
 
