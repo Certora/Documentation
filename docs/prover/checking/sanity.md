@@ -81,9 +81,10 @@ assert balanceOf(recipient) > 0,
 Although it looks like this rule is reasonable, it may actually be vacuous.
 The problem is that the environment `e` is reused, and in particular
 `e.msg.value` is the same in the calls to `deposit` and `transfer`.  Since
-`transfer` is not payable, it will always revert.  If `deposit` always reverts
-when `e.msg.value == 0`, then there are no models that reach the `assert`
-statement.
+`transfer` is not payable, it will always revert if `e.msg.value != 0`.  On the
+other hand, `deposit` always reverts when `e.msg.value == 0`.  Therefore every
+example will either cause `deposit` or `transfer` to revert, so there are no
+models that reach the `assert` statement.
 
 (sanity-assert-tautology)=
 Assert tautology checks
