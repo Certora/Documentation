@@ -7,11 +7,12 @@ There are several kinds of sanity checks:
 
  * {ref}`sanity-reachability` determine whether there are any {term}`model`s that are not
    ignored.
+ * {ref}`sanity-trivial-invariant` determine whether invariants hold in all states, rather than reachable states.
  * {ref}`sanity-assert-vacuity` determine whether individual `assert` statements are {term}`vacuous`.
  * {ref}`sanity-assert-tautology` determine whether individual `assert` statements are {term}`tautologies <tautology>`.
  * {ref}`sanity-redundant-require` determine whether individual `require` statements rule out any models.
 
-The `—rule_sanity` option may be followed by one of `none`, `basic`, or
+The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 `advanced` options to control which sanity checks should be executed:
  * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity
    checks are performed.
@@ -85,72 +86,31 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-### Vacuity checking for invariants
-   
-For invariants, vacuity is checked by converting it into a rule that asserts
-the invariant expression without any require statements. Since a rule would
-check the assertion for all arbitrary starting states, if the rule passes, it
-means that the expression being asserted is a tautology. The invariant, which
-checks the expression for a smaller set of states, would also be a tautology.
+(sanity-trivial-invariant)=
+Checking for trivial invariants
+-------------------------------
 
-The `sanityCheck` contract below has two state variables `address root` and
-`uint a`. Due to the zero address checks in the `constructor` and the
-`changeRoot` function, the root address can never be zero. The `rootNonZero`
-invariant asserts that the root address is never zero. When we run this
-invariant with the `--rule_sanity` `advanced` or `basic` options, the Prover
-creates a rule similar to the `rootNonZeroRule` below. This rule would fail
-since the tool could assume a starting state where the `root` is 0. This means
-that the invariant expression is not a tautology and the invariant passes. On
-the other hand the `aGE0` invariant, when run without the `--rule_sanity`
-option, will pass ([view report][aGE0-report]) but when we run it with the
-`--rule_sanity` `advanced` or `basic` options, the Prover creates a rule
-similar to the `aGE0Rule` below. This rule passes, indicating that the
-invariant expression is a tautology. The verification report shows that the
-invariant failed vacuity check ([view report][sanity-report]).
+A trivial invariant is one that holds in all possible states, not just in
+reachable states.  For example, the following invariant is trivial:
 
-```{todo}
-Link to production, rather than staging.
+```cvl
+invariant squaresNonNeg(int x)
+    x * x >= 0
 ```
 
-[aGE0-report]: https://vaas-stg.certora.com/output/11775/871cf37193c75d27542b/?anonymousKey=dde443c4a806021716e863a454561a6ad1543d2e
-[sanity-report]: https://vaas-stg.certora.com/output/11775/4c4cb65f65c75f013c63/?anonymousKey=0b6a843857e6ead8e1bb1f11b984fb6e3e9fb6a8
+While it does hold in every reachable state, it also holds in every
+non-reachable state.  Therefore it could be more efficiently checked as a rule:
 
-```solidity
-contract sanityCheck{
-    address root;
-    uint a;
-    constructor(address _root) {
-        require(_root != address(0));
-        root = _root;
-    }
-
-    function changeRoot (address root_) public {
-        require(root_ != address(0));
-        root = root_;
-    }
+```cvl
+rule squaresNonNeg(int x) {
+    assert x * x >= 0;
 }
 ```
 
-```cvl
+The rule version is more efficient because it can do a single check in an
+arbitrary state rather than separately checking states after arbitrary method
+invocations.
 
-  // Not a tautology
-  invariant rootNonZero()
-     root() != 0
-
-  rule rootNonZero(){
-     assert root() != 0;
-  }
-
-  // Tautology
-  invariant aGE0()
-     a() >= 0
-
-  rule aGE0Rule{
-     assert a() >= 0;
-  }
-
-```
-    
 (sanity-assert-tautology)=
 Assert tautology checks
 -----------------------
