@@ -47,8 +47,8 @@ function _setManagedBalance(address,uint256) internal => NONDET;
 
 ### Required `;` in more places
 
-`using`, `import`, and `use` statements all require a `;` at the end.  For
-example,
+`using`, `import`, `use`, and `invariant` statements all require a `;` at the
+end.  For example,
 
 ```cvl
 using C as c
