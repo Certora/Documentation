@@ -1,5 +1,5 @@
-Syntax changes introduced in CVL 2
-==================================
+Changes introduced in CVL 2
+===========================
 
 CVL 2.0 is a major overhaul to the type system of CVL.  Many
 of the changes are internal, but we also wanted to take this opportunity to
