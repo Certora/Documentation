@@ -52,5 +52,4 @@ CVL Version 2
 
 ```{toctree}
 cvl2/changes.md
-cvl2/migration.md
 ```
