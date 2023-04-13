@@ -99,7 +99,7 @@ removed.
 This check is currently called **assert vacuity**
 ```
 
-For example, the following rule would be flagged by the assert-vacuity check:
+For example, the following rule would be flagged by the assert tautology check:
 
 ```cvl
 rule tautology {
