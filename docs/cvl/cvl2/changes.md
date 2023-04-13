@@ -92,18 +92,6 @@ require f.selector == sig:balanceOf(address).selector;
 If you do not change this, you will see the following error:
 ```
 
-### Stricter ordering on method annotations
-
-In CVL 2, the order of the annotations must be visibility modifiers (`internal`
-or `external`), followed by `returns` clause (if any), followed by `optional`,
-`library`, or `envfree` in any order (if any), followed by a summary (if any).
-
-CVL 1 was less strict about the order.
-
-```{todo}
-If you do not change this, you will see the following error:
-```
-
 ### Use of contract name instead of `using` variable
 
 In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
