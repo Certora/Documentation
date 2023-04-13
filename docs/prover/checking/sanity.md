@@ -21,6 +21,9 @@ The `—rule_sanity` option may be followed by one of `none`, `basic`, or
  * With `--rule_sanity advanced`, all the sanity checks will be performed for
    all invariants and rules.
 
+We recommend starting with the `basic` mode, since not all rules flagged by the
+`advanced` mode are incorrect.
+
 When the Prover is run with any of these options, it first checks that the rule
 passes; if it does pass then the sanity checks are performed.  If the sanity
 checks also pass, the rule is marked as verified with a green checkmark; if the
