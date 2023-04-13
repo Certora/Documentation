@@ -100,6 +100,8 @@ splitter
 stablecoin
 struct
 structs
+subdirectory
+subdirectories
 subgraph
 subproblems
 subtype
