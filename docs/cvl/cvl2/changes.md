@@ -41,9 +41,9 @@ will become
 function _setManagedBalance(address,uint256) internal => NONDET;
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Required `;` in more places
 
@@ -68,9 +68,9 @@ use rule poolSolvency filtered {
 }
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Method literals require `sig:`
 
@@ -88,9 +88,9 @@ would become:
 require f.selector == sig:balanceOf(address).selector;
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Use of contract name instead of `using` variable
 
@@ -145,9 +145,9 @@ methods {
 }
 ```
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 Changes to methods block entries
 --------------------------------
@@ -288,9 +288,9 @@ If the rare case that you want to summarize the internal implementation and the
 external wrapper differently, you can add two separate entries to the `methods`
 block.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `optional` methods block entries
 
@@ -305,20 +305,20 @@ In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
-```{todo}
-If a methods block contains a non-optional entry for a method that doesn't exist
-in the contract, you will receive the following error message:
-```
+% ```{todo}
+% If a methods block contains a non-optional entry for a method that doesn't exist
+% in the contract, you will receive the following error message:
+% ```
 
 ### `library` annotations
 
 In CVL 2, contract functions declared as library functions must be annotated
 with `library` in the `methods` block.
 
-```{todo}
-If you forget to declare a method as a `library` method, you will receive the
-following error message:
-```
+% ```{todo}
+% If you forget to declare a method as a `library` method, you will receive the
+% following error message:
+% ```
 
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
@@ -326,9 +326,9 @@ In CVL 2, methods block entries for internal functions must contain either `call
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 (cvl2-wildcards)=
 ### Summaries only apply to one contract by default
@@ -385,16 +385,16 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 If a wildcard entry has a ghost or function summary, the user must explicitly
 provide an `expect` clause to the summary.  The `expect` clause tells the
@@ -413,9 +413,9 @@ the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
 If a function does not return any value, the summary should be declared with
 `expect void`.
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 ````{warning}
 The Prover is unable to check that the return type declared in the `expect`
@@ -467,9 +467,9 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Comparisons require identical types
 
@@ -521,9 +521,9 @@ are to change `sum` to a `mathint` (which would prevent the vacuity) or write
 an explicit `assert` or `require` cast (which would make the vacuity explicit).
 ````
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 (cvl2-casting)=
 ### Implicit and explicit casting
@@ -575,9 +575,9 @@ CVL 2 supports assert and require casts on all numeric types.
 Casts between `address`, `bytes1`...`bytes32`, and integer types are not
 supported.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Modulo operator `%` returns negative values for negative inputs
 
@@ -599,9 +599,9 @@ or padded to the correct length.
 There is no way to convert between these types and integer types (except for
 literals as just mentioned).
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 (cvl2-bitwise)=
 ### Changes for bitwise operations
@@ -647,9 +647,9 @@ In CVL 1, you could write a sighash instead of a method identifier in the
 `methods` block.  This feature is no longer supported.  You will need to have
 the name and argument types of the called method in order to provide an entry.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `invoke`, `sinvoke`, and `call`
 
@@ -658,27 +658,27 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
  - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `invoke_fallback`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
 to directly invoke the fallback method.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Havocing local variables
 
@@ -704,9 +704,9 @@ calldataarg args2;
 g(e,args2);
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Destructuring syntax for struct returns
 
@@ -750,9 +750,9 @@ uint x; uint y;
 x, y = g();
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `bytes[]` and `string[]`
 
@@ -764,16 +764,16 @@ block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature
 was not used.  It has been removed in CVL 2.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
