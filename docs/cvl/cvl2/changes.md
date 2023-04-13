@@ -1,5 +1,5 @@
-Syntax changes introduced in CVL 2
-==================================
+Changes introduced in CVL 2
+===========================
 
 CVL 2.0 is a major overhaul to the type system of CVL.  Many
 of the changes are internal, but we also wanted to take this opportunity to
@@ -19,8 +19,9 @@ There are several simple changes to the syntax to make specs more uniform and
 consistent, and to reduce the superficial differences with Solidity.
 
 ### `function` and `;` required for methods block entries
-Methods block entries must now start with `function` and end with `;`.  For
-example:
+
+In CVL 2, methods block entries must now start with `function` and end with
+`;` (semicolons were optional in CVL 1).  For example:
 
 ```cvl
 balanceOf(address) returns(uint) envfree
@@ -40,14 +41,14 @@ will become
 function _setManagedBalance(address,uint256) internal => NONDET;
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Required `;` in more places
 
-`using`, `pragma`, `import`, and `use` statements all require a `;` at the end.  For
-example,
+`using`, `import`, `use`, and `invariant` statements all require a `;` at the
+end.  For example,
 
 ```cvl
 using C as c
@@ -58,18 +59,18 @@ becomes
 using C as c;
 ```
 
-Note: `use` statements do not require (and may not have) a semicolon if they
+`use` statements do not require (and may not have) a semicolon if they
 are followed by a `preserved` or `filtered` block.  For example:
 
 ```cvl
-use rule tree_isImmutable filtered {
-    f -> !excludeFromProver(f)
+use rule poolSolvency filtered {
+    f -> !isEmergencyWithdrawal(f)
 }
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Method literals require `sig:`
 
@@ -87,28 +88,16 @@ would become:
 require f.selector == sig:balanceOf(address).selector;
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
-
-### Stricter ordering on method annotations
-
-In CVL 2, the order of the annotations must be visibility modifiers (`internal` or `external`),
-followed by `returns` clause (if any), followed by `optional`, `library`, or `envfree` in any order (if any),
-followed by a summary (if any).
-
-CVL 1 was less strict about the order.
-
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Use of contract name instead of `using` variable
 
-In CVL 1, the only way to refer to a contract on the {term}`scene` was to first
-introduce a variable with a `using` statement, and then use that variable.  For
-example, to access a struct type `S` defined in `Example.sol`, you would need
-to write
+In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
+introduce a contract instance variable with a `using` statement, and then use
+that variable.  For example, to access a struct type `S` defined in
+`Example.sol`, you would need to write
 
 ```cvl
 using Example as c;
@@ -118,8 +107,9 @@ rule example {
 }
 ```
 
-In CVL 2, you must now use the name of the contract, rather than the variable,
-when referring to user-defined types.  The above example would now be written
+In CVL 2, you must now use the name of the contract, rather than the instance
+variable, when referring to user-defined types.  The above example would now be
+written
 
 ```cvl
 rule example {
@@ -129,7 +119,8 @@ rule example {
 
 There is no need for a `using` statement in this example.
 
-`using` statements are still required to call methods on secondary contracts:
+Calling methods on secondary contracts still requires using a contract instance
+variable:
 
 ```cvl
 using Example as c;
@@ -142,34 +133,52 @@ rule example {
 ```
 
 Entries in the `methods` block may use either the contract name or the instance
-variable.
+variable:
 
-```{todo}
-Error message
+```cvl
+using Example as c;
+
+methods {
+    //// both are valid:
+    function c.balanceOf(address) external returns(uint) envfree;
+    function Example.transfer(address,uint) external envfree;
+}
 ```
+
+% ```{todo}
+% Error message
+% ```
 
 Changes to methods block entries
 --------------------------------
 
-In addition to the superficial changes listed above, there are some changes that
-change the way that methods block entries can be written.  In CVL 1, `methods`
-block entries often had several different functions and meanings:
+In addition to the superficial changes listed above, there are some changes to
+the way that methods block entries can be written (there are also a
+{ref}`few instances <cvl2-wildcards>` where the meanings of entries has
+changed).  In CVL 1, `methods` block entries often had several different
+functions and meanings:
 
  - They were used to indicate targets for summarization
  - They were used to write generic specs that could apply to contracts with
    missing methods
  - They were used to declare targets `envfree`
 
-The changes described in this section make these different uses more explicit.
+The changes described in this section make these different uses more explicit:
 
-### All Solidity types allowed as arguments
+```{contents}
+:local:
+:depth: 1
+```
+
+### Most Solidity types allowed as arguments
 
 CVL 1 had some restrictions on the types of arguments allowed in `methods` block
-entries.  For example, it was impossible to add entries for functions that
-accept arguments with user-defined types (such as enums and structs).
+entries.  For example, user-defined types (such as enums and structs) were not
+fully supported.
 
 CVL 2 `methods` block entries may use any Solidity types for arguments and
-return values, except for [function types][sol-fn-types], which are not supported.
+return values, except for [function types][sol-fn-types] and contract or
+interface types.
 
 [sol-fn-types]: https://docs.soliditylang.org/en/v0.8.17/types.html#function-types
 
@@ -196,7 +205,7 @@ methods {
 ```
 
 In CVL 2, the methods block entry should use the same type as the Solidity
-implementations[^contract-types]:
+implementations, except for function types and contract or interface types:
 
 ```cvl
 methods {
@@ -210,8 +219,25 @@ rule example {
 }
 ```
 
-[^contract-types]: There is one place where the types do not need to match exactly:
-  `address` and specific contract types (such as `IERC20`) are interchangeable.
+Contract functions that take or return contract or interface types should
+instead use `address` in the `methods` block declaration.  For example, if the
+contract contains the following function:
+
+```solidity
+function listToken(IERC20 token) internal
+```
+
+the `methods` block should use `address` for the `token` argument:
+
+```cvl
+methods {
+    function listToken(IERC20 address) internal
+}
+```
+
+Contract functions that take or return function types are not currently
+supported.  Users can use {ref}`munging <munging>` to work around this
+limitation.
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
@@ -262,9 +288,9 @@ If the rare case that you want to summarize the internal implementation and the
 external wrapper differently, you can add two separate entries to the `methods`
 block.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `optional` methods block entries
 
@@ -279,20 +305,20 @@ In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
-```{todo}
-If a methods block contains a non-optional entry for a method that doesn't exist
-in the contract, you will receive the following error message:
-```
+% ```{todo}
+% If a methods block contains a non-optional entry for a method that doesn't exist
+% in the contract, you will receive the following error message:
+% ```
 
 ### `library` annotations
 
 In CVL 2, contract functions declared as library functions must be annotated
 with `library` in the `methods` block.
 
-```{todo}
-If you forget to declare a method as a `library` method, you will receive the
-following error message:
-```
+% ```{todo}
+% If you forget to declare a method as a `library` method, you will receive the
+% following error message:
+% ```
 
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
@@ -300,9 +326,9 @@ In CVL 2, methods block entries for internal functions must contain either `call
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 (cvl2-wildcards)=
 ### Summaries only apply to one contract by default
@@ -313,6 +339,9 @@ given signature.
 In CVL 2, summaries only apply to a single contract, unless the old behavior is
 explicitly requested by using `_` as the receiver.  If no contract is specified,
 the default is `currentContract`.
+
+Entries that use `_` as the receiver are called {term}`wildcard entries <wildcard>`, summaries
+that do not are called {term}`exact entries <exact>`.
 
 Consider the following example:
 ```cvl
@@ -356,51 +385,53 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 If a wildcard entry has a ghost or function summary, the user must explicitly
 provide an `expect` clause to the summary.  The `expect` clause tells the
-Prover how to encode the value returned by the summary.  For example:
+Prover how to interpret the value returned by the summary.  For example:
 
 ```cvl
 methods {
-    function _.foo() internal => fooImpl() expect uint256 ALL;
+    function _.foo() external => fooImpl() expect uint256 ALL;
 }
 ```
 
-This entry will replace any call to any internal function `f()` with a call to
-the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
+This entry will replace any call to any external function `foo()` with a call to
+the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
 `uint256`.
 
 If a function does not return any value, the summary should be declared with
 `expect void`.
 
-```{todo}
-Error message
-```
+% ```{todo}
+% Error message
+% ```
 
 ````{warning}
-The Prover is unable to check that the return type declared in the `expect`
+You must check that your `expect` clauses are correct.
+
+The Prover cannot always check that the return type declared in the `expect`
 clause matches the return type that the contract expects.  Continuing the above
 example, suppose the contract being verified declared a method `foo()` that
 returns a type other than `uint256`:
 
 ```solidity
-function foo() internal returns(address) {
+function foo() external returns(address) {
     ...
 }
 
 function bar() internal {
-    address x = foo();
+    address x = y.foo();
 }
 ```
 
@@ -433,14 +464,14 @@ regardless of the input types.  Arithmetic operators include `+`,
 (changes to bitwise operators are described {ref}`below <cvl2-bitwise>`).
 
 The primary impact of this change is that you may need to declare more of your
-variables as `mathint` instead of `uint`.  If you are performing arithmetic
-operations and integers that you are passing to specs, you will need to be more
-explicit about the overflow behavior by using the {ref}`new casting operators
+variables as `mathint` instead of `uint`.  If you are passing the results of
+arithmetic operations to contract functions, you will need to be more explicit
+about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Comparisons require identical types
 
@@ -449,7 +480,8 @@ require both sides of the equation to have identical types, and {ref}`implicit
 casts <cvl2-casting>` will not be used.  Comparisons with number literals (e.g.
 `0` or `1`) are allowed for any integer type.
 
-If you do not have identical types, the best solution is to use the special
+If you do not have identical types (and cannot change one of your variables to
+a `mathint`), the best solution is to use the special
 `to_mathint` operator to convert both sides to `mathint`.  For example:
 
 ```cvl
@@ -459,7 +491,7 @@ assert to_mathint(balanceOf(user)) == initial + deposit;
 Note that in this example, we do not need to cast the right hand side, since
 the result of `+` is always of type `mathint`.
 
-````{todo}
+````{note}
 When should you not simply cast to `mathint`?  We have one example: consider the
 following code:
 
@@ -474,8 +506,9 @@ hook ... {
 Simply casting to `mathint` will turn overflows into vacuity.
 
 In this particular example, the right solution is to declare `sum` to be a
-`mathint` instead of a `uint`.  Note that with the more "modern" update syntax,
-this isn't a problem:
+`mathint` instead of a `uint`.  Note that with the more recent update syntax,
+this problem will correctly be reported as an error.  For example, if you
+mistakenly write the following:
 
 ```cvl
 ghost uint256 sum;
@@ -483,11 +516,16 @@ ghost uint256 sum;
 hook ... {
     sum = sum + newBalance - oldBalance;
 }
+```
+
+then the Prover will again report a type error, but the only available solutions
+are to change `sum` to a `mathint` (which would prevent the vacuity) or write
+an explicit `assert` or `require` cast (which would make the vacuity explicit).
 ````
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 (cvl2-casting)=
 ### Implicit and explicit casting
@@ -539,9 +577,9 @@ CVL 2 supports assert and require casts on all numeric types.
 Casts between `address`, `bytes1`...`bytes32`, and integer types are not
 supported.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Modulo operator `%` returns negative values for negative inputs
 
@@ -557,12 +595,15 @@ example:
 bytes32 x = to_bytes32(0);
 ```
 
+Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
+or padded to the correct length.
+
 There is no way to convert between these types and integer types (except for
 literals as just mentioned).
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 (cvl2-bitwise)=
 ### Changes for bitwise operations
@@ -571,9 +612,9 @@ In CVL1, the exact details for bitwise operations (such as `&`, `|`, and `<<`) w
 completely specified, especially for negative integers.
 
 In CVL 2, all bitwise operations (`&`, `|`, `~`, `>>`, `>>>`, `<<`, and `xor`)
-first convert to a 256 bit word, then perform the operations on the full 256-bit
-word, then convert back to the expected type.  Signed integer types use
-twos-complement encoding.
+on integer types first convert to a 256 bit word, then perform the operations
+on the full 256-bit word, then convert back to the expected type.  Signed
+integer types use twos-complement encoding.
 
 The two right-shifts differ in how they treat signed integers.  `>>` is an
 arithmetic shift; it preserves the sign bit.  `>>>` is a logical shift; it pads
@@ -582,9 +623,11 @@ the shifted word with zero.
 Bitwise operations cannot be performed on `mathint` values.
 
 ```{note}
-By default, bitwise operators are {term}`overapproximated <overapproximation>`,
-so you may see counterexamples that incorrectly compute the results of bitwise
-operations.
+By default, bitwise operators are {term}`overapproximated <overapproximation>`
+(in both CVL 1 and CVL 2), so you may see counterexamples that incorrectly
+compute the results of bitwise operations.  The approximations are still
+{term}`sound`: the Prover will not report a rule as verified if the original
+code does not satisfy the rule.
 
 The {ref}`-useBitVectorTheory` flag makes the Prover's reasoning about bitwise
 operations more precise, but this flag is experimental in CVL 2.
@@ -606,38 +649,38 @@ In CVL 1, you could write a sighash instead of a method identifier in the
 `methods` block.  This feature is no longer supported.  You will need to have
 the name and argument types of the called method in order to provide an entry.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `invoke`, `sinvoke`, and `call`
 
 Older versions of CVL had special syntax for calling contract and CVL functions:
- - `invoke f(args);` should be replaced with `f(args);`.
- - `sinvoke f(args);` should be replaced with `f@withrevert(args);`
+ - `invoke f(args);` should be replaced with `f@withrevert(args);`.
+ - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `invoke_fallback`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
 to directly invoke the fallback method.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Havocing local variables
 
@@ -651,12 +694,21 @@ havoc args;
 g(e, args);
 ```
 
-In CVL 2, you can no longer `havoc` local variables.  Instead, replace the
-havoced variable with a new variable.
+In CVL 2, you can only `havoc` ghost variables and ghost functions.  Instead of
+havocing a local variable, replace the havoced variable with a new variable. For
+example, you should replace the above with
 
-```{todo}
-If you do not change this, you will see the following error:
+```cvl
+calldataarg args; env e;
+f(e,args);
+
+calldataarg args2;
+g(e,args2);
 ```
+
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### Destructuring syntax for struct returns
 
@@ -700,9 +752,9 @@ uint x; uint y;
 x, y = g();
 ```
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
 ### `bytes[]` and `string[]`
 
@@ -714,8 +766,16 @@ block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
 
-```{todo}
-If you do not change this, you will see the following error:
-```
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 
+### `pragma`
+
+CVL 1 had a `pragma` command for specifying the CVL version, but this feature
+was not used.  It has been removed in CVL 2.
+
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
 

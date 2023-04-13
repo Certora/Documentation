@@ -41,7 +41,9 @@ underapproximation
   called an "overapproximation"; if it does not then it is called an
   "underapproximation".  For example, a {ref}`NONDET <view-summary>` summary is
   an overapproximation because every possible value that the original
-  implementation could return is considered by the Prover.
+  implementation could return is considered by the Prover, while an
+  {ref}`ALWAYS <view-summary>` summary is an underapproximation if the
+  summarized method could return more than one value.
 
   Proofs on overapproximated programs are {term}`sound`, but there may be
   spurious {term}`counterexample`s caused by behavior that the original code
@@ -86,6 +88,13 @@ summarize
   not available or if the implementation is too complex for the Prover to
   analyze without timing out.  See {doc}`/docs/cvl/methods` for
   complete information on different types of method summaries.
+
+wildcard
+exact
+  A methods block entry that explicitly uses `_` as a receiver is a *wildcard
+  entry*; all other entries are called *exact entries*.  See
+  {doc}`/docs/cvl/methods`.
+
 ````
 
 
