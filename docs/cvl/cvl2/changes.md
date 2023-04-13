@@ -398,16 +398,16 @@ multiple methods that return different types.
 
 If a wildcard entry has a ghost or function summary, the user must explicitly
 provide an `expect` clause to the summary.  The `expect` clause tells the
-Prover how to encode the value returned by the summary.  For example:
+Prover how to interpret the value returned by the summary.  For example:
 
 ```cvl
 methods {
-    function _.foo() internal => fooImpl() expect uint256 ALL;
+    function _.foo() external => fooImpl() expect uint256 ALL;
 }
 ```
 
-This entry will replace any call to any internal function `foo()` with a call to
-the CVL function `fooImpl()`, and will encode the output of `fooImpl` as a
+This entry will replace any call to any external function `foo()` with a call to
+the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
 `uint256`.
 
 If a function does not return any value, the summary should be declared with
@@ -418,18 +418,20 @@ If a function does not return any value, the summary should be declared with
 % ```
 
 ````{warning}
-The Prover is unable to check that the return type declared in the `expect`
+You must check that your `expect` clauses are correct.
+
+The Prover cannot always check that the return type declared in the `expect`
 clause matches the return type that the contract expects.  Continuing the above
 example, suppose the contract being verified declared a method `foo()` that
 returns a type other than `uint256`:
 
 ```solidity
-function foo() internal returns(address) {
+function foo() external returns(address) {
     ...
 }
 
 function bar() internal {
-    address x = foo();
+    address x = y.foo();
 }
 ```
 
