@@ -6,7 +6,6 @@ This document is incomplete.
 ```
 
 ````{glossary}
-
 environment
   The environment of a method call refers to the global variables that solidity
   provides, including `msg`, `block`, and `tx`.  CVL represents these variables
@@ -33,6 +32,24 @@ counterexample
   The terms "model", "example", and "counterexample" are used interchangeably.
   They all refer to an assignment of values to all of the CVL variables and
   contract storage.  See {ref}`rule-overview`.
+
+overapproximation
+underapproximation
+  Sometimes it is useful to replace a complex piece of code with something
+  simpler that is easier to reason about.  If the approximation includes all of
+  the possible behaviors of the original code (and possibly others), it is
+  called an "overapproximation"; if it does not then it is called an
+  "underapproximation".  For example, a {ref}`NONDET <view-summary>` summary is
+  an overapproximation because every possible value that the original
+  implementation could return is considered by the Prover, while an
+  {ref}`ALWAYS <view-summary>` summary is an underapproximation if the
+  summarized method could return more than one value.
+
+  Proofs on overapproximated programs are {term}`sound`, but there may be
+  spurious {term}`counterexample`s caused by behavior that the original code
+  did not exhibit.  Underapproximations are more dangerous because a property
+  that is successfully verified on the underapproximation may not hold on the
+  approximated code.
 
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
@@ -71,6 +88,13 @@ summarize
   not available or if the implementation is too complex for the Prover to
   analyze without timing out.  See {doc}`/docs/cvl/methods` for
   complete information on different types of method summaries.
+
+wildcard
+exact
+  A methods block entry that explicitly uses `_` as a receiver is a *wildcard
+  entry*; all other entries are called *exact entries*.  See
+  {doc}`/docs/cvl/methods`.
+
 ````
 
 
