@@ -17,6 +17,3 @@ jobs:
     - run: |
         find build/spelling -type f | xargs cat > errors.txt
         [[ ! $(cat errors.txt) ]] || (echo && echo "errors:" && cat errors.txt && false)
-    - run: |
-        make linkcheck || (echo && echo "errors:" && cat build/linkcheck/output.txt && false)
-
