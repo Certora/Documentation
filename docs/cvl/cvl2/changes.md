@@ -245,14 +245,14 @@ instead use `address` in the `methods` block declaration.  For example, if the
 contract contains the following function:
 
 ```solidity
-function listToken(IERC20 token) internal
+function listToken(IERC20 token) internal { ... }
 ```
 
 the `methods` block should use `address` for the `token` argument:
 
 ```cvl
 methods {
-    function listToken(address token) internal
+    function listToken(address token) internal;
 }
 ```
 
