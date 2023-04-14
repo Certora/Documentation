@@ -34,6 +34,24 @@ counterexample
   They all refer to an assignment of values to all of the CVL variables and
   contract storage.  See {ref}`rule-overview`.
 
+overapproximation
+underapproximation
+  Sometimes it is useful to replace a complex piece of code with something
+  simpler that is easier to reason about.  If the approximation includes all of
+  the possible behaviors of the original code (and possibly others), it is
+  called an "overapproximation"; if it does not then it is called an
+  "underapproximation".  For example, a {ref}`NONDET <view-summary>` summary is
+  an overapproximation because every possible value that the original
+  implementation could return is considered by the Prover, while an
+  {ref}`ALWAYS <view-summary>` summary is an underapproximation if the
+  summarized method could return more than one value.
+
+  Proofs on overapproximated programs are {term}`sound`, but there may be
+  spurious {term}`counterexample`s caused by behavior that the original code
+  did not exhibit.  Underapproximations are more dangerous because a property
+  that is successfully verified on the underapproximation may not hold on the
+  approximated code.
+
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
   method variable, or using an overloaded function name.  The Prover will
@@ -86,6 +104,12 @@ vacuity
 
 tautology
   A tautology is a logical statement that is always true.
+
+wildcard
+exact
+  A methods block entry that explicitly uses `_` as a receiver is a *wildcard
+  entry*; all other entries are called *exact entries*.  See
+  {doc}`/docs/cvl/methods`.
 
 ````
 
