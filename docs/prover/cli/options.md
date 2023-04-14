@@ -343,6 +343,55 @@ The default number of loop iterations we unroll is one. However, in many cases, 
 certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 ```
 
+Options regarding hashing of unbounded data
+-------------------------------------------
+
+(--optimistic_hashing)=
+### `--optimistic_hashing`
+
+**What does it do?**
+
+ When hashing data of potentially unbounded length (including unbounded arrays, like `bytes`, `uint[]`, etc.), assume that its length is bounded by the value set through the `--hashing_length_bound` option. If this is not set, and the length can be exceeded by the input program, the prover reports an assertion violation. I.e., when this option is set, the boundedness of the hashed data assumed checked by the prover, when this option is set that boundedness is assumed instead.
+
+See {doc}`../approx/hashing` for more details.
+
+
+**When to use it?**  
+
+When the assertion regarding unbounded hashing is thrown, but it is acceptable for the prover to ignore cases where the length hashed values exceeds the current bound.
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
+```
+
+(--hashing_length_bound)=
+### `--hashing_length_bound`
+
+**What does it do?**
+
+Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the prover, depending on whether `--optimistic_hashing` has been set. The bound is specified as a number of bytes. 
+
+The default value of this option is 224 (224 bytes correspond to 7 EVM machine words as 7 * 32 == 224).
+
+**When to use it?**  
+Reason to lower this value:
+
+Lowering potentially improves SMT performance, especially if there are many occurrences of unbounded hashing in the program. 
+
+Reasons to raise this value:
+
+ - when `--optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `--optimistic_hashing` being not set)
+ - when `--optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
+```
+
+
 Options that help reduce the running time
 -----------------------------------------
 
@@ -440,12 +489,12 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 `TokenPair public tokenPair;`
 
 Where `TokenPair` is  
-`struct TokenPair {`  
-`IERC20 tokenA;`
-
-`IERC20 tokenB;`
-
-`}`
+```solidity
+struct TokenPair {
+    IERC20 tokenA;
+    IERC20 tokenB;
+}
+```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:  
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --structLink Bank:0=BankToken Bank:1=LoanToken`

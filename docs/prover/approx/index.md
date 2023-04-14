@@ -1,8 +1,8 @@
 Prover Approximations
 =====================
 
-In order to check programs in a finite amount of time, the Prover simplifies
-the code being verified.  This section describes the mechanisms for
+In order to check programs in an acceptable amount of time, the Prover
+simplifies the code being verified. This section describes the mechanisms for
 simplification.
 
 ```{warning}
@@ -17,5 +17,6 @@ overlooked by the Prover.
 loops.md
 summarization.md
 harnessing.md
+hashing.md
 ```
 
