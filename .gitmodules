@@ -7,3 +7,6 @@
 [submodule "docs/user-guide/multicontract/ERC20Example"]
 	path = docs/user-guide/basics/ERC20Example
 	url = https://github.com/Certora/ERC20Example.git
+[submodule "docs/cvl/cvl2/CVL2Examples"]
+	path = docs/cvl/cvl2/CVL2Examples
+	url = git@github.com:Certora/CVL2Examples.git

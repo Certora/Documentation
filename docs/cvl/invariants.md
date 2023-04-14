@@ -433,7 +433,7 @@ Putting these together allows us to conclude
 ```{math}
 ∀ n, ∀ x, P_i(x,n) ∧ P_j(x,n) ⇒ P_i(x,n+1) ∧ P_j(x,n+1)
 ```
-which is exactly what we need for an inductive proof of the the statement
+which is exactly what we need for an inductive proof of the statement
 {math}`∀ n, ∀ x, P_i(x,n) ∧ P_j(x,n)`.  This statement then shows that both
 `i(x)` and `j(x)` are true in all reachable states.
 

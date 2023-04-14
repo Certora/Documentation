@@ -18,6 +18,7 @@ This technique is currently undocumented.  See our [OpenZeppelin verification
 project](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/certora) for an example.
 ```
 
+(munging)=
 Harnessing by munging
 ---------------------
 
