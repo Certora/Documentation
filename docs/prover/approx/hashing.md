@@ -86,7 +86,7 @@ contract C {
 
 Whichever distinct values we chose for `x` and `y` in the example below, on the
 real Keccak function one rule would be violated and one rule would not. In the 
-modeling of the Certora Prover, both rules are violated, since the prover is 
+modeling of the Certora Prover, both rules are violated, since the Prover is 
 allowed to "invent" a hash function for each rule and will choose one that 
 violates the property whenever there is such a function (as long as that 
 function fulfills the "injectivity with large gaps" property).
@@ -165,7 +165,7 @@ Behavior of the second hash operation, triggered by the mapping access `m[b2]`,
 depends on whether `--optimistic_hashing` is set. 
 
  - If the `--optimistic_hashing` flag is not set, the violation of an internal 
-assertion will be reported by the prover, stating that an chunk of data is being
+assertion will be reported by the Prover, stating that an chunk of data is being
 hashed that may exceed the given bound of 224.
 The reported message will look like this:
 ```text
@@ -175,7 +175,7 @@ Optimistic unbounded hashing is currently deactivated (can be activated via
 option "--optimistic_hashing").
 ```
 
- - If the `--optimistic_hashing` flag is set, the prover will internally make an
+ - If the `--optimistic_hashing` flag is set, the Prover will internally make an
 assumption (equivalent to a `require` statement) on `b2` stating that its length cannot
 exceed 224 bytes.
 

@@ -351,14 +351,14 @@ Options regarding hashing of unbounded data
 
 **What does it do?**
 
- When hashing data of potentially unbounded length (including unbounded arrays, like `bytes`, `uint[]`, etc.), assume that its length is bounded by the value set through the `--hashing_length_bound` option. If this is not set, and the length can be exceeded by the input program, the prover reports an assertion violation. I.e., when this option is set, the boundedness of the hashed data assumed checked by the prover, when this option is set that boundedness is assumed instead.
+ When hashing data of potentially unbounded length (including unbounded arrays, like `bytes`, `uint[]`, etc.), assume that its length is bounded by the value set through the `--hashing_length_bound` option. If this is not set, and the length can be exceeded by the input program, the Prover reports an assertion violation. I.e., when this option is set, the boundedness of the hashed data assumed checked by the Prover, when this option is set that boundedness is assumed instead.
 
 See {doc}`../approx/hashing` for more details.
 
 
 **When to use it?**  
 
-When the assertion regarding unbounded hashing is thrown, but it is acceptable for the prover to ignore cases where the length hashed values exceeds the current bound.
+When the assertion regarding unbounded hashing is thrown, but it is acceptable for the Prover to ignore cases where the length hashed values exceeds the current bound.
 
 **Example**
 
@@ -371,7 +371,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 
 **What does it do?**
 
-Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the prover, depending on whether `--optimistic_hashing` has been set. The bound is specified as a number of bytes. 
+Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the Prover, depending on whether `--optimistic_hashing` has been set. The bound is specified as a number of bytes. 
 
 The default value of this option is 224 (224 bytes correspond to 7 EVM machine words as 7 * 32 == 224).
 
