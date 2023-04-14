@@ -4,13 +4,21 @@ Migration guide
 This section gives a step-by-step process for migrating your specs from CVL 1 to
 CVL 2.
 
-## Migration script
+## Step 1: Familiarize yourself with the CVL 2 changes
 
-```{todo}
-You can find the migration script at TODO.
-```
+We recommend at least skimming {doc}`changes` to familiarize yourself with the
+changes introduced by CVL 2.
 
-You can run it on a directory containing spec files as follows:
+## Step 2: Run the migration script
+
+Certora has written a simple script to aid in the conversion from CVL 1 to
+CVL 2.  You can download the script [here][script-location].
+
+[script-location]: https://gist.github.com/shellygr/c054a0ad569397ef4e19ec1d1d5afcdb
+
+After downloading the script, you can run it to automatically modify all `.spec`
+files in a directory.  The script will modify the files in place, so make sure
+that you commit your files before running it.
 
 ```
 python3 CVL1_to_CVL2.0_syntax_update.py -d <path> -r
@@ -18,14 +26,16 @@ python3 CVL1_to_CVL2.0_syntax_update.py -d <path> -r
 
 Run `python3 CVL1_to_CVL2.0_syntax_update.py --help` for further instructions.
 
-```{todo}
-The script will modify all `.spec` files in the specified path its
-subdirectories.
-```
+The migration script only handles simple cases, and is not guaranteed to work.
+Some manual work and adjustment may be needed after running the script. The
+script may also make odd mistakes. 
 
-The migration script only helps deal with common use cases where the
-migration is straightforward. Some manual work and adjustment may be needed
-after running the script. The script may also make odd mistakes. 
+The script will attempt to make the following changes:
+ - replace `sinvoke f(...)` with `f(...)`
+ - replace `invoke f(...)` with `f@withrevert(...)`
+ - replace `f(...).selector` with `sig:f(...).selector`
+ - ensure that rules start with `rule`
+ - 
 
 In particular, as the script only consumes spec files, there are decisions that
 it cannot make, as they are based on the Solidity code. Some of those are
