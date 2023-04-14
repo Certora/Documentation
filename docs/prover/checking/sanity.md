@@ -38,15 +38,21 @@ of the failure:
 The remainder of this document describes these checks in detail.
 
 (sanity-reachability)=
-Reachability checks
--------------------
+Vacuity checks
+--------------
 
-The **reachability** sanity rule checks that even when ignoring all the
+The **rule vacuity** sanity rule checks that even when ignoring all the
 user-provided assertions, the end of the rule is reachable. This check ensures
 that that the combination of `require` statements does not rule out all
-possible counterexamples.
+possible counterexamples.  Rules that rule out all possible counterexamples
+are called {term}`vacuous` rules.  Since they don't actually check any
+assertions, they are almost certainly incorrect.
 
-For example, the following rule would be flagged by the reachability check:
+```{note}
+This rule is currently called **reachability**
+```
+
+For example, the following rule would be flagged by the rule vacuity check:
 ```cvl
 rule vacuous {
     uint x;
@@ -188,28 +194,29 @@ assert (x < 0) => (x >= 5);
 This assertion will pass, but only because the unsigned integer `x` is never
 negative.  This may mislead the user into thinking that they have checked that
 `x >= 5` in some interesting situation, when in fact they have not.  The simpler
-assertion `assert x >= 0;` is more accurate.
+assertion `assert x >= 0;` more clearly describes what is going on.
 
 Overly complex assertions like this may indicate a mistake in the rule.  In this
 case, for example, the fact that the user was checking that `x >= 0` may
 indicate that they should have declared `x` as an `int` instead of a `uint`.
 
-The "assert tautology" check tries to prove some complex logical statements by
+The assertion structure check tries to prove some complex logical statements by
 breaking them into simpler parts.  The following situations are reported by the
-"assert tautology" check:
+assertion structure check:
 
 * `assert p => q;` is reported as a sanity violation if `p` is always false (in
-  which case the simpler assertion `assert !p;` will pass), or if `q` is always
-  true (in which case `assert q;` will suffice).
+  which case the simpler assertion `assert !p;` more clearly describes the
+  situation), or if `q` is always true (in which case `assert q;` is a clearer
+  alternative).
 
 * `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
-  both always true (in which case the simpler assertions `assert p; assert q;` will
-  suffice), or if neither `p` nor `q` are ever true (in which case
-  `assert !p; assert !q;` will suffice).
+  both always true (in which case the simpler assertions `assert p; assert q;`
+  more clearly describe the situation), or if neither `p` nor `q` are ever true
+  (in which case `assert !p; assert !q;` is a clearer alternative).
 
 * `assert p || q;` is reported as a sanity violation if either `p` is always true
-  (in which case `assert p;` suffices) or if `q` is always true (in which case
-  `assert q;` suffices).
+  (in which case `assert p;` more clearly describes the situation) or if `q` is
+  always true (in which case `assert q;` is a clearer alternative).
 
 (sanity-redundant-require)=
 Redundant require checks
