@@ -117,9 +117,9 @@ Omitting this key will cause verification to run locally
 
 At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
 
-- Make sure the runscript you use to run the prover does not have the `--send_only` flag or any commented out (using `#`) lines.
+- Make sure the run script you use to run the Prover does not have the `--send_only` flag or any commented out (using `#`) lines.
 - Since Gambit requires you to provide the solidity compiler flags to compile the mutants, sometimes it might be useful to first identify what those flags should be. See {ref}`gambit-config` for more information. A strategy you can adopt is
-  * first run `gambit` without going through certoraMutate (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
+  * first run `gambit` without going through `certoraMutate` (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
   * Make a `foo.json` file and copy the content of the `"gambit":` field in it.
   * Run `gambit-OS mutate --json foo.json` to identify the issue.
 
