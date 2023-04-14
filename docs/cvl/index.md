@@ -46,3 +46,10 @@ defs.md
 hooks.md
 ```
 
+
+CVL Version 2
+-------------
+
+```{toctree}
+cvl2/changes.md
+```
