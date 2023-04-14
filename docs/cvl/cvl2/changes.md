@@ -132,7 +132,7 @@ rule example {
 }
 ```
 
-Entries in the `methods` block may use either the contract name or the instance
+Entries in the `methods` block may use either the contract name or an instance
 variable:
 
 ```cvl
@@ -145,9 +145,30 @@ methods {
 }
 ```
 
+Using the contract name in the methods block currently has the same effect as
+using an instance variable; this may change in future versions of CVL.
+
 % ```{todo}
 % Error message
 % ```
+
+### Rules must start with `rule`
+
+In CVL 1, you could omit the keyword `rule` when writing rules:
+
+```cvl
+onlyOwnerCanDecrease() {
+    ...
+}
+```
+
+In CVL 2, the `rule` keyword is no longer optional:
+
+```cvl
+rule onlyOwnerCanDecrease() {
+    ...
+}
+```
 
 Changes to methods block entries
 --------------------------------
@@ -231,7 +252,7 @@ the `methods` block should use `address` for the `token` argument:
 
 ```cvl
 methods {
-    function listToken(IERC20 address) internal
+    function listToken(address token) internal
 }
 ```
 
@@ -572,10 +593,33 @@ As with normal `require` statements, require casts can cause vacuity and should
 be used with care.
 ```
 
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
+
 CVL 2 supports assert and require casts on all numeric types.
 
 Casts between `address`, `bytes1`...`bytes32`, and integer types are not
 supported.
+
+`require` and `assert` casts are not allowed anywhere inside of a
+{term}`quantified statement <quantifier>`.  You can work around this limitation
+by adding a second variable.  For example, the following axiom is invalid
+because `x+1` is not a `uint`:
+
+```cvl
+ghost mapping(uint => uint) a {
+    axiom forall uint x . a[x+1] == 0
+}
+```
+
+However, it can be replaced with the following:
+
+```cvl
+ghost mapping(uint => uint) a {
+    axiom forall uint x . forall uint y . (to_mathint(y) == x + 1) => a[y] == 0
+}
+```
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -633,6 +677,30 @@ The {ref}`-useBitVectorTheory` flag makes the Prover's reasoning about bitwise
 operations more precise, but this flag is experimental in CVL 2.
 ```
 
+(cvl2-fallback-changes)=
+Changes to the fallback function
+--------------------------------
+
+In CVL 1, you could determine whether a `method` object was the fallback function
+by comparing its selector to `certorafallback().selector`:
+
+```cvl
+assert f.selector == certorafallback().selector,
+    "f must be the fallback";
+```
+
+In CVL 2, `certorafallback()` is no longer valid.  Instead, you can use the new
+field `f.isFallback` to detect the fallback method:
+
+```cvl
+assert f.isFallback,
+    "f must be the fallback";
+```
+
+% ```{todo}
+% Error message
+% ```
+
 Removed features
 ----------------
 
@@ -673,13 +741,23 @@ them with `assert` and `require` respectively.
 % If you do not change this, you will see the following error:
 % ```
 
-### `invoke_fallback`
+### `invoke_fallback` and `certorafallback()`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
-to directly invoke the fallback method.
+to directly invoke the fallback method.  You can work around this limitation by
+writing a parametric rule and filtering on `f.isFallback`.  See
+{ref}`cvl2-fallback-changes`.
 
 % ```{todo}
 % If you do not change this, you will see the following error:
+% ```
+
+### `invoke_whole`
+
+The `invoke_whole` keyword is no longer supported.
+
+% ```{todo}
+% What did it do?
 % ```
 
 ### Havocing local variables
