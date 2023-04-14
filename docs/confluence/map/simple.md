@@ -135,12 +135,13 @@ We get a call trace that tells us the most important operations performed by the
 ```cvl
 rule insertRevertConditions(uint key, uint value) {
     env e;
+    bool containsKey = contains(key);
     insert@withrevert(e, key, value);
     bool succeeded = !lastReverted;
 
     assert (e.msg.value == 0 
         && value != 0
-        && !contains(key))
+        && !containsKey)
         => succeeded;
 }
 ```
