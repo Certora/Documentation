@@ -194,3 +194,8 @@ These versions can also be made private or hidden
 [rtd-versions]: https://readthedocs.com/projects/certora-certora-prover-documentation/versions/
 [rtd-versioning]: https://docs.readthedocs.io/en/stable/versions.html
 
+Currently, the `latest` documentation refers to the `master` branch, and the
+`stable` label is hidden
+
+
+
