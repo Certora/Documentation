@@ -197,5 +197,3 @@ These versions can also be made private or hidden
 Currently, the `latest` documentation refers to the `master` branch, and the
 `stable` label is hidden
 
-
-
