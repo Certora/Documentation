@@ -1,5 +1,5 @@
 Storage in Call Trace
-============
+=====================
 When the Prover finds a counterexample to an assertion, 
 the resulting trace contains information about the state of the contracts at the beginning of the rule, 
 as well as information about updates to the storage during the execution of the contracts' functions.
@@ -36,17 +36,17 @@ What are the “computational types”?
 -----------------------------------
 There are currently four types:  
 * Concrete - the value of this variable in the counterexample is explicitly set to this value in the spec or contract,
-so it must be similar in all counterexamples.  // TODO: this is unclear. Why must it be similar? What does similar mean here?
+so it must be the same in all counterexamples.
 * Don’t care - the value of this variable is not used before it is written, so its initial value is not relevant.  
 * Havoc - the SMT chooses a random value.  
 * Havoc dependent - the value is a result of some computation involving another havoc or havoc dependent variable.
 We distinguish it from havoc’d variables, because if we know the values of all havoc’d variables,
 this value can be calculated as well (unlike havoc’d variables which are completely random).  
 
-// TODO: I also noticed Unknown here https://prover.certora.com/output/33050/d22a36b3d50b4ef1812a6cc03d72d7aa/?anonymousKey=0c21d1fa076ce622bb4f57624101a5197fead3ef in the call to refreshRewardTokens. Should we doc it too?
+If we are not able to detect the type, it is displayed as Unknown.
 
 Limitations of the current “computational type” resolution
------------------------------------------------------------
+----------------------------------------------------------
 We currently only consider assignments and storage changes (store, havoc, restore (`func() at init` and revert).  
 However, we don’t consider requires or values that cause revert so in
 ```
