@@ -32,11 +32,10 @@ consistent, and to reduce the superficial differences with Solidity.
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
-`;` (semicolons were optional in CVL 1).  See [example][MethodsEntries.spec].
+`;` (semicolons were optional in CVL 1).  See [example][MethodsEntries.spec]
+(this example also adds `external`, {ref}`described below <cvl2-visibility>`).
 
 [MethodsEntries.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
-
-This example also adds `external`, {ref}`described below <cvl2-visibility>`.
 
 If you do not change this, you will get an error message like the following:
 ```
@@ -248,7 +247,7 @@ In CVL 2, the methods block entry should use the same type as the Solidity
 implementations[^contract-types] ([compare files][MethodsBlockTypes.spec]),
 except for function types and contract or interface types:
 
-[MethodsBlockTypes.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8
+[MethodsBlockTypes.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8
 
 ```cvl
 methods {
