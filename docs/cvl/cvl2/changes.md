@@ -29,32 +29,14 @@ Superficial syntax changes
 There are several simple changes to the syntax to make specs more uniform and
 consistent, and to reduce the superficial differences with Solidity.
 
-See [`SyntaxExamples.spec` diff][SyntaxExamples.spec].
-
-[SyntaxExamples.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-4581e72f4b3f00f8d784df0e14f8b5804c16412d7346befab5ce42a7e8a7b632
-
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
-`;` (semicolons were optional in CVL 1).  For example:
+`;` (semicolons were optional in CVL 1).  See [example][MethodsEntries.spec]
 
-```cvl
-balanceOf(address) returns(uint) envfree
-```
-will become
-```cvl
-function balanceOf(address) external returns(uint) envfree;
-```
-(note also the addition of `external`, {ref}`described below <cvl2-visibility>`).
+[MethodsEntries.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
 
-This is also true for entries with summaries:
-```cvl
-_setManagedBalance(address,uint256) => NONDET
-```
-will become
-```cvl
-function _setManagedBalance(address,uint256) internal => NONDET;
-```
+This example also adds `external`, {ref}`described below <cvl2-visibility>`.
 
 ````{todo}
 If you do not change this, you will see the following error:
@@ -70,25 +52,9 @@ Error: CVL parser failed with exception. Exception message: "Failed to parse {sp
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
-end.  For example,
+end.  See [example][Semicolons.spec].
 
-```cvl
-using C as c
-```
-
-becomes
-```cvl
-using C as c;
-```
-
-`use` statements do not require (and may not have) a semicolon if they
-are followed by a `preserved` or `filtered` block.  For example:
-
-```cvl
-use rule poolSolvency filtered {
-    f -> !isEmergencyWithdrawal(f)
-}
-```
+[Semicolons.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7
 
 % ```{todo}
 % If you do not change this, you will see the following error:
