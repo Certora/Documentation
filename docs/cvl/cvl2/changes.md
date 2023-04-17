@@ -32,33 +32,30 @@ consistent, and to reduce the superficial differences with Solidity.
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
-`;` (semicolons were optional in CVL 1).  See [example][MethodsEntries.spec]
+`;` (semicolons were optional in CVL 1).  See [example][MethodsEntries.spec].
 
-[MethodsEntries.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
+[MethodsEntries.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
 
 This example also adds `external`, {ref}`described below <cvl2-visibility>`.
 
-````{todo}
-If you do not change this, you will see the following error:
-
+If you do not change this, you will get an error message like the following:
 ```
-Error: Test CVL:2:4: Syntax error: unexpected token near ID(_setManagedBalance)
-Error: Test CVL:2:4: Couldn't repair and continue parse unexpected token near ID(_setManagedBalance)
-Error: CVL parser failed with exception. Exception message: "Failed to parse {spec file}. Exiting."
+CRITICAL: [main] ERROR ALWAYS - certora/spec/MethodsEntries.spec:4:5: Syntax error: unexpected token near ID(transferFrom)
+CRITICAL: [main] ERROR ALWAYS - certora/spec/MethodsEntries.spec:4:5: Couldn't repair and continue parse unexpected token near ID(transferFrom)
 ```
-
-````
 
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
 end.  See [example][Semicolons.spec].
 
-[Semicolons.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7
+[Semicolons.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
+If you do not change this, you will see an error like the following:
+```
+CRITICAL: [main] ERROR ALWAYS - certora/spec/Semicolons.spec:5:1: Syntax error: unexpected token near using
+CRITICAL: [main] ERROR ALWAYS - certora/spec/Semicolons.spec:5:1: Couldn't repair and continue parse unexpected token near using
+```
 
 ### Method literals require `sig:`
 
