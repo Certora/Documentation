@@ -185,10 +185,12 @@ using an instance variable; this may change in future versions of CVL.
 
 ### Rules must start with `rule`
 
-In CVL 1, you could omit the keyword `rule` when writing rules:
+In CVL 1, you could omit the keyword `rule` when writing rules ([example][RuleKeyword.spec]):
+
+[RuleKeyword.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-b39a57bffd39f86bc1f9555a487af389f501eab9e66a1c3059a89691319da248
 
 ```cvl
-onlyOwnerCanDecrease() {
+transferReverts {
     ...
 }
 ```
@@ -196,9 +198,15 @@ onlyOwnerCanDecrease() {
 In CVL 2, the `rule` keyword is no longer optional:
 
 ```cvl
-rule onlyOwnerCanDecrease() {
+rule transferReverts {
     ...
 }
+```
+
+If you don't change this, you will receive an error like the following:
+```
+CRITICAL: [main] ERROR ALWAYS - certora/spec/RuleKeyword.spec:3:1: Syntax error: unexpected token near ID(transferReverts)
+```
 
 Changes to methods block entries
 --------------------------------
