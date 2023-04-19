@@ -32,9 +32,12 @@ consistent, and to reduce the superficial differences with Solidity.
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
-`;` (semicolons were optional in CVL 1).  For [example][MethodsEntries.spec]:
+`;` (semicolons were optional in CVL 1).  For example
+([CVL 1][MethodsEntries.spec-cvl1], [CVL 2][MethodsEntries.spec-cvl2], [diff][MethodsEntries.spec-diff]):
 
-[MethodsEntries.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
+[MethodsEntries.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/MethodsEntries.spec
+[MethodsEntries.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/MethodsEntries.spec
+[MethodsEntries.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
 
 ```cvl
 transferFrom(address, address, uint) returns(bool) envfree
@@ -64,7 +67,12 @@ CRITICAL: [main] ERROR ALWAYS - certora/spec/MethodsEntries.spec:4:5: Couldn't r
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
-end.  For [example][Semicolons.spec],
+end.  For example
+([CVL 1][Semicolons.spec-cvl1], [CVL 2][Semicolons.spec-cvl2], [diff][Semicolons.spec-diff]):
+
+[Semicolons.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/Semicolons.spec
+[Semicolons.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/Semicolons.spec
+[Semicolons.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7
 
 ```cvl
 invariant balanceOfZeroIsZero()
@@ -96,7 +104,12 @@ CRITICAL: [main] ERROR ALWAYS - certora/spec/Semicolons.spec:5:1: Couldn't repai
 ### Method literals require `sig:`
 
 In some places in CVL, you can refer to a contract method by its name and
-argument types.  For [example][MethodLiterals.spec], you might write
+argument types.  For example, you might write
+([CVL 1][MethodLiterals.spec-cvl1], [CVL 2][MethodLiterals.spec-cvl2], [diff][MethodLiterals.spec-diff]):
+
+[MethodLiterals.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/MethodLiterals.spec
+[MethodLiterals.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/MethodLiterals.spec
+[MethodLiterals.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-41df8240fa5faa12531baa82863891b94abf3fb3b859bdd10bafde73b60eda5d
 
 ```cvl
 f.selector == approve(address, uint).selector
@@ -122,10 +135,13 @@ Error: Error in spec file (MethodLiterals.spec:15:43): could not type expression
 
 In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
 introduce a contract instance variable with a `using` statement, and then use
-that variable.  For [example][ContractNames.spec], to access a struct type `S` defined in
+that variable.  For example, to access a struct type `S` defined in
 `PrimaryContract.sol`, you would need to write
+([CVL 1][ContractNames.spec-cvl1], [CVL 2][ContractNames.spec-cvl2], [diff][ContractNames.spec-diff]):
 
-[ContractNames.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-a6a2974b81074e87d755753c2e84ef1b0cb553bfdeb729827959e0c63f0d02d7
+[ContractNames.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/ContractNames.spec
+[ContractNames.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/ContractNames.spec
+[ContractNames.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-a6a2974b81074e87d755753c2e84ef1b0cb553bfdeb729827959e0c63f0d02d7
 
 ```cvl
 using PrimaryContract as primary;
@@ -185,9 +201,12 @@ using an instance variable; this may change in future versions of CVL.
 
 ### Rules must start with `rule`
 
-In CVL 1, you could omit the keyword `rule` when writing rules ([example][RuleKeyword.spec]):
+In CVL 1, you could omit the keyword `rule` when writing rules
+([CVL 1][RuleKeyword.spec-cvl1], [CVL 2][RuleKeyword.spec-cvl2], [diff][RuleKeyword.spec-diff]):
 
-[RuleKeyword.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-b39a57bffd39f86bc1f9555a487af389f501eab9e66a1c3059a89691319da248
+[RuleKeyword.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/RuleKeyword.spec
+[RuleKeyword.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/RuleKeyword.spec
+[RuleKeyword.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-b39a57bffd39f86bc1f9555a487af389f501eab9e66a1c3059a89691319da248
 
 ```cvl
 transferReverts {
