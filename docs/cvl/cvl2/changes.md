@@ -96,28 +96,27 @@ CRITICAL: [main] ERROR ALWAYS - certora/spec/Semicolons.spec:5:1: Couldn't repai
 ### Method literals require `sig:`
 
 In some places in CVL, you can refer to a contract method by its name and
-argument types.  For example, you might write
+argument types.  For [example][MethodLiterals.spec], you might write
+
 ```cvl
-require f.selector == balanceOf(address).selector;
+f.selector == approve(address, uint).selector
 ```
 
-In this example, `balanceOf(address)` is a *method literal*.  In CVL 2,
+In this example, `approve(address,uint)` is a *method literal*.  In CVL 2,
 these methods literals must now start with `sig:`.  For example, the above
 would become:
 
 ```cvl
-require f.selector == sig:balanceOf(address).selector;
+f.selector == sig:approve(address, uint).selector
 ```
 
-````{todo}
 If you do not change this, you will see the following error:
-
 ```
-Error: Syntax error in spec file (Test CVL:6:3): Variable address is undefined (first instance only reported)
-Error: Syntax error in spec file (Test CVL:6:29): could not type expression "address", message: unknown variable "address"
+Error: Error in spec file (MethodLiterals.spec:14:5): Variable address is undefined (first instance only reported)
+Error: Error in spec file (MethodLiterals.spec:14:5): Variable uint is undefined (first instance only reported)
+Error: Error in spec file (MethodLiterals.spec:15:34): could not type expression "address", message: unknown variable "address"
+Error: Error in spec file (MethodLiterals.spec:15:43): could not type expression "uint", message: unknown variable "uint"
 ```
-
-````
 
 ### Stricter ordering on method annotations
 
