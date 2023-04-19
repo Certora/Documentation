@@ -32,10 +32,28 @@ consistent, and to reduce the superficial differences with Solidity.
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
-`;` (semicolons were optional in CVL 1).  See [example][MethodsEntries.spec]
-(this example also adds `external`, {ref}`described below <cvl2-visibility>`).
+`;` (semicolons were optional in CVL 1).  For [example][MethodsEntries.spec]:
 
 [MethodsEntries.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
+
+```cvl
+transferFrom(address, address, uint) returns(bool) envfree
+```
+will become
+```cvl
+function transferFrom(address, address, uint) external returns(bool) envfree;
+```
+(note also the addition of `external`, {ref}`described below <cvl2-visibility>`).
+
+This is also true for entries with summaries:
+```cvl
+balanceOf(address) returns(uint256) => ALWAYS(3)
+```
+will become
+```cvl
+function balanceOf(address) external returns(uint256) => ALWAYS(3);
+```
+
 
 If you do not change this, you will get an error message like the following:
 ```
@@ -46,9 +64,28 @@ CRITICAL: [main] ERROR ALWAYS - certora/spec/MethodsEntries.spec:4:5: Couldn't r
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
-end.  See [example][Semicolons.spec].
+end.  For [example][Semicolons.spec],
 
-[Semicolons.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7
+```cvl
+invariant balanceOfZeroIsZero()
+    balanceOf(0) == 0
+```
+
+becomes
+```cvl
+invariant balanceOfZeroIsZero()
+    balanceOf(0) == 0;
+```
+
+`use` and `invariant` statements do not require (and may not have) a semicolon
+if they are followed by a `preserved` or `filtered` block.  For example, the
+following is valid in both CVL 1 and CVL 2:
+
+```cvl
+invariant totalSupplyBoundsBalance(address a)
+    balanceOf(a) <= totalSupply()
+    { preserved { require false; } }
+```
 
 If you do not change this, you will see an error like the following:
 ```
