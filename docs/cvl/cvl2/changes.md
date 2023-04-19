@@ -122,14 +122,17 @@ Error: Error in spec file (MethodLiterals.spec:15:43): could not type expression
 
 In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
 introduce a contract instance variable with a `using` statement, and then use
-that variable.  For example, to access a struct type `S` defined in
-`Example.sol`, you would need to write
+that variable.  For [example][ContractNames.spec], to access a struct type `S` defined in
+`PrimaryContract.sol`, you would need to write
+
+[ContractNames.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-a6a2974b81074e87d755753c2e84ef1b0cb553bfdeb729827959e0c63f0d02d7
 
 ```cvl
-using Example as c;
+using PrimaryContract as primary;
 
-rule example {
-    c.S x = getAnS();
+rule structExample {
+    primary.S x;
+    ...
 }
 ```
 
@@ -138,22 +141,28 @@ variable, when referring to user-defined types.  The above example would now be
 written
 
 ```cvl
-rule example {
-    Example.S x = getAnS();
+rule structExample {
+    PrimaryContract.S x;
+    ...
 }
 ```
 
 There is no need for a `using` statement in this example.
 
+If you don't change this, you will an error like the following:
+```
+Error: Error in spec file (ContractNames.spec:12:19): Contract name primary does not exist in the scene. Make sure you are using a contract name and not a contract instance name.
+```
+
 Calling methods on secondary contracts still requires using a contract instance
 variable:
 
 ```cvl
-using Example as c;
+using SecondaryContract as secondary;
 
-rule example {
+rule multicontractExample {
     ...
-    c.balanceOf(a);
+    secondary.balanceOf(0);
     ...
 }
 ```
@@ -162,29 +171,17 @@ Entries in the `methods` block may use either the contract name or an instance
 variable:
 
 ```cvl
-using Example as c;
+using SecondaryContract as secondary;
 
 methods {
-    //// both are valid:
-    function c.balanceOf(address) external returns(uint) envfree;
-    function Example.transfer(address,uint) external envfree;
+    //// both are valid (and the effect is the same):
+    secondary.balanceOf(address) returns(uint) envfree
+    SecondaryContract.transfer(address, uint) returns(bool) envfree
 }
 ```
 
-````{todo}
-Error message
-```
-Error: Syntax error in spec file (Test CVL:4:47): Contract name c does not exist in the scene. Make sure you are using a contract name and not a contract instance name.
-```
-
-````
-
 Using the contract name in the methods block currently has the same effect as
 using an instance variable; this may change in future versions of CVL.
-
-% ```{todo}
-% Error message
-% ```
 
 ### Rules must start with `rule`
 
