@@ -118,25 +118,6 @@ Error: Error in spec file (MethodLiterals.spec:15:34): could not type expression
 Error: Error in spec file (MethodLiterals.spec:15:43): could not type expression "uint", message: unknown variable "uint"
 ```
 
-### Stricter ordering on method annotations
-
-In CVL 2, the order of the annotations must be visibility modifiers (`internal`
-or `external`), followed by `returns` clause (if any), followed by `optional`,
-`library`, or `envfree` in any order (if any), followed by a summary (if any).
-
-CVL 1 was less strict about the order.
-
-````{todo}
-If you do not change this, you will see the following error:
-
-```
-Error: Test CVL:2:35: Syntax error: unexpected token near PRE_RETURN_QUALIFIER(external)
-Error: Test CVL:2:35: Couldn't repair and continue parse unexpected token near PRE_RETURN_QUALIFIER(external)
-Error: CVL parser failed with exception. Exception message: "Failed to parse {spec file name}. Exiting."
-```
-
-````
-
 ### Use of contract name instead of `using` variable
 
 In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
