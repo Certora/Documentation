@@ -13,6 +13,8 @@ use builtin rule deepSanity
 
 Ensure `--multi_assert_check` is enabled (will throw an error otherwise!).
 
+One can configure the number of branching nodes that will be selected (it will always pick those nodes that dominate more) by setting `--settings -maxNumberOfReachChecksBasedOnDomination=N`, default `N=10`.
+
 ### Background and motivation
 
 Sanity rules are one of our main methods to setup a new code base for verification. It serves two needs:
