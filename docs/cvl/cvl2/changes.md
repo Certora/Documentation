@@ -857,3 +857,11 @@ was not used.  It has been removed in CVL 2.
 % If you do not change this, you will see the following error:
 % ```
 
+### `events`
+
+CVL 1 had syntax for an `events` block, but it did nothing and has been removed.
+
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
+
