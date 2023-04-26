@@ -20,7 +20,7 @@ See below.
 
  * **Summary**- A brief summary of the call.
 
- * **Comments**- a list of comments about the resolution of the callee (as mentioned above, this might be unresolved).
+ * **Comments**- A list of comments about the resolution of the callee (as mentioned above, this might be unresolved).
 
 
 The Callee
