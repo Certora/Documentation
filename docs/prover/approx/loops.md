@@ -3,7 +3,7 @@ Loop Unrolling
 
 One of the approximations applied by the Certora Prover is loop unrolling.
 Loops in the contract are replaced by multiple copies of their bodies.
-If a loop is detected to have a constant number of iterations, it is unrolled
+if the Prover detects that a loop has a constant number of iterations, this loop is unrolled
 as many times as the constant.
 
 For example, for the loop:
@@ -11,8 +11,13 @@ For example, for the loop:
 for (uint i = 0; i < 3; i++)
         j++;
 ```
-the loop's body will be unrolled 3 times.
-Otherwise, the default number of copies is 1, but it can be configured using
+the Prover can determine that the loop always runs 3 times, so the loop will be replaced by
+```solidity
+j++;
+j++;
+j++;
+```
+If the Prover cannot easily determine the number of loop iterations, it will unroll it a fixed number of times. The default number is 1, but it can be configured using
 the {ref}`--loop_iter` flag.
 
 For example, consider the following solidity function:
