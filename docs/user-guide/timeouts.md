@@ -18,7 +18,8 @@ The complexity check
 Summarizing complex functions
 -----------------------------
 
-### Modular verification
+Modular verification
+--------------------
 
 Flags for tuning the Prover
 ---------------------------
