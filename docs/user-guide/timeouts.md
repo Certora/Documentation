@@ -24,3 +24,17 @@ Modular verification
 Flags for tuning the Prover
 ---------------------------
 
+Introduction
+------------
+
+The Strategy (what do we actually want)
+---------------------------------------
+
+Identifying Timeouts
+--------------------
+
+Common Causes for Timeouts
+--------------------------
+
+Summarization
+-------------
