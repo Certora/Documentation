@@ -1,9 +1,12 @@
 # Generating Mutations
 
 This is a mutation generator for Solidity.
-It takes as input a solidity source file (or a configuration file as you can see below)
-  and produces a set of uniquely mutated solidity source files which are output in the `out/` directory by default.
+It takes as input a Solidity source file (or a configuration file as you can see below)
+  and produces a set of uniquely mutated Solidity source files which are output in the `out/` directory by default.
+In addition to the mutated source files, Gambit also produces a JSON report of the mutants produced,
+which can be found in `out/results.json`.
 The source is [publicly available](https://github.com/Certora/gambit).
+**Note that we currently only support MacOS and Linux. Windows platform is currently unsupported. **
 
 ## Installing Gambit
 - Gambit is implemented in Rust, which you can download [here](https://www.rust-lang.org/tools/install).
@@ -83,11 +86,11 @@ Options:
 These flags are explained in the following section.
 
 ### Examples of How to Run Gambit
-You can run Gambit on a single solidity file with various additional arguments.
+You can run Gambit on a single Solidity file with various additional arguments.
 Gambit also accepts a configuration file as input where you can
   specify which files you want to mutate and using which mutations.
 You can also control which functions and contracts you want to mutate.
-**Configuration files are the recommended way for using Gambit.**
+**Configuration files are the recommended way to use Gambit.**
 
 #### Running Gambit on a Single Solidity File
 We recommend this approach only when you have a simple project with few files
@@ -96,21 +99,21 @@ We recommend this approach only when you have a simple project with few files
 - `cargo gambit benchmarks/RequireMutation/RequireExample.sol` is an example
   of how to run with a single Solidity file.
 - For projects that have complex dependencies and imports, you will likely need to:
-  * To specify the solidity [base path][basepath], pass the `--base-path` argument.  For example
+  * To specify the Solidity [base path][basepath], pass the `--base-path` argument.  For example
     ```bash
     cargo gambit path/to/file.sol --solc-basepath base/path/dir/.
     ```
-  * To indicate where solidity should find libraries, you provide an [import remapping][remapping] to `solc` using the `--solc-remapping` argument.  For example:
+  * To indicate where Solidity should find libraries, you provide an [import remapping][remapping] to `solc` using the `--solc-remapping` argument.  For example:
     ```bash
     cargo gambit path/to/file.sol \
       --solc-remapping @openzepplin=node_modules/@openzeppelin \
       --solc-remapping ...
     ```
   * To include additional allowed paths,
-    you provide solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
-    For example:
+    provide Solidity's [allowed paths][allowed] to `solc` using the `--allow-paths` argument.
+    Example:
     ```bash
-    cargo gambit path/to/file.sol --solc-allowpaths @openzepplin=... --solc-allowpaths ...
+    cargo gambit path/to/file.sol --solc-allowpaths path1 --solc-allowpaths path2
     ```
 
 [remapping]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#import-remapping
@@ -136,14 +139,29 @@ to `gambit benchmarks/10Power/TenPower.sol --solc-remapping @openzepplin=node_mo
 
 ```json
 {
-    "filename": "benchmarks/10Power/TenPower.sol",
+    "filename": "benchmarks/10Power/src/TenPower.sol",
     "remappings": [
         "@openzeppelin=node_modules/@openzeppelin"
     ]
 }
 ```
+A more elaborate configuration file for a complex project can look like:
 
-In addition to the specifying the command line arguments, you can list the
+```json
+{
+    "filename": "benchmarks/10Power/src/TenPower.sol",
+    "remappings": [
+        "@openzeppelin=node_modules/@openzeppelin"
+    ],
+    "solc-basepath": "benchmarks/10Power/.",
+    "solc-allowpaths": [
+      "benchmarks/10Power/src/contracts/."
+      "benchmarks/10Power/src/helpers/."
+    ],
+}
+```
+
+In addition to specifying the command line arguments, you can list the
 specific {ref}`types of mutations <mutation-types>` that you want to apply, the
 specific functions you wish to mutate, and more.  See {ref}`gambit-config` for
 more details, and [the `benchmark/config-jsons` directory][config-examples] for
@@ -166,13 +184,13 @@ Here is an example that shows how to configure these options.
         "filename": "Foo.sol",
         "contract": "C",
         "functions": ["bar", "baz"],
-        "solc": "solc5.12"
+        "solc": "solc8.12"
     },
     {
         "filename": "Blip.sol",
         "contract": "D",
         "functions": ["bang"],
-        "solc": "solc5.12"
+        "solc": "solc8.12"
         "mutations": [
           "binary-op-mutation",
           "swap-arguments-operator-mutation"
@@ -182,13 +200,13 @@ Here is an example that shows how to configure these options.
 ```
 
 This configuration file will perform all mutations on `Foo.sol`'s
-  functions `bar` and `baz` in the contract, `C` and
+  functions `bar` and `baz` in the contract `C`, and
   only `binary-op-mutation` and `swap-arguments-operator-mutation` mutations
-  on the function `bang` in the contract, `D`.
-Both will compile using the Solidity compiler version `solc5.12`.
+  on the function `bang` in the contract `D`.
+Both will compile using the Solidity compiler version `solc8.12`.
 
 ### Output of Gambit
-Gambit produces a set of uniquely mutated solidity source
+Gambit produces a set of uniquely mutated Solidity source
   files which are, by default, dumped in
   the `out/` directory.
 Each mutant file has a comment that describes the exact mutation that was done.
@@ -197,6 +215,22 @@ For example, one of the mutant files for
 ```
 /// SwapArgumentsOperatorMutation of: uint256 res = a ** decimals;
 uint256 res = decimals ** a;
+```
+
+Also included in the `out/` directory is a JSON summary of all mutants produced, `out/results.json`.
+The results include the filename and a unique string ID of each mutant, along with
+a brief description and the `diff` between the mutant and the original file. For example,
+
+```json
+[
+  {
+    "description": "<brief summary of mutant>",
+    "diff": "<stdout of `diff` command on the mutant and original file>",
+    "id": "0",
+    "name": "out/path/to/mutant.sol"
+  },
+  "..."
+]
 ```
 
 (mutation-types)=

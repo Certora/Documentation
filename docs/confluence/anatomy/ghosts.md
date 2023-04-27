@@ -78,4 +78,4 @@ There are a few things going on here.
     the old.
     
 
-When all of these work in conjunction, CVT successfully proves the rule `totalSupplyInvariant`.
+When all of these work in conjunction, the Prover successfully proves the rule `totalSupplyInvariant`.
