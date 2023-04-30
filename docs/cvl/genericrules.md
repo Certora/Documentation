@@ -15,4 +15,4 @@ use builtin rule msgValueInLoopRule
 
 The names of currently implemented rules:
 -----------------------------------------
-msgValueInLoopRule – check for occurrences of msg.value and delegate calls in loops.
+msgValueInLoopRule – check for occurrences of "msg.value" and delegate calls in loops.
