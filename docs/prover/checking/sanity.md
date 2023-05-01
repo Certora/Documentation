@@ -5,7 +5,7 @@ about certain classes of mistakes in specifications.
 
 There are several kinds of sanity checks:
 
- * {ref}`sanity-reachability` determine whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
+ * {ref}`sanity-vacuity` determine whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
  * {ref}`sanity-assert-tautology` determine whether individual `assert` statements are {term}`tautologies <tautology>`.
  * {ref}`sanity-trivial-invariant` detect invariants that hold in all states, rather than just reachable states.
  * {ref}`sanity-assert-structure` detect unnecessarily complex `assert` statements.
@@ -16,7 +16,7 @@ The `--rule_sanity` option may be followed by one of `none`, `basic`, or
  * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity
    checks are performed.
  * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the
-   reachability check and the trivial invariant check are performed.
+   vacuity check and the trivial invariant check are performed.
  * With `--rule_sanity advanced`, all the sanity checks will be performed for
    all invariants and rules.
 
@@ -37,11 +37,11 @@ of the failure:
 
 The remainder of this document describes these checks in detail.
 
-(sanity-reachability)=
+(sanity-vacuity)=
 Vacuity checks
 --------------
 
-The **rule vacuity** sanity rule checks that even when ignoring all the
+The **vacuity** sanity check ensures that even when ignoring all the
 user-provided assertions, the end of the rule is reachable. This check ensures
 that that the combination of `require` statements does not rule out all
 possible counterexamples.  Rules that rule out all possible counterexamples
@@ -52,7 +52,7 @@ assertions, they are almost certainly incorrect.
 This rule is currently called **reachability**
 ```
 
-For example, the following rule would be flagged by the rule vacuity check:
+For example, the following rule would be flagged by the vacuity check:
 ```cvl
 rule vacuous {
     uint x;
@@ -67,7 +67,7 @@ will always pass, regardless of the behavior of the contract.  This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
 
-The reachability check also flags situations where counterexamples are ruled
+The vacuity check also flags situations where counterexamples are ruled
 out for reasons other than `require` statements.  A common example comes from
 reusing `env` variables.  Consider the following poorly-written rule:
 
@@ -96,7 +96,7 @@ models that reach the `assert` statement.
 Assert tautology checks
 ---------------------
 
-The **assert tautology** sanity rule checks that individual `assert` statements
+The **assert tautology** sanity check ensures that individual `assert` statements
 are not {term}`tautologies <tautology>`.  A tautology is a statement that is
 true on all examples, even if all the `require` and `if` conditions are
 removed.
@@ -130,7 +130,7 @@ function that squares its input?
 Trivial invariant checks
 ------------------------
 
-The **Trivial invariant** sanity rule checks that invariants are not trivial.
+The **Trivial invariant** sanity check ensures that invariants are not trivial.
 A trivial invariant is one that holds in all possible states, not just in
 reachable states.
 
@@ -163,7 +163,7 @@ invocations.
 Assertion structure checks
 --------------------------
 
-The **assertion structure** sanity rule checks that complex assert statements
+The **assertion structure** sanity check ensures that complex assert statements
 can't be replaced with simpler ones.
 
 ```{note}
@@ -222,7 +222,7 @@ assertion structure check:
 Redundant require checks
 ------------------------
 
-The **require redundancy** sanity rule checks for redundant `require` statements.
+The **require redundancy** sanity check ensures for redundant `require` statements.
 A `require` is considered to be redundant if it does not rule out any {term}`models <model>`.
 
 For example, the require-redundancy check would flag the following rule:
