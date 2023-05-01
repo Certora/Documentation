@@ -8,7 +8,7 @@ contract out-of-the-box.
 
 Enable with:
 ```cvl
-use builtin rule deepSanity
+use builtin rule deepSanity;
 ```
 
 Ensure `--multi_assert_check` is enabled (will throw an error otherwise!).
@@ -61,22 +61,27 @@ rule sanity(method f) {
 }
 ```
 
-Where `assert false` is replaced with `assert !true1. This is actually equivalent! But with a small tweak, it can become the key to getting much wider coverage from sanity rules.
+Where `assert false` is replaced with `assert !true`. This is actually equivalent! But with a small tweak, it can become the key to getting much wider coverage from sanity rules.
 
 ### The generalization
 
-There is an intractable number of paths in a complex code and ensuring each one can be realized does not scale. But we can consider simple algorithms to pick main interesting paths. The `deepSanity` rule is implementing heuristics for picking points we must reach as part of sanity. For example, we could pick nodes that:
-- Dominate a big number of nodes (we can easily sort through the dominators mapping and pick top dominators)
-- Percede an external call
-- The root (the usual sanity rule)
+We would like to assert certain points in the program can be reached. 
+Let's suppose that for every such interesting point, we add a variable assignment `X = true;`.
+We can now instead of `assert false`, write: `assert !X`. If the assert is violated, it means we went through the point that set `X` to true.
+If the assert is verified, it means we could not find a path in the program reaching the end through the point we chose, failing our sanity check.
+This is, in essence, the effect of running the `deepSanity` rule.
 
-For example, if we pick N nodes, for each we make a reachability-style variable `Xn`. `Xn` is initialized at the root to false, and setting it to true at the beginning of the node.
+There is an intractable number of paths in a complex code and ensuring each one can be realized does not scale. 
+The `deepSanity` rule uses a heuristic to pick a few interesting points in the program that must be reached:
+- Conditions, for example must reach the "if" or "else" case if they are code-heavy
+- Before an external call
+- The root of the program (this is the same as the usual sanity rule)
 
-At the end of the instrumented program we add an `assert !Xn`, and make sure to enable multi-assert.
+The list of such interesting points will be updated from time to time.
 
 ## More rules
 
 ```{todo}
-This feature is currently undocumented.
+To appear.
 ```
 
