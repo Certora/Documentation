@@ -92,6 +92,7 @@ require f.selector == sig:balanceOf(address).selector;
 % If you do not change this, you will see the following error:
 % ```
 
+(contract-name-qualifier)=
 ### Use of contract name instead of `using` variable
 
 In CVL 1, the only way to refer to a contract in the {term}`scene` was to first

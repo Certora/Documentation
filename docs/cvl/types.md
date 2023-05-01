@@ -13,7 +13,6 @@ The additional CVL types are:
  - {ref}`storage-type` is used to represent a snapshot of the entire EVM storage
  - {ref}`env` is used to represent the Solidity global variables `msg`, `block`, and `tx`
  - {ref}`sort` are used to represent unknown types
- [//]: # (where is calldataarg?)
 
 ```{contents}
 ```
@@ -47,6 +46,10 @@ See {doc}`basics` for the `id` and `number` productions.
 Solidity Types
 --------------
 
+```{versionchanged} 2.0
+Tuple types are no longer allowed.
+```
+
 CVL currently supports the following [solidity types][]:
 
  * `bool`, `int`, `uint`, and the sized variants such as `uint256` and `int8`.
@@ -56,6 +59,9 @@ CVL currently supports the following [solidity types][]:
  * {ref}`Single-dimensional arrays <arrays>` (both statically- and dynamically-sized)
  * {ref}`Enum types, struct types, and type aliases <user-types>`
 
+```{versionadded} 2.0
+Structs with array members are now allowed.
+```
 The following are unsupported:
  * Function types
  * Structs with array members
@@ -90,6 +96,12 @@ You can use [harnessing](/docs/prover/approx/harnessing) to work around these li
 Specifications can use structs, enums, or user-defined value types that are
 defined in Solidity contracts.
 
+```{versionadded} 2.0
+CVL methods that return struct types are supported (as long as the struct type is supported).
+Structs with array-typed fields are supported.
+Assignment to struct fields _may_ be supported.
+```
+
 Struct types have the following limitations:
  - CVL methods that return struct types are unsupported.
  - Structs with array-typed fields are unsupported.
@@ -102,6 +114,9 @@ their underlying type.  Wrapping and unwrapping operations are unnecessary and
 unavailable, and operations on the underlying type are allowed on the
 user-defined types as well.
 
+```{todo}
+add semicolon
+```
 All user-defined type names (structs, enums, and user-defined values) must
 be explicitly qualified by a contract name that is introduced with a
 {doc}`using statement <using>`:
@@ -141,6 +156,10 @@ type ChildFileType is bool;
 contract Child is Parent {
     type alias ChildContractType is uint128;
 }
+```
+
+```{versionchanged} 2.0
+The qualifier is now the contract name not the contract "instance" name. See {ref}`contract-name-qualifier`
 ```
 
 Given these definitions, types can be named as follows:
@@ -262,6 +281,7 @@ the type of its contents vary depending on which method the Prover is checking.
 The only thing you can do with it is pass it as an argument to a `method`
 variable.  It is possible to work around this limitation; see {ref}`partially
 parametric rules` for further details.
+[//]: # (You can also pass a calldataarg to a specific function)
 
 (storage-type)=
 ### The `storage` type
@@ -305,6 +325,7 @@ rule bigger_stake_more_earnings() {
 
 The `lastStorage` variable contains the state of the EVM after the most recent
 contract function call.
+[//] #: (it also contains some sort of references to ghost state/hooks)
 
 (sort)=
 ### Uninterpreted sorts
