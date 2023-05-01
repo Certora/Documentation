@@ -175,12 +175,12 @@ misleading reasons.  For example, consider the following assertion:
 
 ```cvl
 uint x;
-assert (x > 5) => (x >= 0);
+assert (x < 5) => (x >= 0);
 ```
 
 In this case, the assertion is true, but only because `x` is a `uint` and is
 therefore *always* non-negative.  The fact that `x >= 0` has nothing to do with
-the fact that `x > 5`.  Therefore this complex assertion could be replaced with
+the fact that `x < 5`.  Therefore this complex assertion could be replaced with
 the more informative assertion `assert x >= 0;`.
 
 Similarly, if the premise of the assertion is always false, then the implication
@@ -204,17 +204,19 @@ The assertion structure check tries to prove some complex logical statements by
 breaking them into simpler parts.  The following situations are reported by the
 assertion structure check:
 
-* `assert p => q;` is reported as a sanity violation if `p` is always false (in
-  which case the simpler assertion `assert !p;` more clearly describes the
-  situation), or if `q` is always true (in which case `assert q;` is a clearer
-  alternative).
+* `assert p => q;` is reported as a sanity violation if `p` is false whenever the
+  assertion is reached (in which case the simpler assertion `assert !p;` more
+  clearly describes the situation), or if `q` is always true (in which case
+  `assert q;` is a clearer alternative).
 
 * `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
-  both always true (in which case the simpler assertions `assert p; assert q;`
-  more clearly describe the situation), or if neither `p` nor `q` are ever true
-  (in which case `assert !p; assert !q;` is a clearer alternative).
+  both true whenever the assertion is reached (in which case the simpler
+  assertions `assert p; assert q;` more clearly describe the situation), or if
+  neither `p` nor `q` are ever true (in which case `assert !p; assert !q;` is a
+  clearer alternative).
 
-* `assert p || q;` is reported as a sanity violation if either `p` is always true
+* `assert p || q;` is reported as a sanity violation if either `p` is true
+  whenever the assertion is reached
   (in which case `assert p;` more clearly describes the situation) or if `q` is
   always true (in which case `assert q;` is a clearer alternative).
 
@@ -222,8 +224,9 @@ assertion structure check:
 Redundant require checks
 ------------------------
 
-The **require redundancy** sanity check ensures for redundant `require` statements.
-A `require` is considered to be redundant if it does not rule out any {term}`models <model>`.
+The **require redundancy** sanity check highlights redundant `require` statements.
+A `require` is considered to be redundant if it does not rule out any {term}`models <model>`
+that haven't been ruled out by previous requires.
 
 For example, the require-redundancy check would flag the following rule:
 ```cvl
