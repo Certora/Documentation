@@ -12,6 +12,9 @@ Syntax
 
 The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
 
+```{versionchanged} 2.0
+invoke and sinvoke have been removed, see {ref}`removed-call-keywords`
+
 ```
 expr ::= literal
        | unop expr
@@ -45,13 +48,14 @@ binop ::= "+" | "-" | "*" | "/" | "%" | "^"
         | "&" | "|" | "<<" | ">>" | "&&" | "||"
         | "=>" | "<=>" | "xor" | ">>>"
 
+% unused
 specials_fields ::=
            | "block" "." [ "number" | "timestamp" ]
            | "msg"   "." [ "address" | "sender" | "value" ]
            | "tx"    "." [ "origin" ]
            | "length"
            | "selector" | "isPure" | "isView" | "numberOfArguments" | "isFallback"
-
+% unused
 special_vars ::=
            | "lastReverted" | "lastHasThrown"
            | "lastStorage"
@@ -60,6 +64,7 @@ special_vars ::=
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
 
+% unused
 special_functions ::=
            | "to_uint256" | "to_int256" | "to_mathint"
 
@@ -140,6 +145,9 @@ currently undocumented.
    For example, the statement `assert balanceA > 0 <=> balanceB > 0;` will
    report a violation if exactly one of `balanceA` and `balanceB` is positive.
 
+```[versionchanged} 2.0
+One branch of a conditional may be a subtype of the other.
+```]
  * An *if-then-else* (*ITE*) expression of the form
    `cond ? expr1 : expr2` requires `cond` to be a boolean expression and
    requires `expr1` and `expr2` to have the same type; the entire
@@ -187,8 +195,8 @@ currently undocumented.
    will ensure that there is some time for which the price is nonzero.
 
 ```{note}
-The symbols `forall` and `exist` are sometimes referred to as *quantifiers*,
-and expressions of the form `forall type v . e` and `exist type v . e` are
+The symbols `forall` and `exists` are sometimes referred to as *quantifiers*,
+and expressions of the form `forall type v . e` and `exists type v . e` are
 referred to as *quantified expressions*.
 ```
 
@@ -228,6 +236,10 @@ Contracts, method signatures and their properties
 Writing the ABI signature for a contract method produces a `method` object,
 which can be used to access the {ref}`method fields <method-type>`.
 
+```{todo}
+Should users write the ABI signature now, or the source code signature and let the tool
+handle translating to ABI. Are both possible?
+```
 For example,
 ```cvl
 method m;
@@ -289,6 +301,10 @@ There are also several built-in variables:
  * The maximum values for the different integer types are available as the
    variables `max_uint`, `max_address`, `max_uint8`, `max_uint16` etc.
 
+```{versionadded} 2.0
+These casting operators have been deprecated and replaced by a richer array
+of casting operators. See {ref}`new cvl casting <cvl2-casting>`.
+```
 CVL also has three built-in functions for casting mathematical types:
 `to_uint256`, `to_int256`, and `to_mathint`.  See {doc}`mathops` for details.
 
@@ -308,6 +324,9 @@ There are many kinds of function-like things that can be called from CVL:
 There are several additional features that can be used when calling contract
 functions (including calling them through {ref}`method variables <method-type>`).
 
+```{versionchanged} 2.0
+Invoke and sinvoke have been removed completely. See {ref}`removed-call-keywords`
+```
 A contract method invocation can optionally be prefixed by `invoke` or `sinvoke`,
 although this syntax is deprecated in favor of the `@norevert` and
 `@withrevert` syntax described below.  Verification of a method called with

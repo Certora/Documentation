@@ -5,6 +5,9 @@ Events
 The events block is currently unused and undocumented.
 ```
 
+```{versionchanged} 2.0
+Events have been removed.
+```
 Syntax
 ------
 

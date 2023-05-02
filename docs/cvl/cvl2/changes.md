@@ -722,6 +722,7 @@ the name and argument types of the called method in order to provide an entry.
 % If you do not change this, you will see the following error:
 % ```
 
+(removed-call-keywords)
 ### `invoke`, `sinvoke`, and `call`
 
 Older versions of CVL had special syntax for calling contract and CVL functions:

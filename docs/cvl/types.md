@@ -7,7 +7,7 @@ additional types and is also missing support for some Solidity types.
 
 The additional CVL types are:
  - {ref}`mathint` is an arbitrary precision integer that cannot overflow
- [//]: # (I'm not sure method types represent arguments or even contain any real references to the arguments of said functions)
+% I'm not sure method types represent arguments or even contain any real references to the arguments of said functions
  - {ref}`method-type` are used
    to represent arbitrary methods and arguments of the contract under verification
  - {ref}`storage-type` is used to represent a snapshot of the entire EVM storage
