@@ -49,10 +49,13 @@ Here is an example configuration file:
 {
     "project_folder" : "Test/10Power",
     "run_script" : "Test/10Power/runDefault.sh",
-    "gambit" : {
-        "filename" : "Test/10Power/TenPower.sol",
-        "solc" : "solc8.10"
-    },
+    "gambit" : 
+        [
+            {
+                "filename" : "Test/10Power/TenPower.sol",
+                "solc" : "solc8.10"
+            }
+        ],
     "staging" : "master",
     "manual_mutations" : {
         "path/to/original/file.sol" : "path/to/manual/mutations/",
