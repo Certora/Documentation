@@ -17,7 +17,7 @@ Example
 -------
 In order to run the built-in rule `msgValueInLoopRule` add to the spec file the line
 
-use builtin rule msgValueInLoopRule
+`use builtin rule msgValueInLoopRule`
 
 The Names of Currently Implemented Rules:
 -----------------------------------------
