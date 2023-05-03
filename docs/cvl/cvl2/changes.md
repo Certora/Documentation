@@ -45,6 +45,7 @@ function _setManagedBalance(address,uint256) internal => NONDET;
 % If you do not change this, you will see the following error:
 % ```
 
+(new-semicolons)=
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
@@ -171,6 +172,7 @@ rule onlyOwnerCanDecrease() {
 }
 ```
 
+(cvl-methods-block)=
 Changes to methods block entries
 --------------------------------
 
@@ -313,7 +315,7 @@ block.
 % ```{todo}
 % If you do not change this, you will see the following error:
 % ```
-
+(cvl2-optional)=
 ### `optional` methods block entries
 
 In CVL 1, you could write an entry in the methods block for a method that does

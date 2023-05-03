@@ -14,6 +14,9 @@ This feature is currently undocumented.
 Syntax
 ------
 
+```{versionadded} 2.0
+These statements now require a semicolon after them. See {ref}`new-semicolons`.
+```
 The syntax for `import` and `use` statements is given by the following [EBNF grammar](syntax):
 
 ```

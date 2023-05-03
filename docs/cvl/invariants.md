@@ -18,6 +18,10 @@ for details.
 Syntax
 ------
 
+```{versionchanged}
+Invariants now must terminate with a semicolon. See {ref}`new-semicolons`
+```
+
 The syntax for invariants is given by the following [EBNF grammar](syntax):
 
 ```

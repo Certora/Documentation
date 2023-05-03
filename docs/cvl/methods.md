@@ -32,6 +32,10 @@ functions).
 Syntax
 ------
 
+```{versionchanged} 2.0
+A new series of modifiers have been added along with requirements on order and valid combinations. (See {ref}`cvl2-methods-block`).
+```
+
 The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
 
 ```
@@ -67,6 +71,9 @@ for the `id` production.  See {doc}`statements` for the `block` production, and
 (envfree)=
 Entries in the `methods` block
 ------------------------------
+```{verisonadded} 2.0
+Methods entries may now use either the imported contract name, or the contract name itself.
+```
 
 Each entry in the methods block denotes either the sighash or the type signature
 for a contract method.  Methods of contracts that are introduced by {doc}`using
@@ -75,12 +82,18 @@ the contract variable name.  For example, if contract `C` is introduced by the
 statement `using C as c`, then the method `f(uint)` of contract `c` can be
 referred to as `c.f(uint)`.
 
+```{versionadded} 2.0
+Methods that won't always appear in an interface now should include the {ref}`optional keyword <cvl2-optional>`
+```
 It is possible for a method signature to appear in the `methods` block but not
 in the contract being verified.  In this case, the Prover will skip any rules
 that mention the missing method, rather than reporting an error.  This behavior
 allows reusing specifications on contracts that only support part of an
 interface: only the supported methods will be verified.
 
+```{versionchanged} 2.0
+Returns are now _required_ in certain cases and _forbidden_ in others as described in {ref}`cvl2-returns`.
+```
 Following the method signature is an optional `returns` clause.  If a method
 declaration contains a `returns` clause, the declared return type must match
 the contract method's return type.  If the `returns` clause is omitted, the

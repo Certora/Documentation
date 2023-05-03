@@ -45,6 +45,11 @@ In the mean time, we recommend the following rules of thumb:
 Mathematical operations
 -----------------------
 
+```{versionchanged} 2.0
+Math operators have been completely overhauled. All operators are now exclusively
+arbitrary-precision operations. See {ref}`cvl2-mathops-return-mathint`
+```
+
 In CVL, arithmetic operators (+, -, \* and /) are overloaded: they could mean a
 machine-arithmetic operation that can overflow, or a mathematical operation
 that does not overflow. The default interpretation used in almost all cases is
@@ -79,6 +84,9 @@ assert y > x;
 
 The meaning is the same as in the first snippet since an assignment to a `mathint` variable allows non-overflowing interpretations of the arithmetic operators.
 
+```{versionchanged} 2.0
+Arithmetic operators never overflow. To pass a mathint as a uint you must use an appropriate {ref}`casting operator <cvl2-casting>`.
+```
 The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to functions, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if `mathint` variable is passed directly as a function argument.
 
 ```cvl
@@ -108,6 +116,10 @@ variables in CVL:
 
 Only the following _implicit_ cast operations are supported in CVL:
 
+```{versionchanged} 2.0
+To cast a `NumberLiteral` to a `bytesK` you must use the `to_bytesK` casting operator. (See {ref}`cvl2-casting`)
+```
+
 *   `numberLiteral` can implicitly cast to `int*` `uint*` `mathint` `address` and `bytesK` .
     
     *   Note, however, that before casting a `numberLiteral` to target type `int*` `uint*` `address` or `bytesK`, it is (statically) checked that the value of the `numberLiteral` is within the bounds for a safe cast to the target type (e.g. `numberLiteral >= 0 && numberLiteral <= 2^256 - 1` for `uint256`). In case the value is out of bounds, an _explicit_ cast is required. There is no bounds checking when target type is `mathint`.
@@ -118,10 +130,19 @@ Only the following _implicit_ cast operations are supported in CVL:
     
     *   `uint_k1` can implicitly cast to `uint_k2` when `k1 <= k2`
         
+```{versionchanged} 2.0
+Addresses can no longer be cast to and from `uintK`.
+```
     *   `uint_k1` can implicitly cast to `address` when `k1 <= 160`. Moreover, `address` can implicitly cast to `uint256`, but _not_ the other way around. (Note : This is different from earlier behavior because before, `uint256` and `address` were aliases).
         
+```{versionchanged} 2.0
+A uint can no longer take a value out of bounds.
+```
     *   `uint*` can implicitly cast to `mathint`. (Note that there is a **difference** in implicit and explicit casts from `uint256` to `mathint` when the expression value is outside the range of a `uint256` variable. While in the implicit cast the `uint256` value remains unchanged when converted to `mathint`, the explicit cast takes a _mod_ of the value with `2^256`. Again, this difference will be “visible” only when casting unsafely from a `uint` to `mathint`, i.e. when the `uint` value is greater than `2^256`)
         
+```{versionchanged} 2.0
+All expressions retain their original type and are simply ensured to have a type which is a subtype of the `targetType`.
+```
 *   NOTE: When performing an _implicit_ cast, the type of the expression being cast _changes_ to the `targetType` except in the case when the expression is either a _variable_ or a _ghostVariable_. In these two cases, it is only checked that the expression type is a _subtype_ of the `targetType`. If the expression type is a subtype of the `targetType` the expression is successfully type checked. Consider the following example:
     
 
@@ -132,6 +153,9 @@ mathint y = x + m1;                // check that x's type (uint256) is a subtype
 assert x < max_uint                // x STILL has type uint256 
 ```
 
+```{versionchanged} 2.0
+Cast operations have been almost completely replaced with a new set of {ref}`cast operators <cvl2-casting>`.
+```
 ## Explicit casting
 
 *   An explicit cast operator tries to convert the type of an operand from its original type to the target type. The _conversion_ below specifies how the original expression is modified to a value in the target type. Furthermore, _safe\_cast\_bounds_ specify the range of values for the original expression under which the conversion to the target type is safe to perform (i.e. does not result in an _overflow_). When the value is out of safe bounds (say in case of `to_uint256(-1)`), it results in an _overflow_. Here are the rules for performing different cast operations:
