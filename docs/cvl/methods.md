@@ -153,6 +153,11 @@ Prover first determines whether it matches any of the declarations in the
 methods block, and then uses the declaration and the calling context to
 determine whether the call should be replaced by an approximation.
 
+```{versionchanged} 2.0
+The prover now reasons about richer method signatures--that is, for internal functions,
+rather than coercing the signature into an ABI signature, the Prover reasons about the
+richer signature with user defined types and location annotations. 
+```
 To determine whether a call matches a declaration, the tool computes an ABI
 signature for both the call and the method summary.  This ABI signature may be
 simpler than the declaration in Solidity or the `methods` block, because
@@ -162,6 +167,11 @@ particular, structs are converted into tuples and location annotations such as
 multiple method summaries that are converted to the same summarized ABI
 signature, the Prover will report an error.
 
+```{versionchanged} 2.0
+{ref}`Summarization application <cvl2-wildcards>` is much more precise. Specific functions
+of specific callees will be matched unless the old behavior of matching every matching signature
+(regardless of the callee) is requested.
+```
 Method summaries match all calls with the matching ABI signature, including
 internal methods and external methods on all contracts.  There is currently no
 way to apply different summaries to different contracts or to summarize some
@@ -175,7 +185,7 @@ application policy for its signature.  If present, the application policy must
 be either `ALL` or `UNRESOLVED`; the default policy is `ALL` with the exception
 of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.  The decision
 to replace a call by an approximation is made as follows:
-
+% note that an internal summary will still get applied to a public function called from the spec
  * If the function is called from CVL rather than from contract code then it is
    never replaced by a summary.
 
@@ -318,7 +328,8 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
 
 Contract methods can also be summarized using CVL {doc}`functions` or
 {ref}`ghost-axioms` as approximations.  Contract calls to the summarized method
-are replaced by calls to the specified CVL functions.
+are replaced by calls to the specified CVL functions. These summaries act as
+{ref}`view summaries <view-summary>` and leave storage unchanged.
 
 To use a CVL function or ghost as a summary, use a call to the function in
 place of the summary type.  The function call can only refer directly to the

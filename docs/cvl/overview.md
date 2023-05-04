@@ -8,6 +8,9 @@ that are useful for writing specifications.
 
 The beginning of a spec file contains some header information:
 
+```{versionchanged} 2.0
+Pragma has been {ref}`removed <cvl2-pragma>` for specs.
+```
  - **[Version pragma](pragmas):** The CVL version can be specified using `pragma specify <version>`.
 
  - **[Import statements](imports):** CVL files can import the contents of other CVL files.
@@ -18,8 +21,14 @@ The beginning of a spec file contains some header information:
  - **[The methods block](methods):** This section contains information on how methods
    should be summarized by the Prover during verification
 
+```{versionchanged} 2.0
+Events have been removed.
+```
  - **[The events block](events):** This section is currently unused
 
+```{versionchanged} 2.0
+Top level sections now may appear in any order.
+```
 All of the above header sections are optional, but if they appear they must
 appear in the order they are listed here, and they must come before any of the
 items listed below.

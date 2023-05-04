@@ -172,7 +172,7 @@ rule onlyOwnerCanDecrease() {
 }
 ```
 
-(cvl-methods-block)=
+(cvl2-methods-block)=
 Changes to methods block entries
 --------------------------------
 
@@ -724,7 +724,7 @@ the name and argument types of the called method in order to provide an entry.
 % If you do not change this, you will see the following error:
 % ```
 
-(removed-call-keywords)
+(removed-call-keywords)=
 ### `invoke`, `sinvoke`, and `call`
 
 Older versions of CVL had special syntax for calling contract and CVL functions:
@@ -851,7 +851,7 @@ value of a method that returns one of these types.
 % ```{todo}
 % If you do not change this, you will see the following error:
 % ```
-
+(cvl2-pragma)=
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature

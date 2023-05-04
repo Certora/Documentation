@@ -18,7 +18,9 @@ Syntax
 ------
 
 The syntax for `using` statements is given by the following [EBNF grammar](syntax):
-
+```{versionchanged} 2.0
+Using statements now terminate with a {ref}`semicolon <new-semicolons>`.
+```
 ```
 using ::= "using" id "as" id
 ```

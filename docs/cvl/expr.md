@@ -145,9 +145,9 @@ currently undocumented.
    For example, the statement `assert balanceA > 0 <=> balanceB > 0;` will
    report a violation if exactly one of `balanceA` and `balanceB` is positive.
 
-```[versionchanged} 2.0
+```{versionchanged} 2.0
 One branch of a conditional may be a subtype of the other.
-```]
+```
  * An *if-then-else* (*ITE*) expression of the form
    `cond ? expr1 : expr2` requires `cond` to be a boolean expression and
    requires `expr1` and `expr2` to have the same type; the entire
