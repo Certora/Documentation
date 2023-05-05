@@ -12,6 +12,7 @@ This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 ```{contents}
 ```
 
+(cvl2-superficial-syntax-changes)=
 Superficial syntax changes
 --------------------------
 
@@ -170,6 +171,7 @@ rule onlyOwnerCanDecrease() {
 }
 ```
 
+(cvl2-methods-blocks)=
 Changes to methods block entries
 --------------------------------
 
@@ -462,6 +464,7 @@ In this case, the Prover would encode the value returned by `fooImpl()` as a
 will not be able to detect the error.
 ````
 
+(cvl2-integer-types)=
 Changes to integer types
 ------------------------
 
@@ -494,6 +497,7 @@ about the overflow behavior by using the {ref}`new casting operators
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-comparisons-identical-types)=
 ### Comparisons require identical types
 
 When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
