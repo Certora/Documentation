@@ -175,3 +175,25 @@ Note: you can get a list of all the files that ever existed using
 git log --name-only --pretty="format:" docs
 ```
 
+Documentation versioning
+------------------------
+
+Readthedocs supports the following [kinds of versions][rtd-versioning]:
+
+ - A version called "latest" that follows a specific branch (which is `master`
+   by default, but can be changed on the admin tab under [advanced settings][rtd-settings]).
+
+ - A version called "stable" that uses the latest non-prerelease tag
+
+ - Any additional branches or tags that we manually activate (in the [versions tab][rtd-versions]), using the
+   branch/tag name as the display name
+
+These versions can also be made private or hidden
+
+[rtd-settings]: https://readthedocs.com/dashboard/certora-certora-prover-documentation/advanced/
+[rtd-versions]: https://readthedocs.com/projects/certora-certora-prover-documentation/versions/
+[rtd-versioning]: https://docs.readthedocs.io/en/stable/versions.html
+
+Currently, the `latest` documentation refers to the `master` branch, and the
+`stable` label is hidden
+
