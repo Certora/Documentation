@@ -14,7 +14,7 @@ Example:
 assume forall x. f(x) = 0
 ```
 
-A very natural init state axiom. Instead of giving it as is to the SMT-solvers, we automatically collect all instances of `f` in the formula we want to verify, e.g., `f(2), f(9), f(y + 3), f(z)`, and replace the original assert with:
+A very natural `init_state` axiom. Instead of giving it as is to the SMT-solvers, we automatically collect all instances of `f` in the formula we want to verify, e.g., `f(2), f(9), f(y + 3), f(z)`, and replace the original assert with:
 
 ```
 assume f(2) = 0
@@ -27,7 +27,7 @@ Simple enough! You can also write more complex quantified statements, which will
 
 Note that this works for assumes, as well as asserts, axioms, invariants, and anywhere else quantifiers are used. You can also use exists quantifiers.
 
-There are examples where this changes a timeout to 3 seconds, cases where it didn’t really change the running time, and a rare case where it performed much worse than standard quantification. However, in general, this should work much better in terms of running time.
+There are examples where this changes a timeout to 3 seconds, cases where it didn't really change the running time, and a rare case where it performed much worse than standard quantification. However, in general, this should work much better in terms of running time.
 
  
 ## Limitations
