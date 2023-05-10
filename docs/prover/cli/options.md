@@ -745,3 +745,12 @@ This option models bitwise operations exactly instead of using the default
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
+(-smt_groundQuantifiers)=
+#### `--settings -smt_groundQuantifiers=false`
+
+This option disables quantifier grounding.
+
+```{todo}
+When should you use it?
+```
+

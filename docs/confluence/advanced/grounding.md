@@ -1,64 +1,78 @@
-# Grounding 
+# Quantifier grounding 
 
-## Flag
+Quantifier grounding transforms a {term}`quantified` statement into series of
+non-quantified statements.  For example, suppose a specification contains the
+following `ghost` axiom:
 
-Grounding is usually set to “On” by default. To turn it off, use the command
-`--settings -smt_groundQuantifiers=false`.
-
- 
-## Grounding General Idea
-
-Grounding should make it much easier to use quantifiers on the solvers.
-Example:
-
-```
-assume forall x. f(x) = 0
+```cvl
+ghost f(uint x) returns (mathint) {
+    init_state axiom forall uint x . f(x) == 0
+}
 ```
 
-A very natural init state axiom. Instead of giving it as is to the SMT-solvers,
-we automatically collect all instances of `f` in the formula we want to verify,
-e.g., `f(2), f(9), f(y + 3), f(z)`, and replace the original assert with:
+This statement logically says that `f(0) == 0` and `f(1) == 1` and `f(2) == 0`
+and so on.  In practice, however, the verification may only make use of a small
+finite number of these facts.  Grounding is the process of automatically
+replacing the `forall` statement with the specific unquantified statements that
+are necessary.
 
+For example, if the program and specification only ever access `f(2)`, `f(9)`,
+`f(y+3)`, and `f(z)`, then the axiom above would be automatically replaced
+with:
+
+```cvl
+ghost f(uint x) returns (mathint) {
+    init_state axiom f(2)   == 0;
+    init_state axiom f(9)   == 0;
+    init_state axiom f(y+3) == 0;
+    init_state axiom f(z)   == 0;
+}
 ```
-assume f(2) = 0
-assume f(9) = 0
-assume f(y + 3) = 0
-assume f(z) = 0
-```
 
-Simple enough! You can also write more complex quantified statements, which
-will be grounded in a similar fashion. However, this approach has its
-limitations. It will never validate a rule when it is not valid (i.e.,
-grounding is sound), but it may generate false counter-examples. Read below on
-how to minimize the chance of this happening.
+The Prover will also ground more complex quantified expressions, and will ground
+them anywhere that you can write a quantified statement (e.g. `assert` and
+`require` statements, ghost axioms, and invariants).  Grounding also works with
+`exists` quantifiers.
 
-Note that this works for assumes, as well as asserts, axioms, invariants, and
-anywhere else quantifiers are used. You can also use exists quantifiers.
-
-There are examples where this changes a timeout to 3 seconds, cases where it
-didn’t really change the running time, and a rare case where it performed much
-worse than standard quantification. However, in general, this should work much
-better in terms of running time.
-
- 
 ## Limitations
 
-There are some cases we just can’t ground, and some cases that are incomplete
-(i.e. give a wrong counter-example). Nevertheless, grounding is always sound
-(i.e. if we say a formula is valid then it definitely is). Here are some
-guidelines and explanations.
- 
+It is not possible to ground every expression perfectly.  While grounding is
+{term}`sound` (i.e. it will not allow a rule to be verified if it is not true),
+there are cases where it may generate spurious {term}`counterexample`s.
+
+You can prevent spurious counterexamples by turning off grounding (by passing
+{ref}`-smt_groundQuantifiers`), but without grounding the Prover may run
+considerably slower, and is likely to time out.  For example, a rule that was
+verified in 3 seconds with grounding timed out after two hours without
+grounding.  There are also some cases where the Prover runs faster without
+grounding, but these are rare.
+
+The remainder of this document describes specific cases where the Prover cannot
+ground quantified statements, and gives advice on how to work around those
+limitations.
+
 ### Alternating Quantifiers
 
+Alternating quantifiers (those containing `forall` followed by `exist` or
+vice-versa) complicate the process of grounding, so there are limitations to
+what statements you can write and which of them are grounded.
+
+```{todo}
+It is not clear what the difference between the first and third example is
+here, or what about the following does not work.  Is it that one is a `require`
+and the other is an `assert`?
 ```
-assume forall x, exists y. f(x) = g(y)
+
 ```
+require forall mathint x . exists mathint y. f(x) == g(y);
+```
+
 
 Currently, this does not work. We can make it work though, so if you need it,
 reach out to us and we’ll make an effort.
 
 ```
-assume exists x, forall y ...
+require exists mathint x . forall mathint y . p(x,y);
 ```
 
 This works, as well as:
@@ -70,38 +84,70 @@ assert forall x, exists y.
 Currently, for the first case, the tool crashes. In such a case, it is
 preferable to rewrite your spec, or turn grounding off and see if the solvers
 manage it.
+
+```{todo}
+Crashes how?  It would be good to include an error message here so that googlers
+can find it.
+```
  
 ### Recursion
 
+Quantified statements that relate a function with itself on two different inputs
+are likely to give incorrect counterexamples.  For example, the following
+`forall` statement refers to `f` twice:
+
 ```
-assume forall x. f(x) > f(x+1)
-assert f(8) > f(6)
+rule recursiveQuantifier {
+    require forall mathint x . f(x) > f(x-1);
+    assert f(8) > f(6);
+}
 ```
 
-Any recursion of this kind will most likely give a wrong counter-example. It is
-not auto-detected, hence the responsibility to avoid it and realize the
-counter-example is wrong is on the user.
+Although we can see that the assertion must be true, we would need to combine
+the statements `f(8) > f(7)` and `f(7) > f(6)` to prove it, and the grounding
+mechanism is unable to do this.
 
- 
+```{todo}
+What does the counterexample look like?
+```
+
+```{warning}
+The Prover will not detect recursive quantified statements like this, so this
+would be something good to check for when you encounter spurious counterexamples.
+```
+
 ### Variables That Are Not Arguments
 
-```
-forall x. x^2 != y
+In order for grounding to work, every variable appearing in a quantified
+statement must be used as an argument to a function.  For example, neither of
+the following examples will work:
+
+```{todo}
+"must be used" or "must only be used"?
 ```
 
-This cannot work, as we run over all instances of functions in the formula
-during grounding. In this case, there is no function and instance and therefore
-it would not work. Neither would:
-
 ```
-forall x, y. f(x) != 2y
+require forall mathint x . x * 2 != y;
+require forall mathint x . forall mathint y . f(x) != 2y;
 ```
 
-Because of `y`. 
+Grounding is based on the application of functions, so the grounded variables
+must be arguments to functions.  In this case, `x` and `y` are not arguments to
+functions.
 
 In such cases, we will hard crash, so again you can rewrite your spec or turn
 grounding off. To avoid this, ensure that each quantified variable is used as
-an argument of a function call within the quantified expression. This may not
+an argument of a function call within the quantified expression.
+
+```{todo}
+Crash how?
+```
+
+```{todo}
+What is the following example showing?
+```
+
+This may not
 always be possible, but we can write:
 
 ```
@@ -113,27 +159,41 @@ forall x. f(x) % 2 == 1
 The polarity of a sub-formula is the direction of the effect it has on the
 output of the formula. This is best demonstrated through an example:
 
-```
-a /\ (b \/ !c)
-```
-
-`b` possesses a positive polarity, as switching it from `false` to `true` only
-makes the formula change from `false` to `true`. This means that the formula is
-weakly monotone increasing in `b`. The same goes for `a`. `c` on the other hand
-has a negative polarity.
-
-Sub-expressions can also have double polarity:
-```
-(a == b) /\ c
-ite(a, b, c)
+```cvl
+a && (b || !c)
 ```
 
-In both of these examples, `a` has double polarity, because the formula is not
-weakly monotone w.r.t. `a` (neither increasing nor decreasing). 
+In this example, `b` possesses a positive polarity because change `b` from `false` to `true`
+can't make the formula `false` if it wasn't before.  Informally, making `b`
+"more true" can only make the formula "more true".
 
-Grounding crashes when this happens, so we can either rewrite or turn it off.
-This is not about the sub-expressions of the quantified expression but the
-quantified expression itself.
+In this example, `a` also posseses positive polarity: if the formula was true when `a` was
+`false`, it must also be `true` when `a` is `true`.
+
+On the other hand, `c` has a negative polarity because changing `c` from `true`
+to `false` can only make the statement "more false".  If can't become `true` if
+it wasn't true before.
+
+Sub-expressions can also have double polarity.  For example, consider the
+formula
+```
+a <=> b
+```
+In this example, `a` has double polarity, because making `a` true could cause
+the formula to become `false` when it was true before, but it could also cause
+the formula to become `true` when it wasn't before.
+
+Grounding crashes when the variable in the quantifier has double polarity in
+the quantified expression.  In that case, you can either rewrite the quantified
+statement or {ref}`turn grounding off <-smt_groundQuantifiers>`.
+
+```{todo}
+Crashes how?  Error message?
+```
+
+```{todo}
+I don't understand the following examples
+```
 
 ```
 ite(forall .., x, y)
@@ -146,9 +206,6 @@ forall a, b. ite(a, b, b + 1) > 10
 
 is totally fine.
 
- 
-
- 
 ### Simple Parameters
 
 To make the grounding sound, we had to make it work only when the quantified
