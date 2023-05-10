@@ -35,6 +35,9 @@ them anywhere that you can write a quantified statement (e.g. `assert` and
 `require` statements, ghost axioms, and invariants).  Grounding also works with
 `exists` quantifiers.
 
+```{contents}
+```
+
 ## Limitations
 
 It is not possible to ground every expression perfectly.  While grounding is
@@ -208,6 +211,14 @@ forall a, b. ite(a, b, b + 1) > 10
 is totally fine.
 
 ### Simple Parameters
+
+```{todo}
+All examples should use CVL syntax; users don't know about SMT formulas.
+```
+
+```{todo}
+I haven't reviewed beyond this point.
+```
 
 To make the grounding sound, we had to make it work only when the quantified
 variables appear as the exact argument to some function. 
