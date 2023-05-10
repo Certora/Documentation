@@ -10,6 +10,7 @@ Hoare
 Kashi
 OOM
 Prover
+SMT
 Secureum
 Solana
 Todo
