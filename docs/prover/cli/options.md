@@ -748,7 +748,8 @@ dramatically increase the time taken for verification.
 (-smt_groundQuantifiers)=
 #### `--settings -smt_groundQuantifiers=false`
 
-This option disables quantifier grounding.
+This option disables quantifier grounding.  See {ref}`grounding` for more
+information.
 
 ```{todo}
 When should you use it?

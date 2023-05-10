@@ -1,6 +1,7 @@
+(grounding)=
 # Quantifier grounding 
 
-Quantifier grounding transforms a {term}`quantified` statement into series of
+Quantifier grounding transforms a {term}`quantified <quantifier>` statement into series of
 non-quantified statements.  For example, suppose a specification contains the
 following `ghost` axiom:
 
@@ -86,8 +87,8 @@ preferable to rewrite your spec, or turn grounding off and see if the solvers
 manage it.
 
 ```{todo}
-Crashes how?  It would be good to include an error message here so that googlers
-can find it.
+Crashes how?  It would be good to include an error message here so that
+people can find it by searching.
 ```
  
 ### Recursion
@@ -167,7 +168,7 @@ In this example, `b` possesses a positive polarity because change `b` from `fals
 can't make the formula `false` if it wasn't before.  Informally, making `b`
 "more true" can only make the formula "more true".
 
-In this example, `a` also posseses positive polarity: if the formula was true when `a` was
+In this example, `a` also possesses positive polarity: if the formula was true when `a` was
 `false`, it must also be `true` when `a` is `true`.
 
 On the other hand, `c` has a negative polarity because changing `c` from `true`
