@@ -12,16 +12,32 @@ Here is an outline of the migration process:
 :depth: 1
 ```
 
-If you have any questions, please ask for help!
-
-```{todo}
-How do you ask for help?
-```
+If you have any questions, please {ref}`ask for help <contact>`!
 
 ## Step 0: Install CVL 2
 
+The `certora-cli` python package will use CVL 2 starting with version 4.0.0.
+CVL 2 is currently in beta; you can install the pre-release versions using our
+`certora-cli-beta` package:
+
+```
+pip install certora-cli-beta
+```
+
+If you aren't ready to migrate your specs yet, Certora will continue supporting
+CVL 1 through TODO.  You can keep using CVL 1 after the release of
+`certora-cli-4.0.0` by pinning your `certora-cli` package to version `3.6.5`:
+
+```
+pip install 'certora-cli<4.0.0'
+```
+
 ```{todo}
-How do you get CVL 2?
+When is CVL 1 EOL?
+```
+
+```{todo}
+What happens if I have both installed?  How do I downgrade?
 ```
 
 ## Step 1: Skim CVL 2 changes
@@ -56,25 +72,35 @@ script may also make odd mistakes.
 The script will attempt to make the following changes:
  - replace `sinvoke f(...)` with `f(...)`
  - replace `invoke f(...)` with `f@withrevert(...)`
- - replace `f(...)`.selector with `sig:f(...).selector`
+ - replace `f(...).selector` with `sig:f(...).selector`
  - ensure that rules start with `rule`
  - replace `static_assert` with `assert`
  - replace `static_require` with `require`
  - add `;` to the end of `pragma`, `import`, `using`, and `use` statements
  - add a `;` to the end of a methods block entry if it doesn't seem to continue to the next line
  - add `function` to the beginning of a methods block entry
- - add `external` to unsummarized methods block entries
+ - add `external` to unsummarized or `DISPATCHER` methods block entries
  - change `function f(...)` to `function _.f(...)` for summarized external functions
 
 In particular, as the script only consumes spec files, there are decisions that
 it cannot make, as they are based on the Solidity code. Some of those are
 listed here.
 
-## Step 3: Fix type errors
+## Step 3: Update run scripts
 
-This is a good time to try running `certoraRun` on your spec.  The command-line
-interface to `certoraRun` has not changed in CVL 2, so you should try to verify
-your contract the same way you usually would.
+This is a good time to try running `certoraRun` on your spec.
+
+The command-line interface to `certoraRun` has changed in CVL 2 slightly: the
+{ref}`--settings` flags have been replaced by a different mechanism.
+
+```{todo}
+Waiting on docs for this
+```
+
+If you are not using `--settings`, you should be able to verify your contract
+the same way you did with CVL 1.
+
+## Step 3: Fix type errors
 
 If your spec verifies without errors, move on to
 {ref}`cvl2-migration-summaries`!  If `certoraRun` reports errors, you will need
@@ -91,8 +117,9 @@ problems that are not covered here, consult the {doc}`changes` or ask!
 
 ### Syntax errors introduced by the migration script
 
-The migration script is not perfect, and might miss the occasional semicolon or
-fail to add a keyword when it should.  If you have syntax errors you can't
+The migration script is not perfect, and can make syntax mistakes in some
+cases, such as adding an extra semicolon or omitting a keyword.  We hope these
+will be easy to identify and fix, but if you have syntax errors you can't
 understand, consult {ref}`cvl2-superficial-syntax-changes`.
 
 ### Type errors in arithmetic and casts
@@ -108,8 +135,9 @@ If you have errors that indicate problems with number types, try the following:
    contract functions.
 
  - If you have a type error in a `havoc ... assuming` statement, consider using
-   the newer ghost variable syntax.  This can avoid potential vacuity pitfalls
-   caused by mixing `to_mathint` and `havoc ... assuming`.
+   the {ref}`newer ghost variable syntax <ghost-variables>`.  This can avoid
+   potential vacuity pitfalls caused by mixing `to_mathint` and `havoc ...
+   assuming`.
 
  - If you need to compare two different types of integers with with a comparison
    like `==`, `>=`, you probably want to convert them to `mathint` using
