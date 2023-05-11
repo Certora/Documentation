@@ -284,7 +284,8 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
 
  * Normal calls and constructors use the `HAVOC_ECF` approximation: they are
    assumed to change the state of external contracts arbitrarily but to leave
-   the caller's state unchanged.
+   the caller's state unchanged. `AUTO` summary behavior for the `CALL` opcode 
+   with 0 length `calldata` can be changed with {ref}`-optimisticFallback`.
 
  * Calls to library methods and `delegatecall`s are assumed to change
    the caller's storage in an arbitrary way, but are assumed to leave ETH
