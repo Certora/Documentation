@@ -85,6 +85,7 @@ overapproximations
 poststate
 pragma
 pragmas
+pre
 precompiled
 preprocess
 preprocessing

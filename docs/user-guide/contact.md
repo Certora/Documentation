@@ -9,7 +9,9 @@ on our [Help Desk channel on Discord][discord] or the [Certora Forum][forum].
 [forum]:   https://forum.certora.com
 
 For sales, please use the [contact form on our
-website][https://www.certora.com/#Request_Early_Access].
+website][contact].
+
+[contact]: https://www.certora.com/#Request_Early_Access
 
 
 

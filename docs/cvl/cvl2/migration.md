@@ -17,7 +17,7 @@ If you have any questions, please {ref}`ask for help <contact>`!
 ## Step 0: Install CVL 2
 
 The `certora-cli` python package will use CVL 2 starting with version 4.0.0.
-CVL 2 is currently in beta; you can install the pre-release versions using our
+CVL 2 is currently in beta; you can install the pre-release version using our
 `certora-cli-beta` package:
 
 ```
@@ -86,21 +86,17 @@ In particular, as the script only consumes spec files, there are decisions that
 it cannot make, as they are based on the Solidity code. Some of those are
 listed here.
 
-## Step 3: Update run scripts
-
-This is a good time to try running `certoraRun` on your spec.
-
-The command-line interface to `certoraRun` has changed in CVL 2 slightly: the
-{ref}`--settings` flags have been replaced by a different mechanism.
-
-```{todo}
-Waiting on docs for this
-```
-
-If you are not using `--settings`, you should be able to verify your contract
-the same way you did with CVL 1.
-
 ## Step 3: Fix type errors
+
+This is a good time to try running `certoraRun` on your spec.  The command-line
+interface to `certoraRun` has not changed in CVL 2, so you should try to verify
+your contract the same way you usually would.
+
+```{note}
+There may be changes to the CLI before CVL 2 officially launches; we will update
+this document if and when it does.  In particular, we are planning changes to
+the {ref}`--settings` flags.
+```
 
 If your spec verifies without errors, move on to
 {ref}`cvl2-migration-summaries`!  If `certoraRun` reports errors, you will need
@@ -149,6 +145,7 @@ If you have errors that indicate problems with number types, try the following:
 The only place you need `to_mathint` is in comparisons!  It won't hurt in other
 places, but it is unnecessary.
 ```
+
  - If you need to modify the output of one contract function and pass it to
    another contract function, you will need to think carefully about how you
    want to handle overflow.  If you think the computation won't go out of bounds,
