@@ -350,7 +350,6 @@ to the `benchmarks/` directory the `"filename"` would need to be updated to
 `BinaryOpMutation/BinaryOpMutation.sol`.
 
 ## Results Directory
-## Results Directory
 
 `gambit mutate` produces all results in an output directory (default:
 `gambit_out`). Here is an example:
