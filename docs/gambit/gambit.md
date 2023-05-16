@@ -392,7 +392,7 @@ This has the following structure:
 | :-------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
 | `-o`, `--outdir`      | specify Gambit's output directory (defaults to `gambit_out`)                                                                 |
 | `--no-overwrite`      | do not overwrite an output directory; if the output directory exists, print an error and exit                                |
-| `-n`, `--num-mutants` | randomly downsample to a given number of mutants.                                                                            |
+| `-n`, `--num-mutants` | randomly down sample to a given number of mutants.                                                                            |
 | `-s`, `--seed`        | specify a random seed. For reproducibility, Gambit defaults to using the seed `0`. To randomize the seed use `--random-seed` |
 | `--random-seed`       | use a random seed. Note this overrides any value specified by `--seed`                                                       |
 | `--contract`          | specify a specific contract name to mutate; by default mutate all contracts                                                  |

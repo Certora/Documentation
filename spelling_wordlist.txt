@@ -104,6 +104,7 @@ se
 sighash
 sighashes
 solc
+sourcepath
 sourceroot
 splitter
 stablecoin
