@@ -18,27 +18,18 @@ If you have any questions, please {ref}`ask for help <contact>`!
 
 The `certora-cli` python package will use CVL 2 starting with version 4.0.0.
 CVL 2 is currently in beta; you can install the pre-release version using our
-`certora-cli-beta` package:
-
-```
-pip install certora-cli-beta
-```
+`certora-cli-beta` package.  See {ref}`beta-install` for details.
 
 If you aren't ready to migrate your specs yet, Certora will continue supporting
-CVL 1 through TODO.  You can keep using CVL 1 after the release of
+CVL 1 for some time.  You can keep using CVL 1 after the release of
 `certora-cli-4.0.0` by pinning your `certora-cli` package to version `3.6.5`:
 
 ```
 pip install 'certora-cli<4.0.0'
 ```
 
-```{todo}
-When is CVL 1 EOL?
-```
-
-```{todo}
-What happens if I have both installed?  How do I downgrade?
-```
+If you want to switch between the two versions, see the instructions for setting
+up a virtual environment in {ref}`beta-install`.
 
 ## Step 1: Skim CVL 2 changes
 
