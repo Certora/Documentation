@@ -85,6 +85,7 @@ overapproximations
 poststate
 pragma
 pragmas
+pre
 precompiled
 preprocess
 preprocessing
@@ -104,6 +105,8 @@ splitter
 stablecoin
 struct
 structs
+subdirectory
+subdirectories
 subgraph
 subproblems
 subtype

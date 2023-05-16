@@ -162,6 +162,34 @@ can arise during installation and how to deal with them:
     ```
 </details>
 
+(beta-install)=
+## Installing the beta version (optional)
+
+If you wish to install a pre-release version, you can do so by installing
+`certora-cli-beta` instead of `certora-cli`.  We do not recommend having both
+packages installed simultaneously, so you should remove the `certora-cli`
+package before installing `certora-cli-beta`:
+
+```sh
+pip uninstall certora-cli
+pip install certora-cli-beta
+```
+
+If you wish to easily switch between the beta and the production versions, you
+can use a [python virtual environment][virtualenv]:
+
+[virtualenv]: https://virtualenv.pypa.io/en/latest/
+
+```sh
+pip install virtualenv
+virtualenv certora-beta
+source certora-beta/bin/activate
+pip3 install certora-cli-beta
+```
+
+You can then switch to the standard CVL release by running `deactivate`, and
+back to the beta release using `certora-beta/bin/activate`.
+
 Step 3: Set the premium access key as an environment variable
 -------------------------------------------------------------
 
