@@ -58,7 +58,7 @@ returns the pool's balance of the underlying asset (we'll see
 
 ```solidity
 function assetBalance() public view returns (uint256) {
-  return asset.balanceOf(this);
+    return asset.balanceOf(this);
 }
 ```
 
