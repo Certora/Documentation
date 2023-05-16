@@ -30,6 +30,7 @@ bytecodes
 callee
 changelog
 codebase
+config
 conjuncted
 decompilation
 decompiler
@@ -95,12 +96,15 @@ reentrancy
 reentrant
 relatedly
 remappings
+rhs
 satisfiability
 satisfiable
 scalable
 se
 sighash
 sighashes
+solc
+sourceroot
 splitter
 stablecoin
 struct

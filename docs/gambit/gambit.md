@@ -13,7 +13,7 @@ Mutants can be used to evaluate test suites or specs used for formal
 1. Gambit is written in Rust. You'll need to [install Rust and
    Cargo](https://www.rust-lang.org/tools/install) to build Gambit.
 2. Gambit uses the solc, the Solidity compiler, to generate mutants. You'll need
-   to have solc binary that is compatable with the project you are mutating (see
+   to have solc binary that is compatible with the project you are mutating (see
    the `--solc` option in `gambit mutate --help`)
 
 ## Installation
@@ -84,7 +84,7 @@ To mutate a single file, use the `--filename` option (or `-f`), followed by the
 file to mutate.
 
 ```bash
-gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol                          
+gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol
 ```
 <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
 <pre>
@@ -95,10 +95,10 @@ _**Note:** The mutated file must located within your current working directory o
 one of its subdirectories. If you want to mutate code in an arbitrary directory,
 use the `--sourceroot` option._
 
-### Example 2: Mutating and Downsampling
+### Example 2: Mutating and Down Sampling
 
 The above command produced 34 mutants which may be more than you need. Gambit
-provides a way to randomly downsample the number of mutants with the
+provides a way to randomly down sample the number of mutants with the
 `--num-mutants` or `-n` option:
 
 ```bash
@@ -185,7 +185,7 @@ For projects that have complex dependencies and imports, you may need to:
 (gambit-config)=
 ### Example 5: The `--sourceroot`  Option
 
-Gambit needs to track the location of sourcefiles that it mutates within a
+Gambit needs to track the location of source files that it mutates within a
 project: for instance, imagine there are files `foo/Foo.sol` and `bar/Foo.sol`.
 These are separate files, and their path prefixes are needed to determine this.
 Gambit addresses this with the `--sourceroot` option: the sourceroot indicates
@@ -393,7 +393,7 @@ This has the following structure:
 | `-o`, `--outdir`      | specify Gambit's output directory (defaults to `gambit_out`)                                                                 |
 | `--no-overwrite`      | do not overwrite an output directory; if the output directory exists, print an error and exit                                |
 | `-n`, `--num-mutants` | randomly downsample to a given number of mutants.                                                                            |
-| `-s`, `--seed`        | specify a random seed. For reproducability, Gambit defaults to using the seed `0`. To randomize the seed use `--random-seed` |
+| `-s`, `--seed`        | specify a random seed. For reproducibility, Gambit defaults to using the seed `0`. To randomize the seed use `--random-seed` |
 | `--random-seed`       | use a random seed. Note this overrides any value specified by `--seed`                                                       |
 | `--contract`          | specify a specific contract name to mutate; by default mutate all contracts                                                  |
 | `--functions`         | specify one or more functions to mutate; by default mutate all functions                                                     |
