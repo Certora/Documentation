@@ -6,7 +6,7 @@ Step 1: prerequisites
 ---------------------
 
 <details>
-  <summary>Python3.5 or newer</summary>
+  <summary>Python3.8.16 or newer</summary>
 
   Check your Python3 version by executing the following command on the
   terminal:
@@ -15,7 +15,7 @@ Step 1: prerequisites
   python3 --version
   ```
 
-  If the version is < 3.5, follow the [Python installation guide][pythonInstall] to upgrade.
+  If the version is < 3.8.16, follow the [Python installation guide][pythonInstall] to upgrade.
 
   [pythonInstall]: https://wiki.python.org/moin/BeginnersGuide/Download
 </details>
