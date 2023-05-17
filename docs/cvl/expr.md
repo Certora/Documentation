@@ -31,7 +31,7 @@ expr ::= literal
 
 storage_relop ::= "==" | "!="
 
-storage_ref ::= | id "@" id | id
+storage_ref ::= id | id "[" id "]"
 
 function_call ::=
        | [ id "." ] id
@@ -385,16 +385,16 @@ The expression `s1 != s2` behaves similarly, except it will return `false` if al
 and ghosts are equal between `s1` and `s2`.
 
 Storage comparisons also support narrowing the scope of comparison to specific components of the global
-state represented by `storage` variables. This syntax is `r@s1 storage_relop r@s2`, where `r` is a "storage qualifier",
-and `storage_relop` is either `!=` or `==`. The valid qualifiers are:
+state represented by `storage` variables. This syntax is `s1[r] storage_relop s2[r]`, where `r` is a "storage comparison basis", and `storage_relop` is either `!=` or `==`. The valid bases of comparison are:
 
 1. The name of a contract imported with a {ref}`using statement <using-stmt>`,
-2. `balances`, or
+2. The keyword `nativeBalances`, or
 3. The name of a ghost variable or function
 
-It is an error to use different qualifiers on different sides of the comparison operator, and it is also
-an error to use a qualifier on one side and not the other. The application of the qualifiers restricts the comparison
-to only consider the portion of global state identified by the qualifier. 
+It is an error to use different bases on different sides of the comparison operator, and it is also
+an error to use a comparison basis on one side and not the other.
+The application of the basis restricts the comparison
+to only consider the portion of global state identified by the basis.
 
 If the qualifier is a contract identifier
 imported via `using`, then the comparison operation will only consider the storage fields of that contract. For example:
@@ -406,7 +406,7 @@ using OtherContract as o;
 rule compare_state_of_c(env e) {
    storage init = lastStorage;
    o.mutateOtherState(e);
-   assert c@lastStorage == c@init;
+   assert lastStorage[o] == init[o];
 }
 ```
 
@@ -419,15 +419,18 @@ using OtherContract as o;
 rule compare_state_of_c(env e) {
    storage init = lastStorage;
    c.mutateContractState(e);
-   assert c@lastStorage == c@init;
+   assert lastStorage[c] == init[c];
 }
 ```
 
 will not. Note comparing contract's state using this method will **not** compare the balance of the contract between the
 two states.
 
-If the qualifier is the identifier `balances`, then the balances of all contracts are compared between the two storage states. Finally,
-if the qualifier is the name of a ghost function or variable, the value of that function/variable are compared between storage states.
+If the qualifier is the identifier `nativeBalances`, then the account balances
+of all contracts are compared between the two storage states. 
+Finally, if the basis is the name of a ghost function or variable, the value of that
+function/variable are compared between storage states.
+
 Two ghost functions are considered equal if they have the same outputs for all input arguments.
 
 ```{warning}
@@ -443,4 +446,12 @@ that occur arbitrarily nested within expressions. However, support within the Pr
 these comparisons is primarily aimed at assertions of storage equality, e.g., `assert s1 == s2`.
 Support for storage inequality _and_ nesting comparisons within other expressions is considered
 experimental.
+```
+
+```(warning
+The storage comparison checks for exact equality between every single slot of storage which can
+lead to surprising results. This behavior can happen if an uninitialized storage slot is
+written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
+clear operation the slot will definitely hold 0, but the prover will not make any assumptions
+about the value of the uninitialized slot which means they can be considered different.
 ```
