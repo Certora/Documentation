@@ -1,0 +1,11 @@
+certoraRun main.sol:PoolExample underlying.sol \
+--verify PoolExample:Spec.spec \
+--link PoolExample:asset=underlying \
+--solc solc8.10 \
+--cloud \
+--send_only \
+--rule depositRedeemNoGain \
+--rule depositRedeemUserLoss_wrong \
+--rule depositRedeemUserLoss \
+--settings -t=400,-mediumTimeout=50,-depth=12 \
+--msg "depositRedeemUserLoss no summary"
