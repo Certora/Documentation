@@ -27,6 +27,7 @@ axiom ::= [ "init_state" ] "axiom" expression ";"
 See {doc}`types` for the `type` and `cvl_type` productions, and {doc}`expr` for
 the `expression` syntax.
 
+(ghost-variables)=
 Declaring ghost variables
 -------------------------
 
