@@ -22,7 +22,7 @@ pip install certora-cli
 ```
 
 If you already have `certora-cli` installed and
-  the `mutationTest` command is not available,
+  the `certoraMutate` command is not available,
   you may need to update to a newer version by running
 
 ```sh
