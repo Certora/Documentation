@@ -58,7 +58,7 @@ returns the pool's balance of the underlying asset (we'll see
 
 ```solidity
 function assetBalance() public view returns (uint256) {
-  return asset.balanceOf(this);
+    return asset.balanceOf(this);
 }
 ```
 
@@ -107,6 +107,8 @@ rule integrityOfDeposit {
     mathint balance_before = assetBalance();
 
     env e; uint256 amount;
+    require e.msg.sender != currentContract;
+
     deposit(e, amount);
 
     mathint balance_after = assetBalance();

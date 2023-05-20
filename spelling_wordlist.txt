@@ -10,6 +10,7 @@ Hoare
 Kashi
 OOM
 Prover
+SMT
 Secureum
 Solana
 Todo
@@ -84,6 +85,7 @@ overapproximations
 poststate
 pragma
 pragmas
+pre
 precompiled
 preprocess
 preprocessing
@@ -103,6 +105,8 @@ splitter
 stablecoin
 struct
 structs
+subdirectory
+subdirectories
 subgraph
 subproblems
 subtype
