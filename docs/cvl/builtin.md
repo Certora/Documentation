@@ -19,7 +19,7 @@ One can configure the number of branching nodes that will be selected. (the node
 
 Sanity rules act as one of our main methods to set up a new code base for verification. They serve two needs:
 
-- Checking that the Prover can solve through a path of the code, and that no obvious vacuities exist.
+- Checking that the Prover can solve through a path of the code, and that no obvious vacuous statements exist.
 - Checking that the Prover can find the said path in a reasonable amount of time for both pre-processing and SMT phases.
 
 However, sanity rules are limited. This is because they only require finding a single path, and therefore it is not guaranteed that a fast running time for the sanity rule means that the checked method is easy. In addition, it may be able to find a path that does not go through a vacuity that exists deeper down in the code of the program.
@@ -35,7 +35,7 @@ function foo() {
 }
 ```
 
-One trivial way to pass sanity here is to find a model where `array.len=0`. In that case, our sanity check doesn’t visit the loop, regardless of our loop configuration. Any branching in the code is potentially hiding important code.
+One trivial way to pass sanity here is to find a model where `array.len=0`. In that case, our sanity check does not visit the loop, regardless of our loop configuration. Any branching in the code is potentially hiding important code.
 
 ### The structure of a sanity rule
 
