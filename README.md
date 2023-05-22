@@ -91,6 +91,20 @@ Style guide
  - Use the `term` feature when referring to a new term for the first time, this
    links to the glossary. 
 
+ - Prefer semantic blocks to hand-formatting.  For example, prefer
+
+````
+```{note}
+This is a note
+```
+````
+
+to
+
+```
+**Note**: _this is a note_.
+```
+
  - Use a line width of 80-characters in the markdown files
    
  - In the reference manual, prefer descriptions over examples; use examples to
