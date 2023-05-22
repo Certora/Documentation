@@ -288,7 +288,7 @@ examples.
 _**Note:** Any paths provided by the configuration file are resolved relative to
 the configuration file's parent directory._
 
-(configuration-file)s=
+(configuration-files)=
 ## Configuration Files
 Configuration files allow you to save complex configurations and perform
 multiple mutations at once. Gambit uses a simple JSON object format to store

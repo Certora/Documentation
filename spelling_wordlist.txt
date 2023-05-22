@@ -87,6 +87,7 @@ poststate
 pragma
 pragmas
 pre
+prebuilt
 precompiled
 preprocess
 preprocessing
@@ -96,6 +97,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+reproducibility
 rhs
 satisfiability
 satisfiable
