@@ -4,6 +4,8 @@ Balancer
 CVL
 Certora
 Devcon
+downsample
+downsampling
 Ethereum
 FEoD
 Hoare
