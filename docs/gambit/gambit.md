@@ -71,7 +71,7 @@ to be relative to the config file's parent directory._
 
 In the following section we provide examples of how to run Gambit using both
 `--filename` and `--json`. We provide more complete documentation in the
-[Configuration Files](#configuration-files) and [CLI-Options](#cli-options) sections below.
+{ref}`configuration-files` and {ref}`cli-options` sections below.
 
 ## Examples
 
@@ -130,11 +130,11 @@ gambit_out
 └── mutants.log
 </pre>
 
-See the [Results Directory](#results-directory) section for a detailed
+See the {ref}`results-directory` section for a detailed
 explanation of this layout. The `gambit summary` command
 pretty prints each mutant for easy inspection:
 
-![The output of `gambit summary`](doc/gambit-summary.png)
+![The output of `gambit summary`](gambit-summary.png)
 
 By default `gambit summary` prints info on all mutants. If you are interested in
 particular mutants you can specify a subset of mutant ids with the `--mids` flag.
@@ -288,6 +288,7 @@ examples.
 _**Note:** Any paths provided by the configuration file are resolved relative to
 the configuration file's parent directory._
 
+(configuration-file)s=
 ## Configuration Files
 Configuration files allow you to save complex configurations and perform
 multiple mutations at once. Gambit uses a simple JSON object format to store
@@ -349,6 +350,7 @@ directory of the configuration file_. So if the JSON file listed above was moved
 to the `benchmarks/` directory the `"filename"` would need to be updated to
 `BinaryOpMutation/BinaryOpMutation.sol`.
 
+(results-directory)=
 ## Results Directory
 
 `gambit mutate` produces all results in an output directory (default:
@@ -382,7 +384,9 @@ This has the following structure:
   its mutant ID (mid) 1, 2, 3, ...
 + `mutants.log`: a log file with all mutant information. This is similar to
   `results.json` but in a different format and with different information
-  ## CLI Options
+
+(cli-options)=
+## CLI Options
 
  `gambit mutate` supports the following options; for a comprehensive list, run
  `gambit mutate --help`:
