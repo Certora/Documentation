@@ -316,10 +316,10 @@ place of the summary type.  The function call can refer to the
 variables defined as arguments in the summary declarations; expressions
 that combine those variables are not supported.
 
-The function call may also refer to the special variable `calledContract`.
-This variable gives address of the contract on which the summarized method was
-called (this is useful for identifying the called contract in {ref}`wildcard
-summaries <cvl2-wildcards>`).
+The function call may also use the special variable `calledContract`, which
+gives the address of the contract on which the summarized method was called.
+This is useful for identifying the called contract in {ref}`wildcard summaries
+<cvl2-wildcards>`.
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
