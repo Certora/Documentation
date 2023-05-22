@@ -39,10 +39,7 @@ methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= ( sighash | [ id "." ] id "(" evm_params ")" )
                      [ "returns" types ]
-                     { | "with" "(" "env" id ")"
-                       | "receiver" "(" "address" id ")"
-                       | "envfree"
-                     }
+                     [ "envfree" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      [ ";" ]
 
@@ -59,7 +56,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | id "(" [ id { "," id } ] ")"
+                   | id "(" [ id { "," id } ] ")" [ "with" "(" "env" id ")" ]
 
 ```
 
@@ -101,11 +98,6 @@ as separate rules called `envfreeFuncsStaticCheck` and
 [^envfree_nonpayable]: The effect of payable functions on the contract's
   balance depends on the message value, so payable functions also require an
   `env`.
-
-Entries with summaries may also specify variables for the environment of the
-summarized function using `with(env e)`, and the address of the receiver
-contract using `receiver(address a)`.  See
-{ref}`function summaries <function-summary>` below for more details.
 
 Finally, the method entry may contain an optional summarization (indicated by
 `=>` followed by the summary type and an optional application policy).  A
@@ -324,14 +316,10 @@ place of the summary type.  The function call can refer to the
 variables defined as arguments in the summary declarations; expressions
 that combine those variables are not supported.
 
-The call can also refer to variables introduced by the `with(env e)` or
-`receiver(address a)` annotations.  Here `e` or `a` may be replaced with any
-valid identifiers.
-
-The variable defined by the `receiver` clause gives the
-address of the contract on which the summarized method was called (this is
-useful for identifying the called contract in {ref}`wildcard summaries
-<cvl2-wildcards>`).
+The function call may also refer to the special variable `calledContract`.
+This variable gives address of the contract on which the summarized method was
+called (this is useful for identifying the called contract in {ref}`wildcard
+summaries <cvl2-wildcards>`).
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
@@ -340,7 +328,6 @@ follows:
 ```cvl
 methods {
     function _.transferFrom(address from, address to, uint256 amount) external
-        receiver(address calledContract)
         => cvlTransferFrom(calledContract, from, to, amount);
 }
 
@@ -353,6 +340,9 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
     }
 }
 ```
+
+The call can also refer to a variable of type `env` introduced by a `with(env
+e)` annotation.  Here `e` may be replaced with any valid identifier.
 
 The variable defined by the `with` clause contains an {ref}`` `env` type <env>``
 giving the context for the summarized function.  This context may be different
@@ -367,9 +357,7 @@ method:
 ```cvl
 methods {
     function _.transfer(address to, uint256 amount) external
-        with(env e)
-        receiver(address calledContract)
-        => cvlTransfer(calledContract, e, to, amount);
+        => cvlTransfer(calledContract, e, to, amount) with(env e);
 }
 
 function cvlTransfer(address token, env passedEnv, address to, uint amount) {
@@ -385,7 +373,6 @@ rule example {
 ```
 
 In this example, if the `process` method calls `t.transfer(...)`, then in the
-`cvlTransfer` function, `token` will be `t` (because of the `receiver` clause
-in the `methods` block entry), `passedEnv.msg.sender` will be
+`cvlTransfer` function, `token` will be `t`, `passedEnv.msg.sender` will be
 `c`, and `passedEnv.tx.origin` will be `sender`.
 
