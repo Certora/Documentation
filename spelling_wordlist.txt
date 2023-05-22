@@ -98,16 +98,12 @@ reentrant
 relatedly
 remappings
 reproducibility
-rhs
 satisfiability
 satisfiable
 scalable
 se
 sighash
 sighashes
-solc
-sourcepath
-sourceroot
 splitter
 stablecoin
 struct
