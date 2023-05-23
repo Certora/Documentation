@@ -341,6 +341,9 @@ as arrays).
 
 Entries for external functions may have `storage` annotations for argument
 references (in Solidity, external library functions may have storage arguments).
+If a reference-type argument does not have a `storage` annotation, the entry
+will apply to a function that has either a `calldata` or a `memory` annotation
+on the argument.
 
 % ```{todo}
 % If you do not change this, you will see the following error:
