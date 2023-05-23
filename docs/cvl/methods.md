@@ -39,7 +39,7 @@ methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= ( sighash | [ id "." ] id "(" evm_params ")" )
                      [ "returns" types ]
-                     [ "envfree" ]
+                     [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      [ ";" ]
 
@@ -86,7 +86,10 @@ declaration contains a `returns` clause, the declared return type must match
 the contract method's return type.  If the `returns` clause is omitted, the
 return type is taken from the contract method's return type.
 
-Following the `returns` clause is an optional `envfree` tag.  Marking a method
+Following the `returns` clause an may optionally contain either an `envfree`
+tag or a `with` clause.
+
+Marking a method
 with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
 from CVL do not need to explicitly pass an {term}`environment` value as the
 first argument.  Second, the Prover will verify that the method implementation
@@ -98,6 +101,12 @@ as separate rules called `envfreeFuncsStaticCheck` and
 [^envfree_nonpayable]: The effect of payable functions on the contract's
   balance depends on the message value, so payable functions also require an
   `env`.
+
+The `with` clause introduces a new variable to represent the environment that
+is passed to a summarized function; the variable can be used in function
+summaries.  `with` clauses may only be used if the entry has a
+function summary. See {ref}`function-summary` below for more information about
+the environment provided by the `with` clause.
 
 Finally, the method entry may contain an optional summarization (indicated by
 `=>` followed by the summary type and an optional application policy).  A
@@ -356,8 +365,8 @@ method:
 
 ```cvl
 methods {
-    function _.transfer(address to, uint256 amount) external
-        => cvlTransfer(calledContract, e, to, amount) with(env e);
+    function _.transfer(address to, uint256 amount) external with(env e)
+        => cvlTransfer(calledContract, e, to, amount);
 }
 
 function cvlTransfer(address token, env passedEnv, address to, uint amount) {
