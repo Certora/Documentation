@@ -123,7 +123,7 @@ at least one path, the rule succeeds.
 ```{note}
 A success does only guarantee that there is some execution starting in some
 arbitrary state.  It is not possible to check that there is an execution for
-very starting state.
+every starting state.
 ```
 
 (requireInvariant)=
