@@ -340,7 +340,7 @@ In CVL 2, methods block entries for internal functions must contain either `call
 as arrays).
 
 Entries for external functions may have `storage` annotations for argument
-references.
+references (in Solidity, external library functions may have storage arguments).
 
 % ```{todo}
 % If you do not change this, you will see the following error:
