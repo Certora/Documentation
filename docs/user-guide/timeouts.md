@@ -39,6 +39,10 @@ certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true -
 ```
 where `library1` and `library2` are two example library names.
 
+```{note}
+The option `-librariesToSkipNonDet` has no effect if `-summarizeExtLibraryCallsAsNonDetPreLinking` is not set to true.
+```
+
 
 Flags for tuning the Prover
 ---------------------------
