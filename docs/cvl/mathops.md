@@ -85,7 +85,7 @@ assert y > x;
 The meaning is the same as in the first snippet since an assignment to a `mathint` variable allows non-overflowing interpretations of the arithmetic operators.
 
 ```{versionchanged} 2.0
-Arithmetic operators never overflow. To pass a mathint as a uint you must use an appropriate {ref}`casting operator <cvl2-casting>`.
+Arithmetic operators never overflow. To pass a `mathint` as a `uint` you must use an appropriate {ref}`casting operator <cvl2-casting>`.
 ```
 The only case in which arithmetic operators in expressions are allowed to overflow is within arguments passed to functions, or generally, whenever we interact with the code being checked. Solidity functions cannot take values that do not fit within 256 bits. Therefore the tool will report an overflow error if `mathint` variable is passed directly as a function argument.
 
@@ -136,7 +136,7 @@ Addresses can no longer be cast to and from `uintK`.
     *   `uint_k1` can implicitly cast to `address` when `k1 <= 160`. Moreover, `address` can implicitly cast to `uint256`, but _not_ the other way around. (Note : This is different from earlier behavior because before, `uint256` and `address` were aliases).
         
 ```{versionchanged} 2.0
-A uint can no longer take a value out of bounds.
+A `uint` can no longer take a value out of bounds.
 ```
     *   `uint*` can implicitly cast to `mathint`. (Note that there is a **difference** in implicit and explicit casts from `uint256` to `mathint` when the expression value is outside the range of a `uint256` variable. While in the implicit cast the `uint256` value remains unchanged when converted to `mathint`, the explicit cast takes a _mod_ of the value with `2^256`. Again, this difference will be “visible” only when casting unsafely from a `uint` to `mathint`, i.e. when the `uint` value is greater than `2^256`)
         

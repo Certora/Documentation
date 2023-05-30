@@ -30,6 +30,7 @@ boundedness
 bytecode
 bytecodes
 callee
+callees
 changelog
 codebase
 config

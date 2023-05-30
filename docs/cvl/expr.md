@@ -13,7 +13,9 @@ Syntax
 The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
 
 ```{versionchanged} 2.0
-invoke and sinvoke have been removed, see {ref}`cvl2-removed-invoke`
+`invoke` and `sinvoke` have been removed, see {ref}`cvl2-removed-invoke`
+
+```
 
 ```
 expr ::= literal
@@ -325,7 +327,7 @@ There are several additional features that can be used when calling contract
 functions (including calling them through {ref}`method variables <method-type>`).
 
 ```{versionchanged} 2.0
-Invoke and sinvoke have been removed completely. See {ref}`cvl2-removed-invoke`
+`invoke` and `sinvoke` have been removed completely. See {ref}`cvl2-removed-invoke`
 ```
 A contract method invocation can optionally be prefixed by `invoke` or `sinvoke`,
 although this syntax is deprecated in favor of the `@norevert` and

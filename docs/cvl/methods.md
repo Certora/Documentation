@@ -154,7 +154,7 @@ methods block, and then uses the declaration and the calling context to
 determine whether the call should be replaced by an approximation.
 
 ```{versionchanged} 2.0
-The prover now reasons about richer method signatures--that is, for internal functions,
+The Prover now reasons about richer method signatures--that is, for internal functions,
 rather than coercing the signature into an ABI signature, the Prover reasons about the
 richer signature with user defined types and location annotations. 
 ```

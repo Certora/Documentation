@@ -281,7 +281,7 @@ the type of its contents vary depending on which method the Prover is checking.
 The only thing you can do with it is pass it as an argument to a `method`
 variable.  It is possible to work around this limitation; see {ref}`partially
 parametric rules` for further details.
-[//]: # (You can also pass a calldataarg to a specific function)
+%(You can also pass a `calldataarg` to a specific function)
 
 (storage-type)=
 ### The `storage` type
