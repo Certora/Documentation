@@ -33,7 +33,7 @@ Syntax
 ------
 
 ```{versionchanged} 2.0
-A new series of modifiers have been added along with requirements on order and valid combinations. (See {ref}`cvl2-methods-block`).
+A new series of modifiers have been added along with requirements on order and valid combinations. (See {ref}`cvl2-methods-blocks`).
 ```
 
 The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
@@ -71,7 +71,7 @@ for the `id` production.  See {doc}`statements` for the `block` production, and
 (envfree)=
 Entries in the `methods` block
 ------------------------------
-```{verisonadded} 2.0
+```{versionadded} 2.0
 Methods entries may now use either the imported contract name, or the contract name itself.
 ```
 

@@ -12,6 +12,7 @@ This document summarizes the changes to CVL syntax introduced by CVL 2.0.
 ```{contents}
 ```
 
+(cvl2-superficial-syntax-changes)=
 Superficial syntax changes
 --------------------------
 
@@ -172,7 +173,7 @@ rule onlyOwnerCanDecrease() {
 }
 ```
 
-(cvl2-methods-block)=
+(cvl2-methods-blocks)=
 Changes to methods block entries
 --------------------------------
 
@@ -465,6 +466,7 @@ In this case, the Prover would encode the value returned by `fooImpl()` as a
 will not be able to detect the error.
 ````
 
+(cvl2-integer-types)=
 Changes to integer types
 ------------------------
 
@@ -497,6 +499,7 @@ about the overflow behavior by using the {ref}`new casting operators
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-comparisons-identical-types)=
 ### Comparisons require identical types
 
 When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
@@ -714,6 +717,7 @@ We have removed these features because we think they are no longer used and no
 longer useful.  If you find that you do need one of these features, contact
 Certora support.
 
+(cvl2-removed-sighashes)=
 ### Methods entries for sighashes
 
 In CVL 1, you could write a sighash instead of a method identifier in the
@@ -724,7 +728,7 @@ the name and argument types of the called method in order to provide an entry.
 % If you do not change this, you will see the following error:
 % ```
 
-(removed-call-keywords)=
+(cvl2-removed-invoke)=
 ### `invoke`, `sinvoke`, and `call`
 
 Older versions of CVL had special syntax for calling contract and CVL functions:
@@ -736,6 +740,7 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-static-assert-require)=
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
@@ -745,6 +750,7 @@ them with `assert` and `require` respectively.
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-fallback)=
 ### `invoke_fallback` and `certorafallback()`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
@@ -756,6 +762,7 @@ writing a parametric rule and filtering on `f.isFallback`.  See
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-invoke-whole)=
 ### `invoke_whole`
 
 The `invoke_whole` keyword is no longer supported.
@@ -764,6 +771,7 @@ The `invoke_whole` keyword is no longer supported.
 % What did it do?
 % ```
 
+(cvl2-removed-havoc)=
 ### Havocing local variables
 
 In CVL 1, you could write the following:
@@ -792,6 +800,7 @@ g(e,args2);
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-destructure-struct)=
 ### Destructuring syntax for struct returns
 
 In CVL 1, if a contract function returned a struct, you could use a
@@ -838,6 +847,7 @@ x, y = g();
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-double-arrays)=
 ### `bytes[]` and `string[]`
 
 In CVL 1, you could declare variables of type `string[]` and `bytes[]`.  You can
@@ -851,11 +861,20 @@ value of a method that returns one of these types.
 % ```{todo}
 % If you do not change this, you will see the following error:
 % ```
-(cvl2-pragma)=
+
+(cvl2-removed-pragma)=
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature
 was not used.  It has been removed in CVL 2.
+
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
+
+### `events`
+
+CVL 1 had syntax for an `events` block, but it did nothing and has been removed.
 
 % ```{todo}
 % If you do not change this, you will see the following error:

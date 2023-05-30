@@ -9,7 +9,7 @@ that are useful for writing specifications.
 The beginning of a spec file contains some header information:
 
 ```{versionchanged} 2.0
-Pragma has been {ref}`removed <cvl2-pragma>` for specs.
+Pragma has been {ref}`removed <cvl2-removed-pragma>` for specs.
 ```
  - **[Version pragma](pragmas):** The CVL version can be specified using `pragma specify <version>`.
 
