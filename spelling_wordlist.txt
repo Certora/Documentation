@@ -4,6 +4,8 @@ Balancer
 CVL
 Certora
 Devcon
+downsample
+downsampling
 Ethereum
 FEoD
 Hoare
@@ -30,6 +32,7 @@ bytecodes
 callee
 changelog
 codebase
+config
 conjuncted
 decompilation
 decompiler
@@ -86,6 +89,7 @@ poststate
 pragma
 pragmas
 pre
+prebuilt
 precompiled
 preprocess
 preprocessing
@@ -95,6 +99,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+reproducibility
 satisfiability
 satisfiable
 scalable
