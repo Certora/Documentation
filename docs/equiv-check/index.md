@@ -35,13 +35,13 @@ The front-end script, `CertoraEqCheck`,
 To run the equivalence checker in default mode,
   use `CertoraEqCheck` like so:
 
-```
+```bash
 CertoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
 ```
 
 For example:
 
-```
+```bash
 CertoraEqCheck def Test/EqCheck/BasicMathGood.sol:add:solc8.0 Test/EqCheck/BasicMathBad.sol:add_pass:solc8.0
 ```
 
@@ -53,20 +53,20 @@ Also note that
   the contract field can be omitted if the contract name is the same
   the file name.
 
-```
+
 ### Configuration mode
 
 To run the equivalence checker in the configuration mode,
   use `CertoraEqCheck` like so:
 
-```
+```bash
 CertoraEqCheck conf <path_to_conf>.conf contract:function contract:function
 ```
 
 For example:
 
-```
-CertoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
+```bash
+   CertoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
 ```
 
 In the above, `testGood.conf` contains the following:
