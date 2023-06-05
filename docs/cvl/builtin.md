@@ -12,6 +12,20 @@ The syntax for using the built-in rule identifier
 
 built-in-rule-usage ::= 'use builtin rule' identifier
 
+Example
+-------
+In order to run the built-in rule `msgValueInLoopRule` add to the spec file the line
+
+`use builtin rule msgValueInLoopRule`
+
+The Names of Currently Implemented Rules:
+-----------------------------------------
+- `msgValueInLoopRule` – check for occurrences of `msg.value` and delegate calls in loops.
+- `hasDelegateCalls` - check for delegate calls anywhere in the contract.
+- `sanity`
+- `deepSanity`
+
+
 ## Sanity
 
 Enable with:
@@ -77,18 +91,6 @@ rule sanity(method f) {
     assert !true;
 }
 ```
-
-Example
--------
-In order to run the built-in rule `msgValueInLoopRule` add to the spec file the line
-
-`use builtin rule msgValueInLoopRule`
-
-The Names of Currently Implemented Rules:
------------------------------------------
-- `msgValueInLoopRule` – check for occurrences of `msg.value` and delegate calls in loops.
-- `hasDelegateCalls` - check for delegate calls anywhere in the contract.
-
 
 Where `assert false` is replaced with `assert !true`. This is actually equivalent! However, with a small tweak, it can become the key to getting much wider coverage from sanity rules.
 
