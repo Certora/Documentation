@@ -27,11 +27,6 @@ expr ::= literal
        | function_call
 
        | expr "in" id
-	   | storage_ref storage_relop storage_ref
-
-storage_relop ::= "==" | "!="
-
-storage_ref ::= id | id "[" id "]"
 
 function_call ::=
        | [ id "." ] id
@@ -63,6 +58,7 @@ special_vars ::=
            | "lastMsgSig"
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
+           | "nativeBalances"
 		   
 cast_functions ::=
     | require_functions | to_functions | assert_functions
@@ -385,7 +381,8 @@ The expression `s1 != s2` behaves similarly, except it will return `false` if al
 and ghosts are equal between `s1` and `s2`.
 
 Storage comparisons also support narrowing the scope of comparison to specific components of the global
-state represented by `storage` variables. This syntax is `s1[r] storage_relop s2[r]`, where `r` is a "storage comparison basis", and `storage_relop` is either `!=` or `==`. The valid bases of comparison are:
+state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1[r] != s2[r]`, where `r` is a "storage comparison basis",
+and `s1` and `s2` are variables of type `storage`. The valid bases of comparison are:
 
 1. The name of a contract imported with a {ref}`using statement <using-stmt>`,
 2. The keyword `nativeBalances`, or
@@ -423,12 +420,16 @@ rule compare_state_of_c(env e) {
 }
 ```
 
-will not. Note comparing contract's state using this method will **not** compare the balance of the contract between the
+will not. 
+
+```{note}
+Comparing contract's state using this method will **not** compare the balance of the contract between the
 two states.
+```
 
 If the qualifier is the identifier `nativeBalances`, then the account balances
 of all contracts are compared between the two storage states. 
-Finally, if the basis is the name of a ghost function or variable, the value of that
+Finally, if the basis is the name of a ghost function or variable, the values of that
 function/variable are compared between storage states.
 
 Two ghost functions are considered equal if they have the same outputs for all input arguments.
@@ -444,13 +445,14 @@ that compare storage do not encounter this behavior.
 The grammar admits storage comparisons for both equality and inequality
 that occur arbitrarily nested within expressions. However, support within the Prover for
 these comparisons is primarily aimed at assertions of storage equality, e.g., `assert s1 == s2`.
-Support for storage inequality _and_ nesting comparisons within other expressions is considered
+Support for storage inequality as well as nesting comparisons within other expressions is considered
 experimental.
 ```
 
-```(warning
+```{warning}
 The storage comparison checks for exact equality between every single slot of storage which can
-lead to surprising results. This behavior can happen if an uninitialized storage slot is
+lead to surprising failures of storage equality assertions. 
+In particular, these failures can happen if an uninitialized storage slot is
 written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
 clear operation the slot will definitely hold 0, but the prover will not make any assumptions
 about the value of the uninitialized slot which means they can be considered different.
