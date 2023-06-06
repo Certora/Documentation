@@ -24,21 +24,12 @@ The equivalence checker is part of the `certora-cli` package; see {ref}`installa
 Consider two contracts, `BasicMathGood.sol` and `BasicMathBad.sol` shown
   below with two functions, `add` and `add_mult`.
 
-```
-BasicMathGood.sol:
-------------------
-
+```solidity
 contract BasicMathGood {
     function add(uint256 a, uint256 b) public pure returns(uint256) {
         return a + b;
     }
 }
-
-```
-
-```
-BasicMathBad.sol:
-------------------
 
 contract BasicMathBad {
     function add_mult(uint256 a, uint256 b) public pure returns(uint256) {
