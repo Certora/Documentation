@@ -15,8 +15,7 @@ The equivalence checker front-end automatically generates (1) a
 
 ## Installation
 
-The front-end script, `certoraEqCheck`,
-  should be available as part installing `certora-cli`.
+The equivalence checker is part of the `certora-cli` package; see {ref}`installation`.
 
 
 (example)=
