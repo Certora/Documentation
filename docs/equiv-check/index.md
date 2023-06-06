@@ -64,7 +64,7 @@ To run the equivalence checker in default mode,
 certoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
 ```
 
-For the functions in {ref}`example`, this would look as follows:
+For the functions in {ref}`equivalence-checker-example`, this would look as follows:
 
 ```bash
 certoraEqCheck def Test/EqCheck/BasicMathGood.sol:add:solc8.0 Test/EqCheck/BasicMathBad.sol:add_pass:solc8.0
@@ -88,7 +88,7 @@ To run the equivalence checker in the configuration mode,
 certoraEqCheck conf <path_to_conf>.conf contract:function contract:function
 ```
 
-For the functions in {ref}`example`, this would be:
+For the functions in {ref}`equivalence-checker-example`, this would be:
 
 ```bash
    certoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
@@ -116,7 +116,7 @@ where `testGood.conf` is the standard Certora configuration file
 ```
 
 ```{note}
-Use `--bitvector` if you are comparing functions with bitwise operations.
+Use {ref}`-useBitVectorTheory` if you are comparing functions with bitwise operations.
 This will slow down the tool slightly,
 but ensure that the results are sound.
 ```
