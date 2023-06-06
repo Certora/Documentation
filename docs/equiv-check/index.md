@@ -18,7 +18,7 @@ The equivalence checker front-end automatically generates (1) a
 The equivalence checker is part of the `certora-cli` package; see {ref}`installation`.
 
 
-(example)=
+(equivalence-checker-example)=
 ## Example
 
 Consider two contracts, `BasicMathGood.sol` and `BasicMathBad.sol` shown
@@ -86,13 +86,14 @@ To run the equivalence checker in the configuration mode,
 certoraEqCheck conf <path_to_conf>.conf contract:function contract:function
 ```
 
-For the functions in {ref}`example`, this would look like so:
+For the functions in {ref}`example`, this would look as follows:
 
 ```bash
    certoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
 ```
 
-where `testGood.conf` contains the following configuration:
+where `testGood.conf` is the standard Certora configuration file
+  and contains:
 
 ```json
 {
