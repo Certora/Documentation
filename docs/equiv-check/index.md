@@ -19,7 +19,7 @@ The equivalence checker front-end automatically generates (1) a
 
 ## Installation
 
-The front-end script, `CertoraEqCheck`,
+The front-end script, `certoraEqCheck`,
   should be available as part installing `certora-cli`.
 
 
@@ -61,7 +61,7 @@ Equivalence checking can be used to check whether two functions that
 
 ## Usage
 
-`CertoraEqCheck` can be run either in default (`def`) mode,
+`certoraEqCheck` can be run either in default (`def`) mode,
  in which the user must supply all the required information as
  command line arguments (see below),
  or in a `conf` mode where the user supplies a
@@ -70,22 +70,22 @@ Equivalence checking can be used to check whether two functions that
 ### Default mode
 
 To run the equivalence checker in default mode,
-  use `CertoraEqCheck` like so:
+  use `certoraEqCheck` like so:
 
 ```bash
-CertoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
+certoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
 ```
 
 For the functions in {ref}`example`, this would look like so:
 
 ```bash
-CertoraEqCheck def Test/EqCheck/BasicMathGood.sol:add:solc8.0 Test/EqCheck/BasicMathBad.sol:add_pass:solc8.0
+certoraEqCheck def Test/EqCheck/BasicMathGood.sol:add:solc8.0 Test/EqCheck/BasicMathBad.sol:add_pass:solc8.0
 ```
 
 In the above example, `solc` is the name of the executable
   for the Solidity compiler version you are using.
 The Solidity compilers do not need to be the same for both arguments to
- `CertoraEqCheck`, it only need to be appropriate for the given contract.
+ `certoraEqCheck`, it only need to be appropriate for the given contract.
 Also note how
   the contract field can be omitted if the contract name is the same
   the file name.
@@ -94,16 +94,16 @@ Also note how
 ### Configuration mode
 
 To run the equivalence checker in the configuration mode,
-  use `CertoraEqCheck` like so:
+  use `certoraEqCheck` like so:
 
 ```bash
-CertoraEqCheck conf <path_to_conf>.conf contract:function contract:function
+certoraEqCheck conf <path_to_conf>.conf contract:function contract:function
 ```
 
 For the functions in {ref}`example`, this would look like so:
 
 ```bash
-   CertoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
+   certoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
 ```
 
 where `testGood.conf` contains the following configuration:
