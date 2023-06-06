@@ -1,5 +1,5 @@
 (equivcheck-intro)=
-
+Equivalence Checking Using the Certora Prover
 =================================
 
 This chapter describes how one can use the Certora Prover to
@@ -22,6 +22,43 @@ The equivalence checker front-end automatically generates (1) a
 The front-end script, `CertoraEqCheck`,
   should be available as part installing `certora-cli`.
 
+
+(example)=
+## Example
+
+Consider two contracts, `BasicMathGood.sol` and `BasicMathBad.sol` shown
+  below with two functions, `add` and `add_mult`.
+
+```
+BasicMathGood.sol:
+------------------
+
+contract BasicMathGood {
+    function add(uint256 a, uint256 b) public pure returns(uint256) {
+        return a + b;
+    }
+}
+
+```
+
+```
+BasicMathBad.sol:
+------------------
+
+contract BasicMathBad {
+    function add_mult(uint256 a, uint256 b) public pure returns(uint256) {
+        return a * b;
+    }
+}
+```
+
+We are interested in checking the equivalence of `add` and `add_mult`.
+In this simple case, these two functions are clearly not equivalent
+  but you can imagine scenarios where
+  the functions are more complex.
+Equivalence checking can be used to check whether two functions that
+  may be implemented differently, are still semantically equivalent.
+
 ## Usage
 
 `CertoraEqCheck` can be run either in default (`def`) mode,
@@ -39,7 +76,7 @@ To run the equivalence checker in default mode,
 CertoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
 ```
 
-For example:
+For the functions in {ref}`example`, this would look like so:
 
 ```bash
 CertoraEqCheck def Test/EqCheck/BasicMathGood.sol:add:solc8.0 Test/EqCheck/BasicMathBad.sol:add_pass:solc8.0
@@ -49,7 +86,7 @@ In the above example, `solc` is the name of the executable
   for the Solidity compiler version you are using.
 The Solidity compilers do not need to be the same for both arguments to
  `CertoraEqCheck`, it only need to be appropriate for the given contract.
-Also note that
+Also note how
   the contract field can be omitted if the contract name is the same
   the file name.
 
@@ -63,13 +100,31 @@ To run the equivalence checker in the configuration mode,
 CertoraEqCheck conf <path_to_conf>.conf contract:function contract:function
 ```
 
-For example:
+For the functions in {ref}`example`, this would look like so:
 
 ```bash
    CertoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
 ```
 
-In the above, `testGood.conf` contains the following:
+where `testGood.conf` contains the following configuration:
+
+```json
+{
+    "disable_local_typechecking": true,
+    "files": ["BasicMathGood.sol", "BasicMathBad.sol"],
+    "msg": "Equivalence Check",
+    "optimistic_loop": true,
+    "loop_iter": "4",
+    "process": "emv",
+    "send_only": true,
+    "short_output": true,
+    "rule_sanity": "basic",
+    "solc": "solc8.0",
+    "solc_optimize": "200",
+    "server": "staging",
+    "prover_version": "master"
+}
+```
 
 ```{note}
 Use `--bitvector` if you are comparing functions with bitwise operations.
