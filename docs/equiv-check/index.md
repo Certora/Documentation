@@ -3,14 +3,10 @@ Equivalence Checking Using the Certora Prover
 =================================
 
 This chapter describes how one can use the Certora Prover to
-  check the equivalence of two pure functions.
+  check the equivalence of two smart contract functions.
 
 ```{note}
-We are working on extending this to support functions with side effects;
-  for the remaining documentation,
-  we assume a user is interested in running the equivalence checker
-  for two pure functions which may belong to the same contract
-  or two different contracts.
+Currently the equivalence checker only compares two `pure` functions, but we are actively working to develop an equivalence checker for non-`pure` functions as well.
 ```
 
 The equivalence checker front-end automatically generates (1) a
