@@ -56,7 +56,7 @@ Equivalence checking can be used to check whether two functions that
 ### Default mode
 
 To run the equivalence checker in default mode,
-  use `certoraEqCheck` like so:
+  use `certoraEqCheck`:
 
 ```bash
 certoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
