@@ -359,3 +359,11 @@ state `s`.
 Unresolved method calls
 ```
 
+(storage-comparison)=
+Comparing storage
+-----------------
+
+```{todo}
+Merge #78
+```
+
