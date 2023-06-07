@@ -89,6 +89,17 @@ summarize
   analyze without timing out.  See {doc}`/docs/cvl/methods` for
   complete information on different types of method summaries.
 
+vacuous
+vacuity
+  A logical statement is *vacuous* if it is technically true but only because
+  it doesn't say anything.  For example, "every integer that is both greater
+  than 5 and less than 3 is a perfect square" is technically true, but only
+  because there are no numbers that are both greater than 5 and less than 3.
+  Similarly, a rule or assertion can pass, but only because the `require`
+  statements rule out all of the {term}`model`s.  In this case, the rule
+  doesn't say anything about the program being verified.
+  The {doc}`../prover/checking/sanity` help detect vacuous rules.
+
 wildcard
 exact
   A methods block entry that explicitly uses `_` as a receiver is a *wildcard
