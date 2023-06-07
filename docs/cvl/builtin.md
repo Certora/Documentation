@@ -8,6 +8,12 @@ contract-specific rules.
 Built-in rules can be included in any spec file by writing `use builtin rule
 <rule-name>;`.  This document describes the available built-in rules.
 
+```{todo}
+I would be in favor of removing the two "How ... is checked" sections; it seems
+like an implementation detail and I'm not sure that it's useful to users.  I
+don't feel strongly about this.
+```
+
 ```{contents}
 ```
 
@@ -27,7 +33,8 @@ built_in_rule_name ::=
 ```
 
 (built-in-msg-value-in-loop)=
-# Bad loop detection (`msgValueInLoopRule`)
+Bad loop detection &mdash; `msgValueInLoopRule`
+-----------------------------------------------
 
 Loops that [use `msg.value`][msg-value-vulnerability] or [make delegate
 calls][delegatecall-vulnerability] are a well-known source of security
@@ -45,23 +52,30 @@ including
 ```cvl
 use builtin rule msgValueInLoopRule;
 ```
-in a spec file.  The rule will fail on any functions that exhibit these
-behaviors.
+in a spec file.  The rule will fail on any functions that can make delegate
+calls or access `msg.value` inside a loop.
+
+```{todo}
+I imagine it's actually on any functions that recursively call any functions that do this?
+And probably also loops that call functions that recursively access `msg.value`?
+Not sure if this needs more clarification or not.
+```
 
 (built-in-has-delegate-calls)=
-# Delegate call detection (`hasDelegateCalls`)
+Delegate call detection &mdash; `hasDelegateCalls`
+--------------------------------------------------
 
 The `hasDelegateCalls` built-in rule is a handy way to find delegate calls in
 a contract.  It can be enabled by including
 ```cvl
 use builtin rule hasDelegateCalls;
 ```
-
-Any functions that can make delegate calls will fail the `hasDelegateCalls`
-rule.
+in a spec file.  Any functions that can make delegate calls will fail the
+`hasDelegateCalls` rule.
 
 (built-in-sanity)=
-# Basic setup checks (`sanity`)
+Basic setup checks &mdash; `sanity`
+-----------------------------------
 
 The `sanity` rule checks that there is at least one non-reverting path through
 each contract function.  It can be enabled by including
@@ -73,10 +87,10 @@ in a spec file.
 The sanity rule is useful for two reasons:
 
  - It is an easy way to determine which contract functions take a long time to
-   analyze.  If a method takes a long time (or times out) on the `sanity` rule,
-   it will almost certainly time out while verifying interesting properties.
-   This can help you quickly discover which methods may need
-   {doc}`summarization <methods>`.
+   analyze.  If a method takes a long time to verify the `sanity` rule (or
+   times out), it will almost certainly time out while verifying interesting
+   properties.  This can help you quickly discover which methods may need
+   {term}`summarization <summary>`.
 
  - A method the fails the `sanity` rule will revert on every input; every rule
    that calls the method will therefore be {term}`vacuous <vacuity>`.  This probably
@@ -102,7 +116,7 @@ the built-in rule is used to check the basic setup, while `--rule_sanity` checks
 individual rules.
 ```
 
-## How `sanity` is checked
+### How `sanity` is checked
 
 The `sanity` rule is translated into the following {term}`parametric rule`:
 
@@ -119,7 +133,8 @@ To find a counterexample to the assertion, the Prover must construct an input
 for which `f` doesn't revert.
 
 (built-in-deep-sanity)=
-# Thorough complexity checks (`deepSanity`)
+Thorough complexity checks &mdash; `deepSanity`
+-----------------------------------------------
 
 The basic sanity rule only tries to find a _single_ input that causes each
 function to execute without reverting.  While this check can quickly identify
@@ -170,7 +185,7 @@ The number of code points that are chosen can be configured with the
 {ref}`-maxNumberOfReachChecksBasedOnDomination` flag; the default value is
 `10`.
 
-## How `deepSanity` is checked
+### How `deepSanity` is checked
 
 The `deepSanity` rule works similarly to the `sanity` rule; it adds an
 additional variable `x_p` for each interesting program point `p`, and
