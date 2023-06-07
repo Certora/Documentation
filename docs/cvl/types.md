@@ -272,7 +272,7 @@ sometimes called hyperproperties.
 
 CVL supports this kind of specification using the special `storage` type.  A
 variable of type `storage` represents a snapshot of the EVM storage and
-the state of ghosts at a given point in time.
+the state of {ref}`ghosts <ghost-functions>` at a given point in time.
 
 The EVM storage can be reset to a saved storage value `s` by appending `at s` to
 the end of a function call.  For example, the following rule checks that "if you

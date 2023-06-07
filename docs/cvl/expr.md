@@ -30,7 +30,7 @@ expr ::= literal
 
 function_call ::=
        | [ id "." ] id
-         [ "@" ( "norevert" | "withrevert" | "dontsummarize" ]
+         [ "@" ( "norevert" | "withrevert" | "dontsummarize" ) ]
          "(" exprs ")"
          [ "at" id ]
 
@@ -363,11 +363,12 @@ Unresolved method calls
 ```
 
 (storage-comparison)=
-Comparing Storage
+Comparing storage
 -----------------
 
-As described in {ref}`the documentation on storage types <storage-type>`, CVL represents the entirety of the EVM and its ghost state
-in variables with `storage` type. Variables of these types can be checked for equality and inequality.
+As described in {ref}`the documentation on storage types <storage-type>`, CVL represents the entirety of the EVM and its 
+{ref}`ghost state <ghost-functions>`
+in variables with `storage` type. Variables of this type can be checked for equality and inequality.
 
 The basic form of this expression is `s1 == s2`, where `s1` and `s2` are variables of type `storage`.
 This expression compares the states represented by `s1` and `s2`; that is, it checks equality of the following:
@@ -377,8 +378,7 @@ This expression compares the states represented by `s1` and `s2`; that is, it ch
 3. The state of all ghost variables and functions
 
 Thus, if any field in any contract's storage differs between `s1` and `s2`, the expression will return `false`.
-The expression `s1 != s2` behaves similarly, except it will return `false` if all contract storage, balances,
-and ghosts are equal between `s1` and `s2`.
+The expression `s1 != s2` is shorthand for `!(s1 == s2)`.
 
 Storage comparisons also support narrowing the scope of comparison to specific components of the global
 state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1[r] != s2[r]`, where `r` is a "storage comparison basis",
@@ -402,8 +402,8 @@ using OtherContract as o;
 
 rule compare_state_of_c(env e) {
    storage init = lastStorage;
-   o.mutateOtherState(e);
-   assert lastStorage[o] == init[o];
+   o.mutateOtherState(e); // changes `o` but not `c`
+   assert lastStorage[c] == init[c];
 }
 ```
 
@@ -415,7 +415,7 @@ using OtherContract as o;
 
 rule compare_state_of_c(env e) {
    storage init = lastStorage;
-   c.mutateContractState(e);
+   c.mutateContractState(e); // changes `c`
    assert lastStorage[c] == init[c];
 }
 ```
