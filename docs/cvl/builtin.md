@@ -8,12 +8,6 @@ contract-specific rules.
 Built-in rules can be included in any spec file by writing `use builtin rule
 <rule-name>;`.  This document describes the available built-in rules.
 
-```{todo}
-I would be in favor of removing the two "How ... is checked" sections; it seems
-like an implementation detail and I'm not sure that it's useful to users.  I
-don't feel strongly about this.
-```
-
 ```{contents}
 ```
 
@@ -93,19 +87,9 @@ The sanity rule is useful for two reasons:
    {term}`summarization <summary>`.
 
  - A method the fails the `sanity` rule will revert on every input; every rule
-   that calls the method will therefore be {term}`vacuous <vacuity>`.  This probably
-   indicates a problem with the Prover configuration.
-
-```{todo}
-What does "sanity fails" mean?  Is it still the case that a "failing" sanity
-show up as success and vice-versa?  If they are still inverted, we should
-clearly explain that.
-```
-
-```{todo}
-What kind of failure does it indicate?  What should the user do if they see a
-sanity failure?
-```
+   that calls the method will therefore be {term}`vacuous <vacuity>`.  This
+   probably indicates a problem with the Prover configuration; the most likely
+   cause is {ref}`loop unrolling <unrolling>`.
 
 We recommend running the sanity rule at the beginning of a project to
 ensure that the Prover's configuration is reasonable.
