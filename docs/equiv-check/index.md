@@ -34,18 +34,21 @@ contract BasicMathGood {
 }
 
 contract BasicMathBad {
-    function add_mult(uint256 a, uint256 b) public pure returns(uint256) {
-        return a * b;
+    function add_uncheck(uint256 a, uint256 b) public pure returns(uint256) {
+        unchecked {
+            return a * b;
+        }
     }
 }
 ```
 
-We are interested in checking the equivalence of `add` and `add_mult`.
-In this simple case, these two functions are clearly not equivalent
-  but you can imagine scenarios where
+We are interested in checking the equivalence of `add` and `add_uncheck`.
+While this is a simple case,
+  you can imagine scenarios where
   the functions are more complex.
 Equivalence checking can be used to check whether two functions that
   may be implemented differently, are still semantically equivalent.
+The following sections describe how to use the tool.
 
 ## Usage
 
