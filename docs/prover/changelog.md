@@ -23,11 +23,6 @@ Release Notes
 
  - {ref}`storage-comparison`
 
-```{todo}
-Needs more explanation / documentation:
- - Support try-catch
-```
-
 4.0.3 CVL 2 preview (beta)
 --------------------------
 
