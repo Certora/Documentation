@@ -15,15 +15,14 @@ Release Notes
 ### New features
 
  - {ref}`storage-comparison`
- - add support for Vyper
+ - Add support for Vyper
  - Support `CONSTANT` summaries for all non-dynamic return types
  - New {ref}`built-in rules <built-in>` `sanity` and `deepSanity`
- - `--protocol_name` and `--protocol_owner`
+ - Added `--protocol_name` and `--protocol_owner` flags
 
 ### Other improvements
 
  - Performance improvements
- - CVL 2 stabilized (see {doc}`/docs/cvl/cvl2/changes` and {doc}`/docs/cvl/cvl2/migration`)
  - Bug fixes and internal improvements
  - Improved error messages
  - Improved console output
