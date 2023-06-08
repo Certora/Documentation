@@ -7,44 +7,6 @@ Release Notes
 4.0.5 CVL 2 release candidate (6/7/23)
 --------------------------------------
 
-### New documentation
-
- - {ref}`built-in`
-
-### Other improvements
-
- - Performance improvements
- - CVL 2 stabilized (see {doc}`/docs/cvl/cvl2/changes` and {doc}`/docs/cvl/cvl2/migration`)
-
-4.0.4 CVL 2 preview (beta)
---------------------------
-
-### New features
-
- - {ref}`storage-comparison`
-
-4.0.3 CVL 2 preview (beta)
---------------------------
-
-### New features
-
- - add support for Vyper
- - Support `CONSTANT` summaries for all non-dynamic return types
-
-4.0.2 CVL 2 preview (beta)
---------------------------
-
-Bug fixes and internal improvements
-
-4.0.1 CVL 2 preview (beta)
---------------------------
-
- - Improved error messages
- - Bug fixes and internal improvements
-
-4.0.0 CVL 2 preview (beta)
---------------------------
-
 ### Breaking changes
 
  - Upgrade to CVL 2 (see {doc}`/docs/cvl/cvl2/changes` and {doc}`/docs/cvl/cvl2/migration`) 
@@ -52,16 +14,18 @@ Bug fixes and internal improvements
 
 ### New features
 
+ - {ref}`storage-comparison`
+ - add support for Vyper
+ - Support `CONSTANT` summaries for all non-dynamic return types
  - New {ref}`built-in rules <built-in>` `sanity` and `deepSanity`
  - `--protocol_name` and `--protocol_owner`
 
-### Other changes
+### Other improvements
 
+ - Performance improvements
+ - CVL 2 stabilized (see {doc}`/docs/cvl/cvl2/changes` and {doc}`/docs/cvl/cvl2/migration`)
+ - Bug fixes and internal improvements
+ - Improved error messages
  - Improved console output
  - Improved call resolution output
- - Improved error messages
- - Bug fixes and internal improvements
-
-
-
 
