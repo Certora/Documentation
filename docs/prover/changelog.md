@@ -4,8 +4,8 @@ Release Notes
 ```{contents}
 ```
 
-4.0.5 CVL 2 release candidate (6/7/23)
---------------------------------------
+4.0.5 CVL 2 (June 7, 2023)
+--------------------------
 
 ### Breaking changes
 
