@@ -33,11 +33,8 @@ Needs more explanation / documentation:
 
 ### New features
 
-```{todo}
-Needs documentation:
-  - add support for Vyper
-  - Support `CONSTANT` summaries for all non-dynamic return types
-```
+ - add support for Vyper
+ - Support `CONSTANT` summaries for all non-dynamic return types
 
 4.0.2 CVL 2 preview (beta)
 --------------------------
@@ -61,11 +58,7 @@ Bug fixes and internal improvements
 ### New features
 
  - New {ref}`built-in rules <built-in>` `sanity` and `deepSanity`
-
-```{todo}
-Needs documentation:
  - `--protocol_name` and `--protocol_owner`
-```
 
 ### Other changes
 
