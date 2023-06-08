@@ -23,7 +23,7 @@ Some of the systems we have are based on multiple library contracts which implem
 
 In these systems, it’s sensible to split the verification so as each library is operated on an individual basis.
 
-If you encounter timeouts when trying to verify the main entry point contract to the system, check the impact of the libraries on the verification by enabling the option to automatically summarize all external library (delegate) calls as `NONDET`:
+If you encounter timeouts when trying to verify the main entry point contract to the system, check the impact of the libraries on the verification by summarizing all external library (delegate) calls as `NONDET`, using the option `summarizeExtLibraryCallsAsNonDetPreLinking` as follows:
 ```
 certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true'
 ```
@@ -33,16 +33,15 @@ This option is only applied for _external_ library calls, or `delegatecall`s.
 Internal calls are automatically inlined by the Solidity compiler and are subject to summarizations specified in the spec file's `methods` block.
 ```
 
-When enabled, this option also allows you to specify which libraries to _not_ summarize:
+Alternatively, if you wish to apply a "catch-all" summary for all the methods of a specific library, you can write in the methods block of the spec:
 ```
-certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true -librariesToSkipNonDet library1,library2,...'
+methods {
+    function MyBigLibrary._ external => NONDET;
+    function MyBigLibrary._ internal => NONDET;
+}
 ```
-where `library1` and `library2` are two example library names.
-
-```{note}
-The option `-librariesToSkipNonDet` has no effect if `-summarizeExtLibraryCallsAsNonDetPreLinking` is not set to true.
-```
-
+The above snippet has the effect of summarizing as `NONDET` all external calls to the library and _internal_ ones as well.
+All summary types except ghost summaries can be applied. 
 
 Flags for tuning the Prover
 ---------------------------
