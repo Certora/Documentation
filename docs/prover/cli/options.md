@@ -37,7 +37,7 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:  
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-### `--assert_contract`
+### `--assert_contracts`
 
 **What does it do?**  
 Replaces all EVM instructions that cause a non-benign revert in the smart contract with an assertion. Non-benign reverts include division by 0, bad dereference of an array, `throw` command, and more.  
@@ -48,7 +48,7 @@ When you want to see if a suspect instruction can fail in the code, without writ
 
 **Example**  
 If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:  
-`certoraRun Bank.sol:Investor --assert_contract Investor`
+`certoraRun Bank.sol:Investor --assert_contracts Investor`
 
 Most frequently used options
 ----------------------------
@@ -282,7 +282,7 @@ When different contracts have to be compiled for different Solidity versions.
 Passes the value of this option  to the solidity compiler's option `--solc_optimize`.
 
 **When to use it?**  
-When we want to select the solc compiler EVM version
+When we want to select the Solidity compiler EVM version
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
@@ -316,7 +316,7 @@ When we want to enable the IR-based code generator
 Passes the value of this option  to the solidity compiler's option `--evm-version`.
 
 **When to use it?**  
-When we want to select the solc compiler EVM version
+When we want to select the Solidity compiler EVM version
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
@@ -668,7 +668,10 @@ This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 
 (-showInternalFunctions)=
-#### `--prover_args -showInternalFunctions`
+#### `--prover_args '-showInternalFunctions'`
+
+A single occurrence of `--prover_args` can set multiple values
+#### `--prover_args '-showInternalFunctions -optimisticReturnsize'`
 
 **What does it do?**
 
