@@ -454,6 +454,6 @@ The storage comparison checks for exact equality between every single slot of st
 lead to surprising failures of storage equality assertions. 
 In particular, these failures can happen if an uninitialized storage slot is
 written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
-clear operation the slot will definitely hold 0, but the prover will not make any assumptions
+clear operation the slot will definitely hold 0, but the Prover will not make any assumptions
 about the value of the uninitialized slot which means they can be considered different.
 ```
