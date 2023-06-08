@@ -2,6 +2,7 @@ Naming convention:
  - PRs for features that are in design should have the "proposal" label
  - PRs for features that haven't landed yet should have the "future" label
  - PRs for upcoming releases should have the "release" label
+ - PRs with new documentation for existing features should have the "existing feature" label
 
 Before requesting review:
  - Make sure there is a ticket in the DOC board in Jira
