@@ -4,6 +4,20 @@ Built-in Rules
 The Prover has some built-in general-purpose rules that can be verified on a
 contract out-of-the-box.
 
+## Sanity
+
+Enable with:
+```cvl
+use builtin rule sanity;
+```
+
+The sanity rule acts as one of our main methods to set up a new code base for verification. It serves two needs:
+
+- Checking that the Prover can solve through a non-reverting path of the code, and that no obvious vacuous statements exist. For example, calling a method that always reverts will fail the sanity check, meaning it must be invoked with the `@withrevert` annotation.
+- Checking that the Prover can find the said path in a reasonable amount of time for both pre-processing and SMT phases.
+
+It is recommended to include the sanity rule in initial runs of the Prover to ensure the Prover's configuration is a reasonable one.
+
 ## Deep Sanity
 
 Enable with:
@@ -17,12 +31,7 @@ One can configure the number of branching nodes that will be selected. (the node
 
 ### Background and motivation
 
-Sanity rules act as one of our main methods to set up a new code base for verification. They serve two needs:
-
-- Checking that the Prover can solve through a path of the code, and that no obvious vacuous statements exist.
-- Checking that the Prover can find the said path in a reasonable amount of time for both pre-processing and SMT phases.
-
-However, sanity rules are limited. This is because they only require finding a single path, and therefore it is not guaranteed that a fast running time for the sanity rule means that the checked method is easy. In addition, it may be able to find a path that does not go through a vacuity that exists deeper down in the code of the program.
+The basic sanity rule is limited. This is because it only requires finding a _single_ path, and therefore it is not guaranteed that a fast running time for the sanity rule means that the checked method is easy. In addition, it may be able to find a path that does not go through a vacuity that exists deeper down in the code of the program.
 
 For example, consider:
 ```solidity
