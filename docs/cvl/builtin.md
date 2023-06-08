@@ -30,16 +30,12 @@ built_in_rule_name ::=
 Bad loop detection &mdash; `msgValueInLoopRule`
 -----------------------------------------------
 
-Loops that [use `msg.value`][msg-value-vulnerability] or [make delegate
-calls][delegatecall-vulnerability] are a well-known source of security
+Loops that [use `msg.value` or make delegate
+calls][msg-value-vulnerability] are a well-known source of security
 vulnerabilities.
 
 [msg-value-vulnerability]: https://trustchain.medium.com/ethereum-msg-value-reuse-vulnerability-5afd0aa2bcef
-[delegatecall-vulnerability]: https://blog.trailofbits.com/2021/12/16/detecting-miso-and-opyns-msg-value-reuse-vulnerability-with-slither/
 
-```{todo}
-are these the best citations?
-```
 
 The `msgValueInLoopRule` detects these anti-patterns.  It can be enabled by
 including
@@ -47,20 +43,19 @@ including
 use builtin rule msgValueInLoopRule;
 ```
 in a spec file.  The rule will fail on any functions that can make delegate
-calls or access `msg.value` inside a loop.
-
-```{todo}
-I imagine it's actually on any functions that recursively call any functions that do this?
-And probably also loops that call functions that recursively access `msg.value`?
-Not sure if this needs more clarification or not.
-```
+calls or access `msg.value` inside a loop. This includes any functions that recursively call any functions that has
+this vulnerability.
 
 (built-in-has-delegate-calls)=
 Delegate call detection &mdash; `hasDelegateCalls`
 --------------------------------------------------
 
 The `hasDelegateCalls` built-in rule is a handy way to find delegate calls in
-a contract.  It can be enabled by including
+a contract. [Contracts that use delegate calls][delegatecall-vulnerability] require proper security checking.
+
+[delegatecall-vulnerability]: https://blog.solidityscan.com/security-issues-with-delegate-calls-4ae64d775b76
+
+The `hasDelegateCalls` can be enabled by including
 ```cvl
 use builtin rule hasDelegateCalls;
 ```
