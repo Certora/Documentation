@@ -328,7 +328,7 @@ Passes the value of this option as is to the solidity compiler's option `--allow
 See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
 
 **When to use it?**  
-When we want all an additional location for loading sources
+When we want to add an additional location the Solidity compiler to load sources from
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
