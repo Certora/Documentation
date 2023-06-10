@@ -125,6 +125,51 @@ A success does only guarantee that there is some execution starting in some
 arbitrary state.  It is not possible to check that there is an execution for
 every starting state.
 ```
+```{note}
+It is advised to look at the witness example to determine that this is indeed the desired case. 
+```
+For [example](https://gist.github.com/...) 
+https://github.com/Certora/Examples/tree/master/FullProjects 
+the following rule check if there is a scenario in which one can withdraw and get back all his assets
+
+
+```cvl
+rule possibleToFullyWithdraw(address sender, uint256 amount) {
+    env eT0;
+    env eM;
+    uint256 balanceBefore = _token0.balanceOf(sender);
+    
+    require eM.msg.sender == sender;
+    require eT0.msg.sender == sender;
+    _token0.transfer(eT0, currentContract, amount);
+    uint256 amountOut0 = mint(eM,sender);
+    burnSingle(eM, _token0, amountOut0, sender);
+    satisfy balanceBefore == _token0.balanceOf(sender);
+}
+```
+
+When running this rule, the prover might provide a witness example, such as [this](https://prover.certora.com/output/40726/7e2ea3f2baf64505a79108f7ee5b6a35?anonymousKey=09ee75d8c35e4b9b33447820ede1016af9c65022) case
+in which `amount` is zero. Fixing the rule add adding a requirement that 'amount > 0' gives a better example but might start with an infeasible state, such as in [this]([nonzero-case-example]
+(https://prover.certora.com/output/40726/ce7c3e49011f4ae7bf06983eff3254b1/?anonymousKey=3a02d99c74c950c5de0886521581c7096948714c) case (one underlying is minted for 999 LP tokens). Adding another requirements that the state is valid provides us with the [desired witness](
+ https://prover.certora.com/output/40726/db4d12e98718424c86e95937c0945700/?anonymousKey=92ffd0f1210cac228563cd9ad92575f798111e2b).
+
+ ```cvl
+rule possibleToFullyWithdraw(address sender, uint256 amount) {
+    env eT0;
+    env eM;
+    uint256 balanceBefore = _token0.balanceOf(sender);
+    setup(eM);
+
+    require eM.msg.sender == sender;
+    require eT0.msg.sender == sender;
+    require amount > 0;
+    _token0.transfer(eT0, currentContract, amount);
+    uint256 amountOut0 = mint(eM,sender);
+    burnSingle(eM, _token0, amountOut0, sender);
+    satisfy balanceBefore == _token0.balanceOf(sender);
+}
+```
+
 
 (requireInvariant)=
 `requireInvariant` statements
