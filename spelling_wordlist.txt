@@ -4,12 +4,15 @@ Balancer
 CVL
 Certora
 Devcon
+downsample
+downsampling
 Ethereum
 FEoD
 Hoare
 Kashi
 OOM
 Prover
+SMT
 Secureum
 Solana
 Todo
@@ -29,6 +32,7 @@ bytecodes
 callee
 changelog
 codebase
+config
 conjuncted
 decompilation
 decompiler
@@ -84,6 +88,8 @@ overapproximations
 poststate
 pragma
 pragmas
+pre
+prebuilt
 precompiled
 preprocess
 preprocessing
@@ -93,6 +99,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+reproducibility
 satisfiability
 satisfiable
 scalable
@@ -103,6 +110,8 @@ splitter
 stablecoin
 struct
 structs
+subdirectory
+subdirectories
 subgraph
 subproblems
 subtype
