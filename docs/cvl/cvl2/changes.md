@@ -333,21 +333,16 @@ summarization (if any).
 % in the contract, you will receive the following error message:
 % ```
 
-### `library` annotations
-
-In CVL 2, contract functions declared as library functions must be annotated
-with `library` in the `methods` block.
-
-% ```{todo}
-% If you forget to declare a method as a `library` method, you will receive the
-% following error message:
-% ```
-
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
 In CVL 2, methods block entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
+
+For methods block entries of external functions the location annotation must be
+omitted unless it's the `storage` annotation on an external library function, in
+which case it is required (the reasoning here is to have the information required
+in order to correctly calculate a function's sighash).
 
 % ```{todo}
 % If you do not change this, you will see the following error:
