@@ -887,7 +887,7 @@ This is the list of the flags that were renamed:
 | --javaArgs     | --java_args          |              
 
 ### Prover Args
-Prover args are CLI flags that are sent to the Prover, in most cases after renaming of the flag. There are two ways to 
+Prover args are CLI flags that are sent to the Prover. There are two ways to 
 set prover args, using specific CLI flags (e.g. `--loop_iter`) or as parameters to the `--prover_args` (`--settings` in CVL 1.0).
 Unlike CVL 1.0, if a prover args can be set using specific CLI flag it is not allowed to set the prover argument 
 using `--prover_args`. In addition, the value commas and equal signs separators that were used in `--settings` were replaced with a blank
