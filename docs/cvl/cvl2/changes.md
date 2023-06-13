@@ -857,3 +857,91 @@ was not used.  It has been removed in CVL 2.
 % If you do not change this, you will see the following error:
 % ```
 
+Changes to the Command Line Interface (CLI)
+-------------------------------------------
+
+As part of the transition to CVL 2.0 some changes were made to the Command-Line Interface (CLI) for enhanced clarity, 
+uniformity, and readability.
+
+### Flags Renaming
+
+In CVL 2.0 some flags were renamed. Flags that were renamed are:
+1. flags with names that are too generic or wrong
+2. flags that do not match their corresponding key in the conf file
+3. flags that do not follow the snake case format
+
+This is the list of the flags that were renamed:
+
+| CVL 1.0        | CVL 2.0              |
+|----------------|----------------------|
+| --settings     | --prover_args        |
+| --path         | --solc_allow_path    |
+| --optimize     | --solc_optimize      |
+| --optimize_map | --solc_optimize_map  |
+| --get_conf     | --conf_output_file   |
+| --assert       | --assert_contracts   |
+| --bytecode     | --bytecode           |
+| --coinbaseMode | --coinbase_mode      |
+| --toolOutput   | --tool_output        |
+| --structLink   | --struct_link        |              
+| --javaArgs     | --java_args          |              
+
+### Prover Args
+Prover args are CLI flags that are sent to the Prover, in most cases after renaming of the flag. There are two ways to 
+set prover args, using specific CLI flags (e.g. `--loop_iter`) or as parameters to the `--prover_args` (`--settings` in CVL 1.0).
+Unlike CVL 1.0, if a prover args can be set using specific CLI flag it is not allowed to set the prover argument 
+using `--prover_args`. In addition, the value commas and equal signs separators that were used in `--settings` were replaced with a blank
+in `--prover_args`.
+
+Example:
+
+Consider this call to certoraRun using CVL 1.0 syntax
+```commandline
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --settings -smt_bitVectorTheory=true,-smt_hashingScheme=plainInjectivity,-assumeUnwindCond
+```
+
+In order to convert this call to CVL 2.0 we:
+1. rename `--settings` to `--prover_args`
+2. replace `-assumeUnwindCond` with the flag `--optimistic_loop`
+3. remove the comma and equal sign separators
+
+```commandline
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --optimistic_loop \
+    --prover_args '-smt_bitVectorTheory true -smt_hashingScheme plainInjectivity'
+```
+
+### Solidity Compiler Args
+Solidity Compiler Args are CLI flags that are sent to the Solidity compiler. The behaviour of the Solidity Args is similar to Prover
+Args. The flag `--solc_args` can only be used if there is no CLI flag that sets the Solidity flag and the value of `--solc_args` is 
+a string that is sent as is to the Solidity compiler
+
+Example:
+
+Consider this call to certoraRun using CVL 1.0 syntax
+```commandline
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --solc_args "['--optimize', '--optimize-runs', '200', '--experimental-via-ir']"
+```
+In CVL 2.0 calling optimize is using `--solc_optimize`
+
+```commandline
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --solc_args "--experimental-via-ir"
+```
+
+### Enhanced server support
+In CVL 1.0 two server platforms were supported, staging and cloud. In CVL 2.0 more platforms can be added. Instead of the 
+flags --staging and --cloud a specific platform is now set using the new flag `--server`. I.e. `--staging` in CVL 1.0 is `--server staging`
+in CVL 2.0, `--cloud` is now `--server production`. 
+in CVL 1.0 `--staging` and `--cloud` optionally got a branch/hotfix/version as a parameter. In CVL 2.0 this parameter is set using a new flag
+`--prover_version`
