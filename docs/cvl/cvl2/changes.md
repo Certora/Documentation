@@ -643,7 +643,7 @@ Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
 or padded to the correct length.
 
 The only conversion between integer types and these types is from `uint<i*8>` to
-`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target bytesN type);
+`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target `bytes<i>` type);
 For example:
 
 ```cvl
