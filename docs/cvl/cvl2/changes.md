@@ -1,13 +1,13 @@
 Changes introduced in CVL 2
 ===========================
 
-CVL 2.0 is a major overhaul to the type system of CVL.  Many
+CVL 2 is a major overhaul to the type system of CVL.  Many
 of the changes are internal, but we also wanted to take this opportunity to
 introduce a few improvements to the syntax.  The general goal of these changes
 is to make the behavior of CVL more explicit and predictable, and to bring the
 syntax more in line with Solidity's syntax.
 
-This document summarizes the changes to CVL syntax introduced by CVL 2.0.
+This document summarizes the changes to CVL syntax introduced by CVL 2.
 
 ```{contents}
 ```
@@ -704,7 +704,7 @@ assert f.isFallback,
 Removed features
 ----------------
 
-As part of the transition to CVL 2.0, we have removed several language features
+As part of the transition to CVL 2, we have removed several language features
 that are no longer used.
 
 We have removed these features because we think they are no longer used and no
@@ -860,42 +860,41 @@ was not used.  It has been removed in CVL 2.
 Changes to the Command Line Interface (CLI)
 -------------------------------------------
 
-As part of the transition to CVL 2.0 some changes were made to the Command-Line Interface (CLI) for enhanced clarity, 
-uniformity, and readability.
+As part of the transition to CVL 2 some changes were made to the Command-Line Interface (CLI) for enhanced clarity, 
+uniformity, and readability. The complete CLI specification can be found [here](../../prover/cli/options.md)
 
 ### Flags Renaming
 
-In CVL 2.0 some flags were renamed. Flags that were renamed are:
+In CVL 2 some flags were renamed. Flags that were renamed are:
 1. flags with names that are too generic or wrong
 2. flags that do not match their corresponding key in the conf file
 3. flags that do not follow the snake case format
 
 This is the list of the flags that were renamed:
 
-| CVL 1.0        | CVL 2.0              |
-|----------------|----------------------|
-| --settings     | --prover_args        |
-| --path         | --solc_allow_path    |
-| --optimize     | --solc_optimize      |
-| --optimize_map | --solc_optimize_map  |
-| --get_conf     | --conf_output_file   |
-| --assert       | --assert_contracts   |
-| --bytecode     | --bytecode           |
-| --coinbaseMode | --coinbase_mode      |
-| --toolOutput   | --tool_output        |
-| --structLink   | --struct_link        |              
-| --javaArgs     | --java_args          |              
+| CVL 1          | CVL 2               |
+|----------------|---------------------|
+| --settings     | --prover_args       |
+| --path         | --solc_allow_path   |
+| --optimize     | --solc_optimize     |
+| --optimize_map | --solc_optimize_map |
+| --get_conf     | --conf_output_file  |
+| --assert       | --assert_contracts  |
+| --bytecode     | --bytecode_jsons    |
+| --toolOutput   | --tool_output       |
+| --structLink   | --struct_link       |              
+| --javaArgs     | --java_args         |              
 
 ### Prover Args
 Prover args are CLI flags that are sent to the Prover, in most cases after renaming of the flag. There are two ways to 
-set prover args, using specific CLI flags (e.g. `--loop_iter`) or as parameters to the `--prover_args` (`--settings` in CVL 1.0).
-Unlike CVL 1.0, if a prover args can be set using specific CLI flag it is not allowed to set the prover argument 
+set prover args, using specific CLI flags (e.g. `--loop_iter`) or as parameters to the `--prover_args` (`--settings` in CVL 1).
+Unlike CVL 1, if a prover args can be set using specific CLI flag it is not allowed to set the prover argument 
 using `--prover_args`. In addition, the value commas and equal signs separators that were used in `--settings` were replaced with a blank
 in `--prover_args`.
 
 Example:
 
-Consider this call to certoraRun using CVL 1.0 syntax
+Consider this call to certoraRun using CVL 1 syntax
 ```commandline
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
@@ -903,7 +902,7 @@ certoraRun Compound.sol \
     --settings -smt_bitVectorTheory=true,-smt_hashingScheme=plainInjectivity,-assumeUnwindCond
 ```
 
-In order to convert this call to CVL 2.0 we:
+In order to convert this call to CVL 2 we:
 1. rename `--settings` to `--prover_args`
 2. replace `-assumeUnwindCond` with the flag `--optimistic_loop`
 3. remove the comma and equal sign separators
@@ -923,25 +922,26 @@ a string that is sent as is to the Solidity compiler
 
 Example:
 
-Consider this call to certoraRun using CVL 1.0 syntax
+Consider this call to certoraRun using CVL 1 syntax
 ```commandline
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
     --solc_args "['--optimize', '--optimize-runs', '200', '--experimental-via-ir']"
 ```
-In CVL 2.0 calling optimize is using `--solc_optimize`
+In CVL 2 calling optimize is using `--solc_optimize`
 
 ```commandline
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
+    --solc_optimize 200 \
     --solc_args "--experimental-via-ir"
 ```
 
 ### Enhanced server support
-In CVL 1.0 two server platforms were supported, staging and cloud. In CVL 2.0 more platforms can be added. Instead of the 
-flags --staging and --cloud a specific platform is now set using the new flag `--server`. I.e. `--staging` in CVL 1.0 is `--server staging`
-in CVL 2.0, `--cloud` is now `--server production`. 
-in CVL 1.0 `--staging` and `--cloud` optionally got a branch/hotfix/version as a parameter. In CVL 2.0 this parameter is set using a new flag
+In CVL 1 two server platforms were supported, staging and cloud. In CVL 2 more platforms can be added. Instead of the 
+flags --staging and --cloud a specific platform is now set using the new flag `--server`. I.e. `--staging` in CVL 1 is `--server staging`
+in CVL 2, `--cloud` is now `--server production`. 
+in CVL 1 `--staging` and `--cloud` optionally got a branch/hotfix/version as a parameter. In CVL 2 this parameter is set using a new flag
 `--prover_version`
