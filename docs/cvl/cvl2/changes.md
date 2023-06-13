@@ -941,7 +941,7 @@ certoraRun Compound.sol \
 
 ### Enhanced server support
 In CVL 1.0 two server platforms were supported, `staging` and `cloud`. In CVL 2.0 more platforms can be added. Instead of the 
-flags --staging and --cloud a specific platform is now set using the new flag `--server`. I.e. `--staging` in CVL 1.0 is `--server staging`
+flags `--staging` and `--cloud` a specific platform is now set using the new flag `--server`. I.e. `--staging` in CVL 1.0 is `--server staging`
 in CVL 2.0, `--cloud` is now `--server production`. 
 in CVL 1.0 `--staging` and `--cloud` optionally got a branch/hotfix/version as a parameter. In CVL 2.0 this parameter is set using a new flag
 `--prover_version`
