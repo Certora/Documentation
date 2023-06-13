@@ -598,7 +598,7 @@ be used with care.
 
 CVL 2 supports assert and require casts on all numeric types.
 
-Casts from `address`, `bytes1`...`bytes32`, to integer types are not
+Casts from `address` or `bytes1`...`bytes32` to integer types are not
 supported (see {ref}`bytesN-support` regarding casting in the other direction).
 
 `require` and `assert` casts are not allowed anywhere inside of a
