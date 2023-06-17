@@ -12,6 +12,7 @@ This document summarizes the changes to CVL syntax introduced by CVL 2.
 ```{contents}
 ```
 
+(cvl2-superficial-syntax-changes)=
 Superficial syntax changes
 --------------------------
 
@@ -170,6 +171,7 @@ rule onlyOwnerCanDecrease() {
 }
 ```
 
+(cvl2-methods-blocks)=
 Changes to methods block entries
 --------------------------------
 
@@ -331,21 +333,16 @@ summarization (if any).
 % in the contract, you will receive the following error message:
 % ```
 
-### `library` annotations
-
-In CVL 2, contract functions declared as library functions must be annotated
-with `library` in the `methods` block.
-
-% ```{todo}
-% If you forget to declare a method as a `library` method, you will receive the
-% following error message:
-% ```
-
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
 In CVL 2, methods block entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
+
+For methods block entries of external functions the location annotation must be
+omitted unless it's the `storage` annotation on an external library function, in
+which case it is required (the reasoning here is to have the information required
+in order to correctly calculate a function's sighash).
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -462,6 +459,7 @@ In this case, the Prover would encode the value returned by `fooImpl()` as a
 will not be able to detect the error.
 ````
 
+(cvl2-integer-types)=
 Changes to integer types
 ------------------------
 
@@ -494,6 +492,7 @@ about the overflow behavior by using the {ref}`new casting operators
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-comparisons-identical-types)=
 ### Comparisons require identical types
 
 When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
@@ -599,8 +598,8 @@ be used with care.
 
 CVL 2 supports assert and require casts on all numeric types.
 
-Casts between `address`, `bytes1`...`bytes32`, and integer types are not
-supported.
+Casts from `address` or `bytes1`...`bytes32` to integer types are not
+supported (see {ref}`bytesN-support` regarding casting in the other direction).
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -629,6 +628,7 @@ ghost mapping(uint => uint) a {
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
 
+(bytesN-support)=
 ### Support for `bytes1`...`bytes32`
 
 CVL 2 supports the types `bytes1`, `bytes2`, ..., `bytes32`, as in Solidity.
@@ -642,8 +642,15 @@ bytes32 x = to_bytes32(0);
 Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
 or padded to the correct length.
 
-There is no way to convert between these types and integer types (except for
-literals as just mentioned).
+The only conversion between integer types and these types is from `uint<i*8>` to
+`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target `bytes<i>` type);
+For example:
+
+```cvl
+uint24 u;
+bytes3 x = to_bytes3(u); // This is OK
+bytes4 y = to_bytes4(u); // This will fail
+```
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -711,6 +718,7 @@ We have removed these features because we think they are no longer used and no
 longer useful.  If you find that you do need one of these features, contact
 Certora support.
 
+(cvl2-removed-sighashes)=
 ### Methods entries for sighashes
 
 In CVL 1, you could write a sighash instead of a method identifier in the
@@ -721,6 +729,7 @@ the name and argument types of the called method in order to provide an entry.
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-invoke)=
 ### `invoke`, `sinvoke`, and `call`
 
 Older versions of CVL had special syntax for calling contract and CVL functions:
@@ -732,6 +741,7 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-static-assert-require)=
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
@@ -741,6 +751,7 @@ them with `assert` and `require` respectively.
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-fallback)=
 ### `invoke_fallback` and `certorafallback()`
 
 The `invoke_fallback` syntax is no longer supported; there is no longer a way
@@ -752,6 +763,7 @@ writing a parametric rule and filtering on `f.isFallback`.  See
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-invoke-whole)=
 ### `invoke_whole`
 
 The `invoke_whole` keyword is no longer supported.
@@ -760,6 +772,7 @@ The `invoke_whole` keyword is no longer supported.
 % What did it do?
 % ```
 
+(cvl2-removed-havoc)=
 ### Havocing local variables
 
 In CVL 1, you could write the following:
@@ -788,6 +801,7 @@ g(e,args2);
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-destructure-struct)=
 ### Destructuring syntax for struct returns
 
 In CVL 1, if a contract function returned a struct, you could use a
@@ -834,6 +848,7 @@ x, y = g();
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-double-arrays)=
 ### `bytes[]` and `string[]`
 
 In CVL 1, you could declare variables of type `string[]` and `bytes[]`.  You can
@@ -848,10 +863,19 @@ value of a method that returns one of these types.
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-removed-pragma)=
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature
 was not used.  It has been removed in CVL 2.
+
+% ```{todo}
+% If you do not change this, you will see the following error:
+% ```
+
+### `events`
+
+CVL 1 had syntax for an `events` block, but it did nothing and has been removed.
 
 % ```{todo}
 % If you do not change this, you will see the following error:

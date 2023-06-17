@@ -12,6 +12,12 @@ review and provide feedback.  In order for the PR to be accepted, the
 documentation must build without warnings.  To build the documentation locally,
 run `make` in the top level directory.
 
+For new features that are being designed, create an `feature/accepted` branch
+and a `feature/proposal` branch.  File a PR from `proposal` to `accepted` so
+that stakeholders can be aware of the design; future changes to the design
+(before release) should also be reviewed as PRs against the `accepted` branch.
+Once the new feature is available, merge the `accepted` branch into `master`.
+
 [rtd]: https://readthedocs.com/projects/certora-certora-prover-documentation/
 [docs]: https://docs.certora.com/en/latest/docs/user-guide/intro.html
 [sphinx]: https://www.sphinx-doc.org/en/master/
@@ -23,6 +29,11 @@ Building the documentation
  - Install `make` (TODO: instructions for windows)
  - Install relevant python packages `pip install -r requirements.txt`
  - Install additional dependencies for `pyenchant` ([instructions](https://pyenchant.github.io/pyenchant/install.html))
+ - Mac M1 users: add the following to your zsh configuration file (`.zshenv`/`.zshrc`):
+```
+# to fix compatibility of enchant with M1 machines
+export PYENCHANT_LIBRARY_PATH=/opt/homebrew/lib/libenchant-2.2.dylib
+```
  - Run `make` in the top level directory
 
 Documentation organization
@@ -30,9 +41,7 @@ Documentation organization
 
 At the top level, the documentation is currently split into four "books":
 
- - The Tutorial section is a placeholder; in the future we may want to integrate
-   the tutorial more closely to the documentation, but right now it is just a
-   link.
+ - The whitepaper is our whitepaper
 
  - The User Guide contains information about the Certora Prover and Certora
    Verification Language.  It is intended to explain how to use the Prover to
@@ -54,6 +63,9 @@ At the top level, the documentation is currently split into four "books":
    each individual feature in isolation.  It should clearly describe the syntax
    and semantics, but should refer to the user guide for extended examples and
    advice.
+
+   Note: the reference manual now spans `cvl`, `gambit`, and the `prover`
+   subdirectories.
 
  - The Old Documentation section (in the `confluence` folder) is the
    documentation that was copied from confluence.  As it gets edited and
@@ -84,6 +96,20 @@ Style guide
  - Use the `term` feature when referring to a new term for the first time, this
    links to the glossary. 
 
+ - Prefer semantic blocks to hand-formatting.  For example, prefer
+
+````
+```{note}
+This is a note
+```
+````
+
+to
+
+```
+**Note**: _this is a note_.
+```
+
  - Use a line width of 80-characters in the markdown files
    
  - In the reference manual, prefer descriptions over examples; use examples to
@@ -95,6 +121,12 @@ Style guide
    but our overreliance on examples in earlier docs has left a lot of things
    underspecified.
 
+Examples repository
+-------------------
+
+Examples in the user guide should have separate repositories containing the
+projects, with the standard layout for a project.  Examples should be linked
+from the `Examples` repository.
 
 Myst markdown
 -------------
@@ -174,4 +206,26 @@ Note: you can get a list of all the files that ever existed using
 ```
 git log --name-only --pretty="format:" docs
 ```
+
+Documentation versioning
+------------------------
+
+Readthedocs supports the following [kinds of versions][rtd-versioning]:
+
+ - A version called "latest" that follows a specific branch (which is `master`
+   by default, but can be changed on the admin tab under [advanced settings][rtd-settings]).
+
+ - A version called "stable" that uses the latest non-prerelease tag
+
+ - Any additional branches or tags that we manually activate (in the [versions tab][rtd-versions]), using the
+   branch/tag name as the display name
+
+These versions can also be made private or hidden
+
+[rtd-settings]: https://readthedocs.com/dashboard/certora-certora-prover-documentation/advanced/
+[rtd-versions]: https://readthedocs.com/projects/certora-certora-prover-documentation/versions/
+[rtd-versioning]: https://docs.readthedocs.io/en/stable/versions.html
+
+Currently, the `latest` documentation refers to the `master` branch, and the
+`stable` label is hidden
 
