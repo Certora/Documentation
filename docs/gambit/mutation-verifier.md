@@ -103,13 +103,12 @@ Apologies for the temporary inconvenience!
 
 - `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
 Expects a boolean and defaults to `false`.
-- `"staging"` : if your run script does not already have `--staging`, you can also add it to Gambit.
+- `"staging"` : if your run script does not already have `--server staging`, you can also add it to Gambit.
   Similar to the Prover, you can provide the
-  branch name for running mutant verification on `--staging`.
-We support `"staging" : true` as an alternative to `"staging" : "master"`.
+  branch name for running mutant verification on `--prover_version`.
 Omitting this key will cause verification to run locally
   (unless the run script has it).
-- `"cloud"` : if you instead want to run on the cloud environment you can provide the `--cloud` flag. You can also add the name of a specific branch.
+- `"production"` : if you instead want to run on the production environment you can provide the `--server production` flag. You can also add the name of a specific branch using `--prover_version`
 - `"use_certora_run_py"` : Use `certoraRun.py` rather than `certoraRun`. Expects a boolean and defaults to `false`.
 
 

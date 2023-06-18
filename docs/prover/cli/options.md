@@ -739,7 +739,7 @@ counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
 (-maxNumberOfReachChecksBasedOnDomination)=
-#### `--settings -maxNumberOfReachChecksBasedOnDomination=<n>`
+#### `--prover_args "-maxNumberOfReachChecksBasedOnDomination <n>"`
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.

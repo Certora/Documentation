@@ -2,7 +2,7 @@
 
 ## Flag
 
-Grounding is usually set to “On” by default. To turn it off, use the command `--settings -smt_groundQuantifiers=false`.
+Grounding is usually set to “On” by default. To turn it off, use the command `--prover_args "-smt_groundQuantifiers false"`.
 
  
 ## Grounding General Idea
