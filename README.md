@@ -29,6 +29,11 @@ Building the documentation
  - Install `make` (TODO: instructions for windows)
  - Install relevant python packages `pip install -r requirements.txt`
  - Install additional dependencies for `pyenchant` ([instructions](https://pyenchant.github.io/pyenchant/install.html))
+ - Mac M1 users: add the following to your zsh configuration file (`.zshenv`/`.zshrc`):
+```
+# to fix compatibility of enchant with M1 machines
+export PYENCHANT_LIBRARY_PATH=/opt/homebrew/lib/libenchant-2.2.dylib
+```
  - Run `make` in the top level directory
 
 Documentation organization
