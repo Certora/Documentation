@@ -910,19 +910,19 @@ This is the list of the flags that were renamed:
 | `--structLink`   | `--struct_link`       |              
 | `--javaArgs`     | `--java_args`         |              
 
-### Prover Args
-Prover args are CLI flags that are sent to the Prover. Prover args can be set in one of two ways:
+### `Prover Args`
+`Prover args` are CLI flags that are sent to the Prover. `Prover args` can be set in one of two ways:
 1. Using specific CLI flags (e.g. `--loop_iter`)
 2. As parameters to the `--prover_args` (`--settings` in CVL 1)
 
-Unlike CVL 1, if a prover arg is set using a specific CLI flag it cannot be set
+Unlike CVL 1, if a `prover arg` is set using a specific CLI flag it cannot be set
 using `--prover_args`. In addition, the value commas and equal signs separators that were used in `--settings` 
-were replaced with whitespaces
+were replaced with white-spaces
 in `--prover_args`.
 
 Example:
 
-Consider this call to certoraRun using CVL 1 syntax
+Consider this call to `certoraRun` using CVL 1 syntax
 ```cvl
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
@@ -943,14 +943,14 @@ certoraRun Compound.sol \
     --prover_args '-smt_bitVectorTheory true -smt_hashingScheme plainInjectivity'
 ```
 
-### Solidity Compiler Args
-The Solidity Compiler Args are CLI flags that are sent to the Solidity compiler. The behavior of the Solidity Args is similar to Prover
-Args. The flag `--solc_args` can only be used if there is no CLI flag that sets the Solidity flag and the value of `--solc_args` is 
+### `Solidity Compiler Args`
+The `Solidity Compiler Args` are CLI flags that are sent to the Solidity compiler. The behavior of the `Solidity Args` is similar to `Prover
+Args`. The flag `--solc_args` can only be used if there is no CLI flag that sets the Solidity flag and the value of `--solc_args` is 
 a string that is sent as is to the Solidity compiler.
 
 Example:
 
-Consider this call to certoraRun using CVL 1 syntax
+Consider this call to `certoraRun` using CVL 1 syntax
 ```cvl
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
@@ -974,4 +974,4 @@ In CVL 1, two server platforms were supported:
 
 In CVL 2 the flag `--server` was added to replace `--staging` `--cloud` and to allow adding additional server platforms.
 `--server` gets as a parameter the platform name.
-`--prover_version` is a new flag in CVL 2 For setting the Branch/hotfix
+`--prover_version` is a new flag in CVL 2 For setting the Branch/hot-fix
