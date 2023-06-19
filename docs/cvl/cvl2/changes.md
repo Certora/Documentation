@@ -897,18 +897,18 @@ In CVL 2 some flags were renamed:
 
 This is the list of the flags that were renamed:
 
-| CVL 1          | CVL 2               |
-|----------------|---------------------|
-| --settings     | --prover_args       |
-| --path         | --solc_allow_path   |
-| --optimize     | --solc_optimize     |
-| --optimize_map | --solc_optimize_map |
-| --get_conf     | --conf_output_file  |
-| --assert       | --assert_contracts  |
-| --bytecode     | --bytecode_jsons    |
-| --toolOutput   | --tool_output       |
-| --structLink   | --struct_link       |              
-| --javaArgs     | --java_args         |              
+| CVL 1            | CVL 2                 |
+|------------------|-----------------------|
+| `--settings`     | `--prover_args`       |
+| `--path`         | `--solc_allow_path`   |
+| `--optimize`     | `--solc_optimize`     |
+| `--optimize_map` | `--solc_optimize_map` |
+| `--get_conf`     | `--conf_output_file`  |
+| `--assert`       | `--assert_contracts`  |
+| `--bytecode`     | `--bytecode_jsons`    |
+| `--toolOutput`   | `--tool_output`       |
+| `--structLink`   | `--struct_link`       |              
+| `--javaArgs`     | `--java_args`         |              
 
 ### Prover Args
 Prover args are CLI flags that are sent to the Prover. Prover args can be set in one of two ways:
