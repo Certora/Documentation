@@ -93,7 +93,7 @@ manual mutants (for example you might name them `OriginalFileName.m1.sol`, `Orig
 ### Additional Optional Flags
 
 ```{note}
-Gambit supports {ref}`--server`.
+Gambit supports `--server`.
 
 However, Gambit currently has trouble with
 {ref}`--send_only` in the run scripts.
