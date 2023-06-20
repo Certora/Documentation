@@ -734,7 +734,7 @@ use those configuration that match the given solver specification.
 
 The `solver spec` can be a single solver (`-solver=z3:def`), or a list of solver
 configurations (`-solver=[z3:def,cvc5:def]`), where each such solver can be
-further modified.  For example, `cvc5` refers to the set of preconfigured
+further modified.  For example, `cvc5` refers to the set of pre-configured
 configurations of `cvc5` whereas `cvc5:nonlin` is a specific configuration used
 for nonlinear problems.  Additional options can be set via `z3{randomSeed=17}`.
 
