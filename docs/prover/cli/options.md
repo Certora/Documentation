@@ -726,19 +726,26 @@ reports may not be generated.
 (-solver)=
 #### `--settings -solver=<solver spec>`
 
-This option sets the SMT solvers being used within the Prover.  By default, a
-portfolio of various different solvers is used.  It can be useful to specify
-only a subset of these to save on computation time.  In rare cases, solver
-specific options can improve performance as well.
+By default, a portfolio of SMT solvers using various configurations is used within
+the Prover.  It can be useful to specify only a subset of these to save on
+computation time.  In rare cases, solver specific options can improve performance
+as well.  Setting `-solver=<solver spec>` filters the predefined portfolio to only
+use those configuration that match the given solver specification.
 
-The `solver spec` can be a single solver (`-solver=z3`) or a list of solvers
-(`-solver=[cvc5,z3]`), where each such solver can be further modified.  For
-example, `cvc5` refers to the default configuration of `cvc5` whereas
-`cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
-via `z3{randomSeed=17}`.
+The `solver spec` can be a single solver (`-solver=z3:def`), or a list of solver
+configurations (`-solver=[z3:def,cvc5:def]`), where each such solver can be
+further modified.  For example, `cvc5` refers to the set of preconfigured
+configurations of `cvc5` whereas `cvc5:nonlin` is a specific configuration used
+for nonlinear problems.  Additional options can be set via `z3{randomSeed=17}`.
+
+With `-smt_overrideSolvers=true`, the portfolio can be replaced instead of filtered.
+For even better control of which solvers are used in which situation, solver
+specification for certain logics can be given via `-smt_LIASolvers=<solver spec>`, 
+`-smt_NIASolvers=<solver spec>`, and `-smt_BVSolvers=<solver spec>` for linear,
+non-linear and bit-vector formulas.
 
 (-useBitVectorTheory)=
-#### `--settings -useBitVectorTheory`
+#### `--settings -smt_useBV`
 
 This option models bitwise operations exactly instead of using the default
 {term}`overapproximation`s.  It is useful when the Prover reports a
