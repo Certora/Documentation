@@ -133,15 +133,17 @@ the following rule check if there is a scenario in which one can withdraw and ge
 
 
 ```cvl
+/// demonstrate that one can fully withdraw their assets
 rule possibleToFullyWithdraw(address sender, uint256 amount) {
-    env eT0;
-    env eM;
-    uint256 balanceBefore = _token0.balanceOf(sender);
+    env eT0;  // one env to call token functions
+    env eM;   // one env to mint and withdraw from pool
+    uint256 balanceBefore = token.balanceOf(sender);
     
     require eM.msg.sender == sender;
     require eT0.msg.sender == sender;
     _token0.transfer(eT0, currentContract, amount);
     uint256 amountOut0 = mint(eM,sender);
+    //immediately withdraw
     burnSingle(eM, _token0, amountOut0, sender);
     satisfy balanceBefore == _token0.balanceOf(sender);
 }
@@ -157,15 +159,17 @@ rule possibleToFullyWithdraw(address sender, uint256 amount) {
     env eT0;
     env eM;
     uint256 balanceBefore = _token0.balanceOf(sender);
-    setup(eM);
+    setup(eM); //avoid infeasible state
 
     require eM.msg.sender == sender;
     require eT0.msg.sender == sender;
-    require amount > 0;
+    require amount > 0; // added to reason about interesting cases 
     _token0.transfer(eT0, currentContract, amount);
     uint256 amountOut0 = mint(eM,sender);
     burnSingle(eM, _token0, amountOut0, sender);
     satisfy balanceBefore == _token0.balanceOf(sender);
+    
+    satisfy balanceBefore == token.balanceOf(sender);
 }
 ```
 
