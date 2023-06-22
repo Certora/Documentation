@@ -56,7 +56,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | id "(" [ id { "," id } ] ")" [ "with" "(" "env" id ")" ]
+                   | id "(" [ id { "," id } ] ")"
 
 ```
 
@@ -328,7 +328,8 @@ that combine those variables are not supported.
 The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
 This is useful for identifying the called contract in {ref}`wildcard summaries
-<cvl2-wildcards>`.
+<cvl2-wildcards>`.  The `calledContract` keyword is only defined in the `methods`
+block.
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
@@ -355,10 +356,18 @@ e)` annotation.  Here `e` may be replaced with any valid identifier.
 
 The variable defined by the `with` clause contains an {ref}`` `env` type <env>``
 giving the context for the summarized function.  This context may be different
-from the `env` passed to the original call from the spec.  In particular,
-`e.msg.sender` refers to the most recent contract to call an external function
-(as in Solidity).  The variable `e.tx.origin` will be the same as the
-`msg.sender` of the environment for the outermost function call.
+from the `env` passed to the original call from the spec.  In particular:
+
+ - `e.msg.sender` and `e.msg.value` refer to the most recent call to a
+   non-library[^library-with-env] external function (as in Solidity)
+
+ - The variables `e.tx.origin`, `e.block.number`, and `e.block.timestamp` will
+   be the same as the the environment for the outermost function call.
+
+[^library-with-env]: As [in solidity][solidity-delegate-call], `msg.sender` and `msg.value` do not
+  change for `delegatecall`s or library calls.
+
+[solidity-delegate-call]: https://docs.soliditylang.org/en/v0.8.6/introduction-to-smart-contracts.html?#delegatecall-callcode-and-libraries
 
 Continuing the above example, one can use the `env` to summarize the `transfer`
 method:
