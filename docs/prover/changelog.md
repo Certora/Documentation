@@ -5,7 +5,7 @@ Upcoming features
 -----------------
 
 * Add support for `with(env)` and `callee(address)` for summarization.
-  See {doc}`/docs/cvl/methods`.
+  See {ref}`function-summary`.
 
 Prod version March 21, 2022
 ---------------------------

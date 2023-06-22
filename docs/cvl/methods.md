@@ -39,7 +39,7 @@ methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= ( sighash | [ id "." ] id "(" evm_params ")" )
                      [ "returns" types ]
-                     [ "envfree" ]
+                     [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      [ ";" ]
 
@@ -86,7 +86,10 @@ declaration contains a `returns` clause, the declared return type must match
 the contract method's return type.  If the `returns` clause is omitted, the
 return type is taken from the contract method's return type.
 
-Following the `returns` clause is an optional `envfree` tag.  Marking a method
+Following the `returns` clause an may optionally contain either an `envfree`
+tag or a `with` clause.
+
+Marking a method
 with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
 from CVL do not need to explicitly pass an {term}`environment` value as the
 first argument.  Second, the Prover will verify that the method implementation
@@ -98,6 +101,12 @@ as separate rules called `envfreeFuncsStaticCheck` and
 [^envfree_nonpayable]: The effect of payable functions on the contract's
   balance depends on the message value, so payable functions also require an
   `env`.
+
+The `with` clause introduces a new variable to represent the environment that
+is passed to a summarized function; the variable can be used in function
+summaries.  `with` clauses may only be used if the entry has a
+function summary. See {ref}`function-summary` below for more information about
+the environment provided by the `with` clause.
 
 Finally, the method entry may contain an optional summarization (indicated by
 `=>` followed by the summary type and an optional application policy).  A
@@ -307,12 +316,81 @@ Contract methods can also be summarized using CVL {doc}`functions` or
 {ref}`ghost-axioms` as approximations.  Contract calls to the summarized method
 are replaced by calls to the specified CVL functions.
 
-To use a CVL function or ghost as a summary, use a call to the function in
-place of the summary type.  The function call can only refer directly to the
-variables defined as arguments in the summary declarations; expressions
-that combine those variables are not supported.
-
 There are a few restrictions on the functions that can be used as approximations:
  - Functions used as summaries are not allowed to call contract functions.
  - Functions used as summaries may not have accept arguments or return values that have struct or array types.
+
+To use a CVL function or ghost as a summary, use a call to the function in
+place of the summary type.  The function call can refer to the
+variables defined as arguments in the summary declarations; expressions
+that combine those variables are not supported.
+
+The function call may also use the special variable `calledContract`, which
+gives the address of the contract on which the summarized method was called.
+This is useful for identifying the called contract in {ref}`wildcard summaries
+<cvl2-wildcards>`.  The `calledContract` keyword is only defined in the `methods`
+block.
+
+For example, a wildcard summary for a `transferFrom` method may apply to
+multiple ERC20 contracts; the summary can update the correct ghost variables as
+follows:
+
+```cvl
+methods {
+    function _.transferFrom(address from, address to, uint256 amount) external
+        => cvlTransferFrom(calledContract, from, to, amount);
+}
+
+ghost mapping(address => mapping(address => mathint)) tokenBalances;
+
+function cvlTransferFrom(address token, address from, address to, uint amount) {
+    if (...) {
+        tokenBalances[token][from] -= amount;
+        tokenBalances[token][to]   += amount;
+    }
+}
+```
+
+The call can also refer to a variable of type `env` introduced by a `with(env
+e)` annotation.  Here `e` may be replaced with any valid identifier.
+
+The variable defined by the `with` clause contains an {ref}`` `env` type <env>``
+giving the context for the summarized function.  This context may be different
+from the `env` passed to the original call from the spec.  In particular:
+
+ - `e.msg.sender` and `e.msg.value` refer to the most recent call to a
+   non-library[^library-with-env] external function (as in Solidity)
+
+ - The variables `e.tx.origin`, `e.block.number`, and `e.block.timestamp` will
+   be the same as the the environment for the outermost function call.
+
+[^library-with-env]: As [in solidity][solidity-delegate-call], `msg.sender` and `msg.value` do not
+  change for `delegatecall`s or library calls.
+
+[solidity-delegate-call]: https://docs.soliditylang.org/en/v0.8.6/introduction-to-smart-contracts.html?#delegatecall-callcode-and-libraries
+
+Continuing the above example, one can use the `env` to summarize the `transfer`
+method:
+
+```cvl
+methods {
+    function _.transfer(address to, uint256 amount) external with(env e)
+        => cvlTransfer(calledContract, e, to, amount);
+}
+
+function cvlTransfer(address token, env passedEnv, address to, uint amount) {
+    ...
+}
+
+rule example {
+    env e;
+    address sender;
+    require e.msg.sender == sender;
+    c.process(e);
+}
+```
+
+In this example, if the `process` method calls `t.transfer(...)`, then in the
+`cvlTransfer` function, `token` will be `t`, `passedEnv.msg.sender` will be
+`c`, and `passedEnv.tx.origin` will be `sender`.
 
