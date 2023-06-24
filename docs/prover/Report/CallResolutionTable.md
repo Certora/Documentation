@@ -3,7 +3,7 @@ CallResolutionTable
 
 The code verified by the Prover consists of several modules. However, by default, the Prover is aware of just one module. When the module is calling other modules, the Prover does not know how to identify them, let alone seeing and analyzing their code. In this case, the user guides the Prover by configuring it to identify the different modules and connect them through linking. This can be done through two ways:
 1. Inlining- Taking the code of the two modules and building one big module with the code of both.
-2. Summaries- This is a mathematical description of the behavior of the module. It is usually short though less precise. It exists in two forms which are either be over approximating (describing more behaviors than there are actually implemented in the module) or under approximating (limiting the scope of what the other module can do).
+2. Summarization- This is a mathematical description of the behavior of the module. It is usually short though less precise. It exists in two forms which are either be over approximating (describing more behaviors than there are actually implemented in the module) or under approximating (limiting the scope of what the other module can do).
 
 The `CallResolutionTable` shows information about all the summarized calls in the program.
 It helps the user to better understand decisions made by the Prover- which calls in the rule code got inlined, which were replaced by summaries, and why.
@@ -34,7 +34,7 @@ For internal calls, the callee will always be resolved by the Prover, while for 
 Here all the cases for unresolved callees are introduced:
 
  * Fully resolved callee: In such a case, the summary will be applied if the application policy of the summary is set to `ALL`
-(see {doc}`The Methods Block — Certora Prover Documentation 0.0 documentation <summary-types>`).
+(see {ref}`summary types <summary types>`).
 Note, this does not mean that the call itself is resolved. There could be a case where both the callee contract and the callee sighash are resolved, but the sighash is not found in the contract.
 This might happen, due to a wrong linking in the configuration, or, due to a wrong low level call (`abi.encodeWithSignature("fdgf()")`), which is resolved in the bytecode level, even though it’s not an existing function signature.
 
@@ -59,3 +59,6 @@ Run Example with all the cases (rule per a case):
 [Verification Report][report]
 
 [report]: https://vaas-stg.certora.com/output/20941/5deeb346152849f3976f4a68a30c8822?anonymousKey=1bf252ca0e1aae98e20d2daac6c0e6b3a03a0819
+
+(summary types)=
+## Summary types
