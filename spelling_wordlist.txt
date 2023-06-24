@@ -20,6 +20,7 @@ Unary
 Vyper
 axiomatization
 axiomatized
+bitwidth
 bitwise
 blockchain
 blockchains

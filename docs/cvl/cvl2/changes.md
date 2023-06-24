@@ -333,21 +333,16 @@ summarization (if any).
 % in the contract, you will receive the following error message:
 % ```
 
-### `library` annotations
-
-In CVL 2, contract functions declared as library functions must be annotated
-with `library` in the `methods` block.
-
-% ```{todo}
-% If you forget to declare a method as a `library` method, you will receive the
-% following error message:
-% ```
-
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
 In CVL 2, methods block entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
+
+For methods block entries of external functions the location annotation must be
+omitted unless it's the `storage` annotation on an external library function, in
+which case it is required (the reasoning here is to have the information required
+in order to correctly calculate a function's sighash).
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -603,8 +598,8 @@ be used with care.
 
 CVL 2 supports assert and require casts on all numeric types.
 
-Casts between `address`, `bytes1`...`bytes32`, and integer types are not
-supported.
+Casts from `address` or `bytes1`...`bytes32` to integer types are not
+supported (see {ref}`bytesN-support` regarding casting in the other direction).
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -633,6 +628,7 @@ ghost mapping(uint => uint) a {
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
 
+(bytesN-support)=
 ### Support for `bytes1`...`bytes32`
 
 CVL 2 supports the types `bytes1`, `bytes2`, ..., `bytes32`, as in Solidity.
@@ -646,8 +642,15 @@ bytes32 x = to_bytes32(0);
 Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
 or padded to the correct length.
 
-There is no way to convert between these types and integer types (except for
-literals as just mentioned).
+The only conversion between integer types and these types is from `uint<i*8>` to
+`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target `bytes<i>` type);
+For example:
+
+```cvl
+uint24 u;
+bytes3 x = to_bytes3(u); // This is OK
+bytes4 y = to_bytes4(u); // This will fail
+```
 
 % ```{todo}
 % If you do not change this, you will see the following error:

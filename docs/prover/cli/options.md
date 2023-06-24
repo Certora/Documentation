@@ -745,3 +745,9 @@ This option models bitwise operations exactly instead of using the default
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
+(-maxNumberOfReachChecksBasedOnDomination)=
+#### `--settings -maxNumberOfReachChecksBasedOnDomination=<n>`
+
+This option sets the number of program points to test with the `deepSanity`
+built-in rule.  See {ref}`built-in-deep-sanity`.
+
