@@ -895,7 +895,7 @@ The changes will take effect starting v4.3.1 of `certora-cli`.
 ```{note}
 To opt-out of the new CLI, one can set an environment variable `CERTORA_OLD_API` to `1`, e.g.:
 `export CERTORA_OLD_API=1`.
-**The old CLI will not be available starting the future version released after August 31st, 2023**
+**The old CLI will not be available in versions released after August 31st, 2023**
 ```
 
 ### Flags Renaming
