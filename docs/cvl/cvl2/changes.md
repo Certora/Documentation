@@ -892,6 +892,12 @@ The complete CLI specification can be found [here](../../prover/cli/options.md)
 The changes will take effect starting v4.3.1 of `certora-cli`.
 ```
 
+```{note}
+To opt-out of the new CLI, one can set an environment variable `CERTORA_OLD_API` to `1`, e.g.:
+`export CERTORA_OLD_API=1`.
+**The old CLI will not be available starting the future version released after August 31st, 2023**
+```
+
 ### Flags Renaming
 
 In CVL 2 some flags were renamed:
