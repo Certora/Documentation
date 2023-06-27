@@ -18,5 +18,6 @@ checking/index.md
 cli/index.md
 portal/using.md
 changelog.md
+Report/CallResolutionTable.md
 ```
 
