@@ -671,7 +671,7 @@ that the called method returns the correct number of return values.
 #### `--prover_args '-showInternalFunctions'`
 
 A single occurrence of `--prover_args` can set multiple values
-#### `--prover_args '-showInternalFunctions -optimisticReturnsize'`
+`--prover_args '-showInternalFunctions -optimisticReturnsize'`
 
 **What does it do?**
 

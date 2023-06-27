@@ -886,7 +886,7 @@ Changes to the Command Line Interface (CLI)
 
 As part of the transition to CVL 2 changes were made to enhanced clarity,
 uniformity, and readability on the Command-Line Interface (CLI). 
-. The complete CLI specification can be found [here](../../prover/cli/options.md)
+The complete CLI specification can be found [here](../../prover/cli/options.md)
 
 ```{note}
 The changes will take effect starting v4.3.1 of `certora-cli`.
