@@ -139,7 +139,7 @@ A counterexample that looks fishy does not rule out a potential bug that the rul
 3.  **Bitwise operations.** By default, the tool will overapproximate bitwise
     operations applied in a non-standard way (xor, or, and non 2^n-1 masks for
     and). Try to look over the dump and look for red-background lines.  You may
-    be able to solve these by passing the `--settings -useBitVectorTheory` option
+    be able to solve these by passing the `--prover_arsg -useBitVectorTheory` option
     on the command line
 
 4.  **Math.** Sometimes the tool overapproximates math, in particular, multiplication by non-constant, division, and modulo operations. The development team tries to minimize the number of times it happens, but it could still happen. Follow guidelines for bitwise operations as stated above.

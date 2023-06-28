@@ -107,6 +107,7 @@ scalable
 se
 sighash
 sighashes
+skolemized
 splitter
 stablecoin
 struct
@@ -145,3 +146,4 @@ walkthrough
 whitespace
 Inlining
 callees
+prover_args
