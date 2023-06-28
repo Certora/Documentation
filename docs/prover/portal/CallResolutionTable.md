@@ -34,7 +34,7 @@ For internal calls, the callee will always be resolved by the Prover, while for 
 Here all the cases for unresolved callees are introduced:
 
  * Fully resolved callee: In such a case, the summary will be applied if the application policy of the summary is set to `ALL`
-(see {ref}`summary-types`).
+(see {ref}`summaries`).
 Note, this does not mean that the call itself is resolved. There could be a case where both the callee contract and the callee sighash are resolved, but the sighash is not found in the contract.
 This might happen, due to a wrong linking in the configuration, or, due to a wrong low level call (`abi.encodeWithSignature("fdgf()")`), which is resolved in the bytecode level, even though it’s not an existing function signature.
 
@@ -48,7 +48,7 @@ This might happen, due to a wrong linking in the configuration, or, due to a wro
  Comments
 ------
 
-The comments, specify the resolution status of the callee.
+The comments specify the resolution status of the callee.
 In addition, they give more insights about why the Prover failed to resolve the callee.
 For example, if the callee contract is unresolved due to wrong linking, a hint is given to the user. This hint specifies the slot that should be linked, and what are the possible contracts that should be considered when linking (those that contain a function with the resolved sighash, if it is indeed resolved).
 Moreover, the comments specify the summary application reason, which may be due to the configuration in the CLI, a summarization written in the spec, or a decision made by the Prover.
@@ -58,4 +58,4 @@ For example, if the Prover fails to resolve the callee, it then decides to havoc
 Run Example with all the cases (rule per a case):
 [Verification Report][report]
 
-[report]: https://vaas-stg.certora.com/output/20941/5deeb346152849f3976f4a68a30c8822?anonymousKey=1bf252ca0e1aae98e20d2daac6c0e6b3a03a0819
+[report]: https://vaas-stg.certora.com/output/20941/913f4cce938641a38c8fe1d37500d6e5?anonymousKey=d6d1bbd7bb0290b863ccd9b33905b96e91ad5373
