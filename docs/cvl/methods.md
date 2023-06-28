@@ -182,7 +182,6 @@ The `@dontsummarize` tag on method calls is currently undocumented but likely
 affects the summarization behavior.  See {ref}`call-expr`.
 ```
 
-(summary-types)=
 Summary types
 -------------
 
