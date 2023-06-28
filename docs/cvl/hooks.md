@@ -4,10 +4,10 @@ Hooks
 Hooks are used to attach CVL code to certain low-level operations, such as
 loads and stores to specific storage slots.
 
-```{todo}
+```{note}
 This documentation is incomplete.  See
 [the old documentation](/docs/confluence/anatomy/hooks)
-for partial information.  See also {doc}`ghosts`.
+for additional information.  See also {doc}`ghosts` and {doc}`opcodes`.
 ```
 
 ```{contents}
@@ -19,7 +19,7 @@ Syntax
 The syntax for hooks is given by the following [EBNF grammar](syntax):
 
 ```
-hook ::= store_hook | load_hook
+hook ::= store_hook | load_hook | opcode_hook
 
 load_hook ::= "hook" "Sload"
               cvl_type id
@@ -30,6 +30,10 @@ store_hook ::= "hook" "Sstore"
                slot_pattern
                cvl_type id [ "(" cvl_type id ")" ]
                "STORAGE" block
+
+opcode_hook ::= "hook" opcode_name cvl_type id
+               | "hook" opcode_name "(" cvl_param_list ")" cvl_type id
+               | "hook" opcode_name "(" cvl_param_list ")"
 
 TODO: the following needs condensing and explaining
       it is a description of slot_pattern (from cvl.cup)
