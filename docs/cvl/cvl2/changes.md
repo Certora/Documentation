@@ -902,7 +902,7 @@ To opt-out of the new CLI, one can set an environment variable `CERTORA_OLD_API`
 
 In CVL 2 some flags were renamed:
 1. flags with names that are generic or wrong
-2. flags that do not match their corresponding key in the conf file
+2. flags that do not match their corresponding key in the `conf` file
 3. flags that do not follow the snake case format
 
 This is the list of the flags that were renamed:

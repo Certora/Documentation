@@ -257,6 +257,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 ```
 will check that the current contract supports the optional `burnFrom` method.
 
+(special-fields)=
 Special variables and fields
 ----------------------------
 
@@ -288,15 +289,15 @@ There are also several built-in variables:
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
 
- * ```{todo}
-   `allContracts` and `lastMsgSig` are currently undocumented.
-   ```
-
  * You can use the variable `_` as a placeholder for a value you are not
    interested in.
 
  * The maximum values for the different integer types are available as the
    variables `max_uint`, `max_address`, `max_uint8`, `max_uint16` etc.
+
+  * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
+    The balance of an `address a` can be expressed using `nativeBalances[a]`.
+
 
 CVL also has several built-in functions for converting between
 numeric types.  See {doc}`mathops` for details.

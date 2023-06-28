@@ -22,6 +22,7 @@ Summarizing complex functions
 
 ### Modular verification
 
+(library_timeouts)=
 Library-based systems
 ---------------------
 Some of the systems we have are based on multiple library contracts which implement the business logic. They also forward storage updates to a single external contract holding the storage.
