@@ -1,4 +1,5 @@
-EVM (Ethereum Virtual Machine) Opcode hooks
+(opcodes)=
+EVM (Ethereum Virtual Machine) Opcode Hooks
 ================
 
 ## Background

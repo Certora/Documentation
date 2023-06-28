@@ -256,7 +256,7 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **What does it do?**  
 Gets a list of arguments to pass to the Solidity compiler. The arguments will be passed as is, without any formatting, in the same order.  
 arguments that are defined as standalone flags cannot be defined in `--solc_args`, including the Solidity compiler flags  `--optimize`, 
-`--optimize-runs`, `--allow-paths`, `--via-ir` and `--evm-version`. These flags should be set by the prover flags such as:
+`--optimize-runs`, `--allow-paths`, `--via-ir` and `--evm-version`. These flags should be set by the Prover flags such as:
 `--solc_optimize`, `--solc_allow_path`, `--solc_via_ir` and `--solc_evm_version`
 
 **When to use it?**  
@@ -656,8 +656,8 @@ Upon instruction from the Certora team.
 ### `--prover_args`
 
 The `--prover_args` option allows you to provide fine-grained tuning options to the
-Prover.  `--prover_args` receives a string containing prover flags, the prover flags will be sent as it to the prover.
-`--prover_args` cannot set prover options that are set by standalone `certoraRun` options (e.g. the prover option `--t` is
+Prover.  `--prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
+`--prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `--t` is
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
 
