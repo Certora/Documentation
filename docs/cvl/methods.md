@@ -327,7 +327,11 @@ itself).  They differ in the assumptions made about the return value:
    returned values is *not* assumed to match the requested number, unless
    {ref}`-optimisticReturnsize` is specified.
 
-% TODO: restrictions on summaries
+```{warning}
+Using `CONSTANT` and `PER_CALLEE_CONSTANT` summaries for functions that have
+variable-sized outputs is a potential source of {term}`vacuity` and should be
+avoided.  Prefer a `NONDET` summary where possible.
+```
 
 (havoc-summary)=
 #### Havoc summaries: `HAVOC_ALL` and `HAVOC_ECF`
@@ -358,8 +362,6 @@ methods that return multiple values, the approximations are allowed to return
 the incorrect number of results.  In most cases, this will cause the calling
 method to revert.  If you want to ignore this particular revert condition, you
 can pass the {ref}`-optimisticReturnsize` option.
-
-% TODO: restrictions on havoc summaries
 
 (dispatcher)=
 #### `DISPATCHER` summaries
@@ -393,8 +395,6 @@ of the unknown contract is determined by the optional boolean argument to the
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
 all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
 ```
-
-% TODO: restrictions on DISPATCHER summaries
 
 (auto-summary)=
 #### `AUTO` summaries
