@@ -59,7 +59,8 @@ special_vars ::=
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
-		   
+           | "calledContract"
+
 cast_functions ::=
     | require_functions | to_functions | assert_functions
 
@@ -297,6 +298,9 @@ There are also several built-in variables:
 
   * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
     The balance of an `address a` can be expressed using `nativeBalances[a]`.
+
+ * `calledContract` is only available in {ref}`function summaries <function-summary>`.
+   It refers to the receiver contract of a summarized method call.
 
 
 CVL also has several built-in functions for converting between
