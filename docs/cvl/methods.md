@@ -434,6 +434,9 @@ place of the summary type.  The function call can only refer directly to the
 variables defined as arguments in the summary declarations; expressions
 that combine those variables are not supported.
 
+The function call may also use the special variable `calledContract`, which
+contains the address of the receiver contract of the summarized call.
+
 There are a few restrictions on the functions that can be used as approximations:
 
  - Functions used as summaries are not allowed to call contract functions.
