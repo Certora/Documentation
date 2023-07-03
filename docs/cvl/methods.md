@@ -132,10 +132,11 @@ Methods block entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
 
-For methods block entries of external functions the location annotation must be
-omitted unless it's the `storage` annotation on an external library function, in
-which case it is required (the reasoning here is to have the information required
-in order to correctly calculate a function's sighash).
+Entries for external functions may have `storage` annotations for argument
+references (in Solidity, external library functions may have storage arguments).
+If a reference-type argument does not have a `storage` annotation, the entry
+will apply to a function that has either a `calldata` or a `memory` annotation
+on the argument.
 
 (methods-visibility)=
 ### Visibility modifiers
@@ -149,12 +150,12 @@ entry will only match a function with the indicated visibility.
 
 If a function is declared `public` in Solidity, then the Solidity compiler
 creates an internal implementation method, and an external wrapper method that
-calls the internal implementation.  Therefore, you can summarize a `public`
-method by marking the summarization `internal`.
+calls the internal implementation.  An `internal` methods block entry will
+apply to the generated implementation method, while an `external` entry will
+apply to the generated external wrapper method.
 
-The behavior of `internal` vs. `external` summarization for public methods can
-be confusing, especially because functions called directly from CVL are not
-summarized.
+This summarization behavior can be confusing, especially because functions
+called directly from CVL are not summarized.
 
 Consider a public function `f`.  Suppose we provide an `internal` summary for
 `f`:
@@ -394,6 +395,10 @@ of the unknown contract is determined by the optional boolean argument to the
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
 all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
+```
+
+```{note}
+`DISPATCHER` summaries cannot be used to summarize library calls.
 ```
 
 (auto-summary)=
