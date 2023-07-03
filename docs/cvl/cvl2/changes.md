@@ -599,7 +599,8 @@ be used with care.
 CVL 2 supports assert and require casts on all numeric types.
 
 Casts from `address` or `bytes1`...`bytes32` to integer types are not
-supported (see {ref}`bytesN-support` regarding casting in the other direction).
+supported (see {ref}`bytesN-support` regarding casting in the other direction, and {ref}`enum-casting` for information on casting
+enums).
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -624,6 +625,19 @@ ghost mapping(uint => uint) a {
 % If you do not change this, you will see the following error:
 % ```
 
+(enum-casting)=
+### Casting enums to integer types
+
+In CVL2 enums are not directly comparable to the corresponding integer type (`uint8`). Instead one must use one of the new cast
+operators. For example
+
+```cvl
+uint8 x = MyContract.MyEnum.VAL; // will fail typechecking
+uint8 x = assert_uint8(MyContract.MyEnum.VAL); // good
+mathint x = to_mathint(MyContract.MyEnum.VAL); // good
+```
+
+Casting integer types to an enum is not supported.
 ### Modulo operator `%` returns negative values for negative inputs
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
