@@ -4,6 +4,8 @@ Balancer
 CVL
 Certora
 Devcon
+downsample
+downsampling
 Ethereum
 FEoD
 Hoare
@@ -18,6 +20,7 @@ Unary
 Vyper
 axiomatization
 axiomatized
+bitwidth
 bitwise
 blockchain
 blockchains
@@ -30,6 +33,7 @@ bytecodes
 callee
 changelog
 codebase
+config
 conjuncted
 decompilation
 decompiler
@@ -86,6 +90,7 @@ poststate
 pragma
 pragmas
 pre
+prebuilt
 precompiled
 preprocess
 preprocessing
@@ -95,12 +100,14 @@ reentrancy
 reentrant
 relatedly
 remappings
+reproducibility
 satisfiability
 satisfiable
 scalable
 se
 sighash
 sighashes
+skolemized
 splitter
 stablecoin
 struct
@@ -137,3 +144,4 @@ verifier
 verifiers
 walkthrough
 whitespace
+prover_args

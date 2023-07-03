@@ -29,9 +29,8 @@ expr ::= literal
        | expr "in" id
 
 function_call ::=
-       | [ "invoke" | "sinvoke" ]
-         [ id "." ] id
-         [ "@" ( "norevert" | "withrevert" | "dontsummarize" ]
+       | [ id "." ] id
+         [ "@" ( "norevert" | "withrevert" | "dontsummarize" ) ]
          "(" exprs ")"
          [ "at" id ]
 
@@ -59,9 +58,19 @@ special_vars ::=
            | "lastMsgSig"
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
+           | "nativeBalances"
+		   
+cast_functions ::=
+    | require_functions | to_functions | assert_functions
 
-special_functions ::=
-           | "to_uint256" | "to_int256" | "to_mathint"
+require_functions ::=
+    | "require_uint8" | ... | "require_uint256" | "require_int8" | ... | "require_int256"
+
+to_functions ::=
+    | "to_mathint" | "to_bytes1" | ... | "to_bytes32"
+
+assert_functions ::=
+   | "assert_uint8" | ... | "assert_uint256" | "assert_int8" | ... | "assert_int256"
 
 contract ::= id | "currentContract"
 ```
@@ -231,8 +240,8 @@ which can be used to access the {ref}`method fields <method-type>`.
 For example,
 ```cvl
 method m;
-require m.selector == balanceOf(address).selector
-     || m.selector == transfer(address, uint256).selector;
+require m.selector == sig:balanceOf(address).selector
+     || m.selector == sig:transfer(address, uint256).selector;
 ```
 will constrain `m` to be either the `balanceOf` or the `transfer` method.
 
@@ -248,6 +257,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 ```
 will check that the current contract supports the optional `burnFrom` method.
 
+(special-fields)=
 Special variables and fields
 ----------------------------
 
@@ -279,18 +289,18 @@ There are also several built-in variables:
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
 
- * ```{todo}
-   `allContracts` and `lastMsgSig` are currently undocumented.
-   ```
-
  * You can use the variable `_` as a placeholder for a value you are not
    interested in.
 
  * The maximum values for the different integer types are available as the
    variables `max_uint`, `max_address`, `max_uint8`, `max_uint16` etc.
 
-CVL also has three built-in functions for casting mathematical types:
-`to_uint256`, `to_int256`, and `to_mathint`.  See {doc}`mathops` for details.
+  * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
+    The balance of an `address a` can be expressed using `nativeBalances[a]`.
+
+
+CVL also has several built-in functions for converting between
+numeric types.  See {doc}`mathops` for details.
 
 
 (call-expr)=
@@ -307,12 +317,6 @@ There are many kinds of function-like things that can be called from CVL:
 
 There are several additional features that can be used when calling contract
 functions (including calling them through {ref}`method variables <method-type>`).
-
-A contract method invocation can optionally be prefixed by `invoke` or `sinvoke`,
-although this syntax is deprecated in favor of the `@norevert` and
-`@withrevert` syntax described below.  Verification of a method called with
-`invoke` will not report a counterexample if the contract method reverts, while
-`sinvoke` will.
 
 The method name can optionally be prefixed by a contract name.  If a contract is
 not explicitly named, the method will be called with `currentContract` as the
@@ -359,3 +363,98 @@ state `s`.
 Unresolved method calls
 ```
 
+(storage-comparison)=
+Comparing storage
+-----------------
+
+As described in {ref}`the documentation on storage types <storage-type>`, CVL represents the entirety of the EVM and its 
+{ref}`ghost state <ghost-functions>`
+in variables with `storage` type. Variables of this type can be checked for equality and inequality.
+
+The basic form of this expression is `s1 == s2`, where `s1` and `s2` are variables of type `storage`.
+This expression compares the states represented by `s1` and `s2`; that is, it checks equality of the following:
+
+1. The values in storage for all contracts,
+2. The balances of all contracts,
+3. The state of all ghost variables and functions
+
+Thus, if any field in any contract's storage differs between `s1` and `s2`, the expression will return `false`.
+The expression `s1 != s2` is shorthand for `!(s1 == s2)`.
+
+Storage comparisons also support narrowing the scope of comparison to specific components of the global
+state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1[r] != s2[r]`, where `r` is a "storage comparison basis",
+and `s1` and `s2` are variables of type `storage`. The valid bases of comparison are:
+
+1. The name of a contract imported with a {ref}`using statement <using-stmt>`,
+2. The keyword `nativeBalances`, or
+3. The name of a ghost variable or function
+
+It is an error to use different bases on different sides of the comparison operator, and it is also
+an error to use a comparison basis on one side and not the other.
+The application of the basis restricts the comparison
+to only consider the portion of global state identified by the basis.
+
+If the qualifier is a contract identifier
+imported via `using`, then the comparison operation will only consider the storage fields of that contract. For example:
+
+```cvl
+using MyContract as c;
+using OtherContract as o;
+
+rule compare_state_of_c(env e) {
+   storage init = lastStorage;
+   o.mutateOtherState(e); // changes `o` but not `c`
+   assert lastStorage[c] == init[c];
+}
+```
+
+will pass verification whereas:
+
+```cvl
+using MyContract as c;
+using OtherContract as o;
+
+rule compare_state_of_c(env e) {
+   storage init = lastStorage;
+   c.mutateContractState(e); // changes `c`
+   assert lastStorage[c] == init[c];
+}
+```
+
+will not. 
+
+```{note}
+Comparing contract's state using this method will **not** compare the balance of the contract between the
+two states.
+```
+
+If the qualifier is the identifier `nativeBalances`, then the account balances
+of all contracts are compared between the two storage states. 
+Finally, if the basis is the name of a ghost function or variable, the values of that
+function/variable are compared between storage states.
+
+Two ghost functions are considered equal if they have the same outputs for all input arguments.
+
+```{warning}
+The default behavior of the Prover on unresolved external calls is to pessimistically havoc contract
+state and balances. This behavior will render most storage comparisons that incorporate such
+state useless. Care should be taken (using {ref}`summarization <summaries>`) to ensure that rules
+that compare storage do not encounter this behavior.
+```
+
+```{warning}
+The grammar admits storage comparisons for both equality and inequality
+that occur arbitrarily nested within expressions. However, support within the Prover for
+these comparisons is primarily aimed at assertions of storage equality, e.g., `assert s1 == s2`.
+Support for storage inequality as well as nesting comparisons within other expressions is considered
+experimental.
+```
+
+```{warning}
+The storage comparison checks for exact equality between every single slot of storage which can
+lead to surprising failures of storage equality assertions. 
+In particular, these failures can happen if an uninitialized storage slot is
+written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
+clear operation the slot will definitely hold 0, but the Prover will not make any assumptions
+about the value of the uninitialized slot which means they can be considered different.
+```

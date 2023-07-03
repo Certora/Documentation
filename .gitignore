@@ -1,2 +1,4 @@
 build
 .certora_internal
+__pycache__
+util/__pycache__/highlight.cpython-310.pyc

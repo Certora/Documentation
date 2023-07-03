@@ -1,13 +1,13 @@
 Changes introduced in CVL 2
 ===========================
 
-CVL 2.0 is a major overhaul to the type system of CVL.  Many
-of the changes are internal, but we also wanted to take this opportunity to
+CVL 2 is a major overhaul to the type system of CVL. Though many
+of the changes are internal, we wanted to take this opportunity to
 introduce a few improvements to the syntax.  The general goal of these changes
 is to make the behavior of CVL more explicit and predictable, and to bring the
 syntax more in line with Solidity's syntax.
 
-This document summarizes the changes to CVL syntax introduced by CVL 2.0.
+This document summarizes the changes to CVL syntax introduced by CVL 2.
 
 ```{contents}
 ```
@@ -333,21 +333,16 @@ summarization (if any).
 % in the contract, you will receive the following error message:
 % ```
 
-### `library` annotations
-
-In CVL 2, contract functions declared as library functions must be annotated
-with `library` in the `methods` block.
-
-% ```{todo}
-% If you forget to declare a method as a `library` method, you will receive the
-% following error message:
-% ```
-
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
 In CVL 2, methods block entries for internal functions must contain either `calldata`,
 `memory`, or `storage` annotations for all arguments with reference types (such
 as arrays).
+
+For methods block entries of external functions the location annotation must be
+omitted unless it's the `storage` annotation on an external library function, in
+which case it is required (the reasoning here is to have the information required
+in order to correctly calculate a function's sighash).
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -603,8 +598,8 @@ be used with care.
 
 CVL 2 supports assert and require casts on all numeric types.
 
-Casts between `address`, `bytes1`...`bytes32`, and integer types are not
-supported.
+Casts from `address` or `bytes1`...`bytes32` to integer types are not
+supported (see {ref}`bytesN-support` regarding casting in the other direction).
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -633,6 +628,7 @@ ghost mapping(uint => uint) a {
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
 
+(bytesN-support)=
 ### Support for `bytes1`...`bytes32`
 
 CVL 2 supports the types `bytes1`, `bytes2`, ..., `bytes32`, as in Solidity.
@@ -646,8 +642,15 @@ bytes32 x = to_bytes32(0);
 Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
 or padded to the correct length.
 
-There is no way to convert between these types and integer types (except for
-literals as just mentioned).
+The only conversion between integer types and these types is from `uint<i*8>` to
+`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target `bytes<i>` type);
+For example:
+
+```cvl
+uint24 u;
+bytes3 x = to_bytes3(u); // This is OK
+bytes4 y = to_bytes4(u); // This will fail
+```
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -708,7 +711,7 @@ assert f.isFallback,
 Removed features
 ----------------
 
-As part of the transition to CVL 2.0, we have removed several language features
+As we transit to CVL 2, we have removed several language features
 that are no longer used.
 
 We have removed these features because we think they are no longer used and no
@@ -864,7 +867,7 @@ value of a method that returns one of these types.
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature
-was not used.  It has been removed in CVL 2.
+was not used and has been removed in CVL 2.
 
 % ```{todo}
 % If you do not change this, you will see the following error:
@@ -878,3 +881,107 @@ CVL 1 had syntax for an `events` block, but it did nothing and has been removed.
 % If you do not change this, you will see the following error:
 % ```
 
+Changes to the Command Line Interface (CLI)
+-------------------------------------------
+
+As part of the transition to CVL 2 changes were made to enhanced clarity,
+uniformity, and readability on the Command-Line Interface (CLI). 
+The complete CLI specification can be found [here](../../prover/cli/options.md)
+
+```{note}
+The changes will take effect starting v4.3.1 of `certora-cli`.
+```
+
+```{note}
+To opt-out of the new CLI, one can set an environment variable `CERTORA_OLD_API` to `1`, e.g.:
+`export CERTORA_OLD_API=1`.
+**The old CLI will not be available in versions released after August 31st, 2023**
+```
+
+### Flags Renaming
+
+In CVL 2 some flags were renamed:
+1. flags with names that are generic or wrong
+2. flags that do not match their corresponding key in the `conf` file
+3. flags that do not follow the snake case format
+
+This is the list of the flags that were renamed:
+
+| CVL 1            | CVL 2                 |
+|------------------|-----------------------|
+| `--settings`     | `--prover_args`       |
+| `--path`         | `--solc_allow_path`   |
+| `--optimize`     | `--solc_optimize`     |
+| `--optimize_map` | `--solc_optimize_map` |
+| `--get_conf`     | `--conf_output_file`  |
+| `--assert`       | `--assert_contracts`  |
+| `--bytecode`     | `--bytecode_jsons`    |
+| `--toolOutput`   | `--tool_output`       |
+| `--structLink`   | `--struct_link`       |              
+| `--javaArgs`     | `--java_args`         |              
+
+### `Prover Args`
+`Prover args` are CLI flags that are sent to the Prover. `Prover args` can be set in one of two ways:
+1. Using specific CLI flags (e.g. `--loop_iter`)
+2. As parameters to the `--prover_args` (`--settings` in CVL 1)
+
+Unlike CVL 1, if a `prover arg` is set using a specific CLI flag it cannot be set
+using `--prover_args`. In addition, the value commas and equal signs separators that were used in `--settings` 
+were replaced with white-spaces
+in `--prover_args`.
+
+Example:
+
+Consider this call to `certoraRun` using CVL 1 syntax
+```cvl
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --settings -smt_bitVectorTheory=true,-smt_hashingScheme=plainInjectivity,-assumeUnwindCond
+```
+
+In order to convert this call to CVL 2 we:
+1. renamed `--settings` to `--prover_args`
+2. replaced `-assumeUnwindCond` with the flag `--optimistic_loop`
+3. removed the comma and equal sign separators
+
+```cvl
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --optimistic_loop \
+    --prover_args '-smt_bitVectorTheory true -smt_hashingScheme plainInjectivity'
+```
+
+### `Solidity Compiler Args`
+The `Solidity Compiler Args` are CLI flags that are sent to the Solidity compiler. The behavior of the `Solidity Args` is similar to `Prover
+Args`. The flag `--solc_args` can only be used if there is no CLI flag that sets the Solidity flag and the value of `--solc_args` is 
+a string that is sent as is to the Solidity compiler.
+
+Example:
+
+Consider this call to `certoraRun` using CVL 1 syntax
+```cvl
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --solc_args "['--optimize', '--optimize-runs', '200', '--experimental-via-ir']"
+```
+In CVL 2 calling optimize is using `--solc_optimize`
+
+```cvl
+certoraRun Compound.sol \
+    --verify Compound:Compound.spec  \
+    --solc solc8.13 \
+    --solc_optimize 200 \
+    --solc_args "--experimental-via-ir"
+```
+
+### Enhanced server support
+In CVL 1, two server platforms were supported:
+1. `staging` was set using the flag `--staging [Branch/hotfix]`
+2. `production` was set using the flag `--cloud [Branch/hotfix]`
+
+In CVL 2 the flag `--server` was added to replace `--staging` `--cloud` and to allow adding additional server platforms.
+`--server` gets as a parameter the platform name.
+`--prover_version` is a new flag in CVL 2 For setting the Branch/hot-fix
