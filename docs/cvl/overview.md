@@ -45,7 +45,7 @@ the following items in any order:
  - **[Ghosts](ghosts):** Ghosts define additional variables that can be used to keep track
    of state changes in the contracts.
 
- - **[Hooks](hooks):** Hooks allow the specification to instrument the contracts being
+ - **{ref}`Hooks <hooks>`:** Hooks allow the specification to instrument the contracts being
    verified to insert additional CVL code when various instructions are executed.
 
 The remainder of this chapter describes the syntax and semantics of a
