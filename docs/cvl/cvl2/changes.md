@@ -276,45 +276,10 @@ method by marking the summarization `internal`.
 ```{warning}
 The behavior of `internal` vs. `external` summarization for public methods can
 be confusing, especially because functions called directly from CVL are not
-summarized.
-
-Consider a public function `f`.  Suppose we provide an `internal` summary for
-`f`:
-
- - Calls from CVL to `f` *will* effectively be summarized, because CVL will call
-   the external function, which will then call the internal implementation, and
-   the internal implementation will be summarized.
-
- - Calls from another contract to `f` (or calls to `this.f` from `f`'s contract)
-   *will* effectively be summarized, again because the external function
-   immediately calls the summarized internal implementation.
-
- - Internal calls to `f` will be summarized.
-
-On the other hand, suppose we provide an `external` summary for `f`.  In this
-case:
-
- - Calls from CVL to `f` *will not* be summarized, because direct calls from
-   CVL to contract functions do not use summaries.
-
- - Internal calls to `f` *will not* be summarized - they will use the original
-   implementation.
-
- - External calls to `f` (from Solidity code that calls `this.f` or `c.f`) will
-   be summarized
-
-In most cases, public functions should use an `internal` summary, since this
-effectively summarizes both internal and external calls to the function.
+summarized.  See {ref}`methods-visibility`.
 ```
 
-If the rare case that you want to summarize the internal implementation and the
-external wrapper differently, you can add two separate entries to the `methods`
-block.
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
+(cvl2-optional)=
 ### `optional` methods block entries
 
 In CVL 1, you could write an entry in the methods block for a method that does
@@ -333,6 +298,7 @@ summarization (if any).
 % in the contract, you will receive the following error message:
 % ```
 
+(cvl2-locations)=
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
 In CVL 2, methods block entries for internal functions must contain either `calldata`,
