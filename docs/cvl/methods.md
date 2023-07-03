@@ -43,7 +43,7 @@ The syntax for the `methods` block is given by the following [EBNF grammar](synt
 methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
-                     ( exact_pattern | wildcard_pattern | catchall_pattern )
+                     ( exact_pattern | wildcard_pattern )
                      [ "returns" types ]
                      [ "envfree" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
@@ -51,7 +51,6 @@ method_spec      ::= "function"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
-catchall_pattern ::= id "." "_"
 
 visibility ::= "internal" | "external"
 
@@ -79,7 +78,6 @@ contract functions.
 
  - {ref}`exact-methods-entries` match a single method of a single contract.
  - {ref}`wildcard-methods-entries` match a single method signature on all contracts.
- - {ref}`catchall-methods-entries` match all methods of a single contract.
 
 (exact-methods-entries)=
 ### Exact entries
@@ -123,17 +121,6 @@ methods may return different types.
 Wildcard entries may not have {ref}`envfree` or {ref}`optional`; their only
 purpose is {ref}`summarization <summaries>`.  Therefore, wildcard entries must
 have a summary.
-
-(catchall-methods-entries)=
-### Catch-all entries
-
-```{versionadded} 4.0
-% TODO: link to changelog
-```
-
-Catch-all entries match all methods of a given contract.
-
-% TODO: finish
 
 ### Location annotations
 
@@ -230,17 +217,18 @@ some implementations provide and others don't.  For example, some ERC20
 implementations contain a `mint` method, but others don't.
 
 In this situation, you might like to write rules that are checked if the
-contract contains the `mint` method and are skipped otherwise.  For example:
+contract contains the `mint` method and are skipped otherwise.
 
+To do so, you can add the `optional` annotation to the exact methods block
+entry for the function.  Any rules that reference an optional method will be
+skipped if the method does not exist in the contract.
+For example:
 ```cvl
 methods {
     function mint(address _to, uint256 _amount, bytes calldata _data) external;
 }
 ```
 
-To do so, you can add the `optional` annotation to the exact methods block
-entry for the function.  Any rules that reference an optional method will be
-skipped if the method does not exist in the contract.
 
 (summaries)=
 Summaries
@@ -271,8 +259,8 @@ There are several kinds of summaries available:
  - {ref}`havoc-summary`.  These assume that the called method can have arbitrary
    side-effects on the storage of some contracts.
 
- - {ref}`dispatcher`.  A `DISPATCHER` summary assumes that the receiver
-   of the method call is one of a specific set of contracts.
+ - {ref}`dispatcher` assume that the receiver of the method call could be any
+   contract that implements the method.
 
  - {ref}`function-summary` replace calls to the summarized method with {doc}`functions`
    or {ref}`ghost-axioms`.
@@ -320,7 +308,8 @@ summarized methods are replaced by approximations that do not update the state
 of any contract (aside from any balances transferred with the method call
 itself).  They differ in the assumptions made about the return value:
 
- * The `ALWAYS(v)` approximation assumes that the method always returns `v`
+ * The `ALWAYS(v)` approximation assumes that the method always returns `v`.
+   The value `v` must be a literal boolean or integer.
 
  * The `CONSTANT` approximation assumes that all calls to methods with the given
    signature always return the same result.  If the summarized method is
@@ -370,6 +359,8 @@ the incorrect number of results.  In most cases, this will cause the calling
 method to revert.  If you want to ignore this particular revert condition, you
 can pass the {ref}`-optimisticReturnsize` option.
 
+% TODO: restrictions on havoc summaries
+
 (dispatcher)=
 #### `DISPATCHER` summaries
 
@@ -402,6 +393,8 @@ of the unknown contract is determined by the optional boolean argument to the
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
 all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
 ```
+
+% TODO: restrictions on DISPATCHER summaries
 
 (auto-summary)=
 #### `AUTO` summaries
