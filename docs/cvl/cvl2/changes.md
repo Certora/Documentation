@@ -646,7 +646,7 @@ compute the results of bitwise operations.  The approximations are still
 {term}`sound`: the Prover will not report a rule as verified if the original
 code does not satisfy the rule.
 
-The {ref}`-useBitVectorTheory` flag makes the Prover's reasoning about bitwise
+The {ref}`-smt_useBV` flag makes the Prover's reasoning about bitwise
 operations more precise, but this flag is experimental in CVL 2.
 ```
 
