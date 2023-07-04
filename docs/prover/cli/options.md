@@ -749,6 +749,11 @@ This option models bitwise operations exactly instead of using the default
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
+The disadvantage of this encoding is that it does not model `mathint` precisely:
+the maximum supported integer value is $2^256-1$ in this case, effectively restricting
+a `mathint` to a `uint256`. We currently do not have a setting or encoding
+that models precisely both bitwise operations and `mathint`.
+
 (-maxNumberOfReachChecksBasedOnDomination)=
 #### `--prover_args "-maxNumberOfReachChecksBasedOnDomination <n>"`
 
