@@ -727,11 +727,15 @@ use those configuration that match the given solver specification.
 
 The `solver spec` can be a single solver (`-solver=z3:def`), or a list of solver
 configurations (`-solver=[z3:def,cvc5:def]`), where each such solver can be
-further modified.  For example, `cvc5` refers to the set of pre-configured
-configurations of `cvc5` whereas `cvc5:nonlin` is a specific configuration used
-for nonlinear problems.  Additional options can be set via `z3{randomSeed=17}`.
+further modified.  For example, `cvc5` (as in `-solver=cvc5`) refers to the set
+of pre-configured configurations of `cvc5` whereas `cvc5:nonlin` is a specific
+configuration used for nonlinear problems.  Additional options can be set via
+`z3{randomSeed=17}`.
 
 With `-smt_overrideSolvers=true`, the portfolio can be replaced instead of filtered.
+For example, in conjunction with `-solver=[cvc5:def,z3:def]`, the portfolio is
+replaced with the default configurations of `cvc5` and `z3`, irrespective of
+their presence in the predefined portfolio.
 For even better control of which solvers are used in which situation, solver
 specification for certain logics can be given via `-smt_LIASolvers=<solver spec>`, 
 `-smt_NIASolvers=<solver spec>`, and `-smt_BVSolvers=<solver spec>` for linear,
