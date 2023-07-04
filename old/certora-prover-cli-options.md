@@ -21,8 +21,8 @@ certoraRun contractFile:contractName --verify contractName:specFile
 
 ```text
 [--rule rulename] process only a single rule rulename
-[--settings -graphDrawLimit=0] do not generate graphs
-[--settings -t=XX] set timeout of SMT solvers to XX, default is 600 (seconds)
+[--max_graph_depth 0] do not generate graphs
+[--smt_timeout XX] set timeout of SMT solvers to XX, default is 600 (seconds)
 ```
 
 #### Options for dynamic resolving
@@ -36,7 +36,7 @@ Indicate that the member `slot` in `abstractName` is resolved as `contractName`.
 #### Options for dealing with loops
 
 ```text
-[--loop_iter b][--settings -assumeUnwindCond] 
+[--loop_iter b][--optimistic_loop] 
 ```
 
 Handle each loop as having at most `b` iterations. Default value of `b` is 1.
@@ -44,13 +44,13 @@ Handle each loop as having at most `b` iterations. Default value of `b` is 1.
 Note that you may provide more than one settings options by:
 
 ```text
- --settings op1=val1,op2=val2,...
+ --prover_args "op1 val1 op2 val2,..."
 ```
 
 Or even:
 
 ```text
- --settings op1=val1 --settings op2=val2
+ --prover_args "op1 val1" --prover_args "op2 val2"
 ```
 
 #### Sanity of rules
@@ -58,7 +58,7 @@ Or even:
 Enable sanity checking mode with 
 
 ```text
---settings -ruleSanityChecks
+--rule_sanity
 ```
 
 This mode will check for each rule that even when ignoring all the user-provided assertions, the end of the rule is reachable. Namely, that the combination of requirements does not create an “empty” rule that is always true. For example:
