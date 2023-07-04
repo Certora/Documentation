@@ -100,8 +100,8 @@ Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 
 A `satisfy` statement is used to check that the rule can be executed in such a
 way that the `satisfy` statement is true.  A rule with a `satisfy` statement is
-describing a scenario and may not contain `assert` statements.  We require that
-each rule ends with a `satisfy` statement or an `assert` statement.
+describing a scenario and must not contain `assert` statements.  We require that
+each rule ends with either a `satisfy` statement or an `assert` statement.
 
 For each `satisfy` statement, the Certora verifier will produce a witness for a
 valid execution of the rule.  It will show an execution trace containing values
@@ -111,68 +111,21 @@ example if the `require` statements are already inconsistent or if a solidity
 function always reverts, an error is reported.
 
 If the rule contains multiple `satisfy` statements, then all executed `satisfy`
-statements must hold.   However, a `satisfy` statement on a conditional branch that
-is not executed, does not need to hold.  The verifier produces multiple witnesses
-such that for every `satisfy` statement there is a witness that executes this
-statement.
+statements must hold.   However, a `satisfy` statement on a conditional branch
+that is not executed does not need to hold.
 
-If for at least one `satisfy` statement there is no execution path on which it
-holds, an error is reported.  If all `satisfy` statements can be fulfilled on
-at least one path, the rule succeeds.
+If at least one `satisfy` statement is not satisfiable an error is reported.
+If all `satisfy` statements can be fulfilled on at least one path, the rule
+succeeds.
 
 ```{note}
-A success does only guarantee that there is some execution starting in some
-arbitrary state.  It is not possible to check that there is an execution for
-every starting state.
-```
-```{note}
-It is advised to look at the witness example to determine that this is indeed the desired case. 
-```
-For [example](https://github.com/Certora/Examples/tree/master/FullProjects) 
-the following rule checks whether there is a scenario in which a user can withdraw and get back all of their assets:
-
-
-```cvl
-/// demonstrate that one can fully withdraw their assets
-rule possibleToFullyWithdraw(address sender, uint256 amount) {
-    env eT0;  // one env to call token functions
-    env eM;   // one env to mint and withdraw from pool
-    uint256 balanceBefore = token.balanceOf(sender);
-    
-    require eM.msg.sender == sender;
-    require eT0.msg.sender == sender;
-    _token0.transfer(eT0, currentContract, amount);
-    uint256 amountOut0 = mint(eM,sender);
-    //immediately withdraw
-    burnSingle(eM, _token0, amountOut0, sender);
-    satisfy balanceBefore == _token0.balanceOf(sender);
-}
+A success only guarantees that there is some satisfying execution starting in
+some arbitrary state.  It is not possible to check that every possible starting
+state has an execution that satisfies the condition.
 ```
 
-When running this rule, the Prover might provide a witness example, such as [this](https://prover.certora.com/output/40726/7e2ea3f2baf64505a79108f7ee5b6a35?anonymousKey=09ee75d8c35e4b9b33447820ede1016af9c65022) case
-in which `amount` is zero. Fixing the rule add adding a requirement that 'amount > 0' gives a better example but might start with an infeasible state, such as in [this](
-https://prover.certora.com/output/40726/ce7c3e49011f4ae7bf06983eff3254b1/?anonymousKey=3a02d99c74c950c5de0886521581c7096948714c) case (one underlying is minted for 999 LP tokens). Adding another requirements that the state is valid provides us with the [desired witness](
- https://prover.certora.com/output/40726/db4d12e98718424c86e95937c0945700/?anonymousKey=92ffd0f1210cac228563cd9ad92575f798111e2b).
-
- ```cvl
-rule possibleToFullyWithdraw(address sender, uint256 amount) {
-    env eT0;
-    env eM;
-    uint256 balanceBefore = _token0.balanceOf(sender);
-    setup(eM); //avoid infeasible state
-
-    require eM.msg.sender == sender;
-    require eT0.msg.sender == sender;
-    require amount > 0; // added to reason about interesting cases 
-    _token0.transfer(eT0, currentContract, amount);
-    uint256 amountOut0 = mint(eM,sender);
-    burnSingle(eM, _token0, amountOut0, sender);
-    satisfy balanceBefore == _token0.balanceOf(sender);
-    
-    satisfy balanceBefore == token.balanceOf(sender);
-}
-```
-
+See {ref}`producing-examples` for an example demonstrating the `satisfy`
+command.
 
 (requireInvariant)=
 `requireInvariant` statements
