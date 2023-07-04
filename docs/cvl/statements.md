@@ -103,6 +103,9 @@ way that the `satisfy` statement is true.  A rule with a `satisfy` statement is
 describing a scenario and must not contain `assert` statements.  We require that
 each rule ends with either a `satisfy` statement or an `assert` statement.
 
+See {ref}`producing-examples` for an example demonstrating the `satisfy`
+command.
+
 For each `satisfy` statement, the Certora verifier will produce a witness for a
 valid execution of the rule.  It will show an execution trace containing values
 for each input variable and each state variable where all `require` and `satisfy`
@@ -123,9 +126,6 @@ A success only guarantees that there is some satisfying execution starting in
 some arbitrary state.  It is not possible to check that every possible starting
 state has an execution that satisfies the condition.
 ```
-
-See {ref}`producing-examples` for an example demonstrating the `satisfy`
-command.
 
 (requireInvariant)=
 `requireInvariant` statements

@@ -56,6 +56,7 @@ exclude_patterns = [
     'docs/cvl/cvl2/CVL2Examples',
     'docs/cvl/cvl2/cvl1',
     'docs/cvl/cvl2/cvl2',
+    'docs/user-guide/ConstantProductExample',
     '.github'
     ]
 

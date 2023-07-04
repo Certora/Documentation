@@ -4,3 +4,6 @@
 [submodule "docs/cvl/cvl2/CVL2Examples"]
 	path = docs/cvl/cvl2/CVL2Examples
 	url = git@github.com:Certora/CVL2Examples.git
+[submodule "docs/user-guide/ConstantProductExample"]
+	path = docs/user-guide/ConstantProductExample
+	url = git@github.com:Certora/ConstantProductExample.git
