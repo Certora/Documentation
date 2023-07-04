@@ -1,7 +1,7 @@
 Specification By Example
 ========================
 
-The following resources are available for learning CVL from examples
+The following resources are available for learning CVL from examples:
 
 
  - {doc}`../tutorials` lists workshops and tutorials that cover basic Prover usage

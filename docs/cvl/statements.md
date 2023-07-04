@@ -129,7 +129,7 @@ every starting state.
 It is advised to look at the witness example to determine that this is indeed the desired case. 
 ```
 For [example](https://github.com/Certora/Examples/tree/master/FullProjects) 
-the following rule check if there is a scenario in which one can withdraw and get back all his assets
+the following rule checks whether there is a scenario in which a user can withdraw and get back all of their assets:
 
 
 ```cvl
