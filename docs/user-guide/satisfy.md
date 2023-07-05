@@ -2,7 +2,6 @@
 Producing Positive Examples
 ===========================
 
-TODO: replace links with CI
 TODO: demonstrative screenshots
 
 Sometimes it is useful to produce examples of an expected behavior instead of
@@ -54,7 +53,7 @@ this rule, the example is uninteresting because the `amount` that is minted and
 withdrawn is 0; of course minting and withdrawing 0 tokens leaves the
 sender's balance unchanged!
 
-[zero-amount]: https://prover.certora.com/output/40726/7e2ea3f2baf64505a79108f7ee5b6a35?anonymousKey=09ee75d8c35e4b9b33447820ede1016af9c65022
+[zero-amount]: https://prover.certora.com/output/6554/9159f9b128d04d3b9ad5591cc6bbb69d?anonymousKey=182b460d9c654c4580eced3b6d86beed4b324e32
 
 We can add a `require` statement to force the Prover to consider a more
 interesting case:
@@ -74,7 +73,7 @@ it is an uninteresting one: the underlying token is minted for 999 LP tokens,
 which should be impossible.  The problem is that the Prover is able to start the
 rule in an infeasible state.
 
-[infeasible-example]: https://prover.certora.com/output/40726/ce7c3e49011f4ae7bf06983eff3254b1/?anonymousKey=3a02d99c74c950c5de0886521581c7096948714c
+[infeasible-example]: https://prover.certora.com/output/6554/b131d9f56d72480586e125d987d45caa?anonymousKey=015c6d3510daaeaa6448eca27c22effba365f7e1
 
 We can remedy this by adding some additional setup assumptions (see the [full
 spec][constant-product-spec] for details of the `setup` function):
@@ -92,6 +91,6 @@ rule possibleToFullyWithdraw(address sender, uint256 amount) {
 
 With this additional requirement, the Prover produces a [satisfactory example][good-example].
 
-[good-example]: https://prover.certora.com/output/40726/db4d12e98718424c86e95937c0945700/?anonymousKey=92ffd0f1210cac228563cd9ad92575f798111e2b
+[good-example]: https://prover.certora.com/output/6554/883ad682094f4b0da4e0e8bb976a17c5?anonymousKey=061c652dbfdf3693b52ade29d0cc78c5e9ed9ebc
 
 
