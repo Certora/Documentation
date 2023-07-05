@@ -2,8 +2,6 @@
 Producing Positive Examples
 ===========================
 
-TODO: demonstrative screenshots
-
 Sometimes it is useful to produce examples of an expected behavior instead of
 counterexamples that demonstrate unexpected behavior.  You can do this by
 writing a rule that uses {ref}`satisfy` instead of the `assert` command.  For
@@ -67,6 +65,11 @@ rule infeasiblePossibleToFullyWithdraw(address sender, uint256 amount) {
 
     // remainder of the rule is the same...
 }
+```
+
+
+```{todo}
+This next paragraph could be clearer, and a demonstrative screenshot would help.
 ```
 
 Again the Prover produces an example ([report][infeasible-example]), but again
