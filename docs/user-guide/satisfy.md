@@ -49,14 +49,15 @@ rule uninterestingPossibleToFullyWithdraw(address sender, uint256 amount) {
 ```
 
 Although the Prover produces an example ([report][zero-amount]) that satisfies
-this rule, the example is uninteresting because the `amount` that is minted and
-withdrawn is 0; of course minting and withdrawing 0 tokens leaves the
-sender's balance unchanged!
+this rule, the example is rather uninteresting because the amount that is
+minted and withdrawn is 0:
+![screenshot showing that the amount is 0](satisfy-zero-balance.png)
 
 [zero-amount]: https://prover.certora.com/output/6554/9159f9b128d04d3b9ad5591cc6bbb69d?anonymousKey=182b460d9c654c4580eced3b6d86beed4b324e32
 
-We can add a `require` statement to force the Prover to consider a more
-interesting case:
+Of course minting and withdrawing 0 tokens leaves the sender's balance
+unchanged!  We can add a `require` statement to force the Prover to consider a
+more interesting case:
 
 ```cvl
 /// Demonstrate that one can fully withdraw deposited assets
