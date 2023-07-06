@@ -36,52 +36,70 @@ Once you have updated your `certora-cli` installation using `pip` to get the rel
 dependencies, run Gambit from the command line:
 
 ```
-certoraMutate path/to/config/file/Example.conf
+certoraMutate --prover_conf path/to/prover/config.conf --gambit_conf path/to/gambit/config.conf
 ```
 
 (gambit-prover-config)=
 ## Configuration
-The tool expects a configuration file (extension `.conf` is required).
-which is a JSON object.
-Here is an example configuration file:
+The tool expects two separate configuration files (extension `.conf` is required for both):
+the configuration file which defines the execution of mutant generation (`--gambit_conf`),
+and the configuration file which defines execution of the prover (`--prover_conf`).
+Here is a simple configuration file setup:
 
 ```json
+# In prover.conf:
 {
-    "project_folder" : "Test/10Power",
-    "run_script" : "Test/10Power/runDefault.sh",
-    "gambit" : {
-        "filename" : "Test/10Power/TenPower.sol",
-        "solc" : "solc8.10"
-    },
-    "staging" : "master",
-    "manual_mutations" : {
-        "path/to/original/file.sol" : "path/to/manual/mutations/",
-        "...": "..."
-    },
-    "...": "..."
+  "files": [
+    "C.sol"
+  ] ,
+  "process": "emv",
+  "prover_args": [
+    " -adaptiveSolverConfig false -smt_nonLinearArithmetic false"
+  ],
+  "solc": "solc8.1",
+  "verify": "C:c.spec"
+}
+
+# In gambit.conf:
+{
+  "filename" : "Test/10Power/TenPower.sol",
+  "solc" : "solc8.10",
+  "num_mutants": 5
 }
 ```
 
-Note: This configuration is separate from the Prover's `.conf` file and also from the
-  configuration file of the mutation generator ({ref}`gambit-config`).
-Importantly, notice that to use this tool, you can embed the configuration
-for generating the mutants in this `.conf` file; you don't need to write
-  two separate configurations.
+### Auto-configuration of Mutant Generation
 
-### Required Keys for the JSON Configuration File:
-- `"project_directory"` : the directory containing the original Prover project on which to perform mutation testing
-- `"run_script"` : the bash script used to run verification on the original project, usually `project_directory/run.sh` or similar.
-  Gambit will pull the configuration for `certoraRun` from this shell script and verify each mutant using this configuration.
-- `"gambit"` : the JSON configuration element for invoking Gambit. May be a path to a gambit configuration file
-or the explicit JSON element contained therein.  See {ref}`gambit-config` for more information about the gambit configuration.
-The `solc` specific arguments (including the version of the compiler) should be provided here
-  even if they are present in the `run_script`.
+Note: The most common use case of `certoraMutate` is to run on a project that has already been verified by `certoraRun`.
+Therefore, it is recommended to reuse the prover configuration file from verification for mutation testing. For
+convenience, the `--auto_conf` flag is available. When present, a configuration json for mutant generation is
+automatically generated from the prover configuration (the argument to `--prover_conf`) and written to the
+file provided as an argument to `--gambit_conf`. This allows the user to fine-tune the configuration without having to
+write any additional boilerplate from scratch.
 
-### Optional Keys for the JSON Configuration File
-- `"num_threads"` : the maximum number of threads to use for verification, as an integer
-- `"manual_mutations"` : optionally supplement the random mutant generation with your own manually-written mutants.
-Expects a JSON object whose keys are the paths to the original files and whose values are paths to directories containing
-manually-written mutants as `.sol` files.
+### Manual Mutations
+
+In addition to the prover and mutant generation configuration files, the optional flag
+`--manual_mutations` is supported. This allows the user to supplement Gambit's mutant generation operations with
+manually-written mutants. This flag expects as an argument a json file which describes the manual mutations to include.
+Here is an example of such a file:
+
+```json
+{
+  "C.sol": [
+    "C.m1.sol",
+    "C.m2.sol",
+    "C.m3.sol"
+  ],
+  "D.sol": [
+    "D.m1.sol",
+    "D.m2.sol",
+    "D.m3.sol"
+  ]
+}
+```
+
+The JSON file should be a simple mapping from original filenames to arrays of their manually-written mutants.
 
 ```{note}
 Any manual mutations files provided must follow the naming
@@ -90,37 +108,22 @@ convention
 manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
 ```
 
-### Additional Optional Flags
+### CLI Options
 
-```{note}
-Gambit supports `--server`.
+`certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
 
-However, Gambit currently has trouble with
-{ref}`--send_only` in the run scripts.
-If you have this flag, please remove it for now.
-Apologies for the temporary inconvenience!
-```
-
-- `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
-Expects a boolean and defaults to `false`.
-- `"staging"` : if your run script does not already have `--server staging`, you can also add it to Gambit.
-  Similar to the Prover, you can provide the
-  branch name for running mutant verification on `--prover_version`.
-Omitting this key will cause verification to run locally
-  (unless the run script has it).
-- `"production"` : if you instead want to run on the production environment you can provide the `--server production` flag. You can also add the name of a specific branch using `--prover_version`
-- `"use_certora_run_py"` : Use `certoraRun.py` rather than `certoraRun`. Expects a boolean and defaults to `false`.
+| Option | Description |
+|:-------| :-----------|
 
 
 ### Troubleshooting
 
 At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
 
-- Make sure the run script you use to run the Prover does not have the `--send_only` flag or any commented out (using `#`) lines.
 - Since Gambit requires you to provide the solidity compiler flags to compile the mutants, sometimes it might be useful to first identify what those flags should be. See {ref}`gambit-config` for more information. A strategy you can adopt is
   * first run `gambit` without going through `certoraMutate` (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
-  * Make a `foo.json` file and copy the content of the `"gambit":` field in it.
   * Run `gambit-OS mutate --json foo.json` to identify the issue.
+- Try running the prover on your mutants individually using `certoraRun`. It is also possible that you are encountering a bug with the underlying version of the prover.
 
 ## Visualization
 
