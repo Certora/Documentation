@@ -135,6 +135,7 @@ to the server environment specified and run asynchronously. They may be polled l
 | `--gambit_out`                 | specify the output directory for gambit . Defaults to a new directory is added in the working directory               |
 | `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a special directory in prover internals |
 | `--ui_out`                     | specify the directory of the mutant verification report JSON used for the web UI                                      |
+| `--dump_link`                  | specify a text file to write the UI report link                                                                       |
 | `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
 | `--sync`                       | enable synchronous execution                                                                                          |
 | `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
