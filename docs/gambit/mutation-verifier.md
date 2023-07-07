@@ -46,8 +46,9 @@ the configuration file which defines the execution of mutant generation (`--gamb
 and the configuration file which defines execution of the prover (`--prover_conf`).
 Here is a simple configuration file setup:
 
+In prover.conf:
+
 ```json
-# In prover.conf:
 {
   "files": [
     "C.sol"
@@ -59,8 +60,11 @@ Here is a simple configuration file setup:
   "solc": "solc8.1",
   "verify": "C:c.spec"
 }
+```
+In gambit.conf:
 
-# In gambit.conf:
+# In prover.conf:
+```json
 {
   "filename" : "Test/10Power/TenPower.sol",
   "solc" : "solc8.10",
