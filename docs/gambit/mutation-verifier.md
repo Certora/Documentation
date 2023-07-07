@@ -110,10 +110,32 @@ manual mutants (for example you might name them `OriginalFileName.m1.sol`, `Orig
 
 ### CLI Options
 
+`certoraMutate` runs in two distinct modes: sync and async. Use the `--sync` flag to run the entire tool synchronously
+in your shell, from mutant generation to the web report UI. Alternatively, running without the `--sync` flag will dump
+data about the mutation verification jobs in the `collect.json` file in the working directory. These jobs are submitted
+to the server environment specified and run asynchronously. They may be polled later with
+`certoraMutate --collect_file collect.json`.
+
 `certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
 
-| Option | Description |
-|:-------| :-----------|
+| Option                         | Description                                                                                                           |
+|:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
+| `--prover_conf`                | specify the prover configuration file for verifying mutants                                                           |
+| `--gambit_conf`                | specify the configuration file for mutant generation                                                                  |
+| `--auto_conf`                  | build the gambit_conf file from the prover_conf file and exit; the file at gambit_conf must not exist                 |
+| `--manual_mutations`           | specify the JSON file describing the manually-written mutants to include                                              |
+| `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
+| `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the latest installed version                 |
+| `--server`                     | specify the server environment to run on. Defaults to the environment specified in the prover_conf                    |
+| `--debug`                      | show additional logging information during execution                                                                  |
+| `--gambit_out`                 | specify the output directory for gambit . Defaults to a new directory is added in the working directory               |
+| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a special directory in prover internals |
+| `--ui_out`                     | specify the directory of the mutant verification report JSON used for the web UI                                      |
+| `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
+| `--sync`                       | enable synchronous execution                                                                                          |
+| `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
+| `--request_timeout`            | specify the length in seconds for a web request timeout                                                               |
+| `--poll_timeout`               | specify the number of minutes to continue polling a submitted task in sync mode                                       |
 
 
 ### Troubleshooting
