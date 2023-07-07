@@ -114,7 +114,7 @@ manual mutants (for example you might name them `OriginalFileName.m1.sol`, `Orig
 
 ### CLI Options
 
-`certoraMutate` runs in two distinct modes: sync and async. Use the `--sync` flag to run the entire tool synchronously
+`certoraMutate` runs in two distinct modes: synchronous and asynchronous. Use the `--sync` flag to run the entire tool synchronously
 in your shell, from mutant generation to the web report UI. Alternatively, running without the `--sync` flag will dump
 data about the mutation verification jobs in the `collect.json` file in the working directory. These jobs are submitted
 to the server environment specified and run asynchronously. They may be polled later with
@@ -154,7 +154,7 @@ At the moment, there are a few ways in which `certoraMutate` can fail. Here are 
 ## Visualization
 
 The mutation verification results are
-  summarized in an user-friendly visualization.
+  summarized in a user-friendly visualization.
 [Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) is an example summary
   for the [Borda example](https://demo.certora.com/?Borda).
 Rules are represented by the green outer circles
