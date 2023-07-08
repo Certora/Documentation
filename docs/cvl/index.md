@@ -10,6 +10,7 @@ and semantics of CVL Specifications.
 
 overview.md
 syntax.md
+errors.md
 ```
 
 Common Syntactic Elements

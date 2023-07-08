@@ -19,6 +19,7 @@ Superficial syntax changes
 There are several simple changes to the syntax to make specs more uniform and
 consistent, and to reduce the superficial differences with Solidity.
 
+(cvl2-function-keyword)=
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
@@ -46,6 +47,7 @@ function _setManagedBalance(address,uint256) internal => NONDET;
 % If you do not change this, you will see the following error:
 % ```
 
+(cvl2-semicolons)=
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
