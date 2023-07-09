@@ -25,6 +25,7 @@ built_in_rule_name ::=
     | "hasDelegateCalls"
     | "sanity"
     | "deepSanity"
+    | "readOnlyReentrancy"
 ```
 
 (built-in-msg-value-in-loop)=
@@ -172,4 +173,30 @@ additional variable `x_p` for each interesting program point `p`, and
 instruments the contract code at `p` to set `x_p` to `true`.  The Prover then
 tries to prove that `x_p` is false after executing the function.  To find a
 counterexample; the Prover must construct a model that passes through `p`.
+
+(built-in-readonly-reentrancy)=
+Read only reentrancy detection &mdash; `readOnlyReentrancy`
+-----------------------------------------------------------
+
+The `readOnlyReentrancy`  built-in rule detects 
+[read only reentrancy vulnerabilities in a contract][readonly-reentrancy-vulnerability].
+
+[readonly-reentrancy-vulnerability]: https://blog.pessimistic.io/read-only-reentrancy-in-depth-6ea7e9d78e85
+
+The `readOnlyReentrancy` rule can be enabled by including
+```cvl
+use builtin rule readOnlyReentrancy;
+```
+in a spec file.  Any functions that have read only reentrancy will fail the
+`readOnlyReentrancy` rule.
+
+### How `readOnlyReentrancy` is checked
+
+The `readOnlyReentrancy` rule adds instrumentation that is used to check that the results 
+of all view functions are equal to the result of the view function at the beginning of the
+program or the results of all view functions are equal to the 
+result of the view function at the end of the program.
+If the result of one view function is equal to the result at the beginning but another is equal 
+to the result at the end it means that the unresolved call results an unstable state which can be
+exploited.
 
