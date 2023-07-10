@@ -719,27 +719,44 @@ reports may not be generated.
 (-solver)=
 #### `--prover_args '-solver <solver spec>'`
 
-This option sets the SMT solvers being used within the Prover.  By default, a
-portfolio of various different solvers is used.  It can be useful to specify
-only a subset of these to save on computation time.  In rare cases, solver
-specific options can improve performance as well.
+By default, a portfolio of SMT solvers using various configurations is used
+within the Prover.  It can be useful to specify only a subset of these to save
+on computation time.  In rare cases, solver specific options can improve
+performance as well.  Setting `-solver <solver spec>` filters the predefined
+portfolio to only use those configuration that match the given solver
+specification.
 
-The `solver spec` can be a single solver (`-solver z3`) or a list of solvers
-(`-solver [cvc5,z3]`), where each such solver can be further modified.  For
-example, `cvc5` refers to the default configuration of `cvc5` whereas
-`cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
-via `z3{randomSeed=17}`.
+The `solver spec` can be a single solver (`-solver z3:def`), or a list of
+solver configurations (`-solver [z3:def,cvc5:def]`), where each such solver can
+be further modified.  For example, `cvc5` (as in `-solver cvc5`) refers to the
+set of pre-configured configurations of `cvc5` whereas `cvc5:nonlin` is a
+specific configuration used for nonlinear problems.  Additional options can be
+set via `z3{randomSeed=17}`.
 
-(-useBitVectorTheory)=
-#### `--prover_args '-useBitVectorTheory'`
+With `-smt_overrideSolvers true`, the portfolio can be replaced instead of
+filtered. For example, in conjunction with `-solver [cvc5:def,z3:def]`, the
+portfolio is replaced with the default configurations of `cvc5` and `z3`,
+irrespective of their presence in the predefined portfolio.
+For even better control of which solvers are used in which situation, solver
+specification for certain logics can be given via
+`-smt_LIASolvers <solver spec>`, `-smt_NIASolvers <solver spec>`, and
+`-smt_BVSolvers<solver spec>` for linear, non-linear and bit-vector formulas.
+
+(-smt_useBV)=
+#### `--prover_args '-smt_useBV true'`
 
 This option models bitwise operations exactly instead of using the default
 {term}`overapproximation`s.  It is useful when the Prover reports a
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
+The disadvantage of this encoding is that it does not model `mathint`
+precisely: the maximum supported integer value is :math:`2^256-1` in this case,
+effectively restricting a `mathint` to a `uint256`. We currently do not have a
+setting or encoding that models precisely both bitwise operations and `mathint`.
+
 (-maxNumberOfReachChecksBasedOnDomination)=
-#### `--prover_args "-maxNumberOfReachChecksBasedOnDomination <n>"`
+#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
