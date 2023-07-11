@@ -36,17 +36,16 @@ Once you have updated your `certora-cli` installation using `pip` to get the rel
 dependencies, run Gambit from the command line:
 
 ```
-certoraMutate --prover_conf path/to/prover/config.conf --gambit_conf path/to/gambit/config.conf
+certoraMutate --prover_conf path/to/prover/prover.conf --gambit_conf path/to/gambit/gambit.conf
 ```
 
-(gambit-prover-config)=
 ## Configuration
 The tool expects two separate configuration files (extension `.conf` is required for both):
 the configuration file which defines the execution of mutant generation (`--gambit_conf`),
 and the configuration file which defines execution of the prover (`--prover_conf`).
-Here is a simple configuration file setup:
+Here is a simple configuration file setup using the example above:
 
-In prover.conf:
+In `prover.conf`:
 
 ```json
 {
@@ -61,7 +60,7 @@ In prover.conf:
   "verify": "C:c.spec"
 }
 ```
-In gambit.conf:
+In `gambit.conf`:
 
 # In prover.conf:
 ```json
@@ -70,46 +69,6 @@ In gambit.conf:
   "solc" : "solc8.10",
   "num_mutants": 5
 }
-```
-
-### Auto-configuration of Mutant Generation
-
-Note: The most common use case of `certoraMutate` is to run on a project that has already been verified by `certoraRun`.
-Therefore, it is recommended to reuse the prover configuration file from verification for mutation testing. For
-convenience, the `--auto_conf` flag is available. When present, a configuration json for mutant generation is
-automatically generated from the prover configuration (the argument to `--prover_conf`) and written to the
-file provided as an argument to `--gambit_conf`. This allows the user to fine-tune the configuration without having to
-write any additional boilerplate from scratch.
-
-### Manual Mutations
-
-In addition to the prover and mutant generation configuration files, the optional flag
-`--manual_mutations` is supported. This allows the user to supplement Gambit's mutant generation operations with
-manually-written mutants. This flag expects as an argument a json file which describes the manual mutations to include.
-Here is an example of such a file:
-
-```json
-{
-  "C.sol": [
-    "C.m1.sol",
-    "C.m2.sol",
-    "C.m3.sol"
-  ],
-  "D.sol": [
-    "D.m1.sol",
-    "D.m2.sol",
-    "D.m3.sol"
-  ]
-}
-```
-
-The JSON file should be a simple mapping from original filenames to arrays of their manually-written mutants.
-
-```{note}
-Any manual mutations files provided must follow the naming
-convention
-`OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
-manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
 ```
 
 ### CLI Options
@@ -148,8 +107,8 @@ to the server environment specified and run asynchronously. They may be polled l
 At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
 
 - Since Gambit requires you to provide the solidity compiler flags to compile the mutants, sometimes it might be useful to first identify what those flags should be. See {ref}`gambit-config` for more information. A strategy you can adopt is
-  * first run `gambit` without going through `certoraMutate` (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
-  * Run `gambit-OS mutate --json foo.json` to identify the issue.
+  * first run `gambit` without going through `certoraMutate` (you likely have the `gambit` binary in your path already if you are running the tool).
+  * Run `gambit mutate --json foo.json` to identify the issue.
 - Try running the prover on your mutants individually using `certoraRun`. It is also possible that you are encountering a bug with the underlying version of the prover.
 
 ## Visualization
