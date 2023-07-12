@@ -66,7 +66,6 @@ In `gambit.conf`:
 ```json
 {
   "filename" : "Test/10Power/TenPower.sol",
-  "solc" : "solc8.10",
   "num_mutants": 5
 }
 ```
