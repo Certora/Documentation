@@ -64,7 +64,7 @@ In `gambit.conf`:
 
 ```json
 {
-  "filename" : "Test/10Power/TenPower.sol",
+  "filename" : "ProjectDir/C.sol",
   "num_mutants": 5
 }
 ```
