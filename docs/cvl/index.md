@@ -16,7 +16,7 @@ Common Syntactic Elements
 -------------------------
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 3
 
 basics.md
 types.md
@@ -29,7 +29,7 @@ Specification File Contents
 ---------------------------
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 3
 
 pragmas.md
 imports.md
@@ -44,6 +44,7 @@ sorts.md
 ghosts.md
 defs.md
 hooks.md
+opcodes.md
 ```
 
 
