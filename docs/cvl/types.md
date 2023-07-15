@@ -39,27 +39,24 @@ cvl_type ::= basic_type
 See {doc}`basics` for the `id` and `number` productions.
 
 
+(solidity-types)=
 Solidity Types
 --------------
 
-CVL currently supports the following [solidity types][]:
+You can declare variables in CVL of any of the following [solidity types][]:
 
- * `bool`, `int`, `uint`, and the sized variants such as `uint256` and `int8`.
- * `address`
- * `string`, `bytes`, and the sized `bytes` variants (`bytes1` through `bytes32`)
- * Tuples
+ * `int`, `uint`, and the sized variants such as `uint256` and `int8`
+ * `bool`, `address`, and the sized `bytes` variants (`bytes1` through `bytes32`)
+ * `string` and `bytes`
  * {ref}`Single-dimensional arrays <arrays>` (both statically- and dynamically-sized)
- * {ref}`Enum types, struct types, and type aliases <user-types>`
+ * {ref}`Enum types, struct types, and type aliases <user-types>` that are
+   defined in Solidity contracts.
 
-The following are unsupported:
+The following are not directly supported in CVL, although you can interact with
+contracts that use them (see {ref}`type-conversions`):
  * Function types
- * Structs with array members
- * References
  * Multi-dimensional arrays
  * Mappings
- * Built-in solidity methods such as `address.balance(...)` and `array.push(...)`
-
-You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
 
@@ -86,26 +83,21 @@ Specifications can use structs, enums, or user-defined value types that are
 defined in Solidity contracts.
 
 Struct types have the following limitations:
- - CVL methods that return struct types are unsupported.
- - Structs with array-typed fields are unsupported.
  - Assignment to struct fields is unsupported.  You can achieve the same effect
    using a {ref}`require <require>` statement.  For example, instead of `s.f = x;` you can
-   write `require s.f == x;`.
+   write `require s.f == x;`.  However, be aware that `require` statements can
+   introduce {term}`vacuity` if there are multiple conflicting constraints.
 
-Unlike Solidity, CVL treats user-defined value types are treated as aliases for
-their underlying type.  Wrapping and unwrapping operations are unnecessary and
-unavailable, and operations on the underlying type are allowed on the
-user-defined types as well.
-
-All user-defined type names (structs, enums, and user-defined values) must
-be explicitly qualified by a contract name that is introduced with a
-{doc}`using statement <using>`:
+All user-defined type names (structs, enums, and user-defined values) must be
+explicitly qualified by the contract name that contains them.
 
  - For types defined within a contract, the named contract must be the contract
-   containing the type definition
+   containing the type definition.  Note that if a contract inherits a type from
+   a supertype, the contract that actually contains the type must be
+   named, not the inheriting contract.
 
- - For types defined at the file level, the type definition must be in scope
-   for the named contract
+ - For types defined at the file level, the named contract can be any contract
+   from which the type is visible.
 
 ```{warning}
 If you do not qualify the type name with a contract name, the type name will be
@@ -145,17 +137,14 @@ Given these definitions, types can be named as follows:
 caption: child.spec
 ---
 
-using Child  as child;
-using Parent as parent;
-
 // valid types
-parent.ParentFileType     valid1;
-child .ParentFileType     valid2;
-parent.ParentContractType valid3;
+Parent.ParentFileType     valid1;
+Child .ParentFileType     valid2;
+Parent.ParentContractType valid3;
 
 // invalid types
-child .ParentContractType invalid1; // struct types are not inherited
-parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
+Child .ParentContractType invalid1; // user-defined types are not inherited
+Parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
 ```
 
 Additional CVL types
@@ -307,4 +296,40 @@ contract function call.
 ```{todo}
 This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
 ```
+
+(type-conversions)=
+Conversions between CVL and Solidity types
+------------------------------------------
+
+When a specification calls a contract function, the Prover must convert the
+arguments from their CVL types to the corresponding Solidity types, and must
+convert the return values from Solidity back to CVL.  The Prover must also apply
+these conversions when inlining {ref}`hooks <hooks>` and {ref}`function
+summaries <function-summary>`.
+
+There are restrictions on what types can be converted from CVL to Solidity and
+vice-versa.  In general, if a contract uses a type that is not convertible, you
+can still interact with it, but you cannot access the corresponding values. For
+example, if a contract function returns a type that isn't convertible to CVL,
+you can call the function from CVL but you cannot access its return type.
+Similarly, if the function accepts an argument of a type that is not
+representable in CVL, you can still call the function from CVL, but only by
+providing it a generic {ref}`` `calldataarg` argument <calldataarg>``.
+
+The following restrictions apply when converting between CVL types and Solidity
+types:
+ - The type must be a {ref}`valid CVL type <solidity-types>` (except for
+   contract or interface types, which are represented by `address`).
+
+ - Reference types (arrays and structs) can only be passed to Solidity
+   functions that expect `calldata` or `memory` arguments; there is no way to
+   pass `storage` arrays.
+
+ - Arrays returned from Solidity can only be converted to CVL if their elements
+   have [value types][solidity-value-types] that are representable in CVL.
+
+There are additional restrictions on the types for arguments and return values
+for internal function summaries; see {ref}`function-summary`.
+
+[solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 
