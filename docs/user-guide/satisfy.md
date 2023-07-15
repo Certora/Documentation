@@ -17,7 +17,7 @@ For [example][constant-product-spec], we may be interested in showing that it is
 possible for someone to deposit some assets into a pool and then immediately
 withdraw them.  The following rule demonstrates this scenario:
 
-[constant-product-spec]: https://github.com/Certora/ConstantProductExample/blob/master/certora/spec/ConstantProductPool.spec
+[constant-product-spec]: https://github.com/Certora/Examples/blob/master/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec
 
 ```cvl
 /// Demonstrate that one can fully withdraw deposited assets
@@ -68,9 +68,9 @@ rule infeasiblePossibleToFullyWithdraw(address sender, uint256 amount) {
 ```
 
 
-```{todo}
-This next paragraph could be clearer, and a demonstrative screenshot would help.
-```
+% ```{todo}
+% This next paragraph could be clearer, and a demonstrative screenshot would help.
+% ```
 
 Again the Prover produces an example ([report][infeasible-example]), but again
 it is an uninteresting one: the underlying token is minted for 999 LP tokens,
