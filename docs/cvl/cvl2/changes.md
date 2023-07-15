@@ -324,6 +324,12 @@ In CVL 2, summaries only apply to a single contract, unless the old behavior is
 explicitly requested by using `_` as the receiver.  If no contract is specified,
 the default is `currentContract`.
 
+```{note}
+The receiver contract must be the contract where the method is defined.  If a
+contract inherits a method defined in a supercontract, the receiver must be the
+supercontract, rather than the inheriting contract.
+```
+
 Entries that use `_` as the receiver are called {term}`wildcard entries <wildcard>`, summaries
 that do not are called {term}`exact entries <exact>`.
 
