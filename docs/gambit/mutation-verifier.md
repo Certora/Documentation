@@ -60,7 +60,7 @@ In `gambit.conf`:
 ```json
 {
   "filename" : "C.sol",
-  "num_mutants": 5
+  "num-mutants": 5
 }
 ```
 

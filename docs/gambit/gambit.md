@@ -403,14 +403,14 @@ This has the following structure:
 | Option                | Description                                                                                                                  |
 |:----------------------|:-----------------------------------------------------------------------------------------------------------------------------|
 | `-o`, `--outdir`      | specify Gambit's output directory (defaults to `gambit_out`)                                                                 |
-| `--no_overwrite`      | do not overwrite an output directory; if the output directory exists, print an error and exit                                |
-| `-n`, `--num_mutants` | randomly downsample to a given number of mutants.                                                                            |
+| `--no-overwrite`      | do not overwrite an output directory; if the output directory exists, print an error and exit                                |
+| `-n`, `--num-mutants` | randomly downsample to a given number of mutants.                                                                            |
 | `-s`, `--seed`        | specify a random seed. For reproducibility, Gambit defaults to using the seed `0`. To randomize the seed use `--random-seed` |
-| `--random_seed`       | use a random seed. Note that this overrides any value specified by `--seed`                                                  |
+| `--random-seed`       | use a random seed. Note that this overrides any value specified by `--seed`                                                  |
 | `--contract`          | specify a specific contract name to mutate; by default mutate all contracts                                                  |
 | `--functions`         | specify one or more functions to mutate; by default mutate all functions                                                     |
 | `--mutations`         | specify one or more mutation operators to use; only generates mutants that are created using the specified operators         |
-| `--skip_validate`     | only generate mutants without validating them by compilation                                                                 |
+| `--skip-validate`     | only generate mutants without validating them by compilation                                                                 |
 
 Gambit also supports _pass-through arguments_, which are arguments that are
 passed directly to the solidity compiler.
@@ -418,9 +418,9 @@ All pass-through arguments are prefixed with `solc-`:
 
 | Option               | Description                                                                     |
 |:---------------------|:--------------------------------------------------------------------------------|
-| `--solc_base_path`   | passes a value to `solc`'s `--base-path` argument                               |
-| `--solc_allow_paths` | passes a value to `solc`'s `--allow-paths` argument                             |
-| `--solc_remappings`   | passes a value to directly to `solc`: this should be of the form `prefix=path`. |
+| `--solc-base-path`   | passes a value to `solc`'s `--base-path` argument                               |
+| `--solc-allow-paths` | passes a value to `solc`'s `--allow-paths` argument                             |
+| `--solc-remappings`   | passes a value to directly to `solc`: this should be of the form `prefix=path`. |
 
 ## Mutation Operators
 Gambit implements the following mutation operators
