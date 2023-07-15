@@ -1,2 +1,6 @@
 build
 .certora_internal
+<<<<<<< Updated upstream
+=======
+**/__pycache__
+>>>>>>> Stashed changes
