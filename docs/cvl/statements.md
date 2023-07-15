@@ -100,8 +100,11 @@ Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 
 A `satisfy` statement is used to check that the rule can be executed in such a
 way that the `satisfy` statement is true.  A rule with a `satisfy` statement is
-describing a scenario and may not contain `assert` statements.  We require that
-each rule ends with a `satisfy` statement or an `assert` statement.
+describing a scenario and must not contain `assert` statements.  We require that
+each rule ends with either a `satisfy` statement or an `assert` statement.
+
+See {ref}`producing-examples` for an example demonstrating the `satisfy`
+command.
 
 For each `satisfy` statement, the Certora verifier will produce a witness for a
 valid execution of the rule.  It will show an execution trace containing values
@@ -111,19 +114,17 @@ example if the `require` statements are already inconsistent or if a solidity
 function always reverts, an error is reported.
 
 If the rule contains multiple `satisfy` statements, then all executed `satisfy`
-statements must hold.   However, a `satisfy` statement on a conditional branch that
-is not executed, does not need to hold.  The verifier produces multiple witnesses
-such that for every `satisfy` statement there is a witness that executes this
-statement.
+statements must hold.   However, a `satisfy` statement on a conditional branch
+that is not executed does not need to hold.
 
-If for at least one `satisfy` statement there is no execution path on which it
-holds, an error is reported.  If all `satisfy` statements can be fulfilled on
-at least one path, the rule succeeds.
+If at least one `satisfy` statement is not satisfiable an error is reported.
+If all `satisfy` statements can be fulfilled on at least one path, the rule
+succeeds.
 
 ```{note}
-A success does only guarantee that there is some execution starting in some
-arbitrary state.  It is not possible to check that there is an execution for
-every starting state.
+A success only guarantees that there is some satisfying execution starting in
+some arbitrary state.  It is not possible to check that every possible starting
+state has an execution that satisfies the condition.
 ```
 
 (requireInvariant)=
