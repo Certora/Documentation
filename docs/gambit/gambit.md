@@ -164,14 +164,14 @@ For projects that have complex dependencies and imports, you may need to:
 
   ```bash
   gambit mutate path/to/file.sol \
-    --solc-remapping @openzepplin=node_modules/@openzeppelin @foo=node_modules/@foo
+    --solc-remappings @openzepplin=node_modules/@openzeppelin @foo=node_modules/@foo
   ```
 
 * **Specify allow paths:** To include additional allowed paths via `solc`'s
   [`--allow-paths`][allowed] argument, use `--solc-allow-paths`:
 
   ```bash
-  gambit mutatepath/to/file.sol --solc-allowpaths PATH1 --solc-allowpaths PATH2 ...
+  gambit mutatepath/to/file.sol --solc-allow-paths PATH1 --solc-allow-paths PATH2 ...
   ```
 
 * **Use optimization:** To run the solidity compiler with optimizations (`solc`'s
@@ -401,36 +401,37 @@ This has the following structure:
 
 
 | Option                | Description                                                                                                                  |
-| :-------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+|:----------------------|:-----------------------------------------------------------------------------------------------------------------------------|
 | `-o`, `--outdir`      | specify Gambit's output directory (defaults to `gambit_out`)                                                                 |
 | `--no-overwrite`      | do not overwrite an output directory; if the output directory exists, print an error and exit                                |
 | `-n`, `--num-mutants` | randomly downsample to a given number of mutants.                                                                            |
 | `-s`, `--seed`        | specify a random seed. For reproducibility, Gambit defaults to using the seed `0`. To randomize the seed use `--random-seed` |
-| `--random-seed`       | use a random seed. Note that this overrides any value specified by `--seed`                                                       |
+| `--random-seed`       | use a random seed. Note that this overrides any value specified by `--seed`                                                  |
 | `--contract`          | specify a specific contract name to mutate; by default mutate all contracts                                                  |
 | `--functions`         | specify one or more functions to mutate; by default mutate all functions                                                     |
-| `--mutations` 	      | specify one or more mutation operators to use; only generates mutants that are created using the specified operators
+| `--mutations`         | specify one or more mutation operators to use; only generates mutants that are created using the specified operators         |
+| `--skip-validate`     | only generate mutants without validating them by compilation                                                                 |
 
 Gambit also supports _pass-through arguments_, which are arguments that are
 passed directly to the solidity compiler.
 All pass-through arguments are prefixed with `solc-`:
 
-| Option               | Description                                                                   |
-| :------------------- | :---------------------------------------------------------------------------- |
+| Option               | Description                                                                     |
+|:---------------------|:--------------------------------------------------------------------------------|
 | `--solc-base-path`   | passes a value to `solc`'s `--base-path` argument                               |
 | `--solc-allow-paths` | passes a value to `solc`'s `--allow-paths` argument                             |
-| `--solc-remapping`   | passes a value to directly to `solc`: this should be of the form `prefix=path`. |
+| `--solc-remappings`   | passes a value to directly to `solc`: this should be of the form `prefix=path`. |
 
 ## Mutation Operators
 Gambit implements the following mutation operators
 
 | Mutation Operator                    | Description                                              | Example                                        |
-| ------------------------------------ | -------------------------------------------------------- | ---------------------------------------------- |
+|--------------------------------------|----------------------------------------------------------|------------------------------------------------|
 | **binary-op-mutation**               | Replace a binary operator with another                   | `a+b` -> `a-b`                                 |
 | **unary-operator-mutation**          | Replace a unary operator with another                    | `~a` -> `-a`                                   |
 | **require-mutation**                 | Alter the condition of a `require` statement             | `require(some_condition())` -> `require(true)` |
 | **assignment-mutation**              | Replaces the right hand side of a mutation               | `x = foo();` -> `x = -1;`                      |
-| **delete-expression-mutation**       | Comment out an expression statement                      | `foo();` -> `/* foo() */;`                     |
+| **delete-expression-mutation**       | Replaces an expression with a no-op (assert(true))       | `foo();` -> `assert(true);`                    |
 | **if-cond-mutation**                 | Mutate the conditional of an `if` statement              | `if (C) {...}` -> `if (true) {...}`            |
 | **swap-arguments-operator-mutation** | Swap the order of non-commutative operators              | `a - b` -> `b - a`                             |
 | **elim-delegate-mutation**           | Change a `delegatecall()` to a `call()`                  | `_c.delegatecall(...)` -> `_c.call(...)`       |
