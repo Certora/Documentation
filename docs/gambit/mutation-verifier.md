@@ -40,7 +40,7 @@ certoraMutate --prover_conf path/to/prover/prover.conf --gambit_conf path/to/gam
 ```
 
 ## Configurations
-The tool expects two separate configuration files (extension `.conf` is required for both):
+The tool expects two separate configuration files:
 the configuration file which defines the execution of mutant generation (`--gambit_conf`),
 and the configuration file which defines execution of the Prover (`--prover_conf`).
 Here is a simple configuration file setup using the example above:
@@ -51,12 +51,7 @@ In `prover.conf`:
 {
   "files": [
     "C.sol"
-  ] ,
-  "process": "emv",
-  "prover_args": [
-    " -adaptiveSolverConfig false -smt_nonLinearArithmetic false"
   ],
-  "solc": "solc8.1",
   "verify": "C:c.spec"
 }
 ```
@@ -64,18 +59,25 @@ In `gambit.conf`:
 
 ```json
 {
-  "filename" : "ProjectDir/C.sol",
+  "filename" : "C.sol",
   "num_mutants": 5
 }
 ```
 
 ## CLI Options
 
-`certoraMutate` runs in two distinct modes: synchronous and asynchronous. Use the `--sync` flag to run the entire tool synchronously
-in your shell, from mutant generation to the web report UI. Alternatively, running without the `--sync` flag will dump
+`certoraMutate` runs in two distinct modes: synchronous and asynchronous.
+Use the `--sync` flag to run the entire tool synchronously
+in your shell, from mutant generation to the web report UI. 
+Alternatively, running without the `--sync` flag will dump
 data about the mutation verification jobs in the `collect.json` file in the working directory. These jobs are submitted
-to the server environment specified and run asynchronously. They may be polled later with
+to the server environment specified and run asynchronously. 
+They may be polled later with
 `certoraMutate --collect_file collect.json`.
+
+Usually, the synchronous mode is suitable when the original specification run finishes quickly. 
+The asynchronous mode is suitable for bigger specifications of more complicated contracts, where each run takes more than just several minutes. It avoids depending on an active internet connection for the entire duration of the original run and the mutations.
+Soon, Certora will enable automatic notifications for asynchronous mutation testing runs, so that manual checks will not be necessary.
 
 `certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
 
@@ -84,27 +86,30 @@ to the server environment specified and run asynchronously. They may be polled l
 | `--prover_conf`                | specify the Prover configuration file for verifying mutants                                                           |
 | `--gambit_conf`                | specify the configuration file for mutant generation                                                                  |
 | `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
-| `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the latest installed version                 |
-| `--server`                     | specify the server environment to run on. Defaults to the environment specified in `prover.conf`                    |
+| `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
+| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if exists   |
 | `--debug`                      | show additional logging information during execution                                                                  |
-| `--gambit_out`                 | specify the output directory for gambit . Defaults to a new directory is added in the working directory               |
-| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a special directory in Prover internals |
+| `--gambit_out`                 | specify the output directory for gambit. Defaults to a new directory which is added in the working directory          |
+| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden directory used by Prover       |
 | `--ui_out`                     | specify the directory of the mutant verification report JSON used for the web UI                                      |
 | `--dump_link`                  | specify a text file to write the UI report link                                                                       |
 | `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
 | `--sync`                       | enable synchronous execution                                                                                          |
 | `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | specify the length in seconds for a web request timeout                                                               |
-| `--poll_timeout`               | specify the number of minutes to continue polling a submitted task in sync mode                                       |
+| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. (Polling-only can be restarted later)     |
 
 ## Troubleshooting
 
 At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
 
-- Sometimes it might be useful to first run `gambit` without going through `certoraMutate`
-  (you likely have the `gambit` binary in your path already if you are running the tool).
+- Sometimes it might be useful to first run `gambit` without going through `certoraMutate`.
+  `gambit` can be found under the `site-packages` directory under `certora_bins`.
   * Run `gambit mutate --json foo.json` or `gambit mutate --filename solidity.sol` to identify the issue.
-- Try running the Prover on your mutants individually using `certoraRun`. It is also possible that you are encountering a bug with the underlying version of the Prover.
+- Try running the Prover on your mutants individually using `certoraRun`. 
+  Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
+  It is also possible that you are encountering a bug with the underlying version of the Prover.
+- In sync mode, even if the polling timeout was hit, it is possible to re-run `certoraMutate` with just the `--collect_file` option to to retry getting the results without restarting the entire mutation testing task.
 
 ## Visualization
 
