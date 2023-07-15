@@ -20,6 +20,7 @@ Unary
 Vyper
 axiomatization
 axiomatized
+bitwidth
 bitwise
 blockchain
 blockchains
@@ -64,6 +65,7 @@ immutables
 injective
 injectivity
 inlined
+inlining
 instantiation
 invariant
 invariants
@@ -99,6 +101,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+representable
 reproducibility
 satisfiability
 satisfiable
@@ -106,6 +109,7 @@ scalable
 se
 sighash
 sighashes
+skolemized
 splitter
 stablecoin
 struct
@@ -121,11 +125,13 @@ summarization
 summarizations
 supertype
 supertypes
+supercontract
 th
 traceback
 tracebacks
 unary
 unbacked
+unconvertible
 underapproximated
 underapproximates
 underapproximation
@@ -142,3 +148,4 @@ verifier
 verifiers
 walkthrough
 whitespace
+prover_args

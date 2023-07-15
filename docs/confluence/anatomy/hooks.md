@@ -1,5 +1,5 @@
-Hooks
-=====
+Storage Hooks
+=============
 
 Motivation
 ----------

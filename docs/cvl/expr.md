@@ -59,7 +59,8 @@ special_vars ::=
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
-		   
+           | "calledContract"
+
 cast_functions ::=
     | require_functions | to_functions | assert_functions
 
@@ -257,6 +258,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 ```
 will check that the current contract supports the optional `burnFrom` method.
 
+(special-fields)=
 Special variables and fields
 ----------------------------
 
@@ -288,15 +290,18 @@ There are also several built-in variables:
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
 
- * ```{todo}
-   `allContracts` and `lastMsgSig` are currently undocumented.
-   ```
-
  * You can use the variable `_` as a placeholder for a value you are not
    interested in.
 
  * The maximum values for the different integer types are available as the
    variables `max_uint`, `max_address`, `max_uint8`, `max_uint16` etc.
+
+  * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
+    The balance of an `address a` can be expressed using `nativeBalances[a]`.
+
+ * `calledContract` is only available in {ref}`function summaries <function-summary>`.
+   It refers to the receiver contract of a summarized method call.
+
 
 CVL also has several built-in functions for converting between
 numeric types.  See {doc}`mathops` for details.
@@ -320,7 +325,6 @@ functions (including calling them through {ref}`method variables <method-type>`)
 The method name can optionally be prefixed by a contract name.  If a contract is
 not explicitly named, the method will be called with `currentContract` as the
 receiver.
-
 
 It is possible for multiple contract methods to match the method call.  This can
 happen in two ways:
@@ -358,9 +362,12 @@ where `s` is a {ref}`storage variable <storage-type>`.  This indicates that
 before the method is executed, the EVM state should be restored to the saved
 state `s`.
 
-```{todo}
-Unresolved method calls
-```
+### Type restrictions
+
+When calling a contract function, the Prover must convert the arguments and
+return values from their Solidity types to their CVL types and vice-versa.
+There are some restrictions on the types that can be converted.  See
+{ref}`type-conversions` for more details.
 
 (storage-comparison)=
 Comparing storage
