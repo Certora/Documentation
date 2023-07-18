@@ -13,55 +13,21 @@ List of CVL errors
 
 ### `ArraySizeMustBeLiteral`
 
-> Error message indicating that arrays are indexed with non-literals
 >
-> ```{code-block} cvl
-> :emphasize-lines: 1-1
+> Array sizes must be constant
 >
-> function f(uint[3+5] a) {
-> }
-> ```
-> ```
-> Example:2:25: Expected a number literal for a fixed-size array type, not `3+5`
-> ```
-
-
-### `CVLTypeHasLocation`
-
-> Locations are only allowed in contexts that refer to Solidity types directly, such as methods block entry arguments or return types and hook arguments.  See {ref}`type-conversions` for additional information.
->
-> ```{code-block} cvl
-> :emphasize-lines: 2-2
->
-> definition example(Contract.Struct good) returns uint = 3;
-> function badExample(Contract.Struct storage bad) returns uint = 4;
-> ```
-> ```
-> Example:3:49: Only VM types (such as methods block function argument types) be marked `storage`.
-> ```
-
-
-### `FatalSyntaxError`
-
-> Syntax error that the parser can't recover from
->
-> ```{code-block} cvl
-> :emphasize-lines: 1-1
->
-> rule function rule
-> ```
-> ```
-> Example:2:18: Syntax error near `function`: couldn't repair and continue parsing
-> ```
+> *No example provided*
 
 
 ### `LhsIsDynamicArray`
 
+>
 > Error message indicating an assignment to a dynamic array access
 >
+> Example:
 > ```{code-block} cvl
 > :emphasize-lines: 2-2
->
+> 
 > rule example {
 >     x[] = 2;
 > }
@@ -73,41 +39,37 @@ List of CVL errors
 
 ### `LhsIsMapping`
 
+>
 > Error message indicating an assignment to a mapping type
 >
-> ```{code-block} cvl
-> :emphasize-lines: 2-2
->
-> rule example {
->     mapping(uint => uint) = 3;
-> }
-> ```
-> ```
-> Example:3:17: `mapping(uint => uint)` is not a valid left-hand side.
-> ```
+> *No example provided*
 
 
 ### `SyntaxError`
 
+>
 > Syntax error (from the parser)
 >
+> Example:
 > ```{code-block} cvl
 > :emphasize-lines: 1-1
->
+> 
 > rule example oopsie { }
 > ```
 > ```
-> Example:2:26: Syntax error: unexpected token near `ID(oopsie)`
+> Example:2:22: Syntax error: unexpected token near `oopsie`
 > ```
 
 
 ### `TwoStateOnNonGhostFunction`
 
-> You can only use f@old or f@new in the context of a `havoc...assuming` statement, and it can only be applied to a ghost.  See {ref}`havoc-stmt` for more information.
 >
+> You can only use `f@old` or `f@new` in the context of a `havoc...assuming` statement, and it can only be applied to a ghost.  See {ref}`havoc-stmt` for more information.
+>
+> Example:
 > ```{code-block} cvl
 > :emphasize-lines: 5-5
->
+> 
 > function f(uint x) returns uint {
 >     return x;
 > }
@@ -116,7 +78,7 @@ List of CVL errors
 > }
 > ```
 > ```
-> Example:6:31: Cannot use `@old` with non-ghost function `f`
+> Example:6:22: Cannot use `@old` with non-ghost function `f`
 > ```
 
 
@@ -134,11 +96,13 @@ List of CVL errors
 
 ### `CVL2MissingFunctionKW`
 
+>
 > Since CVL 2, methods block entries must begin with `function`.  See {ref}`cvl2-function-keyword`.
 >
+> Example:
 > ```{code-block} cvl
 > :emphasize-lines: 2-2
->
+> 
 > methods {
 >     balanceOf(address);
 > }
@@ -150,23 +114,24 @@ List of CVL errors
 
 ### `CVL2MissingSemicolon`
 
+>
 > Indicates one of the places that CVL became more strict about semicolons.  See {ref}`cvl2-semicolons`.
 >
+> Example:
 > ```{code-block} cvl
 > :emphasize-lines: 2-2
->
+> 
 > methods {
 >     function balanceOf(address)
 > }
 > ```
 > ```
-> Example:3:44: Since CVL 2, methods block entries must end with `;`
+> Example:3:40: Since CVL 2, methods block entries must end with `;`
 > ```
 
 
 
 ## Unsupported feature errors
-
 
 
 
