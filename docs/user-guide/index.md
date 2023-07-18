@@ -9,6 +9,7 @@ tutorials.md
 getting-started/index.md
 basics/index.md
 properties/index.md
+satisfy.md
 patterns/index.md
 multicontract/index.md
 timeouts.md
