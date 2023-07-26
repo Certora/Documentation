@@ -36,96 +36,85 @@ Once you have updated your `certora-cli` installation using `pip` to get the rel
 dependencies, run Gambit from the command line:
 
 ```
-certoraMutate path/to/config/file/Example.conf
+certoraMutate --prover_conf path/to/prover/prover.conf --gambit_conf path/to/gambit/gambit.conf
 ```
 
-(gambit-prover-config)=
-## Configuration
-The tool expects a configuration file (extension `.conf` is required).
-which is a JSON object.
-Here is an example configuration file:
+## Configurations
+The tool expects two separate configuration files:
+the configuration file which defines the execution of mutant generation (`--gambit_conf`),
+and the configuration file which defines execution of the Prover (`--prover_conf`).
+Here is a simple configuration file setup using the example above:
+
+In `prover.conf`:
 
 ```json
 {
-    "project_folder" : "Test/10Power",
-    "run_script" : "Test/10Power/runDefault.sh",
-    "gambit" : {
-        "filename" : "Test/10Power/TenPower.sol",
-        "solc" : "solc8.10"
-    },
-    "staging" : "master",
-    "manual_mutations" : {
-        "path/to/original/file.sol" : "path/to/manual/mutations/",
-        "...": "..."
-    },
-    "...": "..."
+  "files": [
+    "C.sol"
+  ],
+  "verify": "C:c.spec"
+}
+```
+In `gambit.conf`:
+
+```json
+{
+  "filename" : "C.sol",
+  "num-mutants": 5
 }
 ```
 
-Note: This configuration is separate from the Prover's `.conf` file and also from the
-  configuration file of the mutation generator ({ref}`gambit-config`).
-Importantly, notice that to use this tool, you can embed the configuration
-for generating the mutants in this `.conf` file; you don't need to write
-  two separate configurations.
+## CLI Options
 
-### Required Keys for the JSON Configuration File:
-- `"project_directory"` : the directory containing the original Prover project on which to perform mutation testing
-- `"run_script"` : the bash script used to run verification on the original project, usually `project_directory/run.sh` or similar.
-  Gambit will pull the configuration for `certoraRun` from this shell script and verify each mutant using this configuration.
-- `"gambit"` : the JSON configuration element for invoking Gambit. May be a path to a gambit configuration file
-or the explicit JSON element contained therein.  See {ref}`gambit-config` for more information about the gambit configuration.
-The `solc` specific arguments (including the version of the compiler) should be provided here
-  even if they are present in the `run_script`.
+`certoraMutate` runs in two distinct modes: synchronous and asynchronous.
+Use the `--sync` flag to run the entire tool synchronously
+in your shell, from mutant generation to the web report UI. 
+Alternatively, running without the `--sync` flag will dump
+data about the mutation verification jobs in the `collect.json` file in the working directory. These jobs are submitted
+to the server environment specified and run asynchronously. 
+They may be polled later with
+`certoraMutate --collect_file collect.json`.
 
-### Optional Keys for the JSON Configuration File
-- `"num_threads"` : the maximum number of threads to use for verification, as an integer
-- `"manual_mutations"` : optionally supplement the random mutant generation with your own manually-written mutants.
-Expects a JSON object whose keys are the paths to the original files and whose values are paths to directories containing
-manually-written mutants as `.sol` files.
+Usually, the synchronous mode is suitable when the original specification run finishes quickly. 
+The asynchronous mode is suitable for bigger specifications of more complicated contracts, where each run takes more than just several minutes. It avoids depending on an active internet connection for the entire duration of the original run and the mutations.
+Soon, Certora will enable automatic notifications for asynchronous mutation testing runs, so that manual checks will not be necessary.
 
-```{note}
-Any manual mutations files provided must follow the naming
-convention
-`OriginalFileName.<unique-name>.sol`, where `<unique-name>` is a string ID unique with respect to the other
-manual mutants (for example you might name them `OriginalFileName.m1.sol`, `OriginalFileName.m2.sol` and so on).
-```
+`certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
 
-### Additional Optional Flags
+| Option                         | Description                                                                                                           |
+|:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
+| `--prover_conf`                | specify the Prover configuration file for verifying mutants                                                           |
+| `--gambit_conf`                | specify the configuration file for mutant generation                                                                  |
+| `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
+| `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
+| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if exists   |
+| `--debug`                      | show additional logging information during execution                                                                  |
+| `--gambit_out`                 | specify the output directory for gambit. Defaults to a new directory which is added in the working directory          |
+| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden directory used by Prover       |
+| `--ui_out`                     | specify the directory of the mutant verification report JSON used for the web UI                                      |
+| `--dump_link`                  | specify a text file to write the UI report link                                                                       |
+| `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
+| `--sync`                       | enable synchronous execution                                                                                          |
+| `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
+| `--request_timeout`            | specify the length in seconds for a web request timeout                                                               |
+| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. (Polling-only can be restarted later)     |
 
-```{note}
-Gambit supports `--server`.
-
-However, Gambit currently has trouble with
-{ref}`--send_only` in the run scripts.
-If you have this flag, please remove it for now.
-Apologies for the temporary inconvenience!
-```
-
-- `"offline"` : run mutation testing without internet connection, skipping the UI output and other web functions.
-Expects a boolean and defaults to `false`.
-- `"staging"` : if your run script does not already have `--server staging`, you can also add it to Gambit.
-  Similar to the Prover, you can provide the
-  branch name for running mutant verification on `--prover_version`.
-Omitting this key will cause verification to run locally
-  (unless the run script has it).
-- `"production"` : if you instead want to run on the production environment you can provide the `--server production` flag. You can also add the name of a specific branch using `--prover_version`
-- `"use_certora_run_py"` : Use `certoraRun.py` rather than `certoraRun`. Expects a boolean and defaults to `false`.
-
-
-### Troubleshooting
+## Troubleshooting
 
 At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
 
-- Make sure the run script you use to run the Prover does not have the `--send_only` flag or any commented out (using `#`) lines.
-- Since Gambit requires you to provide the solidity compiler flags to compile the mutants, sometimes it might be useful to first identify what those flags should be. See {ref}`gambit-config` for more information. A strategy you can adopt is
-  * first run `gambit` without going through `certoraMutate` (you likely have either `gambit-linux` or `gambit-macos` binaries in your path already if you are running the tool).
-  * Make a `foo.json` file and copy the content of the `"gambit":` field in it.
-  * Run `gambit-OS mutate --json foo.json` to identify the issue.
+- Sometimes it might be useful to first run `gambit` without going through `certoraMutate`.
+  `gambit` can be found under the `site-packages` directory under `certora_bins`.
+  * Run `gambit mutate --json foo.json` or `gambit mutate --filename solidity.sol` to identify the issue.
+- Try running the Prover on your mutants individually using `certoraRun`. 
+  Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
+  It is also possible that you are encountering a bug with the underlying version of the Prover.
+- In sync mode, even if the polling timeout was hit, it is possible to re-run `certoraMutate` with just the `--collect_file` option to to retry getting the results without restarting the entire mutation testing task.
 
 ## Visualization
 
 The mutation verification results are
-  summarized in an user-friendly visualization.
+  summarized in a user-friendly visualization.
 [Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) is an example summary
   for the [Borda example](https://demo.certora.com/?Borda).
 Rules are represented by the green outer circles
