@@ -65,6 +65,7 @@ immutables
 injective
 injectivity
 inlined
+inlining
 instantiation
 invariant
 invariants
@@ -100,6 +101,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+representable
 reproducibility
 satisfiability
 satisfiable
@@ -123,11 +125,13 @@ summarization
 summarizations
 supertype
 supertypes
+supercontract
 th
 traceback
 tracebacks
 unary
 unbacked
+unconvertible
 underapproximated
 underapproximates
 underapproximation
