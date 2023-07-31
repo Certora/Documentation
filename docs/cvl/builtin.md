@@ -25,7 +25,7 @@ built_in_rule_name ::=
     | "hasDelegateCalls"
     | "sanity"
     | "deepSanity"
-    | "readOnlyReentrancy"
+    | "viewReentrancy"
 ```
 
 (built-in-msg-value-in-loop)=
@@ -174,28 +174,28 @@ instruments the contract code at `p` to set `x_p` to `true`.  The Prover then
 tries to prove that `x_p` is false after executing the function.  To find a
 counterexample; the Prover must construct a model that passes through `p`.
 
-(built-in-readonly-reentrancy)=
-Read-only reentrancy detection &mdash; `readOnlyReentrancy`
+(built-in-view-reentrancy)=
+Read-only reentrancy detection &mdash; `viewReentrancy`
 -----------------------------------------------------------
 
-The `readOnlyReentrancy`  built-in rule detects 
-[read-only reentrancy vulnerabilities in a contract][readonly-reentrancy-vulnerability].
+The `viewReentrancy`  built-in rule detects 
+[read-only reentrancy vulnerabilities in a contract][view-reentrancy-vulnerability].
 
-[readonly-reentrancy-vulnerability]: https://blog.pessimistic.io/read-only-reentrancy-in-depth-6ea7e9d78e85
+[view-reentrancy-vulnerability]: https://blog.pessimistic.io/read-only-reentrancy-in-depth-6ea7e9d78e85
 
-The `readOnlyReentrancy` rule can be enabled by including
+The `viewReentrancy` rule can be enabled by including
 ```cvl
-use builtin rule readOnlyReentrancy;
+use builtin rule viewReentrancy;
 ```
 in a spec file.  Any functions that have read-only reentrancy will fail the
-`readOnlyReentrancy` rule.
+`viewReentrancy` rule.
 
-### How `readOnlyReentrancy` is checked
+### How `viewReentrancy` is checked
 
 Reentrancy vulnerabilities can arise when a contract makes an external call with an inconsistent internal 
 state. This behavior allows the receiver contract to make reentrant calls that exploit the inconsistency.
 
-The `readOnlyReentrancy` rule ensures that whenever method `f` of contract `C` makes an external call, 
+The `viewReentrancy` rule ensures that whenever method `f` of contract `C` makes an external call, 
 the internal state of `C` is equivalent to either (1) the state of `C` at the beginning of the calling function,
 or (2) the state of `C` at the end of the calling function (by "equivalent", 
 we mean that all view functions return the same values). 
