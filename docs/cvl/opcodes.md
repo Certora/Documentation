@@ -140,6 +140,10 @@ hook REVERT(uint offset, uint size)
 hook SELFDESTRUCT(address a)
 ```
 
+```{note}
+The hooks are applied to _all_ contracts, not just the main contract under verification.
+```
+
 ## Hooking on raw reads and writes to storage
 While it is already possible to hook on storage fields using storage patterns,
 there are cases where we do not know the storage layout or prefer to catch all storage accesses.
@@ -179,6 +183,13 @@ In any case both hooks are executed, so any other effects of the storage-pattern
 One optimization done by the Prover is automatic unpacking of packed storage variables.
 As this can interfere with the raw reading of storage slots, it has to be disabled by specifying
 `--prover_args "-enableStorageSplitting false"`
+```
+
+```{note}
+Just like the usual opcode hooks, the raw storage hooks are applied on all contracts.
+This means that a storage access on _any_ contract will trigger the hook.
+Therefore, in a rule that models calls to multiple contracts,
+if two contracts are accessing the same slot the same hook code will be called with the same `loc` value.
 ```
 
 ## Missing instructions
