@@ -175,6 +175,12 @@ hook Sstore field0 /* made-up name of the field in slot 0 */ address newValue ST
 The value of `myAddress` will be the new value written to the field at slot 0 `newValue`, and not necessarily the address of `newValue+5`.
 In any case both hooks are executed, so any other effects of the storage-pattern hook will still be visible.
 
+```{note}
+One optimization done by the Prover is automatic unpacking of packed storage variables.
+As this can interfere with the raw reading of storage slots, it has to be disabled by specifying
+`--prover_args "-enableStorageSplitting false"`
+```
+
 ## Missing instructions
 The standard stack-manipulating instructions `DUP*`, `SWAP*`, `PUSH*` and `POP` are not modeled.
 `MLOAD` and `MSTORE` are also not modeled.
