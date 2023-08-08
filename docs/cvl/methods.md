@@ -444,14 +444,16 @@ contains the address of the receiver contract of the summarized call.
 
 There are a few restrictions on the functions that can be used as approximations:
 
- - Functions used as summaries are not allowed to call contract functions.
-
  - The types of any arguments passed to or values returned from the summary
    must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
    Arguments that are not accessed in the summary may have any type.
+  
+ - In case of recursive calls due to the summarization, the recursion limit can be set with 
+   `--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
 
 Function summaries for *internal* methods have a few additional restrictions on
 their arguments and return types:
+ - Functions used as summaries are not allowed to call contract functions.
  - arrays (including static arrays, `bytes`, and `string`) are not supported
  - struct fields must have [value types][solidity-value-types]
  - `storage` and `calldata` structs are not supported, only `memory`
