@@ -449,16 +449,19 @@ Arguments that are not accessed in the summary may have any type.
   
 In case of recursive calls due to the summarization, the recursion limit can be set with 
 `--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
 
-Function summaries for *internal* methods have a few additional restrictions on
+Function summaries for *internal* methods have a few additional restrictions on 
 their arguments and return types:
- - Functions used as summaries are not allowed to call contract functions.
  - arrays (including static arrays, `bytes`, and `string`) are not supported
  - struct fields must have [value types][solidity-value-types]
  - `storage` and `calldata` structs are not supported, only `memory`
 
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
+
+Additionally, functions used as summaries are not allowed to call contract functions.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 
