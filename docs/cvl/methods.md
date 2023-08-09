@@ -442,14 +442,13 @@ that combine those variables are not supported.
 The function call may also use the special variable `calledContract`, which
 contains the address of the receiver contract of the summarized call.
 
-There are a few restrictions on the functions that can be used as approximations:
-
- - The types of any arguments passed to or values returned from the summary
-   must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
-   Arguments that are not accessed in the summary may have any type.
+There is a restriction on the functions that can be used as approximations.
+Namely, the types of any arguments passed to or values returned from the summary
+must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
+Arguments that are not accessed in the summary may have any type.
   
- - In case of recursive calls due to the summarization, the recursion limit can be set with 
-   `--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
+In case of recursive calls due to the summarization, the recursion limit can be set with 
+`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
 
 Function summaries for *internal* methods have a few additional restrictions on
 their arguments and return types:
