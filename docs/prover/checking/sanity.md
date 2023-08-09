@@ -30,7 +30,7 @@ sanity check fails, the rule is marked with a yellow symbol:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
-If a sanity check fails, you can expand the assertion message to see the details
+If a sanity check fails, you can expand the problems view to see the details
 of the failure:
 
 ![Screenshot of rule report showing the expanded details of a sanity failure](sanity-details.png)
@@ -47,10 +47,6 @@ that that the combination of `require` statements does not rule out all
 possible counterexamples.  Rules that rule out all possible counterexamples
 are called {term}`vacuous` rules.  Since they don't actually check any
 assertions, they are almost certainly incorrect.
-
-```{note}
-This rule is currently called **reachability**
-```
 
 For example, the following rule would be flagged by the vacuity check:
 ```cvl
@@ -99,11 +95,9 @@ Assert tautology checks
 The **assert tautology** sanity check ensures that individual `assert` statements
 are not {term}`tautologies <tautology>`.  A tautology is a statement that is
 true on all examples, even if all the `require` and `if` conditions are
-removed.
-
-```{note}
-This check is currently called **assert vacuity**
-```
+removed. Tautology checks also consider the bodies of the contract functions. For
+example, `assert square(x) >= 0;` is a tautology if `square` is a contract
+function that squares its input.
 
 For example, the following rule would be flagged by the assert tautology check:
 
@@ -120,12 +114,6 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-```{todo}
-Does the tautology check also consider the bodies of contract functions?  For
-example, is `assert square(x) >= 0;` a tautology if `square` is a contract
-function that squares its input?
-```
-
 (sanity-trivial-invariant)=
 Trivial invariant checks
 ------------------------
@@ -133,11 +121,6 @@ Trivial invariant checks
 The **Trivial invariant** sanity check ensures that invariants are not trivial.
 A trivial invariant is one that holds in all possible states, not just in
 reachable states.
-
-```{note}
-This check is currently called **assert-vacuity**
-```
-
 
 For example, the following invariant is trivial:
 
@@ -165,10 +148,6 @@ Assertion structure checks
 
 The **assertion structure** sanity check ensures that complex assert statements
 can't be replaced with simpler ones.
-
-```{note}
-This check is currently called **assert-tautology**
-```
 
 If an assertion expression is more complex than necessary, it can pass for
 misleading reasons.  For example, consider the following assertion:
