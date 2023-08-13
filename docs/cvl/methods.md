@@ -442,15 +442,17 @@ that combine those variables are not supported.
 The function call may also use the special variable `calledContract`, which
 contains the address of the receiver contract of the summarized call.
 
-There are a few restrictions on the functions that can be used as approximations:
+There is a restriction on the functions that can be used as approximations.
+Namely, the types of any arguments passed to or values returned from the summary
+must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
+Arguments that are not accessed in the summary may have any type.
+  
+In case of recursive calls due to the summarization, the recursion limit can be set with 
+`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
 
- - Functions used as summaries are not allowed to call contract functions.
-
- - The types of any arguments passed to or values returned from the summary
-   must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
-   Arguments that are not accessed in the summary may have any type.
-
-Function summaries for *internal* methods have a few additional restrictions on
+Function summaries for *internal* methods have a few additional restrictions on 
 their arguments and return types:
  - arrays (including static arrays, `bytes`, and `string`) are not supported
  - struct fields must have [value types][solidity-value-types]
@@ -458,6 +460,8 @@ their arguments and return types:
 
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
+
+Additionally, functions used as summaries are not allowed to call contract functions.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 

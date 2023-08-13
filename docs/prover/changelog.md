@@ -4,6 +4,75 @@ Release Notes
 ```{contents}
 ```
 
+4.8.0 (August 13, 2023)
+-----------------------
+
+### New features and enhancements
+
+#### CVL
+- Better expressivity: `ALWAYS` summaries can get `bytesK` arguments, e.g. `... => ALWAYS(to_bytesK(...))`
+- Support for `ALL_SLOAD` and `ALL_SSTORE` hooks (see {ref}`rawhooks`)
+- Improved ABI encoding/decoding in CVL
+- More efficient handling of skipped rules
+- Allow calling Solidity functions from expression summaries
+
+#### Call Trace and Rule Report
+- Display havoced return values
+- Fixes to dump generation
+- Improved timeout visualization in TAC dumps
+- Fixes to presentation of quantified formulas in Call Trace
+- Better presentation of timeouts
+- Rule report will contain warnings about unused summaries
+- Display native balances
+- More friendly text for dispatcher-based resolutions
+- Improved ghost presentation
+
+#### Performance
+- Rule cache is enabled
+- Reducing number of iterations of static analyses
+- Improved decompiler performance
+
+#### Mutation Verifier
+- Manual mutants now supported in `certoraMutate`
+
+#### Equivalence Checker
+- Support for Vyper for the equivalence checker (`certoraEqCheck` utility)
+
+#### CLI
+- Allowing more Solidity file names
+- More compact zip input to cloud
+- Users can reduce the global timeout below 2 hours using {ref}`--global_timeout`
+
+### Bug fixes
+
+#### CVL
+- More graceful handling of bit-vector mode so that it emits less errors. It should be noted that numbers are forced to the 256-bit range and thus it is not recommended to use bit-vector mode. 
+- Declaration of wildcard (i.e. `_`) variable names in rules or rule arguments is disallowed
+- Internal summaries - disallow `NONDET` summary on functions returning a pointer, as well as `HAVOC` or `HAVOC_ECF` summaries
+- Better checks on ghost axioms, especially if they refer to definitions
+- Fixing array literal assignments
+- Forbid assignments to array elements, i.e. `uint[] a; a[0] = x;` is disallowed
+- Internal summarization did not work in certain tricky cases involving loops and external calls
+- Fixing "Certora Prover Internal Error" sometimes appearing when reasoning on complex-typed arrays
+- Fixes for structs with contract types as fields
+
+#### Call Trace
+- Fix call trace generation issues for `forall` expressions
+
+#### Mutation Verifier
+- Correctly dealing with original runs where rules were originally violated
+
+#### Misc.
+- Static analyses bug fixes
+- Fixes to read-only reentrancy rule
+- Avoiding an exception when `-dontStopAtFirstSplitTimeout` completes with all splits timing out
+
+### Other improvements
+- Better parallelism and utilization
+- Timeout cores and more difficulty traces and hints to study timeout causes
+- Support for Solidity compiler version 0.8.20 and up
+
+
 4.5.1 (July 15, 2023)
 ---------------------
 

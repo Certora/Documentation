@@ -144,6 +144,7 @@ hook SELFDESTRUCT(address a)
 The hooks are applied to _all_ contracts, not just the main contract under verification.
 ```
 
+(rawhooks)=
 ## Hooking on raw reads and writes to storage
 While it is already possible to hook on storage fields using storage patterns,
 there are cases where we do not know the storage layout or prefer to catch all storage accesses.
