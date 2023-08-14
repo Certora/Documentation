@@ -111,10 +111,10 @@ Soon, Certora will enable automatic notifications for asynchronous mutation test
 | `--mutation_conf`              | specify the configuration file for mutant generation                                                                  |
 | `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
 | `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
-| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if exists   |
+| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if the field exists otherwise whatever certoraRun uses bu default   |
 | `--debug`                      | show additional logging information during execution                                                                  |
 | `--gambit_out`                 | specify the output directory for gambit. Defaults to a new directory which is added in the working directory          |
-| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden directory used by Prover       |
+| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
 | `--ui_out`                     | specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | specify a csv file to write the verification JSON report                                                              |
@@ -122,7 +122,7 @@ Soon, Certora will enable automatic notifications for asynchronous mutation test
 | `--sync`                       | enable synchronous execution                                                                                          |
 | `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | specify the length in seconds for a web request timeout                                                               |
-| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. (Polling-only can be restarted later)     |
+| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
 
 ## Troubleshooting
 
