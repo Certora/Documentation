@@ -117,7 +117,7 @@ Soon, Certora will enable automatic notifications for asynchronous mutation test
 | `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
 | `--ui_out`                     | specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | specify a text file to write the UI report link                                                                       |
-| `--dump_csv`                   | specify a csv file to write the verification JSON report                                                              |
+| `--dump_csv`                   | specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
 | `--sync`                       | enable synchronous execution                                                                                          |
 | `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
