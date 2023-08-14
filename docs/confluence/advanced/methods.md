@@ -31,7 +31,8 @@ following summaries are allowed:
     
 *   `Ghost` the summary returns the value return by the given ghost function
     with the given arguments
-    
+
+*   Function summaries.    
 
 (old-summary-example)=
 Example

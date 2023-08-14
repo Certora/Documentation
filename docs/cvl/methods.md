@@ -461,7 +461,5 @@ their arguments and return types:
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
 
-Additionally, functions used as summaries are not allowed to call contract functions.
-
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 
