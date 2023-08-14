@@ -36,12 +36,12 @@ Once you have updated your `certora-cli` installation using `pip` to get the rel
 dependencies, run Gambit from the command line:
 
 ```
-certoraMutate --prover_conf path/to/prover/prover.conf --gambit_conf path/to/gambit/gambit.conf
+certoraMutate --prover_conf path/to/prover/prover.conf --mutation_conf path/to/gambit/gambit.conf
 ```
 
 ## Configurations
 The tool expects two separate configuration files:
-the configuration file which defines the execution of mutant generation (`--gambit_conf`),
+the configuration file which defines the execution of mutant generation (`--mutation_conf`),
 and the configuration file which defines execution of the Prover (`--prover_conf`).
 Here is a simple configuration file setup using the example above:
 
@@ -84,7 +84,7 @@ Soon, Certora will enable automatic notifications for asynchronous mutation test
 | Option                         | Description                                                                                                           |
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | `--prover_conf`                | specify the Prover configuration file for verifying mutants                                                           |
-| `--gambit_conf`                | specify the configuration file for mutant generation                                                                  |
+| `--mutation_conf`              | specify the configuration file for mutant generation                                                                  |
 | `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
 | `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
 | `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if exists   |
