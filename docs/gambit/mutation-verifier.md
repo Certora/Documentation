@@ -111,7 +111,7 @@ Soon, Certora will enable automatic notifications for asynchronous mutation test
 | `--mutation_conf`              | specify the configuration file for mutant generation                                                                  |
 | `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
 | `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
-| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if the field exists otherwise whatever `certoraRun` uses by default   |
+| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, or the `certoraRun` default otherwise.   |
 | `--debug`                      | show additional logging information during execution                                                                  |
 | `--gambit_out`                 | specify the output directory for gambit. Defaults to a new directory which is added in the working directory          |
 | `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
