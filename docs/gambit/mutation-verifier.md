@@ -44,7 +44,7 @@ You must run `certoraMutate` from the root of the Solidity project directory.
 The files `prover.conf` and `mutation.conf`
 can be in their own directories.
 All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
-This is different from how `prover.conf` is written, where the paths are all relative to the root
+Paths in `prover.conf` are all relative to the project directory's root, which is assumed to be the working directory.
 of the project directory, which is assumed to be the working directory.
 ```
 
