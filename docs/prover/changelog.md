@@ -4,10 +4,8 @@ Release Notes
 ```{contents}
 ```
 
-4.3.1 (July 2, 2023)
---------------------
-
-### New features
+Prod version March 21, 2022
+---------------------------
 
 #### CVL
 - New builtin rules: {ref}`sanity <built-in-sanity>` and {ref}`deepSanity <built-in-deep-sanity>`
