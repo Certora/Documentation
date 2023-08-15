@@ -186,14 +186,11 @@ In most cases, public functions should use an `internal` summary, since this
 effectively summarizes both internal and external calls to the function.
 
 (envfree)=
-(with-env)=
-`envfree` and `with(env)` annotations
--------------------------------------
+`envfree` annotations
+---------------------
 
-Following the `returns` clause an may optionally contain either an `envfree`
-tag or a `with` clause.
-
-Marking a method
+Following the `returns` clause of an exact methods entry is an optional
+`envfree` tag.  Marking a method
 with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
 from CVL do not need to explicitly pass an {term}`environment` value as the
 first argument.  Second, the Prover will verify that the method implementation
@@ -205,20 +202,6 @@ as separate rules called `envfreeFuncsStaticCheck` and
 [^envfree_nonpayable]: The effect of payable functions on the contract's
   balance depends on the message value, so payable functions also require an
   `env`.
-
-The `with` clause introduces a new variable to represent the {ref}`environment <env>` that
-is passed to a summarized function; the variable can be used in function
-summaries.  `with` clauses may only be used if the entry has a
-function summary. See {ref}`function-summary` below for more information about
-the environment provided by the `with` clause.
-
-Finally, the method entry may contain an optional summarization (indicated by
-`=>` followed by the summary type and an optional application policy).  A
-summarized declaration indicates that the Prover should replace some calls to
-the summarized function by an approximation.  This is an important technique
-for working around Prover timeouts and also for working with external contracts
-whose implementation is not fixed at verification time[^internalSummaryCaveat].
-
 
 (optional)=
 `optional` annotations
@@ -246,6 +229,17 @@ methods {
     function mint(address _to, uint256 _amount, bytes calldata _data) external;
 }
 ```
+
+(with-env)=
+`with(env e)` clauses
+---------------------
+
+After the `optional` annotation, an entry may contain a `with(env e)` clause.
+The `with` clause introduces a new variable (`e` for `with(env e)`) to represent
+the {ref}`environment <env>` that is passed to a summarized function; the
+variable can be used in function summaries.  `with` clauses may only be used if
+the entry has a function summary. See {ref}`function-summary` below for more
+information about the environment provided by the `with` clause.
 
 
 (summaries)=
@@ -482,8 +476,9 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 }
 ```
 
-The call can also refer to a variable of type `env` introduced by a `with(env
-e)` annotation.  Here `e` may be replaced with any valid identifier.
+The call can also refer to a variable of type `env` introduced by a
+{ref}`` `with(env e)` <with-env>`` annotation.
+Here `e` may be replaced with any valid identifier.
 
 The variable defined by the `with` clause contains an {ref}`` `env` type <env>``
 giving the context for the summarized function.  This context may be different
@@ -531,11 +526,6 @@ Namely, the types of any arguments passed to or values returned from the summary
 must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
 Arguments that are not accessed in the summary may have any type.
   
-In case of recursive calls due to the summarization, the recursion limit can be set with 
-`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
-If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
-Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
-
 Function summaries for *internal* methods have a few additional restrictions on 
 their arguments and return types:
  - arrays (including static arrays, `bytes`, and `string`) are not supported
@@ -544,6 +534,11 @@ their arguments and return types:
 
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
+
+In case of recursive calls due to the summarization, the recursion limit can be set with 
+`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 
