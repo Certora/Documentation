@@ -186,26 +186,9 @@ In most cases, public functions should use an `internal` summary, since this
 effectively summarizes both internal and external calls to the function.
 
 (envfree)=
-`envfree` annotations
----------------------
-
-Each entry in the methods block denotes either the sighash or the type signature
-for a contract method.  Methods of contracts that are introduced by {doc}`using
-statements <using>` can also be described by prefixing the method name with
-the contract variable name.  For example, if contract `C` is introduced by the
-statement `using C as c`, then the method `f(uint)` of contract `c` can be
-referred to as `c.f(uint)`.
-
-It is possible for a method signature to appear in the `methods` block but not
-in the contract being verified.  In this case, the Prover will skip any rules
-that mention the missing method, rather than reporting an error.  This behavior
-allows reusing specifications on contracts that only support part of an
-interface: only the supported methods will be verified.
-
-Following the method signature is an optional `returns` clause.  If a method
-declaration contains a `returns` clause, the declared return type must match
-the contract method's return type.  If the `returns` clause is omitted, the
-return type is taken from the contract method's return type.
+(with-env)=
+`envfree` and `with(env)` annotations
+-------------------------------------
 
 Following the `returns` clause an may optionally contain either an `envfree`
 tag or a `with` clause.
@@ -223,7 +206,7 @@ as separate rules called `envfreeFuncsStaticCheck` and
   balance depends on the message value, so payable functions also require an
   `env`.
 
-The `with` clause introduces a new variable to represent the environment that
+The `with` clause introduces a new variable to represent the {ref}`environment <env>` that
 is passed to a summarized function; the variable can be used in function
 summaries.  `with` clauses may only be used if the entry has a
 function summary. See {ref}`function-summary` below for more information about
@@ -474,37 +457,6 @@ variables defined as arguments in the summary declarations; expressions
 that combine those variables are not supported.
 
 The function call may also use the special variable `calledContract`, which
-contains the address of the receiver contract of the summarized call.
-
-There is a restriction on the functions that can be used as approximations.
-Namely, the types of any arguments passed to or values returned from the summary
-must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
-Arguments that are not accessed in the summary may have any type.
-  
-In case of recursive calls due to the summarization, the recursion limit can be set with 
-`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
-If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
-Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
-
-Function summaries for *internal* methods have a few additional restrictions on 
-their arguments and return types:
- - arrays (including static arrays, `bytes`, and `string`) are not supported
- - struct fields must have [value types][solidity-value-types]
- - `storage` and `calldata` structs are not supported, only `memory`
-
-You can still summarize functions that take unconvertible types as arguments,
-but you cannot access those arguments in your summary.
-
-Additionally, functions used as summaries are not allowed to call contract functions.
-
-[solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
-
-To use a CVL function or ghost as a summary, use a call to the function in
-place of the summary type.  The function call can refer to the
-variables defined as arguments in the summary declarations; expressions
-that combine those variables are not supported.
-
-The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
 This is useful for identifying the called contract in {ref}`wildcard summaries
 <cvl2-wildcards>`.  The `calledContract` keyword is only defined in the `methods`
@@ -572,4 +524,26 @@ rule example {
 In this example, if the `process` method calls `t.transfer(...)`, then in the
 `cvlTransfer` function, `token` will be `t`, `passedEnv.msg.sender` will be
 `c`, and `passedEnv.tx.origin` will be `sender`.
+
+
+There is a restriction on the functions that can be used as approximations.
+Namely, the types of any arguments passed to or values returned from the summary
+must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
+Arguments that are not accessed in the summary may have any type.
+  
+In case of recursive calls due to the summarization, the recursion limit can be set with 
+`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
+
+Function summaries for *internal* methods have a few additional restrictions on 
+their arguments and return types:
+ - arrays (including static arrays, `bytes`, and `string`) are not supported
+ - struct fields must have [value types][solidity-value-types]
+ - `storage` and `calldata` structs are not supported, only `memory`
+
+You can still summarize functions that take unconvertible types as arguments,
+but you cannot access those arguments in your summary.
+
+[solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 

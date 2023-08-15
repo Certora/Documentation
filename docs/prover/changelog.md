@@ -147,7 +147,6 @@ function foo(MyComplexStruct memory z, uint x) external returns (uint) {
 --------------------
 
 ### New features
->>>>>>> master
 
 #### CVL
 - New builtin rules: {ref}`sanity <built-in-sanity>` and {ref}`deepSanity <built-in-deep-sanity>`
