@@ -44,7 +44,7 @@ methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
                      ( exact_pattern | wildcard_pattern )
-                     [ "returns" types ]
+                     [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      ";"
@@ -95,8 +95,8 @@ will match the external function `f` of the contract `C`.
 Exact methods block entries must include a return type; the Prover will check
 that the declared return type matches the return type of the contract function.
 
-Exact entries may contain {ref}`summaries <summaries>`, {ref}`envfree`, and
-{ref}`optional`.
+Exact entries may contain {ref}`summaries <summaries>`, {ref}`envfree`,
+{ref}`optional`, and {ref}`with-env`.
 
 (wildcard-methods-entries)=
 ### Wildcard entries
@@ -477,10 +477,9 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 ```
 
 The call can also refer to a variable of type `env` introduced by a
-{ref}`` `with(env e)` <with-env>`` annotation.
-Here `e` may be replaced with any valid identifier.
+{ref}`with(env) clause <with-env>`.  Here `e` may be replaced with any valid identifier.
 
-The variable defined by the `with` clause contains an {ref}`` `env` type <env>``
+The variable defined by the `with` clause contains an {ref}`env type <env>`
 giving the context for the summarized function.  This context may be different
 from the `env` passed to the original call from the spec.  In particular:
 
