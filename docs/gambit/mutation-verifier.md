@@ -67,9 +67,10 @@ In `prover.conf`:
 In `mutation.conf`:
 
 ```json
-{
-  "filename" : "C.sol",
-  "num-mutants": 5
+{ "gambit": {
+    "filename" : "C.sol",
+    "num-mutants": 5
+  }
 }
 ```
 
@@ -77,9 +78,10 @@ In `mutation.conf`:
 You can add manual mutations to `mutation.conf` like so:
 
 ```json
-{
-  "filename" : "C.sol",
-  "num-mutants": 5,
+{ "gambit": {
+    "filename" : "C.sol",
+    "num-mutants": 5
+  },
   "manual_mutants": {
      "C.sol": "path/to/dir/with/manual_mutants/for/C"
   }
