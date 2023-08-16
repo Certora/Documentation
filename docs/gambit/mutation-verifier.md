@@ -90,6 +90,10 @@ You can add manual mutations to `mutation.conf` like so:
 If you set `num_mutants` to 0 in the above file, `gambit` will run only on the mutants added manually and no other mutants will be generated.
 `certoraMutate` on manually written mutants.
 
+```{note}
+All manual mutations must be named uniquely. For example, if you want to generate manual mutations for `C.sol` and `D.sol`, name them as `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
+```
+
 ## CLI Options
 
 `certoraMutate` runs in two distinct modes: synchronous and asynchronous.
