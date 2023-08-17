@@ -122,6 +122,44 @@ Wildcard entries may not have {ref}`envfree` or {ref}`optional`; their only
 purpose is {ref}`summarization <summaries>`.  Therefore, wildcard entries must
 have a summary.
 
+(catch-all-entries)=
+### Catch-all entries
+
+Sometimes a contract may be included in the scene that is actually totally irrelevant
+to the properties being verified; for example, some external library contract.
+
+So-called "catch-all" entries may be used to apply a single
+{ref}`summary <summaries>` to all functions that declared in some contract. For example:
+
+```cvl
+methods {
+   function SomeLibrary._ external => NONDET;
+}
+```
+
+Will apply the `NONDET` {ref}`havoc summary <havoc-summary>` in place of
+*every* call to a function in the `SomeLibrary` contract. Note that there are no parameter types
+*or* return types for this entry: it refers to all methods in a contract, and cannot be
+further refined with parameter type information. 
+Catch-all summaries apply only to `external` methods, and therefore
+the `external` {ref}`visibility modifier <methods-visibility>` is required. 
+Further, the only purpose of catch-all entries is to apply a summary to all
+external methods in a contract, so a summary is required. However, only
+`havocing summaries <havoc-summary>` are allowed for these entries. Finally, {ref}`envfree` and
+{ref}`optional` keywords are not allowed for catch-all entries.
+
+```{note}
+Catch-all summaries are only applied when the Prover can definitively show that
+the target of a call resolves to the contract mentioned in the catch-all summary.
+For library contracts (a common use case for these catch-all summaries)
+the Prover is almost always able to resolve the target contract.
+
+For example, if you have an entry `function Token._ external => NONDET;`,
+where the contract `Token` has a `burn()` method, the Prover will *not*
+apply the `NONDET` summary for the call `t.burn()`, unless it can prove that
+`t` must hold the address of the `Token` contract.
+```
+
 ### Location annotations
 
 ```{versionadded} 4.0
@@ -309,6 +347,41 @@ to replace a call by an approximation is made as follows:
 
 [^dont-summarize]: The `@dontsummarize` tag on method calls affects the
   summarization behavior.  See {ref}`call-expr`.
+  
+### Summary resolution
+
+With {ref}`wildcard entries <wildcard-methods-entries>`, {ref}`catch-all entries <catch-all-entries>`,
+and {ref}`exact entries <exact-methods-entries>`, multiple entries could apply to a method.
+
+For example, given a call to `Token.burn()` with a methods block that contains the
+following entries:
+
+```cvl
+methods {
+   function Token.burn() external => HAVOC_ECF;
+   function _.burn() external => HAVOC_ALL;
+   function Token._ external => NONDET;
+}
+```
+
+which summary will apply? In CVL, precedence is given to the
+summary attached to the *most specific signature*. Exact entries are considered more exact
+than wildcard entries, which are themselves more exact than catch-all entries. In other words,
+the order of precedence for summaries are:
+
+1. Summaries given for {ref}`exact entries <exact-methods-entries>`
+2. Summaries given for {ref}`wildcard entries <wildcard-methods-entries>`
+3. Summaries given for {ref}`catch-all entries <catch-all-entries>`
+
+Thus, in this example, the `HAVOC_ECF` summary would apply.
+
+```{note}
+An entry that does not have a summary attached does *not* factor into the
+precedence of summary application. For example, if the first entry in the above
+was instead `function Token.burn() external envfree;` without a summary,
+the `HAVOC_ALL` of the wildcard entry will apply.
+```
+
 
 ### Summary types
 
