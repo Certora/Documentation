@@ -474,6 +474,23 @@ The second use is when the solvers can prove the property, they just need more t
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`  
 
+
+(--global_timeout)=
+### `--global_timeout <seconds>`
+Sets the maximal timeout for the Prover.
+Gets an integer input, which represents seconds.
+
+The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
+Users may opt to set this number lower to facilitate faster iteration on specifications.
+
+**When to use it?**
+When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
+Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60`
+
+
 Options to set addresses and link contracts
 -------------------------------------------
 

@@ -45,7 +45,7 @@ class CVLLexer(RegexLexer):
                     "rule", "function", "indexed", "returns", "return",
                     "envfree", "havoc", "assuming", "require", "static_require",
                     "requireInvariant", "assert",
-                    "call", "invariant", "preserved", "static_assert", "methods",
+                    "invariant", "preserved", "static_assert", "methods",
                     "events", "description", "good_description", "filtered",
                     "reset_storage", "invoke", "sinvoke", "invoke_fallback",
                     "invoke_whole", "if", "else", "as", "using", "import", "use",
