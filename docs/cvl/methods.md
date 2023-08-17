@@ -145,7 +145,7 @@ Catch-all summaries apply only to `external` methods, and therefore
 the `external` {ref}`visibility modifier <methods-visibility>` is required. 
 Further, the only purpose of catch-all entries is to apply a summary to all
 external methods in a contract, so a summary is required. However, only
-`havocing summaries <havoc-summary>` are allowed for these entries. Finally, {ref}`envfree` and
+{ref}`havocing summaries <havoc-summary>` are allowed for these entries. Finally, {ref}`envfree` and
 {ref}`optional` keywords are not allowed for catch-all entries.
 
 ```{note}
