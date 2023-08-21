@@ -11,7 +11,7 @@ Release Notes
 - feature: Support Solidity calls also from internal summaries
 - feature: Allowing `with(env)` for summaries {ref}`with-env`
 - bugfix: `lastStorage` comparison fix for ghost maps
-- bugfix: Bitwidth for `bytesK`` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
+- bugfix: Bitwidth for `bytesK` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
 - bugfix: Fixing `struct`s encoding
 - bugfix: Matching method summaries for methods accepting `interface`s
 - bugfix: Some improvements to how quantifiers calling Solidity functions are handled
@@ -24,10 +24,10 @@ Mutation Verification
 
 Timeout and performance
 - feature: Show informative messages about cache hits
-- bugfix: fix hashes of constant strings in constructors vs. in runtime bytecode
+- bugfix: fix hashes of constant strings in constructors vs. in executable bytecode
 
 Linking
-- bugfix: Fixing source-based heuristical linker to decrease chance for wrong matches
+- bugfix: Fixing source-based heuristics linking to decrease chance for wrong matches
 - bugfix: Fixes to sighash resolution
 - bugfix: Correct revert handling in dispatched calls
 
