@@ -4,6 +4,37 @@ Release Notes
 ```{contents}
 ```
 
+4.10.1 (August 21, 2023)
+------------------------
+
+### CVL
+- feature: Support Solidity calls also from internal summaries
+- feature: Allowing `with(env)` for summaries {ref}`with-env`
+- bugfix: `lastStorage` comparison fix for ghost maps
+- bugfix: Bitwidth for `bytesK`` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
+- bugfix: Fixing `struct`s encoding
+- bugfix: Matching method summaries for methods accepting `interface`s
+- bugfix: Some improvements to how quantifiers calling Solidity functions are handled
+
+Mutation Verification
+- feature: Output CSV files of the results
+- bugfix: Manual mutations work and support for multiple manual mutations
+- bugfix: `certoraMutate` working when running from project’s root
+
+
+Timeout and performance
+- feature: Show informative messages about cache hits
+- bugfix: fix hashes of constant strings in constructors vs. in runtime bytecode
+
+Linking
+- bugfix: Fixing source-based heuristical linker to decrease chance for wrong matches
+- bugfix: Fixes to sighash resolution
+- bugfix: Correct revert handling in dispatched calls
+
+Vyper
+- Support for versions below 0.2.16 (from before storage layout output was introduced in Vyper)
+
+
 4.8.0 (August 13, 2023)
 -----------------------
 
