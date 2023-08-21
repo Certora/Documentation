@@ -16,22 +16,22 @@ Release Notes
 - bugfix: Matching method summaries for methods accepting `interface`s
 - bugfix: Some improvements to how quantifiers calling Solidity functions are handled
 
-Mutation Verification
+### Mutation Verification
 - feature: Output CSV files of the results
 - bugfix: Manual mutations work and support for multiple manual mutations
 - bugfix: `certoraMutate` working when running from project’s root
 
 
-Timeout and performance
+### Timeouts and performance
 - feature: Show informative messages about cache hits
 - bugfix: fix hashes of constant strings in constructors vs. in executable bytecode
 
-Linking
+### Linking
 - bugfix: Fixing source-based heuristics linking to decrease chance for wrong matches
 - bugfix: Fixes to sighash resolution
 - bugfix: Correct revert handling in dispatched calls
 
-Vyper
+### Vyper
 - Support for versions below 0.2.16 (from before storage layout output was introduced in Vyper)
 
 
