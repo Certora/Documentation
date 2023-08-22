@@ -43,7 +43,7 @@ The syntax for the `methods` block is given by the following [EBNF grammar](synt
 methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
-                     ( exact_pattern | wildcard_pattern )
+                     ( exact_pattern | wildcard_pattern | catch_all_pattern)
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
@@ -51,6 +51,7 @@ method_spec      ::= "function"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
+catch_all_pattern :: id "." "_" "external"
 
 visibility ::= "internal" | "external"
 
@@ -125,11 +126,13 @@ have a summary.
 (catch-all-entries)=
 ### Catch-all entries
 
-Sometimes a contract may be included in the scene that is actually totally irrelevant
-to the properties being verified; for example, some external library contract.
+Sometimes the behavior of a contract in the scene that is actually totally irrelevant
+to the properties being verified. For example, the exact behavior of an external library contract
+may be unimportant for a particular verification project.
 
-So-called "catch-all" entries may be used to apply a single
-{ref}`summary <summaries>` to all functions that declared in some contract. For example:
+So-called "catch-all" entries are useful in these situations. A catch-all entry is
+used to apply a single {ref}`summary <summaries>` to all functions that are declared in
+a given contract. For example:
 
 ```cvl
 methods {
@@ -157,7 +160,9 @@ the Prover is almost always able to resolve the target contract.
 For example, if you have an entry `function Token._ external => NONDET;`,
 where the contract `Token` has a `burn()` method, the Prover will *not*
 apply the `NONDET` summary for the call `t.burn()`, unless it can prove that
-`t` must hold the address of the `Token` contract.
+`t` must hold the address of the `Token` contract. The "Rule Call Resolution" panel
+shown in the web report can indicate whether a summary was applied.
+
 ```
 
 ### Location annotations
