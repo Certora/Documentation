@@ -18,7 +18,7 @@ Converting from CLI Options to JSON
 **JSON Keys**
 
 JSON keys in the conf file are the flag names without the leading dashes:
-```{contents} Overview
+```
 The CLI flag --verify will be stored under the "verify" in the conf file
 ```
 The JSON key for the input files in the CLI API is **"files"**
@@ -26,14 +26,14 @@ The JSON key for the input files in the CLI API is **"files"**
 **String Value CLI Options**
 
 Flags in CLI API that accept a single string will be stored as **JSON Strings**. Example:
-```{contents} 
+```
 "solc": "solc4.25"
 ```
 **Number Value CLI Options**
 
 Flags in CLI API that accept numbers will be store as **JSON Strings** not as **JSON Numbers**. Example:
 
-```{contents} 
+```
 "smt_timeout": "600"
 ```
 
@@ -41,13 +41,13 @@ Flags in CLI API that accept numbers will be store as **JSON Strings** not as **
 
 Since boolean flags in CLI API do not get a value they will be store as **JSON true**. Example:
 
-```{contents} 
+```
 "send_only": true
 ```
 **List Value CLI Options**
 
 Flags in CLI API that accept multiple strings will be stored as **JSON Arrays**. Example:
-```{contents} 
+```
     "packages": [
         "@balancer-labs/v2-solidity-utils=pkg/solidity-utils",
         "@balancer-labs/v2-vault=pkg/vault"
@@ -57,7 +57,7 @@ Flags in CLI API that accept multiple strings will be stored as **JSON Arrays**.
 **Map Value CLI Options**
 
 Flags in CLI API that are maps will be stored as **JSON Objects**. Example:
-```{contents} 
+```
     "solc_map": {
         "A": "solc5.11",
         "B": "solc5.9",
@@ -78,10 +78,10 @@ and is stored as <strong>run.conf</strong> in the build directory under <strong>
 
 **Complete Example**
 
-```{contents}
+```
 certoraRun SolcArgs/A.sol SolcArgs/A.sol:B SolcArgs/C.sol --verify A:SolcArgs/Trigger.spec --solc_map SolcArgs/A.sol=solc6.1,B=solc6.1,C=solc5.12 --multi_assert_check 
 ```
-```{contents}
+```
 {
     "files": [
         "SolcArgs/A.sol",
