@@ -3,7 +3,8 @@ Certora Prover Conf File API
 
 The **Conf File API** is an alternative API for  `certoraRun` . In terms of functionality 
 this API is identical to the [CLI Options](options.md). Instead of calling `certoraRun` 
-with a list of shell flags, some or all the flags can be stored in a [JSON](https://www.json.org/json-en.html) file:
+with a list of shell flags, some or all the flags can be stored in a [JSON](https://www.json.org/json-en.html) file 
+(to be more precise the format is [JSON5](https://json5.org/)):
 
 ```bash
 certoraRun my_params.conf
