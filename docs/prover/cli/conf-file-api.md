@@ -2,7 +2,7 @@ Certora Prover Conf File API
 ============================
 
 The **Conf File API** is an alternative API for  `certoraRun` . In terms of functionality 
-this API is identical to the [CLI Options](options.md). Instead of calling `certoraRun` 
+this API is identical to the [CLI Options](options.md) API. Instead of calling `certoraRun` 
 with a list of shell flags, some or all the flags can be stored in a [JSON](https://www.json.org/json-en.html) file 
 (to be more precise the format is [JSON5](https://json5.org/)):
 
@@ -18,7 +18,7 @@ Converting from CLI Options to JSON
 
 **JSON Keys**
 
-JSON keys in the conf file are the flag names without the leading dashes:
+JSON keys in the conf file are the CLI option flag names without the leading dashes:
 ```
 The CLI flag --verify will be stored under the "verify" in the conf file
 ```
@@ -32,7 +32,7 @@ Flags in CLI API that accept a single string will be stored as **JSON Strings**.
 ```
 **Number Value CLI Options**
 
-Flags in CLI API that accept numbers will be store as **JSON Strings** not as **JSON Numbers**. Example:
+Flags in CLI API that accept numbers will be stored as **JSON Strings** not as **JSON Numbers**. Example:
 
 ```
 "smt_timeout": "600"
@@ -40,7 +40,7 @@ Flags in CLI API that accept numbers will be store as **JSON Strings** not as **
 
 **Boolean Value CLI Options**
 
-Since boolean flags in CLI API do not get a value they will be store as **JSON true**. Example:
+Since boolean flags in CLI API do not get a value they will be stored as **JSON true**. Example:
 
 ```
 "send_only": true
