@@ -6,22 +6,22 @@ this API is identical to the [CLI Options](options.md) API. Instead of calling `
 with a list of shell flags, some or all the flags can be stored in a [JSON](https://www.json.org/json-en.html) file 
 (to be more precise the format is [JSON5](https://json5.org/)):
 
-```bash
+```
 certoraRun my_params.conf
 ```
-<div style="background-color: #FFFFE0; padding: 10px; border: 1px solid #E6DB55;">
-To denote a text file as a conf file use the <strong>.conf</strong> suffix
-</div>
 
-Converting from CLI Options to JSON
------------------------------------
+Conf files must use the <strong>.conf</strong> suffix
+
+
+How CLI Options are mapped to JSON
+----------------------------------
 
 **JSON Keys**
 
-JSON keys in the conf file are the CLI option flag names without the leading dashes:
-```
-The CLI flag --verify will be stored under the "verify" in the conf file
-```
+JSON keys in the conf file are the CLI option flag names without the leading dashes.
+For example, 
+the CLI flag **--verify** will be stored under the **"verify"** in the conf file
+
 The JSON key for the input files in the CLI API is **"files"**
 
 **String Value CLI Options**
@@ -40,7 +40,7 @@ Flags in CLI API that accept numbers will be stored as **JSON Strings** not as *
 
 **Boolean Value CLI Options**
 
-Since boolean flags in CLI API do not get a value they will be stored as **JSON true**. Example:
+Since boolean flags in the CLI API do not get a value they will be stored as **JSON true**. Example:
 
 ```
 "send_only": true
@@ -67,21 +67,25 @@ Flags in CLI API that are maps will be stored as **JSON Objects**. Example:
     
 ```
 
-<div style="background-color: #FFFFE0; padding: 10px; border: 1px solid #E6DB55;">
+
 Whenever certoraRun completes execution successfully the equivalent 
 conf file is generated
-and is stored as <strong>run.conf</strong> in the build directory under <strong>.certora_interal.</strong>
+and is stored as <strong>run.conf</strong> in the build directory under <strong>.certora_internal.</strong>
 <p>Conf file of the latest run can be found in:
-<div style="text-align:center;">
-<strong>./.certora_internal/latest/run.conf</strong>
-</div>
-</div>
+
+```
+./.certora_internal/latest/run.conf
+```
+
 
 **Complete Example**
 
+The command line:
 ```
 certoraRun SolcArgs/A.sol SolcArgs/A.sol:B SolcArgs/C.sol --verify A:SolcArgs/Trigger.spec --solc_map SolcArgs/A.sol=solc6.1,B=solc6.1,C=solc5.12 --multi_assert_check 
 ```
+
+will generate the conf file below:
 ```
 {
     "files": [
