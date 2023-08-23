@@ -67,7 +67,7 @@ Flags in CLI API that are maps will be stored as **JSON Objects**. Example:
     
 ```
 
-A conf file is generated each time certoraRun completes execution successfully.
+A conf file is generated each time `certoraRun` completes execution successfully.
 The conf file is stored as `**run.conf**` in the build directory under **`.certora_internal`**.
 <p>Conf file of the latest run can be found in:
 
