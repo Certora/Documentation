@@ -65,7 +65,10 @@ can arise during installation and how to deal with them:
 <details>
   <summary>Windows</summary>
 
-  The Certora Prover is not supported on Windows.  Windows users should use WSL.
+  The Certora Prover is not supported on Windows.  Windows users should use
+  WSL.  See [the WSL installation instructions][wsl].
+
+  [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
   % TODO: how?
 </details>
 
