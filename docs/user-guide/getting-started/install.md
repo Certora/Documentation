@@ -6,6 +6,15 @@ Step 1: prerequisites
 ---------------------
 
 <details>
+  <summary>Linux or MacOS</summary>
+  Windows users should use [WSL][wsl].
+
+  % TODO: more information?
+  </details>
+
+[wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
+
+<details>
   <summary>Python3.8.16 or newer</summary>
 
   Check your Python3 version by executing the following command on the
@@ -61,16 +70,6 @@ to `PATH` to avoid errors.
 
 The following section presents some, but maybe not all, possible warnings that
 can arise during installation and how to deal with them:
-
-<details>
-  <summary>Windows</summary>
-
-  The Certora Prover is not supported on Windows.  Windows users should use
-  WSL.  See [the WSL installation instructions][wsl].
-
-  [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
-  % TODO: how?
-</details>
 
 <details>
   <summary>macOS</summary>
