@@ -365,17 +365,17 @@ Consider an invariant `i(x)` that is verified by the Prover.  For the moment,
 let's assume that `i(x)` has no `preserved` blocks. We will prove that for all
 reachable states of the contract, `i(x)` is `true`.
 
-A state `s` is reachable if we can start with an uninitialized state (that is,
+A state `s` is reachable if we can start with an newly created state (that is,
 where all storage variables are 0), apply any constructor, and then call any
 number of contract methods to produce `s`.
 
-Let {math}`P_i(x,n)` be the statement "if we start from the uninitialized
+Let {math}`P_i(x,n)` be the statement "if we start from the newly created
 state, apply any constructor, and then call {math}`n` contract methods, then
 the resulting state satisfies `i(x)`."  Our goal is then to prove
 {math}`∀ n, ∀ x, P_i(x,n)`.  We will prove this by induction on {math}`n`.
 
 In the base case we want to show that for any {math}`x`, if we apply any
-constructor to the uninitialized contract, that the resulting state satisfies
+constructor to the newly created contract, that the resulting state satisfies
 `i(x)`.  This is exactly what the Prover verifies in the initial state check.
 In other words, the initial state check proves that {math}`∀ x, P_i(x,0)`.
 
