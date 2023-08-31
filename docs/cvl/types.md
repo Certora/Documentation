@@ -311,7 +311,7 @@ f();
 ```
 
 You can only use this `at` syntax for contract functions; it is disallowed for
-other types of functions (like CVL functions or definitions).
+other types of functions (such as CVL functions or definitions).
 ````
 
 (sort)=
