@@ -292,11 +292,11 @@ rule bigger_stake_more_earnings() {
 The `currentStorage` variable contains the state of the EVM after the most recent
 contract function call.
 
-```{deprecation} 5.0
+```{deprecated} 5.0
 `lastStorage` is a deprecated synonym for `currentStorage`.
 ```
 
-````{deprecation} 5.0
+````{deprecated} 5.0
 There is a deprecated syntax for first resetting the storage state and then
 calling a function.  If `f` is a contract function and `s` is a `storage`
 variable, you can write
