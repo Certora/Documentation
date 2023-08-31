@@ -263,32 +263,56 @@ CVL supports this kind of specification using the special `storage` type.  A
 variable of type `storage` represents a snapshot of the EVM storage and
 the state of {ref}`ghosts <ghost-functions>` at a given point in time.
 
-The EVM storage can be reset to a saved storage value `s` by appending `at s` to
-the end of a function call.  For example, the following rule checks that "if you
+The EVM storage can be reset to a saved storage by assigning to the
+`currentStorage` variable.  For example, the following rule checks that "if you
 stake more, you earn more":
 
 ```cvl
 rule bigger_stake_more_earnings() {
-    storage initial = lastStorage;
+    storage initial = currentStorage;
     env e;
 
     uint less; uint more;
     require less < more;
 
     // stake less
-    stake(e, less) at initial;
+    currentStorage = initial;
+    stake(e, less);
     earnings_less = earnings(e);
 
     // stake more
-    stake(e, more) at initial;
+    currentStorage = initial;
+    stake(e, more);
     earnings_more = earnings(e);
 
     assert earnings_less < earnings_more, "if you stake more, you earn more";
 }
 ```
 
-The `lastStorage` variable contains the state of the EVM after the most recent
+The `currentState` variable contains the state of the EVM after the most recent
 contract function call.
+
+```{deprecation} 5.0
+`lastStorage` is a deprecated synonym for `currentStorage`.
+```
+
+````{deprecation} 5.0
+There is a deprecated syntax for first resetting the storage state and then
+calling a function.  If `f` is a contract function and `s` is a `storage`
+variable, you can write
+```cvl
+f() at s;
+```
+This syntax is shorthand for first assigning to `currentStorage` and then
+calling `f`.  The above example is equivalent to
+```cvl
+currentStorage = s;
+f();
+```
+
+You can only use this `at` syntax for contract functions; it is disallowed for
+other types of functions (like CVL functions or definitions).
+````
 
 (sort)=
 ### Uninterpreted sorts
