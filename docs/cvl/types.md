@@ -289,7 +289,7 @@ rule bigger_stake_more_earnings() {
 }
 ```
 
-The `currentState` variable contains the state of the EVM after the most recent
+The `currentStorage` variable contains the state of the EVM after the most recent
 contract function call.
 
 ```{deprecation} 5.0
