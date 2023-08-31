@@ -4,6 +4,12 @@ Release Notes
 ```{contents}
 ```
 
+Future
+------
+
+### CVL
+ - add syntax for resetting storage that is separate from method calls
+
 4.10.1 (August 21, 2023)
 ------------------------
 
