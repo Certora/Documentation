@@ -97,7 +97,7 @@ explicitly qualified by the contract name that contains them.
    named, not the inheriting contract.
 
  - For types defined at the file level, the named contract can be any contract
-   from which the type is visible.
+   in the scene from which the type is visible.
 
 ```{warning}
 If you do not qualify the type name with a contract name, the type name will be
@@ -232,7 +232,7 @@ possible assignment.  This means that when evaluating the call to `f(e,args)`,
 the Prover will check the rule on every method of the contract, with every
 possible set of method arguments.
 
-Properties of methods can be extracted from methods using a field-like syntax. 
+Properties of methods can be extracted from methods using a field-like syntax.
 The following fields are available on a method `m`:
 
 *   `m.selector`   - the ABI signature of the method 
