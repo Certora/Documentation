@@ -97,7 +97,7 @@ explicitly qualified by the contract name that contains them.
    named, not the inheriting contract.
 
  - For types defined at the file level, the named contract can be any contract
-   in the scene from which the type is visible.
+   in the {term}`scene` from which the type is visible.
 
 ```{warning}
 If you do not qualify the type name with a contract name, the type name will be
