@@ -207,7 +207,8 @@ hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
 The Body of a Hook
 ------------------
 
-The body of a hook may include straight-line commands (i.e., _neither_ if statements _nor_ invocations of contract functions). Expressions in these commands may reference variables bound by the hook. For example:
+The body of a hook may contain almost any CVL code, including calls to other Solidity functions (not including parametric method calls).
+Expressions in these commands may reference variables bound by the hook. For example:
 
 ```cvl
 ghost ghostBalances(address) returns uint256;
@@ -287,3 +288,56 @@ hook Sstore balances[KEY address account] uint256 v STORAGE {
 In `Sstore` hooks, the old value is read by means of generating an `Sload`. However, any hook that can be matched to the generated `Sload` _does not_ apply within the `Sstore` hook.
 ```
 
+Notes on Hooks Calling Solidity Functions
+-----------------------------------------
+
+Hooks are not recursively applied.
+That is, if a hook calls a Solidity function `foo`, and the Solidity function call triggers a summarization that also calls another Solidity function `bar`, then any hooks that would have applied to `bar` would not be instrumented from this context.
+For example, given the following contract and specification, the rule `check` will fail.
+
+```solidity
+contract C {
+  uint public x;
+  function main() external {
+    x = 3;
+  }
+
+  function foo() external {
+    myInternalFoo();
+  }
+
+  function myInternalFoo() internal {
+    // ...
+  }
+
+  function bar() external {
+    x = 5;
+  }
+
+}
+```
+
+```cvl
+methods {
+  function myInternalFoo() internal => callBar();
+  function x() external returns (uint256) envfree;
+}
+
+function callBar() {
+  env e;
+  bar(e);
+}
+
+ghost uint xGhost;
+hook Sstore x uint v STORAGE {
+  xGhost = v;
+  env e;
+  foo(e);
+}
+
+rule check() {
+  env e;
+  main(e);
+  assert xGhost == x(); // will fail - bar()'s hooks are not instrumented. xGhost == 3 while x == 5
+}
+```
