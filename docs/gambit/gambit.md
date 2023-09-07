@@ -1,5 +1,14 @@
 # Gambit: Mutant Generation for Solidity
 
+
+<!--
+  WARNING: AUTO_GENERATED DOCUMENTATION
+
+  The following documentation is automatlically generated from the Gambit
+  README.md located at https://github.com/Certora/Gambit/README.md. Please view
+  this document for instructions on producing this file.
+-->
+
 Gambit is a state-of-the-art mutation system for Solidity.
 By applying predefined syntax transformations called _mutation operators_ (for
   example, convert `a + b` to `a - b`) to a Solidity program's source code, Gambit
@@ -460,3 +469,5 @@ For more details on each mutation type, refer to the [full documentation](https:
 
 [config-examples]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/
 [test6]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/test6.json
+
+<!-- signature: 4d3f0b61eeb095bea78f9cb7d4c0ae21 -->
