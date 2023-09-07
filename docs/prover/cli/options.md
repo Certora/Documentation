@@ -463,7 +463,7 @@ By default, we do not use a cache. If you want to use a cache to speed up the bu
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
 
-(--smt_timeout)=
+_timeout)=
 ### `--smt_timeout <seconds>`
 
 **What does it do?**  
