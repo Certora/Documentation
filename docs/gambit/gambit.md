@@ -46,8 +46,10 @@ sure it is visible on your `PATH`. Alternatively, you can specify where Gambit c
 find the Solidity compiler with the option `--solc path/to/solc`, or specify a
 `solc` binary (e.g., `solc8.12`) with the option `--solc solc8.12`.
 
-_**Note:** All tests (`cargo test`) are currently run using solc8.13. Your tests may fail if your `solc` points at
-  a different version of the compiler._
+```{note}
+All tests (`cargo test`) are currently run using solc8.13. Your tests may fail if your `solc` points at
+  a different version of the compiler.
+```
 
 ### Running  `gambit mutate` 
 
@@ -116,7 +118,9 @@ Generated 3 mutants in 0.15 seconds
 </pre>
 
 ### Example 3: Viewing Gambit results
-_**Note:** this example assumes you've just completed Example 2_
+```{note}
+This example assumes you've just completed Example 2.
+```
 
 Gambit outputs all of its results in `gambit_out`:
 
@@ -141,7 +145,7 @@ See the {ref}`results-directory` section for a detailed
 explanation of this layout. The `gambit summary` command
 pretty prints each mutant for easy inspection:
 
-![The output of `gambit summary`](img/gambit-summary.png)
+![The output of `gambit summary`](doc/gambit-summary.png)
 
 By default `gambit summary` prints info on all mutants. If you are interested in
 particular mutants you can specify a subset of mutant ids with the `--mids` flag.
