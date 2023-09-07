@@ -40,7 +40,7 @@ Flags in CLI API that accept numbers will be stored as **JSON Strings** not as *
 
 **Boolean Value CLI Options**
 
-Since boolean flags in the CLI API do not get a value they will be stored as **JSON true**. Example:
+Since some boolean flags in the CLI API do not get a value they will be stored as **JSON true**. Example:
 
 ```
 "send_only": true
