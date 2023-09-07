@@ -56,8 +56,8 @@ find the Solidity compiler with the option `--solc path/to/solc`, or specify a
 `solc` binary (e.g., `solc8.12`) with the option `--solc solc8.12`.
 
 ```{note}
-All tests (`cargo test`) are currently run using solc8.13. Your tests may fail if your `solc` points at
-  a different version of the compiler.
+All tests (`cargo test`) are currently run using `solc8.13`. Your tests may fail
+  if your `solc` points at a different version of the compiler.
 ```
 
 ### Running  `gambit mutate` 
@@ -162,7 +162,7 @@ For instance, `gambit summary --mids 3 4 5`  will only print info for mutant ids
 3 through 5.
 
 
-### Example 4: Specifying solc pass-through arguments
+### Example 4: Specifying `solc` pass-through arguments
 The Solidity compiler (`solc`) may need some extra information to successfully
 run on a file or a project.  Gambit enables this with _pass-through arguments_
 that, as the name suggests, are passed directly through to the `solc` compiler.
@@ -470,4 +470,4 @@ For more details on each mutation type, refer to the [full documentation](https:
 [config-examples]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/
 [test6]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/test6.json
 
-<!-- signature: 4d3f0b61eeb095bea78f9cb7d4c0ae21 -->
+<!-- signature: 1a9e068026c4418297b1c794e4fa9960 -->
