@@ -180,7 +180,7 @@ For projects that have complex dependencies and imports, you may need to:
 
   ```bash
   gambit mutate --filename path/to/file.sol \
-    --solc_remappings @openzepplin=node_modules/@openzeppelin @foo=node_modules/@foo
+    --solc_remappings @openzeppelin=node_modules/@openzeppelin @foo=node_modules/@foo
   ```
 
 * **Specify allow paths:** To include additional allowed paths via `solc`'s
@@ -470,4 +470,4 @@ For more details on each mutation type, refer to the [full documentation](https:
 [config-examples]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/
 [test6]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/test6.json
 
-<!-- signature: 6c87fc0197a57572c8c28dbcca7cb833 -->
+<!-- signature: 491c38855fa26bf41be344e1f85a9ef9 -->
