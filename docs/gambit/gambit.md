@@ -141,7 +141,7 @@ See the {ref}`results-directory` section for a detailed
 explanation of this layout. The `gambit summary` command
 pretty prints each mutant for easy inspection:
 
-![The output of `gambit summary`](gambit-summary.png)
+![The output of `gambit summary`](img/gambit-summary.png)
 
 By default `gambit summary` prints info on all mutants. If you are interested in
 particular mutants you can specify a subset of mutant ids with the `--mids` flag.
