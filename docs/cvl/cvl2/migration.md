@@ -1,5 +1,5 @@
-Migration guide
-===============
+CVL2 Migration Guide
+====================
 
 This section gives a step-by-step process for migrating your specs from CVL 1 to
 CVL 2.  It only addresses the changes that are most likely to arise; for full
