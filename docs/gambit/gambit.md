@@ -470,4 +470,3 @@ For more details on each mutation type, refer to the [full documentation](https:
 [config-examples]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/
 [test6]: https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/test6.json
 
-<!-- signature: 491c38855fa26bf41be344e1f85a9ef9 -->
