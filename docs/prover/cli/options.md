@@ -251,19 +251,6 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
-### `--solc_args`
-
-**What does it do?**  
-Gets a list of arguments to pass to the Solidity compiler. The arguments will be passed as is, without any formatting, in the same order.  
-arguments that are defined as standalone flags cannot be defined in `--solc_args`, including the Solidity compiler flags  `--optimize`, 
-`--optimize-runs`, `--allow-paths`, `--via-ir` and `--evm-version`. These flags should be set by the Prover flags such as:
-`--solc_optimize`, `--solc_allow_path`, `--solc_via_ir` and `--solc_evm_version`
-
-**When to use it?**  
-When the source code is compiled using non-standard options by the Solidity compiler. 
-
-**Example**  
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_args "--experimental-via-ir"`
 
 ### `--solc_map`
 
