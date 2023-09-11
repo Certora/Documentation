@@ -355,16 +355,6 @@ In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
-````{todo}
-If a methods block contains a non-optional entry for a method that doesn't exist
-in the contract, you will receive the following error message:
-
-```
-Error: Syntax error in spec file (Test CVL:2:2): External method declaration for test.foo3(uint256 i) returns (uint256) does not correspond to any known declaration. Did you mean to add optional?
-```
-
-````
-
 (cvl2-locations)=
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
@@ -442,13 +432,7 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-````{todo}
-Error message
-
-```
-Error: Syntax error in spec file (Test CVL:2:2): Cannot merge "test.foo(uint256 i)" and "test.foo(uint256 i) returns (uint256)" - they have incompatible return values: Different arities (0 vs 1)
-```
-````
+% TODO: error message
 
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
@@ -474,12 +458,12 @@ the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
 If a function does not return any value, the summary should be declared with
 `expect void`.
 
-````{todo}
-Error message
-```
-Error: Syntax error in spec file (Test CVL:3:5): Wildcard method entry with summary fooImpl() must include an expected return type
-```
-````
+% ````{todo}
+% Error message
+% ```
+% Error: Syntax error in spec file (Test CVL:3:5): Wildcard method entry with summary fooImpl() must include an expected return type
+% ```
+% ````
 
 ````{warning}
 You must check that your `expect` clauses are correct.
@@ -534,14 +518,14 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-````{todo}
-If you do not change this, you will see the following error:
-
-```
-Error: Syntax error in spec file (Test CVL:6:5): could not type expression "foo(i + 1)", message: Could not find an overloading of method test.foo that matches the given arguments: mathint.
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% 
+% ```
+% Error: Syntax error in spec file (Test CVL:6:5): could not type expression "foo(i + 1)", message: Could not find an overloading of method test.foo that matches the given arguments: mathint.
+% ```
+% 
+% ````
 
 (cvl2-comparisons-identical-types)=
 ### Comparisons require identical types
@@ -653,13 +637,13 @@ Casts from `address` or `bytes1`...`bytes32` to integer types are not
 supported (see {ref}`bytesN-support` regarding casting in the other direction, and {ref}`enum-casting` for information on casting
 enums).
 
-````{todo}
-If you do not change this, you will see the following error:
-```
-Error: Syntax error in spec file (Test CVL:3:12): could not type expression "i == j", message: Comparison of uint256 and mathint failed. Explicitly cast one type to the other (e.g. i == assert_uint256(j))
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% ```
+% Error: Syntax error in spec file (Test CVL:3:12): could not type expression "i == j", message: Comparison of uint256 and mathint failed. Explicitly cast one type to the other (e.g. i == assert_uint256(j))
+% ```
+% 
+% ````
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -810,13 +794,13 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
  - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-````{todo}
-If you do not change this, you will see the following error:
-
-```
-Error: Test CVL:5:13: Syntax error: unexpected token near
-```
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% 
+% ```
+% Error: Test CVL:5:13: Syntax error: unexpected token near
+% ```
+% ````
 
 (cvl2-removed-static-assert-require)=
 ### `static_assert` and `static_require`
@@ -824,14 +808,14 @@ Error: Test CVL:5:13: Syntax error: unexpected token near
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
 
-````{todo}
-If you do not change this, you will see the following error:
-```
-Error: Syntax error in spec file (Test CVL:2:5): could not type expression "static_require(2 > 1)", message: No function-like entry for static_require was found in the symbol table. Perhaps something was misspelled?
-Error: Syntax error in spec file (Test CVL:3:5): could not type expression "static_assert(false)", message: No function-like entry for static_assert was found in the symbol table. Perhaps something was misspelled?
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% ```
+% Error: Syntax error in spec file (Test CVL:2:5): could not type expression "static_require(2 > 1)", message: No function-like entry for static_require was found in the symbol table. Perhaps something was misspelled?
+% Error: Syntax error in spec file (Test CVL:3:5): could not type expression "static_assert(false)", message: No function-like entry for static_assert was found in the symbol table. Perhaps something was misspelled?
+% ```
+% 
+% ````
 
 (cvl2-removed-fallback)=
 ### `invoke_fallback` and `certorafallback()`
@@ -841,13 +825,13 @@ to directly invoke the fallback method.  You can work around this limitation by
 writing a parametric rule and filtering on `f.isFallback`.  See
 {ref}`cvl2-fallback-changes`.
 
-````{todo}
-If you do not change this, you will see the following error:
-```
-No function-like entry for invoke_fallback was found in the symbol table. Perhaps something was misspelled?
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% ```
+% No function-like entry for invoke_fallback was found in the symbol table. Perhaps something was misspelled?
+% ```
+% 
+% ````
 
 (cvl2-removed-invoke-whole)=
 ### `invoke_whole`
@@ -883,13 +867,13 @@ calldataarg args2;
 g(e,args2);
 ```
 
-````{todo}
-If you do not change this, you will see the following error:
-```
-Only havocing of ghosts is allowed
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% ```
+% Only havocing of ghosts is allowed
+% ```
+% 
+% ````
 
 (cvl2-removed-destructure-struct)=
 ### Destructuring syntax for struct returns
@@ -934,14 +918,14 @@ uint x; uint y;
 x, y = g();
 ```
 
-````{todo}
-If you do not change this, you will see the following error:
-
-```
-Cannot assign S to uint256, S cannot be represented using type uint256
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% 
+% ```
+% Cannot assign S to uint256, S cannot be represented using type uint256
+% ```
+% 
+% ````
 
 (cvl2-removed-double-arrays)=
 ### `bytes[]` and `string[]`
@@ -954,15 +938,15 @@ block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
 
-````{todo}
-If you do not change this, you will see the following error:
-
-```
-An array with an element of type bytes is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
-An array with an element of type string is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
-```
-
-````
+% ````{todo}
+% If you do not change this, you will see the following error:
+% 
+% ```
+% An array with an element of type bytes is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
+% An array with an element of type string is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
+% ```
+% 
+% ````
 
 (cvl2-removed-pragma)=
 ### `pragma`
