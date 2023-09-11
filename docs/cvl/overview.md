@@ -52,7 +52,7 @@ Verification Language using a modified version of the [EBNF format][EBNF].
 When reading the syntax blocks, keep the following in mind:
 
  - Text in double quotes is a terminal that matches the exact string.
-   For example, `"pragma"` matches `pragma`, and `"."` matches `.`
+   For example, `"ghost"` matches `ghost`, and `"."` matches `.`
 
  - Names that are not in double quotes are nonterminals that refers to other
    parts of the grammar.  For example, `number` matches `1` or `2` or `372`.
