@@ -67,7 +67,7 @@ quantified expression
 
 sanity
   ```{todo}
-  This section is incomplete.  See {ref}`--rule_sanity` for partial information.
+  This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
   ```
 
 scene

@@ -53,8 +53,10 @@ exclude_patterns = [
     'EVMVerifier',
     'docs/cvl/Test/*',
     'docs/user-guide/multicontract/LiquidityPoolExample',
+    'docs/cvl/cvl2/CVL2Examples',
     'docs/cvl/cvl2/cvl1',
     'docs/cvl/cvl2/cvl2',
+    '.github'
     ]
 
 

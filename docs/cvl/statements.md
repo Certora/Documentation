@@ -26,6 +26,7 @@ statement ::= type id [ "=" expr ] ";"
             | "static_require" expr ";"
             | "assert" expr [ "," string ] ";"
             | "static_assert" expr [ "," string ] ";"
+            | "satisfy" expr [ "," string ] ";"
 
             | "requireInvariant" id "(" exprs ")" ";"
 
@@ -91,6 +92,39 @@ about the counterexamples to the message.
 ```{note}
 Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 `require` does not require parentheses around the expression and message.
+```
+
+(satisfy)=
+`satisfy` statements
+--------------------
+
+A `satisfy` statement is used to check that the rule can be executed in such a
+way that the `satisfy` statement is true.  A rule with a `satisfy` statement is
+describing a scenario and must not contain `assert` statements.  We require that
+each rule ends with either a `satisfy` statement or an `assert` statement.
+
+See {ref}`producing-examples` for an example demonstrating the `satisfy`
+command.
+
+For each `satisfy` statement, the Certora verifier will produce a witness for a
+valid execution of the rule.  It will show an execution trace containing values
+for each input variable and each state variable where all `require` and `satisfy`
+statements are executed successfully.  In case there is no such execution, for
+example if the `require` statements are already inconsistent or if a solidity
+function always reverts, an error is reported.
+
+If the rule contains multiple `satisfy` statements, then all executed `satisfy`
+statements must hold.   However, a `satisfy` statement on a conditional branch
+that is not executed does not need to hold.
+
+If at least one `satisfy` statement is not satisfiable an error is reported.
+If all `satisfy` statements can be fulfilled on at least one path, the rule
+succeeds.
+
+```{note}
+A success only guarantees that there is some satisfying execution starting in
+some arbitrary state.  It is not possible to check that every possible starting
+state has an execution that satisfies the condition.
 ```
 
 (requireInvariant)=
