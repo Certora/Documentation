@@ -1,23 +1,24 @@
 The Methods Block
 =================
 
-The `methods` block contains declarations of contract methods.  Although CVL is
-able to call contract functions even if they are not declared in the methods
-block, the methods block allows users to specify additional information about
-contract methods, and can help document the expected interface of the contract.
+The `methods` block contains additional information about contract methods.
+Although you can call contract functions from CVL even if they are not
+declared in the methods block, the methods block allows users to specify
+additional information about contract methods, and can help document the
+expected interface of the contract.
 
 There are two kinds of declarations:
 
 * **Non-summary declarations** document the interface between the specification
-  and the contracts used during verification.  Non-summary declarations also
-  support spec reuse by allowing specs written against a complete interface to
-  be checked against a contract that only implements part of the interface.
+  and the contracts used during verification (see {ref}`envfree`).  Non-summary
+  declarations also support spec reuse by allowing specs written against a
+  complete interface to be checked against a contract that only implements part
+  of the interface (see {ref}`optional`).
 
-* **Summary declarations** are used to replace calls to methods having the
-  given signature with something that is simpler for the Prover to reason about.
+* **Summary declarations** are used to replace calls to certain contract methods.
   Summaries allow the Prover to reason about external contracts whose code is
   unavailable.  They can also be useful to simplify the code being verified to
-  circumvent timeouts.
+  circumvent timeouts.  See {ref}`summaries`.
 
 ```{caution}
 Summary declarations change the way that some function calls are interpreted,
@@ -32,21 +33,28 @@ functions).
 Syntax
 ------
 
+```{versionchanged} 4.0
+The syntax for methods block entries {doc}`changed in CVL 2 <cvl2/changes>`.
+```
+
 The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
 
 ```
 methods          ::= "methods" "{" { method_spec } "}"
 
-method_spec      ::= ( sighash | [ id "." ] id "(" evm_params ")" )
-                     [ "returns" types ]
-                     [ "envfree" ]
+method_spec      ::= "function"
+                     ( exact_pattern | wildcard_pattern )
+                     [ "returns" "(" evm_types ")" ]
+                     [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
-                     [ ";" ]
+                     ";"
+
+exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
+wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
+
+visibility ::= "internal" | "external"
 
 evm_param ::= evm_type [ id ]
-
-types ::= cvl_type { "," cvl_type }
-        | "(" [ evm_type [ id ] { "," evm_type [ id ] } ] ")"
 
 method_summary   ::= "ALWAYS" "(" value ")"
                    | "CONSTANT"
@@ -57,36 +65,132 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
                    | id "(" [ id { "," id } ] ")"
-
 ```
 
-See {doc}`types` for the `evm_type` and `cvl_type` productions.  See {doc}`basics`
-for the `id` production.  See {doc}`statements` for the `block` production, and
-{doc}`expr` for the `expression` production.
+See {doc}`types` for the `evm_type` production.  See {doc}`basics`
+for the `id` production.  See {doc}`expr` for the `expression` production.
+
+Methods entry patterns
+----------------------
+
+Each entry in the methods block contains a pattern that matches some set of
+contract functions.
+
+ - {ref}`exact-methods-entries` match a single method of a single contract.
+ - {ref}`wildcard-methods-entries` match a single method signature on all contracts.
+
+(exact-methods-entries)=
+### Exact entries
+
+An exact methods block entry matches a single method of a single contract.
+If the contract name is omitted, the default is `currentContract`.
+For example,
+```cvl
+methods {
+    function C.f(uint x) external returns(uint);
+}
+```
+will match the external function `f` of the contract `C`.
+
+Exact methods block entries must include a return type; the Prover will check
+that the declared return type matches the return type of the contract function.
+
+Exact entries may contain {ref}`summaries <summaries>`, {ref}`envfree`,
+{ref}`optional`, and {ref}`with-env`.
+
+(wildcard-methods-entries)=
+### Wildcard entries
+
+```{versionadded} 4.0
+Wildcard entries were {ref}`introduced with CVL 2 <cvl2-wildcards>`.
+```
+
+A wildcard entry matches any function in any contract with the indicated name,
+argument types, and visibility.
+For example,
+```cvl
+methods {
+    function _.f(uint x) external => NONDET;
+}
+```
+will match any external function called `f(uint)` in any contract.
+
+Wildcard entries must not declare a return type, since different matched
+methods may return different types.
+
+Wildcard entries may not have {ref}`envfree` or {ref}`optional`; their only
+purpose is {ref}`summarization <summaries>`.  Therefore, wildcard entries must
+have a summary.
+
+### Location annotations
+
+```{versionadded} 4.0
+Location annotations were {ref}`introduced with CVL 2 <cvl2-locations>`.
+```
+
+Methods block entries for internal functions must contain either `calldata`,
+`memory`, or `storage` annotations for all arguments with reference types (such
+as arrays).
+
+Entries for external functions may have `storage` annotations for argument
+references (in Solidity, external library functions may have storage arguments).
+If a reference-type argument does not have a `storage` annotation, the entry
+will apply to a function that has either a `calldata` or a `memory` annotation
+on the argument.
+
+(methods-visibility)=
+### Visibility modifiers
+
+```{versionadded} 4.0
+Visibility modifiers were {ref}`introduced with CVL 2 <cvl2-visibility>`.
+```
+
+Entries in the methods block must be marked either `internal` or `external`; the
+entry will only match a function with the indicated visibility.
+
+If a function is declared `public` in Solidity, then the Solidity compiler
+creates an internal implementation method, and an external wrapper method that
+calls the internal implementation.  An `internal` methods block entry will
+apply to the generated implementation method, while an `external` entry will
+apply to the generated external wrapper method.
+
+This summarization behavior can be confusing, especially because functions
+called directly from CVL are not summarized.
+
+Consider a public function `f`.  Suppose we provide an `internal` summary for
+`f`:
+
+ - Calls from CVL to `f` *will* effectively be summarized, because CVL will call
+   the external function, which will then call the internal implementation, and
+   the internal implementation will be summarized.
+
+ - Calls from another contract to `f` (or calls to `this.f` from `f`'s contract)
+   *will* effectively be summarized, again because the external function
+   immediately calls the summarized internal implementation.
+
+ - Internal calls to `f` will be summarized.
+
+On the other hand, suppose we provide an `external` summary for `f`.  In this
+case:
+
+ - Calls from CVL to `f` *will not* be summarized, because direct calls from
+   CVL to contract functions do not use summaries.
+
+ - Internal calls to `f` *will not* be summarized - they will use the original
+   implementation.
+
+ - External calls to `f` (from Solidity code that calls `this.f` or `c.f`) will
+   be summarized
+
+In most cases, public functions should use an `internal` summary, since this
+effectively summarizes both internal and external calls to the function.
 
 (envfree)=
-Entries in the `methods` block
-------------------------------
+`envfree` annotations
+---------------------
 
-Each entry in the methods block denotes either the sighash or the type signature
-for a contract method.  Methods of contracts that are introduced by {doc}`using
-statements <using>` can also be described by prefixing the method name with
-the contract variable name.  For example, if contract `C` is introduced by the
-statement `using C as c`, then the method `f(uint)` of contract `c` can be
-referred to as `c.f(uint)`.
-
-It is possible for a method signature to appear in the `methods` block but not
-in the contract being verified.  In this case, the Prover will skip any rules
-that mention the missing method, rather than reporting an error.  This behavior
-allows reusing specifications on contracts that only support part of an
-interface: only the supported methods will be verified.
-
-Following the method signature is an optional `returns` clause.  If a method
-declaration contains a `returns` clause, the declared return type must match
-the contract method's return type.  If the `returns` clause is omitted, the
-return type is taken from the contract method's return type.
-
-Following the `returns` clause is an optional `envfree` tag.  Marking a method
+Following the `returns` clause of an exact methods entry is an optional
+`envfree` tag.  Marking a method
 with `envfree` has two effects.  First, {ref}`calls <call-expr>` to the method
 from CVL do not need to explicitly pass an {term}`environment` value as the
 first argument.  Second, the Prover will verify that the method implementation
@@ -99,62 +203,88 @@ as separate rules called `envfreeFuncsStaticCheck` and
   balance depends on the message value, so payable functions also require an
   `env`.
 
-Finally, the method entry may contain an optional summarization (indicated by
-`=>` followed by the summary type and an optional application policy).  A
-summarized declaration indicates that the Prover should replace some calls to
-the summarized function by an approximation.  This is an important technique
-for working around Prover timeouts and also for working with external contracts
-whose implementation is not fixed at verification time[^internalSummaryCaveat].
+(optional)=
+`optional` annotations
+----------------------
 
-[^internalSummaryCaveat]: Because the internal method calls are not explicit in
-  the compiled bytecode, the Prover needs to use heuristics to determine where
-  internal methods are called in order to summarize them.  Occasionally, these
-  heuristics are unable to locate an internal method call, and therefore they
-  remain unsummarized.  The {ref}`-showInternalFunctions` option can aid in
-  determining whether the Prover was able to identify a specific internal
-  function call or not.
-
-The summary type determines what type of approximation is used to replace the
-function calls.  The available types are described in the following sections:
-
- * {ref}`view-summary`
- * {ref}`havoc-summary`
- * {ref}`dispatcher`
- * {ref}`auto-summary`
- * {ref}`function-summary`
-
-The application policy determines which function calls are replaced by
-approximations.  See {ref}`summaries` for details.
-
-```{todo}
-Some of the method summary types are unsupported for methods having certain
-argument or return types.  The exact limitations are currently undocumented.
+```{versionadded} 4.0
+Prior to {ref}`CVL 2 <cvl2-optional>`, all methods entries used the `optional`
+behavior, and there was no `optional` annotation.
 ```
 
+When multiple contracts implement a shared interface, it is convenient to write
+a generic spec of generic rules.  Some interfaces specify optional methods that
+some implementations provide and others don't.  For example, some ERC20
+implementations contain a `mint` method, but others don't.
+
+In this situation, you might like to write rules that are checked if the
+contract contains the `mint` method and are skipped otherwise.
+
+To do so, you can add the `optional` annotation to the exact methods block
+entry for the function.  Any rules that reference an optional method will be
+skipped if the method does not exist in the contract.
+For example:
+```cvl
+methods {
+    function mint(address _to, uint256 _amount, bytes calldata _data) external;
+}
+```
+
+(with-env)=
+`with(env e)` clauses
+---------------------
+
+After the `optional` annotation, an entry may contain a `with(env e)` clause.
+The `with` clause introduces a new variable (`e` for `with(env e)`) to represent
+the {ref}`environment <env>` that is passed to a summarized function; the
+variable can be used in function summaries.  `with` clauses may only be used if
+the entry has a function summary. See {ref}`function-summary` below for more
+information about the environment provided by the `with` clause.
+
+
 (summaries)=
-Which function calls are summarized
------------------------------------
+Summaries
+---------
+
+**Summary declarations** are used to replace calls to methods having the
+given signature with something that is simpler for the Prover to reason about.
+Summaries allow the Prover to reason about external contracts whose code is
+unavailable.  They can also be useful to simplify the code being verified to
+circumvent timeouts.
+
+A summary is indicated by adding `=>` followed by the summary to the end of
+the entry in the methods block.  For example,
+```cvl
+function f(uint) external returns(uint) => ALWAYS(0);
+```
+will replace calls to `f` with an `ALWAYS` summary, while
+```cvl
+function f(uint x) external returns(uint) => cvl_function(x);
+```
+will replace calls to `f` with the CVL function `cvl_function`.
+
+There are several kinds of summaries available:
+
+ - {ref}`view-summary`.  These assume that the called method have no side-effects
+   and simply replace them with a specific value.
+
+ - {ref}`havoc-summary`.  These assume that the called method can have arbitrary
+   side-effects on the storage of some contracts.
+
+ - {ref}`dispatcher` assume that the receiver of the method call could be any
+   contract that implements the method.
+
+ - {ref}`function-summary` replace calls to the summarized method with {doc}`functions`
+   or {ref}`ghost-axioms`.
+
+ - {ref}`auto-summary` are the default for unresolved calls.
+
+### Summary application
 
 To decide whether to summarize a given internal or external function call, the
 Prover first determines whether it matches any of the declarations in the
 methods block, and then uses the declaration and the calling context to
-determine whether the call should be replaced by an approximation.
-
-To determine whether a call matches a declaration, the tool computes an ABI
-signature for both the call and the method summary.  This ABI signature may be
-simpler than the declaration in Solidity or the `methods` block, because
-ABI signatures are less expressive than Solidity type signatures.  In
-particular, structs are converted into tuples and location annotations such as
-`memory` or `calldata` are dropped.  If there are multiple internal functions or
-multiple method summaries that are converted to the same summarized ABI
-signature, the Prover will report an error.
-
-Method summaries match all calls with the matching ABI signature, including
-internal methods and external methods on all contracts.  There is currently no
-way to apply different summaries to different contracts or to summarize some
-calls and not others to methods with the same ABI signature.  For this reason,
-it is not possible to specify a summary for a method that is qualified by a
-contract name.
+determine whether the call should be replaced by an approximation.[^dont-summarize]
 
 To determine whether a function call is replaced by an approximation, the
 Prover considers the context in which the function is called in addition to the
@@ -177,23 +307,21 @@ to replace a call by an approximation is made as follows:
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
 
-```{todo}
-The `@dontsummarize` tag on method calls is currently undocumented but likely
-affects the summarization behavior.  See {ref}`call-expr`.
-```
+[^dont-summarize]: The `@dontsummarize` tag on method calls affects the
+  summarization behavior.  See {ref}`call-expr`.
 
-Summary types
--------------
+### Summary types
 
 (view-summary)=
-### View summaries: `ALWAYS`, `CONSTANT`, `PER_CALLEE_CONSTANT`, and `NONDET`
+#### View summaries: `ALWAYS`, `CONSTANT`, `PER_CALLEE_CONSTANT`, and `NONDET`
 
 These four summary types treat the summarized methods as view methods: the
 summarized methods are replaced by approximations that do not update the state
 of any contract (aside from any balances transferred with the method call
 itself).  They differ in the assumptions made about the return value:
 
- * The `ALWAYS(v)` approximation assumes that the method always returns `v`
+ * The `ALWAYS(v)` approximation assumes that the method always returns `v`.
+   The value `v` must be a literal boolean or integer.
 
  * The `CONSTANT` approximation assumes that all calls to methods with the given
    signature always return the same result.  If the summarized method is
@@ -211,8 +339,14 @@ itself).  They differ in the assumptions made about the return value:
    returned values is *not* assumed to match the requested number, unless
    {ref}`-optimisticReturnsize` is specified.
 
+```{warning}
+Using `CONSTANT` and `PER_CALLEE_CONSTANT` summaries for functions that have
+variable-sized outputs is a potential source of {term}`vacuity` and should be
+avoided.  Prefer a `NONDET` summary where possible.
+```
+
 (havoc-summary)=
-### Havoc summaries: `HAVOC_ALL` and `HAVOC_ECF`
+#### Havoc summaries: `HAVOC_ALL` and `HAVOC_ECF`
 
 The most conservative summary type is `HAVOC_ALL`.  This summary makes no
 assumptions at all about the called function: it is allowed to have arbitrary
@@ -242,7 +376,7 @@ method to revert.  If you want to ignore this particular revert condition, you
 can pass the {ref}`-optimisticReturnsize` option.
 
 (dispatcher)=
-### `DISPATCHER` summaries
+#### `DISPATCHER` summaries
 
 The `DISPATCHER` summary type provides a useful approximation for methods of
 interfaces that are implemented by multiple contracts.  For example, the
@@ -274,8 +408,12 @@ The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
 all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
 ```
 
+```{note}
+`DISPATCHER` summaries cannot be used to summarize library calls.
+```
+
 (auto-summary)=
-### `AUTO` summaries
+#### `AUTO` summaries
 
 The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
 
@@ -301,7 +439,7 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   in the Solidity manual for details.
 
 (function-summary)=
-### Function summaries
+#### Function summaries
 
 Contract methods can also be summarized using CVL {doc}`functions` or
 {ref}`ghost-axioms` as approximations.  Contract calls to the summarized method
@@ -312,7 +450,94 @@ place of the summary type.  The function call can only refer directly to the
 variables defined as arguments in the summary declarations; expressions
 that combine those variables are not supported.
 
-There are a few restrictions on the functions that can be used as approximations:
- - Functions used as summaries are not allowed to call contract functions.
- - Functions used as summaries may not have accept arguments or return values that have struct or array types.
+The function call may also use the special variable `calledContract`, which
+gives the address of the contract on which the summarized method was called.
+This is useful for identifying the called contract in {ref}`wildcard summaries
+<cvl2-wildcards>`.  The `calledContract` keyword is only defined in the `methods`
+block.
+
+For example, a wildcard summary for a `transferFrom` method may apply to
+multiple ERC20 contracts; the summary can update the correct ghost variables as
+follows:
+
+```cvl
+methods {
+    function _.transferFrom(address from, address to, uint256 amount) external
+        => cvlTransferFrom(calledContract, from, to, amount);
+}
+
+ghost mapping(address => mapping(address => mathint)) tokenBalances;
+
+function cvlTransferFrom(address token, address from, address to, uint amount) {
+    if (...) {
+        tokenBalances[token][from] -= amount;
+        tokenBalances[token][to]   += amount;
+    }
+}
+```
+
+The call can also refer to a variable of type `env` introduced by a
+{ref}`with(env) clause <with-env>`.  Here `e` may be replaced with any valid identifier.
+
+The variable defined by the `with` clause contains an {ref}`env type <env>`
+giving the context for the summarized function.  This context may be different
+from the `env` passed to the original call from the spec.  In particular:
+
+ - `e.msg.sender` and `e.msg.value` refer to the sender and value from the most recent call to a
+   non-library[^library-with-env] external function (as in Solidity)
+
+ - The variables `e.tx.origin`, `e.block.number`, and `e.block.timestamp` will
+   be the same as the the environment for the outermost function call.
+
+[^library-with-env]: As [in solidity][solidity-delegate-call], `msg.sender` and `msg.value` do not
+  change for `delegatecall`s or library calls.
+
+[solidity-delegate-call]: https://docs.soliditylang.org/en/v0.8.6/introduction-to-smart-contracts.html?#delegatecall-callcode-and-libraries
+
+Continuing the above example, one can use the `env` to summarize the `transfer`
+method:
+
+```cvl
+methods {
+    function _.transfer(address to, uint256 amount) external with(env e)
+        => cvlTransfer(calledContract, e, to, amount);
+}
+
+function cvlTransfer(address token, env passedEnv, address to, uint amount) {
+    ...
+}
+
+rule example {
+    env e;
+    address sender;
+    require e.msg.sender == sender;
+    c.process(e);
+}
+```
+
+In this example, if the `process` method calls `t.transfer(...)`, then in the
+`cvlTransfer` function, `token` will be `t`, `passedEnv.msg.sender` will be
+`c`, and `passedEnv.tx.origin` will be `sender`.
+
+
+There is a restriction on the functions that can be used as approximations.
+Namely, the types of any arguments passed to or values returned from the summary
+must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
+Arguments that are not accessed in the summary may have any type.
+  
+Function summaries for *internal* methods have a few additional restrictions on 
+their arguments and return types:
+ - arrays (including static arrays, `bytes`, and `string`) are not supported
+ - struct fields must have [value types][solidity-value-types]
+ - `storage` and `calldata` structs are not supported, only `memory`
+
+You can still summarize functions that take unconvertible types as arguments,
+but you cannot access those arguments in your summary.
+
+In case of recursive calls due to the summarization, the recursion limit can be set with 
+`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
+
+[solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 

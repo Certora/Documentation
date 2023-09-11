@@ -1,6 +1,3 @@
-[submodule "EVMVerifier"]
-	path = EVMVerifier
-	url = https://github.com/Certora/EVMVerifier.git
 [submodule "docs/user-guide/multicontract/LiquidityPoolExample"]
 	path = docs/user-guide/multicontract/LiquidityPoolExample
 	url = https://github.com/Certora/LiquidityPoolExample.git
