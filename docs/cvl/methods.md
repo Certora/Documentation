@@ -483,7 +483,7 @@ The variable defined by the `with` clause contains an {ref}`env type <env>`
 giving the context for the summarized function.  This context may be different
 from the `env` passed to the original call from the spec.  In particular:
 
- - `e.msg.sender` and `e.msg.value` refer to the most recent call to a
+ - `e.msg.sender` and `e.msg.value` refer to the sender and value from the most recent call to a
    non-library[^library-with-env] external function (as in Solidity)
 
  - The variables `e.tx.origin`, `e.block.number`, and `e.block.timestamp` will
