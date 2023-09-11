@@ -227,6 +227,9 @@ and set to a nonzero value in the calls to `balanceOf`.  This counterexample is
 not ruled out by the `preserved` block because the `preserved` block only
 places restrictions on the environment passed to `balanceOf`.
 
+In general, you should be cautious of invariants that depend on an environment;
+see {ref}`invariant-assumptions` for more details.
+
 ````
 
 Filters
