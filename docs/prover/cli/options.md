@@ -751,7 +751,3 @@ dramatically increase the time taken for verification.
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
-```{todo}
-When should you use it?
-```
-
