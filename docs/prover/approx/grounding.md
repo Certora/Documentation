@@ -3,7 +3,7 @@
 
 {term}`Quantified expressions <quantifier>` are a very powerful tool for writing
 specifications, but they can also lead to incredibly long running times.  For
-this reason, the Prover uses an approximation "grounding".
+this reason, the Prover uses an approximation called "grounding".
 
 It is not possible to ground every expression perfectly.  While grounding is
 {term}`sound` (i.e. it will not allow a rule to be verified if it is not true),
@@ -158,6 +158,11 @@ Although you are allowed to call functions on complicated expressions that use
 quantified variables, doing so may produce spurious counterexamples.  For
 example, the following is allowed, but is likely to produce spurious
 counterexamples (because `x` itself is not an argument to a function):
+
+```{todo}
+I'm sort of surprised that we allow this.  It would be simpler if we just required
+that `x` must be used as a simple argument to some function, right?
+```
 
 ```cvl
 require forall uint x . f(2 * x) == 0;
