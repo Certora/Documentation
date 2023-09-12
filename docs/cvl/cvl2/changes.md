@@ -367,10 +367,6 @@ omitted unless it's the `storage` annotation on an external library function, in
 which case it is required (the reasoning here is to have the information required
 in order to correctly calculate a function's sighash).
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-wildcards)=
 ### Summaries only apply to one contract by default
 
@@ -437,10 +433,6 @@ from the type declared in the `methods` block entry.
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
 
-% ```{todo}
-% Error message
-% ```
-
 If a wildcard entry has a ghost or function summary, the user must explicitly
 provide an `expect` clause to the summary.  The `expect` clause tells the
 Prover how to interpret the value returned by the summary.  For example:
@@ -457,13 +449,6 @@ the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
 
 If a function does not return any value, the summary should be declared with
 `expect void`.
-
-% ````{todo}
-% Error message
-% ```
-% Error: Syntax error in spec file (Test CVL:3:5): Wildcard method entry with summary fooImpl() must include an expected return type
-% ```
-% ````
 
 ````{warning}
 You must check that your `expect` clauses are correct.
@@ -518,15 +503,6 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-% ````{todo}
-% If you do not change this, you will see the following error:
-% 
-% ```
-% Error: Syntax error in spec file (Test CVL:6:5): could not type expression "foo(i + 1)", message: Could not find an overloading of method test.foo that matches the given arguments: mathint.
-% ```
-% 
-% ````
-
 (cvl2-comparisons-identical-types)=
 ### Comparisons require identical types
 
@@ -578,10 +554,6 @@ are to change `sum` to a `mathint` (which would prevent the vacuity) or write
 an explicit `assert` or `require` cast (which would make the vacuity explicit).
 ````
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-casting)=
 ### Implicit and explicit casting
 
@@ -627,23 +599,11 @@ As with normal `require` statements, require casts can cause vacuity and should
 be used with care.
 ```
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 CVL 2 supports assert and require casts on all numeric types.
 
 Casts from `address` or `bytes1`...`bytes32` to integer types are not
 supported (see {ref}`bytesN-support` regarding casting in the other direction, and {ref}`enum-casting` for information on casting
 enums).
-
-% ````{todo}
-% If you do not change this, you will see the following error:
-% ```
-% Error: Syntax error in spec file (Test CVL:3:12): could not type expression "i == j", message: Comparison of uint256 and mathint failed. Explicitly cast one type to the other (e.g. i == assert_uint256(j))
-% ```
-% 
-% ````
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -663,10 +623,6 @@ ghost mapping(uint => uint) a {
     axiom forall uint x . forall uint y . (to_mathint(y) == x + 1) => a[y] == 0
 }
 ```
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (enum-casting)=
 ### Casting enums to integer types
@@ -708,10 +664,6 @@ uint24 u;
 bytes3 x = to_bytes3(u); // This is OK
 bytes4 y = to_bytes4(u); // This will fail
 ```
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (cvl2-bitwise)=
 ### Changes for bitwise operations
@@ -761,10 +713,6 @@ assert f.isFallback,
     "f must be the fallback";
 ```
 
-% ```{todo}
-% Error message
-% ```
-
 Removed features
 ----------------
 
@@ -782,10 +730,6 @@ In CVL 1, you could write a sighash instead of a method identifier in the
 `methods` block.  This feature is no longer supported.  You will need to have
 the name and argument types of the called method in order to provide an entry.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-removed-invoke)=
 ### `invoke`, `sinvoke`, and `call`
 
@@ -794,28 +738,11 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
  - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-% ````{todo}
-% If you do not change this, you will see the following error:
-% 
-% ```
-% Error: Test CVL:5:13: Syntax error: unexpected token near
-% ```
-% ````
-
 (cvl2-removed-static-assert-require)=
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
-
-% ````{todo}
-% If you do not change this, you will see the following error:
-% ```
-% Error: Syntax error in spec file (Test CVL:2:5): could not type expression "static_require(2 > 1)", message: No function-like entry for static_require was found in the symbol table. Perhaps something was misspelled?
-% Error: Syntax error in spec file (Test CVL:3:5): could not type expression "static_assert(false)", message: No function-like entry for static_assert was found in the symbol table. Perhaps something was misspelled?
-% ```
-% 
-% ````
 
 (cvl2-removed-fallback)=
 ### `invoke_fallback` and `certorafallback()`
@@ -825,22 +752,10 @@ to directly invoke the fallback method.  You can work around this limitation by
 writing a parametric rule and filtering on `f.isFallback`.  See
 {ref}`cvl2-fallback-changes`.
 
-% ````{todo}
-% If you do not change this, you will see the following error:
-% ```
-% No function-like entry for invoke_fallback was found in the symbol table. Perhaps something was misspelled?
-% ```
-% 
-% ````
-
 (cvl2-removed-invoke-whole)=
 ### `invoke_whole`
 
 The `invoke_whole` keyword is no longer supported.
-
-% ```{todo}
-% What did it do?
-% ```
 
 (cvl2-removed-havoc)=
 ### Havocing local variables
@@ -866,14 +781,6 @@ f(e,args);
 calldataarg args2;
 g(e,args2);
 ```
-
-% ````{todo}
-% If you do not change this, you will see the following error:
-% ```
-% Only havocing of ghosts is allowed
-% ```
-% 
-% ````
 
 (cvl2-removed-destructure-struct)=
 ### Destructuring syntax for struct returns
@@ -918,15 +825,6 @@ uint x; uint y;
 x, y = g();
 ```
 
-% ````{todo}
-% If you do not change this, you will see the following error:
-% 
-% ```
-% Cannot assign S to uint256, S cannot be represented using type uint256
-% ```
-% 
-% ````
-
 (cvl2-removed-double-arrays)=
 ### `bytes[]` and `string[]`
 
@@ -938,33 +836,15 @@ block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
 
-% ````{todo}
-% If you do not change this, you will see the following error:
-% 
-% ```
-% An array with an element of type bytes is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
-% An array with an element of type string is currently unsupported in CVL. Only primitive elements which fit into one word are allowed.
-% ```
-% 
-% ````
-
 (cvl2-removed-pragma)=
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature
 was not used and has been removed in CVL 2.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 ### `events`
 
 CVL 1 had syntax for an `events` block, but it did nothing and has been removed.
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 Changes to the Command Line Interface (CLI)
 -------------------------------------------
