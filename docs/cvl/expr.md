@@ -53,7 +53,7 @@ specials_fields ::=
 
 special_vars ::=
            | "lastReverted" | "lastHasThrown"
-           | "lastStorage"
+           | "lastStorage"  | "currentStorage"
            | "allContracts"
            | "lastMsgSig"
            | "_"
@@ -287,7 +287,8 @@ There are also several built-in variables:
    overwriting the value set by `withdraw`.
    ````
  
- * `lastStorage` refers to the most recent state of the EVM storage.  See
+ * `currentStorage` refers to the most recent state of the EVM storage.
+   `lastStorage` is a deprecated synonym for `currentStorage`.  See
    {ref}`storage-type` for more details.
 
  * You can use the variable `_` as a placeholder for a value you are not
@@ -408,9 +409,9 @@ using MyContract as c;
 using OtherContract as o;
 
 rule compare_state_of_c(env e) {
-   storage init = lastStorage;
+   storage init = currentStorage;
    o.mutateOtherState(e); // changes `o` but not `c`
-   assert lastStorage[c] == init[c];
+   assert currentStorage[c] == init[c];
 }
 ```
 
@@ -421,9 +422,9 @@ using MyContract as c;
 using OtherContract as o;
 
 rule compare_state_of_c(env e) {
-   storage init = lastStorage;
+   storage init = currentStorage;
    c.mutateContractState(e); // changes `c`
-   assert lastStorage[c] == init[c];
+   assert currentStorage[c] == init[c];
 }
 ```
 
