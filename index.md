@@ -10,6 +10,7 @@ docs/user-guide/index.md
 docs/cvl/index.md
 docs/prover/index.md
 docs/gambit/index.md
+docs/equiv-check/index.md
 docs/confluence/index.md
 ```
 

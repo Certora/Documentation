@@ -52,13 +52,13 @@ evaluates to true in every reachable state of the contract, and for all
 possible values of the parameters.
 
 While verifying an invariant, the Prover checks two things.  First, it checks
-that the invariant is established after the constructor.  Second, it checks
+that the invariant is established after calling any constructor.  Second, it checks
 that the invariant holds after the execution of any contract method, assuming
 that it held before the method was executed (if it does hold, we say the method
 *preserves* the invariant).
 
-If an invariant always holds at the beginning of every method call, it is
-always safe to assume that it is true.  The
+If an invariant is proven, it is safe to assume that it holds in other rules
+and invariants.  The
 {ref}`requireInvariant command <requireInvariant>` makes it easy to add this
 assumption to another rule, and is a quick way to rule out counterexamples that
 start in impossible states.  See also {doc}`/docs/user-guide/patterns/safe-assum`.
@@ -184,7 +184,9 @@ invariant zero_address_has_no_balance()
 
 The variables defined as parameters to the invariant are also available in
 preserved blocks, which allows restricting the arguments that are considered
-when checking that a method preserves an invariant.
+when checking that a method preserves an invariant.  As always, you should use
+caution when adding additional `require` statements, as they can rule out
+important cases.
 
 ````{caution}
 
@@ -205,10 +207,28 @@ we are checking for preservation.
 To see why this is not the desired behavior, consider a `deposit` method that
 increases the message sender's balance.  When the
 `zero_address_has_no_balance_v2` invariant is checked on `deposit`, the Prover
-will report a violation with the `msg.sender` set to 0 in the call to `deposit`
+will effectively check the following (see {ref}`invariant-as-rule`):
+
+```cvl
+env e;
+require balanceOf(e,0) == 0;
+
+env calledEnv;
+require e.msg.sender != 0; // from the `preserved` block
+deposit(calledEnv, ...);
+
+assert balanceOf(e,0) == 0;
+```
+
+Notice that the `calledEnv` is not restricted by the `preserved` block.
+
+The Prover will report a violation with the `msg.sender` set to 0 in the call to `deposit`
 and set to a nonzero value in the calls to `balanceOf`.  This counterexample is
 not ruled out by the `preserved` block because the `preserved` block only
 places restrictions on the environment passed to `balanceOf`.
+
+In general, you should be cautious of invariants that depend on an environment;
+see {ref}`invariant-assumptions` for more details.
 
 ````
 
@@ -231,10 +251,11 @@ expression defining the invariant.  The body of the `filtered` block must
 contain a single filter of the form `var -> expr`, where `var` is a variable
 name, and `expr` is a boolean expression that may depend on `var`.
 
-Before verifying that a method `m` preserves an invariant, the `expr` is
+Before verifying that a method preserves an invariant, the `expr` is
 evaluated with `var` bound to a `method` object.  This allows `expr` to refer
-to the fields of `var`, such as `var.selector` and `var.isView`.  See
-{ref}`method-type` for a list of the fields available on `method` objects.
+to the checked method using `var`'s fields, such as `var.selector` and
+`var.isView`.  See {ref}`method-type` for a list of the fields available on
+`method` objects.
 
 If the expression evaluates to `false` with `var` replaced by a given method,
 the Prover will not check that the method preserves the invariant.  For example,
@@ -245,20 +266,21 @@ method:
 invariant balance_is_0(address a)
     balanceOf(a) == 0
     filtered {
-        f -> f.selector != deposit(uint).selector
+        f -> f.selector != sig:deposit(uint).selector
     }
 ```
 
 In this example, when the variable `f` is bound to `deposit(uint)`, the
-expression `f.selector != deposit(uint).selector` evaluates to `false`, so the
+expression `f.selector != sig:deposit(uint).selector` evaluates to `false`, so the
 method will be skipped.
 
 ```{note}
-If there is a {ref}`preserved block <preserved>` for a method it will be
-verified even if it should be filtered out.
+If there is a {ref}`preserved block <preserved>` for a method, the method will
+be verified even if the filter would normally exclude it.
 ```
 
 
+(invariant-as-rule)=
 Writing an invariant as a rule
 ------------------------------
 
@@ -279,7 +301,7 @@ The following example demonstrates all of the features of invariants:
 invariant complex_example(env e1, uint arg)
     property_of(e1, arg)
     filtered {
-        m -> m.selector != ignored(uint, address).selector
+        m -> m.selector != sig:ignored(uint, address).selector
     }
     {
         preserved with (env e2) {
@@ -298,13 +320,13 @@ The preservation check for this invariant could be written as a
 ```cvl
 rule complex_example_as_rule(env e1, uint arg, method f)
 filtered {
-    f -> f.selector != ignored(uint, address).selector
+    f -> f.selector != sig:ignored(uint, address).selector
 }
 {
     // pre-state check
     require property_of(e1, arg);
 
-    if (f.selector == special_method(address).selector) {
+    if (f.selector == sig:special_method(address).selector) {
         // special_method preserved block
         address a;
         env e3;
@@ -346,17 +368,17 @@ Consider an invariant `i(x)` that is verified by the Prover.  For the moment,
 let's assume that `i(x)` has no `preserved` blocks. We will prove that for all
 reachable states of the contract, `i(x)` is `true`.
 
-A state `s` is reachable if we can start with an uninitialized state (that is,
+A state `s` is reachable if we can start with an newly created state (that is,
 where all storage variables are 0), apply any constructor, and then call any
 number of contract methods to produce `s`.
 
-Let {math}`P_i(x,n)` be the statement "if we start from the uninitialized
+Let {math}`P_i(x,n)` be the statement "if we start from the newly created
 state, apply any constructor, and then call {math}`n` contract methods, then
 the resulting state satisfies `i(x)`."  Our goal is then to prove
 {math}`∀ n, ∀ x, P_i(x,n)`.  We will prove this by induction on {math}`n`.
 
 In the base case we want to show that for any {math}`x`, if we apply any
-constructor to the uninitialized contract, that the resulting state satisfies
+constructor to the newly created contract, that the resulting state satisfies
 `i(x)`.  This is exactly what the Prover verifies in the initial state check.
 In other words, the initial state check proves that {math}`∀ x, P_i(x,0)`.
 

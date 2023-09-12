@@ -1,5 +1,5 @@
-Hooks
-=====
+Storage Hooks
+=============
 
 Motivation
 ----------
@@ -131,10 +131,10 @@ contract Test {
 
 ### Structs in Static Slots
 
-In static slots we can reason about packing from the hook pattern. For example, if we wanted to hook on a write to `s_1.second` we would write the following hook (remember offsets are in bytes):
+In static slots we can reason about packing from the hook pattern. For example, if we wanted to hook on a write to `s_2.second` we would write the following hook (remember offsets are in bytes):
 
 ```cvl
-hook Sstore s_1.(offset 16) uint64 second (uint64 old_second) STORAGE {
+hook Sstore s_2.(offset 16) uint64 second (uint64 old_second) STORAGE {
   // hook body
 }
 ```

@@ -37,7 +37,7 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:  
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-### `--assert`
+### `--assert_contracts`
 
 **What does it do?**  
 Replaces all EVM instructions that cause a non-benign revert in the smart contract with an assertion. Non-benign reverts include division by 0, bad dereference of an array, `throw` command, and more.  
@@ -48,7 +48,7 @@ When you want to see if a suspect instruction can fail in the code, without writ
 
 **Example**  
 If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:  
-`certoraRun Bank.sol:Investor --assert Investor`
+`certoraRun Bank.sol:Investor --assert_contracts Investor`
 
 Most frequently used options
 ----------------------------
@@ -66,7 +66,6 @@ To create the message above, we used
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
 ### `--rule`
-### `--rules`
 
 **What does it do?**  
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.  
@@ -86,8 +85,6 @@ If we want to verify only `withdraw_succeeds`, we run
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run  
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
-
-Note that `--rules` (plural) may be used alternatively to `--rule`. The two options are identical, but `--rules` may feel more natural when more than one rule is specified. 
 
 (--send_only)=
 ### `--send_only`
@@ -148,79 +145,8 @@ When you have a rule with multiple assertions:
 
 **What does it do?**
 This option enables sanity checking for rules.  The `--rule_sanity` option may
-be followed by one of `none`, `basic`, or `advanced`; these are described below.
+be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/sanity` for more information about sanity checks.
-
-There are 3 kinds of sanity checks:
-
-1. **Reachability** checks that even when ignoring all the user-provided
-   assertions, the end of the rule is reachable. This check ensures that that
-   the combination of `require` statements does not rule out all possible
-   counterexamples.
-
-   For example, the following rule would be flagged by the reachability check:
-   ```cvl
-   rule vacuous {
-     uint x;
-     require x > 2;
-     require x < 1;
-     assert f(x) == 2, "f must return 2";
-   }
-   ```
-   Since there are no models satisfying both `x > 2` and `x < 1`, this rule
-   will always pass, regardless of the behavior of the contract.  This is an
-   example of a *vacuous* rule - one that passes only because the preconditions
-   are contradictory.
-
-   ```{caution}
-   The reachability check will *pass* on vacuous rules and *fail* on correct
-   rules.  A passing reachability check indicates a potential error in the rule.
-   
-   The exception is when a {term}`parametric rule` is checked on the default
-   fallback function: The default fallback function should always revert, so
-   there are no examples that can reach the end of the rule.
-   ```
-
-2. **Assert-Vacuity** checks that individual `assert` statements are not
-   tautologies.  A tautology is a statement that is true on all examples, even
-   if all the `require` and `if` conditions are removed.
-
-   For example, the following rule would be flagged by the assert-vacuity check:
-   ```cvl
-   rule tautology {
-     uint x; uint y;
-     require x != y;
-     ...
-     assert x < 2 || x >= 2,
-      "x must be smaller than 2 or greater than or equal to 2";
-   }
-   ```
-   Since every `uint` satisfies the assertion, the assertion is tautological,
-   which is likely to be an error in the specification.
-
-3. **Require-Redundancy** checks for redundant `require` statements.
-   A `require` is considered to be redundant if it can be removed without
-   affecting the satisfiability of the rule.
-
-   For example, the require-redundancy check would flag the following rule:
-   ```cvl
-   rule require_redundant {
-     uint x;
-     require x > 3;
-     require x > 2;
-     assert f(x) == 2, "f must return 2";
-   }
-   ```
-   In this example, the second requirement is redundant, since any `x` greater
-   than 3 will also be greater than 2.
-
-The `rule_sanity` flag may be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
- * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity checks are performed.
- * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
- * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
-
-We recommend starting with the `basic` mode, since not all rules flagged by the
-`advanced` mode are incorrect.
 
 **When to use it?**  
 We suggest using this option routinely while developing rules.  It is also a
@@ -254,16 +180,6 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
-### `--solc_args`
-
-**What does it do?**  
-Gets a list of arguments to pass to the Solidity compiler. The arguments will be passed as is, without any formatting, in the same order.  
-
-**When to use it?**  
-When the source code is compiled using non-standard options by the Solidity compiler. 
-
-**Example**  
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_args "['--optimize', '--optimize-runs', '200']"`
 
 ### `--solc_map`
 
@@ -276,17 +192,63 @@ When different contracts have to be compiled for different Solidity versions.
 **Example**  
 `certoraRun Bank.sol Exchange.sol --verify Bank:Bank.spec --solc_map Bank=solc4.25,Exchange=solc6.7`
 
-### `--path`
+### `--solc_optimize`
+
+**What does it do?**  
+Passes the value of this option  to the solidity compiler's option `--solc_optimize`.
+
+**When to use it?**  
+When we want to select the Solidity compiler EVM version
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+
+### `--solc_optimize`
+
+**What does it do?**  
+Passes the value of this option as is to the solidity compiler's option `--optimize` and `--optimize-runs`.
+
+**When to use it?**  
+When we want to activate in the solidity compiler the opcode-based optimizer for the generated bytecode and control the 
+number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300`
+
+### `--solc_via_ir`
+
+**What does it do?**  
+Passes the value of this option  to the solidity compiler's option `--via-ir`.
+
+**When to use it?**  
+When we want to enable the IR-based code generator
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
+
+### `--solc_evm_version`
+
+**What does it do?**  
+Passes the value of this option  to the solidity compiler's option `--evm-version`.
+
+**When to use it?**  
+When we want to select the Solidity compiler EVM version
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+
+### `--solc_allow_path`
 
 **What does it do?**  
 Passes the value of this option as is to the solidity compiler's option `--allow-paths`.
 See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
 
 **When to use it?**  
-When we want for security reasons to limit the locations for loaded sources to specific directories
+When we want to add an additional location the Solidity compiler to load sources from
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --path ~/Projects/Bank`
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
+
 
 ### `--packages_path`
 
@@ -441,6 +403,23 @@ The second use is when the solvers can prove the property, they just need more t
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`  
 
+
+(--global_timeout)=
+### `--global_timeout <seconds>`
+Sets the maximal timeout for the Prover.
+Gets an integer input, which represents seconds.
+
+The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
+Users may opt to set this number lower to facilitate faster iteration on specifications.
+
+**When to use it?**
+When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
+Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60`
+
+
 Options to set addresses and link contracts
 -------------------------------------------
 
@@ -476,7 +455,7 @@ When we have an external contract with a constant address. By default, the Pytho
 If we wish the `Oracle` contract to be at address 12, we use  
 `certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12`
 
-### `--structLink`
+### `--struct_link`
 
 **What does it do?**  
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.  
@@ -571,19 +550,9 @@ Also note that the hex string must be:
 - must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will
 
 
-Debugging options
+Version options
 -----------------
 
-### `--debug`
-
-**What does it do?**  
-Adds debug prints to the output of the run.  
-
-**When to use it?**  
-When the tool has an error you do not understand.  
-
-**Example**  
-`certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --debug`
 
 ### `--version`
 
@@ -596,45 +565,13 @@ When you suspect you have an old installation. To install the newest version, us
 
 `certoraRun --version`
 
-### `--typecheck_only`
 
-**What does it do?**  
-Stops after running the Solidity compiler and type checking of the spec, before submitting the verification task.
-
-**When to use it?**  
-If you want only to check your spec, or include it in an automated task (e.g., a git `pre-commit` hook).  
-**Example**
-
-`certoraRun Bank.sol --verify Bank:bank.spec --typecheck_only`
 
 Advanced options
 ----------------
 
-(--cloud)=
-### `--cloud`
 
-**What does it do?**
-
-Runs the Prover on the cloud.  Note that for non-Certora users, `--cloud` is
-the default, so this option does nothing.
-
-**When to use it?**
-
-If you are a Certora employee who usually runs the Prover locally, but want to
-run on the cloud instead.
-
-(--staging)=
-### `--staging [branch]`
-
-**What does it do?**
-
-Runs a non-standard version of the Prover.
-
-**When to use it?**
-
-Upon instruction from the Certora team.
-
-### `--javaArgs`
+### `--java_args`
 
 **What does it do?**
 
@@ -646,39 +583,28 @@ Upon instruction from the Certora team.
 
 **Example**
 
-`--javaArgs '"-Dcvt.default.parallelism=2"'` - will set the number of “tasks” that can run in parallel to 2.
+`--java_args '"-Dcvt.default.parallelism=2"'` - will set the number of “tasks” that can run in parallel to 2.
 
-### `--rerun_verification`
+(--prover_args)=
+### `--prover_args`
 
-**What does it do?**  
-Repeats a previous run, but skips CVL compilation and TAC optimization phases for a single rule, by using a saved binary file from a previous run.
+The `--prover_args` option allows you to provide fine-grained tuning options to the
+Prover.  `--prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
+`--prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `--t` is
+set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
-**When to use it?**  
-When you want to run the same configuration, but save some run-time (for example when encountering a timeout). This should be used with the same parameters to the solver (i.e. same source, specs and optimization configurations). To save a binary to rerun use `--settings -saveRerunData`, and the binary file will be save in outputs.  
-**Example**
-
-`certoraRun Bank.sol --verify Bank:bank.spec --settings -saveRerunData`
-
-`certoraRun Bank.sol --verify Bank:bank.spec --rerun_verification rerun_checkBank.rerunbin`
-
-(--settings)=
-### `--settings`
-
-The `--settings` option allows you to provide fine-grained tuning options to the
-Prover.  `--settings` should be followed by a comma-separated list of options.
-
-```{todo}
-This list is incomplete.
-```
 
 (-optimisticReturnsize)=
-#### `--settings -optimisticReturnsize`
+#### `--prover_args '-optimisticReturnsize'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 
 (-showInternalFunctions)=
-#### `--settings -showInternalFunctions`
+#### `--prover_args '-showInternalFunctions'`
+
+A single occurrence of `--prover_args` can set multiple values
+`--prover_args '-showInternalFunctions -optimisticReturnsize'`
 
 **What does it do?**
 
@@ -705,11 +631,11 @@ reported under the entry for `f`.
 **Example**
 
 ```sh
-certoraRun Bank.sol --verify Bank:bank.spec --settings -showInternalFunctions
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-showInternalFunctions'
 ```
 
 (-globalTimeout)=
-#### `--settings -globalTimeout=<seconds>`
+#### `--prover_args '-globalTimeout <seconds>'`
 
 This option sets the global timeout in seconds.  By default, the global timeout
 is two hours.  Values larger than two hours (7200 seconds) are ignored.
@@ -724,30 +650,53 @@ Jobs that exceed the global timeout will simply be terminated, so the result
 reports may not be generated.
 
 (-solver)=
-#### `--settings -solver=<solver spec>`
+#### `--prover_args '-solver <solver spec>'`
 
-This option sets the SMT solvers being used within the Prover.  By default, a
-portfolio of various different solvers is used.  It can be useful to specify
-only a subset of these to save on computation time.  In rare cases, solver
-specific options can improve performance as well.
+By default, a portfolio of SMT solvers using various configurations is used
+within the Prover.  It can be useful to specify only a subset of these to save
+on computation time.  In rare cases, solver specific options can improve
+performance as well.  Setting `-solver <solver spec>` filters the predefined
+portfolio to only use those configuration that match the given solver
+specification.
 
-The `solver spec` can be a single solver (`-solver=z3`) or a list of solvers
-(`-solver=[cvc5,z3]`), where each such solver can be further modified.  For
-example, `cvc5` refers to the default configuration of `cvc5` whereas
-`cvc5:nonlin` is better for nonlinear problems.  Additional options can be set
-via `z3{randomSeed=17}`.
+The `solver spec` can be a single solver (`-solver z3:def`), or a list of
+solver configurations (`-solver [z3:def,cvc5:def]`), where each such solver can
+be further modified.  For example, `cvc5` (as in `-solver cvc5`) refers to the
+set of pre-configured configurations of `cvc5` whereas `cvc5:nonlin` is a
+specific configuration used for nonlinear problems.  Additional options can be
+set via `z3{randomSeed=17}`.
 
-(-useBitVectorTheory)=
-#### `--settings -useBitVectorTheory`
+With `-smt_overrideSolvers true`, the portfolio can be replaced instead of
+filtered. For example, in conjunction with `-solver [cvc5:def,z3:def]`, the
+portfolio is replaced with the default configurations of `cvc5` and `z3`,
+irrespective of their presence in the predefined portfolio.
+For even better control of which solvers are used in which situation, solver
+specification for certain logics can be given via
+`-smt_LIASolvers <solver spec>`, `-smt_NIASolvers <solver spec>`, and
+`-smt_BVSolvers<solver spec>` for linear, non-linear and bit-vector formulas.
+
+(-smt_useBV)=
+#### `--prover_args '-smt_useBV true'`
 
 This option models bitwise operations exactly instead of using the default
 {term}`overapproximation`s.  It is useful when the Prover reports a
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
+The disadvantage of this encoding is that it does not model `mathint`
+precisely: the maximum supported integer value is :math:`2^256-1` in this case,
+effectively restricting a `mathint` to a `uint256`. We currently do not have a
+setting or encoding that models precisely both bitwise operations and `mathint`.
+
 (-smt_groundQuantifiers)=
 #### `--settings -smt_groundQuantifiers=false`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
+
+(-maxNumberOfReachChecksBasedOnDomination)=
+#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
+
+This option sets the number of program points to test with the `deepSanity`
+built-in rule.  See {ref}`built-in-deep-sanity`.
 

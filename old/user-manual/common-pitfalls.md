@@ -19,7 +19,7 @@ Vacuity is problematic because it indicates that the spec itself is wrong. Usual
 
 ### Basic vacuity checking 
 
-Run the `certora-cli` with the following additional option: `--settings -ruleSanityChecks` to run a basic vacuity check. This option will instruct the tool to prove each rule twice: First time with the original spec, Second time with all assertions removed, and a single `assert false` statement in the end instead. If the second run of the rule does not fail, then a successful result of the original run is meaningless.
+Run the `certora-cli` with the following additional option: `--prover_args -ruleSanityChecks` to run a basic vacuity check. This option will instruct the tool to prove each rule twice: First time with the original spec, Second time with all assertions removed, and a single `assert false` statement in the end instead. If the second run of the rule does not fail, then a successful result of the original run is meaningless.
 
 > TODO: Put a UI screenshot
 
