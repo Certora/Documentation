@@ -174,18 +174,21 @@ If you use a quantified variable in an argument to two different functions,
 you may produce spurious counterexamples.  For example:
 
 ```cvl
-require forall uint x . f(x) < g(x+1);
+require forall uint x . f(x) <= g(x+1) && g(x+1) != 0;
 ```
 
 Here, `x + 1` is used as an argument to `g`, but `x` is not; you may get
-counterexamples where `g(x+1) != 0` for some `x`.  In that case, you can add an
+counterexamples where `g(x+1) == 0` for some `x`.  In that case, you can add an
 additional equivalent require that does use the quantified variable as an argument
 to `g`:
 
 ```cvl
-require forall uint x . f(x) < g(x+1);
-require forall uint x . f(x-1) < g(x);
+require forall uint x . f(x) < g(x+1) && g(x+1) != 0;
+require forall uint x . f(x-1) < g(x) && g(x) != 0;
 ```
+
+This will make `x` a direct argument to `g`, so the expression will be
+grounded properly.
 
 (grounding-polarity)=
 ### Double Polarity
@@ -225,7 +228,7 @@ assert (forall uint x . f(x) > 0) <=> y;
 ```
 
 ```{todo}
-advice?
+advice for rewriting?
 ```
 
 ## How grounding works
