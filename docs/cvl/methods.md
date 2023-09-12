@@ -99,6 +99,9 @@ that the declared return type matches the return type of the contract function.
 Exact entries may contain {ref}`summaries <summaries>`, {ref}`envfree`,
 {ref}`optional`, and {ref}`with-env`.
 
+It is possible for an exact entry to overlap with another entry; see
+{ref}`summary-resolution` for information on how summaries are resolved.
+
 (wildcard-methods-entries)=
 ### Wildcard entries
 
@@ -123,10 +126,13 @@ Wildcard entries may not have {ref}`envfree` or {ref}`optional`; their only
 purpose is {ref}`summarization <summaries>`.  Therefore, wildcard entries must
 have a summary.
 
+It is possible for a wildcard entry to overlap with another entry; see
+{ref}`summary-resolution` for information on how summaries are resolved.
+
 (catch-all-entries)=
 ### Catch-all entries
 
-Sometimes the behavior of a contract in the scene that is actually totally irrelevant
+Sometimes the behavior of a contract in the scene is irrelevant
 to the properties being verified. For example, the exact behavior of an external library contract
 may be unimportant for a particular verification project.
 
@@ -148,8 +154,12 @@ Catch-all summaries apply only to `external` methods, and therefore
 the `external` {ref}`visibility modifier <methods-visibility>` is required. 
 Further, the only purpose of catch-all entries is to apply a summary to all
 external methods in a contract, so a summary is required. However, only
-{ref}`havocing summaries <havoc-summary>` are allowed for these entries. Finally, {ref}`envfree` and
-{ref}`optional` keywords are not allowed for catch-all entries.
+{ref}`havocing summaries <havoc-summary>` are allowed for these entries.
+Finally, {ref}`envfree` and {ref}`optional` keywords are not allowed for
+catch-all entries.
+
+It is possible for a catch-all summary to overlap with another entry; see
+{ref}`summary-resolution` for information on how summaries are resolved.
 
 ```{note}
 Catch-all summaries are only applied when the Prover can definitively show that
@@ -353,6 +363,7 @@ to replace a call by an approximation is made as follows:
 [^dont-summarize]: The `@dontsummarize` tag on method calls affects the
   summarization behavior.  See {ref}`call-expr`.
   
+(summary-resolution)=
 ### Summary resolution
 
 With {ref}`wildcard entries <wildcard-methods-entries>`, {ref}`catch-all entries <catch-all-entries>`,
