@@ -1,7 +1,7 @@
 (grounding)=
 # Quantifier Grounding 
 
-{ref}`Quantified expression <quantifiers>` are a very powerful tool for writing
+{term}`Quantified expressions <quantifier>` are a very powerful tool for writing
 specifications, but they can also lead to incredibly long running times.  For
 this reason, the Prover uses an approximation "grounding".
 
@@ -105,7 +105,7 @@ assert forall uint x . (x > 0) => (exists uint y . f(y) < f(x));
 
 This is clearly true; for example `f(x - 1)` is always smaller than `f(x)`, as
 is `f(0)`.  However, to work around the nested quantifier restriction, we have
-to help the prover find the correct value for `y`.  We could replace this
+to help the Prover find the correct value for `y`.  We could replace this
 statement with either of the following two:
 
 ```cvl
