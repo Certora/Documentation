@@ -229,20 +229,20 @@ The `summary` command allows the user to see a summary of a `mutate` run:
 gambit mutate benchmarks/Ops/AOR/AOR.sol
 ```
 <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+```
 Generated 27 mutants in 0.41 seconds
-</pre>
+```
 
 ```
 gambit summary
 ```
 <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+```
 STD:      5 ( 18.52%)
 AOR:     22 ( 81.48%)
 ---------------------
 TOT:     27 (100.00%)
-</pre>
+```
 
 To print the diffs of specific mutants, pass the `--mids` option:
 
@@ -250,7 +250,7 @@ To print the diffs of specific mutants, pass the `--mids` option:
 $ gambit summary --mids 1 2
 ```
 <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+```
              === Mutant ID: 1 [StatementDeletion] ===
 
 --- original
@@ -287,7 +287,7 @@ Path: mutants/1/benchmarks/Ops/AOR/AOR.sol
      // Expect 4 mutants:
 
 Path: mutants/2/benchmarks/Ops/AOR/AOR.sol
-</pre>
+```
 
 Pass the `--short` option to print a shorter summary of each mutant:
 
@@ -295,13 +295,13 @@ Pass the `--short` option to print a shorter summary of each mutant:
 $ gambit summary --mids 1 2 3 4 5 --short
 ```
 <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+```
 (1) STD [mutants/1/benchmarks/Ops/AOR/AOR.sol@13:9] return a + b -> assert(true)
 (2) AOR [mutants/2/benchmarks/Ops/AOR/AOR.sol@13:18] + -> -
 (3) AOR [mutants/3/benchmarks/Ops/AOR/AOR.sol@13:18] + -> *
 (4) AOR [mutants/4/benchmarks/Ops/AOR/AOR.sol@13:18] + -> /
 (5) AOR [mutants/5/benchmarks/Ops/AOR/AOR.sol@13:18] + -> %
-</pre>
+```
 
 ```{note}
 The `summary` command is currently experimental, and its output and interface
@@ -319,7 +319,7 @@ gambit mutate benchmarks/Ops/AOR/AOR.sol -n 5
 tree gambit_out -L 2
 ```
 <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+```
 Generated 5 mutants in 0.15 seconds
 
 gambit_out
@@ -333,7 +333,7 @@ gambit_out
 │   └── 5
 └── mutants.log
 
-</pre>
+```
 
 This has the following structure:
 + `gambit_results.json`: a JSON file with detailed results
