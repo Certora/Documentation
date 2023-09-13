@@ -101,7 +101,7 @@ The `mutate` command does the following:
 ### Running  `mutate` with command line arguments
 
 By default the `mutate` command expects mutation parameters to be specified
-on the command line.
+on the command line:
 
 ```
 gambit mutate FILENAME [ARGS...]
@@ -112,8 +112,6 @@ gambit mutate FILENAME [ARGS...]
 #### `mutate` command line interface options
 
 Gambit's `mutate` command line interface supports the following options:
-
-TODO: Fix this
 
 | Option               | Description                                                                                                                  |
 | :------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
@@ -187,6 +185,15 @@ array of objects:
 Relative paths in a Gambit configuration file are _relative to the parent
 directory of the configuration file_. This allows Gambit to be run from any
 location without affecting the build configuration.
+
+```{warning}
+Remapping targets are **not relative paths**! If you specify a remapping
+`@map=expanded/@map`, the target `expanded/@map` doesn't need to be a valid
+path.  Instead, it needs to be be valid when extending a provided `import_path`.
+So if the only import path is `.`, then `./expanded/@map` has to exist. But if
+import paths `contracts` and `modules` are given, then one of either
+`contracts/expanded/@map` or `modules/expanded/@map` needs to exist.
+```
 
 ### Import Paths and Remappings
 
