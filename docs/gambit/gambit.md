@@ -33,22 +33,25 @@ You can download prebuilt Gambit binaries for Mac and Linux from our
 To build Gambit from source, clone [the Gambit repository](https://github.com/Certora/gambit) and run
 
 ```
+cargo build --release
+```
+
+from this repository's root. This will create the `target/release/gambit`
+binary. To install globally, run
+
+```
 cargo install --path .
 ```
 
-from this repository's root. This will build Gambit and install it to a globally visible
+This will build Gambit and install it to a globally visible
 location on your `PATH`.
-
-You can also build gambit with `cargo build --release` from the root of this
-repository.  This will create the `target/release/gambit` binary which you can
-manually place on your path or invoke directly.
 
 ## Usage
 
-Gambit has two main commands: the {ref}`the-mutate-command` and 
-the {ref}`the-summary-command`. The `mutate` command is
-responsible for mutating code. The `summary` command allows the user to get a
-high level summary of the results of an execution of `gambit mutate`.
+Gambit has two main commands: the {ref}`the-mutate-command`, which
+is responsible for generating mutants, and the [`summary`
+command](#the-summary-command), which allows the user to get a high-level
+summary of a `gambit mutate` execution.
 
 
 (the-mutate-command)=
@@ -189,10 +192,10 @@ location without affecting the build configuration.
 Gambit resolves imports while parsing, and this requires that you specify any
 import paths and remappings that you would pass to `solc`.
 
-Instead of `solc`'s `--base-name` and `--import-path` arguments, Gambit uses
+Instead of `solc`'s `--base-path` and `--include-path` arguments, Gambit uses
 a simpler scheme and replaces both of these with a single `--import_paths`
-argument. For instance, if the `solc` invocation is `solc C.sol --base-name .
---import-path modules` , then the Gambit invocation becomes `gambit mutate C.sol
+argument. For instance, if the `solc` invocation is `solc C.sol --base-path .
+--include-path modules` , then the Gambit invocation becomes `gambit mutate C.sol
 --import_paths . modules`.
 
 Remappings are specified with the `--import_maps` argument. If the `solc`
