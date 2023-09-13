@@ -49,9 +49,9 @@ location on your `PATH`.
 ## Usage
 
 Gambit has two main commands: the {ref}`the-mutate-command`, which
-is responsible for generating mutants, and the [`summary`
-command](#the-summary-command), which allows the user to get a high-level
-summary of a `gambit mutate` execution.
+is responsible for generating mutants, and the
+{ref}`the-summary-command`, which allows the user to get a
+high-level summary of a `gambit mutate` execution.
 
 
 (the-mutate-command)=
@@ -62,8 +62,9 @@ which files to mutate, which mutation operators to apply, and several other
 options. By default, these mutation parameters are specified by the user with
 {ref}`running-mutate-with-command-line-arguments`. To handle
 more complex use cases, and to allow for easy reproducibility, Gambit
-can read mutation parameters from a [JSON configuration
-file](#running-mutate-with-a-configuration-file) with the `--json` argument.
+can read mutation parameters from a 
+{ref}`running-mutate-with-a-configuration-file` with the
+`--json` argument.
 
 The `mutate` command does the following:
 
