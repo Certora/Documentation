@@ -79,6 +79,7 @@ contract ::= id | "currentContract"
 See {doc}`basics` for the `id`, `number`, and `string` productions.
 See {doc}`types` for the `type` production.
 
+(math-ops)=
 Basic operations
 ----------------
 
@@ -99,7 +100,8 @@ denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 The `>>>` operator is currently undocumented.
 ```
 
-See {doc}`mathops` for more information about the interaction between
+% TODO: migrate this information here.
+See {ref}`cvl2-integer-types` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
 
 (string-interpolation)=
@@ -304,7 +306,7 @@ There are also several built-in variables:
 
 
 CVL also has several built-in functions for converting between
-numeric types.  See {doc}`mathops` for details.
+numeric types.  See {ref}`math-ops` for details.
 
 
 (call-expr)=
