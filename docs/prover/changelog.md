@@ -4,35 +4,108 @@ Release Notes
 ```{contents}
 ```
 
+4.12.1 (September 17, 2023)
+---------------------------
+
+### CVL
+- [bugfix] fix to bitwise operations
+- [bugfix] verify range of `nativeBalances[addr]` values
+- [bugfix] no duplication of multidim ghosts with axioms
+- [feat] delete summary qualifiers for faster preprocessing and dealing with analysis-breaking external functions. If a function is never called from spec, it will not be processed. In cases it’s externally called from Solidity, the summary will apply.
+- [feat] greater flexibility of internal summaries - allows accepting as arguments and returning certain reference types: primitive arrays, `bytes`, and structs which may (in nested structs too) contain primitive arrays
+- [feat] support multiple return values from CVL functions
+- [bugfix] Support keywords as struct fields and user defined type names
+- [bugfix] Fix to multi-assert mode in the case multiple CVL asserts in a rule share the same message
+- [ux] Skip rules where all methods are filtered out
+- [bugfix] Do not drop quantifiers when instrumenting vacuity checks
+- [ux] Improved error messages for preserved block errors
+- [bugfix] Support invariant preserved blocks for functions with an argument which is an array of structs
+- [feat] New keyword: executingContract available inside opcode hooks
+- [bugfix] Applying the CALL opcode hook even if the balance transfer fails
+- [bugfix] Support assigning to a wildcard variable
+- [bugfix] Fail if CVL function is non-void and does not end with a return statement
+
+### Modeling (fixes for false-positives)
+- [bugfix] Fix modeling of the length in hash functions
+- [bugfix] Avoid scalarization of directly hashed structs
+- [bugfix] Fix constant propagation due to trusting non-trivial def analysis results to be all dominating
+- [bugfix] Enable heuristical linking in constructors by forcing freemem pointer scalarization
+- [bugfix] Some handling for revert data information passed between calls
+
+### Performance
+- [feat] Static array storage splitting
+- [feat] Parallel splitter scheduler
+- [bugfix] fix detection of quantifier free logics
+- [bugfix] analysis fix for structs containing arrays of strings
+- [bugfix] fixing string literals hashing and hashing in general
+- [bugfix] general performance improvements
+- [bugfix] summarize internal functions early - helps avoid analyses issues
+- [perf] Cheaper safe math applied on methods marked as potentially reverting too (previously optimization applied only to non-reverting calls)
+- [bugfix] Fix safe math detection for solc versions 8.19 and up
+- [perf] Improved array axiomatization
+- [perf] Skip redundant TAC type checker runs during loop unrolling
+
+### Calltrace & Rule Report
+- [feat] Show storage changed since the start
+- [feat] Update rules every minute
+- [bugfix] show time interval for rules run instead of sum of subrules
+- [feat] Add ghost state to the presented global state
+- [bugfix] Fix formatting of Skeys and BytesK
+
+### CLI
+- [bugfix] link to CVL2 migration document fixed
+- [bugfix] support for other formats of protocol author in package.json files
+- [bugfix] fix error message when passing global timeout setting
+- [bugfix] less verbose prints in terminal
+- [ux] Validate rule names
+- [ux] Show number of splits solved per rule and their "weight"
+- [bugfix] Fixes to equivalence checker
+
+### TAC Dumps
+- [timeouts] Present heuristically difficult operations in the TAC dump of a timeout
+- [feat] New view for presenting the unsat core results for verified rules
+- [ux] Some prettification of the dumps to make them more compact on the screen
+- [ux] Extrapolating source maps from commands in proximity even if originally solc did not provide source maps to these instructions
+
+### Mutation Verification
+- [bugfix] gambit conf in case of no manual mutants
+- [bugfix] correct traversing of rules
+- [feat] improved csv output
+
+### Equivalence Checker
+- [feat] Support void functions
+- [feat] Support compiler comparison
+- [bugfix] Making comparison more reliable in terms of initial state and with respect to low-level calls
+
 4.10.1 (August 21, 2023)
 ------------------------
 
 ### CVL
-- feature: Support Solidity calls also from internal summaries
-- feature: Allowing `with(env)` for summaries {ref}`with-env`
-- bugfix: `lastStorage` comparison fix for ghost maps
-- bugfix: Bitwidth for `bytesK` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
-- bugfix: Fixing `struct`s encoding
-- bugfix: Matching method summaries for methods accepting `interface`s
-- bugfix: Some improvements to how quantifiers calling Solidity functions are handled
+- [feat] Support Solidity calls also from internal summaries
+- [feat] Allowing `with(env)` for summaries {ref}`with-env`
+- [bugfix] `lastStorage` comparison fix for ghost maps
+- [bugfix] Bitwidth for `bytesK` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
+- [bugfix] Fixing `struct`s encoding
+- [bugfix] Matching method summaries for methods accepting `interface`s
+- [bugfix] Some improvements to how quantifiers calling Solidity functions are handled
 
 ### Mutation Verification
-- feature: Output CSV files of the results
-- bugfix: Manual mutations work and support for multiple manual mutations
-- bugfix: `certoraMutate` working when running from project’s root
+- [feat] Output CSV files of the results
+- [bugfix] Manual mutations work and support for multiple manual mutations
+- [bugfix] `certoraMutate` working when running from project’s root
 
 
 ### Timeouts and performance
-- feature: Show informative messages about cache hits
-- bugfix: fix hashes of constant strings in constructors vs. in executable bytecode
+- [feat] Show informative messages about cache hits
+- [bugfix] fix hashes of constant strings in constructors vs. in executable bytecode
 
 ### Linking
-- bugfix: Fixing source-based heuristics linking to decrease chance for wrong matches
-- bugfix: Fixes to sighash resolution
-- bugfix: Correct revert handling in dispatched calls
+- [bugfix] Fixing source-based heuristics linking to decrease chance for wrong matches
+- [bugfix] Fixes to sighash resolution
+- [bugfix] Correct revert handling in dispatched calls
 
 ### Vyper
-- Support for versions below 0.2.16 (from before storage layout output was introduced in Vyper)
+- [bugfix] Support for versions below 0.2.16 (from before storage layout output was introduced in Vyper)
 
 
 4.8.0 (August 13, 2023)
