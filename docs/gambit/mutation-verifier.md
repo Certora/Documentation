@@ -36,12 +36,21 @@ Once you have updated your `certora-cli` installation using `pip` to get the rel
 dependencies, run Gambit from the command line:
 
 ```
-certoraMutate --prover_conf path/to/prover/prover.conf --gambit_conf path/to/gambit/gambit.conf
+certoraMutate --prover_conf path/to/prover/prover.conf --mutation_conf path/to/mutation/mutation.conf
+```
+
+```{note}
+You must run `certoraMutate` from the root of the Solidity project directory.
+The files `prover.conf` and `mutation.conf`
+can be in their own directories.
+All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
+Paths in `prover.conf` are all relative to the project directory's root, which is assumed to be the working directory.
+of the project directory, which is assumed to be the working directory.
 ```
 
 ## Configurations
 The tool expects two separate configuration files:
-the configuration file which defines the execution of mutant generation (`--gambit_conf`),
+the configuration file which defines the execution of mutant generation (`--mutation_conf`),
 and the configuration file which defines execution of the Prover (`--prover_conf`).
 Here is a simple configuration file setup using the example above:
 
@@ -55,13 +64,34 @@ In `prover.conf`:
   "verify": "C:c.spec"
 }
 ```
-In `gambit.conf`:
+In `mutation.conf`:
 
 ```json
-{
-  "filename" : "C.sol",
-  "num-mutants": 5
+{ "gambit": {
+    "filename" : "C.sol",
+    "num-mutants": 5
+  }
 }
+```
+
+### Manual Mutations
+You can add manual mutations to `mutation.conf` like so:
+
+```json
+{ "gambit": {
+    "filename" : "C.sol",
+    "num-mutants": 5
+  },
+  "manual_mutants": {
+     "C.sol": "path/to/dir/with/manual_mutants/for/C"
+  }
+}
+```
+If you set `num_mutants` to 0 in the above file, `gambit` will run only on the mutants added manually and no other mutants will be generated.
+`certoraMutate` on manually written mutants.
+
+```{note}
+All manual mutations must be named uniquely. For example, if you want to generate manual mutations for `C.sol` and `D.sol`, name them as `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
 ```
 
 ## CLI Options
@@ -84,20 +114,21 @@ Soon, Certora will enable automatic notifications for asynchronous mutation test
 | Option                         | Description                                                                                                           |
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | `--prover_conf`                | specify the Prover configuration file for verifying mutants                                                           |
-| `--gambit_conf`                | specify the configuration file for mutant generation                                                                  |
+| `--mutation_conf`              | specify the configuration file for mutant generation                                                                  |
 | `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
 | `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
-| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, if exists   |
+| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, or the `certoraRun` default otherwise.   |
 | `--debug`                      | show additional logging information during execution                                                                  |
 | `--gambit_out`                 | specify the output directory for gambit. Defaults to a new directory which is added in the working directory          |
-| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden directory used by Prover       |
-| `--ui_out`                     | specify the directory of the mutant verification report JSON used for the web UI                                      |
+| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
+| `--ui_out`                     | specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | specify a text file to write the UI report link                                                                       |
+| `--dump_csv`                   | specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
 | `--sync`                       | enable synchronous execution                                                                                          |
 | `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | specify the length in seconds for a web request timeout                                                               |
-| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. (Polling-only can be restarted later)     |
+| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
 
 ## Troubleshooting
 
@@ -106,6 +137,8 @@ At the moment, there are a few ways in which `certoraMutate` can fail. Here are 
 - Sometimes it might be useful to first run `gambit` without going through `certoraMutate`.
   `gambit` can be found under the `site-packages` directory under `certora_bins`.
   * Run `gambit mutate --json foo.json` or `gambit mutate --filename solidity.sol` to identify the issue.
+  * Here, `foo.json` can also be `foo.conf`.
+  * **Note.** you must remove the field `manual_mutants` from the `json` if it is present, before running `gambit`.
 - Try running the Prover on your mutants individually using `certoraRun`. 
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
   It is also possible that you are encountering a bug with the underlying version of the Prover.

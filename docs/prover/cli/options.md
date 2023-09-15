@@ -145,79 +145,8 @@ When you have a rule with multiple assertions:
 
 **What does it do?**
 This option enables sanity checking for rules.  The `--rule_sanity` option may
-be followed by one of `none`, `basic`, or `advanced`; these are described below.
+be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/sanity` for more information about sanity checks.
-
-There are 3 kinds of sanity checks:
-
-1. **Reachability** checks that even when ignoring all the user-provided
-   assertions, the end of the rule is reachable. This check ensures that that
-   the combination of `require` statements does not rule out all possible
-   counterexamples.
-
-   For example, the following rule would be flagged by the reachability check:
-   ```cvl
-   rule vacuous {
-     uint x;
-     require x > 2;
-     require x < 1;
-     assert f(x) == 2, "f must return 2";
-   }
-   ```
-   Since there are no models satisfying both `x > 2` and `x < 1`, this rule
-   will always pass, regardless of the behavior of the contract.  This is an
-   example of a *vacuous* rule - one that passes only because the preconditions
-   are contradictory.
-
-   ```{caution}
-   The reachability check will *pass* on vacuous rules and *fail* on correct
-   rules.  A passing reachability check indicates a potential error in the rule.
-   
-   The exception is when a {term}`parametric rule` is checked on the default
-   fallback function: The default fallback function should always revert, so
-   there are no examples that can reach the end of the rule.
-   ```
-
-2. **Assert-Vacuity** checks that individual `assert` statements are not
-   tautologies.  A tautology is a statement that is true on all examples, even
-   if all the `require` and `if` conditions are removed.
-
-   For example, the following rule would be flagged by the assert-vacuity check:
-   ```cvl
-   rule tautology {
-     uint x; uint y;
-     require x != y;
-     ...
-     assert x < 2 || x >= 2,
-      "x must be smaller than 2 or greater than or equal to 2";
-   }
-   ```
-   Since every `uint` satisfies the assertion, the assertion is tautological,
-   which is likely to be an error in the specification.
-
-3. **Require-Redundancy** checks for redundant `require` statements.
-   A `require` is considered to be redundant if it can be removed without
-   affecting the satisfiability of the rule.
-
-   For example, the require-redundancy check would flag the following rule:
-   ```cvl
-   rule require_redundant {
-     uint x;
-     require x > 3;
-     require x > 2;
-     assert f(x) == 2, "f must return 2";
-   }
-   ```
-   In this example, the second requirement is redundant, since any `x` greater
-   than 3 will also be greater than 2.
-
-The `rule_sanity` flag may be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
- * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity checks are performed.
- * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
- * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
-
-We recommend starting with the `basic` mode, since not all rules flagged by the
-`advanced` mode are incorrect.
 
 **When to use it?**  
 We suggest using this option routinely while developing rules.  It is also a
@@ -251,19 +180,6 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
-### `--solc_args`
-
-**What does it do?**  
-Gets a list of arguments to pass to the Solidity compiler. The arguments will be passed as is, without any formatting, in the same order.  
-arguments that are defined as standalone flags cannot be defined in `--solc_args`, including the Solidity compiler flags  `--optimize`, 
-`--optimize-runs`, `--allow-paths`, `--via-ir` and `--evm-version`. These flags should be set by the Prover flags such as:
-`--solc_optimize`, `--solc_allow_path`, `--solc_via_ir` and `--solc_evm_version`
-
-**When to use it?**  
-When the source code is compiled using non-standard options by the Solidity compiler. 
-
-**Example**  
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_args "--experimental-via-ir"`
 
 ### `--solc_map`
 
@@ -486,6 +402,23 @@ The second use is when the solvers can prove the property, they just need more t
 
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`  
+
+
+(--global_timeout)=
+### `--global_timeout <seconds>`
+Sets the maximal timeout for the Prover.
+Gets an integer input, which represents seconds.
+
+The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
+Users may opt to set this number lower to facilitate faster iteration on specifications.
+
+**When to use it?**
+When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
+Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60`
+
 
 Options to set addresses and link contracts
 -------------------------------------------

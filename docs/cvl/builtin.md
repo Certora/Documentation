@@ -25,6 +25,7 @@ built_in_rule_name ::=
     | "hasDelegateCalls"
     | "sanity"
     | "deepSanity"
+    | "viewReentrancy"
 ```
 
 (built-in-msg-value-in-loop)=
@@ -172,4 +173,33 @@ additional variable `x_p` for each interesting program point `p`, and
 instruments the contract code at `p` to set `x_p` to `true`.  The Prover then
 tries to prove that `x_p` is false after executing the function.  To find a
 counterexample; the Prover must construct a model that passes through `p`.
+
+(built-in-view-reentrancy)=
+Read-only reentrancy detection &mdash; `viewReentrancy`
+-----------------------------------------------------------
+
+The `viewReentrancy`  built-in rule detects 
+[read-only reentrancy vulnerabilities in a contract][view-reentrancy-vulnerability].
+
+[view-reentrancy-vulnerability]: https://blog.pessimistic.io/read-only-reentrancy-in-depth-6ea7e9d78e85
+
+The `viewReentrancy` rule can be enabled by including
+```cvl
+use builtin rule viewReentrancy;
+```
+in a spec file.  Any functions that have read-only reentrancy will fail the
+`viewReentrancy` rule.
+
+### How `viewReentrancy` is checked
+
+Reentrancy vulnerabilities can arise when a contract makes an external call with an inconsistent internal 
+state. This behavior allows the receiver contract to make reentrant calls that exploit the inconsistency.
+
+The `viewReentrancy` rule ensures that whenever method `f` of contract `C` makes an external call, 
+the internal state of `C` is equivalent to either (1) the state of `C` at the beginning of the calling function,
+or (2) the state of `C` at the end of the calling function (by "equivalent", 
+we mean that all view functions return the same values). 
+This ensures that the external call cannot observe `C` in any state that it couldn't have without being 
+called from `C`. 
+
 

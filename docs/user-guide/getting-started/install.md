@@ -6,6 +6,15 @@ Step 1: prerequisites
 ---------------------
 
 <details>
+  <summary>Linux or MacOS</summary>
+  Windows users should use [WSL][wsl].
+
+  % TODO: more information?
+  </details>
+
+[wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
+
+<details>
   <summary>Python3.8.16 or newer</summary>
 
   Check your Python3 version by executing the following command on the
@@ -61,32 +70,6 @@ to `PATH` to avoid errors.
 
 The following section presents some, but maybe not all, possible warnings that
 can arise during installation and how to deal with them:
-
-<details>
-  <summary>Windows</summary>
-
-  So far we haven't encountered any warnings at installation that's needed to be
-  resolved to use the tool freely, however it doesn't mean that you won't
-  encounter one.
-
-  If you do encounter a warning try the following solutions in descending order:
-
-  * Follow the warning's instructions.
-
-  * If you do not understand the warning and don't know how to fix it, try to
-    compare it to the warning of the other OS and follow their instructions.
-   * The warnings in the other OS suggest to add the installation folder to the PATH.
-
-   * To get the location of the `certora-cli` installation re-execute on `cmd`:
-
-     ```bash
-     pip install certora-cli
-     ```
-
-  * Contact the Certora team.
-
-  Please also share the warning with us so we could write a walkthrough for fixing it.
-</details>
 
 <details>
   <summary>macOS</summary>
@@ -214,17 +197,6 @@ whenever you open a terminal. To set an environment variable permanently,
 follow the next steps:
 
 <details>
-  <summary>Windows</summary>
-
-  * Open the cmd terminal and execute:
-
-    ```bash
-    setx CERTORAKEY <premium_key>
-    ```
-</details>
-
-
-<details>
   <summary>macOS</summary>
 
   * Open a terminal and make sure you're in the home directory:
@@ -293,38 +265,6 @@ follow the next steps:
 
 Step 4: Add the Solidity compiler (`solc`) executable's folder to your `PATH`
 ---------------------------------------------------------------------------
-
-<details>
-  <summary>Windows</summary>
-
-  The following instructions are for Windows 11; for other versions of Windows the instructions might slightly differ.
-
-  * Press `"Windows key" + x` to access the Power User Task Menu.
-
-  * In the Power User Task Menu, select the System option.
-
-  * In the System window, scroll to the bottom and click the About option.
-
-  * In the System > About window, click the Advanced system settings link at the bottom of the Device specifications section.
-
-  * In the System Properties window, click the Advanced tab, then click the Environment Variables button near the bottom of that tab.
-
-  * In the Environment Variables window, highlight the Path variable in the System variables section and click the Edit button.
-
-  * Add the full path to the directory that contains the `solc` executables, e.g.:
-
-    ```bash
-    C:\full\path\to\solc\executable\folder
-    ```
-
-  * Quit and reopen all opened terminals for the change to take effect in the terminals.
-
-  * You can check that the variable was set correctly by running the following in the cmd terminal:
-
-    ```bash
-    echo %PATH%
-    ```
-</details>
 
 <details>
   <summary>macOS</summary>

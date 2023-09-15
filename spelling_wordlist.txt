@@ -3,6 +3,7 @@ Aave
 Balancer
 CVL
 Certora
+Disjunction
 Devcon
 downsample
 downsampling
@@ -28,10 +29,12 @@ boolean
 booleans
 bootcamp
 boundedness
+bugfix
 bytecode
 bytecodes
 callee
 changelog
+checkmark
 codebase
 config
 conjuncted
@@ -41,6 +44,8 @@ dereference
 dereferences
 destructuring
 diagnosability
+disjunction
+disjunctions
 dispatchee
 dispatchees
 eBPF
