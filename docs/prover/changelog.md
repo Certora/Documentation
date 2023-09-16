@@ -10,65 +10,42 @@ Release Notes
 ### CVL
 - [bugfix] fix to bitwise operations
 - [bugfix] verify range of `nativeBalances[addr]` values
-- [bugfix] no duplication of multidim ghosts with axioms
-- [feat] delete summary qualifiers for faster preprocessing and dealing with analysis-breaking external functions. If a function is never called from spec, it will not be processed. In cases it’s externally called from Solidity, the summary will apply.
+- [bugfix] no duplication of multi-dimensional ghosts with axioms
+- [feat] delete summary qualifiers for faster preprocessing and dealing with analysis-breaking external functions. If a function is never called from spec, it will not be processed, otherwise an error will be emitted. In cases it’s externally called from Solidity, the summary will apply.
 - [feat] greater flexibility of internal summaries - allows accepting as arguments and returning certain reference types: primitive arrays, `bytes`, and structs which may (in nested structs too) contain primitive arrays
 - [feat] support multiple return values from CVL functions
 - [bugfix] Support keywords as struct fields and user defined type names
 - [bugfix] Fix to multi-assert mode in the case multiple CVL asserts in a rule share the same message
-- [ux] Skip rules where all methods are filtered out
+- [UX] Skip rules where all methods are filtered out
 - [bugfix] Do not drop quantifiers when instrumenting vacuity checks
-- [ux] Improved error messages for preserved block errors
+- [UX] Improved error messages for preserved block errors
 - [bugfix] Support invariant preserved blocks for functions with an argument which is an array of structs
-- [feat] New keyword: executingContract available inside opcode hooks
+- [feat] New keyword: `executingContract` available inside opcode hooks
 - [bugfix] Applying the CALL opcode hook even if the balance transfer fails
 - [bugfix] Support assigning to a wildcard variable
 - [bugfix] Fail if CVL function is non-void and does not end with a return statement
 
-### Modeling (fixes for false-positives)
-- [bugfix] Fix modeling of the length in hash functions
-- [bugfix] Avoid scalarization of directly hashed structs
-- [bugfix] Fix constant propagation due to trusting non-trivial def analysis results to be all dominating
-- [bugfix] Enable heuristical linking in constructors by forcing freemem pointer scalarization
-- [bugfix] Some handling for revert data information passed between calls
-
 ### Performance
-- [feat] Static array storage splitting
-- [feat] Parallel splitter scheduler
-- [bugfix] fix detection of quantifier free logics
-- [bugfix] analysis fix for structs containing arrays of strings
-- [bugfix] fixing string literals hashing and hashing in general
-- [bugfix] general performance improvements
-- [bugfix] summarize internal functions early - helps avoid analyses issues
-- [perf] Cheaper safe math applied on methods marked as potentially reverting too (previously optimization applied only to non-reverting calls)
-- [bugfix] Fix safe math detection for solc versions 8.19 and up
-- [perf] Improved array axiomatization
-- [perf] Skip redundant TAC type checker runs during loop unrolling
+- [feat] Optimizations for safe math handling, in particular for `solc` versions 8.19 and up
+- [feat] Better performance of `string` and array types
 
-### Calltrace & Rule Report
+### Call Trace & Rule Report
 - [feat] Show storage changed since the start
-- [feat] Update rules every minute
-- [bugfix] show time interval for rules run instead of sum of subrules
-- [feat] Add ghost state to the presented global state
-- [bugfix] Fix formatting of Skeys and BytesK
+- [feat] More frequent rule-report update
+- [bugfix] Rule running time to show time interval instead of sum of sub-rules intervals
+- [feat] Show state of ghosts together with contract state
+- [bugfix] Fix formatting of values of type `bytesN` and of storage locations
 
 ### CLI
 - [bugfix] link to CVL2 migration document fixed
-- [bugfix] support for other formats of protocol author in package.json files
+- [bugfix] support for other formats of protocol author in `package.json` files
 - [bugfix] fix error message when passing global timeout setting
 - [bugfix] less verbose prints in terminal
-- [ux] Validate rule names
-- [ux] Show number of splits solved per rule and their "weight"
+- [UX] Validate rule names
+- [UX] Show number of splits solved per rule and their "weight"
 - [bugfix] Fixes to equivalence checker
 
-### TAC Dumps
-- [timeouts] Present heuristically difficult operations in the TAC dump of a timeout
-- [feat] New view for presenting the unsat core results for verified rules
-- [ux] Some prettification of the dumps to make them more compact on the screen
-- [ux] Extrapolating source maps from commands in proximity even if originally solc did not provide source maps to these instructions
-
 ### Mutation Verification
-- [bugfix] gambit conf in case of no manual mutants
 - [bugfix] correct traversing of rules
 - [feat] improved csv output
 
