@@ -11,7 +11,7 @@ Release Notes
 - [bugfix] fix to bitwise operations
 - [bugfix] verify range of `nativeBalances[addr]` values
 - [bugfix] no duplication of multidim ghosts with axioms
-- [feat] delete summary qualifiers for faster preprocessing and dealing with analysis-breaking external functions. If a function is never called from spec, it will not be processed. In cases it’s externally called from Solidity, the summary will apply.
+- [feat] delete summary qualifiers for faster preprocessing and dealing with analysis-breaking external functions. If a function is never called from spec, it will not be processed. In cases where it is externally called from Solidity, the summary will apply.
 - [feat] greater flexibility of internal summaries - allows accepting as arguments and returning certain reference types: primitive arrays, `bytes`, and structs which may (in nested structs too) contain primitive arrays
 - [feat] support multiple return values from CVL functions
 - [bugfix] Support keywords as struct fields and user defined type names
