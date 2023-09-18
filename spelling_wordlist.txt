@@ -154,3 +154,5 @@ verifiers
 walkthrough
 whitespace
 prover_args
+UX
+UNSAT
