@@ -97,4 +97,17 @@ rule simply asserts that this variable is `false` (note that we required
 % ----------------
 % Using the `LOGn` opcodes.
 %
-
+% ## Using call hooks
+% 
+% ```{todo}
+% Ensure that the `ecrecover` function is checked whenever the signed transaction
+% function changes a balance
+% ```
+% 
+% ### Call hooks or summarization?
+% 
+% ```{todo}
+% Now we have hooks on calls and also summaries that can call contract functions;
+% these do similar things.  Which is the recommended way / what are the tradeoffs?
+% ```
+% 

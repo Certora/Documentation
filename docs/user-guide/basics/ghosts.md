@@ -53,17 +53,3 @@ Caveats
 Use an invariant about the total supply maybe?
 ```
 
-## Using call hooks
-
-```{todo}
-Ensure that the `ecrecover` function is checked whenever the signed transaction
-function changes a balance
-```
-
-### Call hooks or summarization?
-
-```{todo}
-Now we have hooks on calls and also summaries that can call contract functions;
-these do similar things.  Which is the recommended way / what are the tradeoffs?
-```
-
