@@ -137,7 +137,7 @@ index of the access.  For example, the following hook will execute on any write
 to the array `C.entries` and will update the corresponding entry of the ghost
 mapping `_entries` to match:
 ```cvl
-hook Sstore C.entries[INDEX i] uint e STORAGE {
+hook Sstore C.entries[INDEX uint i] uint e STORAGE {
     _entries[i] = e;
 }
 ```
