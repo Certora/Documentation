@@ -778,3 +778,9 @@ setting or encoding that models precisely both bitwise operations and `mathint`.
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
+(-enableStorageSplitting)=
+#### `--prover_args '-enableStorageSplitting false'`
+
+This option disables the storage splitting optimization.
+
+

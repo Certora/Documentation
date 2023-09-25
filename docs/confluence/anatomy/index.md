@@ -6,6 +6,7 @@ overview.md
 functions.md
 ghosts.md
 ghostfunctions.md
+hooks.md
 definitions.md
 multicontract.md
 example.md

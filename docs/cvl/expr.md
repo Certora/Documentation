@@ -168,7 +168,7 @@ currently undocumented.
    it to `userBalance(address)` otherwise.
 
    Conditional expressions are *short-circuiting*: if `expr1` or `expr2` have
-   side-effects (such as updating a [ghost variable](ghosts)), only the
+   side-effects (such as updating a {ref}`ghost variable <ghosts>`), only the
    side-effects of the expression that is chosen are performed.
 
  * A *universal* expression of the form `forall t v . expr` requires `t`

@@ -187,7 +187,7 @@ function foo(MyComplexStruct memory z, uint x) external returns (uint) {
 - Support conversion of `uintN` to `bytesK` with casting {ref}`bytesN-support`
 - Support {ref}`nativeBalances <special-fields>` in CVL
 - Making access of user-defined-types (enums, structs, user-defined type values) in Solidity consistent, whether those types are declared in a contract or outside of a contract. Specifically, for a user-defined type that's declared in a contract, the access to it in a spec file is `DeclaringContract.TypeName`. For top-level user-defined types (declared outside of any contract/library) the access is using the using contract `UsingContract.TypeName`.
-- Support for {ref}`EVM opcode hooks <opcodes>`
+- Support for {ref}`EVM opcode hooks <opcode-hooks>`
 
 #### CallTrace
 - Display CVL functions in Call Trace

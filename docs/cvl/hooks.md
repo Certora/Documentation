@@ -3,318 +3,390 @@ Hooks
 =====
 
 Hooks are used to attach CVL code to certain low-level operations, such as
-loads and stores to specific storage slots.
+loads and stores to specific storage variables.
 
-Storage Hooks
--------------
+Each hook contains a pattern that describes what operations cause the hook to
+be invoked, and a block of code that is executed when the contract performs
+those operations.
 
-The previous sections described uninterpreted functions as they exist in the Prover. But by themselves, these uninterpreted functions are pretty useless. They don't even seem to keep track of any "ghost" state, as there is no way to relate the uninterpreted functions to the state of the contract being analyzed. _Hooks_ are the glue that pieces together program behavior and the uninterpreted functions by providing a way to _hook_ into certain program behavior and _update_ ghost relations to reflect that program behavior.
+The remainder of this document describes the operation of hooks in detail.  For
+examples of idiomatic hook usage, see {ref}`tracking-changes` and
+{ref}`using-opcodes`.
 
-### Program State
+```{contents}
+```
 
-Ghosts are used to represent some state of a smart contract that the contract itself doesn't necessarily explicitly express. Nonetheless, there is often a relationship between what we want to express as a ghost state and the actual state of the program. For this reason, the hooks that can be expressed in CVL are linked to changes in contract `storage`, the only place where persistent contract state lives.
+Syntax
+------
 
-The Anatomy of a Hook
----------------------
+```
+hook ::= "hook" pattern block
 
-A hook is made up of two separate pieces.
+pattern ::= "Sstore" access_path param [ "(" param ")" ] "STORAGE"
+          | "Sload"  param access_path "STORAGE"
+          | opcode   [ "(" params ")" ] [ param ]
 
-1.  The _pattern_: describes what read or write pattern the Prover looks for
-    
-2.  The _body_: a block of code for the Prover to insert
-    
+access_path ::= id
+              | "(" "slot" number ")"
+              | access_path "." id
+              | access_path "[" "KEY"   basic_type id "]"
+              | access_path "[" "INDEX" basic_type id "]"
+              | access_path "." "(" "offset" number ")"
 
-Inside each rule, the Prover takes these hooks and looks for any reads or writes to storage that match the _pattern_. At each match, it will insert the _body_ of the hook where the match was found.
+opcode ::= "ALL_SLOAD" | "ALL_SSTORE" | ... TODO
 
-Hook Patterns
--------------
+param  ::= evm_type id
+```
 
-### `Sload` and `Sstore`
+See {doc}`statements` for information about the `statement` production; see
+{doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
+production.
 
-`Sload` and `Sstore` are two `TAC` primitives representing a _read_ from storage and a _write_ to storage, respectively. A pattern for an `Sload` will bind a variable to provide access to "the value loaded", and a pattern for an `Sstore` will bind a variable both for "the value stored" and (optionally) "the old value that was overwritten." For example:
+(load-hooks)=
+(store-hooks)=
+Load and store hooks
+--------------------
+
+```{todo}
+Syntax for load and store hooks
+```
+
+Load hooks are executed before a read from a specific location in storage, while
+store hooks are executed before a write to a specific location in storage.
+
+The locations to be matched are given by an access path, such as a contract
+variable, array index, or a slot number.  See {ref}`access-paths` below for
+information on the available access paths.
+
+A load pattern contains the keyword `Sload`, followed by the type and name of a
+variable that will hold the loaded value, followed by an access path indicating
+the location that is read.  Load patterns must end with the keyword `STORAGE`.
+
+For example, here is a load hook that will execute whenever a contract reads the
+value of `C.owner`:
+```cvl
+hook Sload address o C.owner STORAGE { ... }
+```
+Inside the body of this hook, the variable `o` will be bound to the value that
+was read.
+
+A store pattern contains the keyword `Sstore`, followed by an access path
+indicating the location that is being written to, followed by the type and name
+of a variable to hold the value that is being stored.  Optionally, the pattern
+may also include the type and name of a variable to store the previous value
+that is being overwritten.  Store patterns must end with the keyword `STORAGE`.
+
+For example, here is a store hook that will execute whenever a contract writes
+the value of `C.totalSupply`:
+```cvl
+hook Sstore C.totalSupply uint ts (uint old_ts) STORAGE { ... }
+```
+Inside the body of this hook, the variable `ts` will be bound to the value that
+is being written to the `totalSupply` variable, while `old_ts` is bound to the
+value that was stored there previously.
+
+If you do not need to refer to the old value, you can omit the variable
+declaration for it.  For example, the following hook only binds the new value
+of `C.totalSupply`:
+```cvl
+hook Sstore C.totalSupply uint ts STORAGE { ... }
+```
+
+```{todo}
+Is this correct?
+
+If there is a store hook that binds the old value of the variable, then the
+Prover will add a load instruction that reads the value immediately before the
+store instruction.  Therefore, if a path has both a load hook and a store hook,
+they will both be executed when the contract performs a store.
+```
+
+(access-paths)=
+### Access paths
+
+The patterns for load and store hooks are fine-grained; they allow you to hook
+on accesses to specific contract variables or specific array, struct, or
+mapping accesses.
+
+Storage locations are designated by "access paths".  An access path
+starts with either the name of a contract field, or a [slot number][storage-layout].
+
+```{todo}
+is this correct?
+
+Contract fields must be qualified by the contract that defines them (e.g.
+`Contract.field`).  If the contract name is omitted, it defaults to
+`currentContract`.
+```
+
+```{todo}
+Does the contract need to be the contract that defines the field, or can it be
+an inheriting contract?  What happens if there are multiple variables with the
+same name (because of inheritance)?
+```
+
+[storage-layout]: https://docs.soliditylang.org/en/v0.8.17/internals/layout_in_storage.html
+
+If the indicated location holds a struct, you can refer to a specific field of
+the struct by appending `.<field-name>` to the path.  For example, the following
+hook will execute on every store to the `balance` field of the struct `C.owner`:
+```cvl
+hook Sstore C.owner.balance uint b STORAGE { ... }
+```
+
+If the indicated location holds an array, you can refer to an arbitrary element
+of the array by appending `[INDEX uint <variable>]`.  This pattern will match
+any store to an element of the array, and will bind the named variable to the
+index of the access.  For example, the following hook will execute on any write
+to the array `C.entries` and will update the corresponding entry of the ghost
+mapping `_entries` to match:
+```cvl
+hook Sstore C.entries[INDEX i] uint e STORAGE {
+    _entries[i] = e;
+}
+```
+
+Similarly, if the indicated location holds a mapping, you can refer to an
+arbitrary entry by appending `[KEY <type> <variable>]`.  This pattern will
+match any write to the mapping, and will bind the named variable to the key.
+For example, the following hook will execute on any write to the mapping
+`C.balances`, and will update the `_balances` ghost accordingly:
 
 ```cvl
-hook Sload uint256 v <pattern> STORAGE {
-  // inside this block, "v" provides access to the value that was loaded
-  // by this command (i.e. the lhs of the Sload command). Another variable
-  // name other than "v" could have been used
-}
-
-hook Sstore <pattern> uint256 v STORAGE {
-  // inside this block, "v" provides access to the value that was written
-  // to storage by this command (i.e. the rhs of the Sload command) Another
-  // variable name other than "v" could have been used
-}
-
-hook Sstore <pattern> uint256 v (uint256 v_old) STORAGE {
-  // inside this block:
-  //  - "v" provides access to the value that was written to storage by
-  //    this command
-  //  - "v_old" provides access to the value that was overwritten by this
-  //    command
+hook Sstore C.balances[KEY address user] uint balance STORAGE {
+    _balances[user] = balance;
 }
 ```
 
-In the last hook, the Prover will generate an extra `Sload v_old <pattern>` before every matched `Sstore`
+Finally, there is the low-level access pattern `<base>.(offset <n>)` for matching
+loads and stores that are a specific number of bytes from the
+base.  For example, the following hook will match writes to the third or fourth
+byte of slot 1 (these two bytes are matched because the type of the variable is
+`uint16`:
 
-### Slot Patterns
-
-Slot patterns represent any access path that could represent a storage access to any of Solidity's data structures (struct, array, mapping). However, because the EVM view of storage is just of a flat array of 256 bit words, an inline assembly block can produce a storage access that is not expressible by our slot pattern (in which case the storage analysis will be unable to reason about it anyway). A slot pattern conforms to the following grammar:
-
+```cvl
+hook Sstore (slot 1).(offset 2) uint16 b STORAGE { ... }
 ```
-ap := id            // some storage variable declared in contract
-   |  (slot n)      // n words into storage array
-   |  ap.(offset n) // struct access n bytes from ap, where n is a multiple of 32
-   |  ap.f          // struct access to a field named f
-   |  ap[KEY t k]   // mapping access into the mapping at ap with key k of type t
-   |  ap[INDEX t i] // array access into the array at ap with index i of type t
-   ;
+
+These different kinds of paths can be combined.  For example, the following
+hook will execute whenever the contract writes to the `balance` field of a
+struct in the `users` mapping of contract `C`:
+```cvl
+hook C.users[KEY address user].balance uint v (uint old_value) STORAGE { ... }
+```
+Inside the body of the hook, the variable `user` will refer to the address that
+was used as the key into the mapping `C.users`; the variable `v` will contain
+the value that is written, and the variable `old_value` will contain the value
+that was previously stored there.
+
+```{note}
+The only available access paths for `solc` versions 5.17 and older are `slot`
+and `offset` paths.
+```
+
+### Access path caveats
+
+```{todo}
+information on what kind of funny business happens if people do their own memory
+management, and about the disjointness of arrays and so forth
+
+How can you tell if an analysis failed and your hooks didn't apply?
+```
+
+(rawhooks)=
+### Hooking on all loads or stores
+
+Load and store hooks apply to reads and writes to specific storage locations.
+In some cases, it is useful to instrument every load or store, regardless of
+the location.
+
+The `ALL_SLOAD` and `ALL_SSTORE` opcode hooks are used for this purpose; they
+will be executed on every load and store instruction (in all contracts)
+respectively.  See {ref}`opcode-hooks` below for the general syntax of opcode
+hooks.
+
+The `ALL_SLOAD` opcode hook takes one input `uint` argument containing the slot
+number of the load instruction, and has one `uint` output containing the value
+that is loaded from the slot.  For example:
+```cvl
+hook ALL_SLOAD(uint slot) uint val { ... }
+```
+
+The `ALL_SSTORE` opcode hook takes two input `uint` arguments; the first is the
+slot number of the store instruction, and the second is the value being stored.
+For example:
+```cvl
+hook ALL_SSTORE(uint slot, uint val) { ... }
 ```
 
 ```{note}
-Nested struct offsets (`ap.(offset n)`) will be flattened before matching with the storage analysis (which will also flatten struct accesses). So, for example, both `ap.(offset 5).(offset 3)`and `ap.(offset 4).(offset 4)` will compile to `ap.(offset 8)` and would match any struct access where `ap` matches the base and some sequence of struct dereferences adds up to `8` bytes.
+The storage splitting optimization must be disabled using the
+{ref}`-enableStorageSplitting` option in order to use the `ALL_SLOAD` or
+`ALL_SSTORE` hooks.
 ```
 
-These slot patterns provide a simple syntax to specify what storage slot to hook on directly based on the Solidity-level declarations of storage variables. The following are a few examples of Solidity-level declarations of storage variables and slot patterns that will match accesses to these
+If a load instruction matches an `Sload` hook pattern and there is also an
+`ALL_SLOAD` hook, then both hooks will be executed; the `Sload` hook will apply
+first, and then the `ALL_SLOAD` hook.
 
-```solidity
-mapping(address => uint256) balances;
-balances[KEY address addr]
-
-MyStruct {
-  uint256 el_1;
-  address el_2;
-}
-MyStruct[] arr;
-arr[INDEX uint256 i].(offset 32) // an access to el_2 of some element of arr
-
-mapping(uint256 => MyStruct[]) map;
-map[KEY uint256 k][INDEX uint256 i].(offset 0) // an access to el_1 of some
-                                               // element of some value
-                                               // map‌
-```
+Similarly, if a store would trigger both an `Sstore` pattern and an `ALL_SSTORE`
+pattern, the `Sstore` hook would be executed, followed by the `ALL_SSTORE` hook.
 
 ```{note}
-The access pattern `(slot n)` requires an understanding of the storage layout of a contract. If you know where a top-level variable sits in the top-level storage array you can use this access pattern. Additionally, with `solc5.X` and older, you must use this pattern instead of storage variable identifiers since the storage layout is unavailable in versions older than `solc5.X`
+Just like the usual opcode hooks, the raw storage hooks are applied on all
+contracts.  This means that a storage access on _any_ contract will trigger the
+hook.  Therefore, in a rule that models calls to multiple contracts, if two
+contracts are accessing the same slot the same hook code will be called with
+the same slot number.
 ```
 
-Struct Patterns
----------------
+(opcode-hooks)=
+EVM opcode hooks
+----------------
 
-There are several kinds of slots we can see in a Solidity contract's storage layout.
+Opcode hooks are executed just after[^before-hooks] a contract executes a
+specific [EVM opcode][evm-opcodes].  An opcode hook pattern consists of the
+name of the opcode, followed by the inputs to the opcode (if any), followed by
+the type and variable name for the output (if any).
 
-1.  Single word/256 bit/32 byte slots in arrays or mappings
-    
-2.  Static slots (i.e., not inside of a mapping or array)
-    
-3.  Packed struct values
-    
+[^before-hooks]: For halting instructions such as `REVERT` and `SELFDESTRUCT`,
+  the hook is executed before the instruction instead of after.
 
-We will examine these three cases in the following running example:
+[evm-opcodes]: https://ethereum.org/en/developers/docs/evm/opcodes/
 
-```solidity
-contract Test {
-  struct MyStruct {
-    uint256 first;
-    uint256 second;
-    uint256 third;
-  }
-  
-  struct MyPackedStruct {
-    uint128 first;
-    uint64 second;
-    uint64 third;
-  }
-
-  MyStruct s_1;
-  MyPackedStruct s_2;
-  mapping(uint256 => MyStruct) m_1;
-  mapping(uint256 => MyPackedStruct) m_2;
-  ...
-}
-```
-
-### Structs in Static Slots
-
-In static slots we can reason about packing from the hook pattern. For example, if we wanted to hook on a write to `s_1.second` we would write either of the following hooks (remember offsets are in bytes):
-
+For example, the following hook will execute immediately after any contract
+executes the `EXTCODESIZE` instruction:
 ```cvl
-hook Sstore s_1.second uint64 secondValue (uint64 old_second) STORAGE {
-  // hook body
-}
+hook EXTCODESIZE(address addr) uint v { ... }
+```
+Within the body of the hook, the `addr` variable will be bound to the address
+argument to the opcode, and the variable `v` will be bound to the returned value
+of the opcode.
+
+```{note}
+Opcode hooks are applied to _all_ contracts, not just the main contract under
+verification.
 ```
 
+Opcode hooks have the same names, arguments, and return values as the
+corresponding [EVM opcodes][evm-opcodes], with the exception of the `CREATE1`
+hook, which corresponds to the `CREATE` opcode.
 
+Below is the set of supported opcode hook patterns:
 ```cvl
-hook Sstore s_1.(offset 16) uint64 second (uint64 old_second) STORAGE {
-  // hook body
-}
+hook ADDRESS address v
+
+hook BALANCE(address addr) uint v
+
+hook ORIGIN address v
+
+hook CALLER address v
+
+hook CALLVALUE uint v
+
+hook CODESIZE uint v
+
+hook CODECOPY(uint destOffset, uint offset, uint length)
+
+hook GASPRICE uint v
+
+hook EXTCODESIZE(address addr) uint v
+
+hook EXTCODECOPY(address b, uint destOffset, uint offset, uint length)
+
+hook EXTCODEHASH(address a) bytes32 hash
+
+hook BLOCKHASH(uint n) bytes32 hash
+
+hook COINBASE address v
+
+hook TIMESTAMP uint v
+
+hook NUMBER uint v
+
+hook DIFFICULTY uint v
+
+hook GASLIMIT uint v
+
+hook CHAINID uint v
+
+hook SELFBALANCE uint v
+
+hook BASEFEE uint v
+
+hook MSIZE uint v
+
+hook GAS uint v
+
+hook LOG0(uint offset, uint length)
+
+hook LOG1(uint offset, uint length, bytes32 t1)
+
+hook LOG2(uint offset, uint length, bytes32 t1, bytes32 t2)
+
+hook LOG3(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3)
+
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4)
+
+hook CREATE1(uint value, uint offset, uint length) address v
+
+hook CREATE2(uint value, uint offset, uint length, bytes32 salt) address v 
+
+hook CALL(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
+
+hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
+
+hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
+
+hook STATICCALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
+
+hook REVERT(uint offset, uint size)
+
+hook SELFDESTRUCT(address a)
 ```
 
-### Structs inside Mappings or Arrays
+% Note: I'm removing the following section and just replacing it by saying that
+% the above list are the only supported codes, since there seem to be many other
+% unsupported codes (e.g. `ADD` and friends)
+% ### Unsupported opcodes
+% 
+% The standard stack-manipulating instructions `DUP*`, `SWAP*`, `PUSH*` and `POP`
+% are not modeled.  `MLOAD` and `MSTORE` are also not modeled.
 
-When a struct is inside a mapping or an array, it becomes a bit trickier to reason about. However, 1 word/32 byte offsets are fine. So if we wanted to hook on a write to `m_1[k].third` we would write either:
+## Known inter-dependencies and common pitfalls
 
-```cvl
-hook Sstore m_1[KEY uint256 k].third uint256 thirdValue STORAGE {
-  // hook body
-}
-```
+Hooks are instrumented for every appearance of the matching instruction in the
+bytecode, as generated by a high-level source compiler such as the Solidity
+compiler.  The behavior of the bytecode may sometimes be surprising.  For
+example, every Solidity method call to a non-payable function will contain an
+early call to `CALLVALUE` to check that it is 0. This means that every time a
+non-payable Solidity function is invoked, the `CALLVALUE` hook will be
+triggered.
 
-or:
+Hook bodies
+-----------
 
-```cvl
-hook Sstore m_1[KEY uint256 k].(offset 64) uint256 third STORAGE {
-  // hook body
-}
-```
+The body of a hook may contain almost any CVL code, including calls to other
+Solidity functions.  The only exception is that hooks may not contain
+parametric method calls.  Expressions in hook bodies may reference variables
+bound by the hook pattern.
 
-### Manually Unpacking Structs
+````{todo}
+Questions about the following:
+ - does this have to do with the fact that the call is from a hook, or from a
+   summary?
+ - for example, if a hook calls a contract function that performs a store that
+   has a hook on it, would the inner hook get called?  Similarly, if a contract
+   calls a summarized function and the summary calls a contract function that
+   then performs a store with a hook, does the hook execute?
 
-The natural way to define a hook for structs with packed values is the same as for structs with 32-byte aligned fields.
-
-One could also hook on the slot and unpack manually.
-
-Solidity packs structs in the order they're declared, starting from the least significant bit. So a word holding a `MyPackedStruct` would look like:
-
-```
-//T=third         S=second        F=first
-0xTTTTTTTTTTTTTTTTSSSSSSSSSSSSSSSSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-```
-
-So we could write a definition that will unpack these bits:
-
-```cvl
-definition MyPackedStruct_first(uint256 s) returns uint256 =
-    s & 0xffffffffffffffffffffffffffffffff;
-definition MyPackedStruct_second(uint256 s) returns uint256 =
-    (s & 0xffffffffffffffff00000000000000000000000000000000) >>> 128;
-definition MyPackedStruct_third(uint256 s) returns uint256 =
-    (s & 0xffffffffffffffff000000000000000000000000000000000000000000000000) >>> 192;
-```
-
-And so to write a hook to `m_2[k].{first, second, third}` we can write the following:
-
-```cvl
-hook Sstore m_2[KEY uint256 k].(offset 0) uint256 s STORAGE {
-  uint256 first   = MyPackedStruct_first(s);
-  uint256 second  = MyPackedStruct_second(s);
-  uint256 third   = MyPackedStruct_third(s);    
-  // body
-}
-```
-
-```{caution}
-This hook will be triggered on writes to all fields of the struct packed into the same slot‌.
-```
-
-Putting it Together
--------------------
-
-The combination of `Sload`/`Sstore` and the slot pattern combine to create a complete specification of a **hook pattern**. For example:
-
-```cvl
-hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
-  // inside this block:
-  //  - "account" provides access to the key into the mapping that was
-  //    was used in this storage access
-  //  - "v" provides access to the value that was written to storage by
-  //    this command
-  //  - "v_old" provides access to the value that was overwritten by this
-  //    command
-}
-```
-
-(hook-body)=
-The Body of a Hook
-------------------
-
-The body of a hook may contain almost any CVL code, including calls to other Solidity functions (not including parametric method calls).
-Expressions in these commands may reference variables bound by the hook. For example:
-
-```cvl
-ghost ghostBalances(address) returns uint256;
-hook Sload uint256 v balances[KEY address account] STORAGE {
-  require ghostBalances(account) == v;
-}‌
-```
-
-This would make sure that on every read, we make sure that `ghostBalances` matches `balances`. Often hook bodies only include a one-line update to a ghost function, but this doesn't necessarily need to be the case. A similar update to `ghostBalances` would be possible on an `Sstore` but requires understanding a _two-state context_.
-
-(two-state-old)=
-Two State Context
------------------
-
-A two-state context is a scope in which two versions of a variable or ghost function are available, representing _two different_ states of that variable/ghost function. If we are talking about the variable `my_var` then the _old_ version would be accessed using `my_var@old`, and the new version would be accessed using `my_var@new`. For ghost functions, we annotate the ghost application. For example, an application of the _old_ version might look like `my_ghost@old(x, y)`, and an application of the _new_ version might look like `my_ghost@new(x, y)` .
-
-But how is it that we would have _two_ versions of a variable or ghost function? Currently, the _only_ place that will _create_these two versions is a havoc-assuming statement.
-
-### Havoc Assuming
-
-Sometimes we want to forget everything we know about a variable and allow it to take any value from a certain program point onward. This is when we _havoc_ a variable. For example:
-
-```cvl
-rule my_rule(uint256 x) {
-  require x == 2;
-  assert x == 2; // passes
-  havoc x;
-  assert x == 2; // fails
-}
-```
-
-Other times, we'd only like to forget certain things about a variable or ghost function, and sometimes we'd like to learn _new_ things or constrain a variable based on its own value. This is where the `havoc assuming` statement becomes very useful. The following example should illustrate the idea:
-
-```cvl
-rule my_rule(uint256 x) {
-  require x >= 2;
-  havoc x assuming x@new > x@old;
-  assert x > 2; // passes
-}
-```
-
-and a `havoc assuming` statement with a ghost function might look like the following:
-
-```cvl
-ghost contains(uint256 x) returns bool;
-
-rule my_rule(uint256 x, uint256 y, uint256 z) {
-  require contains(x);
-  // "every input that used to return true should still return true
-  //  AND y should now return true as well"
-  havoc contains assuming contains@new(y) &&
-      forall uint256 a. contains@old(a) => contains@new(a);
-      
-  assert contains(x) && contains(y); // passes
-  assert contains(z);                // fails
-}
-```
-
-Finally, as shown in the section on definitions, a definition with ghosts in two-state form may be used inside the two-state context of a `havoc assuming` statement.
-
-A Hook that Modifies Ghost State
---------------------------------
-
-{ref}`Above <hook-body>` we saw an example where we made sure that the ghost state matched a read of its corresponding concrete state. This did not modify the ghost state but rather _further constrained_ it according to new information. But when the concrete state is changed, we need some way to modify the ghost state. Suppose we have an update to a balance. We can use a `havoc assuming` statement to assume that all balances not concerned by the update stay the same and that the balance of the account that was changed gets updated:
-
-```cvl
-ghost ghostBalances(address) returns uint256;
-
-hook Sstore balances[KEY address account] uint256 v STORAGE {
-  havoc ghostBalances assuming ghostBalances@new(account) == v &&
-    forall address a. a != account =>
-        ghostBalances@new(a) == ghostBalances@old(a);
-}
-```
-
-```{caution}
-In `Sstore` hooks, the old value is read by means of generating an `Sload`. However, any hook that can be matched to the generated `Sload` _does not_ apply within the `Sstore` hook.
-```
-
-Notes on Hooks Calling Solidity Functions
------------------------------------------
 
 Hooks are not recursively applied.
-That is, if a hook calls a Solidity function `foo`, and the Solidity function call triggers a summarization that also calls another Solidity function `bar`, then any hooks that would have applied to `bar` would not be instrumented from this context.
+That is, if a hook calls a Solidity function `foo`, and the Solidity function
+call triggers a summarization that also calls another Solidity function `bar`,
+then any hooks that would have applied to `bar` would not be instrumented from
+this context.
+
 For example, given the following contract and specification, the rule `check` will fail.
 
 ```solidity
@@ -363,3 +435,6 @@ rule check() {
   assert xGhost == x(); // will fail - bar()'s hooks are not instrumented. xGhost == 3 while x == 5
 }
 ```
+
+````
+

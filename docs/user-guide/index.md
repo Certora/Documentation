@@ -13,8 +13,9 @@ satisfy.md
 patterns/index.md
 multicontract/index.md
 timeouts.md
-checking.md
+opcodes.md
 troubleshooting.md
+checking.md
 faq.md
 glossary.md
 contact.md

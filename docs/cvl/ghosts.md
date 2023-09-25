@@ -1,4 +1,4 @@
-(ghost-functions)=
+(ghosts)=
 Ghosts
 ======
 
@@ -116,6 +116,7 @@ for information about initial state axioms.
 ```
 
 (ghost-axioms)=
+(ghost-functions)=
 Ghost functions
 ---------------
 
