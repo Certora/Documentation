@@ -47,10 +47,6 @@ production.
 Load and store hooks
 --------------------
 
-```{todo}
-Syntax for load and store hooks
-```
-
 Load hooks are executed before a read from a specific location in storage, while
 store hooks are executed before a write to a specific location in storage.
 
@@ -243,6 +239,11 @@ the same slot number.
 (opcode-hooks)=
 EVM opcode hooks
 ----------------
+
+```{todo}
+Are `Create` hooks and `CREATE1`/`CREATE2` hooks different?  Should `Create`
+be documented?
+```
 
 Opcode hooks are executed just after[^before-hooks] a contract executes a
 specific [EVM opcode][evm-opcodes].  An opcode hook pattern consists of the
