@@ -27,8 +27,8 @@ hooks.md
 opcodes.md
 ```
 
-CVL 2
------
+Changes since CVL1
+------------------
 
 ```{toctree}
 :maxdepth: 2
