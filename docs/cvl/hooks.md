@@ -19,6 +19,8 @@ examples of idiomatic hook usage, see {ref}`tracking-changes` and
 Syntax
 ------
 
+The syntax for hooks is given by the following [EBNF grammar](syntax):
+
 ```
 hook ::= "hook" pattern block
 
