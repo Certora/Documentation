@@ -11,15 +11,17 @@ basic usage of the Certora Prover.
 It is available [here][tutorial].
 
 The Tutorial is organized as a series of lessons and exercises.  You are
-encouraged to clone the [git repository][tutorail-code] and work through the exercises yourself.
+encouraged to clone the [git repository][tutorial-code] and work through the exercises yourself.
 
 
 [tutorial]: https://docs.certora.com/projects/tutorials
-[tutorail-code] : https://github.com/Certora/tutorials-code
+
+[tutorial-code]: https://github.com/Certora/tutorials-code
 
 Examples
 --------
-A set of exmaples featuring CVL are available on [github][examples].
+A set of examples featuring CVL are available on [github][examples].
+
 [examples]: https://github.com/Certora/Examples
 
 Stanford DeFi Security Summit
