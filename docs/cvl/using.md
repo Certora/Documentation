@@ -25,3 +25,5 @@ using ::= "using" id "as" id
 
 See {ref}`identifiers` for the `id` production.
 
+[using example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool_link.spec#L14)
+

@@ -94,7 +94,11 @@ Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 `require` does not require parentheses around the expression and message.
 ```
 
-(satisfy)=
+[assert example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L75)
+
+- [require example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L44)
+
+- (satisfy)=
 `satisfy` statements
 --------------------
 
@@ -127,9 +131,16 @@ some arbitrary state.  It is not possible to check that every possible starting
 state has an execution that satisfies the condition.
 ```
 
+[satisfy example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L243)
+
 (requireInvariant)=
 `requireInvariant` statements
 -----------------------------
+
+`requireInvariant` examples:
+
+  - [in a rule](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
+  - [in a `CVL` function](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L27)
 
 ```{todo}
 This feature is currently undocumented.
@@ -155,6 +166,8 @@ Function calls
 ```{todo}
 This feature is currently undocumented.  See {ref}`call-expr` for partial information.
 ```
+
+[withrevert example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
 
 (havoc-stmt)=
 `havoc` statements

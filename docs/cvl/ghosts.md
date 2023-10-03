@@ -3,8 +3,9 @@ Ghosts
 ======
 
 Ghosts are a way of defining additional variables for use during verification.
-These variables are often used to communicate information between
-[rules](rules.md) and [hooks](hooks.md).
+These variables are ofthen used to 
+- communicate information between [rules](rules.md) and [hooks](hooks.md).
+- Define deterministic function summaries [summaries](methods.md).
 
 ```{contents}
 ```
@@ -53,6 +54,16 @@ while the following are invalid:
 ghost (uint, uint) x;                              // tuples are not CVL types
 ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
+  - [simple variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
+
+  - [ghost mapping](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
+
+Restrictions on Ghost Definitions
+---------------------------------
+- A ghost cannot refer to solidity or `CVL` functions or to other ghosts. It can refer to itself.
+- Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
+ `forall` can be used in order to refer the storage referred to by the parameters.
+- A struct is not allowed as the key or the output type of a ghost mapping.
 
 
 Using ghost variables
@@ -107,6 +118,7 @@ rule update_changes_no_other(address user, address other) {
 Here the `updated` ghost is used to communicate information from the `userInfo`
 hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
 
+
 Initial state axioms
 --------------------
 
@@ -114,6 +126,12 @@ Initial state axioms
 This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions)
 for information about initial state axioms.
 ```
+- [initial state axiom example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L207)
+
+All State Axioms
+----------------
+
+- [`axiom` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L119)
 
 (ghost-axioms)=
 Ghost functions
@@ -122,10 +140,10 @@ Ghost functions
 CVL also has support for "ghost functions".  These serve a different purpose
 from ghost variables, although they can be used in similar ways.
 
+- [ghost function example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24)
+
+
 ```{todo}
 This documentation is currently incomplete.  See [ghosts](/docs/confluence/anatomy/ghosts)
 and [ghost functions](/docs/confluence/anatomy/ghostfunctions) in the old documentation.
 ```
-
-
-

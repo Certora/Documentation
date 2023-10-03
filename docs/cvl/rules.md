@@ -61,6 +61,8 @@ of the `assert` statements evaluate to true.  If all of the `assert` statements
 evaluate to true on every example, the rule passes.  Otherwise, the Prover will
 output a specific counterexample that causes the assertions to fail.
 
+- [simple rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L54)
+
 ```{caution}
 `assert` statements in contract code are handled differently from `assert`
 statements in rules.
@@ -91,6 +93,8 @@ always satisfy the rule.
 Rules that contain undefined `method` variables are sometimes called
 {term}`parametric rule`s.  See {ref}`method-type` for more details about
 how to use method variables.
+
+- [parameteric rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94)
 
 
 Filters
@@ -126,6 +130,8 @@ rule r(method f, method g) filtered {
     ...
 }
 ```
+
+[filters example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/Reentrancy/certora/spec/Reentrancy.spec#L29C9-L29C9)
 
 See {ref}`method-type` for a list of the fields of the `method` type.
 
