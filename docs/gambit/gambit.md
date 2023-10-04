@@ -242,12 +242,11 @@ Here are some examples of using the `--sourceroot` option.
    ```
 
    This should output the following:
-   <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-   <pre>
+   ```
    Generated 1 mutants in 0.13 seconds
    1,BinaryOpMutation,benchmarks/BinaryOpMutation/BinaryOpMutation.sol,23:10, % ,*
    gambit_out/mutants/1/benchmarks/BinaryOpMutation/BinaryOpMutation.sol
-   </pre>
+   ```
 
    The first command generates a single mutant, and its source path is relative to `.`,
    the default source root. We can see that the reported paths in `mutants.log`,
@@ -265,12 +264,11 @@ Here are some examples of using the `--sourceroot` option.
 
    which will output:
 
-   <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-   <pre>
+   ```
    Generated 1 mutants in 0.13 seconds
    1,BinaryOpMutation,BinaryOpMutation.sol,23:10, % ,*
    gambit_out/mutants/1/BinaryOpMutation.sol
-   </pre>
+   ```
 
    The reported filenames, and the offset path inside of
    `gambit_out/mutants/1/`, are now relative to the source root that we
@@ -284,10 +282,9 @@ Here are some examples of using the `--sourceroot` option.
    This will try to find the specified file inside of `scripts`, and since it
    doesn't exist Gambit reports the error:
 
-   <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-   <pre>
+   ```
    [ERROR gambit] [!!] Illegal Configuration: Resolved filename `/Users/USER/Gambit/benchmarks/BinaryOpMutation/BinaryOpMutation.sol` is not prefixed by the derived source root /Users/USER/Gambit/scripts
-   </pre>
+   ```
 
    Gambit prints an error and exits.
 
