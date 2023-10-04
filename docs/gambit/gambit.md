@@ -101,11 +101,9 @@ file to mutate.
 
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol
-```
-<!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+
 Generated 34 mutants in 0.69 seconds
-</pre>
+```
 
 ```{note}
 The mutated file must be located within your current working directory or
@@ -121,10 +119,9 @@ provides a way to randomly downsample the number of mutants with the
 
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 3
-```
-<pre>
+
 Generated 3 mutants in 0.15 seconds
-</pre>
+```
 
 ### Example 3: Viewing Gambit results
 ```{note}
@@ -135,9 +132,7 @@ Gambit outputs all of its results in `gambit_out`:
 
 ```bash
 tree -L 2 gambit_out
-```
-<!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+
 gambit_out
 ├── gambit_results.json
 ├── input_json
@@ -148,7 +143,7 @@ gambit_out
 │   ├── 2
 │   └── 3
 └── mutants.log
-</pre>
+```
 
 See the {ref}`results-directory` section for a detailed
 explanation of this layout. The `gambit summary` command
@@ -389,9 +384,7 @@ to the `benchmarks/` directory the `"filename"` would need to be updated to
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 5
 tree gambit_out -L 2
-```
-<!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
-<pre>
+
 Generated 5 mutants in 0.15 seconds
 
 gambit_out
@@ -405,7 +398,7 @@ gambit_out
 │   └── 5
 └── mutants.log
 
-</pre>
+```
 
 This has the following structure:
 + `gambit_results.json`: a JSON file with detailed results
