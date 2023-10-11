@@ -17,7 +17,7 @@ We visualize this *coverage* information in a dedicated HTML file: `zipOutput/Re
 In the rest of this section, we provide a more detailed explanation of the concept of unsat cores and provide several particular example usages of the unsat cores. 
 
  
-## Unsat Cores
+## Unsat cores
 
 The Certora Prover works as follows:
 1. It takes as an input `.sol` and `.spec` files.
@@ -42,9 +42,9 @@ Furthermore, we maintain a mapping between the commands in the TAC program, and 
 
 
 
-## Unsat Cores Examples
+## Unsat core examples
 
-### Tautology Example
+### Tautology example
 Assume the following CVL rule called `tautology`. 
 
 ```cvl
@@ -64,7 +64,7 @@ We first call a solidity function `getCurrentManager(...)` to get the address of
 
 
 
-###  Visualization on the `.sol` and `.spec` Files
+###  Visualization on the `.sol` and `.spec` files
 
 You can access the unsat cores visualization via `Job Info -> Unsat Core Page` buttons, as shown on Figure 1. 
 
@@ -127,7 +127,7 @@ assert CANON131!!144,
 
 Also, notice that some commands in the TAC dump are followed by "SPEC" or "SOL" with a violet background; these are commands for which we have a mapping to `.spec` and `.sol` files, respectively. 
 
-## Basic vs. Advanced Mode
+## Basic vs. advanced mode
 
 The `--coverage_info` flag takes three possible values: `none`, `basic` and `advanced`:
 1. `none` means no unsat core analysis and no visualization, 
