@@ -67,6 +67,7 @@ hyperproperties
 hyperproperty
 immutable
 immutables
+initializations
 injective
 injectivity
 inlined
@@ -154,5 +155,6 @@ verifiers
 walkthrough
 whitespace
 prover_args
-UX
 UNSAT
+unsat
+UX
