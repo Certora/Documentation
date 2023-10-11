@@ -84,7 +84,7 @@ Every line can have either none, green, red or yellow background color. No backg
 
 1. Green means that all of the TAC commands that are mapped to the line are in the unsat core, i.e. needed to prove the property. 
 2. Red means that none of the TAC commands that are mapped to the line are in the unsat core, i.e. not needed to prove the property.
-3. Yellow means that some of the TAC commands that are mapped to the line are in the unsat core and some of them are not in the unsat core. 
+3. Yellow means that some of the TAC commands that are mapped to the line are in the unsat core and some of them are not in the unsat core (there are no yellow lines in the Tautology example). 
 
 Furthermore, if we have multiple rules/invariants or a parametric rule (such as our `tautology`), we can also have multiple rules/invariants mapping to a single `.sol` or `.spec` line. That is, we generate just a single, joint, visualization for all the rules/invariants (run with `--rule` and `--method` flags to get a visualization for a single rule/method/invariant). And in such case, a yellow line means that some of the commands on the line are needed to prove some of the rules/methods/invariants and some of the commands are not needed. 
 
@@ -97,7 +97,7 @@ On contrary to `.sol` and `.spec` visualization, we generate separate TAC unsat 
 ![](tac-visualisation-button.png)
 Figure 3: The TAC visualization button.
 
-The visualization here consists only of 2 colors: `green` means that the command is needed and `yellow` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b shows the TAC visualization for the Tautology example. 
+The visualization here consists only of 2 colors: `green` means that the command is needed and `red` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b shows the TAC visualization for the Tautology example. 
 
 ![](tautology-tac-a.png)
 Figure 4a: The visualization of the Tautology example on TAC, part A. 
@@ -109,20 +109,24 @@ Namely, only the following TAC commands are in the unsat core:
 
 ```
 → require other != manager
-I69 = CANON27 SPEC
-CANON30!!71 = I69==R35 SPEC
-B72 = !CANON30!!71 SPEC
-assume B72
+I90 = other682 SPEC
+I91 = manager664 SPEC
+tmp685686 = I90==I91 SPEC
+B92 = !tmp685686 SPEC
+assume B92
 ...
 ...
 → assert newManager != other || newManager != manager
-I137 = CANON27 SPEC
-CANON125!!138 = R62==I137 SPEC
-B139 = !CANON125!!138 SPEC
-CANON129!!142 = R62==R35 SPEC
-B143 = !CANON129!!142 SPEC
-CANON131!!144 = B139||B143 SPEC
-assert CANON131!!144,
+I156 = newManager879 SPEC
+I157 = other682 SPEC
+tmp901902 = I156==I157 SPEC
+B158 = !tmp901902 SPEC
+I159 = newManager879 SPEC
+I160 = manager664 SPEC
+tmp909910 = I159==I160 SPEC
+B161 = !tmp909910 SPEC
+certoraAssert897898 = B158||B161 SPEC
+assert certoraAssert897898,
 ```
 
 Also, notice that some commands in the TAC dump are followed by "SPEC" or "SOL" with a violet background; these are commands for which we have a mapping to `.spec` and `.sol` files, respectively. 
