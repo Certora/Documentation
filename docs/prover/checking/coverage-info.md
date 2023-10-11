@@ -42,199 +42,116 @@ There are roughly two types of assertions in `A`:
 
 In particular, for every `assign`, `assume` and `assert` command `Ci` from the TAC there is a corresponding assert `Ai` in `A`. Suppose we obtain an unsat core `U` of `A`. Then, the meaning of every excluded assert `Ai in (A - U)` is the following:
 
-- if `Ci` is an `assume` or `assert` command then `Ci` can be completely removed from the TAC without causing a violation of the underlying CVL property
-- if `Ci` is an `assign` command, for instance `x = y + z`, then the right hand side of the equation can be `havoc'd` without violating the underlying CVL property, i.e. in our example we can replace `x = y + z` with `x = havoc`.
+
+- If `Ci` is an `assume` or `assert` command then `Ci` can be completely removed from the TAC without causing a violation of the underlying CVL property.
+- If `Ci` is an `assign` command, for instance `x = y + z`, then the right hand side of the equation can be `havoc'd` without violating the underlying CVL property, i.e. in our example we can replace `x = y + z` with `x = havoc`.
+
+
+Furthermore, we maintaing a particular mapping between the commands in the TAC program, and the commands in the input `.sol` and `.spec` files. In particular, for `.spec` files, we usually have a mapping for a vast majority of the commands (CVL `assert`s, `require`s, and variable assignments). Unfortunately, for `.sol` files, the mapping is only particular due due to the compilation to the bytecode (the compilers are not build by Certora and hence we cannot ensure preservation of mapping between commands in `.sol` and commands in the bytecode). 
 
 
 
+(unsat-cores-examples)=
+Unsat Cores Examples
+--------------
 
 
+== Tautology Example ==
+Assume the following cvl rule called `tautology`. 
 
-
-
-- If an unsat core `U` of `A` does not contain an assert `Ai` that corresponds to an `assume` command from TAC
-
-
-
-
-
-
-The **vacuity** sanity check ensures that even when ignoring all the
-user-provided assertions, the end of the rule is reachable. This check ensures
-that that the combination of `require` statements does not rule out all
-possible counterexamples.  Rules that rule out all possible counterexamples
-are called {term}`vacuous` rules.  Since they don't actually check any
-assertions, they are almost certainly incorrect.
-
-For example, the following rule would be flagged by the vacuity check:
 ```cvl
-rule vacuous {
-    uint x;
-    require x > 2;
-    require x < 1;
-    assert f(x) == 2, "f must return 2";
+rule tautology(uint256 fundId, method f) { 
+	address manager =  getCurrentManager(fundId);
+	address other;
+	require other != manager;
+	env e;
+	calldataarg args;
+	f(e,args);
+	address newManager = getCurrentManager(fundId);
+	assert ( newManager!= other || newManager != manager);
 }
 ```
 
-Since there are no models satisfying both `x > 2` and `x < 1`, this rule
-will always pass, regardless of the behavior of the contract.  This is an
-example of a {term}`vacuous` rule &mdash; one that passes only because the
-preconditions are contradictory.
+We first call a solidity function `getCurrentManager(...)` to get the `address` of the *current* `manager` of the underlying smart contract. Subesequently, we create another address `other` and require that `other != manager`. Subsequently, we call a fuction `f(...)` of the contract, and assuming this function call could have changed the manager, we get the value `newManager` of *current* manager. Finally, we assert that either `newManager!= other` or `newManager != manager`. However, notice that we required that `other != manager` and hence the `assert` is necessarily `true`. The function calls of `getCurrentManager(...)` and `f(...)` are completely irrelevant. 
 
-The vacuity check also flags situations where counterexamples are ruled
-out for reasons other than `require` statements.  A common example comes from
-reusing `env` variables.  Consider the following poorly-written rule:
 
-```cvl
-env e; uint amount; address recipient;
 
-require balanceOf(recipient) == 0;
-require amount > 0;
+** Visualisation on the ** `.sol`&`.spec` files
 
-deposit(e, amount);
-transfer(e, recipient, amount);
+You can access the unsat cores visualisation via `Job Info -> Unsat Core Page` buttons, as shown on Figure 1. 
 
-assert balanceOf(recipient) > 0,
-    "depositing and then transferring makes recipient's balance positive";
+![](coverage-info-button.png)
+Figure 1: The `.spec` & `.sol` visualisation button.
+
+The visualisation itself is shown on Figure 2. It consists of two *panes*: 
+1. the left pane shows *per-line* visualisation
+2. and the right pane shows detailed info about individual visualised lines. 
+
+![](tautology-sol-and-spec.png)
+Figure 2: The visualisation of the Tautology example on `.sol` and `.spec`. 
+
+
+In particular, in the left pane, we highligh lines from individual `.sol` and `.spec` files. 
+Every line can have either none, gree, red or yellow background color. No background means we have no information about this line. For instance, it might not be neither `assert` nor `require` nor `assign` command, or we might not have the mapping due to compilation to the EVM bytecode. Green, red or yellow background means that we have a mapping to one or more commands on the line (one `.spec`/`.sol` line can be often broke down to several TAC commands) with the following meaning:
+
+1. Green means that all of the TAC commands that are mapped to the line are in the unsat core, i.e. needed to prove the property. 
+2. Red means that none of the TAC commands that are mapped to the line are in the unsat core, i.e. not needed to prove the property.
+3. Yellow means that some of the TAC commands that are mapped to the line are in the unsat core and some of them are not in the unsat core. 
+
+Furthermore, if we have multiple rules/invarints or a parametric rule (such as our `tautology`), we can also have multiple rules/invariants mapping to a single `.sol` or `.spec` line. That is, we generate just a single, joint, visualisation for all the rules/invariants (run with `--rule` and `--method` flags to get a visualisation for a single rule/method/invariant). And in such case, a yellow line means that some of the commands on the line are needed to prove some of the rules/methods/invariants. 
+
+The right pane provides detailed information about individual line and mapped commands on the line group by the *full-rule-name* and the *value*, where each *value* refers to a particular `assign`, `assert` or `assume` TAC command that is mapped to the line. 
+
+
+** Visualisation on TAC **
+On contrary to `.sol` and `.spec` visualisation, we generate separate TAC unsat core visualisation for every rule/method/invariant. To access it, click first on the particular `rule/method/invariant` in the `Rules` pane and then on the `Dump page` button as shown in Figure 3. 
+
+![](tac-visualisation-button.png)
+Figure 3: The TAC visualisation button.
+
+For detailed guidelines on reading TAC dumps, please refer to ..TODO..
+The visualisation here consists only of 2 colors: `green` means that the command is needed and `yellow` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b shows the TAC visualisation for the Tautology example. 
+
+![](tautology-tac-a.png)
+Figure 4a: The TAC visualisation button.
+
+![](tautology-tac-b.png)
+Figure 4b: The TAC visualisation button.
+
+Namely, only the following TAC commands are in the unsat core:
+
+```
+→ require other != manager
+I69 = CANON27 SPEC
+CANON30!!71 = I69==R35 SPEC
+B72 = !CANON30!!71 SPEC
+assume B72
+...
+...
+→ assert newManager != other || newManager != manager
+I137 = CANON27 SPEC
+CANON125!!138 = R62==I137 SPEC
+B139 = !CANON125!!138 SPEC
+CANON129!!142 = R62==R35 SPEC
+B143 = !CANON129!!142 SPEC
+CANON131!!144 = B139||B143 SPEC
+assert CANON131!!144,
 ```
 
-Although it looks like this rule is reasonable, it may actually be vacuous.
-The problem is that the environment `e` is reused, and in particular
-`e.msg.value` is the same in the calls to `deposit` and `transfer`.  Since
-`transfer` is not payable, it will always revert if `e.msg.value != 0`.  On the
-other hand, `deposit` always reverts when `e.msg.value == 0`.  Therefore every
-example will either cause `deposit` or `transfer` to revert, so there are no
-models that reach the `assert` statement.
+Also, notice that some commands in the TAC dump are followed by "SPEC" or "SOL" with a violet background; these are commands for which we have a mapping to `.spec` and `.sol` files, respectively. 
 
-(sanity-assert-tautology)=
-Assert tautology checks
----------------------
+** Basic vs. Advanced Mode
 
-The **assert tautology** sanity check ensures that individual `assert` statements
-are not {term}`tautologies <tautology>`.  A tautology is a statement that is
-true on all examples, even if all the `require` and `if` conditions are
-removed. Tautology checks also consider the bodies of the contract functions. For
-example, `assert square(x) >= 0;` is a tautology if `square` is a contract
-function that squares its input.
+The `--coverage_info` flag takes three possible values: `none`, `basic` and `advanced`:
+1. `none` means no unsat core analysis and no visualisation, 
+2. `basic` means relatively fast bust possibly very imprecise analysis, 
+3. and `advanced` means possibly slow but more precise analysis. 
 
-For example, the following rule would be flagged by the assert tautology check:
+In particular, the Certora Prover internally does many various transformations of the TAC program before it converts the TAC to SMT. These transformations usually simplify the TAC and make the whole verification task easier and faster. However, some of these transformations might lead to loosing mapping a mapping between the initial and the final TAC, and consequently also loosing a mapping between the SMT and the input .sol and .spec files. In such case, some lines/commands in the `.spec` and `.sol` visualisation might be marked as not needed even if they are actually needed; the other direction, i.e. spurious red lines, is also possible. The `basic` mode keeps all the TAC transformations and hence is faster but possibly more imprecise, whereas the `advanced` mode turns off some of the transformations to make the analysis more precise. 
 
-```cvl
-rule tautology {
-  uint x; uint y;
-  require x != y;
-  ...
-  assert x < 2 || x >= 2,
-   "x must be smaller than 2 or greater than or equal to 2";
-}
-```
 
-Since every `uint` satisfies the assertion, the assertion is tautological, which
-may indicate an error in the specification.
-
-(sanity-trivial-invariant)=
-Trivial invariant checks
-------------------------
-
-The **Trivial invariant** sanity check ensures that invariants are not trivial.
-A trivial invariant is one that holds in all possible states, not just in
-reachable states.
-
-For example, the following invariant is trivial:
-
-```cvl
-invariant squaresNonNeg(int x)
-    x * x >= 0
-```
-
-While it does hold in every reachable state, it also holds in every
-non-reachable state.  Therefore it could be more efficiently checked as a rule:
-
-```cvl
-rule squaresNonNeg(int x) {
-    assert x * x >= 0;
-}
-```
-
-The rule version is more efficient because it can do a single check in an
-arbitrary state rather than separately checking states after arbitrary method
-invocations.
-
-(sanity-assert-structure)=
-Assertion structure checks
---------------------------
-
-The **assertion structure** sanity check ensures that complex assert statements
-can't be replaced with simpler ones.
-
-If an assertion expression is more complex than necessary, it can pass for
-misleading reasons.  For example, consider the following assertion:
-
-```cvl
-uint x;
-assert (x < 5) => (x >= 0);
-```
-
-In this case, the assertion is true, but only because `x` is a `uint` and is
-therefore *always* non-negative.  The fact that `x >= 0` has nothing to do with
-the fact that `x < 5`.  Therefore this complex assertion could be replaced with
-the more informative assertion `assert x >= 0;`.
-
-Similarly, if the premise of the assertion is always false, then the implication
-is {term}`vacuously <vacuous>` true.  For example:
-
-```cvl
-uint x;
-assert (x < 0) => (x >= 5);
-```
-
-This assertion will pass, but only because the unsigned integer `x` is never
-negative.  This may mislead the user into thinking that they have checked that
-`x >= 5` in some interesting situation, when in fact they have not.  The simpler
-assertion `assert x >= 0;` more clearly describes what is going on.
-
-Overly complex assertions like this may indicate a mistake in the rule.  In this
-case, for example, the fact that the user was checking that `x >= 0` may
-indicate that they should have declared `x` as an `int` instead of a `uint`.
-
-The assertion structure check tries to prove some complex logical statements by
-breaking them into simpler parts.  The following situations are reported by the
-assertion structure check:
-
-* `assert p => q;` is reported as a sanity violation if `p` is false whenever the
-  assertion is reached (in which case the simpler assertion `assert !p;` more
-  clearly describes the situation), or if `q` is always true (in which case
-  `assert q;` is a clearer alternative).
-
-* `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
-  both true whenever the assertion is reached (in which case the simpler
-  assertions `assert p; assert q;` more clearly describe the situation), or if
-  neither `p` nor `q` are ever true (in which case `assert !p; assert !q;` is a
-  clearer alternative).
-
-* `assert p || q;` is reported as a sanity violation if either `p` is true
-  whenever the assertion is reached
-  (in which case `assert p;` more clearly describes the situation) or if `q` is
-  always true (in which case `assert q;` is a clearer alternative).
-
-(sanity-redundant-require)=
-Redundant require checks
-------------------------
-
-The **require redundancy** sanity check highlights redundant `require` statements.
-A `require` is considered to be redundant if it does not rule out any {term}`models <model>`
-that haven't been ruled out by previous requires.
-
-For example, the require-redundancy check would flag the following rule:
-```cvl
-rule require_redundant {
-  uint x;
-  require x > 3;
-  require x > 2;
-  assert f(x) == 2, "f must return 2";
-}
-```
-
-In this example, the second requirement is redundant, since any `x` greater
-than 3 will also be greater than 2.
+(unsat-cores-vs-sanity-checks)=
+Relation to Sanity Checks
+--------------
+..TODO.. describe some differences
 
