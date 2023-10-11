@@ -94,7 +94,7 @@ The right pane provides detailed information about individual lines and mapped c
 ### Visualization on TAC 
 On contrary to `.sol` and `.spec` visualization, we generate separate TAC unsat core visualization for individual rules/methods/invariants. To access it, click first on the particular `rule/method/invariant` in the `Rules` pane and then on the `Dump page` button as shown in Figure 3. 
 
-![](tac-visualisation-button.png)
+![](tac-visualization-button.png)
 Figure 3: The TAC visualization button.
 
 The visualization here consists only of 2 colors: `green` means that the command is needed and `red` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b shows the TAC visualization for the Tautology example. 
@@ -140,3 +140,7 @@ The `--coverage_info` flag takes three possible values: `none`, `basic` and `adv
 
 In particular, the Certora Prover internally does many various transformations of the TAC program before it converts the TAC program to SMT. These transformations usually simplify the TAC program and make the whole verification task easier and faster. However, some of these transformations might lead to loosing a mapping between the initial and the final TAC program, and consequently also loosing a mapping between the SMT encoding and the input `.sol` and `.spec` files. In such case, some lines/commands in the `.spec` and `.sol` visualization might be marked as not needed even if they are actually needed; the other direction, i.e. spurious red lines, is also possible. The `basic` mode keeps all the TAC transformations and hence is faster but possibly more imprecise, whereas the `advanced` mode turns off some of the transformations to make the analysis more precise. 
 
+## Multiple unsat cores
+In general, the SMT formula can have multiple unsat cores; in fact, even exponentially many w.r.t. the number of assertions in the formula. By default, we generate just a single unsat core per rule/method/invariant. Use can use the flag `--prover_args "-numOfUnsatCores <k>"` to instruct Certora Prover to generate up `k` unsat cores for each rule/method/invariant. At this moment, we support `k > 1` only for the TAC visualizations. In particular, 
+the name of the TAC unsat core visualization file has the form 
+`Report-<rule_name>-<method_name>-unsatCore<i>.html` where `i >= 1` is the index of the unsat core, e.g. `Report-tautology-createFundLPU256RP-unsatCore1.html`. The `Dump page` button always leads to the first unsat core (`i == 1`). To access the additional unsat cores, you can either manually change the HTML address, or download the `zipOutput` as all the unsat core visualizations are stored in the `zipOutput/Reports` folder. 
