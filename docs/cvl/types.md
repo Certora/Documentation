@@ -296,6 +296,10 @@ rule bigger_stake_more_earnings() {
 The `lastStorage` variable contains the state of the EVM after the most recent
 contract function call.
 
+Variables of `storage` type can also be compared for equality, allowing simple
+rules that check the equivalence of different functions.  See
+{ref}`storage-comparison` for details.
+
 (sort)=
 ### Uninterpreted sorts
 
