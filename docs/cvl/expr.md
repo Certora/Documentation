@@ -466,3 +466,46 @@ written and then later cleared by Solidity (via the `pop()` function or the `del
 clear operation the slot will definitely hold 0, but the Prover will not make any assumptions
 about the value of the uninitialized slot which means they can be considered different.
 ```
+
+(direct-storage-access)=
+Direct Storage Access
+---------------------
+
+The value of contract state variables can be directly accessed from CVL. These direct
+storage accesses are written using the state variable names and struct fields defined
+in the contract. For example, to access the state variable `uint x` defined in the `currentContract`,
+one can simply write `currentContract.x`. More complex structs can be accessed by chaining field selects
+and array/map dereference operations together. For example, if the current contract has the following
+type definitions and state variables:
+
+```
+struct Foo {
+   mapping (address => uint[]) bar;
+}
+Foo[3] myState;
+```
+
+one can write `currentContract.myState[0].bar[addr][0]`, where `addr` is a CVL variable of type `address`.
+
+The storage of contracts other than the `currentContract` can be accessed by writing the contract identifier
+bound with a {ref}`using statement <using-stmt>`. For example, if the `myState` definition above appeared in
+a contract called `Test` and the current CVL file included  `using Test as t;` one could write `t.myState[0].bar[addr][0]`.
+
+```{note}
+A contract identifier (or `currentContract`) *must* be included in the direct storage access. In other
+words, writing just `myState[0].bar[addr][0]` will not work, even if `myState` is declared in the current contract.
+```
+
+Currently only primitive values (e.g., `uint`, `bytes3`, `bool`, enums, and user defined value types) can be directly accessed.
+Attempting to access more complex types will yield a type checking error. For example, attempting to access
+an entire array with `currentContract.myState[0].bar[addr]` will fail.
+
+```{note}
+Although entire arrays cannot be accessed, the _length_ of the arrays can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
+```
+
+```{warning}
+Direct storage access is an experimental feature, and relies on several internal static analyses which can sometimes fail.
+If these internal static analyses fail, any rules that use direct storage access will fail during processing. If this
+occurs, check the "Global Problems" view of the web report and contact Certora for assistance.
+```
