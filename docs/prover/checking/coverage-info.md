@@ -14,7 +14,7 @@ To answer the above questions, the Certora Prover generates a so-called *minimal
 
 We visualize this *coverage* information in a dedicated HTML file: `zipOutput/Reports/UnsatCorevisualization.html`. Furthermore, we also visualize the unsat core coverage information on our `TAC` representation of the verification condition. 
 
-In the rest of this section, we provide a more detailed explanation of the concept of unsat cores and provide several particular example usages of the unsat cores. 
+In the rest of this section, we provide a more detailed explanation of the concept of unsat cores and demonstrate it on an example. 
 
  
 ## Unsat cores
@@ -35,7 +35,7 @@ There are several different kinds of assertions in `A` and some of them correspo
 
 
 - If `Ci` is an `assume` or `assert` command then `Ci` can be completely removed from the TAC program without causing a violation of the underlying CVL property.
-- If `Ci` is an `assign` command, for instance `R1 = R2 + R3`, then the right hand side of the equation can be `havoc'd` without violating the underlying CVL property, i.e. in our example we can replace `R1 = R2 + R3` with `R1 = havoc`.
+- If `Ci` is an `assign` command, for instance `R1 = R2 + R3`, then the right hand side of the equation can be `havoc'd` without violating the underlying CVL property, i.e. in our example we can replace `R1 = R2 + R3` by `R1 = havoc`.
 
 
 Furthermore, we maintain a mapping between the commands in the TAC program, and the commands in the input `.sol` and `.spec` files. In particular, for `.spec` files, we usually have a mapping for a vast majority of the commands (CVL `assert`s, `require`s, and variable assignments). Unfortunately, for `.sol` files, the mapping is very limited due to the compilation to the bytecode (the compilers are not build by Certora and hence we cannot ensure preservation of mapping between commands in `.sol` and commands in the bytecode). 
@@ -49,18 +49,18 @@ Assume the following CVL rule called `tautology`.
 
 ```cvl
 rule tautology(uint256 fundId, method f) { 
+	env e;
 	address manager =  getCurrentManager(fundId);
 	address other;
-	require other != manager;
-	env e;
+	require other != manager && other != e.msg.sender;
 	calldataarg args;
 	f(e,args);
 	address newManager = getCurrentManager(fundId);
-	assert ( newManager!= other || newManager != manager);
+	assert newManager!= other || newManager != manager;
 }
 ```
 
-We first call a solidity function `getCurrentManager(...)` to get the address of the *current* `manager` of the underlying smart contract. Subsequently, we create another address `other` and require that `other != manager`. Subsequently, we call a function `f(...)` of the contract, and, assuming this function call could have changed the manager, we get the value `newManager` of the *current* manager. Finally, we assert that either `newManager!= other` or `newManager != manager`. However, notice that we required that `other != manager` and hence the `assert` is necessarily `true`. The function calls of `getCurrentManager(...)` and `f(...)` are completely irrelevant. 
+We first call a solidity function `getCurrentManager(...)` to get the address of the *current* `manager` of the underlying smart contract. Subsequently, we create another address `other` and require that `other != manager && other != e.msg.sender`. Subsequently, we call a function `f(...)` of the contract, and, assuming this function call could have changed the manager, we get the value `newManager` of the *current* manager. Finally, we assert that either `newManager!= other` or `newManager != manager`. However, notice that we required that `other != manager` and hence the `assert` is necessarily `true`. The function calls of `getCurrentManager(...)` and `f(...)` are completely irrelevant. 
 
 
 
@@ -75,7 +75,7 @@ The visualization itself is shown on Figure 2. It consists of two *panes*:
 1. The left pane shows *per-line* visualization.
 2. The right pane shows detailed info about individual visualized lines. 
 
-![](tautology-sol-and-spec.png)
+![](tautology-sol-and-spec-new.png)
 Figure 2: The visualization of the Tautology example on `.sol` and `.spec`. 
 
 
@@ -84,52 +84,53 @@ Every line can have either none, green, red or yellow background color. No backg
 
 1. Green means that all of the TAC commands that are mapped to the line are in the unsat core, i.e. needed to prove the property. 
 2. Red means that none of the TAC commands that are mapped to the line are in the unsat core, i.e. not needed to prove the property.
-3. Yellow means that some of the TAC commands that are mapped to the line are in the unsat core and some of them are not in the unsat core (there are no yellow lines in the Tautology example). 
+3. Yellow means that some of the TAC commands that are mapped to the line are in the unsat core and some of them are not in the unsat core.
 
 Furthermore, if we have multiple rules/invariants or a parametric rule (such as our `tautology`), we can also have multiple rules/invariants mapping to a single `.sol` or `.spec` line. That is, we generate just a single, joint, visualization for all the rules/invariants (run with `--rule` and `--method` flags to get a visualization for a single rule/method/invariant). And in such case, a yellow line means that some of the commands on the line are needed to prove some of the rules/methods/invariants and some of the commands are not needed. 
 
-The right pane provides detailed information about individual lines and mapped commands on the lines group by the rule/method/invariant name (denoted *rule*) and the *value*, where each *value* refers to a particular `assign`, `assert` or `assume` TAC command that is mapped to the line. 
+The right pane provides detailed information about individual lines and commands mapped to the lines group by the rule/method/invariant name (denoted *rule*) and the *value*, where each *value* refers to a particular `assign`, `assert` or `assume` TAC command that is mapped to the line. For instance, in the Tautology example, we can see that sub-command `other != manager` of line `11` matters (is in the unsat core), whereas `other != e.msg.sender` is not in the unsat core. Also, note that the pane shows e.g. both `other != manager` and `other == manager`; this is because in our TAC representation we encode `other != manager` as `!(other == manager)`. 
 
 
 ### Visualization on TAC 
-On contrary to `.sol` and `.spec` visualization, we generate separate TAC unsat core visualization for individual rules/methods/invariants. To access it, click first on the particular `rule/method/invariant` in the `Rules` pane and then on the `Dump page` button as shown in Figure 3. 
+On contrary to `.sol` and `.spec` visualization, we generate separate TAC unsat core visualization for individual rules/methods/invariants. To access it, click first on the particular rule/method/invariant in the `Rules` pane and then on the `Dump page` button as shown in Figure 3. 
 
 ![](tac-visualization-button.png)
 Figure 3: The TAC visualization button.
 
-The visualization here consists only of 2 colors: `green` means that the command is needed and `red` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b shows the TAC visualization for the Tautology example. 
+The visualization here consists only of 2 colors: `green` means that the command is needed and `red` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b show the TAC visualization for the Tautology example. 
 
-![](tautology-tac-a.png)
+![](tautology-tac-a-new.png)
 Figure 4a: The visualization of the Tautology example on TAC, part A. 
 
-![](tautology-tac-b.png)
+![](tautology-tac-b-new.png)
 Figure 4b: The visualization of the Tautology example on TAC, part B.
 
 Namely, only the following TAC commands are in the unsat core:
 
 ```
-→ require other != manager
-I90 = other682 SPEC
-I91 = manager664 SPEC
-tmp685686 = I90==I91 SPEC
-B92 = !tmp685686 SPEC
-assume B92
+→ require other != manager && other != e.msg.sender
+I95 = other287 SPEC
+I96 = manager269 SPEC
+tmp292293 = I95==I96 SPEC
+B97 = !tmp292293 SPEC
 ...
+certoraAssume288289 = B97&&B102 SPEC
+assume certoraAssume288289
 ...
 → assert newManager != other || newManager != manager
-I156 = newManager879 SPEC
-I157 = other682 SPEC
-tmp901902 = I156==I157 SPEC
-B158 = !tmp901902 SPEC
-I159 = newManager879 SPEC
-I160 = manager664 SPEC
-tmp909910 = I159==I160 SPEC
-B161 = !tmp909910 SPEC
-certoraAssert897898 = B158||B161 SPEC
-assert certoraAssert897898,
+I158 = newManager419 SPEC
+I159 = other287 SPEC
+tmp441442 = I158==I159 SPEC
+B160 = !tmp441442 SPEC
+I161 = newManager419 SPEC
+I162 = manager269 SPEC
+tmp449450 = I161==I162 SPEC
+B163 = !tmp449450 SPEC
+certoraAssert437438 = B160||B163 SPEC
+assert certoraAssert437438,
 ```
 
-Also, notice that some commands in the TAC dump are followed by "SPEC" or "SOL" with a violet background; these are commands for which we have a mapping to `.spec` and `.sol` files, respectively. 
+Also, notice that some commands in the TAC dump are followed by "SPEC" or "SOL" with a violet background color; these are commands for which we have a mapping to `.spec` and `.sol` files, respectively. 
 
 ## Basic vs. advanced mode
 
@@ -141,6 +142,6 @@ The `--coverage_info` flag takes three possible values: `none`, `basic` and `adv
 In particular, the Certora Prover internally does many various transformations of the TAC program before it converts the TAC program to SMT. These transformations usually simplify the TAC program and make the whole verification task easier and faster. However, some of these transformations might lead to loosing a mapping between the initial and the final TAC program, and consequently also loosing a mapping between the SMT encoding and the input `.sol` and `.spec` files. In such case, some lines/commands in the `.spec` and `.sol` visualization might be marked as not needed even if they are actually needed; the other direction, i.e. spurious red lines, is also possible. The `basic` mode keeps all the TAC transformations and hence is faster but possibly more imprecise, whereas the `advanced` mode turns off some of the transformations to make the analysis more precise. 
 
 ## Multiple unsat cores
-In general, the SMT formula can have multiple unsat cores; in fact, even exponentially many w.r.t. the number of assertions in the formula. By default, we generate just a single unsat core per rule/method/invariant. Use can use the flag `--prover_args "-numOfUnsatCores <k>"` to instruct Certora Prover to generate up `k` unsat cores for each rule/method/invariant. At this moment, we support `k > 1` only for the TAC visualizations. In particular, 
+In general, the SMT formula can have multiple unsat cores; in fact, even exponentially many w.r.t. the number of assertions in the formula. By default, we generate just a single unsat core per rule/method/invariant. Use can use the flag `--prover_args "-numOfUnsatCores <k>"` to instruct the Certora Prover to generate up `k` unsat cores for each rule/method/invariant. At this moment, we support `k > 1` only for the TAC visualizations. In particular, 
 the name of the TAC unsat core visualization file has the form 
 `Report-<rule_name>-<method_name>-unsatCore<i>.html` where `i >= 1` is the index of the unsat core, e.g. `Report-tautology-createFundLPU256RP-unsatCore1.html`. The `Dump page` button always leads to the first unsat core (`i == 1`). To access the additional unsat cores, you can either manually change the HTML address, or download the `zipOutput` as all the unsat core visualizations are stored in the `zipOutput/Reports` folder. 
