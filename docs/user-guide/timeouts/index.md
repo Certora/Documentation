@@ -1,6 +1,12 @@
 Managing Timeouts
 =================
 
+```{toctree}
+:maxdepth: 2
+
+timeouts-theory.md
+```
+
 Timeouts of the Certora Prover are an unpleasant reality.
 In this chapter we present a practical guide to diagnosing the causes of timeouts and ways to prevent them.
 % This page elaborates on the theoretical background of timeouts in a program % verification tool.  
@@ -35,7 +41,7 @@ Timeouts that are not SMT timeouts should be reported to Certora.
 Typically, they will either require developer effort, or significant limitations of the input.
 ```
 
-For some more general background on SMT timeouts, please see [this page](timeouts/timeouts-theory.md).
+For some more general background on SMT timeouts, please see [this page](timeouts-theory.md).
 
 (timeout_causes)=
 # What Causes Timeouts?
@@ -52,7 +58,7 @@ Note that these are not the only sources of complexity; however, for instance li
 
 ## Intuitions on Kinds of Complexity
 
-In the section on the [theoretical background of verification timeouts](timeouts/timeouts-theory.md) we gave a few details on SMT solver architecture. 
+In the section on the [theoretical background of verification timeouts](timeouts-theory.md) we gave a few details on SMT solver architecture. 
 We can use the parts of the SMT solver for some intuition on different kinds of complexity explosions.
 
 | difficulty         | solver parts  |
@@ -116,26 +122,62 @@ In the following we will discuss some concrete approaches to timeout prevention.
 This collection will be extended over time based on user's experiences and tool improvements.
 %At the start of each subsection we will give an intuition which kinds of timeous can be prevented by the strategy described in that subsection.
 
+```{note}
+The old documentation has a section on
+{doc}`troubleshooting </docs/confluence/perplexed>` that addresses timeouts, which might complement the information given here.  
+There is also some helpful information in the section on
+{ref}`summarization <old-summary-example>`.
+Some of the information in these references is out of date.
+```
+
+## Prover Settings
+
+In this subsection we list some option combinations that have helped preventing timeouts in the past.
+We group the options by timeout causes they are most relevant for. 
+
+### Dealing With a High Path Count
+
+The Certora Prover internally divides each verification condition into smaller subproblems and attempts to solve them separately. This technique is called *control flow splitting*.
+For a more detailed explanation of how control flow splitting works, see [this page](control-flow-splitting).
+
+The following option combinations can help:
+
+When the VC is very big .. 
+  resplitting
+  higher split depth
+
+When there are very many subproblems that are of medium difficulty .. 
+   parallel splitting
+   lower split depth
+   higher medium timeout
+
+
+### Dealing With Nonlinear Arithmetic
+
+Try yices
+
 
 (modular_verification)=
-### Modular verification
+## Modular verification
 
-Especially for large code bases, but also for instance when there are parts with particularly high verification-complexity, it makes sense to modularize the verification process.
-In this subsection we elaborate on modularization techniques that can help preventing timeouts.
+Especially for large code bases, but also for instance when there are parts with particularly complex behavior, it helps to modularize the verification process.
+In the following we elaborate on modularization techniques that can help preventing timeouts.
 
 
-#### "Sanity" Rules
+### "Sanity" Rules
 
 For isolating the timeout reason, it can be useful to verify the code with respect to a trivial specification.
 This, to some extent, rules out the specification as the source of complexity.
 
-For documentation on sanity rules, see {ref}`sanity <built-in-sanity>` and {ref}`deep sanity <built-in-deep-sanity>`. 
+Sanity rules are such trivial specifications.
+For documentation on them, see {ref}`sanity <built-in-sanity>` and {ref}`deep sanity <built-in-deep-sanity>`. 
 
 
 (library_timeouts)=
-#### Library-based systems
+### Library-based systems
 
-Some of the systems we have are based on multiple library contracts which implement the business logic. They also forward storage updates to a single external contract holding the storage.
+Some of the systems we have are based on multiple library contracts which implement the business logic. 
+They also forward storage updates to a single external contract holding the storage.
 
 In these systems, it’s sensible to split the verification so as each library is operated on an individual basis.
 
@@ -159,12 +201,60 @@ methods {
 The above snippet has the effect of summarizing as `NONDET` all external calls to the library and _internal_ ones as well.
 All summary types except ghost summaries can be applied. 
 
+## Simplifying the Input / Munging / Verifiable-Code-Antipatterns
 
-```{note}
-The old documentation has a section on
-{doc}`troubleshooting </docs/confluence/perplexed>` that addresses timeouts, which might complement the information given here.  
-There is also some helpful information in the section on
-{ref}`summarization <old-summary-example>`.
-Some of the information in these references is out of date.
+### Passing Complex Structs
+
+
+A common culprit for high memory complexity are complex datastructures that are passed from the specification to the program, or also inside the program.
+Especially problematic are `struct` types that contain many dynamically-sized arrays. 
+
+
+```cvl
+rule myRule() {
+    MyStruct x;
+    foo(x);
+
+}
 ```
 
+```solidity
+struct MyStruct {
+    // several dynamically-size arrays
+    bytes b1;
+    bytes b2;
+    uint[] u1;
+    uint8[] u2;
+}
+
+function foo(MyStruct x) public {
+    ...
+}
+```
+
+### Memory and Storage in Inline Assembly
+
+In particular sload/mload/sstore/mstore.
+Shows through storage/memory analysis failures ("Global Problems" pane).
+
+The Certora Prover works on EVM bytecode as its input. 
+To the bytecode, the address space of both Storage and Memory are flat number lines.
+That two contract fields `x` and `y` don't share the same memory an arithmetic property, with more complex data structures like mappings, arrays, and structs, this means that every "non-aliasing" argument requires reasoning about multiplications, additions, and hash functions.
+Certora Prover models this reasoning correctly, but this naive low-level modelling can quickly overwhelm SMT solvers.
+In order to handle storage efficiently, Certora Prover analyses Storage (Memory) accesses in EVM code in order to understand the Storage (Memory) layout, thus making information like "an update to mapping `x` will never overwrite the scalar variable `y` much more "obvious" to the SMT solvers.
+For scaling SMT solving to larger programs, these simplifications are essential.
+
+The following example snippet shows inline assembly being used to make up a custom storage layout.
+
+```solidity
+        // ...
+        assembly {
+            // ...
+            mstore(0x00, id)
+            mstore(0x1c, or(_ERC721_MASTER_SLOT_SEED, caller()))
+            let ownershipSlot := add(id, add(id, keccak256(0x00, 0x20)))
+            let ownershipPacked := sload(ownershipSlot)
+            // ...
+        }
+```
+%source https://github.com/Vectorized/solady/blob/main/src/tokens/ERC721.sol

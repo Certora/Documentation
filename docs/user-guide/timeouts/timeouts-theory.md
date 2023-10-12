@@ -2,7 +2,7 @@
 
 In this section, we will discuss some background of timeouts happening in the Certora Prover.
 We try to answer questions like "Why do you build a tool that times out?" and "Will there be an automatic program verifier that never times out?".
-For more practical advice on timeout prevention, please consult the other parts of our documentation on [managing timeouts](../timeouts.md).
+For more practical advice on timeout prevention, please consult the other parts of our documentation on [managing timeouts](index.md).
 
 We are going to focus on SMT timeouts. 
 
