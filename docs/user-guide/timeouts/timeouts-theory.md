@@ -7,7 +7,7 @@ For more practical advice on timeout prevention, please consult the other parts 
 We are going to focus on SMT timeouts. 
 
 ```{todo}
-This section will be fleshed out more in the near future.
+This section still needs to be written.
 ```
 
 
