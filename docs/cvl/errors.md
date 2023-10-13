@@ -12,6 +12,44 @@ List of CVL errors
 ## Basic syntax errors
 
 
+### `ApplyExpWithAtNewOrAtOldBase`
+
+>
+> One cannot use the `@old` or `@new` notation on a contract instance.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> rule r {
+>     mathint x = currentContract@new.foo();
+>     assert false;
+> }
+> ```
+> ```
+> Example:3:25: @old or @new does not make sense here.
+> ```
+
+
+### `ApplyMethodOnNonContract`
+
+>
+> Solidity functions can only be applied from contract instances
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> rule r {
+>     mathint x = a.b.foo();
+>     assert false;
+> }
+> ```
+> ```
+> Example:3:25: Can only apply a method to a contract name, but got 'a.b'
+> ```
+
+
 ### `ArraySizeMustBeLiteral`
 
 >
@@ -20,12 +58,28 @@ List of CVL errors
 > *No example provided*
 
 
-### `CVLTypeHasLocation`
+### `AtOnNonContractCall`
 
 >
-> Locations are only allowed in contexts that refer to Solidity types directly, such as methods block entry arguments, methods block return types, and hook arguments.  See {ref}`type-conversions` for additional information.
+> You may only use the `at storage` syntax for calls to contract functions.  See {ref}`call-expr` for more
+> information.
 >
-> *No example provided*
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 6-6
+> 
+> function f() {
+> }
+> 
+> rule r {
+>     storage s = lastStorage;
+>     f() at s;
+>     assert false;
+> }
+> ```
+> ```
+> Example:7:13: `at s` may only be used for calls to contract functions; `f` is a CVL function.
+> ```
 
 
 ### `DuplicatePreserved`
@@ -44,28 +98,7 @@ List of CVL errors
 > }
 > ```
 > ```
-> Example:3:13: Invariant `i` has multiple generic preserved blocks (additional block on line 4)
-> ```
-
-
-### `InvalidCatchAllFlag`
-
->
-> The annotations that follow the `returns` clause in a methods-block entry (such as {ref}`optional` and
-> {ref}`envfree`) only make sense for specific contract functions.  Therefore, their use in catch-all
-> summaries of the form `function C._` are disallowed.  If you really want to declare every function `envfree`,
-> you will need to add a separate entry for each function.
->
-> Example:
-> ```{code-block} cvl
-> :emphasize-lines: 2-2
-> 
-> methods {
->     function C._ envfree => NONDET;
-> }
-> ```
-> ```
-> Example:3:26: Catch-all methods entries of the form `function f._` cannot be marked `envfree`
+> Example:3:13: Invariant `i` has multiple generic preserved blocks (additional block on line 4).
 > ```
 
 
@@ -93,6 +126,22 @@ List of CVL errors
 > CVL does not support assigning to an entire mapping; you must give individual assignments for the needed elements.
 >
 > *No example provided*
+
+
+### `MultipleFiltersSameMethodParam`
+
+>
+> There should be only a single filter for each `method`-type parameter
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 1-1
+> 
+> rule r(method f) filtered { f -> true, f -> true } { assert false; }
+> ```
+> ```
+> Example:2:37: Cannot define multiple filters for the same method parameter `f`.
+> ```
 
 
 ### `ReservedKeywordAsFunction`
@@ -152,6 +201,24 @@ List of CVL errors
 > ```
 
 
+### `UnexpectedToken`
+
+>
+> A syntax error. A list of expected tokens is presented
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> ghost f() returns uint {
+>     whatever axiom true;
+> }
+> ```
+> ```
+> Example:3:13: Syntax error: unexpected token `whatever`; expected `init_state`.
+> ```
+
+
 ### `WithWrongNumberArguments`
 
 >
@@ -186,7 +253,24 @@ List of CVL errors
 > function summary(uint256 x) {}
 > ```
 > ```
-> Example:3:50: `with` clause argument has type `uint256`; `with` clauses must define a single argument of type `env` (e.g. `with(env e)`)
+> Example:3:55: `with` clause argument has type `uint256`; `with` clauses must define a single argument of type `env` (e.g. `with(env e)`)
+> ```
+
+
+### `WithrevertOnNonContractCall`
+
+>
+> Only contract functions can be called `@withrevert`; see {ref}`call-expr`.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> function f() {}
+> function g() { f@withrevert(); }
+> ```
+> ```
+> Example:3:24: `@withrevert` may only be used for calls to contract functions; `f` is a CVL function.
 > ```
 
 
@@ -224,7 +308,7 @@ List of CVL errors
 > }
 > ```
 > ```
-> Example:3:13: `nativeBalances` is a CVL keyword and cannot be redeclared
+> Example:3:13: `nativeBalances` is a CVL keyword and cannot be redeclared here.
 > ```
 
 
@@ -248,7 +332,72 @@ List of CVL errors
 > }
 > ```
 > ```
-> Example:4:13: `x` is defined in the `if` branch (on line 5) but not in the `else` branch
+> Example:4:13: `x` is defined in the `if` branch (on line 5) but not in the `else` branch.
+> ```
+
+
+### `MethodVariableNotInRule`
+
+>
+> Variables of {ref}`method type <method-type>` may only be declared in the top-level of a rule, or as parameters/arguments to a
+> rule, CVL function, or definition.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 3-3
+> 
+> invariant inv() true {
+>     preserved externalFunction() with (env e) {
+>         method f;
+>         require true;
+>     }
+> }
+> ```
+> ```
+> Example:4:17: `method` variables can only be declared in rules, at their out-most scope.
+> ```
+
+
+### `MethodVariableTooManyContracts`
+
+>
+> `method` type variables could only be used under at most a single contract within a given rule.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 3-8
+> 
+> using SecondaryContract as secondary;
+> 
+> rule r(method f) {
+>     env e; calldataarg args;
+>     currentContract.f(e, args);
+>     secondary.f(e, args);
+>     assert true;
+> }
+> ```
+> ```
+> Example:4:9: In rule r there are conflicting usages of `f` - it is marked as being parametric in more than a single contract: [PrimaryContract, SecondaryContract]
+> ```
+
+
+### `NoSuchContractInstance`
+
+>
+> When calling a method on a specific contract, the contract must be either `currentContract` or a method-typed
+> variable introduced with a `using` statement. See {ref}`call-expr` for more details.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> rule r {
+>     d.foo();
+>     assert true;
+> }
+> ```
+> ```
+> Example:3:15: contract variable `d` not found. Contract variables must be introduced with a `using` statement.
 > ```
 
 
@@ -256,6 +405,57 @@ List of CVL errors
 
 >
 > A filter for some method parameter filters out all candidates.
+>
+> *No example provided*
+
+
+### `NotConvertible`
+
+>
+> This error message indicates that you tried to use a value that cannot be automatically converted to the
+> expected type.  You may need to insert an explicit cast.  See {ref}`subtyping` for more information on types.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> function example(env e) {
+>     uint256 x = e;
+> }
+> ```
+> ```
+> Example:3:25: `e` has type `env`, which cannot be converted to the expected type `uint256`.
+> ```
+
+
+### `ParametricReturn`
+
+>
+> You are not allowed to access the return value of a {term}`parametric method` call, since the parametric method
+> may be resolved to any of several contract methods, and those methods may have different return types.
+> 
+> Note that this is also true when you call an overloaded contract method with a {ref}`` `calldataarg` `` argument,
+> since this also acts as a parametric method call that calls each of the different overloadings.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 3-3
+> 
+> rule example {
+>     method f; env e; calldataarg args;
+>     uint x = f(e,args);
+>     assert true;
+> }
+> ```
+> ```
+> Example:4:22: You may not access the return value of a call to a `method` variable.
+> ```
+
+
+### `StorageAccessMismatch`
+
+>
+> Direct storage access must have restricted forms.
 >
 > *No example provided*
 
@@ -301,6 +501,27 @@ List of CVL errors
 > ```
 > ```
 > Example:3:58: `envfree` methods-block entries must not declare a `with(env ...)` clause
+> ```
+
+
+### `InvalidCatchAllFlag`
+
+>
+> The annotations that follow the `returns` clause in a methods-block entry (such as {ref}`optional` and
+> {ref}`envfree`) only make sense for specific contract functions.  Therefore, their use in catch-all
+> summaries of the form `function C._` are disallowed.  If you really want to declare every function `envfree`,
+> you will need to add a separate entry for each function.
+>
+> Example:
+> ```{code-block} cvl
+> :emphasize-lines: 2-2
+> 
+> methods {
+>     function C._ envfree => NONDET;
+> }
+> ```
+> ```
+> Example:3:26: Catch-all methods entries of the form `function f._` cannot be marked `envfree`
 > ```
 
 
@@ -404,4 +625,29 @@ List of CVL errors
 > Example:3:13: Redeclaring variables is not supported; `x` was previously declared on line 2
 > ```
 
+
+
+## CLI options errors
+
+
+### `ContractChoiceNoSuchContract`
+
+>
+> All contracts listed in the {ref}`--contract` option must be in the {term}`scene`.
+>
+> *No example provided*
+
+
+
+## Non-specific errors
+
+
+### `General`
+
+>
+> This is a non-specific type of error type; there is not yet additional documentation for these.  If you find
+> a particular General error message confusing, please {ref}`contact certora <contact>` and we will try to
+> add specific documentation (and also help you out!).
+>
+> *No example provided*
 
