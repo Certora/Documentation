@@ -500,9 +500,9 @@ As we expected, the dispatcher for `executeOperation` chooses
 `TransferReceiver.executeOperation` as the receiver, which in turn calls
 `underlying.transferFrom(Pool, ..., 2)`.  If we expand the call trace further,
 we see that the Prover chose the pool's allowance for the recipient to be
-`MAX_UINT256`:
+`10`:
 
-![Call trace entry showing a load from `_allowance[*][*]` returning `MAX_UINT256`](transfer-allowance.png)
+![Call trace entry showing `_allowance[Pool][TransferReceiver]` returning `10`](transfer-allowance.png)
 
 It turns out that this particular violation can't actually happen, because the
 pool contract never approves any other contract to transfer its funds.  We
