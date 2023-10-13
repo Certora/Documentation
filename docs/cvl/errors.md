@@ -413,7 +413,8 @@ List of CVL errors
 
 >
 > This error message indicates that you tried to use a value that cannot be automatically converted to the
-> expected type.  You may need to insert an explicit cast.  See {ref}`subtyping` for more information on types.
+> expected type.  You may need to insert an explicit cast.  See {ref}`type-conversions` and {doc}`mathops`
+> for more information on types.
 >
 > Example:
 > ```{code-block} cvl
@@ -431,10 +432,10 @@ List of CVL errors
 ### `ParametricReturn`
 
 >
-> You are not allowed to access the return value of a {term}`parametric method` call, since the parametric method
+> You are not allowed to access the return value of a {term}`parametric method <parametric rule>` call, since the parametric method
 > may be resolved to any of several contract methods, and those methods may have different return types.
 > 
-> Note that this is also true when you call an overloaded contract method with a {ref}`` `calldataarg` `` argument,
+> Note that this is also true when you call an overloaded contract method with a {ref}`` `calldataarg` <calldataarg>`` argument,
 > since this also acts as a parametric method call that calls each of the different overloadings.
 >
 > Example:
@@ -633,7 +634,7 @@ List of CVL errors
 ### `ContractChoiceNoSuchContract`
 
 >
-> All contracts listed in the {ref}`--contract` option must be in the {term}`scene`.
+> All contracts listed in the `--contract` option must be in the {term}`scene`.
 >
 > *No example provided*
 
