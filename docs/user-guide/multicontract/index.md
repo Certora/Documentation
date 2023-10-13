@@ -498,7 +498,7 @@ counterexample:
 
 As we expected, the dispatcher for `executeOperation` chooses
 `TransferReceiver.executeOperation` as the receiver, which in turn calls
-`underlying.transferFrom(Pool, ..., 2)`.  If we expand the call trace further,
+`underlying.transferFrom(Pool, ..., 2)`.  If we look in the initial storage of the contract,
 we see that the Prover chose the pool's allowance for the recipient to be
 `10`:
 
