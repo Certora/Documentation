@@ -280,7 +280,7 @@ methods {
 [^wildcards]: instead of `underlying.balanceOf` in the methods block, you could
   also use the contract name: `Asset.balanceOf`.  You could also write a single
   entry for all `balanceOf` methods using `_` for the contract: `_.balanceOf`.
-  See {ref}`methods` for full details.
+  See {ref}`methods-entries` for full details.
 
 The second simplification is that we can use the special variable
 `currentContract` to refer to the main contract being verified (the one passed
