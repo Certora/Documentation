@@ -157,4 +157,5 @@ whitespace
 prover_args
 UNSAT
 unsat
+unsatisfiability
 UX

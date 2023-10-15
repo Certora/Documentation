@@ -10,7 +10,7 @@ The `--coverage_info [none|basic|advanced]` flag enables automatic computation o
 * *Do I really need to initialise a CVL variable in my rule?*
 * *Do I really need all preserved blocks in my CVL `invariant`?*
 
-To answer the above questions, the Certora Prover generates a so-called *minimal unsat core* which, intuitively, represents the minimal subset of the commands in the input `.sol` and `.spec` files that are needed to prove the CVL properties. If some of the input `.sol` commands are not needed to derive the proof, it might indicate that the specification does not cover all behavior implemented in the smart contract. If some of the input `.spec` commands are not needed to derive the proof (typically unnecessary `require` statements or variable initializations), it indicates that the CVL rules/invariants can be make stronger. 
+To answer the above questions, the Certora Prover generates a so-called *unsat core* which, intuitively, represents the minimal subset of the commands in the input `.sol` and `.spec` files that are needed to prove the CVL properties. If some of the input `.sol` commands are not needed to derive the proof, it might indicate that the specification does not cover all behavior implemented in the smart contract. If some of the input `.spec` commands are not needed to derive the proof (typically unnecessary `require` statements or variable initializations), it indicates that the CVL rules/invariants can be made stronger. 
 
 We visualize this *coverage* information in a dedicated HTML file: `zipOutput/Reports/UnsatCorevisualization.html`. Furthermore, we also visualize the unsat core coverage information on our `TAC` representation of the verification condition. 
 
@@ -26,9 +26,9 @@ The Certora Prover works as follows:
 4. Each TAC program is then converted to an SMT formula such that the formula is unsatisfiable if and only if the property holds (i.e. cannot be violated). 
 
 The SMT formula  is built from a set `A` of *assertions*, say `{A1, A2, ..., An}`, that are built over a set of *variables*. Intuitively, you can see the assertions as mathematical equations. The formula is *satisfiable* if there exists an assignment to the variables that satisfies all the assertions simultaneously. Otherwise, the formula is *unsatisfiable*. In practice, it is often the case that already a small subset of `A` is unsatisfiable. Especially, one can extract a *minimal unsatisfiable subset* `U` of `A`. The *minimality* here means that if you remove any assert from `U` then it becomes satisfiable, i.e., it is not a *minimum cardinality*. We call a minimal unsatisfiable subset of `A` an *unsat core* of `A`. 
-For example, assume that `A = {a, !a, !b, a || b}` where `a` and `b` are Boolean variables. 
+For example, assume that `A = {a, !a, !b, a || b, a || !b}` where `a` and `b` are Boolean variables. 
 There are two minimal unsatisfiable subsets (i.e. unsat cores) of this formula:
-`{a, !a}` and `{!a, !b, a || b}`.
+`{a, !a}` and `{!a, !b, a || b}`. Furthermore, note that `a || !b` is not contained in any of the minimal unsatisfiable subsets (i.e. it is  irrelevant for the unsatisfiability of `A`). 
 
 
 There are several different kinds of assertions in `A` and some of them correspond to commands from the TAC program. In particular, for every `assign`, `assume` and `assert` command `Ci` from the TAC program, there is a corresponding assert `Ai` in `A`. Suppose we obtain an unsat core `U` of `A`. Then, the meaning of every excluded assert `Ai in (A - U)` is the following:
@@ -60,7 +60,7 @@ rule tautology(uint256 fundId, method f) {
 }
 ```
 
-We first call a solidity function `getCurrentManager(...)` to get the address of the *current* `manager` of the underlying smart contract. Subsequently, we create another address `other` and require that `other != manager && other != e.msg.sender`. Subsequently, we call a function `f(...)` of the contract, and, assuming this function call could have changed the manager, we get the value `newManager` of the *current* manager. Finally, we assert that either `newManager!= other` or `newManager != manager`. However, notice that we required that `other != manager` and hence the `assert` is necessarily `true`. The function calls of `getCurrentManager(...)` and `f(...)` are completely irrelevant. 
+We first call a solidity function `getCurrentManager(...)` to get the address of the current `manager` of the underlying smart contract. Subsequently, we create another address `other` and require that `other != manager && other != e.msg.sender`. Subsequently, we call a function `f(...)` of the contract, and, assuming this function call could have changed the manager, we get the value `newManager` of the current manager. Finally, we assert that either `newManager!= other` or `newManager != manager`. However, notice that we required that `other != manager` and hence the `assert` is necessarily `true`. The function calls of `getCurrentManager(...)` and `f(...)` are completely irrelevant. 
 
 
 
@@ -86,18 +86,18 @@ Every line can have either none, green, red or yellow background color. No backg
 2. Red means that none of the TAC commands that are mapped to the line are in the unsat core, i.e. not needed to prove the property.
 3. Yellow means that some of the TAC commands that are mapped to the line are in the unsat core and some of them are not in the unsat core.
 
-Furthermore, if we have multiple rules/invariants or a parametric rule (such as our `tautology`), we can also have multiple rules/invariants mapping to a single `.sol` or `.spec` line. That is, we generate just a single, joint, visualization for all the rules/invariants (run with `--rule` and `--method` flags to get a visualization for a single rule/method/invariant). And in such case, a yellow line means that some of the commands on the line are needed to prove some of the rules/methods/invariants and some of the commands are not needed. 
+Furthermore, if we have multiple rules/invariants or a parametric rule (such as our `tautology`), we can also have multiple rules/invariants mapping to a single `.sol` or `.spec` line. That is, we generate just a single, joint, visualization for all the rules/invariants (run with `--rule` and `--method` flags to get a visualization for a single rule/method/invariant). In such a case, a yellow line means that some of the commands on the line are needed to prove some of the rules/methods/invariants and some of the commands are not needed. 
 
 The right pane provides detailed information about individual lines and commands mapped to the lines group by the rule/method/invariant name (denoted *rule*) and the *value*, where each *value* refers to a particular `assign`, `assert` or `assume` TAC command that is mapped to the line. For instance, in the Tautology example, we can see that sub-command `other != manager` of line `11` matters (is in the unsat core), whereas `other != e.msg.sender` is not in the unsat core. Also, note that the pane shows e.g. both `other != manager` and `other == manager`; this is because in our TAC representation we encode `other != manager` as `!(other == manager)`. 
 
 
 ### Visualization on TAC 
-On contrary to `.sol` and `.spec` visualization, we generate separate TAC unsat core visualization for individual rules/methods/invariants. To access it, click first on the particular rule/method/invariant in the `Rules` pane and then on the `Dump page` button as shown in Figure 3. 
+In contrast to `.sol` and `.spec` visualization, we generate separate TAC unsat core visualization for individual rules/methods/invariants. To access it, click first on the particular rule/method/invariant in the `Rules` pane and then on the `Dump page` button as shown in Figure 3. 
 
 ![](tac-visualization-button.png)
 Figure 3: The TAC visualization button.
 
-The visualization here consists only of 2 colors: `green` means that the command is needed and `red` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b show the TAC visualization for the Tautology example. 
+The visualization here consists only of 2 colors: `green` means that the command is needed for the proof and `red` means that the command is not needed (i.e. not in the unsat core). In particular, Figures 4a and 4b show the TAC visualization for the Tautology example. 
 
 ![](tautology-tac-a-new.png)
 Figure 4a: The visualization of the Tautology example on TAC, part A. 
@@ -105,7 +105,7 @@ Figure 4a: The visualization of the Tautology example on TAC, part A.
 ![](tautology-tac-b-new.png)
 Figure 4b: The visualization of the Tautology example on TAC, part B.
 
-Namely, only the following TAC commands are in the unsat core:
+Only the following TAC commands are in the unsat core:
 
 ```
 → require other != manager && other != e.msg.sender
@@ -135,7 +135,7 @@ Also, notice that some commands in the TAC dump are followed by "SPEC" or "SOL" 
 ## Basic vs. advanced mode
 
 The `--coverage_info` flag takes three possible values: `none`, `basic` and `advanced`:
-1. `none` means no unsat core analysis and no visualization, 
+1. `none` means no unsat core analysis, 
 2. `basic` means relatively fast bust possibly very imprecise analysis, 
 3. and `advanced` means possibly slow but more precise analysis. 
 
