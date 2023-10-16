@@ -468,7 +468,7 @@ about the value of the uninitialized slot which means they can be considered dif
 ```
 
 (direct-storage-access)=
-Direct Storage Access
+Direct storage access
 ---------------------
 
 The value of contract state variables can be directly accessed from CVL. These direct
@@ -478,11 +478,13 @@ one can simply write `currentContract.x`. More complex structs can be accessed b
 and array/map dereference operations together. For example, if the current contract has the following
 type definitions and state variables:
 
-```
-struct Foo {
-   mapping (address => uint[]) bar;
+```solidity
+contract Example
+   struct Foo {
+      mapping (address => uint[]) bar;
+   }
+   Foo[3] myState;
 }
-Foo[3] myState;
 ```
 
 one can write `currentContract.myState[0].bar[addr][0]`, where `addr` is a CVL variable of type `address`.
@@ -505,7 +507,7 @@ Although entire arrays cannot be accessed, the _length_ of the arrays can be acc
 ```
 
 ```{warning}
-Direct storage access is an experimental feature, and relies on several internal static analyses which can sometimes fail.
+Direct storage access is an experimental feature, and relies on several internal program analyses which can sometimes fail.
 If these internal static analyses fail, any rules that use direct storage access will fail during processing. If this
 occurs, check the "Global Problems" view of the web report and contact Certora for assistance.
 ```
