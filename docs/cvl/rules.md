@@ -93,6 +93,7 @@ Rules that contain undefined `method` variables are sometimes called
 how to use method variables.
 
 
+(rule-filters)=
 Filters
 -------
 
