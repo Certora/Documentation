@@ -1,5 +1,5 @@
 (using-stmt)=
-Using statements
+Using Statements
 ================
 
 The `using` statement introduces a variable that can be used to call methods on

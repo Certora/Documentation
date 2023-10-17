@@ -60,6 +60,12 @@ contracts that use them (see {ref}`type-conversions`):
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
 
+(math-types)=
+### Integer types
+
+CVL integer types are mostly identical to Solidity integer types.  See
+{ref}`math-ops` for details.
+
 (arrays)=
 ### Array access
 
@@ -97,7 +103,7 @@ explicitly qualified by the contract name that contains them.
    named, not the inheriting contract.
 
  - For types defined at the file level, the named contract can be any contract
-   from which the type is visible.
+   in the {term}`scene` from which the type is visible.
 
 ```{warning}
 If you do not qualify the type name with a contract name, the type name will be
@@ -158,7 +164,7 @@ to bugs.  To avoid this complexity, CVL provides the `mathint` type that can
 represent an integer of any size; operations on `mathint`s can never overflow
 or underflow.
 
-See {doc}`mathops` for details on mathematical operations and casting
+See {ref}`math-ops` for details on mathematical operations and casting
 between `mathint` and Solidity integer types.
 
 (env)=
@@ -232,7 +238,7 @@ possible assignment.  This means that when evaluating the call to `f(e,args)`,
 the Prover will check the rule on every method of the contract, with every
 possible set of method arguments.
 
-Properties of methods can be extracted from methods using a field-like syntax. 
+Properties of methods can be extracted from methods using a field-like syntax.
 The following fields are available on a method `m`:
 
 *   `m.selector`   - the ABI signature of the method 
@@ -289,6 +295,10 @@ rule bigger_stake_more_earnings() {
 
 The `lastStorage` variable contains the state of the EVM after the most recent
 contract function call.
+
+Variables of `storage` type can also be compared for equality, allowing simple
+rules that check the equivalence of different functions.  See
+{ref}`storage-comparison` for details.
 
 (sort)=
 ### Uninterpreted sorts
