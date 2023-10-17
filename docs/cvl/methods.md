@@ -333,6 +333,7 @@ There are several kinds of summaries available:
 
  - {ref}`auto-summary` are the default for unresolved calls.
 
+(delete-summary)=
 ### Summary application
 
 To decide whether to summarize a given internal or external function call, the
