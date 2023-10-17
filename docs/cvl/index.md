@@ -9,33 +9,13 @@ and semantics of CVL Specifications.
 :maxdepth: 2
 
 overview.md
-syntax.md
-```
-
-Common Syntactic Elements
--------------------------
-
-```{toctree}
-:maxdepth: 3
-
 basics.md
 types.md
-mathops.md
 expr.md
 statements.md
-```
-
-Specification File Contents
----------------------------
-
-```{toctree}
-:maxdepth: 3
-
-pragmas.md
 imports.md
 using.md
 methods.md
-events.md
 rules.md
 builtin.md
 functions.md
@@ -46,11 +26,12 @@ defs.md
 hooks.md
 ```
 
-
-CVL Version 2
--------------
+Changes Since CVL 1
+-------------------
 
 ```{toctree}
+:maxdepth: 2
+
 cvl2/changes.md
 cvl2/migration.md
 ```

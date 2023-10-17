@@ -1,4 +1,4 @@
-Changes introduced in CVL 2
+Changes Introduced in CVL 2
 ===========================
 
 CVL 2 is a major overhaul to the type system of CVL. Though many
@@ -8,6 +8,17 @@ is to make the behavior of CVL more explicit and predictable, and to bring the
 syntax more in line with Solidity's syntax.
 
 This document summarizes the changes to CVL syntax introduced by CVL 2.
+
+The `CVLMigration` repository contains examples demonstrating each of the
+changes; the `cvl1` branch contains the examples in valid CVL 1 syntax, while
+the `cvl2` branch contains the same examples in CVL 2 syntax.  You can see the
+differences [here][cvl2-diff], our you can clone [the
+repository][migration-repo] and compare the `cvl1` and `cvl2` branches using
+your favorite tools.
+
+[cvl2-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split
+[migration-repo]: https://github.com/Certora/CVL2Migration
+
 
 ```{contents}
 ```
@@ -22,89 +33,123 @@ consistent, and to reduce the superficial differences with Solidity.
 ### `function` and `;` required for methods block entries
 
 In CVL 2, methods block entries must now start with `function` and end with
-`;` (semicolons were optional in CVL 1).  For example:
+`;` (semicolons were optional in CVL 1).  For example
+([CVL 1][MethodsEntries.spec-cvl1], [CVL 2][MethodsEntries.spec-cvl2], [diff][MethodsEntries.spec-diff]):
+
+[MethodsEntries.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/MethodsEntries.spec
+[MethodsEntries.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/MethodsEntries.spec
+[MethodsEntries.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
 
 ```cvl
-balanceOf(address) returns(uint) envfree
+transferFrom(address, address, uint) returns(bool) envfree
 ```
 will become
 ```cvl
-function balanceOf(address) external returns(uint) envfree;
+function transferFrom(address, address, uint) external returns(bool) envfree;
 ```
 (note also the addition of `external`, {ref}`described below <cvl2-visibility>`).
 
 This is also true for entries with summaries:
 ```cvl
-_setManagedBalance(address,uint256) => NONDET
+balanceOf(address) returns(uint256) => ALWAYS(3)
 ```
 will become
 ```cvl
-function _setManagedBalance(address,uint256) internal => NONDET;
+function balanceOf(address) external returns(uint256) => ALWAYS(3);
 ```
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
+
+If you do not change this, you will get an error message like the following:
+```
+CRITICAL: [main] ERROR ALWAYS - certora/spec/MethodsEntries.spec:4:5: Syntax error: unexpected token near ID(transferFrom)
+CRITICAL: [main] ERROR ALWAYS - certora/spec/MethodsEntries.spec:4:5: Couldn't repair and continue parse unexpected token near ID(transferFrom)
+```
 
 ### Required `;` in more places
 
 `using`, `import`, `use`, and `invariant` statements all require a `;` at the
-end.  For example,
+end.  For example
+([CVL 1][Semicolons.spec-cvl1], [CVL 2][Semicolons.spec-cvl2], [diff][Semicolons.spec-diff]):
+
+[Semicolons.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/Semicolons.spec
+[Semicolons.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/Semicolons.spec
+[Semicolons.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7
 
 ```cvl
-using C as c
+invariant balanceOfZeroIsZero()
+    balanceOf(0) == 0
 ```
 
 becomes
 ```cvl
-using C as c;
+invariant balanceOfZeroIsZero()
+    balanceOf(0) == 0;
 ```
 
-`use` statements do not require (and may not have) a semicolon if they
-are followed by a `preserved` or `filtered` block.  For example:
+`use` and `invariant` statements do not require (and may not have) a semicolon
+if they are followed by a `preserved` or `filtered` block.  For example, the
+following is valid in both CVL 1 and CVL 2:
 
 ```cvl
-use rule poolSolvency filtered {
-    f -> !isEmergencyWithdrawal(f)
-}
+invariant totalSupplyBoundsBalance(address a)
+    balanceOf(a) <= totalSupply()
+    { preserved { require false; } }
 ```
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
+If you do not change this, you will see an error like the following:
+```
+CRITICAL: [main] ERROR ALWAYS - certora/spec/Semicolons.spec:5:1: Syntax error: unexpected token near using
+CRITICAL: [main] ERROR ALWAYS - certora/spec/Semicolons.spec:5:1: Couldn't repair and continue parse unexpected token near using
+```
 
 ### Method literals require `sig:`
 
 In some places in CVL, you can refer to a contract method by its name and
 argument types.  For example, you might write
+([CVL 1][MethodLiterals.spec-cvl1], [CVL 2][MethodLiterals.spec-cvl2], [diff][MethodLiterals.spec-diff]):
+
+[MethodLiterals.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/MethodLiterals.spec
+[MethodLiterals.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/MethodLiterals.spec
+[MethodLiterals.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-41df8240fa5faa12531baa82863891b94abf3fb3b859bdd10bafde73b60eda5d
+
 ```cvl
-require f.selector == balanceOf(address).selector;
+f.selector == approve(address, uint).selector
 ```
 
-In this example, `balanceOf(address)` is a *method literal*.  In CVL 2,
+In this example, `approve(address,uint)` is a *method literal*.  In CVL 2,
 these methods literals must now start with `sig:`.  For example, the above
 would become:
 
 ```cvl
-require f.selector == sig:balanceOf(address).selector;
+f.selector == sig:approve(address, uint).selector
 ```
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
+If you do not change this, you will see the following error:
+```
+Error: Error in spec file (MethodLiterals.spec:14:5): Variable address is undefined (first instance only reported)
+Error: Error in spec file (MethodLiterals.spec:14:5): Variable uint is undefined (first instance only reported)
+Error: Error in spec file (MethodLiterals.spec:15:34): could not type expression "address", message: unknown variable "address"
+Error: Error in spec file (MethodLiterals.spec:15:43): could not type expression "uint", message: unknown variable "uint"
+```
 
 ### Use of contract name instead of `using` variable
 
 In CVL 1, the only way to refer to a contract in the {term}`scene` was to first
 introduce a contract instance variable with a `using` statement, and then use
 that variable.  For example, to access a struct type `S` defined in
-`Example.sol`, you would need to write
+`PrimaryContract.sol`, you would need to write
+([CVL 1][ContractNames.spec-cvl1], [CVL 2][ContractNames.spec-cvl2], [diff][ContractNames.spec-diff]):
+
+[ContractNames.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/ContractNames.spec
+[ContractNames.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/ContractNames.spec
+[ContractNames.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-a6a2974b81074e87d755753c2e84ef1b0cb553bfdeb729827959e0c63f0d02d7
 
 ```cvl
-using Example as c;
+using PrimaryContract as primary;
 
-rule example {
-    c.S x = getAnS();
+rule structExample {
+    primary.S x;
+    ...
 }
 ```
 
@@ -113,22 +158,28 @@ variable, when referring to user-defined types.  The above example would now be
 written
 
 ```cvl
-rule example {
-    Example.S x = getAnS();
+rule structExample {
+    PrimaryContract.S x;
+    ...
 }
 ```
 
 There is no need for a `using` statement in this example.
 
+If you don't change this, you will an error like the following:
+```
+Error: Error in spec file (ContractNames.spec:12:19): Contract name primary does not exist in the scene. Make sure you are using a contract name and not a contract instance name.
+```
+
 Calling methods on secondary contracts still requires using a contract instance
 variable:
 
 ```cvl
-using Example as c;
+using SecondaryContract as secondary;
 
-rule example {
+rule multicontractExample {
     ...
-    c.balanceOf(a);
+    secondary.balanceOf(0);
     ...
 }
 ```
@@ -137,28 +188,29 @@ Entries in the `methods` block may use either the contract name or an instance
 variable:
 
 ```cvl
-using Example as c;
+using SecondaryContract as secondary;
 
 methods {
-    //// both are valid:
-    function c.balanceOf(address) external returns(uint) envfree;
-    function Example.transfer(address,uint) external envfree;
+    //// both are valid (and the effect is the same):
+    secondary.balanceOf(address) returns(uint) envfree
+    SecondaryContract.transfer(address, uint) returns(bool) envfree
 }
 ```
 
 Using the contract name in the methods block currently has the same effect as
 using an instance variable; this may change in future versions of CVL.
 
-% ```{todo}
-% Error message
-% ```
-
 ### Rules must start with `rule`
 
-In CVL 1, you could omit the keyword `rule` when writing rules:
+In CVL 1, you could omit the keyword `rule` when writing rules
+([CVL 1][RuleKeyword.spec-cvl1], [CVL 2][RuleKeyword.spec-cvl2], [diff][RuleKeyword.spec-diff]):
+
+[RuleKeyword.spec-cvl1]: https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/RuleKeyword.spec
+[RuleKeyword.spec-cvl2]: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/RuleKeyword.spec
+[RuleKeyword.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-b39a57bffd39f86bc1f9555a487af389f501eab9e66a1c3059a89691319da248
 
 ```cvl
-onlyOwnerCanDecrease() {
+transferReverts {
     ...
 }
 ```
@@ -166,9 +218,14 @@ onlyOwnerCanDecrease() {
 In CVL 2, the `rule` keyword is no longer optional:
 
 ```cvl
-rule onlyOwnerCanDecrease() {
+rule transferReverts {
     ...
 }
+```
+
+If you don't change this, you will receive an error like the following:
+```
+CRITICAL: [main] ERROR ALWAYS - certora/spec/RuleKeyword.spec:3:1: Syntax error: unexpected token near ID(transferReverts)
 ```
 
 (cvl2-methods-blocks)=
@@ -207,8 +264,10 @@ interface types.
 
 To work around the missing types, CVL 1 allowed users to encode some
 user-defined types as primitive types in the `methods` block; these workarounds
-are no longer allowed in CVL 2.  For example, consider the following solidity
-function:
+are no longer allowed in CVL 2.  For example, consider the following [solidity
+function][types-example]:
+
+[types-example]: https://TODO/
 
 ```solidity
 contract Example {
@@ -228,7 +287,10 @@ methods {
 ```
 
 In CVL 2, the methods block entry should use the same type as the Solidity
-implementations, except for function types and contract or interface types:
+implementations[^contract-types] ([compare files][MethodsBlockTypes.spec]),
+except for function types and contract or interface types:
+
+[MethodsBlockTypes.spec]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8
 
 ```cvl
 methods {
@@ -293,11 +355,6 @@ In CVL 2, this behavior is still available, but the methods entry must contain
 the keyword `optional` somewhere after the `returns` clause and before the
 summarization (if any).
 
-% ```{todo}
-% If a methods block contains a non-optional entry for a method that doesn't exist
-% in the contract, you will receive the following error message:
-% ```
-
 (cvl2-locations)=
 ### Required `calldata`, `memory`, or `storage` annotations for reference types
 
@@ -309,10 +366,6 @@ For methods block entries of external functions the location annotation must be
 omitted unless it's the `storage` annotation on an external library function, in
 which case it is required (the reasoning here is to have the information required
 in order to correctly calculate a function's sighash).
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (cvl2-wildcards)=
 ### Summaries only apply to one contract by default
@@ -375,16 +428,10 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-% ```{todo}
-% Error message
-% ```
+% TODO: error message
 
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.
-
-% ```{todo}
-% Error message
-% ```
 
 If a wildcard entry has a ghost or function summary, the user must explicitly
 provide an `expect` clause to the summary.  The `expect` clause tells the
@@ -402,10 +449,6 @@ the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
 
 If a function does not return any value, the summary should be declared with
 `expect void`.
-
-% ```{todo}
-% Error message
-% ```
 
 ````{warning}
 You must check that your `expect` clauses are correct.
@@ -460,10 +503,6 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-comparisons-identical-types)=
 ### Comparisons require identical types
 
@@ -515,10 +554,6 @@ are to change `sum` to a `mathint` (which would prevent the vacuity) or write
 an explicit `assert` or `require` cast (which would make the vacuity explicit).
 ````
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-casting)=
 ### Implicit and explicit casting
 
@@ -564,10 +599,6 @@ As with normal `require` statements, require casts can cause vacuity and should
 be used with care.
 ```
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 CVL 2 supports assert and require casts on all numeric types.
 
 Casts from `address` or `bytes1`...`bytes32` to integer types are not
@@ -592,10 +623,6 @@ ghost mapping(uint => uint) a {
     axiom forall uint x . forall uint y . (to_mathint(y) == x + 1) => a[y] == 0
 }
 ```
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (enum-casting)=
 ### Casting enums to integer types
@@ -637,10 +664,6 @@ uint24 u;
 bytes3 x = to_bytes3(u); // This is OK
 bytes4 y = to_bytes4(u); // This will fail
 ```
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (cvl2-bitwise)=
 ### Changes for bitwise operations
@@ -690,10 +713,6 @@ assert f.isFallback,
     "f must be the fallback";
 ```
 
-% ```{todo}
-% Error message
-% ```
-
 Removed features
 ----------------
 
@@ -711,10 +730,6 @@ In CVL 1, you could write a sighash instead of a method identifier in the
 `methods` block.  This feature is no longer supported.  You will need to have
 the name and argument types of the called method in order to provide an entry.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-removed-invoke)=
 ### `invoke`, `sinvoke`, and `call`
 
@@ -723,19 +738,11 @@ Older versions of CVL had special syntax for calling contract and CVL functions:
  - `sinvoke f(args);` should be replaced with `f(args);`.
  - `call f(args)` should be replaced with `f(args)`.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-removed-static-assert-require)=
 ### `static_assert` and `static_require`
 
 These deprecated aliases for `assert` and `require` are being removed; replace
 them with `assert` and `require` respectively.
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (cvl2-removed-fallback)=
 ### `invoke_fallback` and `certorafallback()`
@@ -745,18 +752,10 @@ to directly invoke the fallback method.  You can work around this limitation by
 writing a parametric rule and filtering on `f.isFallback`.  See
 {ref}`cvl2-fallback-changes`.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-removed-invoke-whole)=
 ### `invoke_whole`
 
 The `invoke_whole` keyword is no longer supported.
-
-% ```{todo}
-% What did it do?
-% ```
 
 (cvl2-removed-havoc)=
 ### Havocing local variables
@@ -782,10 +781,6 @@ f(e,args);
 calldataarg args2;
 g(e,args2);
 ```
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 (cvl2-removed-destructure-struct)=
 ### Destructuring syntax for struct returns
@@ -830,10 +825,6 @@ uint x; uint y;
 x, y = g();
 ```
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-removed-double-arrays)=
 ### `bytes[]` and `string[]`
 
@@ -845,27 +836,15 @@ block.  However, you can only call methods that take one of these types as an
 argument by passing a `calldataarg` variable, and you cannot access the return
 value of a method that returns one of these types.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 (cvl2-removed-pragma)=
 ### `pragma`
 
 CVL 1 had a `pragma` command for specifying the CVL version, but this feature
 was not used and has been removed in CVL 2.
 
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
-
 ### `events`
 
 CVL 1 had syntax for an `events` block, but it did nothing and has been removed.
-
-% ```{todo}
-% If you do not change this, you will see the following error:
-% ```
 
 Changes to the Command Line Interface (CLI)
 -------------------------------------------

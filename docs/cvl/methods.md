@@ -43,7 +43,7 @@ The syntax for the `methods` block is given by the following [EBNF grammar](synt
 methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
-                     ( exact_pattern | wildcard_pattern )
+                     ( exact_pattern | wildcard_pattern | catch_all_pattern)
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
@@ -51,6 +51,7 @@ method_spec      ::= "function"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
+catch_all_pattern :: id "." "_" "external"
 
 visibility ::= "internal" | "external"
 
@@ -70,6 +71,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
 for the `id` production.  See {doc}`expr` for the `expression` production.
 
+(methods-entries)=
 Methods entry patterns
 ----------------------
 
@@ -98,6 +100,9 @@ that the declared return type matches the return type of the contract function.
 Exact entries may contain {ref}`summaries <summaries>`, {ref}`envfree`,
 {ref}`optional`, and {ref}`with-env`.
 
+It is possible for an exact entry to overlap with another entry; see
+{ref}`summary-resolution` for information on how summaries are resolved.
+
 (wildcard-methods-entries)=
 ### Wildcard entries
 
@@ -121,6 +126,55 @@ methods may return different types.
 Wildcard entries may not have {ref}`envfree` or {ref}`optional`; their only
 purpose is {ref}`summarization <summaries>`.  Therefore, wildcard entries must
 have a summary.
+
+It is possible for a wildcard entry to overlap with another entry; see
+{ref}`summary-resolution` for information on how summaries are resolved.
+
+(catch-all-entries)=
+### Catch-all entries
+
+Sometimes the behavior of a contract in the scene is irrelevant
+to the properties being verified. For example, the exact behavior of an external library contract
+may be unimportant for a particular verification project.
+
+So-called "catch-all" entries are useful in these situations. A catch-all entry is
+used to apply a single {ref}`summary <summaries>` to all functions that are declared in
+a given contract. For example:
+
+```cvl
+methods {
+   function SomeLibrary._ external => NONDET;
+}
+```
+
+Will apply the `NONDET` {ref}`havoc summary <havoc-summary>` in place of
+*every* call to a function in the `SomeLibrary` contract. Note that there are no parameter types
+*or* return types for this entry: it refers to all methods in a contract, and cannot be
+further refined with parameter type information. 
+Catch-all summaries apply only to `external` methods, and therefore
+the `external` {ref}`visibility modifier <methods-visibility>` is required. 
+Further, the only purpose of catch-all entries is to apply a summary to all
+external methods in a contract, so a summary is required. However, only
+{ref}`havocing summaries <havoc-summary>` are allowed for these entries.
+Finally, {ref}`envfree` and {ref}`optional` keywords are not allowed for
+catch-all entries.
+
+It is possible for a catch-all summary to overlap with another entry; see
+{ref}`summary-resolution` for information on how summaries are resolved.
+
+```{note}
+Catch-all summaries are only applied when the Prover can definitively show that
+the target of a call resolves to the contract mentioned in the catch-all summary.
+For library contracts (a common use case for these catch-all summaries)
+the Prover is almost always able to resolve the target contract.
+
+For example, if you have an entry `function Token._ external => NONDET;`,
+where the contract `Token` has a `burn()` method, the Prover will *not*
+apply the `NONDET` summary for the call `t.burn()`, unless it can prove that
+`t` must hold the address of the `Token` contract. The "Rule Call Resolution" panel
+shown in the web report can indicate whether a summary was applied.
+
+```
 
 ### Location annotations
 
@@ -309,6 +363,42 @@ to replace a call by an approximation is made as follows:
 
 [^dont-summarize]: The `@dontsummarize` tag on method calls affects the
   summarization behavior.  See {ref}`call-expr`.
+  
+(summary-resolution)=
+### Summary resolution
+
+With {ref}`wildcard entries <wildcard-methods-entries>`, {ref}`catch-all entries <catch-all-entries>`,
+and {ref}`exact entries <exact-methods-entries>`, multiple entries could apply to a method.
+
+For example, given a call to `Token.burn()` with a methods block that contains the
+following entries:
+
+```cvl
+methods {
+   function Token.burn() external => HAVOC_ECF;
+   function _.burn() external => HAVOC_ALL;
+   function Token._ external => NONDET;
+}
+```
+
+which summary will apply? In CVL, precedence is given to the
+summary attached to the *most specific signature*. Exact entries are considered more exact
+than wildcard entries, which are themselves more exact than catch-all entries. In other words,
+the order of precedence for summaries are:
+
+1. Summaries given for {ref}`exact entries <exact-methods-entries>`
+2. Summaries given for {ref}`wildcard entries <wildcard-methods-entries>`
+3. Summaries given for {ref}`catch-all entries <catch-all-entries>`
+
+Thus, in this example, the `HAVOC_ECF` summary would apply.
+
+```{note}
+An entry that does not have a summary attached does *not* factor into the
+precedence of summary application. For example, if the first entry in the above
+was instead `function Token.burn() external envfree;` without a summary,
+the `HAVOC_ALL` of the wildcard entry will apply.
+```
+
 
 ### Summary types
 
@@ -483,7 +573,7 @@ The variable defined by the `with` clause contains an {ref}`env type <env>`
 giving the context for the summarized function.  This context may be different
 from the `env` passed to the original call from the spec.  In particular:
 
- - `e.msg.sender` and `e.msg.value` refer to the most recent call to a
+ - `e.msg.sender` and `e.msg.value` refer to the sender and value from the most recent call to a
    non-library[^library-with-env] external function (as in Solidity)
 
  - The variables `e.tx.origin`, `e.block.number`, and `e.block.timestamp` will
