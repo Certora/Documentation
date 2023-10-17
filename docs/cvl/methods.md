@@ -46,7 +46,7 @@ method_spec      ::= "function"
                      ( exact_pattern | wildcard_pattern | catch_all_pattern)
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
-                     [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
+                     [ "=>" method_summary [ "" | "UNRESOLVED" | "ALL" | "DELETE" ] ]
                      ";"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
@@ -343,9 +343,16 @@ determine whether the call should be replaced by an approximation.[^dont-summari
 To determine whether a function call is replaced by an approximation, the
 Prover considers the context in which the function is called in addition to the
 application policy for its signature.  If present, the application policy must
-be either `ALL` or `UNRESOLVED`; the default policy is `ALL` with the exception
-of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.  The decision
-to replace a call by an approximation is made as follows:
+be either `ALL`, `UNRESOLVED`, or `DELETE`; the default policy is `ALL` with the exception
+of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.
+
+A `DELETE` summary is similar to an `ALL` summary, except that the `DELETE`
+summary removes the method from the {term}`scene` entirely.  The method cannot
+be called from CVL, and {term}`parametric rule`s will not be instantiated on the
+deleted method.  This can drastically improve performance if the deleted method
+is complex.
+
+The decision to replace a call by an approximation is made as follows:
 
  * If the function is called from CVL rather than from contract code then it is
    never replaced by a summary.
