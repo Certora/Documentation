@@ -71,6 +71,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
 for the `id` production.  See {doc}`expr` for the `expression` production.
 
+(methods-entries)=
 Methods entry patterns
 ----------------------
 
