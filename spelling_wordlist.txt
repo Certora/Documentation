@@ -153,6 +153,8 @@ verifier
 verifiers
 walkthrough
 whitespace
+Inlining
+callees
 prover_args
 UX
 UNSAT
