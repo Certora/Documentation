@@ -77,7 +77,7 @@ By contrast, out-of-bounds array accesses in CVL are treated as undefined
 values: if `i > a.length` then the Prover considers every possible value for
 `a[i]` when constructing counterexamples.
 
-CVL Arrays also have the following limitations:
+CVL arrays also have the following limitations:
  - Only single dimensional arrays are supported
  - The `push` and `pop` methods are not supported.
 You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
@@ -257,7 +257,7 @@ CVL functions.
 
 If you wish to only invoke methods on a certain contract, you can call the
 `method` variable with an explicit receiver contract.  The receiver must be a
-contract variable (either {ref}`currentContract` or a variable introduced with a
+contract variable (either {ref}`currentContract <currentContract>` or a variable introduced with a
 `using` statement).  For example, the following will only verify the rule `r`
 on methods of the contract `example`:
 

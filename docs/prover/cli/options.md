@@ -53,7 +53,7 @@ If we have a solidity file `Bank.sol`, with a contract named `Investor` inside i
 Most frequently used options
 ----------------------------
 
-### `--msg`
+### `--msg <description>`
 
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. Note that you need to wrap your message in quotes if it contains spaces.  
@@ -66,7 +66,7 @@ To create the message above, we used
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
 (--rule)=
-### `--rule`
+### `--rule <rule name> ...`
 
 **What does it do?**  
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.  
