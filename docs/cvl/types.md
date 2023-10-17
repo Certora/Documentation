@@ -244,34 +244,13 @@ possible assignment.  This means that when evaluating the call to `f(e,args)`,
 the Prover will check the rule on every method of every contract on the
 {term}`scene`, with every possible set of method arguments.
 
-The Prover will generate a separate output for each possible value of each
-`method` variable in a rule.  You can request that the Prover only run with
-specific methods using the {ref}`--method` and {ref}`--contract` command line
-arguments.  The set of methods can also be restricted using {ref}`rule filters
-<rule-filters>`.
+See {ref}`parametric-rules` for more information about how rules that declare
+method variables are verified.
 
 Variables of type `method` can only be declared as an argument to the rule or
 directly in the body of a rule.  They may not be nested inside of `if`
 statements or declared in CVL functions.  They may be passed as arguments to
 CVL functions.
-
-If you wish to only invoke methods on a certain contract, you can call the
-`method` variable with an explicit receiver contract.  The receiver must be a
-contract variable (either {ref}`currentContract <currentContract>` or a variable introduced with a
-`using` statement).  For example, the following will only verify the rule `r`
-on methods of the contract `example`:
-
-```cvl
-using Example as example;
-
-rule r {
-    method f; env e; calldataarg args;
-    example.f(e,args);
-    ...
-}
-```
-
-It is an error to call the same `method` variable on two different contracts.
 
 Properties of methods can be extracted from `method` variables using a
 field-like syntax.  The following fields are available on a method `m`:
