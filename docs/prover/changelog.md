@@ -4,35 +4,85 @@ Release Notes
 ```{contents}
 ```
 
+4.12.1 (September 17, 2023)
+---------------------------
+
+### CVL
+- [bugfix] fix to bitwise operations
+- [bugfix] verify range of `nativeBalances[addr]` values
+- [bugfix] no duplication of multi-dimensional ghosts with axioms
+- [feat] delete summary qualifiers for faster preprocessing and dealing with analysis-breaking external functions. If a function is never called from spec, it will not be processed. In cases where it is externally called from Solidity, the summary will apply.
+- [feat] greater flexibility of internal summaries - allows accepting as arguments and returning certain reference types: primitive arrays, `bytes`, and structs which may (in nested structs too) contain primitive arrays
+- [feat] support multiple return values from CVL functions
+- [bugfix] Support keywords as struct fields and user defined type names
+- [bugfix] Fix to multi-assert mode when multiple CVL asserts in a rule share the same message
+- [UX] Skip rules where all methods are filtered out
+- [bugfix] Do not drop quantifiers when instrumenting vacuity checks
+- [UX] Improved error messages for preserved block errors
+- [bugfix] Support invariant preserved blocks for functions with an argument which is an array of structs
+- [feat] New keyword: `executingContract` available inside opcode hooks
+- [bugfix] Applying the CALL opcode hook even if the balance transfer fails
+- [bugfix] Support assigning to a wildcard variable
+- [bugfix] Fail if CVL function is non-void and does not end with a return statement
+
+### Performance
+- [feat] Optimizations for safe math handling, in particular for `solc` versions 8.19 and up
+- [feat] Better performance of `string` and array types
+
+### Call Trace & Rule Report
+- [feat] Show storage changed since the start
+- [feat] More frequent rule-report update
+- [bugfix] Rule running time to show time interval instead of sum of sub-rules intervals
+- [feat] Show state of ghosts together with contract state
+- [bugfix] Fix formatting of values of type `bytesN` and of storage locations
+
+### CLI
+- [bugfix] link to CVL2 migration document fixed
+- [bugfix] support for other formats of protocol author in `package.json` files
+- [bugfix] fix error message when passing global timeout setting
+- [bugfix] less verbose prints in terminal
+- [UX] Validate rule names
+- [UX] Show number of splits solved per rule and their "weight"
+- [bugfix] Fixes to equivalence checker
+
+### Mutation Verification
+- [bugfix] correct traversing of rules
+- [feat] improved csv output
+
+### Equivalence Checker
+- [feat] Support void functions
+- [feat] Support compiler comparison
+- [bugfix] Making comparison more reliable in terms of initial state and with respect to low-level calls
+
 4.10.1 (August 21, 2023)
 ------------------------
 
 ### CVL
-- feature: Support Solidity calls also from internal summaries
-- feature: Allowing `with(env)` for summaries {ref}`with-env`
-- bugfix: `lastStorage` comparison fix for ghost maps
-- bugfix: Bitwidth for `bytesK` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
-- bugfix: Fixing `struct`s encoding
-- bugfix: Matching method summaries for methods accepting `interface`s
-- bugfix: Some improvements to how quantifiers calling Solidity functions are handled
+- [feat] Support Solidity calls also from internal summaries
+- [feat] Allowing `with(env)` for summaries {ref}`with-env`
+- [bugfix] `lastStorage` comparison fix for ghost maps
+- [bugfix] Bitwidth for `bytesK` variables is ensured, important for revert characteristic rules for methods accepting `bytesK`
+- [bugfix] Fixing `struct`s encoding
+- [bugfix] Matching method summaries for methods accepting `interface`s
+- [bugfix] Some improvements to how quantifiers calling Solidity functions are handled
 
 ### Mutation Verification
-- feature: Output CSV files of the results
-- bugfix: Manual mutations work and support for multiple manual mutations
-- bugfix: `certoraMutate` working when running from project’s root
+- [feat] Output CSV files of the results
+- [bugfix] Manual mutations work and support for multiple manual mutations
+- [bugfix] `certoraMutate` working when running from project’s root
 
 
 ### Timeouts and performance
-- feature: Show informative messages about cache hits
-- bugfix: fix hashes of constant strings in constructors vs. in executable bytecode
+- [feat] Show informative messages about cache hits
+- [bugfix] fix hashes of constant strings in constructors vs. in executable bytecode
 
 ### Linking
-- bugfix: Fixing source-based heuristics linking to decrease chance for wrong matches
-- bugfix: Fixes to sighash resolution
-- bugfix: Correct revert handling in dispatched calls
+- [bugfix] Fixing source-based heuristics linking to decrease chance for wrong matches
+- [bugfix] Fixes to sighash resolution
+- [bugfix] Correct revert handling in dispatched calls
 
 ### Vyper
-- Support for versions below 0.2.16 (from before storage layout output was introduced in Vyper)
+- [bugfix] Support for versions below 0.2.16 (from before storage layout output was introduced in Vyper)
 
 
 4.8.0 (August 13, 2023)

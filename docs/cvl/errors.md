@@ -413,7 +413,7 @@ List of CVL errors
 
 >
 > This error message indicates that you tried to use a value that cannot be automatically converted to the
-> expected type.  You may need to insert an explicit cast.  See {ref}`type-conversions` and {doc}`mathops`
+> expected type.  You may need to insert an explicit cast.  See {ref}`type-conversions`
 > for more information on types.
 >
 > Example:

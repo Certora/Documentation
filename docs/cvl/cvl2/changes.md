@@ -1,4 +1,4 @@
-Changes introduced in CVL 2
+Changes Introduced in CVL 2
 ===========================
 
 CVL 2 is a major overhaul to the type system of CVL. Though many

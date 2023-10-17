@@ -60,6 +60,12 @@ contracts that use them (see {ref}`type-conversions`):
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
 
+(math-types)=
+### Integer types
+
+CVL integer types are mostly identical to Solidity integer types.  See
+{ref}`math-ops` for details.
+
 (arrays)=
 ### Array access
 
@@ -158,7 +164,7 @@ to bugs.  To avoid this complexity, CVL provides the `mathint` type that can
 represent an integer of any size; operations on `mathint`s can never overflow
 or underflow.
 
-See {doc}`mathops` for details on mathematical operations and casting
+See {ref}`math-ops` for details on mathematical operations and casting
 between `mathint` and Solidity integer types.
 
 (env)=
@@ -289,6 +295,10 @@ rule bigger_stake_more_earnings() {
 
 The `lastStorage` variable contains the state of the EVM after the most recent
 contract function call.
+
+Variables of `storage` type can also be compared for equality, allowing simple
+rules that check the equivalence of different functions.  See
+{ref}`storage-comparison` for details.
 
 (sort)=
 ### Uninterpreted sorts

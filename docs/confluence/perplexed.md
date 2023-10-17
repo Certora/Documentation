@@ -5,7 +5,7 @@ Certora Prover is a complex tool, relying on many abstractions, and thus its out
 
 This page lists a few common issues that can happen and helps in their debugging.
 
-[Ask, ask, ask](https://forum.certora.com/)! There’s no stupid question. There’s no not-in-place comment.
+[Ask, ask, ask](https://discord.com/channels/795999272293236746/1104825071450718338)! There’s no stupid question. There’s no not-in-place comment.
 This page will only address a partial subset of the
 problems that could happen.
 
