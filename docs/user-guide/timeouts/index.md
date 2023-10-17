@@ -289,7 +289,10 @@ function foo(MyStruct x) public {
 ### Memory and Storage in Inline Assembly
 
 % In particular sload/mload/sstore/mstore.
+
 % Shows through storage/memory analysis failures ("Global Problems" pane).
+
+% Q: could we have "background" boxes or so -- indicating information that helps with a deeper understanding, but does only indirectly relate to using the tool
 
 Background: The Certora Prover works on EVM bytecode as its input. 
 To the bytecode, the address space of both Storage and Memory are flat number lines.
