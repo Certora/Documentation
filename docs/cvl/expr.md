@@ -261,6 +261,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 will check that the current contract supports the optional `burnFrom` method.
 
 (special-fields)=
+(currentContract)=
 Special variables and fields
 ----------------------------
 

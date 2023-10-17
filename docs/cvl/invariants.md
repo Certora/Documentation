@@ -1,3 +1,4 @@
+(invariants)=
 Invariants
 ==========
 
@@ -10,7 +11,8 @@ verified by the Prover, but it may still be possible for the contract to
 violate it.  The possible sources of unsoundness are {ref}`preserved`,
 {ref}`invariant-filters`, and {ref}`invariant-revert`.  Invariant proofs are
 also unsound if some of the methods are filtered out using the
-{ref}`--function` or {ref}`--contract` flags.  See these sections for details.
+{ref}`--method` or {ref}`--contract` flags.  See the linked sections for
+details.
 ```
 
 ```{contents}
