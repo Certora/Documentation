@@ -146,12 +146,11 @@ on the scene implement methods with the same signature, you must use the same
 `preserved` block for all of them.
 ```
 
-If a preserved block specifies a method signature, the signature must either be
-`fallback()` or match one of the contract methods, and the preserved block only
-applies when checking preservation of that contract method.  The `fallback()`
-preserved block applies only to the `fallback()` function that should be
-defined in the contract.  The arguments of the method are in scope within the
-preserved block.
+If a preserved block specifies a method signature, the signature must either be `fallback()` or
+match one of the contract methods, and the preserved block only applies when
+checking preservation of that contract method.  The `fallback()` preserved block
+applies only to the `fallback()` function that should be defined in the contract.
+The arguments of the method are in scope within the preserved block.
 
 If there is no method signature, the preserved block is a default block that is
 used for all methods that don't have a specific preserved block, including the
