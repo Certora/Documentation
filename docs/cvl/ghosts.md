@@ -3,9 +3,9 @@ Ghosts
 ======
 
 Ghosts are a way of defining additional variables for use during verification.
-These variables are ofthen used to 
-- communicate information between [rules](rules.md) and [hooks](hooks.md).
-- Define deterministic function summaries [summaries](methods.md).
+These variables are often used to 
+- Communicate information between [rules](rules.md) and [hooks](hooks.md).
+- Define deterministic [function summaries](https://github.com/Certora/Documentation/blob/a81d87e58217c438af864e20f51e5fd281dbbec8/docs/cvl/methods.md?plain=1#L442).
 
 ```{contents}
 ```
@@ -56,7 +56,7 @@ ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
   - [simple variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
 
-  - [ghost mapping](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
+  - [`ghost mapping`](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
 
 Restrictions on Ghost Definitions
 ---------------------------------
@@ -140,7 +140,7 @@ Ghost functions
 CVL also has support for "ghost functions".  These serve a different purpose
 from ghost variables, although they can be used in similar ways.
 
-- [ghost function example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24)
+- [`ghost` function example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24)
 
 
 ```{todo}
