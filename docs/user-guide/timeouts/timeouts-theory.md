@@ -13,18 +13,18 @@ instead of executables, Certora Prover outputs SMT formulas. These formulas are
 then sent to an SMT solver, and the result is translated back to a
 counterexample call trace, or a "Not Violated" result.
 
-We take a brief peek inside an SMT solver, as provided by the image below. We
-can see that at the center of the solver, there is a SAT solver, and that it
-communicates with theory solvers. The problem of solving propositional formulas
-(aka SAT) is famously NP-complete. In practice this means that there are classes
-of propositional formulas for which all known SAT solvers show exponential
-runtime behavior. Exponential runtime is usually equated with intractability
-("we have an algorithm, but it's impractical because it runs too long"). Most of
-the other theories are at least NP-complete, already in their conjunctive
-fragments (which SMT theory solvers use). Nonlinear integer arithmetic stands
-out in that it is undecidable.
+All SMT solvers share a certain architecture At the center of an SMT solver,
+there is a SAT solver. The SAT solver operates on a Boolean abstraction of the
+input formula, and communicates with theory solvers to refine the abstraction
+according to the theories used by the formula. The problem of solving
+propositional formulas (aka SAT) is famously NP-complete. In practice this means
+that there are classes of propositional formulas for which all known SAT solvers
+show exponential runtime behavior. Exponential runtime is usually equated with
+intractability ("we have an algorithm, but it's impractical because it runs too
+long"). Most of the theories involved are at least NP-complete, already in their
+conjunctive fragments (which SMT theory solvers use). Nonlinear integer
+arithmetic stands out in that it is undecidable.
 
-% TODO insert image
 
 ## Not all is bad
 
@@ -60,9 +60,3 @@ weighs most heavily on the SAT-solving part of the SMT solver. Storage or Memory
 accesses lead to case splits, which are also Boolean in nature. On the other
 hand, arithmetic is resolved by specialized solvers; different algorithms are
 required for the linear and the nonlinear cases.
-
-% Note that this list of reasons is a result of experience as much as theoretical considerations, so it might be extended and refined in the future.
-
-
-
-%, since SMT solvers are designed to solve problems that, according to theoretical computer science, are prone to showing "exponential" runtime behavior or worse.
