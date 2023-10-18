@@ -15,6 +15,7 @@ intro.md
 /docs/user-guide/getting-started/install.md
 approx/index.md
 techniques/index.md
+diagnosis/index.md
 checking/index.md
 cli/index.md
 portal/using.md

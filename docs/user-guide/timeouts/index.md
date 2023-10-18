@@ -2,27 +2,24 @@ Managing Timeouts
 =================
 
 ```{toctree}
-:maxdepth: 2
-
 timeouts-theory.md
 ```
 
-Timeouts of the Certora Prover are an unpleasant reality. In this chapter we
-present a practical guide to diagnosing the causes of timeouts and ways to
-prevent them. 
-% This page elaborates on the theoretical background of timeouts in a program 
-% verification tool.  
 
+
+Certora Prover has a potential to run very long on some inputs. When it runs too
+long, it will give up and return a "timeout" result. In this chapter, we present
+a practical guide to diagnosing the causes of timeouts and ways to prevent them.
 
 # Introduction
 
-We start with a rough classification of Certora Prover timeouts:
+We classify Certora Prover timeouts as follows:
 1.  Timeouts that happen before SMT solvers are running 
-2.  Timeouts where the SMT queries *in sum* lead to a "global timeout" 
+2.  Timeouts where the SMT queries in sum lead to a global timeout
 3.  Timeouts where a single SMT query could not be solved 
 
-Types 1. and 2. are signified by a hard stop of the prover. That means the
-prover ran until the global timeout (set via `--globalTimeout`, typically 2
+Types 1. and 2. are signified by a hard stop of the Prover. That means the
+Prover ran until the global timeout (set via `--globalTimeout`, typically 2
 hours) and was forcefully shut down from everything it was doing. A message like
 "hard stop reached" appears in the "Global problems" pane of the report, and
 error symbols next to one or many rules.
@@ -30,11 +27,12 @@ error symbols next to one or many rules.
 % which symbols? red exclamation mark, also "killed" symbol?
 % made CERT-3797 so we get a clear indication to the user, hopefully
 
-Type 3. is signified by a soft stop. This means an smt solver shut down due to
-hitting the limit for a single smt run (set via `--smt_timeout`). When running
+Type 3. is signified by a soft stop. This means an SMT solver shut down due to
+hitting the limit for a single SMT run (set via `--smt_timeout`). When running
 with default settings this means that we give up for the individual rule since
 in order to obtain a proof of correctness we need to solve every subproblem we
-generate (see documentation on splitting for more details). 
+generate (see documentation on [control-flow splitting](control-flow-splitting)
+for more details). 
 
 % TODO link to splitting doc
 %Usually the run will have finished in less than two hours, and it will show the timeout sign (a yellow clock symbol) for individual rules.
@@ -43,60 +41,36 @@ generate (see documentation on splitting for more details).
 % TODO: we should indicate which it is. -- can kind of be seen from from hard stop -- can be seen from whether there's a report. --> still need differentiation between suffocating on splits or not
 
 In the remainder we will focus on the mitigation of SMT timeouts, i.e., types 2.
-and 3.
+and 3. Non-SMT Timeouts (Type 1.) should be reported to Certora. 
 
-```{note}
-Timeouts that are not SMT timeouts should be reported to Certora. 
-Typically, they will either require developer effort, or significant 
-limitations of the input.
-```
-
-For some more general background on SMT timeouts, please see 
-[this page](timeouts-theory.md).
+We give more general background on SMT timeouts on [this
+page](timeouts-theory.md).
 
 (timeout_causes)=
 # What Causes Timeouts?
 
 As a first step towards resolving a timeout, we need to diagnose its root
 causes. In our experience so far, the following are some of the most common
-reasons for SMT timeouts.
+reasons for SMT timeouts:
 
- - Non-trivival amount of onlinear arithmetic
+ - Non-trivial amount of nonlinear arithmetic
  - Very high path count
  - High storage/memory complexity
 
-This list is not exhaustive by any means, but the majority of timeouts we have
-observed so far can be traced back to one or more of these causes. Note that
-these are not the only sources of complexity; however, for instance linear
-arithmetic usually only becomes a problem when the input program is rather
-large, of which the path count is a good indication.
+This list is not exhaustive, but the majority of timeouts we have observed so
+far can be traced back to one or more of these causes. These are not the only
+sources of complexity, but they should work well as general estimates of
+complexity. For instance linear arithmetic usually only becomes a problem when
+the input program is rather large, which is also indicated by path count in most
+practical cases.
 
-## Intuitions on Kinds of Complexity
-
-In the section on the [theoretical background of verification
-timeouts](timeouts-theory.md) we gave a few details on SMT solver architecture.
-We can use the parts of the SMT solver for some intuition on different kinds of
-complexity explosions.
-
-| Difficulty         | Solver parts  |
-|--------------------|---------------|
-| Path count         |  SAT          |
-| Storage/memory     |  SAT          |
-| Arithmetic         |  LIA / NIA    |
-% | bitwise operations |  SAT, UF, LIA |
-
-Since control flow is encoded into Boolean logic by the Certora Prover, it
-weighs most heavily on the SAT-solving part of the SMT solver. Storage or Memory
-accesses lead to case splits, which are also Boolean in nature. On the other
-hand, arithmetic is resolved by specialized solvers; different algorithms are
-required for the linear and the nonlinear cases.
-
-% Note that this list of reasons is a result of experience as much as theoretical considerations, so it might be extended and refined in the future.
 
 ## Complexity Feedback from Certora Prover
 
+Certora Prover provides some help with diagnosing timeouts. We present these
+features in this section.
 
-#### Difficulty Statistics
+### Difficulty Statistics
 
 Certora Prover provides statistics on the problem sizes it encounters. 
 These statistics are structured according to the timeout reasons given above.
@@ -105,28 +79,29 @@ Currently, the Prover tracks the following statistics:
  - Path count
  - Nonlinear operations count
  - Memory/storage complexity
- - Bitwise operation complexity (under construction)
 
-
-#### Immediate feedback, "HIGH, MED, LOW"
-
-For a very short summary we give a LOW/MEDIUM/HIGH statement for some of the
-statistics. This occurs as an INFO message in the Global Problems pane of the
-Prover reports.
+For a very short summary we give one summarizing number for each of the
+statistics, along with a LOW/MEDIUM/HIGH statement. This occurs as an INFO
+message in the Global Problems pane of the Prover reports.
 
 The exact classifications are made from experience with these statistics.
  - LOW: unlikely to be a reason for a timeout
- - MEDIUM: might be a reason for a timeout, the timeout might also be a result
+ - MEDIUM: might be a reason for a timeout; the timeout might also be a result
    of the combined complexity with other measures
  - HIGH: likely to be a reason for a timeout, even if it is the only aspect of
    the verification problem that shows high complexity
 
-As of October 2023 these categories map to intervals as follows.
+These categories map to intervals as follows.
 
 |    | LOW | MEDIUM | HIGH |
 |----|-----|--------|------|
-| Path count | 0 to 2^20 | 20^20 to 2^80 | > 2^80 |
+| Path count | 0 to 2<sup>20</sup> | 20<sup>20</sup> to 2<sup>80</sup> | > 2<sup>80</sup> |
 | Nonlinear operations | 0 to 10 | 10 to 30 | > 30 |
+
+```{note}
+All heuristics mentioned here are might be improved over time, so 
+consider them subject to change.
+```
 
 (timeout_tac_reports)=
 ### Timeout TAC Reports
@@ -136,16 +111,10 @@ report. In case of a timeout this graph contains information one which parts of
 the program were part of the actual timeout, and which were already solved
 successfully. It also contains statistics on the above-described timeout causes.
 
-Find more documentation on tac reports in general [here](tac-reports).
+Find more documentation on TAC reports in general [here](tac-reports).
 
-In the timeout case, the tac reports contain some additional information that
+In the timeout case, the TAC reports contain some additional information that
 should help with diagnosing the timeout.
-
-#### Statistics- and Explanation-Box
-
-#### Split- and Heuristical Difficulty-Coloring
-
-#### TAC Source Code Box
 
 (timeout_prevention)=
 # Timeout Prevention
@@ -189,14 +158,15 @@ subproblems and attempts to solve them separately. This technique is called
 *control flow splitting*. For a more detailed explanation of how control flow
 splitting works, see [this page](control-flow-splitting).
 
-We list a few option combinations that can help in different settings. There is
-a tradeoff of where time is spent: The Prover can either try to spend much time
-at a low splitting level in the hope that no further splitting will be needed,
-or it can split quickly in the hope that the subproblems will be much easier to
-solve. The first variant ("lazy splitting") is weak when the shallow splits are
-too hard, and time spent on them is wasted. The second variant ("eager
-splitting") is weak when we end up with too many subproblems; the number of
-splits is worst-case exponential in the splitting depth.
+We list a few option combinations that can help in various settings. There is
+a tradeoff between spending time in different places: The Prover can either try
+to spend much time at a low splitting level in the hope that no further
+splitting will be needed, or it can split quickly in the hope that the
+subproblems will be much easier to solve. The first variant ("lazy splitting")
+is weak when the shallow splits are too hard, and time spent on them is wasted.
+The second variant ("eager splitting") is weak when we end up with too many
+subproblems; the number of splits is worst-case exponential in the splitting
+depth.
 
 When the relevant source code is very large, the shallow splits have a chance of
 being too large for the solvers, thus eager splitting might help.
@@ -206,8 +176,8 @@ being too large for the solvers, thus eager splitting might help.
 ```
 
 When there are very many subproblems that are of medium difficulty there is a
-chance that the prover has to split too often (not being able to "close" any
-subsplits). Then, a lazier splitting strategy could help. We achieve lazier
+chance that the Prover has to split too often (not being able to "close" any
+sub-splits). Then, a lazier splitting strategy could help. We achieve lazier
 splitting by giving the solver more time to find a solution before we split a
 problem.
 
@@ -230,7 +200,7 @@ that Certora Prover is solving (being undecidable in general).
 
 #### Running with Yices
 
-A different choice of solver sometimes helps. The *Yices* smt solver ([home
+A different choice of solver sometimes helps. The *Yices* SMT solver ([home
 page](https://yices.csl.sri.com/)) is not used by default since it is not
 compatible with our default hashing scheme. 
 
@@ -243,7 +213,7 @@ Yices is in the default portfolio, it is included automatically then.
 
 Optionally, we can further prioritize the usage of Yices by decreasing the size
 of the solver portfolio. With the `-solvers` option set as follows, Certora
-Prover will run only CVC5 and Yices. Furthermore, we can make Certora prover use
+Prover will run only CVC5 and Yices. Furthermore, we can make Certora Prover use
 the ordering given in the `-solvers` option for prioritizing solvers using the
 `-smt_overrideSolvers` option.
 
@@ -336,9 +306,9 @@ rule myRule() {
 
 ```solidity
 struct MyStruct {
-    // several dynamically-size arrays
-    bytes b1;
-    bytes b2;
+    // several dynamically-sized arrays
+    bytes b;
+    string s;
     uint[] u1;
     uint8[] u2;
 }
@@ -362,7 +332,7 @@ That two contract fields `x` and `y` don't share the same memory an arithmetic
 property. With more complex data structures like mappings, arrays, and structs,
 this means that every "non-aliasing" argument requires reasoning about
 multiplications, additions, and hash functions. Certora Prover models this
-reasoning correctly, but this naive low-level modelling can quickly overwhelm
+reasoning correctly, but this naive low-level modeling can quickly overwhelm
 SMT solvers. In order to handle storage efficiently, Certora Prover analyses
 Storage (Memory) accesses in EVM code in order to understand the Storage
 (Memory) layout, thus making information like "an update to mapping `x` will

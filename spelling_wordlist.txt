@@ -19,6 +19,7 @@ Solana
 Todo
 Unary
 Vyper
+Yices
 axiomatization
 axiomatized
 bitwidth
@@ -37,7 +38,9 @@ changelog
 checkmark
 codebase
 config
-conjuncted
+conjoined
+datastructure
+datastructures
 decompilation
 decompiler
 dereference
@@ -81,6 +84,8 @@ logics
 macOS
 modularity
 modularly
+modularize
+modularization
 monotonicity
 multicontract
 namespace
@@ -122,6 +127,7 @@ structs
 subdirectory
 subdirectories
 subgraph
+subproblem
 subproblems
 subtype
 subtypes
@@ -134,6 +140,7 @@ supercontract
 th
 traceback
 tracebacks
+tradeoff
 unary
 unbacked
 unconvertible

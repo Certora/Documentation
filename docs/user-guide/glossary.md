@@ -34,6 +34,16 @@ counterexample
   They all refer to an assignment of values to all of the CVL variables and
   contract storage.  See {ref}`rule-overview`.
 
+linear arithmetic
+nonlinear arithmetic
+  An arithmetic expression is called linear if it consists only of additions, 
+  subtractions, and multiplications by constant. Division and modulo where the
+  second parameter is a constant are also linear arithmetic.
+  Examples for linear expressions are `x * 3`, `x / 3`, `5 * (x + 3 * y)`.
+  Every arithmetic expression that is not linear arithmetic nonlinear.
+  Examples for nonlinear expressions are `x * y`, `x * (1 + y)`, `x * x`, 
+  `3 / x`, `3 ^ x`.
+
 overapproximation
 underapproximation
   Sometimes it is useful to replace a complex piece of code with something
