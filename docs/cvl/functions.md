@@ -30,13 +30,14 @@ Examples
 - [CVL function with no return](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L24)
 
 - Function with a return:
-    `function` abs_value_difference(uint256 x, uint256 y) returns uint256 {
+    ```cvl
+    function abs_value_difference(uint256 x, uint256 y) returns uint256 {
         if (x < y) {
           return y - x;
         } else {
           return x - y;
         }
-    }
+    }```
 - [overriding a function from imported spec](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L38)
   
 Using a CVL Function

@@ -137,10 +137,7 @@ state has an execution that satisfies the condition.
 `requireInvariant` statements
 -----------------------------
 
-`requireInvariant` examples:
-
-  - [in a rule](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
-  - [in a CVL function](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L27)
+[`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
 ```{todo}
 This feature is currently undocumented.
