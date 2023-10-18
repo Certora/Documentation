@@ -5,7 +5,7 @@ Import and Use Statements
 Contents of additional spec files can be imported using the `import` command.
 Some parts of the imported spec files are implicitly included in the importing
 spec file, while others such as rules and invariants must be explicitly
-`use`d. Functions, definitions, filters and preserved blocks of the imported spec can be overriden by the importing 
+`use`d. Functions, definitions, filters and preserved blocks of the imported spec can be overridden by the importing 
 spec.
 
 ```{todo}
