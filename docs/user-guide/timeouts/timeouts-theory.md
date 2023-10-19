@@ -13,7 +13,7 @@ instead of executables, Certora Prover outputs SMT formulas. These formulas are
 then sent to an SMT solver, and the result is translated back to a
 counterexample call trace, or a "Not Violated" result.
 
-All SMT solvers share a certain architecture At the center of an SMT solver,
+All SMT solvers share a general architecture. At the center of an SMT solver,
 there is a SAT solver. The SAT solver operates on a Boolean abstraction of the
 input formula, and communicates with theory solvers to refine the abstraction
 according to the theories used by the formula. The problem of solving
