@@ -327,5 +327,5 @@ For the storage case, CVT reports these problems as Storage Analysis Failures.
 So when there is a timeout, it can help to eliminate these failures by
 summarizing the code that led to them (which will usually contain inline
 assembly with `sload` and `sstore` commands). `mstore` and `mload` commands in
-inline assemnbly may pose similar difficulties.
+inline assembly may pose similar difficulties.
 
