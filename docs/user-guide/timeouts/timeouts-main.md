@@ -1,5 +1,10 @@
 # Introduction
 
+In the following, we will give a basic classification of timeouts, explain some
+candidate causes for timeouts, and show ways to sometimes prevent them. We give
+a glimpse into the more theoretical background of timeouts in program
+verification in [this section](timeouts-theory.md)
+
 We classify Certora Prover timeouts as follows:
 1.  Timeouts that happen before SMT solvers are running 
 2.  Timeouts where the SMT queries in sum lead to a global timeout
@@ -27,9 +32,6 @@ for more details).
 In the remainder we will focus on the mitigation of SMT timeouts, i.e., types 2.
 and 3. Non-SMT Timeouts (Type 1.) should be reported to Certora. 
 
-We give more general background on SMT timeouts on [this
-page](timeouts-theory.md).
-
 (timeout_causes)=
 # What Causes Timeouts?
 
@@ -42,9 +44,9 @@ reasons for SMT timeouts:
  - High storage/memory complexity
 
 This list is not exhaustive, but the majority of timeouts we have observed so
-far can be traced back to one or more of these causes. These are not the only
-sources of complexity, but they should work well as general estimates of
-complexity. For instance linear arithmetic usually only becomes a problem when
+far can be traced back to one or more of these causes. While these are not the
+only sources of complexity, they should work well as general estimates of
+complexity. For instance, linear arithmetic usually only becomes a problem when
 the input program is rather large, which is also indicated by path count in most
 practical cases.
 
@@ -324,6 +326,6 @@ For scaling SMT solving to larger programs, these simplifications are essential.
 For the storage case, CVT reports these problems as Storage Analysis Failures.
 So when there is a timeout, it can help to eliminate these failures by
 summarizing the code that led to them (which will usually contain inline
-assembly with `sload` and `sstore` commands).
-`mstore` and `mload` commands in inline may pose similar difficulties.
+assembly with `sload` and `sstore` commands). `mstore` and `mload` commands in
+inline assemnbly may pose similar difficulties.
 
