@@ -1,4 +1,5 @@
-# Timeouts in Certora Prover -- Theory Background
+Timeouts in Certora Prover - Theoretical Background
+====================================================
 
 In this section, we will discuss some background of timeouts happening in the
 Certora Prover. We try to answer questions like "Why do you build a tool that
@@ -26,7 +27,7 @@ conjunctive fragments (which SMT theory solvers use). Nonlinear integer
 arithmetic stands out in that it is undecidable.
 
 
-## Not all is bad
+## Usefulness of worst-case intractable problems
 
 When seeing the complexity results of the previous section, it is easy to give
 up on the problems of SAT and SMT. Indeed, there were long periods in computer
@@ -41,7 +42,7 @@ often there are slight variations on the input that do not impact the property
 being proven and that make the problem tractable. This practice is likely to 
 require experience, which we collect in this chapter.
 
-## Intuitions on Kinds of Complexity
+## Intuitions on kinds of complexity
 
 In the section on the [theoretical background of verification
 timeouts](timeouts-theory.md) we gave a few details on SMT solver architecture.
