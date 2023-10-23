@@ -461,7 +461,7 @@ If we wish the `Oracle` contract to be at address 12, we use
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.  
 
 **When to use it?**  
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.  
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.  
 
 **Example**  
 Assume we have the contract `Bank.sol` with the following code snippet:  
