@@ -156,7 +156,7 @@ Solidity-like statements
 This feature is currently undocumented.
 ```
 
-(`withrevert`)=
+(withrevert)=
 Function calls
 --------------
 
