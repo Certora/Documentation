@@ -1,10 +1,10 @@
-Release Notes
+Verification Report Release Notes
 =============
 ​
 ```{contents}
 ```
 ​
-0.5.6 Report version (October 24, 2023)
+0.5.6 (October 24, 2023)
 ---------------------------
 ​
 ### Features
