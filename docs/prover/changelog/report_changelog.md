@@ -4,17 +4,17 @@ Release Notes
 ```{contents}
 ```
 ​
-0.5.5 Report version (October 24, 2023)
+0.5.6 Report version (October 24, 2023)
 ---------------------------
 ​
 ### Features
 ​
 - [feat] Shareable report button
 - [feat] Foldable call trace
-- [feat] Added view of .conf files in source files tab
-- [feat] New Tracking Points feature in call trace
+- [feat] Added view of .conf files in the source files tab
+- [feat] New Tracking Points feature in the call trace
 - [feat] Added support for Witness examples view
-- [feat] Added link to unsat core page inside info tab
+- [feat] Added link to the unsat core page inside info tab
 - [feat] Added job status at the top level
 - [feat] Default first load of the report shows spec file and rules tab only
 - [feat] Display report version in the info tab
