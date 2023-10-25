@@ -9,12 +9,12 @@ Release Notes
 ​
 ### Features
 ​
-- [feat] Sharable report button button
+- [feat] Shareable report button
 - [feat] Foldable call trace
 - [feat] Added view of .conf files in source files tab
 - [feat] New Tracking Points feature in call trace
 - [feat] Added support for Witness examples view
-- [feat] Added link to Unsat core page inside info tab
+- [feat] Added link to unsat core page inside info tab
 - [feat] Added job status at the top level
 - [feat] Default first load of the report shows spec file and rules tab only
 - [feat] Display report version in the info tab
@@ -42,7 +42,7 @@ Release Notes
 - [bugfix] Fixed Firefox warnings on source files tab
 - [bugfix] Fixed filter and collapse on contracts and global call resolution tabs to be consistent
 - [bugfix] Fixed contracts tab to show more/less and line breaks
-- [bugfix] Fixed ui braking when selecting new rule
+- [bugfix] Fixed UI breaking when selecting new rule
 - [bugfix] Fixed issue of multi counter example shown without call trace
 - [bugfix] Fixed call resolution opening two items by default instead of one
 - [bugfix] Fixed view of job run time to show time from start to finish, job's queue time excluded
