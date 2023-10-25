@@ -13,7 +13,6 @@ OOM
 Prover
 SMT
 Secureum
-Sharable
 Solana
 Todo
 UI
@@ -116,7 +115,6 @@ satisfiability
 satisfiable
 scalable
 se
-sharable
 sighash
 sighashes
 skolemized
