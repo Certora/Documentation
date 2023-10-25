@@ -46,10 +46,11 @@ reasons for SMT timeouts:
 
 This list is not exhaustive, but the majority of timeouts we have observed so
 far can be traced back to one or more of these causes. While these are not the
-only sources of complexity, they should work well as general estimates of
-complexity. For instance, linear arithmetic usually only becomes a problem when
-the input program is rather large, which is also indicated by path count in most
-practical cases.
+only sources of complexity, they provide a good idea of the probable timeout 
+causes. 
+% For instance, linear arithmetic usually only becomes a problem when
+% the input program is rather large, which is also indicated by path count in most
+% practical cases.
 
 
 ## Complexity feedback from Certora Prover
@@ -63,9 +64,9 @@ Certora Prover provides statistics on the problem sizes it encounters.
 These statistics are structured according to the timeout reasons given above.
 
 Currently, the Prover tracks the following statistics:
- - path count
  - nonlinear operations count
- - memory/storage complexity
+ - path count
+ - memory/storage complexity measures
 
 % For a very short summary we give one summarizing number for each of the
 % statistics, along with a LOW/MEDIUM/HIGH statement. This occurs as an INFO
@@ -78,7 +79,8 @@ The exact classifications are made from experience with these statistics.
  - HIGH: likely to be a reason for a timeout, even if it is the only aspect of
    the verification problem that shows high complexity
 
-These categories map to intervals as follows.
+These categories map to intervals as follows (for the memory/storage complexity, 
+we are still collecting data).
 
 |    | LOW | MEDIUM | HIGH |
 |----|-----|--------|------|
@@ -107,10 +109,10 @@ Timeout prevention approaches fall into these categories.
 2. changing specs
 3. changing source code
 
-Changing tool settings is least invasive and easy to do, so it is preferred.
-However, there are cases when parts of the input code that are very tricky need
-to be worked around. Sometimes a combination of approaches is needed to resolve
-a timeout.
+Changing tool settings is least invasive and easy to do, thus it is usually
+preferable to the other options. However, there are cases when parts of the
+input code that are very hard to reason about need to be worked around.
+Sometimes a combination of approaches is needed to resolve a timeout.
 
 
 In the following we will discuss some concrete approaches to timeout prevention.
