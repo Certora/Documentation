@@ -1,4 +1,4 @@
-Verification Report Release Notes
+Rules Report Release Notes
 =============
 ​
 ```{contents}
