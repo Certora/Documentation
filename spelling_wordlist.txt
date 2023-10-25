@@ -5,8 +5,6 @@ CVL
 Certora
 Disjunction
 Devcon
-downsample
-downsampling
 Ethereum
 FEoD
 Hoare
@@ -17,7 +15,10 @@ SMT
 Secureum
 Solana
 Todo
+UI
 Unary
+UX
+UNSAT
 Vyper
 axiomatization
 axiomatized
@@ -43,6 +44,8 @@ decompiler
 dereference
 dereferences
 destructuring
+downsample
+downsampling
 diagnosability
 disjunction
 disjunctions
@@ -144,6 +147,7 @@ underapproximations
 uninterpreted
 unlinked
 unroller
+unsat
 unsatisfiable
 unsummarized
 untrusted
@@ -154,5 +158,3 @@ verifiers
 walkthrough
 whitespace
 prover_args
-UX
-UNSAT
