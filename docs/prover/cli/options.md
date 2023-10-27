@@ -712,7 +712,7 @@ Sets the maximum splitting depth.
 
 When the deepest splits are too heavy to solve, but not too high in number,
 increasing this will lead to smaller, but more split leafs that run at the full
-smt timeout. Conversely, if runtime is too high because there are too many
+SMT timeout. Conversely, if runtime is too high because there are too many
 splits, decreasing this number means that more time is spent on fewer, but
 bigger split leafs.
 
@@ -781,9 +781,8 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplit
 
 
 
-```
---prover_args "-smt_initialSplitDepth <number>"
-```
+(-smt_initialSplitDepth)=
+### `--prover_args '-smt_initialSplitDepth <number>'`
 
 The splitting can be configured to skip the checks at low splitting levels, thus
 generating sub-splits up to a given depth immediately. Note that the number of

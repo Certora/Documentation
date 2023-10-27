@@ -71,7 +71,7 @@ following (each links to a more detailed description of the option):
    to go on.
  - [Medium timeout](-mediumTimeout) controls the timeout that is applied when
    checking splits that are not at the maximal recursion depth. 
- - Setting the [initial splitting depth](-smt_initialSplittingDepth) to a level 
+ - Setting the [initial splitting depth](-smt_initialSplitDepth) to a level 
    above 0 will make the prover skip the checking and immediately enumerate all 
    splits up to that depth.
 

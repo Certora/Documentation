@@ -30,6 +30,8 @@ boolean
 booleans
 bootcamp
 boundedness
+branching
+branchings
 bugfix
 bytecode
 bytecodes
@@ -106,6 +108,7 @@ precompiled
 preprocess
 preprocessing
 prestate
+prover
 reachability
 reentrancy
 reentrant
@@ -130,6 +133,8 @@ subdirectories
 subgraph
 subproblem
 subproblems
+subtree
+subtrees
 subtype
 subtypes
 summarizable
