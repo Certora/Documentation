@@ -8,17 +8,19 @@ This document is incomplete.
 ````{glossary}
 
 control flow graph
-  Control flow graphs are a program representation that illustrates in which 
-  order the program's instructions are processed during program execution. 
+  Control flow graphs (short: CFGs) are a program representation that 
+  illustrates in which order the program's instructions are processed during 
+  program execution. 
   The nodes in a control flow graph represent single non-branching sequences 
-  of commands. The edges in a control flow graph represent the possibilty of 
+  of commands. The edges in a control flow graph represent the possibility of 
   control passing from the last command of the source node to the first 
   command of the target node. For instance, an `if`-statement in the program
-  will lead to a branching, i.e., a node with two outgoing edges in the 
+  will lead to a branching, i.e., a node with two outgoing edges, in the 
   control flow graph.
   Certora Prover's [TAC reports](tac-reports) contain a control flow graph of 
   the TAC intermediate representation of each given CVL rule (a CVL rule can 
   be seen as a program with some extra "assert" commands).
+  % TODO: ok to mention TAC here?
 
 environment
   The environment of a method call refers to the global variables that solidity

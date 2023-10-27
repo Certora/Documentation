@@ -1,79 +1,79 @@
 Techniques Used by Certora Prover
 =================================
 
-In this chapter we describe techniques used by the Certora Prover whose
-understanding can be relevant for an expert usage of the Prover.
+In this chapter, we describe some of the techniques used inside the Certora
+Prover. While this knowledge not essential for using the prover, it can
+sometimes be helpful when the prover does not behave as expected, for instance
+in case of a prover timeout.
 
 (control-flow-splitting)=
 # Control Flow Splitting
 
-Control flow splitting (or short "splitting") is one of the techniques that 
-Certora Prover employs to speed up solving. It is best illustrated using the
-*control flow graph* (CFG) of a given CVL rule.
-% TODO: link to glossary somehow?
+
+Control flow splitting (or short "splitting") is one of the techniques that
+Certora Prover employs to speed up solving. In the remainder of this section, we
+will give an overview of how the technique works. This background should be
+helpful when using the settings described [here](control-flow-splitting-options)
+to prevent prover timeouts.
+
+Splitting is best illustrated using the {term}`control flow graph` (CFG) of a given
+CVL rule.
 
 A single splitting step proceeds as follows:
- - pick a node with two successors in the CFG
- - generate two new CFGs; in the first (second) CFG, the edge to the first 
-   (second) successor has been removed, also remove all nodes that become 
-   unreachable through the edge removal
+ - Pick a node with two successors in the CFG, the *split point*.
+ - Generate two new CFGs, we call them *splits*; both splits are copies of the 
+   original CFG, except that in the first (second) split, the edge to the first 
+   (second) successor has been removed. The algorithm also removes all nodes and 
+   edges that become unreachable through the initial edge removal.
 
 The following picture illustrates a single splitting step.
 
-The splitting algorithm then splits recursively according to the `-mediumTimeout` and `-timemout` (short `-t`) settings.
+![One splitting step](split-step.png)
 
- - check CFG with timeout `depth < -depth ? -mediumTimeout : -t`
-   - if SAT: done
-   - if UNSAT: if this was the last sub-CFG: terminate prover with UNSAT, otherwise wait for other sub-CFGs
-   - if TIMEOUT
-    - if depth > `-depth`: terminate prover with "TIMEOUT" result
-    - else: split CFG, check the resulting sub-CFGs
 
-Which branching nodes to pick for the next split is decided by a heuristic.
+There is an internal heuristic deciding which branching nodes to pick for each
+single splitting step.
 
-Settings
-% TODO does this belong here? or is there a settings section?
-
-The behavior of the splitting component of Certora Prover can be influenced through the following settings.
-
-The maximum splitting depth can be set by the following setting.
+Certora prover applies these single splitting steps recursively as follows:
 
 ```
---prover_args "-depth <seconds>"
+Recursive Splitting Algorithm:
+Input: CFG input_program
+
+worklist.add(input_program)
+
+while (worklist != [])
+    g = worklist.pop()
+
+    res = check(g)
+    when (res) 
+        SAT, model -> return (SAT, model)
+        UNSAT -> continue
+        TIMEOUT -> 
+            if (max_depth_is_reached())
+                return timeout
+            else
+                worklist.add_all(split_single(g))
+return UNSAT
 ```
 
-The "medium timeout" determines how much time is given to checking a split at not 
-max-depth before we split again.
+Intuitively, the the algorithm explores the tree of all possible recursive
+splittings along a fixed sequence of split points up to the maximum splitting
+depth. We call the splits at maximum splitting depth split leafs.
 
-```
---prover_args "-mediumTimeout <seconds>"
-```
+The main settings with which the user can influence these process are the
+following (each links to a more detailed description of the option):
 
-The regular SMT timeout determines how much time is maximally spent on checking a split on the maximum depth.
-When this is exceeded, Certora Prover will return "TIMEMOUT", unless `-dontStopAtFirstSplitTimeout` is set.
+ - [Maximum split depth](-depth) controls the maximum recursion depth
+ - [Smt timeout](--smt_timeout) controls the timeout that is applied at maximum
+   recursion depth; if this is exceeded, the prover will give up with a TIMEOUT 
+   result, unless [the corresponding setting](-dontStopAtFirstSplitTimeout) says 
+   to go on.
+ - [Medium timeout](-mediumTimeout) controls the timeout that is applied when
+   checking splits that are not at the maximal recursion depth. 
+ - Setting the [initial splitting depth](-smt_initialSplittingDepth) to a level 
+   above 0 will make the prover skip the checking and immediately enumerate all 
+   splits up to that depth.
 
-```
--smt_timeout <seconds>
-```
+   
 
-We can tell the Certora Prover to not stop when the first split has had a 
-maximum-depth timeout. Note that this is only useful for SAT results, since 
-for an overall UNSAT results, all splits need to be UNSAT, while for a SAT 
-result it is enough that one split is UNSAT.
-
-% TODO: talk about SAT / UNSAT -- violated/not-violated won't due it due to `satisfy`...
-
-```
---prover_args "-dontStopAtFirstSplitTimeout <true/false>"
-```
-
-The splitting can be configured to skip the checks at low splitting levels, thus
-generating sub-splits up to a given depth immediately. Note that the number of
-splits generated here is equal to `2^n` where `n` is the initial splitting depth
-(unless the program has less than `n` branchings, which will be rare in
-practice).
-
-
-```
---prover_args "-smt_initialSplitDepth <number>"
-```

@@ -694,3 +694,111 @@ setting or encoding that models precisely both bitwise operations and `mathint`.
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
+
+(control-flow-splitting-options)=
+Advanced options that control control flow splitting
+----------------------------------------------------
+
+See [here](control-flow-splitting) for an explanation of control flow splitting.
+
+(-depth)=
+### `--prover_args '-depth <number>'`
+
+**What does it do?**
+
+Sets the maximum splitting depth.
+
+**When to use it?** 
+
+When the deepest splits are too heavy to solve, but not too high in number,
+increasing this will lead to smaller, but more split leafs that run at the full
+smt timeout. Conversely, if runtime is too high because there are too many
+splits, decreasing this number means that more time is spent on fewer, but
+bigger split leafs.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
+```
+
+(-mediumTimeout)=
+### `--prover_args '-mediumTimeout <seconds>'`
+
+The "medium timeout" determines how much time is given to checking a split at
+not max-depth before we split again.
+
+**What does it do?**
+
+Sets the time that non-leaf splits get before being split again.
+
+**When to use it?** 
+
+When a little more time can close some splitting subtrees early, this can save a
+lot of time, since the subtree's size is exponential in the remaining depth. On
+the other hand, if something will be split further anyway, this can save the
+runtime spent on intermediate "TIMEOUT" results. Use
+{ref}`-smt_initialSplitDepth` to eliminate that time investment altogether up to
+a given depth.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
+```
+
+
+
+% The regular SMT timeout determines how much time is maximally spent on checking
+% a split on the maximum depth. When this is exceeded, Certora Prover will return
+% "TIMEMOUT", unless `-dontStopAtFirstSplitTimeout` is set.
+
+%```
+%-smt_timeout <seconds>
+%```
+
+
+(-dontStopAtFirstSplitTimeout)=
+### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
+
+**What does it do?**
+
+We can tell the Certora Prover to not stop when the first split has had a
+maximum-depth timeout. Note that this is only useful for SAT results, since for
+an overall UNSAT results, all splits need to be UNSAT, while for a SAT result it
+is enough that one split is UNSAT.
+
+% TODO: talk about SAT / UNSAT -- violated/not-violated won't due it due to `satisfy`...
+
+**When to use it?** 
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
+```
+
+
+
+
+```
+--prover_args "-smt_initialSplitDepth <number>"
+```
+
+The splitting can be configured to skip the checks at low splitting levels, thus
+generating sub-splits up to a given depth immediately. Note that the number of
+splits generated here is equal to `2^n` where `n` is the initial splitting depth
+(unless the program has less than `n` branchings, which will be rare in
+practice).
+
+
+**What does it do?**
+
+**When to use it?** 
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
+```
+
