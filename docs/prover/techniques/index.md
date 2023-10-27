@@ -26,9 +26,14 @@ A single splitting step proceeds as follows:
    (second) successor has been removed. The algorithm also removes all nodes and 
    edges that become unreachable through the initial edge removal.
 
-The following picture illustrates a single splitting step.
+```{figure} split-step.png
+:name: single_split()
+:alt: A single splitting step
+:align: center
+:height: 300px
 
-![One splitting step](split-step.png)
+Illustration of a single splitting step
+```
 
 
 There is an internal heuristic deciding which branching nodes to pick for each
@@ -36,24 +41,29 @@ single splitting step.
 
 Certora prover applies these single splitting steps recursively as follows:
 
-```
-Recursive Splitting Algorithm:
-Input: CFG input_program
+```{code-block}
+:name: recursive splitting algorithm
+:caption: "Recursive splitting algorithm as pseudo code"
 
-worklist.add(input_program)
+Input: input_program_cfg
+
+worklist = []
+worklist.add([input_program_cfg, 0])
 
 while (worklist != [])
-    g = worklist.pop()
+    [cfg, current_depth] = worklist.pop()
 
-    res = check(g)
+    res = check(cfg, get_timeout_for(current_depth))
     when (res) 
-        SAT, model -> return (SAT, model)
+        [SAT, model] -> return [SAT, model]
         UNSAT -> continue
         TIMEOUT -> 
-            if (max_depth_is_reached())
+            if (current_depth == max_depth)
                 return timeout
             else
-                worklist.add_all(split_single(g))
+                [split_1, split_2] = split_single(cfg)
+                worklist.add([split_1, current_depth + 1])
+                worklist.add([split_2, current_depth + 1])
 return UNSAT
 ```
 
