@@ -4,14 +4,36 @@ Definitions
 Definitions are declared at the top-level of a specification and are in scope inside every rule, function and inside other definitions.
 
 ```{todo}
-The documentation for this feature is incomplete.  See [the old documentation](https://github.com/Certora/Documentation/blob/sitvanit/ghost-restrictions/docs/confluence/anatomy/definitions.md)
+The documentation for this feature is incomplete.  See [the old documentation](https://github.com/Certora/Documentation/blob/master/docs/confluence/anatomy/definitions.md)
 ```
 
 Examples
 --------
 
-See [`definition` example](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/base.spec#L22)
-for `definition` example.
+The following [example](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/base.spec#L22) 
+introduces a definition called `filterDef` which takes a method argument `m` and produces a `bool`:
+
+```cvl
+definition filterDef(method f) returns bool = f.selector == sig:someUInt().selector;
+```
+
+This definition can then be used as shorthand for f.selector == sig:someUInt().selector. 
+For example, in this spec it is [used in the filter](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/base.spec#L28)
+for parametricRule:
+
+```cvl
+rule parametricRuleInBase(method f) filtered { f -> filterDef(f)  }
+{
+...
+}
+```
+This is equivalent to
+
+```cvl
+rule parametricRuleInBase(method f) filtered { f -> f.selector == sig:someUInt().selector  } {
+...
+}
+```
 
 Syntax
 ------

@@ -63,6 +63,24 @@ output a specific counterexample that causes the assertions to fail.
 
 - [simple rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L54)
 
+    ```cvl
+    /// `deposit` must increase the pool's underlying asset balance
+    rule integrityOfDeposit {
+    
+        mathint balance_before = underlyingBalance();
+    
+    
+        env e; uint256 amount;
+        safeAssumptions(_, e);
+    
+        deposit(e, amount);
+    
+        mathint balance_after = underlyingBalance();
+    
+        assert balance_after == balance_before + amount,
+            "deposit must increase the underlying balance of the pool";
+    }
+    ```
 ```{caution}
 `assert` statements in contract code are handled differently from `assert`
 statements in rules.
@@ -95,7 +113,15 @@ Rules that contain undefined `method` variables are sometimes called
 how to use method variables.
 
 - [parameteric rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94)
-
+    ```cvl
+    rule integrityOfCustomerKeyRule(address a, method f) {
+    env e;
+    calldataarg args;
+    BankAccountRecord.Customer c = getCustomer(a);  
+    require c.id == a || c.id == 0;
+    f(e,args);
+    assert c.id == a || c.id == 0;
+    ```
 
 Filters
 -------
@@ -120,6 +146,9 @@ For example, the following rule has two filters.  The rule will only be
 verified with `f` instantiated by a view method, and `g` instantiated by a
 method other than `exampleMethod(uint,uint)` or `otherExample(address)`:
 
+
+- [filters example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/Reentrancy/certora/spec/Reentrancy.spec#L29C9-L29C9)
+
 ```cvl
 rule r(method f, method g) filtered {
     f -> f.isView,
@@ -130,8 +159,6 @@ rule r(method f, method g) filtered {
     ...
 }
 ```
-
-[filters example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/Reentrancy/certora/spec/Reentrancy.spec#L29C9-L29C9)
 
 See {ref}`method-type` for a list of the fields of the `method` type.
 

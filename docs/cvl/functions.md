@@ -1,14 +1,13 @@
 Functions
 =========
 
-A CVL function provides basic encapsulation for code reuse in a specification. If there is a common set of assumptions 
-or assertions used in several rules, a CVL Function would be an apt place to group those together. 
-Additionally they can be used for basic calculations. CVL function can be used for function summarization as well.
+CVL functions allow you to reuse parts of a specification, such as common assumptions, assertions, 
+or basic calculations. They are also used for [function summaries](https://github.com/Certora/Examples/blob/bf3255766c28068eea2d0513edb8daca7bcaa206/CVLByExample/function-summary/multi-contract/certora/specs/spec_with_summary.spec#L6).
 
 Syntax
 ------
 
-The syntax for CVL functions is given by the following EBNF grammar:
+The syntax for CVL functions is given by the following [EBNF grammar](https://github.com/Certora/Documentation/blob/e7d162f7b4b3eb65fe8ba9098cfff7c43b74474e/docs/confluence/anatomy/functions.md?plain=1#L6):
 
 ```
 function ::= [ "override" ]
@@ -38,9 +37,9 @@ Examples
           return x - y;
         }
     }```
-- [overriding a function from imported spec](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L38)
+- [Overriding a function from imported spec](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L38)
   
-Using a CVL Function
---------------------
+Using CVL functions
+-------------------
   CVL Function may be called from within a rule, or from within another CVL Function.
 

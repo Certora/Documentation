@@ -4,8 +4,8 @@ Ghosts
 
 Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to 
-- Communicate information between [rules](rules.md) and [hooks](hooks.md).
-- Define deterministic [function summaries](https://github.com/Certora/Documentation/blob/a81d87e58217c438af864e20f51e5fd281dbbec8/docs/cvl/methods.md?plain=1#L442).
+- communicate information between [rules](rules.md) and [hooks](hooks.md).
+- define deterministic [function summaries](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/with-env/WithEnvGhostSummary/WithEnv.spec#L10).
 
 ```{contents}
 ```
@@ -58,11 +58,11 @@ ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 
   - [`ghost mapping`](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
 
-Restrictions on Ghost Definitions
+Restrictions on ghost definitions
 ---------------------------------
-- A ghost cannot refer to solidity or `CVL` functions or to other ghosts. It can refer to itself.
+- A ghost axiom cannot refer to `Solidity` or `CVL` functions or to other ghosts. It can refer to the ghost itself.
 - Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
- `forall` can be used in order to refer the storage referred to by the parameters.
+ `forall` can be used in order to refer the storage referred to by the parameters. [Example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec#L12).
 - A struct is not allowed as the key or the output type of a ghost mapping.
 
 
@@ -118,9 +118,9 @@ rule update_changes_no_other(address user, address other) {
 Here the `updated` ghost is used to communicate information from the `userInfo`
 hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
 
-
-Initial state axioms
---------------------
+Ghost axioms
+------------
+### Initial state axioms
 
 ```{todo}
 This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions)
@@ -128,8 +128,7 @@ for information about initial state axioms.
 ```
 - [initial state axiom example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L207)
 
-All State Axioms
-----------------
+### Global axioms
 
 - [`axiom` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L119)
 
