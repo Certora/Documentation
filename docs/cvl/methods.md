@@ -46,6 +46,7 @@ method_spec      ::= "function"
                      ( exact_pattern | wildcard_pattern | catch_all_pattern)
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
+                     [ "optional" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      ";"
 
