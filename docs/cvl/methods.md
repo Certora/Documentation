@@ -280,7 +280,7 @@ skipped if the method does not exist in the contract.
 For example:
 ```cvl
 methods {
-    function mint(address _to, uint256 _amount, bytes calldata _data) external;
+    function mint(address _to, uint256 _amount, bytes calldata _data) external optional;
 }
 ```
 
