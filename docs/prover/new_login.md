@@ -8,12 +8,12 @@ The migration to the new system is set to occur on Sunday, November 5th. You wil
 
 Please follow these instructions:
 - Once you receive the welcome email, log out of your accounts dashboard at Certora website
-- Click the `LOGIN TO CERTORA` link from the email. You will be redirected to the new login page and will be asked to change the initial password to activate your account.
+- Click the `LOGIN TO CERTORA` link from the email. You will be redirected to the new login page and will be asked to change the initial password to activate your account
 - Follow the password prompts to authenticate the new password
 - After the initial login, replace the current Certora’s login page in your bookmarks with: https://prover.certora.com
 
 
-Once the steps above are done, your email address is going to be used as your username to login to the Certora’s website (Prover dashboard) and it's going to replace the Certora Prover key during login.
+Once the steps above are done, your email address is going to be used as your username to login to Certora’s website (Prover dashboard) and it's going to replace the Certora Prover key during login.
 
 The Certora key will be used to run Prover as usual.
 
