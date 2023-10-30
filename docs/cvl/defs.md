@@ -17,9 +17,9 @@ introduces a definition called `filterDef` which takes a method argument `m` and
 definition filterDef(method f) returns bool = f.selector == sig:someUInt().selector;
 ```
 
-This definition can then be used as shorthand for f.selector == sig:someUInt().selector. 
+This definition can then be used as shorthand for `f.selector == sig:someUInt().selector`. 
 For example, in this spec it is [used in the filter](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/base.spec#L28)
-for parametricRule:
+for `parametricRule`:
 
 ```cvl
 rule parametricRuleInBase(method f) filtered { f -> filterDef(f)  }
