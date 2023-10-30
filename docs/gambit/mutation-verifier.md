@@ -29,6 +29,9 @@ If you already have `certora-cli` installed and
 pip install --upgrade certora-cli
 ```
 
+```{note}
+If you are on linux, you will need pip version 20.3 and above.
+```
 
 ## Running the Mutation Verifier
 
