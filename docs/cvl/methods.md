@@ -46,6 +46,7 @@ method_spec      ::= "function"
                      ( exact_pattern | wildcard_pattern | catch_all_pattern)
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
+                     [ "optional" ]
                      [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
                      ";"
 
@@ -71,6 +72,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
 for the `id` production.  See {doc}`expr` for the `expression` production.
 
+(methods-entries)=
 Methods entry patterns
 ----------------------
 
@@ -279,7 +281,7 @@ skipped if the method does not exist in the contract.
 For example:
 ```cvl
 methods {
-    function mint(address _to, uint256 _amount, bytes calldata _data) external;
+    function mint(address _to, uint256 _amount, bytes calldata _data) external optional;
 }
 ```
 
