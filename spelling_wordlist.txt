@@ -160,4 +160,3 @@ verifier
 verifiers
 walkthrough
 whitespace
-prover_args
