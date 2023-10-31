@@ -19,37 +19,45 @@ contract updates a storage variable, while a call hook will be run whenever the
 contract makes an external call.
 
 Together, hooks and ghosts let you keep track of what the contract does during
-execution.  This guide works through some common examples of using ghosts and
-hooks to monitor contracts.  For full details see the reference manual on
-{ref}`hooks <hooks>` and {ref}`ghosts <ghosts>`.
-
-```{contents}
-```
-
-## Running example
+execution.
 
 ```{todo}
- - ERC 20
- - Offline signed transaction feature
+This section is incomplete.  For references, see:
+ - The "Ghosts and hooks" lectures from the {ref}`stanford` and {ref}`paris` workshops
+ - {ref}`ghost-variables` and {ref}`hooks` in the reference manual
 ```
 
-## Using store hooks to track sums 
-
-```{todo}
-The usual thing
- - `sumOfBalances` ghost
- - changes hook
- - `totalSupplyIsSumOfBalances`
- - `init_state` axiom
-
-Caveats
- - The Prover doesn't know `sumOfBalances` is the sum; can't relate sum of balances
-   to individual balances (sum of two balances example)
-```
-
-## Using load hooks to TODO
-
-```{todo}
-Use an invariant about the total supply maybe?
-```
-
+% This guide works through some common examples of using ghosts and
+% hooks to monitor contracts.  For full details see the reference manual on
+% {ref}`hooks <hooks>` and {ref}`ghosts <ghosts>`.
+% 
+% ```{contents}
+% ```
+% 
+% ## Running example
+% 
+% ```{todo}
+%  - ERC 20
+%  - Offline signed transaction feature
+% ```
+% 
+% ## Using store hooks to track sums 
+% 
+% ```{todo}
+% The usual thing
+%  - `sumOfBalances` ghost
+%  - changes hook
+%  - `totalSupplyIsSumOfBalances`
+%  - `init_state` axiom
+% 
+% Caveats
+%  - The Prover doesn't know `sumOfBalances` is the sum; can't relate sum of balances
+%    to individual balances (sum of two balances example)
+% ```
+% 
+% ## Using load hooks to TODO
+% 
+% ```{todo}
+% Use an invariant about the total supply maybe?
+% ```
+% 
