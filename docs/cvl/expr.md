@@ -261,6 +261,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 will check that the current contract supports the optional `burnFrom` method.
 
 (special-fields)=
+(currentContract)=
 Special variables and fields
 ----------------------------
 
@@ -268,6 +269,9 @@ Several of the CVL types have special fields; see {doc}`types` (particularly
 {ref}`env`, {ref}`method-type`, and {ref}`arrays`).
 
 There are also several built-in variables:
+
+ * `address currentContract` always refers to the main contract being verified
+   (that is, the contract named in the {ref}`--verify` option).
 
  * `bool lastReverted` and `bool lastHasThrown` are boolean values that
    indicate whether the most recent contract function reverted or threw an
