@@ -22,7 +22,7 @@ A spec may contain any of the following:
  - **[Rules](rules):** A rule describes the expected behavior of the methods of a
    contract.
 
- - **[Invariants](invariants):** Invariants describe facts about the state of a contract that
+ - **{ref}`invariants`:** Invariants describe facts about the state of a contract that
    should always be true.
 
  - **[Functions](functions):** CVL functions contain CVL code that can be reused throughout the spec.

@@ -1,4 +1,4 @@
-Release Notes
+Prover Release Notes
 =============
 
 ```{contents}

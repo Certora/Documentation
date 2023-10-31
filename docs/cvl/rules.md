@@ -79,6 +79,10 @@ to be reported as counterexamples.
 Parametric rules
 ----------------
 
+Rules that contain undefined `method` variables are sometimes called
+{term}`parametric rule`s.  See {ref}`method-type` for more details about
+how to use method variables.
+
 Undefined variables of the `method` type are treated slightly differently from
 undefined variables of other types.  If a rule uses one or more undefined
 `method` variables, the Prover will generate a separate report for each method
@@ -88,11 +92,30 @@ In particular, the Prover will generate a separate counterexample for each
 method that violates the rule, and will indicate if some contract methods
 always satisfy the rule.
 
-Rules that contain undefined `method` variables are sometimes called
-{term}`parametric rule`s.  See {ref}`method-type` for more details about
-how to use method variables.
+You can request that the Prover only run with specific methods using the
+{ref}`--method` and {ref}`--contract` command line arguments.  The set of
+methods can also be restricted using {ref}`rule filters <rule-filters>`.
+
+If you wish to only invoke methods on a certain contract, you can call the
+`method` variable with an explicit receiver contract.  The receiver must be a
+contract variable (either {ref}`currentContract <currentContract>` or a variable introduced with a
+`using` statement).  For example, the following will only verify the rule `r`
+on methods of the contract `example`:
+
+```cvl
+using Example as example;
+
+rule r {
+    method f; env e; calldataarg args;
+    example.f(e,args);
+    ...
+}
+```
+
+It is an error to call the same `method` variable on two different contracts.
 
 
+(rule-filters)=
 Filters
 -------
 
