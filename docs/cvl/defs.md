@@ -3,9 +3,7 @@ Definitions
 
 Definitions are declared at the top-level of a specification and are in scope inside every rule, function and inside other definitions.
 
-```{todo}
-The documentation for this feature is incomplete.  See [the old documentation](https://github.com/Certora/Documentation/blob/master/docs/confluence/anatomy/definitions.md)
-```
+A definition binds parameters for use in an arbitrary expression on the right-hand side, which should evaluate to a value of the declared return type.
 
 Examples
 --------

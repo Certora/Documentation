@@ -9,12 +9,6 @@ spec file, while others such as rules and invariants must be explicitly
 spec. If a spec defines a function and uses it (e.g. in a rule or function), and another spec imports it and overrides 
 it, uses in the imported spec use the new version.
 
-
-
-```{todo}
-This feature is currently undocumented.
-```
-
 Examples
 --------
 - [Example for `import`](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L1)
@@ -24,8 +18,6 @@ Examples
 - [`use invariant`](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L8)
     - [overriding imported `preserved`](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L10)
     - [adding a `preserved` block](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L14)
-- [`use builtin` rule](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ReadOnlyReentrancy/certora/spec/ReadOnlyReentrancy.spec#L1)
-
 
 Syntax
 ------

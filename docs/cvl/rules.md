@@ -112,16 +112,16 @@ Rules that contain undefined `method` variables are sometimes called
 {term}`parametric rule`s.  See {ref}`method-type` for more details about
 how to use method variables.
 
-- [parameteric rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94)
-    ```cvl
-    rule integrityOfCustomerKeyRule(address a, method f) {
+```cvl
+  rule sanity(method f) {
     env e;
     calldataarg args;
-    BankAccountRecord.Customer c = getCustomer(a);  
-    require c.id == a || c.id == 0;
     f(e,args);
-    assert c.id == a || c.id == 0;
-    ```
+    assert false;
+    }
+  ```
+- [parameteric rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94)
+  
 
 Filters
 -------

@@ -93,7 +93,15 @@ about the counterexamples to the message.
 Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 `require` does not require parentheses around the expression and message.
 ```
+Examples
+--------
 
+```cvl
+rule checkCalleeSummary() {
+    env e;
+    assert (summarizedExternal() == 16, "Summarization of internal function does not take effect.");
+}
+```
 - [`assert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L75)
 
 - [`require` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L44)
@@ -137,48 +145,15 @@ state has an execution that satisfies the condition.
 `requireInvariant` statements
 -----------------------------
 
+`requireInvariant` is shorthand for `require` of the expression of the invariant where parameters have to be substituted.
+
 - [`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
-```{todo}
-This feature is currently undocumented.
 ```
 
-```{note}
+{note}
 `requireInvariant` is always safe for invariants that have been proved, even in
 `preserved` blocks; see {ref}`invariant-induction` for a detailed explanation.
 ```
 
-(control-flow)=
-Solidity-like statements
-------------------------
-
-```{todo}
-This feature is currently undocumented.
-```
-
-(withrevert)=
-Function calls
---------------
-
-```{todo}
-This feature is currently undocumented.  See {ref}`call-expr` for partial information.
-```
-
-- [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
-
-(havoc-stmt)=
-`havoc` statements
-------------------
-
-```{todo}
-This section is currently incomplete.  See
-[ghosts](/docs/confluence/anatomy/ghosts) and {ref}`two-state-old`
-for the old documentation.
-```
-
-```{todo}
-Be sure to document `@old` and `@new` (two-state contexts).  They are not documented in {doc}`expr`
-because I think `havoc ... assuming ...` is the only place that they are
-available.
-```
 
