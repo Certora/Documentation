@@ -503,7 +503,8 @@ Attempting to access more complex types will yield a type checking error. For ex
 an entire array with `currentContract.myState[0].bar[addr]` will fail.
 
 ```{note}
-Although entire arrays cannot be accessed, the _length_ of the dynamic arrays can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
+Although entire arrays cannot be accessed, the _length_ or the _number of elements_ of the dynamic arrays
+can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
 ```
 
 ```{warning}

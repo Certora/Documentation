@@ -5,8 +5,6 @@ CVL
 Certora
 Disjunction
 Devcon
-downsample
-downsampling
 Ethereum
 FEoD
 Hoare
@@ -17,7 +15,10 @@ SMT
 Secureum
 Solana
 Todo
+UI
 Unary
+UX
+UNSAT
 Vyper
 axiomatization
 axiomatized
@@ -33,6 +34,7 @@ bugfix
 bytecode
 bytecodes
 callee
+certora
 changelog
 checkmark
 codebase
@@ -43,6 +45,8 @@ decompiler
 dereference
 dereferences
 destructuring
+downsample
+downsampling
 diagnosability
 disjunction
 disjunctions
@@ -63,6 +67,7 @@ havoc
 havoced
 havocing
 havocs
+https
 hyperproperties
 hyperproperty
 immutable
@@ -76,6 +81,7 @@ invariant
 invariants
 iterable
 Keccak
+Linux
 lifecycle
 logics
 macOS
@@ -144,6 +150,7 @@ underapproximations
 uninterpreted
 unlinked
 unroller
+unsat
 unsatisfiable
 unsummarized
 untrusted
@@ -153,6 +160,3 @@ verifier
 verifiers
 walkthrough
 whitespace
-prover_args
-UX
-UNSAT

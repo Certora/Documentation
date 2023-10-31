@@ -17,6 +17,7 @@ approx/index.md
 checking/index.md
 cli/index.md
 portal/using.md
-changelog.md
+changelog/index.md
+new_login.md
 ```
 
