@@ -1,17 +1,17 @@
 Rules Report Release Notes
 =============
-​
+
 ```{contents}
 ```
-​
+
 0.5.6 (October 24, 2023)
 ---------------------------
-​
+
 ### Features
-​
+
 - [feat] Shareable report button
 - [feat] Foldable call trace
-- [feat] Added view of .conf files in the source files tab
+- [feat] Added view of `.conf` files in the source files tab
 - [feat] New Tracking Points feature in the call trace
 - [feat] Added support for Witness examples view
 - [feat] Added link to the unsat core page inside info tab
@@ -29,10 +29,10 @@ Rules Report Release Notes
 - [feat] Improved drop filters
 - [feat] Improved component's state handling
 - [feat] Added upload failed view
-​
-​
+
+
 ### Bugs
-​
+
 - [bugfix] Fixed the issue of selected file not being shown in the file tree
 - [bugfix] Fixed call resolution empty state issue
 - [bugfix] Fixed global problems empty state issue
@@ -47,5 +47,4 @@ Rules Report Release Notes
 - [bugfix] Fixed call resolution opening two items by default instead of one
 - [bugfix] Fixed view of job run time to excluded the time the job waited in the queue
 - [bugfix] Fixed variables sorting order
-​
-​
+
