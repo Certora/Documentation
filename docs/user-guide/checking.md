@@ -1,4 +1,4 @@
-Checking specifications
+Checking Specifications
 =======================
 
 Formal verification is only as good as the specification.  If a specification

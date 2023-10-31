@@ -1,5 +1,5 @@
 (opcodes)=
-EVM (Ethereum Virtual Machine) Opcode Hooks
+EVM Opcode Hooks
 ================
 
 ## Background

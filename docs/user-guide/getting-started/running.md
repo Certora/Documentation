@@ -3,16 +3,12 @@ Running the Certora Prover
 
 ```{todo}
 This documentation is incomplete.  In the meantime,
-see [Lesson 1 of the tutorial][lesson]
+see [Lesson 2 of the tutorial][lesson]
 for a detailed walkthrough of how to write a basic property, verify it using
 the Certora Prover, and understand the verification results.
 
-Feel free to post questions at [forum.certora.com](https://forum.certora.com).
+Feel free to post questions at [discord help-desk channel](https://discord.com/invite/Z9wQfRqZYY).
 ```
 
-```{todo}
-The built-in rules {ref}`built-in-sanity` and {ref}`built-in-deep-sanity` can
-be useful early in a project.
-```
 
-[lesson]: https://github.com/Certora/Tutorials/tree/master/01.Lesson_GettingStarted
+[lesson]: https://docs.certora.com/projects/tutorials/en/latest/lesson2_started/erc20_example.html

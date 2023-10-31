@@ -115,7 +115,7 @@ rule integrityOfDeposit {
 
     assert balance_after == balance_before + amount,
         "deposit must increase the underlying balance of the pool";
-}
+} 
 ```
 
 This rule makes a call to `Pool.deposit(...)`, which in turn makes a call to
@@ -237,8 +237,8 @@ a variable `underlying` to refer to the `Asset` contract instance[^using-positio
   (if any) and before the `methods` block (if any).
 
 ```cvl
-using Asset as underlying
-using Pool  as pool
+using Asset as underlying;
+using Pool  as pool;
 ```
 
 We can then call methods on the contract `underlying`.  For example, instead of
@@ -267,15 +267,20 @@ We can simplify this rule in two ways.  First, we can declare the
 `underlying.balanceOf` method `envfree` to avoid explicitly passing in `env`
 variables.  This works the same way as `envfree` {ref}`declarations for the
 main contract <envfree>`, except that you must indicate that the method is for
-the `underlying` contract instance:
+the `underlying` contract instance [^wildcards]:
 
 ```cvl
 methods {
     ...
 
-    underlying.balanceOf(address) returns(uint256) envfree
+    function underlying.balanceOf(address) external returns(uint256) envfree;
 }
 ```
+
+[^wildcards]: instead of `underlying.balanceOf` in the methods block, you could
+  also use the contract name: `Asset.balanceOf`.  You could also write a single
+  entry for all `balanceOf` methods using `_` for the contract: `_.balanceOf`.
+  See {ref}`methods-entries` for full details.
 
 The second simplification is that we can use the special variable
 `currentContract` to refer to the main contract being verified (the one passed
@@ -289,6 +294,8 @@ rule integrityOfDeposit {
     mathint balance_before = underlying.balanceOf(currentContract);
 
     env e; uint256 amount;
+    require e.msg.sender != currentContract;
+
     deposit(e, amount);
 
     mathint balance_after = underlying.balanceOf(currentContract);
@@ -335,6 +342,8 @@ increase the underlying balance of the pool.  We can write the property as
 follows:
 
 ```cvl
+/// flash loans must increase the pool's underlying asset balance, assuming the
+/// receiver has no pool balance.
 rule flashLoanIncreasesBalance {
     address receiver; uint256 amount; env e;
 
@@ -363,7 +372,7 @@ the `methods` block[^optimistic-dispatcher]:
 
 ```cvl
 methods {
-    executeOperation(uint256,uint256,address) returns (bool) => DISPATCHER(true)
+    function _.executeOperation(uint256,uint256,address) external => DISPATCHER(true);
 }
 ```
 
@@ -374,7 +383,9 @@ methods {
 This summary means that when the Prover encounters an external call to
 `receiver.executeOperation(...)`, it will try to construct counterexamples
 where the `receiver` contract is any of the contracts in the scene that
-implement the `executeOperation` method.
+implement the `executeOperation` method.  We use the wildcard `_` as the
+receiver contract so that the summary will apply regardless of the receiver
+contract.
 
 So far, there are no contracts in the scene that implement the
 `executeOperation` method, so the Prover will conservatively use a havoc
@@ -487,11 +498,11 @@ counterexample:
 
 As we expected, the dispatcher for `executeOperation` chooses
 `TransferReceiver.executeOperation` as the receiver, which in turn calls
-`underlying.transferFrom(Pool, ..., 2)`.  If we expand the call trace further,
+`underlying.transferFrom(Pool, ..., 2)`.  If we look in the initial storage of the contract,
 we see that the Prover chose the pool's allowance for the recipient to be
-`MAX_UINT256`:
+`10`:
 
-![Call trace entry showing a load from `_allowance[*][*]` returning `MAX_UINT256`](transfer-allowance.png)
+![Call trace entry showing `_allowance[Pool][TransferReceiver]` returning `10`](transfer-allowance.png)
 
 It turns out that this particular violation can't actually happen, because the
 pool contract never approves any other contract to transfer its funds.  We
@@ -697,7 +708,7 @@ a methods block that summarizes all of the ERC20 methods as `DISPATCHER`.  You
 can use an {doc}`import statement </docs/cvl/imports>` to include this in your spec ([full spec][pool-spec]):
 
 ```cvl
-import "../helpers/erc20.spec"
+import "../helpers/erc20.spec";
 ```
 
 This gives a concise way to handle this situation.  Be sure to include the
