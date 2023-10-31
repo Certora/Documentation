@@ -53,7 +53,7 @@ worklist.add([input_program_cfg, 0])
 while (worklist != [])
     [cfg, current_depth] = worklist.pop()
 
-    res = check(cfg, get_timeout_for(current_depth))
+    res = smt_check(cfg, get_timeout_for(current_depth))
     when (res) 
         [SAT, model] -> return [SAT, model]
         UNSAT -> continue
