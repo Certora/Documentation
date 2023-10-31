@@ -231,7 +231,8 @@ follow the next steps:
     source .zshenv
     ```
 
-When running the Certora Prover in the Visual Studio Code Extension, you need to restart your computer to apply your changes effectively. This will lead otherwise to an error: ```DEBUG: https://prover.certora.com/ "POST /v2/cli/verify HTTP/1.1" 403 447```
+When running the Certora Prover in the Visual Studio Code Extension, you may need
+to restart VSCode or your computer.
 
 </details>
 
