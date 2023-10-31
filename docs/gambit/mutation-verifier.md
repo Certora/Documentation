@@ -30,7 +30,7 @@ pip install --upgrade certora-cli
 ```
 
 ```{note}
-If you are on Linux, you will need pip version 20.3 and above.
+If you are on Linux, you will need pip version 20.3 or above.
 ```
 
 ## Running the Mutation Verifier
