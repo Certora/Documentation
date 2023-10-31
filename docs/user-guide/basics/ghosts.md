@@ -27,6 +27,8 @@ This section is incomplete.  For references, see:
  - {ref}`ghost-variables` and {ref}`hooks` in the reference manual
 ```
 
+% TODO: DOC-353
+%
 % This guide works through some common examples of using ghosts and
 % hooks to monitor contracts.  For full details see the reference manual on
 % {ref}`hooks <hooks>` and {ref}`ghosts <ghosts>`.

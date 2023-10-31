@@ -60,6 +60,7 @@ special_vars ::=
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
            | "calledContract"
+           | "exectuingContract"
 
 cast_functions ::=
     | require_functions | to_functions | assert_functions
@@ -308,6 +309,8 @@ There are also several built-in variables:
  * `calledContract` is only available in {ref}`function summaries <function-summary>`.
    It refers to the receiver contract of a summarized method call.
 
+ * `executingContract` is only available in {ref}`hooks <hooks>`.  It refers to
+   the contract that is executing when the hook is triggered.
 
 CVL also has several built-in functions for converting between
 numeric types.  See {ref}`math-ops` for details.

@@ -29,7 +29,7 @@ pattern ::= "Sstore" access_path param [ "(" param ")" ] "STORAGE"
           | opcode   [ "(" params ")" ] [ param ]
 
 access_path ::= id
-              | "(" "slot" number ")"
+              | [ id "." ] "(" "slot" number ")"
               | access_path "." id
               | access_path "[" "KEY"   basic_type id "]"
               | access_path "[" "INDEX" basic_type id "]"
@@ -90,15 +90,6 @@ of `C.totalSupply`:
 hook Sstore C.totalSupply uint ts STORAGE { ... }
 ```
 
-```{todo}
-Is this correct?
-
-If there is a store hook that binds the old value of the variable, then the
-Prover will add a load instruction that reads the value immediately before the
-store instruction.  Therefore, if a path has both a load hook and a store hook,
-they will both be executed when the contract performs a store.
-```
-
 (access-paths)=
 ### Access paths
 
@@ -109,18 +100,15 @@ mapping accesses.
 Storage locations are designated by "access paths".  An access path
 starts with either the name of a contract field, or a [slot number][storage-layout].
 
-```{todo}
-is this correct?
-
-Contract fields must be qualified by the contract that defines them (e.g.
+Contract fields may be qualified by the contract that defines them (e.g.
 `Contract.field`).  If the contract name is omitted, it defaults to
-`currentContract`.
-```
+`currentContract`.  The contract name may either be an instance variable
+introduced by a [using statement][using] or the name of a contract on the
+{term}`scene`.
 
-```{todo}
-Does the contract need to be the contract that defines the field, or can it be
-an inheriting contract?  What happens if there are multiple variables with the
-same name (because of inheritance)?
+```{note}
+If a contract inherits multiple variables with the same name, you cannot use
+that variable as an access path.
 ```
 
 [storage-layout]: https://docs.soliditylang.org/en/v0.8.17/internals/layout_in_storage.html
@@ -166,9 +154,10 @@ byte of slot 1 (these two bytes are matched because the type of the variable is
 hook Sstore (slot 1).(offset 2) uint16 b STORAGE { ... }
 ```
 
-These different kinds of paths can be combined.  For example, the following
-hook will execute whenever the contract writes to the `balance` field of a
-struct in the `users` mapping of contract `C`:
+These different kinds of paths can be combined, subject to restrictions listed
+below.  For example, the following hook will execute whenever the contract
+writes to the `balance` field of a struct in the `users` mapping of contract
+`C`:
 ```cvl
 hook C.users[KEY address user].balance uint v (uint old_value) STORAGE { ... }
 ```
@@ -177,6 +166,13 @@ was used as the key into the mapping `C.users`; the variable `v` will contain
 the value that is written, and the variable `old_value` will contain the value
 that was previously stored there.
 
+There are a few restrictions on the available combinations of low-level and
+high-level access paths:
+ - You cannot access struct fields on access paths that contain `slot` or
+   `offset` components, because the struct type is not known.
+ - You can only use `KEY` and `INDEX` patterns on word-aligned access paths
+   (i.e.  any `offset` components must be multiples of 32).
+
 ```{note}
 The only available access paths for `solc` versions 5.17 and older are `slot`
 and `offset` paths.
@@ -184,12 +180,16 @@ and `offset` paths.
 
 ### Access path caveats
 
-```{todo}
-information on what kind of funny business happens if people do their own memory
-management, and about the disjointness of arrays and so forth
+In order to apply hooks correctly, the Prover must analyze the contract's
+use of storage.  In some cases, especially in the presence of inline assembly
+`sload` and `sstore` instructions, the analysis will fail.  In this case, hooks
+may not be applied.
 
-How can you tell if an analysis failed and your hooks didn't apply?
-```
+If storage analysis fails, you will see a message indicating the failure in the
+global problems view of the rule report.
+
+% TODO: reference the prover/techniques section that is currently in progress in
+% a different PR
 
 (rawhooks)=
 ### Hooking on all loads or stores
@@ -242,10 +242,7 @@ the same slot number.
 EVM opcode hooks
 ----------------
 
-```{todo}
-Are `Create` hooks and `CREATE1`/`CREATE2` hooks different?  Should `Create`
-be documented?
-```
+% TODO DOC-354: document Create hooks (which are different from `CREATE1` / `CREATE2`)
 
 Opcode hooks are executed just after[^before-hooks] a contract executes a
 specific [EVM opcode][evm-opcodes].  An opcode hook pattern consists of the
@@ -366,6 +363,7 @@ early call to `CALLVALUE` to check that it is 0. This means that every time a
 non-payable Solidity function is invoked, the `CALLVALUE` hook will be
 triggered.
 
+(executingContract)=
 Hook bodies
 -----------
 
@@ -373,6 +371,9 @@ The body of a hook may contain almost any CVL code, including calls to other
 Solidity functions.  The only exception is that hooks may not contain
 parametric method calls.  Expressions in hook bodies may reference variables
 bound by the hook pattern.
+
+Hook bodies may also refer to the special CVL variable `executingContract`,
+which contains the address of the contract whose code triggered the hook.
 
 ````{todo}
 Questions about the following:
