@@ -27,6 +27,11 @@ hyperproperty
   like "two small deposits will have the same effect as one large deposit" is a
   hyperproperty.  See {ref}`storage-type` for more details.
 
+invariant
+  An invariant (or representation invariant) is a property of the contract
+  state that is expected to hold between invocations of contract methods.  See
+  {ref}`invariants`.
+
 model
 example
 counterexample
