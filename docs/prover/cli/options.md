@@ -93,7 +93,7 @@ If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
 
 (--method)=
-### `--method <method_signature> ...`
+### `--method <method_signature>`
 
 **What does it do?**
 Only uses functions with the given method signature when instantiating
