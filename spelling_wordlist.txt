@@ -39,8 +39,6 @@ checkmark
 codebase
 config
 conjoined
-datastructure
-datastructures
 decompilation
 decompiler
 dereference
@@ -113,7 +111,6 @@ relatedly
 remappings
 representable
 reproducibility
-runtime
 satisfiability
 satisfiable
 scalable

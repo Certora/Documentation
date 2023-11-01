@@ -272,7 +272,7 @@ Note that the occurrence of these patterns is not always a problem, so they shou
 
 ### Passing complex structs
 
-A common culprit for high memory complexity are complex datastructures that are
+A common culprit for high memory complexity are complex data structures that are
 passed from the specification to the program, or also inside the program.
 Especially problematic are `struct` types that contain many dynamically-sized
 arrays. 

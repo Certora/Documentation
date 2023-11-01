@@ -20,10 +20,10 @@ input formula, and communicates with theory solvers to refine the abstraction
 according to the theories used by the formula. The problem of solving
 propositional formulas (aka SAT) is famously NP-complete. In practice this means
 that there are classes of propositional formulas for which all known SAT solvers
-show exponential runtime behavior. Exponential runtime is usually equated with
-intractability ("we have an algorithm, but it's impractical because it runs too
-long"). Most of the theories involved are at least NP-complete, already in their
-conjunctive fragments (which SMT theory solvers use). Nonlinear integer
+show exponential run-time behavior. Exponential running time is usually equated
+with intractability ("we have an algorithm, but it's impractical because it runs
+too long"). Most of the theories involved are at least NP-complete, already in
+their conjunctive fragments (which SMT theory solvers use). Nonlinear integer
 arithmetic stands out in that it is undecidable.
 
 
