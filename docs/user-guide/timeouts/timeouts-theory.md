@@ -34,7 +34,7 @@ up on the problems of SAT and SMT. Indeed, there were long periods in computer
 science history when SAT was considered unsolvable. However, it is important to
 understand that these complexity results describe the worst case behavior. It
 turns out that there is a large class of formulas where SAT is tractable, even
-on inputs with millions of variables, and SAT solvers are used with great
+on inputs with millions of variables, and SAT solvers have been used with great
 success in industries like chip design for decades now.
 
 For the usage of Certora Prover this means that timeouts can happen, but that

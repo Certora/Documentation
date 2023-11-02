@@ -13,7 +13,7 @@ We classify Certora Prover timeouts as follows:
 Types 1. and 2. are signified by a hard stop of the Prover. That means the
 Prover ran into the timeout of the cloud job, which is set at 2 hours, and was
 forcefully shut down from everything it was doing (it is possible to lower that
-timeout using the `--globalTimeout` flag). A message like "hard stop reached"
+timeout using the {ref}`--globalTimeout` flag). A message like "hard stop reached"
 appears in the "Global problems" pane of the report, and error symbols next to
 one or many rules.
 
@@ -164,7 +164,7 @@ certoraRun ... --prover_args '-smt_initialSplitDepth 5 -depth 15'
 
 When there are very many subproblems that are of medium difficulty there is a
 chance that the Prover has to split too often (not being able to "close" any
-sub-splits). Then, a lazier splitting strategy could help. We achieve lazier
+sub-splits). In that case, a lazier splitting strategy could help. We achieve lazier
 splitting by giving the solver more time to find a solution before we split a
 problem.
 
@@ -211,10 +211,8 @@ the `-smt_overrideSolvers` option.
 (modular-verification)=
 ## Modular verification
 
-Especially for large code bases, but also for instance when there are parts with
-particularly complex behavior, it helps to modularize the verification process.
-In the following we elaborate on modularization techniques that can help
-preventing timeouts.
+Often it is useful to break a complex problem into simpler subproblems; this process is called modularization.
+You can modularize a verification problem by first proving a property about a complex piece of code (such as a library or a method) and then using that property to summarize the complex code.  In the following we elaborate on modularization techniques that can help with timeout prevention.
 
 
 ### "Sanity" rules
@@ -230,12 +228,11 @@ Sanity rules are such trivial specifications. For documentation on them, see
 (library_timeouts)=
 ### Library-based systems
 
-Some of the systems we have are based on multiple library contracts which
+Some systems are based on multiple library contracts which
 implement the business logic. They also forward storage updates to a single
 external contract holding the storage.
 
-In these systems, it’s sensible to split the verification so as each library is
-operated on an individual basis.
+In these systems, it is sensible to verify each library independently.
 
 If you encounter timeouts when trying to verify the main entry point contract to
 the system, check the impact of the libraries on the verification by summarizing
@@ -247,13 +244,14 @@ certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true'
 ```
 
 ```{note}
-This option is only applied for _external_ library calls, or `delegatecall`s.
+This option is only applied for `delegatecall`s and _external_ library calls.
 Internal calls are automatically inlined by the Solidity compiler and are 
 subject to summarizations specified in the spec file's `methods` block.
 ```
 
-Alternatively, if you wish to apply a "catch-all" summary for all the methods of
-a specific library, you can write in the methods block of the spec:
+Alternatively, you can summarize all the methods of
+a single library using a {ref}`catch-all summary <catch-all-entries>`.  For example,
+to use a `NONDET` summary for all functions of `MyBigLibrary`, you could add the following:
 
 ```
 methods {
@@ -278,8 +276,8 @@ Note that the occurrence of these patterns is not always a problem, so they shou
 
 A common culprit for high memory complexity are complex data structures that are
 passed from the specification to the program, or also inside the program.
-Especially problematic are `struct` types that contain many dynamically-sized
-arrays. 
+`struct` types that contain many dynamically-sized
+arrays are especially problematic. 
 
 % TODO: which calls exactly? external calls? all of them?
 
@@ -305,7 +303,7 @@ function foo(MyStruct x) public {
 }
 ```
 
-### Memory and Storage in Inline Assembly
+### Memory and storage in inline assembly
 
 % Shows through storage/memory analysis failures ("Global Problems" pane).
 
