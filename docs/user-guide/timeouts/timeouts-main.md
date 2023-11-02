@@ -17,7 +17,7 @@ timeout using the `--globalTimeout` flag). A message like "hard stop reached"
 appears in the "Global problems" pane of the report, and error symbols next to
 one or many rules.
 
-% made CERT-3797 so we get a clear indication to the user, hopefully
+% TODO made CERT-3797 so we get a clear indication to the user, hopefully
 % then, CVT should indicate via report-logs
 %  - whether there was a hard stop
 %  - whether SMT has started
@@ -34,7 +34,7 @@ In the remainder we will focus on the mitigation of SMT timeouts, i.e., types 2.
 and 3. Non-SMT Timeouts (Type 1.) should be reported to Certora. 
 
 (timeout_causes)=
-# What causes timeouts?
+# Identifying timeout causes
 
 As a first step towards resolving a timeout, we need to diagnose its root
 causes. In our experience, the following are some of the most common
@@ -60,8 +60,12 @@ features in this section.
 
 ### Difficulty statistics
 
-Certora Prover provides statistics on the problem sizes it encounters. 
-These statistics are structured according to the timeout reasons given above.
+Certora Prover provides statistics on the problem sizes it encounters. These
+statistics are available in the {ref}`tac-reports` that are generated in case of
+an SMT timeout. The statistics are structured according to the timeout reasons
+given above.
+
+%TODO: once stats are available in the html reports, mention it here
 
 Currently, the Prover tracks the following statistics:
  - nonlinear operations count
@@ -88,7 +92,7 @@ we are still collecting data).
 | Nonlinear operations | 0 to 10 | 10 to 30 | > 30 |
 % TODO: memory/storage complexity, once we have a feeling for that
 
-(timeout_tac_reports)=
+(timeout-tac-reports)=
 ### Timeout TAC reports
 
 For each verification item, there is a TAC graph linked in the verification
@@ -154,8 +158,8 @@ depth.
 When the relevant source code is very large, the shallow splits have a chance of
 being too large for the solvers, thus eager splitting might help.
 
-```
---prover_args "-smt_initialSplitDepth 5 -depth 15"
+```sh
+certoraRun ... --prover_args '-smt_initialSplitDepth 5 -depth 15'
 ```
 
 When there are very many subproblems that are of medium difficulty there is a
@@ -164,15 +168,15 @@ sub-splits). Then, a lazier splitting strategy could help. We achieve lazier
 splitting by giving the solver more time to find a solution before we split a
 problem.
 
-```
---prover_args "-mediumTimeout 30 -depth 5"
+```sh
+certoraRun ... --prover_args '-mediumTimeout 30 -depth 5'
 ```
 
 It can also help to have splitting run in parallel (the splits are solved
 sequentially by default).
 
-```
---prover_args "-splitParallel true"
+```sh
+certoraRun --prover_args '-splitParallel true'
 ```
 
 ### Dealing with nonlinear arithmetic
@@ -204,7 +208,7 @@ the `-smt_overrideSolvers` option.
 ```
 
 
-(modular_verification)=
+(modular-verification)=
 ## Modular verification
 
 Especially for large code bases, but also for instance when there are parts with
