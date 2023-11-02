@@ -1,19 +1,19 @@
-(ghost-functions)=
+(ghosts-doc)=
 Ghosts
 ======
 
 Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to 
-- communicate information between [rules](rules.md) and [hooks](hooks.md).
+- communicate information between {ref}`rules` and {ref}`hooks`.
 - define deterministic [function summaries](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/with-env/WithEnvGhostSummary/WithEnv.spec#L10).
 
 ```{contents}
 ```
 
+The syntax for ghost declarations is given by the following [EBNF grammar](syntax):
+
 Syntax
 ------
-
-The syntax for ghost declarations is given by the following [EBNF grammar](syntax):
 
 ```
 ghost ::= "ghost" type id                             (";" | "{" axioms "}")
@@ -55,6 +55,7 @@ ghost (uint, uint) x;                              // tuples are not CVL types
 ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
 
+(ghost-functions)=
 Ghost Functions
 ---------------
 CVL also has support for "ghost functions".  These serve a different purpose from ghost variables, although they can be
@@ -82,7 +83,7 @@ Using ghost variables
 ---------------------
 
 While verifying a rule or invariant, the Prover considers every possible
-initial value of a ghost variable (subject to its {ref}`axioms <ghost-axioms>`,
+initial value of a ghost variable (subject to its {ref}`ghost-axioms`,
 see below).
 
 Within CVL, you can read or write ghosts using the normal variable syntax.  For
@@ -130,6 +131,7 @@ rule update_changes_no_other(address user, address other) {
 Here the `updated` ghost is used to communicate information from the `userInfo`
 hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
 
+(ghost-axioms)=
 Ghost axioms
 ------------
 ### Initial state axioms
@@ -146,6 +148,7 @@ init_state axiom sumBalances == 0;
 
 - [initial state axiom example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L207)
 
+(global-axioms)=
 ### Global axioms
 
 Sometimes we might want to constrain the behavior of a ghost in some particular way. 
@@ -163,6 +166,4 @@ While this is not a very interesting axiom, we could imagine expressing more com
 such as a reachability relation.
 
 - [`axiom` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L119)
-
-
 

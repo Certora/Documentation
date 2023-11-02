@@ -1,3 +1,4 @@
+(rules)=
 Rules
 =====
 
@@ -88,7 +89,7 @@ statements in rules.
 An `assert` statement in Solidity causes the transaction to revert, in the same
 way that a `require` statement in Solidity would.  By default, examples that
 cause contract functions to revert are {ref}`ignored by the prover
-<withrevert>`, and these examples will *not* be reported as counterexamples.
+<with-revert>`, and these examples will *not* be reported as counterexamples.
 
 The {ref}`--multi_assert_check` option causes assertions in the contract code
 to be reported as counterexamples.

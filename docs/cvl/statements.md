@@ -156,4 +156,27 @@ state has an execution that satisfies the condition.
 `preserved` blocks; see {ref}`invariant-induction` for a detailed explanation.
 ```
 
+(havoc-stmt)=
+`havoc` statements
+------------------
+
+```{todo}
+This section is currently incomplete.  See
+[ghosts](/docs/confluence/anatomy/ghosts) and {ref}`two-state-old`
+for the old documentation.
+
+```{todo}
+Be sure to document `@old` and `@new` (two-state contexts).  They are not documented in {doc}`expr`
+because I think `havoc ... assuming ...` is the only place that they are
+available.
+```
+
+(control-flow)=
+Solidity-like statements
+------------------------
+
+```{todo}
+This feature is currently undocumented.
+```
+
 

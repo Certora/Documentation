@@ -1,13 +1,14 @@
+(functions-doc)=
 Functions
 =========
 
 CVL functions allow you to reuse parts of a specification, such as common assumptions, assertions, 
-or basic calculations. They are also used for [function summaries](https://github.com/Certora/Examples/blob/bf3255766c28068eea2d0513edb8daca7bcaa206/CVLByExample/function-summary/multi-contract/certora/specs/spec_with_summary.spec#L6).
+or basic calculations. Additionally they can be used for basic calculations and  for [function summaries](https://github.com/Certora/Examples/blob/bf3255766c28068eea2d0513edb8daca7bcaa206/CVLByExample/function-summary/multi-contract/certora/specs/spec_with_summary.spec#L6).
 
 Syntax
 ------
 
-The syntax for CVL functions is given by the following [EBNF grammar](https://github.com/Certora/Documentation/blob/e7d162f7b4b3eb65fe8ba9098cfff7c43b74474e/docs/confluence/anatomy/functions.md?plain=1#L6):
+The syntax for CVL functions is given by the following [EBNF grammar](syntax):
 
 ```
 function ::= [ "override" ]
@@ -19,10 +20,6 @@ function ::= [ "override" ]
 
 See {doc}`basics` for the `id` production, {doc}`types` for the `type` production,
 and {doc}`statements` for the `block` production.
-
-```{todo}
-This documentation is incomplete.  See [the old documentation](/docs/confluence/anatomy/functions).
-```
 
 Examples
 --------

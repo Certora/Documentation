@@ -34,8 +34,6 @@ use ::= "use" "rule" id
 
 ```
 
-See [`basics`](https://github.com/Certora/Documentation/blob/master/docs/cvl/basics.md) for the `string` and `id` 
-productions, [`expr`](https://github.com/Certora/Documentation/blob/master/docs/cvl/expr.md) for the
-`expression` production, and [`invariants`](https://github.com/Certora/Documentation/blob/26ebc45781d4f07258b64083b9a76d5497b56824/docs/cvl/invariants.md?plain=1#L140)
-for the `preserved_block` production.
+See {doc}`basics` for the `string` and `id` productions, {doc}`expr` for the `expression` production, and 
+{doc}`invariants` for the `preserved_block` production.
 

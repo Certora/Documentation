@@ -340,7 +340,7 @@ while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
 
-
+(with-revert)=
 After the function name, but before the arguments, you can write an optional
 method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
  * `@norevert` indicates that examples where the method revert should not be
@@ -482,7 +482,7 @@ and array/map dereference operations together. For example, if the current contr
 type definitions and state variables:
 
 ```solidity
-contract Example
+contract Example {
    struct Foo {
       mapping (address => uint[]) bar;
    }
