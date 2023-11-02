@@ -24,7 +24,7 @@ one or many rules.
 
 
 Type 3. is signified by a soft stop. This means an SMT solver shut down due to
-hitting the limit for a single SMT run (set via `--smt_timeout`). When running
+hitting the limit for a single SMT run (set via {ref}`--smt_timeout`). When running
 with default settings this means that we give up for the individual rule since
 in order to obtain a proof of correctness we need to solve every subproblem we
 generate (see documentation on [control-flow splitting](control-flow-splitting)
