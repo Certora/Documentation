@@ -67,7 +67,7 @@ required for the linear and the nonlinear cases.
 There is a large body of literature on the topics of logics, complexity, and SMT.
 Here are some links as an entry point for further reading:
 
-The wikipedia articles on
+The Wikipedia articles on
 [SMT](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories), and the
 more basic problem known as
 [SAT](https://en.wikipedia.org/wiki/Boolean_satisfiability_problem) give an
@@ -75,7 +75,7 @@ overview on the fundamentals of these problems, and the existing solving
 algorithms.
 
 [Programming Z3](https://theory.stanford.edu/~nikolaj/programmingz3.html)
-provides a guide to the z3 smt solver that also provides a good overview of the
+provides a guide to the z3 SMT solver that also provides a good overview of the
 architecture and components of an SMT solver, including some algorithms, and
 further references.
 

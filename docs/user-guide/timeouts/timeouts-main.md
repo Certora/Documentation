@@ -154,7 +154,7 @@ particular with large or complex code bases.
 
 One way of isolating the timeout cause is by running with a trivial
 specification.  This way, the specification is ruled out as the source of
-complexity. Thus, a timeout on such a ruyle hints towards some parts of the
+complexity. Thus, a timeout on such a rule hints towards some parts of the
 program code being challenging for the solver, rather than the program code in
 combination with another, less trivial, spec.
 
@@ -173,7 +173,7 @@ In these systems, it can be appropriate to verify each library independently.
 If you encounter timeouts when trying to verify the main entry point contract to
 the system, check the impact of the libraries on the verification by summarizing
 all external library (delegate) calls as `NONDET`, using the option
-`summarizeExtLibraryCallsAsNonDetPreLinking` as follows:
+`-summarizeExtLibraryCallsAsNonDetPreLinking` as follows:
 
 ```sh
 certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true'
@@ -316,7 +316,7 @@ prevention.
 As mentioned here [before](timeout-causes-library-contracts), systems with
 libraries are a natural candidate for modularization.
 
-Alternatively to using the '-summarizeExtLibraryCallsAsNonDetPreLinking true'
+Alternatively to using the `-summarizeExtLibraryCallsAsNonDetPreLinking true`
 option mentioned before, one can summarize all the methods of a single library
 using a {ref}`catch-all summary <catch-all-entries>`.  For example, to use a
 `NONDET` summary for all functions of `MyBigLibrary`, one could add the
