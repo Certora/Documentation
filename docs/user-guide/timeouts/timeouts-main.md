@@ -185,7 +185,7 @@ Internal calls are automatically inlined by the Solidity compiler and are
 subject to summarizations specified in the spec file's `methods` block.
 ```
 
-(timeout_prevention)=
+(timeout-prevention)=
 # Timeout prevention
 
 Timeout prevention approaches fall into these categories.

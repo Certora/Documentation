@@ -10,10 +10,11 @@ parts of our documentation on [managing timeouts](index.md).
 
 ## Complexity of the SMT problem
 
-Certora Prover is roughly similar in architecture to a compiler. However,
-instead of executables, Certora Prover outputs SMT formulas. These formulas are
-then sent to an SMT solver, and the result is translated back to a
-counterexample call trace, or a "Not Violated" result.
+As described in in the [white paper](whitepaper-technical), Certora Prover is
+roughly similar in architecture to a compiler. However, instead of executables,
+Certora Prover outputs {term}`SMT` formulas. These formulas are then sent to an
+SMT solver, and the result is translated back to a counterexample call trace, or
+a "Not Violated" result.
 
 All SMT solvers share a general architecture. At the center of an SMT solver,
 there is a SAT solver. The SAT solver operates on a Boolean abstraction of the
@@ -40,10 +41,8 @@ success in industries like chip design for decades now.
 
 For the usage of Certora Prover this means that timeouts can happen, but that
 often there are slight variations on the input that do not impact the property
-being proven and that make the problem tractable. This practice is likely to 
-require experience, which we collect in this chapter.
-
-## Intuitions on kinds of complexity
+being proven and that make the problem tractable. This practice is likely to
+require experience, which we collect in the {ref}`timeout-prevention` section.
 
 In the section on the [theoretical background of verification
 timeouts](timeouts-theory.md) we gave a few details on SMT solver architecture.
@@ -62,3 +61,23 @@ weighs most heavily on the SAT-solving part of the SMT solver. Storage or Memory
 accesses lead to case splits, which are also Boolean in nature. On the other
 hand, arithmetic is resolved by specialized solvers; different algorithms are
 required for the linear and the nonlinear cases.
+
+## Further reading
+
+There is a large body of literature on the topics of logics, complexity, and SMT.
+Here are some links as an entry point for further reading:
+
+The wikipedia articles on
+[SMT](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories), and the
+more basic problem known as
+[SAT](https://en.wikipedia.org/wiki/Boolean_satisfiability_problem) give an
+overview on the fundamentals of these problems, and the existing solving
+algorithms.
+
+[Programming Z3](https://theory.stanford.edu/~nikolaj/programmingz3.html)
+provides a guide to the z3 smt solver that also provides a good overview of the
+architecture and components of an SMT solver, including some algorithms, and
+further references.
+
+
+
