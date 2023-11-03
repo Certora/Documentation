@@ -1,9 +1,19 @@
 # Introduction
 
 In the following, we will give a basic classification of timeouts, explain some
-candidate causes for timeouts, and show ways to sometimes prevent them. We give
-a glimpse into the more theoretical background of timeouts in program
-verification in [this section](timeouts-theory.md)
+candidate causes for timeouts, and show ways to sometimes prevent them. See
+{ref}`timeouts-background` for a glimpse into some of the theoretical background
+on verification timeouts.
+
+For a first classification of timeouts in Certora Prover, we consider on where
+in the Prover's pipeline they occur. The pipeline starts by compiling a CVL rule
+and the linked EVM bytecode into an intermediate language (called {term}`TAC`).
+This is followed by many static analyses and program transformations.
+Afterwards, the TAC program is iteratively split into parts and translated into
+logical formulas. The logical formulas are then sent to an {term}`SMT` solver.
+For more details on how programs are split up see {ref}`control-flow-splitting`.
+ For a more comprehensive overview of the Certora Prover, see the
+{ref}`whitepaper-technical` section of the Certora Technology White Paper.
 
 We classify Certora Prover timeouts as follows:
 1.  timeouts that happen before SMT solvers are running 
@@ -13,9 +23,18 @@ We classify Certora Prover timeouts as follows:
 Types 1. and 2. are signified by a hard stop of the Prover. That means the
 Prover ran into the timeout of the cloud job, which is set at 2 hours, and was
 forcefully shut down from everything it was doing (it is possible to lower that
-timeout using the {ref}`--globalTimeout` flag). A message like "hard stop reached"
-appears in the "Global problems" pane of the report, and error symbols next to
-one or many rules.
+timeout using the {ref}`-globalTimeout` flag). A message like "hard stop
+reached" appears in the "Global problems" pane of the
+[report](verification-report), and error symbols next to one or many rules.
+
+```{figure} hard-stop-in-report.png
+:name: hard stop in report
+:align: center
+:height: 130px
+A hard stop message appearing under Global Problems
+```
+
+
 
 % TODO made CERT-3797 so we get a clear indication to the user, hopefully
 % then, CVT should indicate via report-logs
@@ -24,39 +43,52 @@ one or many rules.
 
 
 Type 3. is signified by a soft stop. This means an SMT solver shut down due to
-hitting the limit for a single SMT run (set via {ref}`--smt_timeout`). When running
-with default settings this means that we give up for the individual rule since
-in order to obtain a proof of correctness we need to solve every subproblem we
-generate (see documentation on [control-flow splitting](control-flow-splitting)
-for more details). 
+hitting the limit for a single SMT run (set via {ref}`--smt_timeout`). 
 
-In the remainder we will focus on the mitigation of SMT timeouts, i.e., types 2.
-and 3. Non-SMT Timeouts (Type 1.) should be reported to Certora. 
+```{figure} rule-timeout-in-report.png
+:name: rule timeout in report
+:align: center
+:height: 200px
+A rule that timed out in the SMT solver
+```
+
+In the remainder, we will focus on the mitigation of SMT timeouts, i.e., types
+2. and 3. Non-SMT Timeouts (Type 1.) should be reported to Certora. 
+
+% TODO: we could suggest that the users try DELETE summaries for type 1, but 
+%  first I think we'd need some feedback from the tool, what would be good to
+%  delete (and also document DELETE summaries)
 
 (timeout_causes)=
 # Identifying timeout causes
 
-As a first step towards resolving a timeout, we need to diagnose its root
-causes. In our experience, the following are some of the most common
-reasons for SMT timeouts:
+As a first step towards resolving an SMT timeout, we need to diagnose its root
+causes. In our experience, the following are some of the most common reasons for
+SMT timeouts:
 
  - non-trivial amount of nonlinear arithmetic
  - very high path count
- - high storage/memory complexity
+ - high Storage/Memory complexity
+
+The term {term}`nonlinear arithmetic` refers to computations involving
+multiplications or divisions of variables. These are notoriously hard for
+solvers. The path count is the number of paths from initial location to final
+location in the  rule's {term}`control flow graph`. In the worst case, this
+leads to a very high number of sub-cases that the solver needs to consider.
+Furthermore, a high number of updates to Storage or Memory can be challenging
+for the solver, because it needs to reason about
+[aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)) of Storage/Memory
+locations.
 
 This list is not exhaustive, but the majority of timeouts we have observed so
 far can be traced back to one or more of these causes. While these are not the
-only sources of complexity, they provide a good idea of the probable timeout 
-causes. 
-% For instance, linear arithmetic usually only becomes a problem when
-% the input program is rather large, which is also indicated by path count in most
-% practical cases.
-
+only sources of complexity, they provide a good idea of the probable causes for
+a given timeout. 
 
 ## Complexity feedback from Certora Prover
 
-Certora Prover provides some help with diagnosing timeouts. We present these
-features in this section.
+Certora Prover provides help with diagnosing timeouts. We present these features
+in this section.
 
 ### Difficulty statistics
 
@@ -72,25 +104,28 @@ Currently, the Prover tracks the following statistics:
  - path count
  - memory/storage complexity measures
 
-% For a very short summary we give one summarizing number for each of the
-% statistics, along with a LOW/MEDIUM/HIGH statement. This occurs as an INFO
+For a very short summary we give one summarizing number for each of the
+statistics, along with a LOW/MEDIUM/HIGH statement. 
+
+%This occurs as an INFO
 % message in the Global Problems pane of the Prover reports.
 
-The exact classifications are made from experience with these statistics.
+The meanings of the LOW/MEDIUM/HIGH classifications are as follows:
  - LOW: unlikely to be a reason for a timeout
  - MEDIUM: might be a reason for a timeout; the timeout might also be a result
    of the combined complexity with other measures
  - HIGH: likely to be a reason for a timeout, even if it is the only aspect of
    the verification problem that shows high complexity
 
-These categories map to intervals as follows (for the memory/storage complexity, 
-we are still collecting data).
+% These categories map to intervals as follows (for the memory/storage complexity, 
+% we are still collecting data).
 
-|    | LOW | MEDIUM | HIGH |
-|----|-----|--------|------|
-| Path count | 0 to 2<sup>20</sup> | 20<sup>20</sup> to 2<sup>80</sup> | > 2<sup>80</sup> |
-| Nonlinear operations | 0 to 10 | 10 to 30 | > 30 |
+%|    | LOW | MEDIUM | HIGH |
+%|----|-----|--------|------|
+%| Path count | 0 to 2<sup>20</sup> | 20<sup>20</sup> to 2<sup>80</sup> | > 2<sup>80</sup> |
+%| Nonlinear operations | 0 to 10 | 10 to 30 | > 30 |
 % TODO: memory/storage complexity, once we have a feeling for that
+
 
 (timeout-tac-reports)=
 ### Timeout TAC reports
@@ -104,6 +139,51 @@ Find more documentation on TAC reports in general [here](tac-reports).
 
 In the timeout case, the TAC reports contain some additional information that
 should help with diagnosing the timeout.
+
+
+### Finding timeout causes through modularization
+
+In addition to the other techniques described here, it can be insightful to
+remove parts of the code in order to isolate the timeout reason. If timeouts are
+eliminated through this, modular verification techniques can be employed in 
+order to prove correctness of the parts separately.
+These techniques are a relatively blunt instrument, but can be necessary in 
+particular with large or complex code bases.
+
+#### Sanity rules
+
+One way of isolating the timeout cause is by running with a trivial
+specification.  This way, the specification is ruled out as the source of
+complexity. Thus, a timeout on such a ruyle hints towards some parts of the
+program code being challenging for the solver, rather than the program code in
+combination with another, less trivial, spec.
+
+Sanity rules are such trivial specifications. For documentation on them, see
+{ref}`sanity <built-in-sanity>` and {ref}`deep sanity <built-in-deep-sanity>`. 
+
+(timeout-causes-library-contracts)=
+#### Library contracts
+
+Some systems are based on multiple library contracts which implement the
+business logic. They also forward storage updates to a single external contract
+holding the storage.
+
+In these systems, it can be appropriate to verify each library independently.
+
+If you encounter timeouts when trying to verify the main entry point contract to
+the system, check the impact of the libraries on the verification by summarizing
+all external library (delegate) calls as `NONDET`, using the option
+`summarizeExtLibraryCallsAsNonDetPreLinking` as follows:
+
+```sh
+certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true'
+```
+
+```{note}
+This option is only applied for `delegatecall`s and _external_ library calls.
+Internal calls are automatically inlined by the Solidity compiler and are 
+subject to summarizations specified in the spec file's `methods` block.
+```
 
 (timeout_prevention)=
 # Timeout prevention
@@ -142,21 +222,31 @@ relevant for.
 
 The Certora Prover internally divides each verification condition into smaller
 subproblems and attempts to solve them separately. This technique is called
-*control flow splitting*. For a more detailed explanation of how control flow
-splitting works, see [this page](control-flow-splitting).
+control flow splitting. For a more detailed explanation, see
+{ref}`control-flow-splitting`.
 
-We list a few option combinations that can help in various settings. There is
-a tradeoff between spending time in different places: The Prover can either try
-to spend much time at a low splitting level in the hope that no further
-splitting will be needed, or it can split quickly in the hope that the
-subproblems will be much easier to solve. The first variant ("lazy splitting")
-is weak when the shallow splits are too hard, and time spent on them is wasted.
-The second variant ("eager splitting") is weak when we end up with too many
-subproblems; the number of splits is worst-case exponential in the splitting
-depth.
+We list a few option combinations that can help in various settings. There is a
+tradeoff between spending time in different places: The Prover can either try to
+spend much time at a low splitting level in the hope that no further splitting
+will be needed, or it can split quickly in the hope that the subproblems will be
+much easier to solve. 
+
+% Two important flags controlling this behavior are
+% {ref}`-smt_initialSplitDepth` and {ref}`-mediumTimeout`. The first variant
+% ("lazy splitting", e.g., `-smt_initialSplitDepth` at its default of 0, and
+% `-mediumTimeout` at 30 seconds.) is weak when the shallow splits are too hard,
+% and time spent on them is wasted. The second variant ("eager splitting", e.g.
+% `-smt_initialSplitDepth` of 5 and `-mediumTimeout` at its default) is weak when
+% we end up with too many subproblems; note that the number of splits is
+% worst-case exponential in the splitting depth.
+
+The options on control flow splitting are described in more detail in the
+[corresponding section of the CLI
+documentation](control-flow-splitting-options). In the following, we list some
+brief examples how they can be used to avoid timeouts in certain scenarios.
 
 When the relevant source code is very large, the shallow splits have a chance of
-being too large for the solvers, thus eager splitting might help.
+being too large for the solvers, thus eager splitting might help:
 
 ```sh
 certoraRun ... --prover_args '-smt_initialSplitDepth 5 -depth 15'
@@ -176,82 +266,61 @@ It can also help to have splitting run in parallel (the splits are solved
 sequentially by default).
 
 ```sh
-certoraRun --prover_args '-splitParallel true'
+certoraRun ... --prover_args '-splitParallel true'
+```
+
+If the expectation is that the rule is violated (or not violated in case of a
+`satisfy`-style rule), the {ref}`-dontStopAtFirstSplitTimeout` option can prove
+useful.
+
+```sh
+certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediumTimeout 5' --smt_timeout 10
 ```
 
 ### Dealing with nonlinear arithmetic
 
-Nonlinear integer arithmetic is in general the hardest part of the formula's
-that Certora Prover is solving (being undecidable in general).
+Nonlinear integer arithmetic is often the hardest part of the formulas that
+Certora Prover is solving.
 
-#### Running with Yices
+Sometimes it helps to choose a selection and prioritization of solvers that
+is different from the default.
 
-A different choice of solver sometimes helps. The *Yices* SMT solver ([home
-page](https://yices.csl.sri.com/)) is not used by default since it is not
-compatible with our default hashing scheme. 
+For instance, we can prioritize the usage of the [Yices SMT
+solver](https://yices.csl.sri.com/) by decreasing the size of the solver
+portfolio. With the `-solvers` option set as follows, the Certora Prover will
+run only CVC5 and Yices. Furthermore, we can make the Certora Prover use the
+ordering given in the `-solvers` option for prioritizing solvers using the
+`-smt_overrideSolvers` option.
 
-The following setting sets a hashing scheme that is compatible with Yices. Since
-Yices is in the default portfolio, it is included automatically then.
+% TODO reference options, once they have been documented
+% also, make this subsection a bit more concrete perhaps? not sure how, yet
 
+```sh
+certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
 ```
---prover_args "-smt_hashingScheme plainInjectivity"
-```
-
-Optionally, we can further prioritize the usage of Yices by decreasing the size
-of the solver portfolio. With the `-solvers` option set as follows, the Certora
-Prover will run only CVC5 and Yices. Furthermore, we can make the Certora Prover
-use the ordering given in the `-solvers` option for prioritizing solvers using
-the `-smt_overrideSolvers` option.
-
-```
---prover_args "-solvers [yices, cvc5] -smt_overrideSolvers true"
-```
-
 
 (modular-verification)=
 ## Modular verification
 
-Often it is useful to break a complex problem into simpler subproblems; this process is called modularization.
-You can modularize a verification problem by first proving a property about a complex piece of code (such as a library or a method) and then using that property to summarize the complex code.  In the following we elaborate on modularization techniques that can help with timeout prevention.
-
-
-### "Sanity" rules
-
-For isolating the timeout reason, it can be useful to verify the code with
-respect to a trivial specification. This, to some extent, rules out the
-specification as the source of complexity.
-
-Sanity rules are such trivial specifications. For documentation on them, see
-{ref}`sanity <built-in-sanity>` and {ref}`deep sanity <built-in-deep-sanity>`. 
+Often it is useful to break a complex problem into simpler subproblems; this
+process is called modularization. You can modularize a verification problem by
+first proving a property about a complex piece of code (such as a library or a
+method) and then using that property to summarize the complex code.  In the
+following we elaborate on modularization techniques that can help with timeout
+prevention.
 
 
 (library_timeouts)=
 ### Library-based systems
 
-Some systems are based on multiple library contracts which
-implement the business logic. They also forward storage updates to a single
-external contract holding the storage.
+As mentioned here [before](timeout-causes-library-contracts), systems with
+libraries are a natural candidate for modularization.
 
-In these systems, it is sensible to verify each library independently.
-
-If you encounter timeouts when trying to verify the main entry point contract to
-the system, check the impact of the libraries on the verification by summarizing
-all external library (delegate) calls as `NONDET`, using the option
-`summarizeExtLibraryCallsAsNonDetPreLinking` as follows:
-
-```
-certoraRun ... --prover_args '-summarizeExtLibraryCallsAsNonDetPreLinking true'
-```
-
-```{note}
-This option is only applied for `delegatecall`s and _external_ library calls.
-Internal calls are automatically inlined by the Solidity compiler and are 
-subject to summarizations specified in the spec file's `methods` block.
-```
-
-Alternatively, you can summarize all the methods of
-a single library using a {ref}`catch-all summary <catch-all-entries>`.  For example,
-to use a `NONDET` summary for all functions of `MyBigLibrary`, you could add the following:
+Alternatively to using the '-summarizeExtLibraryCallsAsNonDetPreLinking true'
+option mentioned before, one can summarize all the methods of a single library
+using a {ref}`catch-all summary <catch-all-entries>`.  For example, to use a
+`NONDET` summary for all functions of `MyBigLibrary`, one could add the
+following:
 
 ```
 methods {
@@ -261,16 +330,20 @@ methods {
 ```
 
 The above snippet has the effect of summarizing as `NONDET` all external calls
-to the library and _internal_ ones as well. All summary types except ghost
-summaries can be applied. 
-For more information on method summaries, see [this page](method-summarization).
+to the library and _internal_ ones as well. Only `NONDET` and `HAVOC` summaries
+can be applied. 
+For more information on method summaries, see {ref}`summaries`.
 
 ## Simplifying the source code 
 % aka  Munging / Verifiable-Code-Antipatterns
 
-Simplifying the source code of the program under verification can be a valuable last resort for obtaining useful verification results.
-In the following, we describe some code patterns that have proven to be very difficult for the Prover and thus are good targets for code simplification.
-Note that the occurrence of these patterns is not always a problem, so they should be looked at in conjunction with the difficulty statistics and generally a holistic view of the program under verification.
+Simplifying the source code of the program under verification can be a valuable
+last resort for obtaining useful verification results. In the following, we
+describe some code patterns that have proven to be very difficult for the Prover
+and thus are good targets for code simplification. Note that the occurrence of
+these patterns is not always a problem, so they should be looked at in
+conjunction with the difficulty statistics and generally a holistic view of the
+program under verification.
 
 ### Passing complex structs
 
@@ -303,30 +376,25 @@ function foo(MyStruct x) public {
 }
 ```
 
+In this case, it can help to identify fields of the struct that are not relevant
+for the property of the program that is currently being reasoned about and
+comment out those fields. In our experience these fields exist relatively often
+especially in large structs. Naturally, the removal might be complicated by the
+fact that all usages of these fields also need some munging steps applied to
+them.
+
 ### Memory and storage in inline assembly
 
-% Shows through storage/memory analysis failures ("Global Problems" pane).
+The Certora Prover employs [static analyses and
+simplifications](storage-and-memory-analysis) in order to make the reasoning
+about Storage and Memory easier for the SMT solvers. These static analyses are
+sometimes thrown off by unusual code patterns (most often produced when using
+inline assembly), which can make the SMT formulas too hard to solve. 
 
-% Q: could we have "background" boxes or so -- indicating information that helps with a deeper understanding, but does only indirectly relate to using the tool -- just some place for rambling :-) 
-
-```{note}
-Background: The Certora Prover works on EVM bytecode as its input. To the
-bytecode, the address space of both Storage and Memory are flat number lines.
-That two contract fields `x` and `y` don't share the same memory is an
-arithmetic property. With more complex data structures like mappings, arrays,
-and structs, this means that every "non-aliasing" argument requires reasoning
-about multiplications, additions, and hash functions. Certora Prover models this
-reasoning correctly, but this naive low-level modeling can quickly overwhelm SMT
-solvers. In order to handle storage efficiently, Certora Prover analyses Storage
-(Memory) accesses in EVM code in order to understand the Storage (Memory)
-layout, thus making information like "an update to mapping `x` will never
-overwrite the scalar variable `y`" much more obvious to the SMT solvers. For
-scaling SMT solving to larger programs, these simplifications are essential.
-```
-
-For the storage case, CVT reports these problems as Storage Analysis Failures.
-So when there is a timeout, it can help to eliminate these failures by
-summarizing the code that led to them (which will usually contain inline
-assembly with `sload` and `sstore` commands). `mstore` and `mload` commands in
-inline assembly may pose similar difficulties.
+CVT reports these failures of Storage or Memory analysis in the Global Problems
+pane of the reports, along with pointers to the offending source code positions
+ (typically inline assembly containing `sstore`/`sload`/`mstore`/`mload`
+ operations). To resolve such failures, the relevant code parts need to be
+summarized or munged. (Naturally, the Certora developers are working make such
+failures less frequent as well.)
 

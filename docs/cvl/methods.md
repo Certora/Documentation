@@ -1,3 +1,4 @@
+(methods-block)=
 The Methods Block
 =================
 

@@ -30,6 +30,7 @@ boolean
 booleans
 bootcamp
 boundedness
+branchings
 bugfix
 bytecode
 bytecodes
@@ -76,6 +77,8 @@ instantiation
 invariant
 invariants
 iterable
+iterative
+iteratively
 Keccak
 lifecycle
 logics
