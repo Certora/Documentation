@@ -17,9 +17,10 @@ control flow graph
   command of the target node. For instance, an `if`-statement in the program
   will lead to a branching, i.e., a node with two outgoing edges, in the 
   control flow graph.
+  A CVL rule can be seen as a program with some extra "assert" commands, thus 
+  a rule has a CFG like regular programs.
   Certora Prover's [TAC reports](tac-reports) contain a control flow graph of 
-  the TAC intermediate representation of each given CVL rule (a CVL rule can 
-  be seen as a program with some extra "assert" commands).
+  the {term}`TAC` intermediate representation of each given CVL rule.
   % TODO: ok to mention TAC here?
 
 environment
@@ -42,6 +43,11 @@ hyperproperty
   like "two small deposits will have the same effect as one large deposit" is a
   hyperproperty.  See {ref}`storage-type` for more details.
 
+invariant
+  An invariant (or representation invariant) is a property of the contract
+  state that is expected to hold between invocations of contract methods.  See
+  {ref}`invariants`.
+
 model
 example
 counterexample
@@ -55,7 +61,7 @@ nonlinear arithmetic
   subtractions, and multiplications by constant. Division and modulo where the
   second parameter is a constant are also linear arithmetic.
   Examples for linear expressions are `x * 3`, `x / 3`, `5 * (x + 3 * y)`.
-  Every arithmetic expression that is not linear arithmetic nonlinear.
+  Every arithmetic expression that is not linear is nonlinear.
   Examples for nonlinear expressions are `x * y`, `x * (1 + y)`, `x * x`, 
   `3 / x`, `3 ^ x`.
 
@@ -99,6 +105,21 @@ scene
   The *scene* refers to the set of contract instances that the Prover knows
   about.
 
+SMT
+SMT solver
+  "SMT" is short for "Satisfiability Modulo Theory". An SMT solver takes as 
+  input a formula in predicate logic and returns whether the formula is 
+  satisfiable (short "SAT") or unsatisfiable (short: "UNSAT"). The "Modulo 
+  Theory" part means that the solver assumes a meaning for certain symbols in 
+  the formula. For instance the theory of integer arithmetic stipulates that the 
+  symbols `+`, `-, `*`, etc. have their regular everyday mathematical 
+  meaning.
+  When the formula is satisfiable, the SMT solver can also return a model for 
+  the formula. I.e. an assignment of the formula's variables that makes the 
+  formula evaluate to "true". For instance, on the formula "x > 5 /\ x = y * y", 
+  a solver will return SAT, and produce any valuation where x is a (integral)
+  square number and larger than 5, and y is the root of x.
+
 sound
 unsound
   Soundness means that any rule violations in the code being verified are
@@ -115,6 +136,16 @@ summarize
   analyze without timing out.  See {doc}`/docs/cvl/methods` for
   complete information on different types of method summaries.
 
+TAC
+  TAC (originally short for "three address code") is an intermediate 
+  representation used by the Certora Prover. TAC code is kept invisible to the 
+  user most of the time, so it's details are not in the scope of this 
+  documentation. We provide an working understanding, which is helpful for some 
+  advanced proving tasks, in the {ref}`tac-reports` section.
+
+tautology
+  A tautology is a logical statement that is always true.
+
 vacuous
 vacuity
   A logical statement is *vacuous* if it is technically true but only because
@@ -127,8 +158,6 @@ vacuity
   doesn't say anything about the program being verified.
   The {doc}`../prover/checking/sanity` help detect vacuous rules.
 
-tautology
-  A tautology is a logical statement that is always true.
 
 wildcard
 exact

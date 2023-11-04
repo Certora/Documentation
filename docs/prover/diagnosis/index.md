@@ -1,9 +1,11 @@
-Diagnostic Tools in the Certora Prover
-======================================
+Diagnostic Tools
+================
 
 
 (tac-reports)=
-# TAC Reports
+## TAC Reports
+
+% TODO  write this -- https://certora.atlassian.net/browse/DOC-355
 
 % ## Timeout TAC Reports
 % 
@@ -14,8 +16,5 @@ Diagnostic Tools in the Certora Prover
 % ### TAC Source Code Box
 
 
-```{todo}
-This section still needs to be written.
 There is a brief explanation of how to use TAC reports in the 
 [webinar on timeouts](https://www.youtube.com/watch?v=mntP0_EN-ZQ).
-```
