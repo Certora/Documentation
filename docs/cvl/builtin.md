@@ -195,11 +195,11 @@ in a spec file.  Any functions that have read-only reentrancy will fail the
 Reentrancy vulnerabilities can arise when a contract makes an external call with an inconsistent internal 
 state. This behavior allows the receiver contract to make reentrant calls that exploit the inconsistency.
 
-The `viewReentrancy` rule ensures that whenever method `f` of contract `C` makes an external call, 
-the internal state of `C` is equivalent to either (1) the state of `C` at the beginning of the calling function,
-or (2) the state of `C` at the end of the calling function (by "equivalent", 
+The `viewReentrancy` rule ensures that whenever a method `f` of {ref}`currentContract <currentContract>` makes an external call, 
+the internal state of `currentContract` is equivalent to either (1) the state of `currentContract` at the beginning of the calling function,
+or (2) the state of `currentContract` at the end of the calling function (by "equivalent", 
 we mean that all view functions return the same values). 
-This ensures that the external call cannot observe `C` in any state that it couldn't have without being 
-called from `C`. 
+This ensures that the external call cannot observe `currentContract` in any state that it couldn't have without being 
+called from `currentContract`. 
 
 
