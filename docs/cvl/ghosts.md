@@ -31,12 +31,11 @@ the `expression` syntax.
 (ghost-variables)=
 Declaring ghost variables
 -------------------------
-
 Ghost variables must be declared at the top level of a specification file.
 A ghost variable declaration includes the keyword `ghost` followed by the type and name
 of the ghost variable.
 
-The type of a ghost may be either a [CVL type](types.md) or a `mapping` type.
+The type of a ghost variable may be either a [CVL type](types.md) or a `mapping` type.
 Mapping types are similar to solidity mapping types.  They must have CVL types
 as keys, but may contain either CVL types or mapping types as values.
 
@@ -55,6 +54,10 @@ ghost (uint, uint) x;                              // tuples are not CVL types
 ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
 
+- [simple `ghost` variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
+
+- [`ghost mapping` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
+
 (ghost-functions)=
 Ghost Functions
 ---------------
@@ -66,10 +69,7 @@ Ghost functions should be used either:
 - when there are no updates to the ghost as the deterministic behavior and axioms are the only properties of the ghost
 - when updating the ghost - more than one entry is updated and then the havoc assuming statement is used.
 
-  - [simple variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
-
-  - [`ghost mapping` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
-
+  
   - [`ghost` function example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24)
 
 Restrictions on ghost definitions
@@ -77,11 +77,10 @@ Restrictions on ghost definitions
 - A ghost axiom cannot refer to `Solidity` or `CVL` functions or to other ghosts. It can refer to the ghost itself.
 - Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
  `forall` can be used in order to refer the storage referred to by the parameters. [Example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec#L12).
-- A  a 'user-defined type, such as struct, array or interface is not allowed as the key or the output type of a ghost mapping.
+- A user-defined type, such as struct, array or interface is not allowed as the key or the output type of a `ghost mapping`.
 
 Using ghost variables
 ---------------------
-
 While verifying a rule or invariant, the Prover considers every possible
 initial value of a ghost variable (subject to its {ref}`ghost-axioms`,
 see below).

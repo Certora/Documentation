@@ -97,10 +97,25 @@ Examples
 --------
 
 ```cvl
-rule checkCalleeSummary() {
-    env e;
-    assert (summarizedExternal() == 16, "Summarization of internal function does not take effect.");
+rule withdraw_succeeds {
+   env e; // env represents the bytecode environment passed on every call
+   // invoke function withdraw and assume that it does not revert
+   bool success = withdraw(e);  // e is passed as an additional argument
+   assert success, "withdraw must succeed"; // verify that withdraw succeeded
 }
+
+rule totalFundsAfterDeposit(uint256 amount) {
+	env e; 
+	
+	deposit(e, amount);
+	
+	uint256 userFundsAfter = getFunds(e, e.msg.sender);
+	uint256 totalAfter = getTotalFunds(e);
+	
+	// Verify that the total funds of the system is at least the current funds of the msg.sender.
+	assert totalAfter >= userFundsAfter;
+}
+
 ```
 - [`assert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L75)
 
@@ -149,9 +164,7 @@ state has an execution that satisfies the condition.
 
 - [`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
-```
-
-{note}
+```{note}
 `requireInvariant` is always safe for invariants that have been proved, even in
 `preserved` blocks; see {ref}`invariant-induction` for a detailed explanation.
 ```
