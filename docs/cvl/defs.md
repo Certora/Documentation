@@ -35,7 +35,7 @@ rule parametricRuleInBase(method f) filtered { f -> f.selector == sig:someUInt()
 Syntax
 ------
 
-The syntax for definitions is given by the following [EBNF grammar](syntax):
+The syntax for definitions is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 definition ::= [ "override" ]

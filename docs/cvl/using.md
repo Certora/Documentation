@@ -13,7 +13,7 @@ Examples
 Syntax
 ------
 
-The syntax for `using` statements is given by the following [EBNF grammar](syntax):
+The syntax for `using` statements is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 using ::= "using" id "as" id

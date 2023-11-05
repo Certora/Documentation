@@ -37,7 +37,7 @@ Syntax
 The syntax for methods block entries {doc}`changed in CVL 2 <cvl2/changes>`.
 ```
 
-The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
+The syntax for the `methods` block is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 methods          ::= "methods" "{" { method_spec } "}"

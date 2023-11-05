@@ -4,13 +4,13 @@ Ghosts
 
 Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to 
-- communicate information between {ref}`rules` and {ref}`hooks`.
+- communicate information between {ref}`rules-main` and {ref}`hooks`.
 - define deterministic [function summaries](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/with-env/WithEnvGhostSummary/WithEnv.spec#L10).
 
 ```{contents}
 ```
 
-The syntax for ghost declarations is given by the following [EBNF grammar](syntax):
+The syntax for ghost declarations is given by the following [EBNF grammar](ebnf-syntax):
 
 Syntax
 ------

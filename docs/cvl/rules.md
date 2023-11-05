@@ -1,4 +1,4 @@
-(rules)=
+(rules-main)=
 Rules
 =====
 
@@ -19,7 +19,7 @@ these features.
 Syntax
 ------
 
-The syntax for rules is given by the following [EBNF grammar](syntax):
+The syntax for rules is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 rule ::= [ "rule" ]

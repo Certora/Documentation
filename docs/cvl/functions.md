@@ -8,7 +8,7 @@ or basic calculations. Additionally they can be used for basic calculations and 
 Syntax
 ------
 
-The syntax for CVL functions is given by the following [EBNF grammar](syntax):
+The syntax for CVL functions is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 function ::= [ "override" ]

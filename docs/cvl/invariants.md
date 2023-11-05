@@ -18,7 +18,7 @@ for details.
 Syntax
 ------
 
-The syntax for invariants is given by the following [EBNF grammar](syntax):
+The syntax for invariants is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 invariant ::= "invariant" id

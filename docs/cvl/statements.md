@@ -15,7 +15,7 @@ CVL commands.
 Syntax
 ------
 
-The syntax for statements in CVL is given by the following [EBNF grammar](syntax):
+The syntax for statements in CVL is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 block ::= statement { statement }

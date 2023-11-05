@@ -22,7 +22,7 @@ Examples
 Syntax
 ------
 
-The syntax for `import` and `use` statements is given by the following [EBNF grammar](syntax):
+The syntax for `import` and `use` statements is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 import ::= "import" string
