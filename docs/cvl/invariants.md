@@ -132,10 +132,8 @@ For this reason, invariants that depend on the environment or on the state of
 external contracts are a potential source of {term}`unsoundness <unsound>`, and should be
 used with care.
 
-```{todo}
 There is an additional source of unsoundness that occurs if the invariant
 expression reverts in the before state but not in the after state.
-```
 
 (preserved)=
 Preserved blocks
