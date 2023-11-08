@@ -7,7 +7,7 @@ sometimes be helpful when the prover does not behave as expected, for instance
 in case of a prover timeout.
 
 (control-flow-splitting)=
-# Control Flow Splitting
+# Control flow splitting
 
 
 ```{note}
@@ -46,7 +46,8 @@ Illustration of a single splitting step
 There is an internal heuristic deciding which branching nodes to pick for each
 single splitting step.
 
-Certora prover applies these single splitting steps recursively as follows:
+The following pseudo-code illustrates how Certora prover applies the single splitting 
+in a recursive fashion.
 
 ```{code-block}
 :name: recursive splitting algorithm
@@ -74,27 +75,34 @@ while (worklist != [])
 return UNSAT
 ```
 
-Intuitively, the the algorithm explores the tree of all possible recursive
+Intuitively, the algorithm explores the tree of all possible recursive
 splittings along a fixed sequence of split points up to the maximum splitting
-depth. We call the splits at maximum splitting depth split leafs.
+depth. We call the splits at maximum splitting depth *split leafs*. The
+exploration stops in either of the following three cases:
+ - if one split was found that is SAT (reasoning: if one split is SAT, then the
+  original program must be SAT, since the behavior of the split is replayable in
+  the original program)
+ - if all splits have been shown to be unsat
+ - if solving on a split leaf has timed out (except if 
+   {ref}`-dontStopAtFirstSplitTimeout` has been set)
 
-The main settings with which the user can influence these process are the
+The settings with which the user can influence these process are the
 following (each links to a more detailed description of the option):
 
- - [Maximum split depth](-depth) controls the maximum recursion depth
- - [Smt timeout](--smt_timeout) controls the timeout that is applied at maximum
-   recursion depth; if this is exceeded, the prover will give up with a TIMEOUT 
+ - [Maximum split depth](-depth) controls the maximum splitting depth.
+ - [Medium timeout](-mediumTimeout) controls the timeout that is applied when
+   checking splits that are not split leafs, i.e., that are not at the maximum
+   depth. 
+ - [Smt timeout](--smt_timeout) controls the timeout that is used to solve split 
+   leafs; if this is exceeded, the prover will give up with a TIMEOUT 
    result, unless [the corresponding setting](-dontStopAtFirstSplitTimeout) says 
    to go on.
- - [Medium timeout](-mediumTimeout) controls the timeout that is applied when
-   checking splits that are not at the maximal recursion depth. 
- - Setting the [initial splitting depth](-smt_initialSplitDepth) to a level 
+ - Setting the [initial splitting depth](-smt_initialSplitDepth) to a value 
    above 0 will make the prover skip the checking and immediately enumerate all 
    splits up to that depth.
 
-
 (storage-and-memory-analysis)=
-# Storage and Memory Analysis
+# Storage and Memory analysis
 
 The Certora Prover works on EVM bytecode as its input. To the bytecode, the
 address space of both Storage and Memory are flat number lines. That two
