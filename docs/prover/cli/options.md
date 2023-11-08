@@ -787,7 +787,7 @@ Sets the maximum splitting depth.
 
 When the deepest splits are too heavy to solve, but not too high in number,
 increasing this will lead to smaller, but more split leafs that run at the full
-SMT timeout. Conversely, if runtime is too high because there are too many
+SMT timeout. Conversely, if run time is too high because there are too many
 splits, decreasing this number means that more time is spent on fewer, but
 bigger split leafs.
 
@@ -801,18 +801,18 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ### `--prover_args '-mediumTimeout <seconds>'`
 
 The "medium timeout" determines how much time is given to checking a split at
-not max-depth before we split again.
+is not a split leaf. 
 
 **What does it do?**
 
-Sets the time that non-leaf splits get before being split again.
+Sets the time that non-leaf splits get before being split again. 
 
 **When to use it?** 
 
 When a little more time can close some splitting subtrees early, this can save a
 lot of time, since the subtree's size is exponential in the remaining depth. On
 the other hand, if something will be split further anyway, this can save the
-runtime spent on intermediate "TIMEOUT" results. Use
+run time spent on intermediate "TIMEOUT" results. Use
 {ref}`-smt_initialSplitDepth` to eliminate that time investment altogether up to
 a given depth.
 
@@ -847,32 +847,37 @@ is enough that one split is UNSAT.
 
 **When to use it?** 
 
+When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
+
 **Example**
 
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
 ```
 
-
-
-
 (-smt_initialSplitDepth)=
 ### `--prover_args '-smt_initialSplitDepth <number>'`
 
-The splitting can be configured to skip the checks at low splitting levels, thus
-generating sub-splits up to a given depth immediately. Note that the number of
-splits generated here is equal to `2^n` where `n` is the initial splitting depth
-(unless the program has less than `n` branchings, which will be rare in
-practice).
-
+With this option, the splitting can be configured to skip the checks at low
+splitting levels, thus generating sub-splits up to a given depth immediately.
 
 **What does it do?**
 
+The first `<number>` split levels are not checked with the SMT solver, but rather 
+split immediately.
+
 **When to use it?** 
+
+When there is a lot of overhead induced by processing and trying to solve splits
+that are too hard, and thus run into a timeout anyway. Note that the number of
+splits generated here is equal to `2^n` where `n` is the initial splitting depth
+(assuming the program has enough branching points, which is usually the case);
+thus, low numbers are advisable. For instance setting this to 5 means that the
+prover will immediately produce 32 splits.
 
 **Example**
 
 ```sh
-certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-smt_initialSplitDepth 3'
 ```
 

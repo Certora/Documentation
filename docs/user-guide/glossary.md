@@ -30,6 +30,18 @@ environment
   the contract state or the state of other contracts --- these are referred to
   as the {ref}`storage <storage-type>`.
 
+EVM
+Ethereum Virtual Machine
+EVM bytecode
+  EVM is short for Ethereum Virtual Machine.
+  EVM bytecode is one of the source languages that the Certora Prover internally
+  can take as input for verification. It is produced by the Solidity and Vyper 
+  compilers, among others.
+  For details on what the EVM is and how it works, the following links provide
+  good entry points.
+  [https://ethereum.org/en/developers/docs/evm/](https://ethereum.org/en/developers/docs/evm/)
+  [https://en.wikipedia.org/wiki/Ethereum#Virtual_machine](https://en.wikipedia.org/wiki/Ethereum#Virtual_machine)
+
 havoc
   In some cases, the Prover should assume that some variables can change in an
   unknown way.  For example, an external function on an unknown contract may
@@ -52,8 +64,13 @@ model
 example
 counterexample
   The terms "model", "example", and "counterexample" are used interchangeably.
-  They all refer to an assignment of values to all of the CVL variables and
-  contract storage.  See {ref}`rule-overview`.
+  In the context of a CVL rule, they refer to an assignment of values to all of 
+  the CVL variables and contract storage that either violates an `assert` statement 
+  or fulfills a `satisfy` statement. See {ref}`rule-overview`.
+  In the context of {term}`SMT solver`s, a model is a valuation of the logical 
+  constants and uninterpreted functions in the input formula that makes the formula
+  evaluate to `true`.
+
 
 linear arithmetic
 nonlinear arithmetic
@@ -101,6 +118,13 @@ sanity
   This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
   ```
 
+SAT result
+UNSAT result
+  *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a 
+  successful run (i.e. not a timeout). SAT means that the input formula is 
+  satisfiable and a {term}`model` has been found. UNSAT means the the input 
+  formula is unsatisfiable and there is not model for it.
+
 scene
   The *scene* refers to the set of contract instances that the Prover knows
   about.
@@ -145,6 +169,9 @@ TAC
 
 tautology
   A tautology is a logical statement that is always true.
+
+UNSAT result
+  See {term}`SAT result`.
 
 vacuous
 vacuity
