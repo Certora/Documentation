@@ -107,6 +107,7 @@ precompiled
 preprocess
 preprocessing
 prestate
+prover
 reachability
 reentrancy
 reentrant
