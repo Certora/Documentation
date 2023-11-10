@@ -2,8 +2,9 @@ Certora CLI 5.0 Changes
 =======================
 
 The release of `certora-cli` version 5.0 introduces a few small breaking
-changes for CVL.  These changes improve the This document explains those
-changes and how to work with them.
+changes for CVL.  These changes improve the coverage for parametric rules and
+invariants, and simplify some rarely-used features.  This document explains
+those changes and how to work with them.
 
 ```{note}
 `certora-cli` 5.0 also includes several new features, bug fixes, and
@@ -106,14 +107,14 @@ invariant solvency()
 
 There is nothing new about this process of identifying violations and adding
 new invariants as necessary; it is the same process you would use for analyzing
-any vulnerability.  This example just shows that some work may be required when
+any violation.  This example just shows that some work may be required when
 verifying old specifications with `certora-cli` 5.0.
 
 The benefit is that by checking methods on secondary contracts, the Prover
-forced us to consider a previously unstated assumption about the contract and
-write an invariant that could detect important security vulnerabilities.  For
+forces us to consider a previously unstated assumptions about the contract and
+write invariants that could detect important security vulnerabilities.  For
 this reason, you are encouraged to identify and prove additional invariants
-to solve counterexamples instead of using the filtering techniques described
+to address counterexamples instead of using the filtering techniques described
 in the following sections.
 
 ### Filtering properties that should not be checked
@@ -143,8 +144,9 @@ methods to a specific contract.
 The first and simplest way to restrict verification to a specific contract is
 to call the `method` object with a specific receiver contract:
 
-```cvl
+```{code-block} cvl
 :emphasize-lines: 6
+
 rule authorization_check(method f)
 filtered { f -> f.isView }
 {
@@ -162,8 +164,9 @@ variable introduced by a `using` clause.
 
 The second and more flexible way is to use the new `contract` property of the
 `method` variable:
-```cvl
-:emphasize-lines:2
+```{code-block} cvl
+:emphasize-lines: 2
+
 rule authorization_check(method f)
 filtered { f -> f.isView && f.contract == currentContract }
 {
@@ -196,7 +199,7 @@ Method variable restrictions
 Starting with `certora-cli` version 5.0, you cannot declare new {ref}`method
 variables <method-type>` anywhere except the top-level body of a rule.
 Declaring new `method` variables inside of `if` statements, hook bodies, CVL
-function bodies, and preserved blocks are all disallowed.
+function bodies, preserved blocks, and all other contexts are all disallowed.
 
 You can still pass `method`-type variables as arguments to CVL functions and
 definitions.  You can use this feature to rewrite CVL functions that formerly
