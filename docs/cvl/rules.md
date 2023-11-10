@@ -95,6 +95,8 @@ always satisfy the rule.
 You can request that the Prover only run with specific methods using the
 {ref}`--method` and {ref}`--contract` command line arguments.  The set of
 methods can also be restricted using {ref}`rule filters <rule-filters>`.
+The Prover will automatically skip any methods that have
+{ref}`` `DELETE` summaries <delete-summary>``.
 
 If you wish to only invoke methods on a certain contract, you can call the
 `method` variable with an explicit receiver contract.  The receiver must be a
