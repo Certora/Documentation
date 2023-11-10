@@ -101,9 +101,11 @@ file to mutate.
 
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol
-
-Generated 34 mutants in 0.69 seconds
 ```
+<!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
+<pre>
+Generated 34 mutants in 0.69 seconds
+</pre>
 
 ```{note}
 The mutated file must be located within your current working directory or
@@ -119,9 +121,10 @@ provides a way to randomly downsample the number of mutants with the
 
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 3
-
-Generated 3 mutants in 0.15 seconds
 ```
+<pre>
+Generated 3 mutants in 0.15 seconds
+</pre>
 
 ### Example 3: Viewing Gambit results
 ```{note}
@@ -132,7 +135,9 @@ Gambit outputs all of its results in `gambit_out`:
 
 ```bash
 tree -L 2 gambit_out
-
+```
+<!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
+<pre>
 gambit_out
 ├── gambit_results.json
 ├── input_json
@@ -143,7 +148,7 @@ gambit_out
 │   ├── 2
 │   └── 3
 └── mutants.log
-```
+</pre>
 
 See the {ref}`results-directory` section for a detailed
 explanation of this layout. The `gambit summary` command
@@ -237,11 +242,12 @@ Here are some examples of using the `--sourceroot` option.
    ```
 
    This should output the following:
-   ```
+   <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
+   <pre>
    Generated 1 mutants in 0.13 seconds
    1,BinaryOpMutation,benchmarks/BinaryOpMutation/BinaryOpMutation.sol,23:10, % ,*
    gambit_out/mutants/1/benchmarks/BinaryOpMutation/BinaryOpMutation.sol
-   ```
+   </pre>
 
    The first command generates a single mutant, and its source path is relative to `.`,
    the default source root. We can see that the reported paths in `mutants.log`,
@@ -259,11 +265,12 @@ Here are some examples of using the `--sourceroot` option.
 
    which will output:
 
-   ```
+   <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
+   <pre>
    Generated 1 mutants in 0.13 seconds
    1,BinaryOpMutation,BinaryOpMutation.sol,23:10, % ,*
    gambit_out/mutants/1/BinaryOpMutation.sol
-   ```
+   </pre>
 
    The reported filenames, and the offset path inside of
    `gambit_out/mutants/1/`, are now relative to the source root that we
@@ -277,9 +284,10 @@ Here are some examples of using the `--sourceroot` option.
    This will try to find the specified file inside of `scripts`, and since it
    doesn't exist Gambit reports the error:
 
-   ```
+   <!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
+   <pre>
    [ERROR gambit] [!!] Illegal Configuration: Resolved filename `/Users/USER/Gambit/benchmarks/BinaryOpMutation/BinaryOpMutation.sol` is not prefixed by the derived source root /Users/USER/Gambit/scripts
-   ```
+   </pre>
 
    Gambit prints an error and exits.
 
@@ -384,7 +392,9 @@ to the `benchmarks/` directory the `"filename"` would need to be updated to
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 5
 tree gambit_out -L 2
-
+```
+<!-- Code output: using `pre` to avoid the Copy To Clipboard feature -->
+<pre>
 Generated 5 mutants in 0.15 seconds
 
 gambit_out
@@ -398,7 +408,7 @@ gambit_out
 │   └── 5
 └── mutants.log
 
-```
+</pre>
 
 This has the following structure:
 + `gambit_results.json`: a JSON file with detailed results
