@@ -114,7 +114,7 @@ forced us to consider a previously unstated assumption about the contract and
 write an invariant that could detect important security vulnerabilities.  For
 this reason, you are encouraged to identify and prove additional invariants
 to solve counterexamples instead of using the filtering techniques described
-below.
+in the following sections.
 
 ### Filtering properties that should not be checked
 
@@ -178,11 +178,17 @@ filtered { f -> f.isView && f.contract == currentContract }
 If `f` is a `method` variable, `f.contract` refers to the contract that contains
 the method `f`.
 
-### Skipping verification to avoid timeouts
+(v5-contract-option)=
+### Focusing on specific contracts
 
-```{todo}
-Finish
-```
+If you want to focus verification on a specific contract, you can do so using
+the {ref}`--contract` option.  This option takes a list of contracts and only
+instantiates parametric rules and invariants on methods of those contracts.
+
+You can use this option to help transition specs to `certora-cli` 5.0; if `C`
+is the main contract being verified, then passing `--contract C` will cause
+method variables to be instantiated in the same way the would have in older
+versions.
 
 Method variable restrictions
 ----------------------------
@@ -228,6 +234,10 @@ rule r {
 
 New `DELETE` summary syntax
 ---------------------------
+
+```{todo}
+merge in DELETE summary docs and link to them
+```
 
 The syntax of the new `DELETE` keyword in summaries has changed.  Prior to
 `certora-cli` 5.0, it was possible to call methods summarized with `DELETE`
