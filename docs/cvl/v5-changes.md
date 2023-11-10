@@ -238,14 +238,10 @@ rule r {
 New `DELETE` summary syntax
 ---------------------------
 
-```{todo}
-merge in DELETE summary docs and link to them
-```
-
-The syntax of the new `DELETE` keyword in summaries has changed.  Prior to
-`certora-cli` 5.0, it was possible to call methods summarized with `DELETE`
-summaries from spec, and the user had to annotate the `DELETE` modifier to
-indicate how those calls should be treated.
+The syntax of the {ref}``new `DELETE` keyword <delete-summary>`` in summaries
+has changed.  Prior to `certora-cli` 5.0, it was possible to call methods
+summarized with `DELETE` summaries from spec, and the user had to annotate the
+`DELETE` modifier to indicate how those calls should be treated.
 
 Starting with `certora-cli` 5.0, calling methods that have been summarized with
 a `DELETE` summary is disallowed, and the `DELETE` annotation requires no
