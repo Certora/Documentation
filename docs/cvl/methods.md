@@ -349,10 +349,10 @@ be either `ALL`, `UNRESOLVED`, or `DELETE`; the default policy is `ALL` with the
 of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.
 
 A `DELETE` summary is similar to an `ALL` summary, except that the `DELETE`
-summary removes the method from the {term}`scene` entirely.  The method cannot
-be called from CVL, and {term}`parametric rule`s will not be instantiated on the
-deleted method.  This can drastically improve performance if the deleted method
-is complex.
+summary removes the method from the {term}`scene` entirely.  Calling the method
+from CVL will produce a rule violation, and {term}`parametric rule`s will not
+be instantiated on the deleted method.  This can drastically improve
+performance if the deleted method is complex.
 
 The decision to replace a call by an approximation is made as follows:
 
