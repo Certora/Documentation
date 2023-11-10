@@ -1,14 +1,14 @@
-# Coverage Info via Unsat Cores
+# Coverage Info
 
-The `--coverage_info [none|basic|advanced]` flag enables automatic computation of `.sol` and `.spec` files coverage w.r.t. the underlying verification task. In particular, using this flag can help you answer questions such as:
+The {ref}`--coverage_info` flag enables automatic computation of coverage information for a verification run. In particular, using this flag can help you answer questions such as:
 
-* *Are all solidity functions from the input involed in proving my rules?*
-* *Are all solidity commands from the input involed in proving my rules?*
+* *Are all solidity functions from the input involved in proving my rules?*
+* *Are all solidity commands from the input involved in proving my rules?*
 * *Supposing an `assert` in my rule is not reachable, what is the reason for the unreachability?*
 * *Do I really need all hooks that are defined in my .spec file(s)?*
 * *Do I really need all `require` statements in my rule?*
-* *Do I really need to initialise a CVL variable in my rule?*
-* *Do I really need all preserved blocks in my CVL `invariant`?*
+* *Do I really need to initialize a CVL variable in my rule?*
+* *Do I really need all of the preserved blocks in my CVL `invariant`?*
 
 To answer the above questions, the Certora Prover generates a so-called *unsat core* which, intuitively, represents the minimal subset of the commands in the input `.sol` and `.spec` files that are needed to prove the CVL properties. If some of the input `.sol` commands are not needed to derive the proof, it might indicate that the specification does not cover all behavior implemented in the smart contract. If some of the input `.spec` commands are not needed to derive the proof (typically unnecessary `require` statements or variable initializations), it indicates that the CVL rules/invariants can be made stronger. 
 
