@@ -3,8 +3,9 @@ Certora CLI 5.0 Changes
 
 The release of `certora-cli` version 5.0 introduces a few small breaking
 changes for CVL.  These changes improve the coverage for parametric rules and
-invariants, and simplify some rarely-used features.  This document explains
-those changes and how to work with them.
+invariants, remove support for Solidity function calls in quantified expressions,
+and simplify some rarely-used features.  This document explains those changes
+and how to work with them.
 
 ```{note}
 `certora-cli` 5.0 also includes several new features, bug fixes, and
@@ -192,6 +193,50 @@ You can use this option to help transition specs to `certora-cli` 5.0; if `C`
 is the main contract being verified, then passing `--contract C` will cause
 method variables to be instantiated in the same way the would have in older
 versions.
+
+Disallow Solidity function calls in quantified expressions
+----------------------------------------------------------
+
+Starting with `certora-cli` version 5.0, the Prover no longer supports
+making Solidity contract `method` calls in quantified expression bodies by
+default. For example, given the simple contract below, you can no longer
+use the `method` `foo()` in a quantified expression body.
+
+```{code-block} solidity
+contract example {
+   function foo(uint256 i) public pure returns (uint256) {
+       return i;
+   } 
+}
+```
+
+```cvl
+rule for_all() {
+    // Using foo(i) in the quantified body will now cause the prover to
+    // generate an error.
+    require (forall uint256 i . i == foo(i));
+    assert false, "Prover will generate an error before this line";
+}
+```
+
+In the example rule `for_all`, the prover will now generate an error similar
+to the following:
+
+```
+Error in spec file (test2.spec:8:36): Contract function calls such as foo(i)
+are disallowed inside quantified formulas.
+```
+
+Using Solidity `method` calls in the quantified expressions introduced an
+element of instability to quantifier expressions that you can better
+overcome using ghosts, direct storage access, and other access patterns.
+
+
+If you must use Solidity `method` calls in quantified expressions,
+you can still access the old behavior by specifying the
+`--allow_solidity_calls_in_quantifiers` argument to `certoraRun` on the 
+command line.
+
 
 Method variable restrictions
 ----------------------------
