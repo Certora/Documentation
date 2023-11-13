@@ -198,7 +198,7 @@ Disallow Solidity function calls in quantified expressions
 ----------------------------------------------------------
 
 Starting with `certora-cli` version 5.0, the Prover no longer supports
-making Solidity contract `method` calls in quantified expression bodies by
+making Solidity contract method calls in quantified expression bodies by
 default. For example, given the simple contract below, you can no longer
 use the `method` `foo()` in a quantified expression body.
 
@@ -215,7 +215,7 @@ contract example {
 
 rule for_all() {
     // Using foo(i) in the quantified body will now cause the prover to
-    // generate an error.
+    // generate a type-checking error.
     require (forall uint256 i . i == foo(i));
     assert false, "Prover will generate an error before this line";
 }
