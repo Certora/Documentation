@@ -3,7 +3,7 @@ Certora CLI 5.0 Changes
 
 The release of `certora-cli` version 5.0 introduces a few small breaking
 changes for CVL.  These changes improve the coverage for parametric rules and
-invariants, remove support for Solidity function calls in quantified expressions,
+invariants, disallow Solidity function calls in quantified expressions,
 and simplify some rarely-used features.  This document explains those changes
 and how to work with them.
 
@@ -211,6 +211,8 @@ contract example {
 ```
 
 ```cvl
+:emphasize-lines: 4
+
 rule for_all() {
     // Using foo(i) in the quantified body will now cause the prover to
     // generate an error.
@@ -222,7 +224,7 @@ rule for_all() {
 In the example rule `for_all`, the prover will now generate an error similar
 to the following:
 
-```
+```txt
 Error in spec file (test2.spec:8:36): Contract function calls such as foo(i)
 are disallowed inside quantified formulas.
 ```
