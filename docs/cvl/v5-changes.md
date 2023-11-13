@@ -210,7 +210,7 @@ contract example {
 }
 ```
 
-```cvl
+```{code-block} cvl
 :emphasize-lines: 4
 
 rule for_all() {
