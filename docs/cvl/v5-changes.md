@@ -224,7 +224,7 @@ rule for_all() {
 In the example rule `for_all`, the prover will now generate an error similar
 to the following:
 
-```txt
+```text
 Error in spec file (test2.spec:8:36): Contract function calls such as foo(i)
 are disallowed inside quantified formulas.
 ```
