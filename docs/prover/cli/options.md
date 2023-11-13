@@ -53,7 +53,7 @@ If we have a solidity file `Bank.sol`, with a contract named `Investor` inside i
 Most frequently used options
 ----------------------------
 
-### `--msg`
+### `--msg <description>`
 
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. Note that you need to wrap your message in quotes if it contains spaces.  
@@ -65,13 +65,19 @@ Adding a message makes it easier to track several runs. It is very useful if you
 To create the message above, we used  
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
-### `--rule`
+(--rule)=
+### `--rule <rule name> ...`
 
 **What does it do?**  
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.  
 
 **When to use it?**  
-This option saves a lot of run time. Use it whenever you care about only a specific subset of a specification's properties. The most common case is when you add a new rule to an existing specification. The other is when code changes cause a specific rule to fail; in the process of fixing the code, updating the rule, and understanding counterexamples, you likely want to verify only that specific rule.  
+This option saves a lot of run time. Use it whenever you care about only a
+specific subset of a specification's properties. The most common case is when
+you add a new rule to an existing specification. The other is when code changes
+cause a specific rule to fail; in the process of fixing the code, updating the
+rule, and understanding counterexamples, you likely want to verify only that
+specific rule.  
 
 **Example**  
 If `Bank.spec` includes the following properties:  
@@ -85,6 +91,75 @@ If we want to verify only `withdraw_succeeds`, we run
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run  
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
+
+(--method)=
+### `--method <method_signature>`
+
+**What does it do?**
+Only uses functions with the given method signature when instantiating
+{term}`parametric rule`s and {term}`invariant`s.  The method signature consists
+of the name of a method and the types of its arguments.
+
+You may provide multiple method signatures, in which case the Prover will run on
+each of the listed methods.
+
+**When to use it?**
+This option is useful when focusing on a specific counterexample; running on a
+specific contract method saves time.
+
+**Example**
+Suppose we are verifying an ERC20 contract, and we have the following
+{term}`parametric rule`:
+
+```cvl
+rule r {
+    method f; env e; calldataarg args;
+    address owner; address spender;
+
+    mathint allowance_before = allowance(owner, spender);
+    f(e,args);
+    mathint allowance_after  = allowance(owner, spender);
+
+    assert allowance_after > allowance_before => e.msg.sender == owner; 
+}
+```
+
+If we discover a counterexample in the method `deposit(uint)`, and wish to change
+the contract or the spec to rerun, we can just rerun on the `deposit` method:
+
+```sh
+certoraRun --method 'deposit(uint)'
+```
+
+Note that many shells will interpret the `(` and `)` characters specially, so
+the method signature argument will usually need to be quoted as in the example.
+
+(--contract)=
+### `--contract <contract_name> ...`
+
+```{versionadded} 5.0
+Prior to version 5, method variables and invariants were only instantiated with
+methods of {ref}`currentContract`.
+```
+
+**What does it do?**
+Only uses methods on the specified contract when instantiating
+{term}`parametric rule`s or {term}`invariant`s.  The contract name must be one
+of the contracts included in the {term}`scene`.
+
+**When to use it?**
+As with the {ref}`--rule` and {ref}`--method` options, this option is used to
+avoid rerunning the entire verification 
+
+**Example**
+Suppose you are working on a multicontract verification and wish to debug a
+counterexample in a method of the `Underlying` contract defined in the file
+`Example.sol`:
+
+```sh
+certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
+    --contract Underlying
+```
 
 (--send_only)=
 ### `--send_only`
@@ -145,79 +220,8 @@ When you have a rule with multiple assertions:
 
 **What does it do?**
 This option enables sanity checking for rules.  The `--rule_sanity` option may
-be followed by one of `none`, `basic`, or `advanced`; these are described below.
+be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/sanity` for more information about sanity checks.
-
-There are 3 kinds of sanity checks:
-
-1. **Reachability** checks that even when ignoring all the user-provided
-   assertions, the end of the rule is reachable. This check ensures that that
-   the combination of `require` statements does not rule out all possible
-   counterexamples.
-
-   For example, the following rule would be flagged by the reachability check:
-   ```cvl
-   rule vacuous {
-     uint x;
-     require x > 2;
-     require x < 1;
-     assert f(x) == 2, "f must return 2";
-   }
-   ```
-   Since there are no models satisfying both `x > 2` and `x < 1`, this rule
-   will always pass, regardless of the behavior of the contract.  This is an
-   example of a *vacuous* rule - one that passes only because the preconditions
-   are contradictory.
-
-   ```{caution}
-   The reachability check will *pass* on vacuous rules and *fail* on correct
-   rules.  A passing reachability check indicates a potential error in the rule.
-   
-   The exception is when a {term}`parametric rule` is checked on the default
-   fallback function: The default fallback function should always revert, so
-   there are no examples that can reach the end of the rule.
-   ```
-
-2. **Assert-Vacuity** checks that individual `assert` statements are not
-   tautologies.  A tautology is a statement that is true on all examples, even
-   if all the `require` and `if` conditions are removed.
-
-   For example, the following rule would be flagged by the assert-vacuity check:
-   ```cvl
-   rule tautology {
-     uint x; uint y;
-     require x != y;
-     ...
-     assert x < 2 || x >= 2,
-      "x must be smaller than 2 or greater than or equal to 2";
-   }
-   ```
-   Since every `uint` satisfies the assertion, the assertion is tautological,
-   which is likely to be an error in the specification.
-
-3. **Require-Redundancy** checks for redundant `require` statements.
-   A `require` is considered to be redundant if it can be removed without
-   affecting the satisfiability of the rule.
-
-   For example, the require-redundancy check would flag the following rule:
-   ```cvl
-   rule require_redundant {
-     uint x;
-     require x > 3;
-     require x > 2;
-     assert f(x) == 2, "f must return 2";
-   }
-   ```
-   In this example, the second requirement is redundant, since any `x` greater
-   than 3 will also be greater than 2.
-
-The `rule_sanity` flag may be followed by either `none`, `basic`, or `advanced` to control which sanity checks should be executed.
- * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity checks are performed.
- * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the reachability check is performed for all rules and invariants, and the assert-vacuity check is performed for invariants.
- * With `--rule_sanity advanced`, all the sanity checks will be performed for all invariants and rules.
-
-We recommend starting with the `basic` mode, since not all rules flagged by the
-`advanced` mode are incorrect.
 
 **When to use it?**  
 We suggest using this option routinely while developing rules.  It is also a
@@ -251,19 +255,6 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
-### `--solc_args`
-
-**What does it do?**  
-Gets a list of arguments to pass to the Solidity compiler. The arguments will be passed as is, without any formatting, in the same order.  
-arguments that are defined as standalone flags cannot be defined in `--solc_args`, including the Solidity compiler flags  `--optimize`, 
-`--optimize-runs`, `--allow-paths`, `--via-ir` and `--evm-version`. These flags should be set by the Prover flags such as:
-`--solc_optimize`, `--solc_allow_path`, `--solc_via_ir` and `--solc_evm_version`
-
-**When to use it?**  
-When the source code is compiled using non-standard options by the Solidity compiler. 
-
-**Example**  
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_args "--experimental-via-ir"`
 
 ### `--solc_map`
 
@@ -545,7 +536,7 @@ If we wish the `Oracle` contract to be at address 12, we use
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.  
 
 **When to use it?**  
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.  
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.  
 
 **Example**  
 Assume we have the contract `Bank.sol` with the following code snippet:  

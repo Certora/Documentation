@@ -60,6 +60,12 @@ contracts that use them (see {ref}`type-conversions`):
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
 
+(math-types)=
+### Integer types
+
+CVL integer types are mostly identical to Solidity integer types.  See
+{ref}`math-ops` for details.
+
 (arrays)=
 ### Array access
 
@@ -71,7 +77,7 @@ By contrast, out-of-bounds array accesses in CVL are treated as undefined
 values: if `i > a.length` then the Prover considers every possible value for
 `a[i]` when constructing counterexamples.
 
-CVL Arrays also have the following limitations:
+CVL arrays also have the following limitations:
  - Only single dimensional arrays are supported
  - The `push` and `pop` methods are not supported.
 You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
@@ -97,7 +103,7 @@ explicitly qualified by the contract name that contains them.
    named, not the inheriting contract.
 
  - For types defined at the file level, the named contract can be any contract
-   from which the type is visible.
+   in the {term}`scene` from which the type is visible.
 
 ```{warning}
 If you do not qualify the type name with a contract name, the type name will be
@@ -158,7 +164,7 @@ to bugs.  To avoid this complexity, CVL provides the `mathint` type that can
 represent an integer of any size; operations on `mathint`s can never overflow
 or underflow.
 
-See {doc}`mathops` for details on mathematical operations and casting
+See {ref}`math-ops` for details on mathematical operations and casting
 between `mathint` and Solidity integer types.
 
 (env)=
@@ -203,6 +209,12 @@ The remaining solidity global variables are not accessible from CVL.
 (calldataarg)=
 ### The `method` and `calldataarg` types
 
+```{versionchanged} 5.0
+Formerly, parametric method calls would only call methods of `currentContract`;
+now they call methods of all contracts.  This version also introduced the
+`f.contract` field.
+```
+
 An important feature of CVL is the ability to reason about the effects of an
 arbitrary method called with arbitrary arguments.  To support this, CVL
 provides the `method` type to represent an arbitrary method, and the
@@ -229,23 +241,32 @@ rule balance_increasing() {
 
 Since `f`, `e`, and `args` are not given values, the Prover will consider every
 possible assignment.  This means that when evaluating the call to `f(e,args)`,
-the Prover will check the rule on every method of the contract, with every
-possible set of method arguments.
+the Prover will check the rule on every method of every contract on the
+{term}`scene`, with every possible set of method arguments.
 
-Properties of methods can be extracted from methods using a field-like syntax. 
-The following fields are available on a method `m`:
+See {ref}`parametric-rules` for more information about how rules that declare
+method variables are verified.
 
-*   `m.selector`   - the ABI signature of the method 
-*   `m.isPure`     - true when m is declared with the pure attribute
-*   `m.isView`     - true when m is declared with the view attribute
-*   `m.isFallback` - true when `m` is the fallback function
-*   `m.numberOfArguments` - the number of arguments to method m
+Variables of type `method` can only be declared as an argument to the rule or
+directly in the body of a rule.  They may not be nested inside of `if`
+statements or declared in CVL functions.  They may be passed as arguments to
+CVL functions.
+
+Properties of methods can be extracted from `method` variables using a
+field-like syntax.  The following fields are available on a method `m`:
+
+* `m.selector`   - the ABI signature of the method 
+* `m.isPure`     - true when m is declared with the pure attribute
+* `m.isView`     - true when m is declared with the view attribute
+* `m.isFallback` - true when `m` is the fallback function
+* `m.numberOfArguments` - the number of arguments to method m
+* `m.contract`   - the receiver contract for the method
 
 There is no way to examine the contents of a `calldataarg` variable, because
 the type of its contents vary depending on which method the Prover is checking.
-The only thing you can do with it is pass it as an argument to a `method`
-variable.  It is possible to work around this limitation; see {ref}`partially
-parametric rules` for further details.
+The only thing you can do with it is pass it as an argument to a contract
+method call. It is possible to work around this limitation; see
+{ref}`partially parametric rules` for further details.
 
 (storage-type)=
 ### The `storage` type
@@ -289,6 +310,10 @@ rule bigger_stake_more_earnings() {
 
 The `lastStorage` variable contains the state of the EVM after the most recent
 contract function call.
+
+Variables of `storage` type can also be compared for equality, allowing simple
+rules that check the equivalence of different functions.  See
+{ref}`storage-comparison` for details.
 
 (sort)=
 ### Uninterpreted sorts

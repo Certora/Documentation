@@ -6,6 +6,7 @@ This document is incomplete.
 ```
 
 ````{glossary}
+
 environment
   The environment of a method call refers to the global variables that solidity
   provides, including `msg`, `block`, and `tx`.  CVL represents these variables
@@ -25,6 +26,11 @@ hyperproperty
   of operations starting from the same initial state.  For example, a statement
   like "two small deposits will have the same effect as one large deposit" is a
   hyperproperty.  See {ref}`storage-type` for more details.
+
+invariant
+  An invariant (or representation invariant) is a property of the contract
+  state that is expected to hold between invocations of contract methods.  See
+  {ref}`invariants`.
 
 model
 example
@@ -95,10 +101,14 @@ vacuity
   it doesn't say anything.  For example, "every integer that is both greater
   than 5 and less than 3 is a perfect square" is technically true, but only
   because there are no numbers that are both greater than 5 and less than 3.
+
   Similarly, a rule or assertion can pass, but only because the `require`
   statements rule out all of the {term}`model`s.  In this case, the rule
   doesn't say anything about the program being verified.
   The {doc}`../prover/checking/sanity` help detect vacuous rules.
+
+tautology
+  A tautology is a logical statement that is always true.
 
 wildcard
 exact

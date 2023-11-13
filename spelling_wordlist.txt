@@ -3,9 +3,8 @@ Aave
 Balancer
 CVL
 Certora
+Disjunction
 Devcon
-downsample
-downsampling
 Ethereum
 FEoD
 Hoare
@@ -16,7 +15,10 @@ SMT
 Secureum
 Solana
 Todo
+UI
 Unary
+UX
+UNSAT
 Vyper
 axiomatization
 axiomatized
@@ -33,6 +35,7 @@ bytecode
 bytecodes
 callee
 changelog
+checkmark
 codebase
 config
 conjuncted
@@ -41,7 +44,11 @@ decompiler
 dereference
 dereferences
 destructuring
+downsample
+downsampling
 diagnosability
+disjunction
+disjunctions
 dispatchee
 dispatchees
 eBPF
@@ -51,6 +58,7 @@ envfree
 executable
 executables
 expressivity
+foldable
 fuzzer
 getter
 getters
@@ -72,6 +80,7 @@ invariant
 invariants
 iterable
 Keccak
+Linux
 lifecycle
 logics
 macOS
@@ -140,6 +149,7 @@ underapproximations
 uninterpreted
 unlinked
 unroller
+unsat
 unsatisfiable
 unsummarized
 untrusted
@@ -149,4 +159,3 @@ verifier
 verifiers
 walkthrough
 whitespace
-prover_args

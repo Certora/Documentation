@@ -87,7 +87,7 @@ each unsuccessful analysis.
 
 If `statsdata.json` indicates an analysis failure on a method that is
 consistently timing out, we encourage you to
-[contact Certora Support](https://forum.certora.com); our developers may be able
+[contact Certora Support](https://discord.com/channels/795999272293236746/1104825071450718338); our developers may be able
 to help resolve the issue.
 
 For example, the following shows that the `POINTSTO` analysis is failing on
