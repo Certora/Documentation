@@ -42,7 +42,7 @@ would be encoded as:
 { "send_only": true }
 ```
 
-* flags that take a single additional argument (such as[--solc](options.md#--solc) or as [--loop_iter](options.md#--loop_iter) 
+* flags that take a single additional argument (such as[--solc](options.md#--solc)) or as [--loop_iter](options.md#--loop_iter) 
  are encoded as a JSON string. For example,
 ```
 certoraRun --solc solc4.25 --loop_iter 2
