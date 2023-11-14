@@ -31,7 +31,7 @@ is equivalent to running with the following conf file:
 ```
 The values in the map depend on the type of arguments:
 
-* for flags that take no additional arguments (such as[--send_only](options.md#--send_only)),
+* for flags that take no additional arguments (such as[--send_only](options.html?highlight=options#send-only)),
 the value should be true. For example,
 ```
 certoraRun --send_only
@@ -42,7 +42,7 @@ would be encoded as:
 { "send_only": true }
 ```
 
-* flags that take a single additional argument (such as[--solc](options.md#--solc)) or as [--loop_iter](options.md#--loop_iter) 
+* flags that take a single additional argument (such as[--solc](options.md#--solc)) or as [--loop_iter](options.html?highlight=options#loop-iter) 
  are encoded as a JSON string. For example,
 ```
 certoraRun --solc solc4.25 --loop_iter 2
@@ -55,7 +55,7 @@ would be encoded as:
 
 Note that conf files do not use JSON numbers; numbers are encoded as strings.
 
-* flags that take multiple additional arguments (such as [--packages](options.md#--packages))
+* flags that take multiple additional arguments (such as [--packages](highlight=options#packages))
 are encoded as JSON lists. For example,
 ```
 certoraRun --packages @balancer-labs/v2-solidity-utils=pkg/solidity-utils @balancer-labs/v2-vault=pkg/vault
