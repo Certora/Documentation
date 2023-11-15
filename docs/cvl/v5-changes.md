@@ -186,11 +186,11 @@ the method `f`.
 ### Focusing on specific contracts
 
 If you want to focus verification on a specific contract, you can do so using
-the {ref}`--contract` option.  This option takes a list of contracts and only
+the {ref}`--parametric_contracts` option.  This option takes a list of contracts and only
 instantiates parametric rules and invariants on methods of those contracts.
 
 You can use this option to help transition specs to `certora-cli` 5.0; if `C`
-is the main contract being verified, then passing `--contract C` will cause
+is the main contract being verified, then passing `--parametric_contracts C` will cause
 method variables to be instantiated in the same way the would have in older
 versions.
 
@@ -313,10 +313,41 @@ Starting with `certora-cli` 5.0, calling methods that have been summarized with
 a `DELETE` summary is disallowed, and the `DELETE` annotation requires no
 additional annotation.
 
-CLI changes
------------
+[//]: # (CLI changes: New Parametric Contracts Attribute)
 
-```{todo}
-Finish
-```
+[//]: # (-----------------------------------------------)
 
+[//]: # ()
+[//]: # (As mentioned above the attribute `parametric_contracts` `certora-cli` was added to version 5.0 we added. )
+
+[//]: # (The attributes accepts the parametric contracts as a list of strings. )
+
+[//]: # (The attribute can be set as a the CLI flag `--parametric_contracts` or in a conf file.)
+
+[//]: # ()
+[//]: # (**Example**)
+
+[//]: # (CLI:)
+
+[//]: # (`certoraRun C1.sol C2.sol C3.sol --parametric_contracts C1 C3 ...`)
+
+[//]: # ()
+[//]: # (Conf file:)
+
+[//]: # ("files": [ "C1", "C2", "C3"],)
+
+[//]: # ("parametric_contracts": [ "C1", "C3"],)
+
+[//]: # (...)
+
+[//]: # ()
+[//]: # (CLI changes: End of CVL1 Deprecation period)
+
+[//]: # (-------------------------------------------)
+
+[//]: # ()
+[//]: # (With the release of `certora-cli` version 5.0, we stop supporting)
+
+[//]: # (the CVL1 attributes that were deprecated during the transition to CVL2. )
+
+[//]: # (You can find the list of the modified attributes [here]&#40;https://docs.certora.com/en/latest/docs/cvl/cvl2/changes.html?highlight=cvl2#changes-to-the-command-line-interface-cli&#41;.)
