@@ -769,3 +769,19 @@ setting or encoding that models precisely both bitwise operations and `mathint`.
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
+
+### --allow_solidity_calls_in_quantifiers
+
+**What does it do?**
+
+Instructs the Prover to permit contract method calls in quantified expression
+bodies.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
+
+**Example**
+
+`--allow_solidity_calls_in_quantifiers` instructs the prover to not generate an
+error on encountering contract method calls in quatified expression bodies.
