@@ -770,6 +770,7 @@ This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
 
+(--allow_solidity_calls_in_quantifiers)=
 ### --allow_solidity_calls_in_quantifiers
 
 **What does it do?**
