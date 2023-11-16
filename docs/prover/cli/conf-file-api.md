@@ -42,7 +42,7 @@ would be encoded as:
 { "send_only": true }
 ```
 
-* flags that take a single additional argument (such as[--solc](options.md#--solc)) or as [--loop_iter](options.html?highlight=options#loop-iter) 
+* flags that take a single additional argument (such as {ref}`--solc`) or as {ref}`--loop_iter`) 
  are encoded as a JSON string. For example,
 ```
 certoraRun --solc solc4.25 --loop_iter 2
@@ -55,7 +55,7 @@ would be encoded as:
 
 Note that conf files do not use JSON numbers; numbers are encoded as strings.
 
-* flags that take multiple additional arguments (such as [--packages](highlight=options#packages))
+* flags that take multiple additional arguments (such as {ref}`--packages`)
 are encoded as JSON lists. For example,
 ```
 certoraRun --packages @balancer-labs/v2-solidity-utils=pkg/solidity-utils @balancer-labs/v2-vault=pkg/vault
