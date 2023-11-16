@@ -784,5 +784,5 @@ Upon instruction from the Certora team.
 
 **Example**
 
-`--allow_solidity_calls_in_quantifiers` instructs the prover to not generate an
+`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
 error on encountering contract method calls in quantified expression bodies.

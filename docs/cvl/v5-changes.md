@@ -9,7 +9,7 @@ and how to work with them.
 
 ```{note}
 `certora-cli` 5.0 also includes several new features, bug fixes, and
-performance improvements that are not discussed here; see {ref}`changelog-5.0.0`
+performance improvements that are not discussed here; see {ref}`prover-release-notes`
 for more details.
 ```
 
@@ -317,14 +317,14 @@ CLI changes: New Parametric Contracts Attribute
 
 As mentioned above the attribute `parametric_contracts` was added to `certora-cli` 5.0. 
 The attribute accepts the parametric contracts as a list of strings. 
-The attribute can be set as the CLI flag `--parametric_contracts` or in a conf file.
+The attribute can be set as the CLI flag `--parametric_contracts` or in a `.conf` file.
 
 **Example**
 CLI:
 
 `certoraRun C1.sol C2.sol C3.sol --parametric_contracts C1 C3 ...`
 
-Conf file:
+Configuration file:
 
 `"files": [ "C1", "C2", "C3"],
 "parametric_contracts": [ "C1", "C3"],
