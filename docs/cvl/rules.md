@@ -93,7 +93,7 @@ method that violates the rule, and will indicate if some contract methods
 always satisfy the rule.
 
 You can request that the Prover only run with specific methods using the
-{ref}`--method` and {ref}`--contract` command line arguments.  The set of
+{ref}`--method` and {ref}`--parametric_contracts` command line arguments.  The set of
 methods can also be restricted using {ref}`rule filters <rule-filters>`.
 The Prover will automatically skip any methods that have
 {ref}`` `DELETE` summaries <delete-summary>``.
