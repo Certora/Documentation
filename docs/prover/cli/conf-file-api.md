@@ -31,7 +31,7 @@ is equivalent to running with the following conf file:
 ```
 The values in the map depend on the type of arguments:
 
-* for flags that take no additional arguments (such as[--send_only](options.html?highlight=options#send-only)),
+* for flags that take no additional arguments (such as {ref}`--send_only`),
 the value should be true. For example,
 ```
 certoraRun --send_only
