@@ -243,7 +243,7 @@ When we do not care much for the output. It is recommended when running the tool
 
 Options that control the Solidity compiler
 ------------------------------------------
-
+(--solc)=
 ### `--solc`
 
 **What does it do?**  
@@ -336,6 +336,7 @@ By default, we look for the packages in `$NODE_PATH`. If the packages are in any
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages`
 
+(--packages)=
 ### `--packages`
 
 **What does it do?**  
