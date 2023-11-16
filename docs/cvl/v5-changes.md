@@ -247,41 +247,25 @@ Starting with `certora-cli` 5.0, calling methods that have been summarized with
 a `DELETE` summary is disallowed, and the `DELETE` annotation requires no
 additional annotation.
 
-[//]: # (CLI changes: New Parametric Contracts Attribute)
+CLI changes: New Parametric Contracts Attribute
+-----------------------------------------------
 
-[//]: # (-----------------------------------------------)
+As mentioned above the attribute `parametric_contracts` `certora-cli` was added to version 5.0 we added. 
+The attributes accepts the parametric contracts as a list of strings. 
+The attribute can be set as the CLI flag `--parametric_contracts` or in a conf file.
 
-[//]: # ()
-[//]: # (As mentioned above the attribute `parametric_contracts` `certora-cli` was added to version 5.0 we added. )
+**Example**
+CLI:
+`certoraRun C1.sol C2.sol C3.sol --parametric_contracts C1 C3 ...`
 
-[//]: # (The attributes accepts the parametric contracts as a list of strings. )
+Conf file:
+"files": [ "C1", "C2", "C3"],
+"parametric_contracts": [ "C1", "C3"],
+...
 
-[//]: # (The attribute can be set as a the CLI flag `--parametric_contracts` or in a conf file.)
+CLI changes: End of CVL1 Deprecation period
+-------------------------------------------
 
-[//]: # ()
-[//]: # (**Example**)
-
-[//]: # (CLI:)
-
-[//]: # (`certoraRun C1.sol C2.sol C3.sol --parametric_contracts C1 C3 ...`)
-
-[//]: # ()
-[//]: # (Conf file:)
-
-[//]: # ("files": [ "C1", "C2", "C3"],)
-
-[//]: # ("parametric_contracts": [ "C1", "C3"],)
-
-[//]: # (...)
-
-[//]: # ()
-[//]: # (CLI changes: End of CVL1 Deprecation period)
-
-[//]: # (-------------------------------------------)
-
-[//]: # ()
-[//]: # (With the release of `certora-cli` version 5.0, we stop supporting)
-
-[//]: # (the CVL1 attributes that were deprecated during the transition to CVL2. )
-
-[//]: # (You can find the list of the modified attributes [here]&#40;https://docs.certora.com/en/latest/docs/cvl/cvl2/changes.html?highlight=cvl2#changes-to-the-command-line-interface-cli&#41;.)
+With the release of `certora-cli` version 5.0, we stop supporting
+the CVL1 attributes that were deprecated during the transition to CVL2. 
+You can find the list of the modified attributes [here](https://docs.certora.com/en/latest/docs/cvl/cvl2/changes.html?highlight=cvl2#changes-to-the-command-line-interface-cli).
