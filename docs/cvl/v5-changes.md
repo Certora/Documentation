@@ -185,7 +185,7 @@ the method `f`.
 ### Focusing on specific contracts
 
 If you want to focus verification on a specific contract, you can do so using
-the {ref}`--parametric_contracts` option.  This option takes a list of contracts and only
+the {ref}`--send_only` option.  This option takes a list of contracts and only
 instantiates parametric rules and invariants on methods of those contracts.
 
 You can use this option to help transition specs to `certora-cli` 5.0; if `C`
@@ -234,7 +234,6 @@ rule r {
     assert true;
 }
 ```
-
 New `DELETE` summary syntax
 ---------------------------
 
