@@ -3,8 +3,9 @@ Certora CLI 5.0 Changes
 
 The release of `certora-cli` version 5.0 introduces a few small breaking
 changes for CVL.  These changes improve the coverage for parametric rules and
-invariants, and simplify some rarely-used features.  This document explains
-those changes and how to work with them.
+invariants, disallow Solidity function calls in quantified expressions,
+and simplify some rarely-used features.  This document explains those changes
+and how to work with them.
 
 ```{note}
 `certora-cli` 5.0 also includes several new features, bug fixes, and
@@ -192,6 +193,71 @@ You can use this option to help transition specs to `certora-cli` 5.0; if `C`
 is the main contract being verified, then passing `--parametric_contracts C` will cause
 method variables to be instantiated in the same way the would have in older
 versions.
+
+Disallow calls to contract functions in quantified expressions
+--------------------------------------------------------------
+
+Starting with `certora-cli` version 5.0, the Prover no longer supports
+making contract method calls in quantified expression bodies by
+default.
+
+For example, given the simple contract below, you can no longer
+use the `method` `getI()` in a quantified expression body.
+
+```{code-block} solidity
+contract example {
+
+   uint i; 
+    
+   function getI() public view returns (uint256) {
+       return i;
+   }
+}
+```
+
+```{code-block} cvl
+:emphasize-lines: 4
+
+rule there_exists {
+    // Using getI() in the quantified body will now cause the Prover to
+    // generate a type-checking error.
+    require (exists uint256 i . i == getI());
+    assert false, "Prover will generate an error before this line";
+}
+```
+
+In the example rule `there_exists`, the Prover will now generate an error similar
+to the following:
+
+```text
+Error in spec file (test2.spec:8:36): Contract function calls such as getI()
+are disallowed inside quantified formulas.
+```
+
+In most simple cases, you can replace contract method calls with either a
+{ref}direct storage access <...> or a {ref}ghost <ghosts>. For example the
+above function `getI` simply returns the storage variable `i` and you can
+change the `require` statement in the `there_exists` rule to use storage access:
+`require (exists uint i . i == currentContract.i)`. To use a ghost, declare
+the ghost and the hook that populates the ghost with the current value of
+the contract variable `i`.
+
+```{code-block} cvl
+ghost uint gI;
+
+hook Sstore i uint256 v STORAGE {
+    gI = v;
+}
+```
+
+Finally, replace `getI` in the `require` statement in rule `there_exists` with the
+ghost variable `gI`: `require (exists uint i . i == gI)`.
+
+If you must use contract method calls in quantified expressions,
+you can still access the old behavior by specifying the
+{ref}`--allow_solidity_calls_in_quantifiers` argument to `certoraRun` on the 
+command line.
+
 
 Method variable restrictions
 ----------------------------
