@@ -12,14 +12,14 @@ certoraRun my_params.conf
 ```
 
 * Conf files must use the `.conf` suffix
-* 
+
 
 
 How CLI Options are mapped to JSON
 ----------------------------------
 
 Command-line arguments are stored as key-value pairs in the conf file. 
-The keys are the names of the parameters (with the leading -- removed). 
+The keys are the names of the parameters (with the leading `--` removed). 
 For example,
 ```
 certoraRun --verify Example:example.spec
@@ -31,8 +31,8 @@ is equivalent to running with the following conf file:
 ```
 The values in the map depend on the type of arguments:
 
-* for flags that take no additional arguments (such as {ref}`--send_only`),
-the value should be true. For example,
+* boolean flags that take no arguments (such as {ref}`--send_only`), 
+the value should be `true`. For example,
 ```
 certoraRun --send_only
 ```
@@ -42,7 +42,7 @@ would be encoded as:
 { "send_only": true }
 ```
 
-* flags that take a single additional argument (such as {ref}`--solc`) or as {ref}`--loop_iter`) 
+* flags that expect a single argument (such as {ref}`--solc`) or as {ref}`--loop_iter`) 
  are encoded as a JSON string. For example,
 ```
 certoraRun --solc solc4.25 --loop_iter 2
@@ -55,7 +55,7 @@ would be encoded as:
 
 Note that conf files do not use JSON numbers; numbers are encoded as strings.
 
-* flags that take multiple additional arguments (such as {ref}`--packages`)
+* flags that expect multiple arguments (such as {ref}`--packages`)
 are encoded as JSON lists. For example,
 ```
 certoraRun --packages @balancer-labs/v2-solidity-utils=pkg/solidity-utils @balancer-labs/v2-vault=pkg/vault
@@ -71,25 +71,6 @@ would be encoded as:
 ```
 
 
-
-
-
-
-Command-line arguments are stored as key-value pairs in the conf file.
-* The keys are the names of the parameters 
-(with the leading -- removed). For example, the **--verify** flag
-```
-certoraRun ... --verify Example:example.spec ...
-```
-will appear in the conf file as:
-```
-{
-    ...
-    "verify": "Example:example.spec" 
-    ...
-}
-```
-
 * The input files in the CLI API will be stored under the key **files**
 
 ```
@@ -99,39 +80,9 @@ will appear in the conf file as:
 ```
 {
     ...
-    "files": "Example:example.spec" 
+    "files": "example.sol" 
     ...
 }
-```
-**String Value CLI Options**
-
-Flags in CLI API that accept a single string will be stored as **JSON Strings**. Example:
-```
-"solc": "solc4.25"
-```
-**Number Value CLI Options**
-
-Flags in CLI API that accept numbers will be stored as **JSON Strings** not as **JSON Numbers**. Example:
-
-```
-"smt_timeout": "600"
-```
-
-**Boolean Value CLI Options**
-
-Since some boolean flags in the CLI API do not get a value they will be stored as **JSON true**. Example:
-
-```
-"send_only": true
-```
-**List Value CLI Options**
-
-Flags in CLI API that accept multiple strings will be stored as **JSON Arrays**. Example:
-```
-    "packages": [
-        "@balancer-labs/v2-solidity-utils=pkg/solidity-utils",
-        "@balancer-labs/v2-vault=pkg/vault"
-    ]
 ```
 
 **Map Value CLI Options**
