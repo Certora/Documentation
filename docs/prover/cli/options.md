@@ -134,8 +134,8 @@ certoraRun --method 'deposit(uint)'
 Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
 
-(--contract)=
-### `--contract <contract_name> ...`
+(--parametric_contracts)=
+### `--parametric_contracts <contract_name> ...`
 
 ```{versionadded} 5.0
 Prior to version 5, method variables and invariants were only instantiated with
@@ -158,7 +158,7 @@ counterexample in a method of the `Underlying` contract defined in the file
 
 ```sh
 certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
-    --contract Underlying
+    --parametric_contracts Underlying
 ```
 
 (--send_only)=
