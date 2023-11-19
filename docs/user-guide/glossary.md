@@ -1,12 +1,12 @@
 Glossary
 ========
 
-```{todo}
-This document is incomplete.
-```
-
 ````{glossary}
 
+call trace
+  TODO
+
+CFG
 control flow graph
   Control flow graphs (short: CFGs) are a program representation that 
   illustrates in which order the program's instructions are processed during 
@@ -118,6 +118,8 @@ sanity
   This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
   ```
 
+SAT
+UNSAT
 SAT result
 UNSAT result
   *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a 
@@ -161,7 +163,7 @@ summarize
   complete information on different types of method summaries.
 
 TAC
-  TAC (originally short for "three address code") is an intermediate 
+  TAC (originally short for "three address code") is an intermediate program
   representation used by the Certora Prover. TAC code is kept invisible to the 
   user most of the time, so it's details are not in the scope of this 
   documentation. We provide an working understanding, which is helpful for some 
