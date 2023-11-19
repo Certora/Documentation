@@ -113,13 +113,13 @@ SMT solver
   satisfiable (short "SAT") or unsatisfiable (short: "UNSAT"). The "Modulo 
   Theory" part means that the solver assumes a meaning for certain symbols in 
   the formula. For instance the theory of integer arithmetic stipulates that the 
-  symbols `+`, `-, `*`, etc. have their regular everyday mathematical 
+  symbols `+`, `-`, `*`, etc. have their regular everyday mathematical 
   meaning.
   When the formula is satisfiable, the SMT solver can also return a model for 
   the formula. I.e. an assignment of the formula's variables that makes the 
   formula evaluate to "true". For instance, on the formula "x > 5 /\ x = y * y", 
-  a solver will return SAT, and produce any valuation where x is a (integral)
-  square number and larger than 5, and y is the root of x.
+  a solver will return SAT, and produce any valuation where x is the square of
+  an integer and larger than 5, and y is the root of x.
 
 sound
 unsound
@@ -141,7 +141,7 @@ TAC
   TAC (originally short for "three address code") is an intermediate 
   representation used by the Certora Prover. TAC code is kept invisible to the 
   user most of the time, so it's details are not in the scope of this 
-  documentation. We provide an working understanding, which is helpful for some 
+  documentation. We provide a working understanding, which is helpful for some 
   advanced proving tasks, in the {ref}`tac-reports` section.
 
 tautology

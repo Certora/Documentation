@@ -135,7 +135,7 @@ report. In case of a timeout this graph contains information on which parts of
 the program were part of the actual timeout, and which were already solved
 successfully. It also contains statistics on the above-described timeout causes.
 
-Find more documentation on TAC reports in general [here](tac-reports).
+% Find more documentation on TAC reports in general [here](tac-reports).
 
 In the timeout case, the TAC reports contain some additional information that
 should help with diagnosing the timeout.
