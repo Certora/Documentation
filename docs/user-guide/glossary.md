@@ -21,6 +21,7 @@ control flow graph
   a rule has a CFG like regular programs.
   Certora Prover's [TAC reports](tac-reports) contain a control flow graph of 
   the {term}`TAC` intermediate representation of each given CVL rule.
+  Further reading: [wikipedia](https://en.wikipedia.org/wiki/Control-flow_graph)
   % TODO: ok to mention TAC here?
 
 
@@ -108,7 +109,7 @@ scene
 
 SMT
 SMT solver
-  "SMT" is short for "Satisfiability Modulo Theory". An SMT solver takes as 
+  "SMT" is short for "Satisfiability Modulo Theories". An SMT solver takes as 
   input a formula in predicate logic and returns whether the formula is 
   satisfiable (short "SAT") or unsatisfiable (short: "UNSAT"). The "Modulo 
   Theory" part means that the solver assumes a meaning for certain symbols in 
@@ -120,6 +121,7 @@ SMT solver
   formula evaluate to "true". For instance, on the formula "x > 5 /\ x = y * y", 
   a solver will return SAT, and produce any valuation where x is the square of
   an integer and larger than 5, and y is the root of x.
+  Further reading: [wikipedia](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories)
 
 sound
 unsound
@@ -139,7 +141,9 @@ summarize
 
 TAC
   TAC (originally short for "three address code") is an intermediate 
-  representation used by the Certora Prover. TAC code is kept invisible to the 
+  representation
+  ([wikipedia](https://en.wikipedia.org/wiki/Intermediate_representation))
+  used by the Certora Prover. TAC code is kept invisible to the 
   user most of the time, so it's details are not in the scope of this 
   documentation. We provide a working understanding, which is helpful for some 
   advanced proving tasks, in the {ref}`tac-reports` section.
