@@ -1,10 +1,6 @@
 Glossary
 ========
 
-```{todo}
-This document is incomplete.
-```
-
 ````{glossary}
 
 control flow graph
