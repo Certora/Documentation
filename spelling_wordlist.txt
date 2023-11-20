@@ -71,6 +71,7 @@ hyperproperties
 hyperproperty
 immutable
 immutables
+initializations
 injective
 injectivity
 inlined
@@ -106,6 +107,7 @@ precompiled
 preprocess
 preprocessing
 prestate
+prover
 reachability
 reentrancy
 reentrant
@@ -159,3 +161,8 @@ verifier
 verifiers
 walkthrough
 whitespace
+prover_args
+UNSAT
+unsat
+unsatisfiability
+UX

@@ -95,6 +95,13 @@ summarize
   analyze without timing out.  See {doc}`/docs/cvl/methods` for
   complete information on different types of method summaries.
 
+SMT
+satisfiability modulo theory
+  A formal logic we use to encode a {term}`verification condition`.
+
+tautology
+  A tautology is a logical statement that is always true.
+
 vacuous
 vacuity
   A logical statement is *vacuous* if it is technically true but only because
@@ -107,8 +114,8 @@ vacuity
   doesn't say anything about the program being verified.
   The {doc}`../prover/checking/sanity` help detect vacuous rules.
 
-tautology
-  A tautology is a logical statement that is always true.
+verification condition
+  A logical formula encoding the verification task for a given program and specification.
 
 wildcard
 exact
