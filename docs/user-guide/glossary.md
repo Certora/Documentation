@@ -120,7 +120,11 @@ UNSAT result
   *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a 
   successful run (i.e. not a timeout). SAT means that the input formula is 
   satisfiable and a {term}`model` has been found. UNSAT means the the input 
-  formula is unsatisfiable and there is not model for it.
+  formula is unsatisfiable (and thus there is no model for it).
+  Note that within Certora Prover what SAT means depends on the type of rule 
+  being checked: For an `assert` rule, SAT means a violation, while for a 
+  `satisfy` rule, SAT means non-violation of the rule, and vice versa for UNSAT. 
+  (See also {ref}`rule-overview`.)
 
 scene
   The *scene* refers to the set of contract instances that the Prover knows
@@ -169,9 +173,6 @@ TAC
 
 tautology
   A tautology is a logical statement that is always true.
-
-UNSAT result
-  See {term}`SAT result`.
 
 vacuous
 vacuity

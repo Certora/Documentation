@@ -803,10 +803,10 @@ Sets the maximum splitting depth.
 **When to use it?** 
 
 When the deepest splits are too heavy to solve, but not too high in number,
-increasing this will lead to smaller, but more split leafs that run at the full
-SMT timeout. Conversely, if run time is too high because there are too many
-splits, decreasing this number means that more time is spent on fewer, but
-bigger split leafs.
+increasing this will lead to smaller, but more split leafs, which run at the
+full SMT timeout (as set by {ref}`--smt_timeout`). Conversely, if run time is
+too high because there are too many splits, decreasing this number means that
+more time is spent on fewer, but bigger split leafs.
 
 **Example**
 
@@ -817,8 +817,8 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 (-mediumTimeout)=
 ### `--prover_args '-mediumTimeout <seconds>'`
 
-The "medium timeout" determines how much time is given to checking a split at
-is not a split leaf. 
+The "medium timeout" determines how much time the SMT solver gets for checking a
+split that is not a split leaf. 
 
 **What does it do?**
 
@@ -856,9 +856,9 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
 **What does it do?**
 
 We can tell the Certora Prover to not stop when the first split has had a
-maximum-depth timeout. Note that this is only useful for SAT results, since for
-an overall UNSAT results, all splits need to be UNSAT, while for a SAT result it
-is enough that one split is UNSAT.
+maximum-depth timeout. Note that this is only useful for {term}`SAT result`s,
+since for an overall {term}`UNSAT result`s, all splits need to be UNSAT, while
+for a SAT result it is enough that one split is UNSAT.
 
 % TODO: talk about SAT / UNSAT -- violated/not-violated won't due it due to `satisfy`...
 

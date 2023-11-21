@@ -2,9 +2,9 @@ Techniques Used by Certora Prover
 =================================
 
 In this chapter, we describe some of the techniques used inside the Certora
-Prover. While this knowledge not essential for using the prover, it can
-sometimes be helpful when the prover does not behave as expected, for instance
-in case of a prover timeout.
+Prover. While this knowledge not essential for using the Prover, it can
+sometimes be helpful when the Prover does not behave as expected, for instance
+in case of a timeout.
 
 (control-flow-splitting)=
 # Control flow splitting
@@ -86,7 +86,7 @@ exploration stops in either of the following three cases:
  - if solving on a split leaf has timed out (except if 
    {ref}`-dontStopAtFirstSplitTimeout` has been set)
 
-The settings with which the user can influence these process are the
+The settings with which the user can influence this process are the
 following (each links to a more detailed description of the option):
 
  - [Maximum split depth](-depth) controls the maximum splitting depth.
