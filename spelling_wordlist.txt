@@ -20,6 +20,7 @@ Unary
 UX
 UNSAT
 Vyper
+Yices
 axiomatization
 axiomatized
 bitwidth
@@ -30,6 +31,7 @@ boolean
 booleans
 bootcamp
 boundedness
+branchings
 bugfix
 bytecode
 bytecodes
@@ -38,7 +40,7 @@ changelog
 checkmark
 codebase
 config
-conjuncted
+conjoined
 decompilation
 decompiler
 dereference
@@ -79,6 +81,8 @@ instantiation
 invariant
 invariants
 iterable
+iterative
+iteratively
 Keccak
 Linux
 lifecycle
@@ -86,6 +90,8 @@ logics
 macOS
 modularity
 modularly
+modularize
+modularization
 monotonicity
 multicontract
 namespace
@@ -127,6 +133,7 @@ structs
 subdirectory
 subdirectories
 subgraph
+subproblem
 subproblems
 subtype
 subtypes
@@ -139,6 +146,7 @@ supercontract
 th
 traceback
 tracebacks
+tradeoff
 unary
 unbacked
 unconvertible
