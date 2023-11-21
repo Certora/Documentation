@@ -25,8 +25,9 @@ that there are classes of propositional formulas for which all known SAT solvers
 show exponential run-time behavior. Exponential running time is usually equated
 with intractability ("we have an algorithm, but it's impractical because it runs
 too long"). Most of the theories involved are at least NP-complete, already in
-their conjunctive fragments (which SMT theory solvers use). Nonlinear integer
-arithmetic stands out in that it is undecidable.
+their conjunctive fragments (which SMT theory solvers use). In fact, with the
+addition of nonlinear integer arithmetic the SMT problem is undecidable, meaning
+that there is no algorithm that can correctly solve all possible formulas.
 
 
 ## Usefulness of worst-case intractable problems

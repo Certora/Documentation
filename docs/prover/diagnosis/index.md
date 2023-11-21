@@ -15,6 +15,5 @@ Diagnostic Tools
 % 
 % ### TAC Source Code Box
 
-
 There is a brief explanation of how to use TAC reports in the 
 [webinar on timeouts](https://www.youtube.com/watch?v=mntP0_EN-ZQ).

@@ -1,8 +1,10 @@
+(prover-release-notes)=
 Prover Release Notes
 =============
 
 ```{contents}
 ```
+
 
 4.12.1 (September 17, 2023)
 ---------------------------
