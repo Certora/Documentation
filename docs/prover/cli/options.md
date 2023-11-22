@@ -769,6 +769,57 @@ setting or encoding that models precisely both bitwise operations and `mathint`.
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
+(--allow_solidity_calls_in_quantifiers)=
+### --allow_solidity_calls_in_quantifiers
+
+**What does it do?**
+
+Instructs the Prover to permit contract method calls in quantified expression
+bodies.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
+
+**Example**
+
+`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
+error on encountering contract method calls in quantified expression bodies.
+
+
+(control-flow-splitting-options)=
+Advanced options that control control flow splitting
+----------------------------------------------------
+
+See [here](control-flow-splitting) for an explanation of control flow splitting.
+
+
+(-mediumTimeout)=
+### `--prover_args '-mediumTimeout <seconds>'`
+
+The "medium timeout" determines how much time is given to checking a split at
+not max-depth before we split again.
+
+
+(-dontStopAtFirstSplitTimeout)=
+### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
+
+We can tell the Certora Prover to not stop when the first split has had a
+maximum-depth timeout. Note that this is only useful for SAT results, since for
+an overall UNSAT results, all splits need to be UNSAT, while for a SAT result it
+is enough that one split is UNSAT.
+
+
+(-smt_initialSplitDepth)=
+### `--prover_args '-smt_initialSplitDepth <number>'`
+
+Splitting can be configured to skip the checks at low splitting levels, thus
+generating sub-splits up to a given depth immediately. Note that the number of
+splits generated here is equal to `2^n` where `n` is the initial splitting depth
+(unless the program has less than `n` branchings, which will be rare in
+practice).
+
+
 
 (--allow_solidity_calls_in_quantifiers)=
 ### --allow_solidity_calls_in_quantifiers
