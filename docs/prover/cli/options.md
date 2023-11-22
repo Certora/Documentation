@@ -819,21 +819,3 @@ splits generated here is equal to `2^n` where `n` is the initial splitting depth
 (unless the program has less than `n` branchings, which will be rare in
 practice).
 
-
-
-(--allow_solidity_calls_in_quantifiers)=
-### --allow_solidity_calls_in_quantifiers
-
-**What does it do?**
-
-Instructs the Prover to permit contract method calls in quantified expression
-bodies.
-
-**When to use it?**
-
-Upon instruction from the Certora team.
-
-**Example**
-
-`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
-error on encountering contract method calls in quantified expression bodies.

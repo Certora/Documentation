@@ -7,6 +7,9 @@ Prover Release Notes
 
 5.0.5 (November 21, 2023)
 -------------------------
+
+Please find a list of the main changes in v5 here {doc}`/docs/cvl/v5-changes`.
+
 ### CVL
 - [feat] Allowing calling Solidity functions from within CVL hooks
 - [feat] {ref}`direct-storage-access`
