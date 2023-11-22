@@ -819,4 +819,3 @@ splits generated here is equal to `2^n` where `n` is the initial splitting depth
 (unless the program has less than `n` branchings, which will be rare in
 practice).
 
-
