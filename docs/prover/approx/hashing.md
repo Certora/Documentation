@@ -33,8 +33,11 @@ inputs `x` and `y`
   - the gap between `hash(x)` and `hash(y)` is large enough that every additive 
     term `hash(x) + i` that occurs in the program is also distinct from `hash(y)`.
 
-Furthermore, the initial storage slots are reserved, i.e., we make sure that no
-hash value ends up colliding with slots 0 to 10000.
+Furthermore, the initial storage slots and large constants that appear in the code 
+are reserved, i.e., we make sure that no hash value ends up colliding with slots 
+0 to 10000 and with any constant that is explicitly given in the source code. (The
+latter constraint is necessary to avoid collisions with hashes that the solidity 
+compiler has precompiled.)
 
 These constraints are enough for the Solidity storage model to work as expected.
 However this modeling allows Certora Prover to pick hash functions that show 
