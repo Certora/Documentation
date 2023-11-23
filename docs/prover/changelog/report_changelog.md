@@ -4,7 +4,7 @@ Rules Report Release Notes
 ```{contents}
 ```
 
-0.5.6 (October 24, 2023)
+0.5.6 (November 23, 2023)
 ---------------------------
 
 ### Features
