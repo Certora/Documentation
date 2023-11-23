@@ -22,7 +22,7 @@ function that are crucial for the function of the smart contracts under
 verification while abstracting away from implementation details of the actual
 hash function.
 
-## Modeling the Keccak Function (bounded case)
+## Modeling the Keccak function (bounded case)
 
 The Certora Prover models the Keccak hash function as an arbitrary function that
 is _injective with large gaps_.
@@ -117,8 +117,77 @@ contract C {
 }
 ```
 
+### Constants in code vs hashes
 
-## Hashing of Unbounded Data
+A special case in Certora Prover's modeling of hashing is the treatment of 
+constants that appear in the code: The Prover implicitly assumes that then hash 
+function never outputs one of these constants on any of the concrete inputs it 
+gets in that program.
+
+For an example, consider this rule and spec:
+
+```
+// CVL:
+methods {
+    function readAtSlotAddress() external returns (uint) envfree;
+    function updateMap(uint k, uint v) external envfree;
+}
+
+rule foo {
+	uint v1 = readAtSlotAddress();
+
+	uint preImage;
+	uint x; 
+
+	updateMap(preImage, x);
+
+	uint v2 = readAtSlotAddress();
+
+	assert(v1 == v2);
+}
+
+// solidity
+contract C {
+	uint constant slotAddress = 1000000;
+
+	mapping(uint => uint) map;
+
+	function updateMap(uint k, uint v) public {
+		map[k] = v;
+	}
+
+	function readAtSlotAddress() public returns (uint r) {
+		assembly {
+			r := sload(slotAddress)
+		}
+	}
+}
+```
+
+The function `readAtSlotAddress` reads from storage at the slot with the number
+1000000. The function `updateMap` updates a mapping; this means it updates
+storage at a hash computed from its identifier (here 1, since it is the second
+field in the contract) and the key `k`. Now, if `k` is chosen such that
+`keccak(1, k)` equals 1000000, the map update would overwrite that storage
+slot, and thus the assertion in the rule `foo` would be violated.
+
+However, Certora Prover will return "not violated" for this assertion, since it
+assumes that no hash ever collides with the constant 1000000, which occurs in
+the program.
+
+On the other hand, if we change the contract to leave `slotAddress`
+uninitialized, then Certora Prover will return a violation, since then it an
+choose the the values such that `keccak(2, preImage)` == `slotAddress`.
+
+```{note}
+The reader may wonder at first whether this means that the Certora Prover computes 
+the inverse value of the Keccak function for some image value (which would be a 
+challenging task in and of itself). This is not the case, in practice the Prover 
+makes up any arbitrary function that fulfills the previously described axioms and 
+also maps that single input to an output accordingly.
+```
+
+## Hashing of unbounded data
 
 In the discussion so far we only considered hashes of data whose length is 
 already known before program execution (e.g. a `uint` variable always has 256 
