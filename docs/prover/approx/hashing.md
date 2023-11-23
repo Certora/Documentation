@@ -179,8 +179,8 @@ assumes that no hash ever collides with the constant 1000000, which occurs in
 the program.
 
 On the other hand, if we change the contract to leave `slotAddress`
-uninitialized, then Certora Prover will return a violation, since then it an
-choose the the values such that `keccak(2, preImage)` == `slotAddress`.
+uninitialized, then Certora Prover will return a violation, since then it can
+choose the values such that `keccak(2, preImage)` == `slotAddress`.
 
 ```{note}
 The reader may wonder at first whether this means that the Certora Prover computes 
