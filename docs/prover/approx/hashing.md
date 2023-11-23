@@ -40,7 +40,7 @@ latter constraint is necessary to avoid collisions with hashes that the solidity
 compiler has precompiled.)
 
 These constraints are enough for the Solidity storage model to work as expected.
-However this modeling allows Certora Prover to pick hash functions that show 
+However, this modeling allows Certora Prover to pick hash functions that show 
 different behavior from the actual Keccak function, for instance it is unlikely 
 that the individual numeric values or their ordering matches that of the Keccak
 function. We present some examples in the following subsection.
@@ -53,7 +53,7 @@ of solidity's storage operations.
 
 ### Examples (Imprecision of Modeling)
 
-We illustrate the consequences of our modeling on a few examples.
+We illustrate the implications of our modeling decisions on a few examples.
 
 ### Modeling does not account for individual values of the Keccak function
 
@@ -86,7 +86,7 @@ contract C {
 }
 ```
 
-#### Modeling Does Not Account for Ordering
+### Modeling Does Not Account for Ordering
 
 Whichever distinct values we chose for `x` and `y` in the example below, on the
 real Keccak function one rule would be violated and one rule would not. In the 
