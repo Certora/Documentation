@@ -5,6 +5,50 @@ Prover Release Notes
 ```{contents}
 ```
 
+5.0.5 (November 21, 2023)
+-------------------------
+
+Please find a list of the main changes in v5 here {doc}`/docs/cvl/v5-changes`.
+
+### CVL
+- [feat] Allowing calling Solidity functions from within CVL hooks
+- [feat] {ref}`direct-storage-access`
+- [feat] Support for exhaustive parametric methods. Now `method f` calls will check for all methods in all contracts in Scene. The set of checked contracts can be limited with `--parametric_contracts Contract1 Contract2`
+- [bugfix] Disallow declaring method variables (aka `method f`; declarations) outside the top-level scope of a rule. They could still be declared as rule and CVL function arguments
+- [bugfix] Remove assume/assert notation from `DELETE` summary qualifiers
+- [bugfix] Disallow Solidity calls in CVL quantifier bodies
+- [bugfix] Support the '$' sign in identifiers (specifically for Solidity functions)
+- [UX] When non-reverting calls lead to an 'empty function' because all paths revert, show an alert in the rule report
+
+### Performance
+- [feat] New parallel splitter, can be enabled with `--prover_args '-newSplitParallel true'`
+- [feat] A new option for potential help with timeouts `--prover_args '-calltraceFreeOpt true'`
+- [feat] An option `-relaxedPointerSemantics` accepting a comma-separated list of `contract:methodWithoutParamTypes` pairs where the points-to analysis is allowed to be less strict
+- [feat] Better support for internal function summaries when `--via-ir` option is used, enabled with `--function_finder_mode relaxed`
+- [bugfix] Errors for an optimization we call “Memory partitioning” will now show up as alerts in the Global Problems view
+
+### Misc
+- [feat] Solana call trace basic support
+- [feat] Mutation testing: Allow `certoraMutate` to run with a link to an original run
+- [feat] Allow to skip `solc` warnings we consider errors (undefined return values) with `--contract_compiler_skip_severe_warning_as_error`
+- [feat] `--send_only` is now the default mode except for CI users. Use `--wait_for_results` to force the old behavior
+- [bugfix] Fixes for: Vyper, loop unrolling, CVL, memory consumption, storage splitting
+- [bugfix] Remove support for native array theory in SMT
+- [bugfix] Mutation testing: only delete files created by the mutation tester
+- [UX] Old CLI format is now obsolete
+- [UX] CVL1 type checker is not run anymore for compatibility checks
+- [UX] `--solc_args` is deprecated
+
+
+
+4.13.1 (September 26, 2023)
+---------------------------
+
+Minor improvements.
+
+- [feat] Present array length accesses in call  trace
+- [bugfix] Report timeouts of sanity checks
+
 
 4.12.1 (September 17, 2023)
 ---------------------------
