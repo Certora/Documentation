@@ -1,8 +1,8 @@
-Techniques Used by Certora Prover
-=================================
+Techniques Used by the Certora Prover
+=====================================
 
 In this chapter, we describe some of the techniques used inside the Certora
-Prover. While this knowledge not essential for using the Prover, it can
+Prover. While this knowledge is not essential for using the Prover, it can
 sometimes be helpful when the Prover does not behave as expected, for instance
 in case of a timeout.
 
@@ -17,11 +17,11 @@ of control flow splitting in the
 ```
 
 
-Control flow splitting (or short "splitting") is one of the techniques that
+Control flow splitting (or short "splitting") is one of the techniques that the
 Certora Prover employs to speed up solving. In the remainder of this section, we
 will give an overview of how the technique works. This background should be
 helpful when using the settings described [here](control-flow-splitting-options)
-to prevent prover timeouts.
+to prevent Prover timeouts.
 
 Splitting is best illustrated using the {term}`control flow graph` (CFG) of a given
 CVL rule.
@@ -94,11 +94,11 @@ following (each links to a more detailed description of the option):
    checking splits that are not split leafs, i.e., that are not at the maximum
    depth. 
  - [Smt timeout](--smt_timeout) controls the timeout that is used to solve split 
-   leafs; if this is exceeded, the prover will give up with a TIMEOUT 
+   leafs; if this is exceeded, the Prover will give up with a TIMEOUT 
    result, unless [the corresponding setting](-dontStopAtFirstSplitTimeout) says 
    to go on.
  - Setting the [initial splitting depth](-smt_initialSplitDepth) to a value 
-   above 0 will make the prover skip the checking and immediately enumerate all 
+   above 0 will make the Prover skip the checking and immediately enumerate all 
    splits up to that depth.
 
 (storage-and-memory-analysis)=
@@ -110,12 +110,12 @@ contract fields `x` and `y` don't share the same memory is an arithmetic
 property. With more complex data structures like mappings, arrays, and structs,
 this means that every
 ["non-aliasing"](https://en.wikipedia.org/wiki/Aliasing_(computing)) argument
-requires reasoning about multiplications, additions, and hash functions. Certora
-Prover models this reasoning correctly, but this naive low-level modeling can
-quickly overwhelm SMT solvers. In order to handle storage efficiently, Certora
-Prover analyses Storage (Memory) accesses in EVM code in order to understand the
-Storage (Memory) layout, thus making information like "an update to mapping `x`
-will never overwrite the scalar variable `y`" much more obvious to the SMT
-solvers. For scaling SMT solving to larger programs, these simplifications are
-essential.
+requires reasoning about multiplications, additions, and hash functions. The
+Certora Prover models this reasoning correctly, but this naive low-level
+modeling can quickly overwhelm SMT solvers. In order to handle storage
+efficiently, the Certora Prover analyzes Storage (Memory) accesses in EVM code in
+order to understand the Storage (Memory) layout, thus making information like
+"an update to mapping `x` will never overwrite the scalar variable `y`" much
+more obvious to the SMT solvers. For scaling SMT solving to larger programs,
+these simplifications are essential.
 

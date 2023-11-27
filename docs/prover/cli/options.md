@@ -855,7 +855,7 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
 
 **What does it do?**
 
-We can tell the Certora Prover to not stop when the first split has had a
+We can tell the Certora Prover to continue even when the first split has had a
 maximum-depth timeout. Note that this is only useful for {term}`SAT result`s,
 since for an overall {term}`UNSAT result`s, all splits need to be UNSAT, while
 for a SAT result it is enough that one split is UNSAT.
@@ -886,11 +886,14 @@ split immediately.
 **When to use it?** 
 
 When there is a lot of overhead induced by processing and trying to solve splits
-that are too hard, and thus run into a timeout anyway. Note that the number of
+that are very hard, and thus run into a timeout anyway. 
+
+```{note} The number of
 splits generated here is equal to `2^n` where `n` is the initial splitting depth
 (assuming the program has enough branching points, which is usually the case);
 thus, low numbers are advisable. For instance setting this to 5 means that the
 prover will immediately produce 32 splits.
+```
 
 **Example**
 
