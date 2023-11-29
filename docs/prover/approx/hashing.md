@@ -59,7 +59,7 @@ We illustrate the implications of our modeling decisions using a few examples.
 
 The Keccak256-hash of the string `hello` is 
 `0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8`.
-However, due to our modeling, the certora prover cannot prove that fact. the
+However, due to our modeling, the Certora Prover cannot prove that fact. the
 rule `hashOf17Eq` will show as "violated" since the Prover can pick a function 
 for `keccak256` that assigns `hello` differently.
 For the same reason the Prover also does not disprove that the hash of `17`
