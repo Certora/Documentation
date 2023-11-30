@@ -67,7 +67,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | id "(" [ id { "," id } ] ")"
+                   | id "(" [ id { "," id } ] ")" [ "expect" id ]
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
@@ -546,9 +546,52 @@ Contract methods can also be summarized using CVL {doc}`functions` or
 are replaced by calls to the specified CVL functions.
 
 To use a CVL function or ghost as a summary, use a call to the function in
-place of the summary type.  The function call can only refer directly to the
-variables defined as arguments in the summary declarations; expressions
-that combine those variables are not supported.
+place of the summary type.
+
+If a wildcard entry has a ghost or function summary, the user must explicitly
+provide an `expect` clause to the summary.  The `expect` clause tells the
+Prover how to interpret the value returned by the summary.  For example:
+
+```cvl
+methods {
+    function _.foo() external => fooImpl() expect uint256 ALL;
+}
+```
+
+This entry will replace any call to any external function `foo()` with a call to
+the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
+`uint256`.
+
+If a function does not return any value, the summary should be declared with
+`expect void`.
+
+````{warning}
+You must check that your `expect` clauses are correct.
+
+The Prover cannot always check that the return type declared in the `expect`
+clause matches the return type that the contract expects.  Continuing the above
+example, suppose the contract being verified declared a method `foo()` that
+returns a type other than `uint256`:
+
+```solidity
+function foo() external returns(address) {
+    ...
+}
+
+function bar() internal {
+    address x = y.foo();
+}
+```
+
+In this case, the Prover would encode the value returned by `fooImpl()` as a
+`uint256`, and the `bar` method would then attempt to decode this value as an
+`address`.  This will cause undefined behavior, and in some cases the Prover
+will not be able to detect the error.
+````
+
+The function call can only refer directly to the variables defined as arguments
+in the summary declarations; expressions that combine those variables are not
+supported.
 
 The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
@@ -600,7 +643,7 @@ method:
 ```cvl
 methods {
     function _.transfer(address to, uint256 amount) external with(env e)
-        => cvlTransfer(calledContract, e, to, amount);
+        => cvlTransfer(calledContract, e, to, amount) expect void;
 }
 
 function cvlTransfer(address token, env passedEnv, address to, uint amount) {
