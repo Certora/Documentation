@@ -25,6 +25,7 @@ ghosts.md
 defs.md
 hooks.md
 opcodes.md
+errors.md
 ```
 
 Changes Since CVL 1
