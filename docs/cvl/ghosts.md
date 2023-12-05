@@ -6,17 +6,25 @@ Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to communicate information between
 [rules](rules.md) and [hooks](hooks.md).
 
+Ghosts can be seen as an 'extension' to the state of the contracts under verification.
+This means that in case a call reverts, the ghost values will revert to their pre-state.
+Additionally, if an unresolved call is handled by a havoc, the ghost values will havoc as well.
+An exception to this rule are ghosts marked _persistent_.
+
 ```{contents}
 ```
 
 Syntax
 ------
 
-The syntax for ghost declarations is given by the following [EBNF grammar](syntax):
+The syntax for ghost and persistent ghost declarations is given by the following [EBNF grammar](syntax):
 
 ```
 ghost ::= "ghost" type id                             (";" | "{" axioms "}")
         | "ghost" id "(" cvl_types ")" "returns" type (";" | "{" axioms "}")
+
+persistent_ghost ::=  "persistent" "ghost" type id                             (";" | "{" axioms "}")
+                    | "persistent" "ghost" id "(" cvl_types ")" "returns" type (";" | "{" axioms "}")
 
 type ::= basic_type
        | "mapping" "(" cvl_type "=>" type ")"
@@ -127,5 +135,97 @@ This documentation is currently incomplete.  See [ghosts](/docs/confluence/anato
 and [ghost functions](/docs/confluence/anatomy/ghostfunctions) in the old documentation.
 ```
 
+Ghosts vs. persistent ghosts
+----------------------------
 
+In the most common cases, regular, non-persistent ghosts are the natural choice
+for a specification requiring extra tracking of information.
 
+We present two examples where persistent ghosts are useful.
+
+### Persistent ghosts that survive havocs
+In the first example, we want to track the occurrence of a potential reentrant call[^reentrancy]:
+
+[^reentrancy]: The example given here is very basic,  the examples repository contains [more complete examples of reentrancy checks](https://github.com/Certora/Examples/tree/master/CVLByExample/Reentrancy)
+
+```cvl
+persistent ghost bool reentrancy_happened {
+    init_state axiom !reentrancy_happened;
+}
+
+hook CALL(uint g, address addr, uint value, uint argsOffset, uint argsLength, 
+          uint retOffset, uint retLength) uint rc {
+    if (addr == currentContract) {
+        reentrancy_happened = reentrancy_happened 
+                                || (executingContract == currentContract 
+                                    && addr == currentContract);
+    }
+}
+
+invariant no_reentrant_calls !reentrancy_happened;
+```
+
+To see why a persistent ghost must be used here for the variable `reentrancy_happened`, consider the following contract:
+```solidity
+contract NotReentrant {
+    function transfer1Token(IERC20 a) external {
+        require (address(a) != address(this));
+        a.transfer(msg.sender, 1);
+    }
+}
+```
+
+If we do not apply any linking or dispatching for the call done on the target `a`, the call to `transfer` would havoc.
+In the lower-level view of the tool, the sequence of events that happens is as follows:
+1. A call to `a.transfer` which cannot be resolved and results in a havoc operation. Non-persistent ghosts are havoced, in particular `reentrancy_happened`.
+2. A `CALL` hook executes, updating `reentrancy_happened` based on its havoced value, meaning it can turn to true.
+
+Therefore even if the addresses of `a` and `NotReentrant` are distinct, we could still falsely detect a reentrant call as `reentrancy_happened` was set to true due to non-determinism.
+The call trace would show `reentrancy_happened` as being determined to be true due to a havoc in the "Ghosts State" view under "Global State".
+
+### Persistent ghosts that survive reverts
+In this example, we use persistent ghosts to figure out if a revert happened with user-provided data or not.
+This can help distinguishing between compiler-generated reverts and user-specified reverts (but only in [Solidity versions prior to 0.8.x](https://soliditylang.org/blog/2020/10/28/solidity-0.8.x-preview/)).
+The idea is to set a ghost to true if a `REVERT` opcode is encountered with a positive buffer size. As in early Solidity versions the panic errors would compile to reverts with empty buffers, as well as user-provided `require`s with no message specified. 
+
+```cvl
+persistent ghost bool saw_user_defined_revert_msg;
+
+hook REVERT(uint offset, uint size) {
+    if (size > 0) {
+        saw_user_defined_revert_msg = true;
+    }
+}
+
+rule mark_methods_that_have_user_defined_reverts(method f, env e, calldataarg args) {
+    require !saw_user_defined_revert_msg;
+
+    @withrevert(e, args);
+
+    satisfy saw_user_defined_revert_msg;
+}
+```
+
+To see why a regular ghost cannot be used to implement this rule, let's consider the following trivial contract:
+```solidity
+contract Reverting {
+	function noUserDefinedRevertFlows(uint a, uint b) external {
+		uint c = a/b; // will see a potential division-by-zero revert
+		uint[] memory arr = new uint[](1);
+		uint d = arr[a+b]; // will see a potential out-of-bounds access revert;
+	}
+
+	function userDefinedRequireMsg(uint a) external {
+		require(a != 0, "a != 0");
+	}
+
+	function emptyRequire(uint a) external {
+		require(a != 0);
+	}
+}
+```
+
+It is expected that the method `userDefinedRequireMsg` and only it will satisfy the rule. 
+However, if we use regular ghosts, the ghost variable `saw_user_defined_revert_msg` will revert in case the input argument `a` is equal to 0, together with the contract itself. 
+This means the value of `saw_user_defined_revert_msg` will remain false, and thus the `satisfy` statement will fail.
+With regular ghosts, the rule would of course fail also for the two other methods, meaning that non-persistent ghosts are not suitable for distinguishing between different reverts.
