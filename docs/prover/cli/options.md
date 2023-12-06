@@ -215,6 +215,34 @@ When you have a rule with multiple assertions:
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
+(--independent_satisfy)=
+### `--independent_satisfy`
+
+**What does it do?**
+The `independent_satisfy` mode checks each satisfy statement independently from all other satisfy statements that occurs in a rule. 
+Normally, each satisfy statement will be turned into a sub-rule (similarly to the `multi_assert_check` mode), 
+but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
+Turning on the `independent_satisfy` mode will, for each sub-rule, ignore all currently not-checked satisfy statements.
+
+As an illustrative example, consider the following rule `R` that has two satisfy:
+
+```cvl
+…
+bool b;
+satisfy b, "R1";
+satisfy !b, "R2";
+…
+```
+
+The `independent_satisfy` mode would generate and check two sub-rules: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b /\ !b`.
+
+**When to use it?**
+When you have a rule with multiple satisfy statements, and you would like to check each case separately.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
+
 (--rule_sanity)=
 ### `--rule_sanity`
 
