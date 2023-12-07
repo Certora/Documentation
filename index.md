@@ -4,6 +4,7 @@ Certora Prover Documentation
 ```{toctree}
 :maxdepth: 3
 :caption: Contents
+:hidden:
 
 docs/whitepaper/index.md
 docs/user-guide/index.md
