@@ -1,31 +1,30 @@
-Certora Prover Documentation
-============================
+## Quickstart - install & run Prover
 
 <div class="display:flex;flex-direction:column;width:100%;align-items:center">
-    <h2>Quickstart - install & run Prover </h2>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/c4Joys3ZN1s?si=3OUWCdE-kWZPT_Ke" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 </div>
 
 
-<div class="display:flex;flex-direction:column;width:100%;align-items:center;margin:20px 0px 10px 0px;">
-    <h2 class="margin:5px 0px 5px 0px">Explore Certora</h2>
-    <p class="text-align:center">Secure your smart contracts with industry-leading formal verification tools & smart contract audits.</p>
-    <div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
-        <span style="btn display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Certora Prover</span>
-        <span style="btn display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL</span>
-        <span style="btn display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Gambit</span>
-    </div>
+## Explore Certora 
+Secure your smart contracts with industry-leading formal verification tools & smart contract audits
+
+<div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
+    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Certora Prover</card>
+    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL</card>
+    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Gambit</card>
 </div>
 
-<div class="display:flex;flex-direction:column;width:100%;align-items:center;margin:20px 0px 10px 0px;">
-    <h2 class="margin:5px 0px 5px 0px">Practice your skills</h2>
-    <p class="text-align:center">Secure your smart contracts with industry-leading formal verification tools & smart contract audits.</p>
-    <div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
-        <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Tutorial</span>
-        <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL by Example</span>
-        <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CertoraInit</span>
-    </div>
+
+
+## Practice your skills
+Secure your smart contracts with industry-leading formal verification tools & smart contract audits.
+
+<div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
+    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Tutorial</card>
+    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL by Example</card>
+    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CertoraInit</card>
 </div>
+
 
 
 ```{toctree}
