@@ -1,4 +1,4 @@
-## Quickstart - install & run Prover
+## Quickstart - install and run Prover
 
 <div class="display:flex;flex-direction:column;width:100%;align-items:center">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/c4Joys3ZN1s?si=3OUWCdE-kWZPT_Ke" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
