@@ -10,9 +10,9 @@ Secure your smart contracts with industry-leading formal verification tools & sm
 Secure your smart contracts with industry-leading formal verification tools & smart contract audits
 
 <div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
-    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Certora Prover</card>
-    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL</card>
-    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Gambit</card>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Certora Prover</span>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL</span>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Gambit</span>
 </div>
 
 
@@ -21,9 +21,9 @@ Secure your smart contracts with industry-leading formal verification tools & sm
 Secure your smart contracts with industry-leading formal verification tools & smart contract audits.
 
 <div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
-    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Tutorial</card>
-    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL by Example</card>
-    <card style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CertoraInit</card>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Tutorial</span>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL by Example</span>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CertoraInit</span>
 </div>
 
 
