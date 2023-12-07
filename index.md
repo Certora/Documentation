@@ -1,16 +1,29 @@
 Certora Prover Documentation
 ============================
 
-## Get started with Certora Prover
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DtVj788m3Qo?si=r_fHXUIlKpbhfNrb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-
-## Intro 
-<div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
-    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Getting started</span>
-    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center">Tutorial</span>
+<div class="display:flex;flex-direction:column;width:100%;align-items:center">
+    <h2>Quickstart - install & run Prover </h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/c4Joys3ZN1s?si=3OUWCdE-kWZPT_Ke" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 </div>
+
+
+<div class="display:flex;flex-direction:column;width:100%;align-items:center">
+    <h2>Explore Certora</h2>
+    <p class="text-align:center">Secure your smart contracts with industry-leading formal verification tools & smart contract audits.</p>
+    <div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
+        <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Certora Prover</span>
+        <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL</span>
+        <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Gambit</span>
+    </div>
+</div>
+
+## Practice your skills 
+<div style="display:flex;width:100%;justify-content:center;flex-wrap:wrap;gap:10px;color:black">
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">Tutorial</span>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CVL by Example</span>
+    <span style="display:flex;justify-content:center;align-items:center;flex-grow:1;flex-basis:200px;max-width:250px;height:100px;border:1px solid #0d0d0d;padding:2px 5px;border-radius:5px;text-align:center;cursor:pointer;text-align:center">CertoraInit</span>
+</div>
+
 
 ```{toctree}
 :maxdepth: 3
