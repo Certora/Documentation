@@ -7,12 +7,6 @@ verify smart contracts.  It is organized by topic and focuses on the most
 useful features instead of including comprehensive details.  For details, see
 the {doc}`/docs/cvl/index`.
 
-```{todo}
-This documentation is currently undergoing significant reorganization and
-editing.  Some of the pages are missing; where possible we have included
-pointers to the {doc}`/docs/confluence/index` on given topics.
-```
-
 The Certora Prover is based on well-studied techniques from the formal
 verification community. _**Specifications**_ define a set of rules that call
 into the contract under analysis and make various assertions about its

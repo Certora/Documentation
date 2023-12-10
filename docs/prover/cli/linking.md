@@ -3,6 +3,5 @@ Linking
 =======
 
 ```{todo}
-This documentation is incomplete.  See
-[the old documentation](/docs/confluence/advanced/linking).
+This documentation is incomplete.
 ```

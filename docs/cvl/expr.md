@@ -346,16 +346,14 @@ each checked method.  Rules that use this feature are referred to as
 
 
 After the function name, but before the arguments, you can write an optional
-method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
+method tag, one of `@norevert` or `@withrevert`.
  * `@norevert` indicates that examples where the method revert should not be
    considered.  This is the default behavior if no tag is provided
  * `@withrevert` indicates that examples that would revert should still be
    considered.  In this case, the method will set the `lastReverted` and
    `lastHasThrown` variables to `true` in case the called method reverts or
    throws an exception.
- * ```{todo}
-   The `@dontsummarize` tag is currently undocumented.
-   ```
+
 
 After the method tag, the method arguments are provided.  Unless the method
 is declared {ref}`envfree <envfree>`, the first argument must be an

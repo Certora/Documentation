@@ -36,8 +36,6 @@ opcode_hook ::= "hook" opcode_name cvl_type id
                | "hook" opcode_name "(" cvl_param_list ")" cvl_type id
                | "hook" opcode_name "(" cvl_param_list ")"
 
-TODO: the following needs condensing and explaining
-      it is a description of slot_pattern (from cvl.cup)
 
 /**
    (slot 2) -> 3rd storage slot
