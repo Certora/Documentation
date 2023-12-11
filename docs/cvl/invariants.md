@@ -11,9 +11,10 @@ verified by the Prover, but it may still be possible for the contract to
 violate it.  The possible sources of unsoundness are {ref}`preserved`,
 {ref}`invariant-filters`, and {ref}`invariant-revert`.  Invariant proofs are
 also unsound if some of the methods are filtered out using the
-{ref}`--method` or {ref}`--contract` flags.  See the linked sections for
+{ref}`--method` or {ref}`--parametric_contracts` flags.  See the linked sections for
 details.
 ```
+
 
 ```{contents}
 ```
@@ -111,6 +112,18 @@ Nevertheless, the invariant will pass.  The reason is that before a call to
 `add` pushes a nonzero integer into `a[i]`, the length of `a` was `i-1`, so the
 call to `get(i)` will revert.  Therefore, the Prover would discard the
 counterexample instead of reporting it.
+As above, an invariant stating that `supply() == token.totalSupply()` would be
+verified, but a method on `token` might change the total supply without updating
+the `SupplyTracker` contract.  Since the Prover only checks the main contract's
+methods for preservation, it will not report that the invariant can be
+falsified.
+
+For this reason, invariants that depend on the environment or on the state of
+external contracts are a potential source of {term}`unsoundness <unsound>`, and should be
+used with care.
+
+There is an additional source of unsoundness that occurs if the invariant
+expression reverts in the before state but not in the after state.
 
 (preserved)=
 Preserved blocks

@@ -96,10 +96,6 @@ denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 `^` denotes exponentiation and `xor` denotes exclusive or.
 ```
 
-```{todo}
-The `>>>` operator is currently undocumented.
-```
-
 % TODO: migrate this information here.
 See {ref}`cvl2-integer-types` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
