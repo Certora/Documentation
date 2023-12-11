@@ -53,7 +53,7 @@ If we have a solidity file `Bank.sol`, with a contract named `Investor` inside i
 Most frequently used options
 ----------------------------
 
-### `--msg`
+### `--msg <description>`
 
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. Note that you need to wrap your message in quotes if it contains spaces.  
@@ -65,13 +65,19 @@ Adding a message makes it easier to track several runs. It is very useful if you
 To create the message above, we used  
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
-### `--rule`
+(--rule)=
+### `--rule <rule name> ...`
 
 **What does it do?**  
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.  
 
 **When to use it?**  
-This option saves a lot of run time. Use it whenever you care about only a specific subset of a specification's properties. The most common case is when you add a new rule to an existing specification. The other is when code changes cause a specific rule to fail; in the process of fixing the code, updating the rule, and understanding counterexamples, you likely want to verify only that specific rule.  
+This option saves a lot of run time. Use it whenever you care about only a
+specific subset of a specification's properties. The most common case is when
+you add a new rule to an existing specification. The other is when code changes
+cause a specific rule to fail; in the process of fixing the code, updating the
+rule, and understanding counterexamples, you likely want to verify only that
+specific rule.  
 
 **Example**  
 If `Bank.spec` includes the following properties:  
@@ -85,6 +91,75 @@ If we want to verify only `withdraw_succeeds`, we run
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run  
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
+
+(--method)=
+### `--method <method_signature>`
+
+**What does it do?**
+Only uses functions with the given method signature when instantiating
+{term}`parametric rule`s and {term}`invariant`s.  The method signature consists
+of the name of a method and the types of its arguments.
+
+You may provide multiple method signatures, in which case the Prover will run on
+each of the listed methods.
+
+**When to use it?**
+This option is useful when focusing on a specific counterexample; running on a
+specific contract method saves time.
+
+**Example**
+Suppose we are verifying an ERC20 contract, and we have the following
+{term}`parametric rule`:
+
+```cvl
+rule r {
+    method f; env e; calldataarg args;
+    address owner; address spender;
+
+    mathint allowance_before = allowance(owner, spender);
+    f(e,args);
+    mathint allowance_after  = allowance(owner, spender);
+
+    assert allowance_after > allowance_before => e.msg.sender == owner; 
+}
+```
+
+If we discover a counterexample in the method `deposit(uint)`, and wish to change
+the contract or the spec to rerun, we can just rerun on the `deposit` method:
+
+```sh
+certoraRun --method 'deposit(uint)'
+```
+
+Note that many shells will interpret the `(` and `)` characters specially, so
+the method signature argument will usually need to be quoted as in the example.
+
+(--parametric_contracts)=
+### `--parametric_contracts <contract_name> ...`
+
+```{versionadded} 5.0
+Prior to version 5, method variables and invariants were only instantiated with
+methods of {ref}`currentContract`.
+```
+
+**What does it do?**
+Only uses methods on the specified contract when instantiating
+{term}`parametric rule`s or {term}`invariant`s.  The contract name must be one
+of the contracts included in the {term}`scene`.
+
+**When to use it?**
+As with the {ref}`--rule` and {ref}`--method` options, this option is used to
+avoid rerunning the entire verification 
+
+**Example**
+Suppose you are working on a multicontract verification and wish to debug a
+counterexample in a method of the `Underlying` contract defined in the file
+`Example.sol`:
+
+```sh
+certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
+    --parametric_contracts Underlying
+```
 
 (--send_only)=
 ### `--send_only`
@@ -461,7 +536,7 @@ If we wish the `Oracle` contract to be at address 12, we use
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.  
 
 **When to use it?**  
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.  
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.  
 
 **Example**  
 Assume we have the contract `Bank.sol` with the following code snippet:  
@@ -693,4 +768,54 @@ setting or encoding that models precisely both bitwise operations and `mathint`.
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
+
+(--allow_solidity_calls_in_quantifiers)=
+### --allow_solidity_calls_in_quantifiers
+
+**What does it do?**
+
+Instructs the Prover to permit contract method calls in quantified expression
+bodies.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
+
+**Example**
+
+`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
+error on encountering contract method calls in quantified expression bodies.
+
+
+(control-flow-splitting-options)=
+Advanced options that control control flow splitting
+----------------------------------------------------
+
+See [here](control-flow-splitting) for an explanation of control flow splitting.
+
+
+(-mediumTimeout)=
+### `--prover_args '-mediumTimeout <seconds>'`
+
+The "medium timeout" determines how much time is given to checking a split at
+not max-depth before we split again.
+
+
+(-dontStopAtFirstSplitTimeout)=
+### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
+
+We can tell the Certora Prover to not stop when the first split has had a
+maximum-depth timeout. Note that this is only useful for SAT results, since for
+an overall UNSAT results, all splits need to be UNSAT, while for a SAT result it
+is enough that one split is UNSAT.
+
+
+(-smt_initialSplitDepth)=
+### `--prover_args '-smt_initialSplitDepth <number>'`
+
+Splitting can be configured to skip the checks at low splitting levels, thus
+generating sub-splits up to a given depth immediately. Note that the number of
+splits generated here is equal to `2^n` where `n` is the initial splitting depth
+(unless the program has less than `n` branchings, which will be rare in
+practice).
 
