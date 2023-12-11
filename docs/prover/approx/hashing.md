@@ -34,8 +34,8 @@ inputs `x` and `y`
     term `hash(x) + i` that occurs in the program is also distinct from `hash(y)`.
 
 Furthermore, the initial storage slots and large constants that appear in the code 
-are reserved, i.e., we make sure that no hash value ends up colliding with slots 
-0 to 10000 and with any constant that is explicitly given in the source code. (The
+are reserved. I.e., we make sure that no hash value ends up colliding with slots 
+0 to 10000 nor with any constant that is explicitly given in the source code. (The
 latter constraint is necessary to avoid collisions with hashes that the solidity 
 compiler has precompiled.)
 
@@ -181,6 +181,9 @@ the program.
 On the other hand, if we change the contract to leave `slotAddress`
 uninitialized, then Certora Prover will return a violation, since then it can
 choose the values such that `keccak(2, preImage)` == `slotAddress`.
+
+Also see this [example run](https://prover.certora.com/output/91772/e02fc5c0f57c4404b6fe28f237ecab07?anonymousKey=9e9e40a985a82d55446b0cdc2c75a7540ca696bc) 
+for a further illustration of both cases.
 
 ```{note}
 The reader may wonder at first whether this means that the Certora Prover computes 
