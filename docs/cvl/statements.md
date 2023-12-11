@@ -93,27 +93,26 @@ about the counterexamples to the message.
 Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
 `require` does not require parentheses around the expression and message.
 ```
-Examples
---------
+### Examples
 
 ```cvl
 rule withdraw_succeeds {
-   env e; // env represents the bytecode environment passed on every call
-   // invoke function withdraw and assume that it does not revert
-   bool success = withdraw(e);  // e is passed as an additional argument
-   assert success, "withdraw must succeed"; // verify that withdraw succeeded
+    env e; // env represents the bytecode environment passed on every call
+    // invoke function withdraw and assume that it does not revert
+    bool success = withdraw(e);  // e is passed as an additional argument
+    assert success, "withdraw must succeed"; // verify that withdraw succeeded
 }
 
 rule totalFundsAfterDeposit(uint256 amount) {
-	env e; 
+	 env e; 
 	
-	deposit(e, amount);
+	 deposit(e, amount);
 	
-	uint256 userFundsAfter = getFunds(e, e.msg.sender);
-	uint256 totalAfter = getTotalFunds(e);
+	 uint256 userFundsAfter = getFunds(e, e.msg.sender);
+	 uint256 totalAfter = getTotalFunds(e);
 	
-	// Verify that the total funds of the system is at least the current funds of the msg.sender.
-	assert totalAfter >= userFundsAfter;
+	 // Verify that the total funds of the system is at least the current funds of the msg.sender.
+	 assert totalAfter >= userFundsAfter;
 }
 
 ```
@@ -160,7 +159,7 @@ state has an execution that satisfies the condition.
 `requireInvariant` statements
 -----------------------------
 
-`requireInvariant` is shorthand for `require` of the expression of the invariant where parameters have to be substituted.
+`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/ variables for which the invariant should hold.
 
 - [`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
