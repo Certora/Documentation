@@ -10,7 +10,7 @@ possible expressions in CVL and explains how they are evaluated.
 Syntax
 ------
 
-The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
+The syntax for CVL expressions is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 expr ::= literal
@@ -94,10 +94,6 @@ are standard.
 One significant difference between CVL and Solidity is that in Solidity, `^`
 denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 `^` denotes exponentiation and `xor` denotes exclusive or.
-```
-
-```{todo}
-The `>>>` operator is currently undocumented.
 ```
 
 % TODO: migrate this information here.
@@ -344,7 +340,7 @@ while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
 
-
+(with-revert)=
 After the function name, but before the arguments, you can write an optional
 method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
  * `@norevert` indicates that examples where the method revert should not be
@@ -353,6 +349,9 @@ method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
    considered.  In this case, the method will set the `lastReverted` and
    `lastHasThrown` variables to `true` in case the called method reverts or
    throws an exception.
+
+   [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
+
  * ```{todo}
    The `@dontsummarize` tag is currently undocumented.
    ```
@@ -483,7 +482,7 @@ and array/map dereference operations together. For example, if the current contr
 type definitions and state variables:
 
 ```solidity
-contract Example
+contract Example {
    struct Foo {
       mapping (address => uint[]) bar;
    }
