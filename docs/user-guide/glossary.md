@@ -60,14 +60,17 @@ invariant
 model
 example
 counterexample
-  The terms "model", "example", and "counterexample" are used interchangeably.
+witness example
+  We use the terms "model" and "example" interchangeably.
   In the context of a CVL rule, they refer to an assignment of values to all of 
-  the CVL variables and contract storage that either violates an `assert` statement 
-  or fulfills a `satisfy` statement. See {ref}`rule-overview`.
+  the CVL variables and contract storage that either violates an `assert` 
+  statement or fulfills a `satisfy` statement. 
+  In the `assert` case, we also call the model a "counterexample". In the 
+  `satisfy` case, we also call the model "witness example".
+  See {ref}`rule-overview`.
   In the context of {term}`SMT solver`s, a model is a valuation of the logical 
   constants and uninterpreted functions in the input formula that makes the formula
-  evaluate to `true`.
-
+  evaluate to `true`, also see {term}`SAT result`.
 
 linear arithmetic
 nonlinear arithmetic
@@ -124,8 +127,12 @@ UNSAT result
   satisfiable and a {term}`model` has been found. UNSAT means that the input 
   formula is unsatisfiable (and thus there is no model for it).
   Within the Certora Prover, what SAT means depends on the type of rule 
-  being checked: For an `assert` rule, SAT means a violation, while for a 
-  `satisfy` rule, SAT means non-violation of the rule, and vice versa for UNSAT. 
+  being checked: For an `assert` rule, SAT means the rule is violated and the 
+  SMT model corresponds to a counterexample.
+  For a `satisfy` rule, SAT means the rule is not violated and the SMT model
+  corresponds to a witness example.
+  Conversely, UNSAT means that an `assert` is never violated or a `satisfy` never
+  fulfilled respectively.
   (See also {ref}`rule-overview`.)
 
 scene
