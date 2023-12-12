@@ -858,7 +858,7 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
 We can tell the Certora Prover to continue even when the first split has had a
 maximum-depth timeout. Note that this is only useful for {term}`SAT result`s,
 since for an overall {term}`UNSAT result`s, all splits need to be UNSAT, while
-for a SAT result it is enough that one split is UNSAT.
+for a SAT result it is enough that one split is SAT.
 
 % TODO: talk about SAT / UNSAT -- violated/not-violated won't due it due to `satisfy`...
 
@@ -875,8 +875,8 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplit
 (-smt_initialSplitDepth)=
 ### `--prover_args '-smt_initialSplitDepth <number>'`
 
-With this option, the splitting can be configured to skip the checks at low
-splitting levels, thus generating sub-splits up to a given depth immediately.
+With this option, the splitting can be configured to skip the SMT solver-based checks 
+at low splitting levels, thus generating sub-splits up to a given depth immediately.
 
 **What does it do?**
 
@@ -893,6 +893,12 @@ splits generated here is equal to `2^n` where `n` is the initial splitting depth
 (assuming the program has enough branching points, which is usually the case);
 thus, low numbers are advisable. For instance setting this to 5 means that the
 prover will immediately produce 32 splits.
+```
+
+```{note}
+The {ref}`-depth` setting has precedence over this setting. I.e., if `-depth`
+is set to a lower value than `-smt_initialSplitDepth`, the initial splitting 
+will only proceed up to the splitting depth given via `-depth`.
 ```
 
 **Example**
