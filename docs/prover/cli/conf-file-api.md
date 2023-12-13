@@ -99,12 +99,7 @@ Flags in CLI API that are maps will be stored as **JSON Objects**. Example:
 **Generating a Conf File**
 
 After each successful run of `certoraRun` a conf file is generated and is
-stored in the file **run.conf** under the internal directory of that run.
-The conf file of the latest run can be found in:
-
-```
-.certora_internal/latest/run.conf
-```
+stored in the file `.certora_internal/latest/run.conf`.
 
 Instead of generating a complete conf file from scratch, users can take 
 one of these generated  conf files as a basis for their modifications.
