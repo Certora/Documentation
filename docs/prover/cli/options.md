@@ -255,7 +255,7 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**  
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
-
+(--solc_map)=
 ### `--solc_map`
 
 **What does it do?**  
