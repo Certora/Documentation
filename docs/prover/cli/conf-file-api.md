@@ -33,7 +33,7 @@ The values in the map depend on the type of arguments:
 
 * boolean flags that take no arguments (such as {ref}`--send_only`), 
 the value should be `true`. For example,
-```
+```sh
 certoraRun --send_only
 ```
 
