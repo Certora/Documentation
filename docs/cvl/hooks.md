@@ -17,7 +17,7 @@ for additional information.  See also {doc}`ghosts` and {doc}`opcodes`.
 Syntax
 ------
 
-The syntax for hooks is given by the following [EBNF grammar](syntax):
+The syntax for hooks is given by the following EBNF grammar:
 
 ```
 hook ::= store_hook | load_hook | opcode_hook
@@ -94,3 +94,9 @@ slot_pattern ::= slot_pattern_nested:sp {: RESULT = sp; :}
              ;
 
 ```
+
+Examples
+--------
+- [store hook example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L117)
+- [load hook example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L141)
+

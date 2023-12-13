@@ -1,3 +1,4 @@
+(verification-report)=
 Certora Verification Reports
 ============================
 
