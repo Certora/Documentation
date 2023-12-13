@@ -26,7 +26,7 @@ certoraRun --verify Example:example.spec
 ```
 is equivalent to running with the following conf file:
 
-```
+```json
 { "verify": "Example:example.spec" }
 ```
 The values in the map depend on the type of arguments:
@@ -34,7 +34,7 @@ The values in the map depend on the type of arguments:
 * Boolean flags take no arguments (such as {ref}`--send_only`), in 
 the conf file the value should be `true`, since the default value of boolean attributes. For example,
 is `false` there is no need to set a boolean attribute to values other than `true`
-    ```
+    ```sh
     certoraRun --send_only
     ```
 
@@ -72,7 +72,7 @@ are encoded as JSON lists. For example,
     ```
 
 
-* The input files in the CLI API will be stored under the key **files**
+* The input files in the CLI API will be stored under the key `files`
 
     ```
     certoraRun example.sol  ...
