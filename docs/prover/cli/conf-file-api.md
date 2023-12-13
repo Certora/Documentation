@@ -71,7 +71,7 @@ would be encoded as:
 ```
 
 
-* The input files in the CLI API will be stored under the key **files**
+* The input files in the CLI API will be stored under the key `files`
 
 ```
 certoraRun example.sol  ...
