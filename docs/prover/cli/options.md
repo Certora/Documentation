@@ -267,7 +267,7 @@ When different contracts have to be compiled for different Solidity versions.
 **Example**  
 `certoraRun Bank.sol Exchange.sol --verify Bank:Bank.spec --solc_map Bank=solc4.25,Exchange=solc6.7`
 
-
+(--solc_optimize)=
 ### `--solc_optimize`
 
 **What does it do?**  
@@ -280,7 +280,7 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300`
 
-
+(--solc_optimize_map)=
 ### `--solc_optimize_map`
 
 **What does it do?**  
