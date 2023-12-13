@@ -26,7 +26,7 @@ certoraRun --verify Example:example.spec
 ```
 is equivalent to running with the following conf file:
 
-```
+```json
 { "verify": "Example:example.spec" }
 ```
 The values in the map depend on the type of arguments:
