@@ -19,7 +19,7 @@ How CLI Options are mapped to JSON
 ----------------------------------
 
 Command-line arguments are stored as key-value pairs in the conf file. 
-The keys are the names of the parameters (with the leading `--` removed). 
+The keys are the names of the CLI options (with the leading `--` removed). 
 For example,
 ```
 certoraRun --verify Example:example.spec
@@ -31,9 +31,23 @@ is equivalent to running with the following conf file:
 ```
 The values in the map depend on the type of arguments:
 
-* Boolean flags take no arguments (such as {ref}`--send_only`), in 
-the conf file the value should be `true`, since the default value of boolean attributes. For example,
-is `false` there is no need to set a boolean attribute to values other than `true`
+* The input files in the CLI API will be stored as list under the key `files`
+
+    ```
+    certoraRun example.sol  ...
+    ```
+  will appear in the conf file as:
+    ```
+    {
+      ...
+      "files": [ "example.sol" ], 
+      ...
+    }
+    ```
+
+* Boolean options are options that take no arguments (for example {ref}`--send_only`). In 
+the conf file all keys must come with a value, the value for boolean options is `true`. 
+Since the default value of boolean options is `false` there is no need to set a boolean attribute to values other than `true`
     ```sh
     certoraRun --send_only
     ```
@@ -43,7 +57,7 @@ is `false` there is no need to set a boolean attribute to values other than `tru
     { "send_only": true }
     ```
 
-* Flags that expect a single argument (such as {ref}`--solc`) or as {ref}`--loop_iter`) 
+* Options that expect a single argument (for example {ref}`--solc`) or {ref}`--loop_iter`) 
  are encoded as a JSON string. For example,
     ```
     certoraRun --solc solc4.25 --loop_iter 2
@@ -52,10 +66,10 @@ is `false` there is no need to set a boolean attribute to values other than `tru
     ```
     { "solc": "solc4.25", "loop_iter": "2" }
     ```
-    Note that conf files do not use JSON numbers; numbers are encoded as strings.
+    Note that in conf files numbers are also encoded as strings.
 
 
-* Flags that expect multiple arguments (such as {ref}`--packages`)
+* Options that expect multiple arguments (for example {ref}`--packages`)
 are encoded as JSON lists. For example,
     ```
     certoraRun --packages @balancer-labs/v2-solidity-utils=pkg/solidity-utils \
@@ -71,23 +85,7 @@ are encoded as JSON lists. For example,
     }
     ```
 
-
-* The input files in the CLI API will be stored under the key `files`
-
-    ```
-    certoraRun example.sol  ...
-    ```
-    will appear in the conf file as:
-    ```
-    {
-      ...
-      "files": [ "example.sol" ], 
-      ...
-    }
-    ```
-
-
-* Flags in CLI API that are maps ({ref}`--solc_map` and {ref}`--solc_optimize_map`) will be stored as JSON objects.
+* Options that are maps ({ref}`--solc_map` and {ref}`--solc_optimize_map`) will be stored as JSON objects.
   For example,
     ```
     certoraRun --solc_map A=solc5.11,B=solc5.9,C=solc6.8
@@ -128,7 +126,7 @@ The conf file of the latest run can be found in:
 ```
 
 Instead of generating a complete conf file from scratch, users can take 
-one of these generated  conf files as a basis for their modifications.
+one of these generated conf files as a basis for their modifications.
 
 ## Conf Files in the VS Code IDE Extension
 The [Certora IDE Extension](https://marketplace.visualstudio.com/items?itemName=Certora.vscode-certora-prover)
