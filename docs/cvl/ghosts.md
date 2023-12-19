@@ -31,12 +31,11 @@ the `expression` syntax.
 (ghost-variables)=
 Declaring ghost variables
 -------------------------
-
 Ghost variables must be declared at the top level of a specification file.
 A ghost variable declaration includes the keyword `ghost` followed by the type and name
 of the ghost variable.
 
-The type of a ghost may be either a [CVL type](types.md) or a `mapping` type.
+The type of a ghost variable may be either a [CVL type](types.md) or a `mapping` type.
 Mapping types are similar to solidity mapping types.  They must have CVL types
 as keys, but may contain either CVL types or mapping types as values.
 
@@ -55,33 +54,33 @@ ghost (uint, uint) x;                              // tuples are not CVL types
 ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
 
+- [simple `ghost` variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
+
+- This example uses an [`init_state` axiom](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L114)
+
+- [`ghost mapping` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
+
 (ghost-functions)=
 Ghost Functions
 ---------------
 CVL also has support for "ghost functions".  These serve a different purpose from ghost variables, although they can be
 used in similar ways.
+
 Ghost functions must be declared at the top level of a specification file.
 A ghost function declaration includes the keyword `ghost` followed by the name and signature of the ghost function.
 Ghost functions should be used either:
 - when there are no updates to the ghost as the deterministic behavior and axioms are the only properties of the ghost
 - when updating the ghost - more than one entry is updated and then the havoc assuming statement is used.
 
-  - [simple variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
-
-  - [`ghost mapping` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
-
+  
   - [`ghost` function example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24)
 
 Restrictions on ghost definitions
 ---------------------------------
-- A ghost axiom cannot refer to `Solidity` or `CVL` functions or to other ghosts. It can refer to the ghost itself.
-- Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
- `forall` can be used in order to refer the storage referred to by the parameters. [Example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec#L12).
-- A  a 'user-defined type, such as struct, array or interface is not allowed as the key or the output type of a ghost mapping.
+- A user-defined type, such as struct, array or interface is not allowed as the key or the output type of a `ghost mapping`.
 
 Using ghost variables
 ---------------------
-
 While verifying a rule or invariant, the Prover considers every possible
 initial value of a ghost variable (subject to its {ref}`ghost-axioms`,
 see below).
@@ -134,19 +133,8 @@ hook back to the `updated_changes_user` and `updated_changes_no_other` rules.
 (ghost-axioms)=
 Ghost axioms
 ------------
-### Initial state axioms
+Ghost axioms are properties that the Prover assumes whenever it makes use of a ghost.
 
-When writing invariants, initial axioms are a way to express the “constructor state” of a ghost function. They are used 
-only when checking the base step of invariants.
-
-```cvl
-ghost mathint sumBalances{
-// assuming value zero at the initial state before constructor
-init_state axiom sumBalances == 0;
-}
-```
-
-- [initial state axiom example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L207)
 
 (global-axioms)=
 ### Global axioms
@@ -157,13 +145,31 @@ about the ghost. For example:
 
 ```cvl
 ghost bar(uint256) returns uint256 {
-axiom forall uint256 x. bar(x) > 10;
+    axiom forall uint256 x. bar(x) > 10;
 }
 ```
 
 In any rule that uses bar, no application of bar could ever evaluate to a number less than or equal to 10. 
-While this is not a very interesting axiom, we could imagine expressing more complicated functions, 
-such as a reachability relation.
 
 - [`axiom` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L119)
 
+### Initial state axioms
+
+When writing invariants, initial axioms are a way to express the “constructor state” of a ghost function. They are used 
+only when checking the base step of invariants {ref}`invariant-as-rule`. Before checking the initial state of an invariant, the Certora Prover adds a `require` for each `init_state` axiom. `init_state` axioms are not used in rules or the preservation check for invariants.
+
+```cvl
+ghost mathint sumBalances{
+    // assuming value zero at the initial state before constructor
+    init_state axiom sumBalances == 0;
+}
+```
+
+- [initial state axiom example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L207)
+
+
+Restrictions on ghost axioms
+----------------------------
+- A ghost axiom cannot refer to Solidity or CVL functions or to other ghosts. It can refer to the ghost itself.
+- Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
+ `forall` can be used in order to refer the storage referred to by the parameters. [Example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec#L12).
