@@ -38,7 +38,7 @@ Syntax
 The syntax for methods block entries {doc}`changed in CVL 2 <cvl2/changes>`.
 ```
 
-The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
+The syntax for the `methods` block is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 methods          ::= "methods" "{" { method_spec } "}"
@@ -520,13 +520,13 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
  * Calls to non-library `view` and `pure` methods use the `NONDET` approximation:
    they keep all state unchanged.
 
- * Normal calls and constructors use the `HAVOC_ECF` approximation: they are
-   assumed to change the state of external contracts arbitrarily but to leave
-   the caller's state unchanged.
-
  * Calls to library methods and `delegatecall`s are assumed to change
    the caller's storage in an arbitrary way, but are assumed to leave ETH
    balances and the storage of other contracts unchanged.
+
+ * All other calls and constructors use the `HAVOC_ECF` approximation: they are
+   assumed to change the state of external contracts arbitrarily but to leave
+   the caller's state unchanged.
 
 [^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
   opcode used to make the call: calls made using the `STATICCALL` opcode use
