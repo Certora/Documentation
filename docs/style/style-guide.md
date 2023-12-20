@@ -97,7 +97,7 @@ bullets, and incorrect sectioning.
 
 While reading your generated documentation, it is especially helpful to look
 over the navigation bar on the left side to make sure it looks good.  This can
-help you remember to use short section titles, {ref}`docs-page-headers`,
+help you remember to {ref}`docs-short-titles`, {ref}`docs-page-headers`,
 {ref}`docs-section-headers`, and also just make sure that your information is
 well organized.
 
@@ -320,6 +320,7 @@ flag to the `{contents}` directive:
 :local:
 
 ```
+````
 
 This technique is helpful when you want to remind the user of the outline for a
 subsection.  See {ref}`cvl2-methods-blocks` for an example.
@@ -331,6 +332,7 @@ true if the section is just a bunch of subsections: it is still useful to have
 a sentence or two explaining what the subsections are (and possibly including
 a {ref}`local contents block <docs-contents-blocks>`).
 
+(docs-short-titles)=
 ### Use short section titles
 
 The navigation tree on the left of the page is easier to use if each page header
