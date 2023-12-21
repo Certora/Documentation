@@ -30,10 +30,10 @@ import ::= "import" string
 use ::= "use" "rule" id
         [ "filtered" "{" id "->" expression { "," id "->" expression } "}" ]
       | "use" "builtin" "rule" id
-      | "use" "invariant" id [ "{" { preserved_block } "}" ]
+      | "use" "invariant" id [ "filtered" "{" id "->" expression "}" ] [ "{" { preserved_block } "}" ]
 
 ```
 
 See {doc}`basics` for the `string` and `id` productions, {doc}`expr` for the `expression` production, and 
-{doc}`invariants` for the `preserved_block` production.
+{doc}`invariants` for the `filtered` and `preserved_block` production.
 
