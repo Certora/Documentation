@@ -227,15 +227,42 @@ Turning on the `independent_satisfy` mode will ignore all currently unchecked sa
 As an illustrative example, consider the following rule `R` that has two satisfy statements:
 
 ```cvl
-…
-bool b;
-satisfy b, "R1";
-satisfy !b, "R2";
-…
+rule R {
+  bool b;
+  satisfy b, "R1";
+  satisfy !b, "R2";
+}
 ```
 
-The `independent_satisfy` mode would generate and check two sub-rules: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b /\ !b`.
+The statements for "R1" and "R2" will actually create two subrules equivalent to:
+```cvl
+rule R1_default {
+  bool b;
+  satisfy b, "R1";
+}
+
+rule R2_default {
+  bool b;
+  assume b, "R1";
+  satisfy !b, "R2"; // This actually checks b && !b
+}
+```
+
+The `independent_satisfy` mode would also generate and check two sub-rules: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`. The two `independent_satisfy` generated subrules will be equivalent to:
+
+```cvl
+rule R1_independent {
+  bool b;
+  satisfy b, "R1";
+}
+
+rule R2_independent {
+  bool b;
+  // assume b, "R1";
+  satisfy !b, "R2";
+}
+```
 
 **When to use it?**
 When you have a rule with multiple satisfy statements, and you would like to demonstrate each statement separately.
