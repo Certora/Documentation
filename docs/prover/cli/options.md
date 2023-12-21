@@ -220,9 +220,9 @@ When you have a rule with multiple assertions:
 
 **What does it do?**
 The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule. 
-Normally, each satisfy statement will be turned into a subrule (similarly to the {ref}`--multi_assert_check` mode), 
+Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode), 
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
-Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each subrule.
+Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
 
 As an illustrative example, consider the following rule `R` that has two satisfy statements:
 
@@ -234,7 +234,7 @@ rule R {
 }
 ```
 
-The statements for "R1" and "R2" will actually create two subrules equivalent to:
+The statements for "R1" and "R2" will actually create two sub-rules equivalent to:
 ```cvl
 rule R1_default {
   bool b;
@@ -249,7 +249,7 @@ rule R2_default {
 ```
 
 The `independent_satisfy` mode would also generate and check two sub-rules: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`. The two `independent_satisfy` generated subrules will be equivalent to:
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`. The two `independent_satisfy` generated sub-rules will be equivalent to:
 
 ```cvl
 rule R1_independent {
