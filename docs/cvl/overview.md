@@ -31,7 +31,7 @@ A spec may contain any of the following:
 
  - **[Sorts](sorts):** Sorts define simple types that can be compared for equality.
 
- - **[Ghosts](ghosts):** Ghosts define additional variables that can be used to keep track
+ - **[Ghosts](ghosts-doc):** Ghosts define additional variables that can be used to keep track
    of state changes in the contracts.
 
  - **{ref}`Hooks <hooks>`:** Hooks allow the specification to instrument the contracts being
