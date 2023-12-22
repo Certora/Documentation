@@ -60,7 +60,7 @@ special_vars ::=
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
            | "calledContract"
-           | "exectuingContract"
+           | "executingContract"
 
 cast_functions ::=
     | require_functions | to_functions | assert_functions
