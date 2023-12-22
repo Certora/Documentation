@@ -71,7 +71,7 @@ In `mutation.conf`:
 ```json
 { "gambit": {
     "filename" : "C.sol",
-    "num-mutants": 5
+    "num_mutants": 5
   }
 }
 ```
@@ -82,7 +82,7 @@ You can add manual mutations to `mutation.conf` like so:
 ```json
 { "gambit": {
     "filename" : "C.sol",
-    "num-mutants": 5
+    "num_mutants": 5
   },
   "manual_mutants": {
      "C.sol": "path/to/dir/with/manual_mutants/for/C"
