@@ -85,7 +85,7 @@ Axioms are **dangerous** and should be used **carefully** as they are a pote
 
 1.  The axiom implies `false`
     
-2.  Somewhere in the program, we assume something about a ghost function that, when conjuncted with a ghost axiom, implies `false`
+2.  Somewhere in the program, we assume something about a ghost function that, when conjoined with a ghost axiom, implies `false`
 ```
     
 

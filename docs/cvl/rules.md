@@ -1,3 +1,4 @@
+(rules-main)=
 Rules
 =====
 
@@ -18,7 +19,7 @@ these features.
 Syntax
 ------
 
-The syntax for rules is given by the following [EBNF grammar](syntax):
+The syntax for rules is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 rule ::= [ "rule" ]
@@ -61,6 +62,26 @@ of the `assert` statements evaluate to true.  If all of the `assert` statements
 evaluate to true on every example, the rule passes.  Otherwise, the Prover will
 output a specific counterexample that causes the assertions to fail.
 
+- [simple rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L54)
+
+    ```cvl
+    /// `deposit` must increase the pool's underlying asset balance
+    rule integrityOfDeposit {
+    
+        mathint balance_before = underlyingBalance();
+    
+    
+        env e; uint256 amount;
+        safeAssumptions(_, e);
+    
+        deposit(e, amount);
+    
+        mathint balance_after = underlyingBalance();
+    
+        assert balance_after == balance_before + amount,
+            "deposit must increase the underlying balance of the pool";
+    }
+    ```
 ```{caution}
 `assert` statements in contract code are handled differently from `assert`
 statements in rules.
@@ -68,7 +89,7 @@ statements in rules.
 An `assert` statement in Solidity causes the transaction to revert, in the same
 way that a `require` statement in Solidity would.  By default, examples that
 cause contract functions to revert are {ref}`ignored by the prover
-<withrevert>`, and these examples will *not* be reported as counterexamples.
+<with-revert>`, and these examples will *not* be reported as counterexamples.
 
 The {ref}`--multi_assert_check` option causes assertions in the contract code
 to be reported as counterexamples.
@@ -93,8 +114,10 @@ method that violates the rule, and will indicate if some contract methods
 always satisfy the rule.
 
 You can request that the Prover only run with specific methods using the
-{ref}`--method` and {ref}`--contract` command line arguments.  The set of
+{ref}`--method` and {ref}`--parametric_contracts` command line arguments.  The set of
 methods can also be restricted using {ref}`rule filters <rule-filters>`.
+The Prover will automatically skip any methods that have
+{ref}`` `DELETE` summaries <delete-summary>``.
 
 If you wish to only invoke methods on a certain contract, you can call the
 `method` variable with an explicit receiver contract.  The receiver must be a
@@ -114,6 +137,16 @@ rule r {
 
 It is an error to call the same `method` variable on two different contracts.
 
+```cvl
+  rule sanity(method f) {
+    env e;
+    calldataarg args;
+    f(e,args);
+    assert false;
+    }
+  ```
+- [parameteric rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94)
+  
 
 (rule-filters)=
 Filters
@@ -138,6 +171,9 @@ to the fields of `var`, such as `var.selector` and `var.isView`.  See
 For example, the following rule has two filters.  The rule will only be
 verified with `f` instantiated by a view method, and `g` instantiated by a
 method other than `exampleMethod(uint,uint)` or `otherExample(address)`:
+
+
+- [filters example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/Reentrancy/certora/spec/Reentrancy.spec#L29C9-L29C9)
 
 ```cvl
 rule r(method f, method g) filtered {

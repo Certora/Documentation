@@ -45,6 +45,7 @@ following topics:
 | [The Certora Prover pipeline](https://youtu.be/vg6da3A7lSs) | ({download}`slides <basics/stanford/09-pipeline.pdf>`)        |
 | [SMT solvers                ](https://youtu.be/9QuS_8cL91w) | ({download}`slides <basics/stanford/10-smt.pdf>`)             |
 
+The covered examples are available in the [CVL examples repository](https://github.com/Certora/Examples).
 
 [stanford]: https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA
 

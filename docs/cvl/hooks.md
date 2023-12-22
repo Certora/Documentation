@@ -19,7 +19,7 @@ examples of idiomatic hook usage, see {ref}`tracking-changes` and
 Syntax
 ------
 
-The syntax for hooks is given by the following [EBNF grammar](syntax):
+The syntax for hooks is given by the following EBNF grammar:
 
 ```
 hook ::= "hook" pattern block
@@ -44,12 +44,21 @@ See {doc}`statements` for information about the `statement` production; see
 {doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
 production.
 
+Examples
+--------
+- [store hook example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L117)
+- [load hook example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L141)
+
+```{todo}
+move these examples to the correct spots
+```
+
 (load-hooks)=
 (store-hooks)=
 Load and store hooks
 --------------------
 
-Load hooks are executed before a read from a specific location in storage, while
+Load hooks are executed before a read from a specific location in storage, while
 store hooks are executed before a write to a specific location in storage.
 
 The locations to be matched are given by an access path, such as a contract

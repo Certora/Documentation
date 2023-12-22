@@ -428,51 +428,10 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-% TODO: error message
-
 Wildcard entries must not declare return types, because they may apply to
-multiple methods that return different types.
-
-If a wildcard entry has a ghost or function summary, the user must explicitly
-provide an `expect` clause to the summary.  The `expect` clause tells the
-Prover how to interpret the value returned by the summary.  For example:
-
-```cvl
-methods {
-    function _.foo() external => fooImpl() expect uint256 ALL;
-}
-```
-
-This entry will replace any call to any external function `foo()` with a call to
-the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
-`uint256`.
-
-If a function does not return any value, the summary should be declared with
-`expect void`.
-
-````{warning}
-You must check that your `expect` clauses are correct.
-
-The Prover cannot always check that the return type declared in the `expect`
-clause matches the return type that the contract expects.  Continuing the above
-example, suppose the contract being verified declared a method `foo()` that
-returns a type other than `uint256`:
-
-```solidity
-function foo() external returns(address) {
-    ...
-}
-
-function bar() internal {
-    address x = y.foo();
-}
-```
-
-In this case, the Prover would encode the value returned by `fooImpl()` as a
-`uint256`, and the `bar` method would then attempt to decode this value as an
-`address`.  This will cause undefined behavior, and in some cases the Prover
-will not be able to detect the error.
-````
+multiple methods that return different types.  If a wildcard entry is summarized
+with a ghost or function summary, the summary must include an `expect` clause;
+see {ref}`function-summary` for more details.
 
 (cvl2-integer-types)=
 Changes to integer types
