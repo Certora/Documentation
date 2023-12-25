@@ -19,7 +19,7 @@ The additional CVL types are:
 Syntax
 ------
 
-The syntax for types in CVL is given by the following [EBNF grammar](syntax):
+The syntax for types in CVL is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 basic_type ::= "int*" | "uint*" | "address" | "bool"
