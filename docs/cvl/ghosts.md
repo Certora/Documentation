@@ -9,7 +9,12 @@ These variables are often used to communicate information between
 Ghosts can be seen as an 'extension' to the state of the contracts under verification.
 This means that in case a call reverts, the ghost values will revert to their pre-state.
 Additionally, if an unresolved call is handled by a havoc, the ghost values will havoc as well.
+Ghosts are regarded as part of the state of the contracts, 
+and when calls are invoked with `at storageVar` statements (see {ref}`storage-type`),
+they are restored to their state as saved in `storageVar`.
 An exception to this rule are ghosts marked _persistent_.
+Persistent ghosts are **never** havoced, and **never** reverted.
+See {ref}`persistent-ghosts` below for more details and examples.
 
 ```{contents}
 ```
@@ -135,11 +140,12 @@ This documentation is currently incomplete.  See [ghosts](/docs/confluence/anato
 and [ghost functions](/docs/confluence/anatomy/ghostfunctions) in the old documentation.
 ```
 
+(persistent-ghosts)=
 Ghosts vs. persistent ghosts
 ----------------------------
 
-In the most common cases, regular, non-persistent ghosts are the natural choice
-for a specification requiring extra tracking of information.
+In most cases, non-persistent ghosts are the natural choice for a specification 
+that requires extra tracking of information.
 
 We present two examples where persistent ghosts are useful.
 
@@ -157,8 +163,7 @@ hook CALL(uint g, address addr, uint value, uint argsOffset, uint argsLength,
           uint retOffset, uint retLength) uint rc {
     if (addr == currentContract) {
         reentrancy_happened = reentrancy_happened 
-                                || (executingContract == currentContract 
-                                    && addr == currentContract);
+                                || executingContract == currentContract;
     }
 }
 
@@ -176,15 +181,25 @@ contract NotReentrant {
 ```
 
 If we do not apply any linking or dispatching for the call done on the target `a`, the call to `transfer` would havoc.
-In the lower-level view of the tool, the sequence of events that happens is as follows:
-1. A call to `a.transfer` which cannot be resolved and results in a havoc operation. Non-persistent ghosts are havoced, in particular `reentrancy_happened`.
+During a havoc operation, the Prover conservatively assumes that almost any possible behavior can occur.
+In particular, it must assume that during the execution of the `a.transfer` call, 
+non-persistent ghosts can be updated arbitrarily (e.g. by other contracts),
+and thus (assuming `reentrancy_happenedt` were not marked as persistent), 
+the Prover considers the case where `reentrancy_happened` is set to `true` due to the havoc.
+Thus, when the `CALL` hook executes immediately after, 
+it does so where the `reentrancy_happened` value is already `true`, 
+and thus the value after the hook will remain `true`.
+
+In the lower-level view of the tool, the sequence of events is as follows:
+1. A call to `a.transfer` which cannot be resolved and results in a {ref}`havoc <glossary>` operation.
+Non-persistent ghosts are havoced, in particular `reentrancy_happened` if it were not marked as such.
 2. A `CALL` hook executes, updating `reentrancy_happened` based on its havoced value, meaning it can turn to true.
 
 Therefore even if the addresses of `a` and `NotReentrant` are distinct, we could still falsely detect a reentrant call as `reentrancy_happened` was set to true due to non-determinism.
 The call trace would show `reentrancy_happened` as being determined to be true due to a havoc in the "Ghosts State" view under "Global State".
 
 ### Persistent ghosts that survive reverts
-In this example, we use persistent ghosts to figure out if a revert happened with user-provided data or not.
+In this example, we use persistent ghosts to determine if a revert happened with user-provided data or not.
 This can help distinguishing between compiler-generated reverts and user-specified reverts (but only in [Solidity versions prior to 0.8.x](https://soliditylang.org/blog/2020/10/28/solidity-0.8.x-preview/)).
 The idea is to set a ghost to true if a `REVERT` opcode is encountered with a positive buffer size. As in early Solidity versions the panic errors would compile to reverts with empty buffers, as well as user-provided `require`s with no message specified. 
 
@@ -200,7 +215,7 @@ hook REVERT(uint offset, uint size) {
 rule mark_methods_that_have_user_defined_reverts(method f, env e, calldataarg args) {
     require !saw_user_defined_revert_msg;
 
-    @withrevert(e, args);
+    f@withrevert(e, args);
 
     satisfy saw_user_defined_revert_msg;
 }
@@ -225,7 +240,16 @@ contract Reverting {
 }
 ```
 
-It is expected that the method `userDefinedRequireMsg` and only it will satisfy the rule. 
-However, if we use regular ghosts, the ghost variable `saw_user_defined_revert_msg` will revert in case the input argument `a` is equal to 0, together with the contract itself. 
-This means the value of `saw_user_defined_revert_msg` will remain false, and thus the `satisfy` statement will fail.
-With regular ghosts, the rule would of course fail also for the two other methods, meaning that non-persistent ghosts are not suitable for distinguishing between different reverts.
+It is expected for the method `userDefinedRequireMsg` to satisfy the rule, 
+and it should be the only method to satisfy it.
+Assuming `saw_user_defined_revert_msg` was defined as a regular, non-persistent ghost, 
+the rule would not be satisfied for `userDefinedRequireMsg`: in case the input argument `a` is equal to 0,
+the contract reverts, and the value of `saw_user_defined_revert_msg` 
+is reset to its value before the call, which must be `false`
+(because the rule required it before the call).
+In this case, after the call `saw_user_defined_revert_msg` cannot be set to true and thus the `satisfy` fails.
+Applying the same reasoning, it is clear that the same behavior happens 
+for reverting behaviors of `noUserDefinedRevertFlows` and `emptyRequire`,
+which do not have user-defined revert messages. 
+This means that if `saw_user_defined_revert_msg` is not marked persistent, 
+the rule cannot distinguishing between methods that may revert with user-defined messages and methods that may not.
