@@ -71,10 +71,10 @@ A mutation test requires an original verification job that was completed success
 Rules that are not verified on the original run will be ignored.
 
 (orig-verification-link)=
-### Original Verification Link
+#### Original Verification Link
 
 You can provide the original run job's link via `--orig_run`, for example: 
-```
+```sh
 --orig_run https://prover.certora.com/output/53342/9487899b2afc4709899889fab6c2c673/?anonymousKey=5c365717c9c1076f0c1acb050c7eb5867f07a236
 ```
 
