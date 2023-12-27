@@ -122,22 +122,22 @@ It avoids depending on an active internet connection for the entire duration of
 
 | Option                         | Description                                                                                                           |
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
-| `--prover_conf`                | specify the Prover configuration file for verifying mutants                                                           |
-| `--mutation_conf`              | specify the configuration file for mutant generation                                                                  |
-| `--num_mutants`                | request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
-| `--prover_version`             | specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
-| `--server`                     | specify the server environment to run on. Defaults to the value specified in the file of `--prover_conf`, or the `certoraRun` default otherwise.   |
-| `--debug`                      | show additional logging information during execution                                                                  |
-| `--gambit_out`                 | specify the output directory for gambit. Defaults to a new directory which is added in the working directory          |
-| `--applied_mutants_dir`        | specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
-| `--ui_out`                     | specify a JSON file to dump the mutant verification report used for the web UI                                   |
-| `--dump_link`                  | specify a text file to write the UI report link                                                                       |
-| `--dump_csv`                   | specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
-| `--collect_file`               | specify the collect file from which to run in asynchronous mode                                                       |
-| `--sync`                       | enable synchronous execution                                                                                          |
-| `--max_timeout_attempts_count` | specify the maximum number of times a web request is attempted                                                        |
-| `--request_timeout`            | specify the length in seconds for a web request timeout                                                               |
-| `--poll_timeout`               | specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
+| `--prover_conf`                | Specify the Prover configuration file for verifying mutants                                                           |
+| `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
+| `--num_mutants`                | Request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
+| `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
+| `--server`                     | Specify the server environment to run on. Defaults to the value specified in the `--prover_conf` file or the `certoraRun` default otherwise   |
+| `--debug`                      | Show additional logging information during execution                                                                  |
+| `--gambit_out`                 | Specify the output directory for Gambit. Defaults to adding a new directory under the working directory          |
+| `--applied_mutants_dir`        | Specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
+| `--ui_out`                     | Specify a JSON file to dump the mutant verification report used for the web UI                                   |
+| `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
+| `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
+| `--collect_file`               | Specify the collect file from which to run in asynchronous mode                                                       |
+| `--sync`                       | Enable synchronous execution                                                                                          |
+| `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
+| `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
+| `--poll_timeout`               | Specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
 
 ## Troubleshooting
 
