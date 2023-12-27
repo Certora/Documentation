@@ -101,7 +101,6 @@ For example, if you want to generate manual mutations for `C.sol` and `D.sol`,
   name them `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
 ```
 
-(synchronous_execution)=
 ## Synchronous Execution
 
 By default, `certoraMutate` will dump data about the mutation verification jobs 
