@@ -142,7 +142,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--ui_out`                     | Specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
-| `--collect_file`               | Specify the collect file from which to run in {ref}`synchronous-execution`                                                       |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
 | `--poll_timeout`               | Specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
