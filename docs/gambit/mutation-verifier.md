@@ -101,20 +101,22 @@ For example, if you want to generate manual mutations for `C.sol` and `D.sol`,
   name them `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
 ```
 
+## Synchronous Mode
+
+By default, `certoraMutate` will dump data about the mutation verification jobs 
+  in the `collect.json` file in the working directory. 
+These jobs are submitted to the server environment specified and run asynchronously. 
+They may be polled later with `certoraMutate --collect_file collect.json`.
+
+Use the `--sync` flag to run the entire tool synchronously in your shell, 
+  from mutant generation to the web report UI. 
+The synchronous mode is suitable when the original specification run finishes quickly. 
+The asynchronous default mode is ideal for more extensive specifications of 
+  more complicated contracts, where each run takes more than just several minutes. 
+It avoids depending on an active internet connection for the entire duration of 
+  the original run and the mutations.
+
 ## CLI Options
-
-`certoraMutate` runs in two distinct modes: synchronous and asynchronous.
-Use the `--sync` flag to run the entire tool synchronously
-in your shell, from mutant generation to the web report UI. 
-Alternatively, running without the `--sync` flag will dump
-data about the mutation verification jobs in the `collect.json` file in the working directory. These jobs are submitted
-to the server environment specified and run asynchronously. 
-They may be polled later with
-`certoraMutate --collect_file collect.json`.
-
-Usually, the synchronous mode is suitable when the original specification run finishes quickly. 
-The asynchronous mode is suitable for bigger specifications of more complicated contracts, where each run takes more than just several minutes. It avoids depending on an active internet connection for the entire duration of the original run and the mutations.
-Soon, Certora will enable automatic notifications for asynchronous mutation testing runs, so that manual checks will not be necessary.
 
 `certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
 
