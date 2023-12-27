@@ -52,8 +52,8 @@ Paths in `prover.conf` are all relative to the project directory's root,
 
 ## Configurations
 The tool expects two separate configuration files:
-the configuration file which defines the execution of mutant generation (`--mutation_conf`),
-and the configuration file which defines execution of the Prover (`--prover_conf`).
+  the configuration file which defines the execution of mutant generation (`--mutation_conf`),
+  and the configuration file which defines the execution of the Prover (`--prover_conf`).
 Here is a simple configuration file setup using the example above:
 
 In `prover.conf`:
@@ -69,7 +69,8 @@ In `prover.conf`:
 In `mutation.conf`:
 
 ```json
-{ "gambit": [{
+{ 
+  "gambit": [{
     "filename" : "C.sol",
     "num_mutants": 5
   }]
