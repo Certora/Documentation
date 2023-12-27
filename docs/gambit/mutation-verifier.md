@@ -37,8 +37,8 @@ If you are on Linux, you will need pip version 20.3 or above.
 Once you have updated your `certora-cli` installation using `pip` to get the relevant
   dependencies, run Gambit from the command line:
 
-```
-certoraMutate --prover_conf path/to/prover/prover.conf --mutation_conf path/to/mutation/mutation.conf
+```sh
+certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation.conf
 ```
 
 ```{note}
@@ -63,6 +63,19 @@ Here is a simple configuration file setup using the example above in `mutation.c
   }]
 }
 ```
+
+### Automatic Generation
+You can generate a mutation configuration automatically from a Prover configuration 
+  with the flag `--generate_mutation_conf`.
+The resulting configuration may need some manual path fixing or the addition of other
+ `certoraMutate` specific options.
+
+Example usage:
+```sh
+certoraRun path/to/prover.conf --generate_mutation_conf path/to/generated/mutation.conf
+```
+
+
 
 ### Manual Mutations
 You can add manual mutations to `mutation.conf` like so:
