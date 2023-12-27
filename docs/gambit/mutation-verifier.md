@@ -159,8 +159,8 @@ We are actively working on mitigating them.
 
 The mutation verification results are
   summarized in a user-friendly visualization.
-[Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) 
-  is an example summary for the [Borda example](https://demo.certora.com/?Borda).
+[Here](https://mutation-testing-beta.certora.com/?id=01623b02-0cda-435b-8c31-af9306d6d302&anonymousKey=857c3aeb-169c-4c93-8021-e82058603ca1) 
+  is an example summary for the [advanced mutation of an ERC20 example](https://github.com/Certora/CertoraInit/blob/master/mutation/advanced_mutation.conf).
 The green outer circles represent the rules, 
   and the gray dots represent the mutants.
 Selecting a rule shows which mutants it detected,
