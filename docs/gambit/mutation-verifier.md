@@ -1,13 +1,12 @@
 # Using Gambit with the Prover
 
-This is the mutation verifier which
- checks that variants of the original
- solidity program do not pass the specification.
+The mutation verifier checks that variants of the original
+  Solidity program do not pass the specification.
 It uses mutations from the {doc}`Gambit <gambit>`
   mutation generator.
 It also allows users to include manually generated mutants.
 If a mutated program passes the specification,
-it may indicate that the specification is vacuous or not rigorous enough.
+  it may indicate that the specification is vacuous or not rigorous enough.
 In the rest of the document,
   we refer to both the mutation generator and the verifier as Gambit.
 
@@ -36,7 +35,7 @@ If you are on Linux, you will need pip version 20.3 or above.
 ## Running the Mutation Verifier
 
 Once you have updated your `certora-cli` installation using `pip` to get the relevant
-dependencies, run Gambit from the command line:
+  dependencies, run Gambit from the command line:
 
 ```
 certoraMutate --prover_conf path/to/prover/prover.conf --mutation_conf path/to/mutation/mutation.conf
@@ -44,10 +43,11 @@ certoraMutate --prover_conf path/to/prover/prover.conf --mutation_conf path/to/m
 
 ```{note}
 You must run `certoraMutate` from the root of the Solidity project directory.
-The files `prover.conf` and `mutation.conf`
-can be in their own directories, but must always be within the project directory.
+The files `prover.conf` and `mutation.conf` can be in their own directories, 
+  but must always be within the project directory.
 All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
-Paths in `prover.conf` are all relative to the project directory's root, which is assumed to be the working directory.
+Paths in `prover.conf` are all relative to the project directory's root, 
+  which is assumed to be the working directory.
 ```
 
 ## Configurations
