@@ -123,17 +123,14 @@ It avoids depending on an active internet connection for the entire duration of
 
 | Option                         | Description                                                                                                           |
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
-| `--prover_conf`                | Specify the Prover configuration file for verifying mutants                                                           |
 | `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
-| `--num_mutants`                | Request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
+| `--prover_conf`                | Specify the Prover configuration file for verifying mutants                                                           |
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
 | `--debug`                      | Show additional logging information during execution                                                                  |
-| `--gambit_out`                 | Specify the output directory for Gambit. Defaults to adding a new directory under the working directory          |
-| `--applied_mutants_dir`        | Specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
 | `--ui_out`                     | Specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
-| `--collect_file`               | Specify the collect file from which to run in asynchronous mode                                                       |
+| `--collect_file`               | Specify the collect file from which to run in {ref}`synchronous-execution`                                                       |
 | `--sync`                       | Enable {ref}`synchronous-execution`                                            |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
