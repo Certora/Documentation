@@ -92,7 +92,7 @@ If you do, the Prover will execute the verification job using this file on the
 The original run job runs in parallel to the mutation verification jobs. 
 A mutation testing report will not be produced if the original run job fails or halts.
 
-Here is a simple configuration file setup using the example above inn `prover.conf`:
+Here is a simple configuration file setup using the example above in `prover.conf`:
 
 ```json
 {
