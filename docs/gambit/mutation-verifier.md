@@ -64,6 +64,30 @@ Here is a simple configuration file setup using the example above in `mutation.c
 }
 ```
 
+### Manual Mutations
+You can add manual mutations to `mutation.conf` like so:
+
+```json
+{ 
+  "gambit": [{
+    "filename" : "C.sol",
+    "num_mutants": 5
+  }],
+  "manual_mutants": {
+     "C.sol": "path/to/dir/with/manual_mutants/for/C"
+  }
+}
+```
+If you don't have a `gambit` object in the `conf` file, 
+  `certoraMutate` will run only on the mutants added manually, 
+  and no other mutants will be generated.
+
+```{note}
+All manual mutations must be named uniquely. 
+For example, if you want to generate manual mutations for `C.sol` and `D.sol`, 
+  name them `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
+```
+
 ## Original Verification Run
 
 A mutation test requires an original verification job that was completed successfully without halting. All mutant checks will be run with the same verification configuration as the original run, 
@@ -103,30 +127,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 }
 ```
 
-
-## Manual Mutations
-You can add manual mutations to `mutation.conf` like so:
-
-```json
-{ 
-  "gambit": [{
-    "filename" : "C.sol",
-    "num_mutants": 5
-  }],
-  "manual_mutants": {
-     "C.sol": "path/to/dir/with/manual_mutants/for/C"
-  }
-}
-```
-If you don't have a `gambit` object in the `conf` file, 
-  `certoraMutate` will run only on the mutants added manually, 
-  and no other mutants will be generated.
-
-```{note}
-All manual mutations must be named uniquely. 
-For example, if you want to generate manual mutations for `C.sol` and `D.sol`, 
-  name them `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
-```
 
 (synchronous-execution)=
 ## Synchronous Execution
