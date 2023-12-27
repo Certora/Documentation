@@ -127,23 +127,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 }
 ```
 
-
-(synchronous-execution)=
-## Synchronous Execution
-
-By default, `certoraMutate` will dump data about the mutation verification jobs 
-  in the `collect.json` file in the working directory. 
-These jobs are submitted to the server environment specified and run asynchronously. 
-They may be polled later with `certoraMutate --collect_file collect.json`.
-
-Use the `--sync` flag to run the entire tool synchronously in your shell, 
-  from mutant generation to the web report UI. 
-The synchronous mode is suitable when the original specification run finishes quickly. 
-The asynchronous default mode is ideal for more extensive specifications of 
-  more complicated contracts, where each run takes more than just several minutes. 
-It avoids depending on an active internet connection for the entire duration of 
-  the original run and the mutations.
-
 ## CLI Options
 
 `certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
@@ -160,7 +143,6 @@ It avoids depending on an active internet connection for the entire duration of
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--collect_file`               | Specify the collect file from which to run in {ref}`synchronous-execution`                                                       |
-| `--sync`                       | Enable {ref}`synchronous-execution`                                            |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
 | `--poll_timeout`               | Specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
