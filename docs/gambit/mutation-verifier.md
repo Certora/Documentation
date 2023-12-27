@@ -159,14 +159,12 @@ We are actively working on mitigating them.
 
 The mutation verification results are
   summarized in a user-friendly visualization.
-[Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) is an example summary
-  for the [Borda example](https://demo.certora.com/?Borda).
-Rules are represented by the green outer circles
-  and the mutants are represented by the gray dots.
-Selecting a rule shows which mutants it detected
-  and selecting a mutant shows which rules detected it.
-The coverage metric is computed as the fraction
-  of total generated mutants that were detected.
-Clicking on a mutant's patch also shows the
-  diff with respect to the original program.
+[Here](https://mutation-testing-beta.certora.com/reports/mutation?id=c7c659d7-d500-46f2-acf1-1392eee714b5&anonymousKey=f4b40ba6-2160-4993-9f50-02625b291cae) 
+  is an example summary for the [Borda example](https://demo.certora.com/?Borda).
+The green outer circles represent the rules, 
+  and the gray dots represent the mutants.
+Selecting a rule shows which mutants it detected,
+  and selecting a mutant shows which rules caught it.
+The coverage metric is the ratio of the caught mutants to all mutants tested.
+Clicking on a mutant's patch shows the difference between it and the original program.
 
