@@ -71,7 +71,7 @@ A mutation test requires an original verification job that was completed success
 Rules that are not verified on the original run will be ignored.
 
 (orig-verification-link)=
-#### Original Verification Link
+### Original Verification Link
 
 You can provide the original run job's link via `--orig_run`, for example: 
 ```
@@ -81,7 +81,7 @@ You can provide the original run job's link via `--orig_run`, for example:
 Note that the run must have the job status `Executed` on the [Prover dashboard](https://prover.certora.com).
 
 (prover-conf)=
-#### Prover Configuration
+### Prover Configuration
 
 Alternatively, you can provide a verification configuration file for the Certora Prover 
   via `--prover_conf`. 
