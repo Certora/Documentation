@@ -136,6 +136,7 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
 | `--orig_run`                   | Specify the {ref}`orig-verification-link`                                                            |
 | `--prover_conf`                | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
+| `--msg`                        | Add a message to identify the `certoraMutate` run |
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
 | `--gambit_only`                | Stop processing after generating mutations |
 | `--debug`                      | Show additional logging information during execution                                                                  |
