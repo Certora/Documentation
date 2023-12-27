@@ -165,6 +165,13 @@ The green outer circles represent the rules,
   and the gray dots represent the mutants.
 Selecting a rule shows which mutants it detected,
   and selecting a mutant shows which rules caught it.
-The coverage metric is the ratio of the caught mutants to all mutants tested.
 Clicking on a mutant's patch shows the difference between it and the original program.
+
+The Coverage metric is the ratio of the caught mutants to all mutants tested, 
+  also shown under Caught Mutations.
+The Rules metric shows the ratio of the rules that caught at least one mutation 
+  out of all the rules in the tested specification.
+The Solo Rules metric shows the ratio between the rules that caught a unique mutation 
+  and all rules that caught at least one mutation.
+
 
