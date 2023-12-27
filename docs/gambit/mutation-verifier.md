@@ -78,7 +78,9 @@ You can provide the original run job's link via `--orig_run`, for example:
 --orig_run https://prover.certora.com/output/53342/9487899b2afc4709899889fab6c2c673/?anonymousKey=5c365717c9c1076f0c1acb050c7eb5867f07a236
 ```
 
-Note that the run must have the job status `Executed` on the [Prover dashboard](https://prover.certora.com).
+```{note}
+The run must have the job status `Executed` on the [Prover dashboard](https://prover.certora.com).
+```
 
 (prover-conf)=
 ### Prover Configuration
