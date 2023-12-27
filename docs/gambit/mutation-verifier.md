@@ -140,17 +140,20 @@ It avoids depending on an active internet connection for the entire duration of
 
 ## Troubleshooting
 
-At the moment, there are a few ways in which `certoraMutate` can fail. Here are some suggestions on how to troubleshoot when that happens. We are actively working on mitigating them.
+At the moment, there are a few ways in which `certoraMutate` can fail. 
+Here are some suggestions on how to troubleshoot when that happens. 
+We are actively working on mitigating them.
 
-- Sometimes it might be useful to first run `gambit` without going through `certoraMutate`.
+- Sometimes it is easier to understand the problem by running `gambit` directly.
   `gambit` can be found under the `site-packages` directory under `certora_bins`.
   * Run `gambit mutate --json foo.json` or `gambit mutate --filename solidity.sol` to identify the issue.
   * Here, `foo.json` can also be `foo.conf`.
-  * **Note.** you must remove the field `manual_mutants` from the `json` if it is present, before running `gambit`.
+  * **Note:** you must remove the field `manual_mutants` from the `json` if it is present before running `gambit`.
 - Try running the Prover on your mutants individually using `certoraRun`. 
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
   It is also possible that you are encountering a bug with the underlying version of the Prover.
-- In sync mode, even if the polling timeout was hit, it is possible to re-run `certoraMutate` with just the `--collect_file` option to to retry getting the results without restarting the entire mutation testing task.
+- In sync mode, even if the polling timeout was hit, it is possible to re-run `certoraMutate` 
+  with just the `--collect_file` option to retry getting the results without restarting the entire mutation testing task.
 
 ## Visualization
 
