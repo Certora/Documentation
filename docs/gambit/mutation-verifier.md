@@ -104,7 +104,7 @@ Here is a simple configuration file setup using the example above in `prover.con
 ```
 
 
-### Manual Mutations
+## Manual Mutations
 You can add manual mutations to `mutation.conf` like so:
 
 ```json
