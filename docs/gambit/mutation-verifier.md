@@ -50,23 +50,10 @@ Paths in `prover.conf` are all relative to the project directory's root,
   which is assumed to be the working directory.
 ```
 
-## Configurations
-The tool expects two separate configuration files:
-  the configuration file which defines the execution of mutant generation (`--mutation_conf`),
-  and the configuration file which defines the execution of the Prover (`--prover_conf`).
-Here is a simple configuration file setup using the example above:
-
-In `prover.conf`:
-
-```json
-{
-  "files": [
-    "C.sol"
-  ],
-  "verify": "C:c.spec"
-}
-```
-In `mutation.conf`:
+## Mutation Configuration
+The tool expects a configuration file which defines the execution of 
+  mutant generation (`--mutation_conf`).
+Here is a simple configuration file setup using the example above in `mutation.conf`:
 
 ```json
 { 
@@ -76,6 +63,39 @@ In `mutation.conf`:
   }]
 }
 ```
+
+## Original Verification Run
+
+A mutation test requires an original verification job that was completed successfully without halting. All mutant checks will be run with the same verification configuration as the original run, 
+  and their results will be compared to the original run. 
+Rules that are not verified on the original run will be ignored.
+
+(orig-verification-link)=
+### Original Verification Link
+
+You can provide the original run job's link via `--orig_run`, for example: `--orig_run https://prover.certora.com/output/53342/9487899b2afc4709899889fab6c2c673/?anonymousKey=5c365717c9c1076f0c1acb050c7eb5867f07a236`. Note that the run must have the job status `Executed` on the [Prover dashboard](https://prover.certora.com).
+
+(prover-conf)=
+### Prover Configuration
+
+Alternatively, you can provide a verification configuration file for the Certora Prover 
+  via `--prover_conf`. 
+If you do, the Prover will execute the verification job using this file on the unmutated code, 
+  which will be the original run. 
+The original run job runs in parallel to the mutation verification jobs. 
+A mutation testing report will not be produced if the original run job fails or halts.
+
+Here is a simple configuration file setup using the example above inn `prover.conf`:
+
+```json
+{
+  "files": [
+    "C.sol"
+  ],
+  "verify": "C:c.spec"
+}
+```
+
 
 ### Manual Mutations
 You can add manual mutations to `mutation.conf` like so:
