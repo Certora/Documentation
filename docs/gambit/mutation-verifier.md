@@ -101,8 +101,8 @@ For example, if you want to generate manual mutations for `C.sol` and `D.sol`,
   name them `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
 ```
 
-(synchronous_mode)=
-## Synchronous Mode
+(synchronous_execution)=
+## Synchronous Execution
 
 By default, `certoraMutate` will dump data about the mutation verification jobs 
   in the `collect.json` file in the working directory. 
@@ -134,7 +134,7 @@ It avoids depending on an active internet connection for the entire duration of
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--collect_file`               | Specify the collect file from which to run in asynchronous mode                                                       |
-| `--sync`                       | Enable [synchronous execution](#synchronous_mode)                                                                                          |
+| `--sync`                       | Enable [](#synchronous_execution)                                              |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
 | `--poll_timeout`               | Specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
