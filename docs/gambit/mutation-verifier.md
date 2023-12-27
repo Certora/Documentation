@@ -151,9 +151,10 @@ It avoids depending on an active internet connection for the entire duration of
 | Option                         | Description                                                                                                           |
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
-| `--orig_run`                | Specify the {ref}`orig-verification-link`                                                            |
+| `--orig_run`                   | Specify the {ref}`orig-verification-link`                                                            |
 | `--prover_conf`                | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
+| `--gambit_only`                | Stop processing after generating mutations |
 | `--debug`                      | Show additional logging information during execution                                                                  |
 | `--ui_out`                     | Specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
