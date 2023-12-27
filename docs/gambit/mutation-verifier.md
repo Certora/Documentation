@@ -80,8 +80,8 @@ You can provide the original run job's link via `--orig_run`, for example: `--or
 
 Alternatively, you can provide a verification configuration file for the Certora Prover 
   via `--prover_conf`. 
-If you do, the Prover will execute the verification job using this file on the unmutated code, 
-  which will be the original run. 
+If you do, the Prover will execute the verification job using this file on the 
+  code without any mutation, which will be the original run. 
 The original run job runs in parallel to the mutation verification jobs. 
 A mutation testing report will not be produced if the original run job fails or halts.
 
@@ -144,7 +144,7 @@ It avoids depending on an active internet connection for the entire duration of
 | Option                         | Description                                                                                                           |
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
-| `--prover_conf`                | Specify the Prover configuration file for verifying mutants                                                           |
+| `--prover_conf`                | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
 | `--debug`                      | Show additional logging information during execution                                                                  |
 | `--ui_out`                     | Specify a JSON file to dump the mutant verification report used for the web UI                                   |
