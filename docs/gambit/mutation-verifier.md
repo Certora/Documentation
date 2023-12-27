@@ -144,7 +144,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
 | `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
-| `--poll_timeout`               | Specify the number of minutes to poll a task in sync mode before giving up. Polling is possible even after the timeout with another call to `certoraMutate`     |
 
 ## Troubleshooting
 
@@ -160,8 +159,6 @@ We are actively working on mitigating them.
 - Try running the Prover on your mutants individually using `certoraRun`. 
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
   It is also possible that you are encountering a bug with the underlying version of the Prover.
-- In sync mode, even if the polling timeout was hit, it is possible to re-run `certoraMutate` 
-  with just the `--collect_file` option to retry getting the results without restarting the entire mutation testing task.
 
 ## Visualization
 
