@@ -81,7 +81,8 @@ In `mutation.conf`:
 You can add manual mutations to `mutation.conf` like so:
 
 ```json
-{ "gambit": [{
+{ 
+  "gambit": [{
     "filename" : "C.sol",
     "num_mutants": 5
   }],
@@ -90,11 +91,14 @@ You can add manual mutations to `mutation.conf` like so:
   }
 }
 ```
-If you set `num_mutants` to 0 in the above file, `gambit` will run only on the mutants added manually and no other mutants will be generated.
-`certoraMutate` on manually written mutants.
+If you set `num_mutants` to 0 in the above file or emit the `gambit` object entirely, 
+  `certoraMutate` will run only on the mutants added manually, 
+  and no other mutants will be generated.
 
 ```{note}
-All manual mutations must be named uniquely. For example, if you want to generate manual mutations for `C.sol` and `D.sol`, name them as `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
+All manual mutations must be named uniquely. 
+For example, if you want to generate manual mutations for `C.sol` and `D.sol`, 
+  name them `C.m1.sol, C.m2.sol, D.m3.sol, D.m4.sol, ...` etc.
 ```
 
 ## CLI Options
