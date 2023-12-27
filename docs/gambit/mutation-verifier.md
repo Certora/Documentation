@@ -126,7 +126,6 @@ It avoids depending on an active internet connection for the entire duration of
 | `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
 | `--num_mutants`                | Request the mutant generator to generate a specific number of mutants. Defaults to 5                                  |
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
-| `--server`                     | Specify the server environment to run on. Defaults to the value specified in the `--prover_conf` file or the `certoraRun` default otherwise   |
 | `--debug`                      | Show additional logging information during execution                                                                  |
 | `--gambit_out`                 | Specify the output directory for Gambit. Defaults to adding a new directory under the working directory          |
 | `--applied_mutants_dir`        | Specify the target directory for mutant verification build files. Defaults to a hidden Prover internal directory      |
