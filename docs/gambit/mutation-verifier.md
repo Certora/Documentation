@@ -34,7 +34,7 @@ If you are on Linux, you will need pip version 20.3 or above.
 
 ## Running the Mutation Verifier
 
-The mutation verificiation script is called `certoraMutate`. 
+The mutation verification script is called `certoraMutate`. 
 Run it from the command line:
 
 ```sh
