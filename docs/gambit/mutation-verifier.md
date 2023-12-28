@@ -10,7 +10,7 @@ If a mutated program passes the specification,
 In the rest of the document,
   we refer to both the mutation generator and the verifier as Gambit.
 
-## Installations and Setup
+## Installation
 
 To use the mutation verifier,
   first {ref}`install the Certora Prover and its dependencies <installation>`.
@@ -34,8 +34,8 @@ If you are on Linux, you will need pip version 20.3 or above.
 
 ## Running the Mutation Verifier
 
-Once you have updated your `certora-cli` installation using `pip` to get the relevant
-  dependencies, run Gambit from the command line:
+The mutation verificiation script is called `certoraMutate`. 
+Run it from the command line:
 
 ```sh
 certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation.conf
