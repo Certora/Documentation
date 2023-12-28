@@ -119,6 +119,8 @@ You can provide the original run job's link via `--orig_run`, for example:
 The run must have the job status `Executed` on the [Prover dashboard](https://prover.certora.com).
 ```
 
+The files will be downloaded to either a default directory or to one specified with `--orig_run_dir`.
+
 (prover-conf)=
 ### Prover Configuration
 
@@ -148,6 +150,7 @@ Here is a simple configuration file setup using the example above in `prover.con
 |:-------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | `--mutation_conf`              | Specify the configuration file for mutant generation                                                                  |
 | `--orig_run`                   | Specify the {ref}`orig-verification-link`                                                            |
+| `--orig_run_dir`               | Specify the folder where the files will be downloaded from the {ref}`orig-verification-link` |
 | `--prover_conf`                | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
 | `--msg`                        | Add a message to identify the `certoraMutate` run |
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
