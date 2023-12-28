@@ -78,7 +78,15 @@ certoraRun path/to/prover.conf --generate_mutation_conf path/to/generated/mutati
 
 
 ### Manual Mutations
-You can add manual mutations to `mutation.conf` like so:
+
+You have the option to include manually generated mutated files, not produced by Gambit, in your mutation test. We refer to these as 'manual mutations.' They can be beneficial for evaluating verification coverage related to specific changes that Gambit might not generate, or mutations that Gambit does not currently support.
+
+```note
+It is recommended to limit each manually mutated file to a single mutation for more accurate coverage analysis and better traceability.
+```
+
+
+To add manual mutations to `mutation.conf`, write:
 
 ```json
 { 
@@ -87,7 +95,7 @@ You can add manual mutations to `mutation.conf` like so:
     "num_mutants": 5
   }],
   "manual_mutants": {
-     "C.sol": "path/to/dir/with/manual_mutants/for/C"
+     "C.sol": "path/to/dir/with/manual_mutants/for/C.m1.sol"
   }
 }
 ```
