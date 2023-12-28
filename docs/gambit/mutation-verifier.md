@@ -153,7 +153,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--prover_version`             | Specify the version of `certoraRun` to use for verification. Defaults to the installed version of `certoraRun`        |
 | `--gambit_only`                | Stop processing after generating mutations |
 | `--debug`                      | Show additional logging information during execution                                                                  |
-| `--ui_out`                     | Specify a JSON file to dump the mutant verification report used for the web UI                                   |
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
