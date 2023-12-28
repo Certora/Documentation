@@ -165,12 +165,12 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--orig_run`                   | Specify the {ref}`orig-verification-link`                                                            |
 | `--orig_run_dir`               | Specify the folder where the files will be downloaded from the {ref}`orig-verification-link` |
 | `--prover_conf`                | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
-| `--msg`                        | Add a message to identify the `certoraMutate` run |
 | `--prover_version`             | Specify the `certoraRun` version for verification. If not specified, the installed `certoraRun` version is used by default.        |
+| `--msg`                        | Add a message to identify the `certoraMutate` run |
 | `--gambit_only`                | Stop processing after generating mutations |
-| `--debug`                      | Show additional logging information during execution                                                                  |
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_failed_collects`       | Specify a log file to capture mutant collection failures |
+| `--debug`                      | Show additional logging information during execution                                                                  |
 
 ## Troubleshooting
 
