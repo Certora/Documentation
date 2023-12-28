@@ -157,7 +157,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
-| `--request_timeout`            | Specify the length in seconds for a web request timeout                                                               |
 
 ## Troubleshooting
 
