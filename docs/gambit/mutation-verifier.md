@@ -105,7 +105,7 @@ To add manual mutations to `mutation.conf`, write:
 }
 ```
 If you don't have a `gambit` object in the `conf` file, 
-  `certoraMutate` will run only on the mutants added manually, 
+  `certoraMutate` will run only on the manual mutants, 
   and no other mutants will be generated.
 
 ```{note}
