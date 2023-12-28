@@ -158,6 +158,7 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--debug`                      | Show additional logging information during execution                                                                  |
 | `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_csv`                   | Specify a CSV file to write the verification report. Much of this content is in the JSON report as well, but this is intended to be an alternative representation of the data                                                              |
+| `--dump_failed_collects`       | Specify a log file to capture mutant collection failures |
 | `--max_timeout_attempts_count` | Specify the maximum number of times a web request is attempted                                                        |
 
 ## Troubleshooting
