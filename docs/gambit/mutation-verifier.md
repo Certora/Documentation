@@ -212,6 +212,8 @@ Clicking on a mutant's patch shows the difference between it and the original pr
 
 ### Metrics
 
+At the top bar of the report there are different coverage metrics.
+
 ![Mutation metrics](doc/mutation_metrics.png)
 
 - The Coverage metric is the ratio of the caught mutants to all mutants tested, 
