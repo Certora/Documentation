@@ -191,14 +191,15 @@ We are actively working on mitigating them.
 
 The mutation verification results are
   summarized in a user-friendly visualization.
+
+
 [Here](https://mutation-testing-beta.certora.com/?id=01623b02-0cda-435b-8c31-af9306d6d302&anonymousKey=857c3aeb-169c-4c93-8021-e82058603ca1) 
-  is an example summary for the [advanced mutation of an ERC20 example](https://github.com/Certora/CertoraInit/blob/master/mutation/advanced_mutation.conf).
-
-![Report of the advanced mutation of CertoraInit](doc/mutation_advanced_results.png)
-
+  is an example summary for the 
+  [advanced mutation of an ERC20 example](https://github.com/Certora/CertoraInit/blob/master/mutation/advanced_mutation.conf).
 The green outer circles represent the rules, 
   and the gray dots represent the mutants.
 
+![Report of the advanced mutation of CertoraInit](doc/mutation_advanced_results.png)
 
 Selecting a rule shows which mutants it detected,
  and selecting a mutant shows which rules caught it.
@@ -208,6 +209,10 @@ Selecting a rule shows which mutants it detected,
 Clicking on a mutant's patch shows the difference between it and the original program.
 
 ![Showing a mutant patch](doc/show_mutant_patch.png)
+
+### Metrics
+
+![Mutation metrics](doc/mutation_metrics.png)
 
 The Coverage metric is the ratio of the caught mutants to all mutants tested, 
   also shown under Caught Mutations.
