@@ -387,7 +387,14 @@ Options regarding summarization
 ### `--optimistic_summary_recursion`
 
 **What does it do?**
-In case there's a call to some Solidity function within a summary, we may end up with recursive calls to this summary. For example, if in the summary of `foo` we call the Solidity function `bar`, and `bar`'s Solidity code contains a call to `foo`, we'll summarize `foo` again, which will lead to another call to `bar` etc.
+In case there's a call to some Solidity function within a summary, we may end up with recursive calls to this summary. For example, if in the summary of `foo` we call the Solidity function `bar`, and `bar`'s Solidity code contains a call to `foo`, we'll summarize `foo` again, which will lead to another call to `bar` etc. In this case if this flag is set to `false` we may get an assertion failure with a message along the lines of
+```
+Recursion limit (...) for calls to ..., reached during compilation of summary ...
+```
+Alternatively, such recursion could happen with {ref}`dispatcher` summaries - if both contract A and B have a function `foo()`, and `A.foo()` contains a call to `someContractAddress.foo()`, then if `foo()` is summarized with {ref}`dispatcher`, and `B.foo()` is unresolved, the dispatching may choose `A.foo()` as one of the possible targets and we end up with recursion. In this case if this flag is set to `false` we may get an assertion failure message along the lines of
+```
+When summarizing a call with dispatcher, found we already have it in the stack: ... consider removing its dispatcher summary.
+```
 The default behavior in this case is to assert if the recursion limit is reached (the limit is controlled by the {ref}`--summary_recursion_limit` flag). Setting this flag to `true` will instead assume that the limit is never reached.
 
 **When to use it**
