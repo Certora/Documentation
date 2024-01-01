@@ -487,6 +487,8 @@ contract Example {
       mapping (address => uint[]) bar;
    }
    Foo[3] myState;
+   uint32 luckyNumber;
+   address[] public addresses;
 }
 ```
 
@@ -514,4 +516,17 @@ can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].leng
 Direct storage access is an experimental feature, and relies on several internal program analyses which can sometimes fail.
 If these internal static analyses fail, any rules that use direct storage access will fail during processing. If this
 occurs, check the "Global Problems" view of the web report and contact Certora for assistance.
+```
+
+### Direct storage havoc
+
+The same direct storage syntax can also be used in `havoc` statements. With the previously-mentioned `Example` contract and `using Example as ex`, you can write `havoc ex.luckyNumber` or `havoc addresses[10]` or even `havoc addresses.length`.
+
+While you may use a `havoc assuming` statement, unlike [ghosts](ghosts), you cannot directly refer to the havoced storage path in the assuming statement using the `@old` and `@new` syntax.
+
+```{warning}
+As with direct storage access in general, direct storage havoc is experimental and limited to primitive types. In particular, this mean you _cannot_ currently havoc
+* entire arrays or entire mappings (only arrays at a specific index, or mappings at a specific key)
+* user-defined types such as structs, or arrays/mappings of such types
+* enums
 ```
