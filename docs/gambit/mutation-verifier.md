@@ -208,6 +208,8 @@ Selecting a rule shows which mutants it detected,
 
 Clicking on a mutant's patch shows the difference between it and the original program.
 
+![Showing a mutant patch](doc/show_mutant_patch.png)
+
 The Coverage metric is the ratio of the caught mutants to all mutants tested, 
   also shown under Caught Mutations.
 The Rules metric shows the ratio of the rules that caught at least one mutation 
