@@ -201,11 +201,11 @@ The green outer circles represent the rules,
   and the gray dots represent the mutants.
 
 
-Selecting a rule shows which mutants it detected.
+Selecting a rule shows which mutants it detected,
+ and selecting a mutant shows which rules caught it.
 
 ![Selecting a rule](doc/selecting_a_rule.png)
 
-Selecting a mutant shows which rules caught it.
 Clicking on a mutant's patch shows the difference between it and the original program.
 
 The Coverage metric is the ratio of the caught mutants to all mutants tested, 
