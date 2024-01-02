@@ -176,13 +176,12 @@ back to the beta release using `certora-beta/bin/activate`.
 Step 3: Set the premium access key as an environment variable
 -------------------------------------------------------------
 
-The Certora Prover is available for all to use in a free trial version. The
-Prover's processing power and storage capacity are limited in the trial
-version. If you are using the tool in this way, you can skip to the next step.
+The Certora Prover requires a personal key. 
+You can get a personal key by registering on the 
+[Certora website](https://www.certora.com/signup?plan=prover).
 
-Otherwise, you should have received a personal _premium key_ from the Certora
-team. Before running the Prover in the premium version, you should register the
-premium key as a system variable.
+Before running the Prover, 
+you should register your key as a system variable.
 
 To do so on macOS or Linux machines, execute the following command on the terminal:
 
@@ -191,7 +190,7 @@ export CERTORAKEY=<premium_key>
 ```
 
 This command sets a temporary variable that will be unset once the terminal is
-closed. We recommended storing the premium key in an environment variable named
+closed. We recommended storing the key in an environment variable named
 `CERTORAKEY`. This way, you will no longer need to execute the above command
 whenever you open a terminal. To set an environment variable permanently,
 follow the next steps:
