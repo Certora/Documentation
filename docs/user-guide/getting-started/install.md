@@ -186,7 +186,7 @@ To do so on macOS or Linux machines,
   execute the following command on the terminal:
 
 ```bash
-export CERTORAKEY=<premium_key>
+export CERTORAKEY=<personal_access_key>
 ```
 
 This command sets a temporary variable that will be unset once the terminal is
