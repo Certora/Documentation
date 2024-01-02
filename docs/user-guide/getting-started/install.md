@@ -181,9 +181,9 @@ You can get a personal access key by registering on the
 [Certora website](https://www.certora.com/signup?plan=prover).
 
 Before running the Prover, 
-you should register your access key as a system variable.
-
-To do so on macOS or Linux machines, execute the following command on the terminal:
+  you should register your access key as a system variable.
+To do so on macOS or Linux machines, 
+  execute the following command on the terminal:
 
 ```bash
 export CERTORAKEY=<premium_key>
