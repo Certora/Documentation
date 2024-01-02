@@ -38,7 +38,7 @@ The mutation verification script is called `certoraMutate`.
 Run it from the command line:
 
 ```sh
-certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation.conf
+certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation.mconf
 ```
 
 ```{note}
@@ -53,7 +53,7 @@ Paths in `prover.conf` are all relative to the project directory's root,
 ## Mutation Configuration
 The tool expects a configuration file which defines the execution of 
   mutant generation (`--mutation_conf`).
-Here is a simple configuration file setup using the example above in `mutation.conf`:
+Here is a simple configuration file setup using the example above in `mutation.mconf`:
 
 ```json
 { 
@@ -72,7 +72,7 @@ The resulting configuration may need some manual path fixing or the addition of 
 
 Example usage:
 ```sh
-certoraRun path/to/prover.conf --generate_mutation_conf path/to/generated/mutation.conf
+certoraRun path/to/prover.conf --generate_mutation_conf path/to/generated/mutation.mconf
 ```
 
 
@@ -91,7 +91,7 @@ It is recommended to limit each manually mutated file to a single mutation for m
 ```
 
 
-To add manual mutations to `mutation.conf`, write:
+To add manual mutations to `mutation.mconf`, write:
 
 ```json
 { 
@@ -104,7 +104,7 @@ To add manual mutations to `mutation.conf`, write:
   }
 }
 ```
-If you don't have a `gambit` object in the `conf` file, 
+If you don't have a `gambit` object in the `mconf` file, 
   `certoraMutate` will run only on the manual mutants, 
   and no other mutants will be generated.
 
