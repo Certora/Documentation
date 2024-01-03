@@ -16,7 +16,6 @@ timeouts/index.md
 opcodes.md
 checking.md
 troubleshooting.md
-checking.md
 faq.md
 glossary.md
 contact.md
