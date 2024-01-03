@@ -47,7 +47,7 @@ When it finishes successfully, you should see the following lines printed:
 
 ```
 ********************  PROVER END  ********************
-You will receive an email notification when this mutation test is completed.
+You will receive an email notification when this mutation test is completed. It may take several hours.
 ```
 
 ```{note}
