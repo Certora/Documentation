@@ -41,6 +41,15 @@ Run it from the command line:
 certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation.mconf
 ```
 
+If you do, the script will generate code mutants, 
+  then submit a verification job per mutant to Certora's server.
+When it finishes successfully, you should see the following lines printed:
+
+```
+********************  PROVER END  ********************
+You will receive an email notification when this mutation test is completed.
+```
+
 ```{note}
 You must run `certoraMutate` from the root of the Solidity project directory.
 The files `prover.conf` and `mutation.conf` can be in their own directories, 
