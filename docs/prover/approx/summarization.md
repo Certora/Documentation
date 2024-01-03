@@ -1,3 +1,4 @@
+(method-summarization)=
 Method Summarization
 ====================
 

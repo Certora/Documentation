@@ -1,3 +1,4 @@
+(invariants)=
 Invariants
 ==========
 
@@ -5,9 +6,13 @@ Invariants describe a property of the state of a contract that is always
 expected to hold.
 
 ```{caution}
-Even if an invariant is verified, it may still be possible to violate it.  This
-is a potential source of {term}`unsoundness <unsound>`.  See {ref}`invariant-assumptions`
-for details.
+Certain features of invariants are {term}`unsound`: the invariant can be
+verified by the Prover, but it may still be possible for the contract to
+violate it.  The possible sources of unsoundness are {ref}`preserved`,
+{ref}`invariant-filters`, and {ref}`invariant-revert`.  Invariant proofs are
+also unsound if some of the methods are filtered out using the
+{ref}`--method` or {ref}`--parametric_contracts` flags.  See the linked sections for
+details.
 ```
 
 
@@ -18,7 +23,7 @@ for details.
 Syntax
 ------
 
-The syntax for invariants is given by the following [EBNF grammar](syntax):
+The syntax for invariants is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 invariant ::= "invariant" id
@@ -69,59 +74,44 @@ point in time.  Therefore, you should only use view functions inside of an
 invariant.  Non-view functions are allowed, but the behavior is undefined.
 ```
 
-(invariant-assumptions)=
-Assumptions made while checking invariants
-------------------------------------------
+(invariant-revert)=
+Invariants that revert
+----------------------
 
-In Ethereum, the only way to change the storage state of a smart contract is
-using the smart contract's methods.  Therefore, if an invariant depends only on
-the storage of the contract, we can prove the invariant by checking it after
-calling each of the contract methods.
-
-However, it is possible to write invariants whose value depends on things other
-than the contract's storage.  The truth of an expression may depend on the
-state of other contracts or on the {term}`environment`.  For these invariants,
-the expression can change from `true` to `false` without invoking a method on
-the main contract.
+There is well-known unsoundness in the Prover's handling of invariants that
+occurs if an invariant expression reverts in the "before" state but not in the
+"after" state.  In this case, the assumption that the invariant holds before
+calling the contract method will revert, causing any counterexample to be
+discarded.
 
 For example, consider the following contract:
 
-```solidity
-contract Timestamp {
-    uint256 public immutable timestamp;
-
-    constructor() {
-        timestamp = block.timestamp;
-    }
-}
-```
-
-The following invariant will be successfully verified, although it is clearly
-false:
-
 ```cvl
-invariant time_is_now(env e)
-    timestamp() == e.block.timestamp;
-```
+contract Example {
+    private uint[] a;
 
-The verification is successful because the action that falsifies the invariant
-is the passage of time, rather than the invocation of a contract method.
+    public function add(uint i) external {
+        a.push(i);
+    }
 
-Similarly, an invariant that depends on an external contract can become false
-by calling a method on the external contract.  For example:
-
-```solidity
-contract SupplyTracker {
-    address token;
-    uint256 public supply;
-
-    constructor(address _token) {
-        token  = _token;
-        supply = token.totalSupply();
+    public function get(uint i) external returns(uint) {
+        return a[i];
     }
 }
 ```
 
+This contract simply wraps an array of integers and allows you to add integers
+to the array.  The following invariant states that all elements of the array are
+0:
+```cvl
+invariant all_elements_are_zero(uint i) get(i) == 0;
+```
+
+This property is clearly false; you can invalidate it by calling `add(2)`.
+Nevertheless, the invariant will pass.  The reason is that before a call to
+`add` pushes a nonzero integer into `a[i]`, the length of `a` was `i-1`, so the
+call to `get(i)` will revert.  Therefore, the Prover would discard the
+counterexample instead of reporting it.
 As above, an invariant stating that `supply() == token.totalSupply()` would be
 verified, but a method on `token` might change the total supply without updating
 the `SupplyTracker` contract.  Since the Prover only checks the main contract's
@@ -132,23 +122,21 @@ For this reason, invariants that depend on the environment or on the state of
 external contracts are a potential source of {term}`unsoundness <unsound>`, and should be
 used with care.
 
-```{todo}
 There is an additional source of unsoundness that occurs if the invariant
 expression reverts in the before state but not in the after state.
-```
 
 (preserved)=
 Preserved blocks
 ----------------
 
-Often, the preservation of an invariant depends on another invariant, or on an
-external assumption about the system.  These assumptions can be written in
-`preserved` blocks.
+Often, the proof that an invariant is preserved depends on another invariant,
+or on an external assumption about the system.  These assumptions can be
+written in `preserved` blocks.
 
 ```{caution}
 Adding `require` statements to preserved blocks can be a source of
-{term}`unsoundness <unsound>`, since the invariants are only guaranteed to hold if the
-requirements are true for every method invocation.
+{term}`unsoundness <unsound>`, since the invariants are only guaranteed to hold
+if the requirements are true for every method invocation.
 ```
 
 Recall that the Prover checks that a method preserves an invariant by first
@@ -163,13 +151,25 @@ block, if any), inside a set of curly braces (`{ ... }`).  Each preserved block
 consists of the keyword `preserved` followed by an optional method signature, 
 an optional `with` declaration, and finally the block of commands to execute.
 
+```{note}
+Although invariants are now checked on methods of all contracts on the scene,
+the method signature in a `preserved` block only allows specifying the method
+signature of the method, and not the receiver contract.  If multiple contracts
+on the scene implement methods with the same signature, you must use the same
+`preserved` block for all of them.
+```
+
 If a preserved block specifies a method signature, the signature must either be `fallback()` or
 match one of the contract methods, and the preserved block only applies when
 checking preservation of that contract method.  The `fallback()` preserved block
 applies only to the `fallback()` function that should be defined in the contract.
-The arguments of the method are in scope within the preserved block.  
-If there is no method signature, the preserved is a default block that applies to 
-all methods that don't have a specific preserved block, including the `fallback()` method.
+The arguments of the method are in scope within the preserved block.
+
+If there is no method signature, the preserved block is a default block that is
+used for all methods that don't have a specific preserved block, including the
+`fallback()` method.  If an invariant has both a default preserved block and a
+specific preserved block for a method, the specific preserved block is used;
+the default preserved block will not be executed.
 
 The `with` declaration is used to give a name to the {term}`environment` used
 while invoking the method.  It can be used to restrict the transactions that are
@@ -227,11 +227,11 @@ and set to a nonzero value in the calls to `balanceOf`.  This counterexample is
 not ruled out by the `preserved` block because the `preserved` block only
 places restrictions on the environment passed to `balanceOf`.
 
-In general, you should be cautious of invariants that depend on an environment;
-see {ref}`invariant-assumptions` for more details.
+In general, you should be cautious of invariants that depend on an environment.
 
 ````
 
+(invariant-filters)=
 Filters
 -------
 
@@ -243,7 +243,7 @@ a method for skipping verification on a method-by-method basis.
 Filtering out methods while checking invariants is {term}`unsound`.  If you are
 filtering out a method because the invariant doesn't pass, consider using a
 `preserved` block instead; this allows you to add assumptions in a fine-grained
-way.
+way (although `preserved` blocks can also be unsound).
 ```
 
 To filter out methods from an invariant, add a `filtered` block after the
@@ -253,9 +253,9 @@ name, and `expr` is a boolean expression that may depend on `var`.
 
 Before verifying that a method preserves an invariant, the `expr` is
 evaluated with `var` bound to a `method` object.  This allows `expr` to refer
-to the checked method using `var`'s fields, such as `var.selector` and
-`var.isView`.  See {ref}`method-type` for a list of the fields available on
-`method` objects.
+to the checked method using `var`'s fields, such as `var.selector`,
+`var.contract`, and `var.isView`.  See {ref}`method-type` for a list of the
+fields available on `method` objects.
 
 If the expression evaluates to `false` with `var` replaced by a given method,
 the Prover will not check that the method preserves the invariant.  For example,
@@ -279,14 +279,13 @@ If there is a {ref}`preserved block <preserved>` for a method, the method will
 be verified even if the filter would normally exclude it.
 ```
 
-
 (invariant-as-rule)=
 Writing an invariant as a rule
 ------------------------------
 
-Above we explained that verifying an invariant requires two checks: an initial-state check
-that the constructor establishes the invariant, and a preservation check that
-each method preserves the invariant.
+Above we explained that verifying an invariant requires two checks: an
+initial-state check that the constructor establishes the invariant, and a
+preservation check that each method preserves the invariant.
 
 Invariants are the only mechanism in CVL for specifying properties of
 constructors, but {term}`parametric rule`s can be used to write the

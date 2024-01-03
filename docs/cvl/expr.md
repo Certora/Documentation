@@ -10,7 +10,7 @@ possible expressions in CVL and explains how they are evaluated.
 Syntax
 ------
 
-The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
+The syntax for CVL expressions is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 expr ::= literal
@@ -94,10 +94,6 @@ are standard.
 One significant difference between CVL and Solidity is that in Solidity, `^`
 denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 `^` denotes exponentiation and `xor` denotes exclusive or.
-```
-
-```{todo}
-The `>>>` operator is currently undocumented.
 ```
 
 % TODO: migrate this information here.
@@ -261,6 +257,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 will check that the current contract supports the optional `burnFrom` method.
 
 (special-fields)=
+(currentContract)=
 Special variables and fields
 ----------------------------
 
@@ -268,6 +265,9 @@ Several of the CVL types have special fields; see {doc}`types` (particularly
 {ref}`env`, {ref}`method-type`, and {ref}`arrays`).
 
 There are also several built-in variables:
+
+ * `address currentContract` always refers to the main contract being verified
+   (that is, the contract named in the {ref}`--verify` option).
 
  * `bool lastReverted` and `bool lastHasThrown` are boolean values that
    indicate whether the most recent contract function reverted or threw an
@@ -340,7 +340,7 @@ while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
 
-
+(with-revert)=
 After the function name, but before the arguments, you can write an optional
 method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
  * `@norevert` indicates that examples where the method revert should not be
@@ -349,6 +349,9 @@ method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
    considered.  In this case, the method will set the `lastReverted` and
    `lastHasThrown` variables to `true` in case the called method reverts or
    throws an exception.
+
+   [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
+
  * ```{todo}
    The `@dontsummarize` tag is currently undocumented.
    ```
@@ -479,7 +482,7 @@ and array/map dereference operations together. For example, if the current contr
 type definitions and state variables:
 
 ```solidity
-contract Example
+contract Example {
    struct Foo {
       mapping (address => uint[]) bar;
    }
@@ -503,7 +506,8 @@ Attempting to access more complex types will yield a type checking error. For ex
 an entire array with `currentContract.myState[0].bar[addr]` will fail.
 
 ```{note}
-Although entire arrays cannot be accessed, the _length_ of the dynamic arrays can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
+Although entire arrays cannot be accessed, the _length_ or the _number of elements_ of the dynamic arrays
+can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
 ```
 
 ```{warning}

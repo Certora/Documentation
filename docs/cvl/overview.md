@@ -19,10 +19,10 @@ A spec may contain any of the following:
  - **[Methods blocks](methods):** `methods` blocks contain information on how methods
    should be summarized by the Prover during verification.
 
- - **[Rules](rules):** A rule describes the expected behavior of the methods of a
+ - **[Rules](rules-main):** A rule describes the expected behavior of the methods of a
    contract.
 
- - **[Invariants](invariants):** Invariants describe facts about the state of a contract that
+ - **{ref}`invariants`:** Invariants describe facts about the state of a contract that
    should always be true.
 
  - **[Functions](functions):** CVL functions contain CVL code that can be reused throughout the spec.
@@ -40,7 +40,7 @@ A spec may contain any of the following:
 The remainder of this chapter describes the syntax and semantics of a
 specification file in detail.
 
-(syntax)=
+(ebnf-syntax)=
 Syntactic Conventions
 ---------------------
 

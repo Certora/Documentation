@@ -29,6 +29,9 @@ If you already have `certora-cli` installed and
 pip install --upgrade certora-cli
 ```
 
+```{note}
+If you are on Linux, you will need pip version 20.3 or above.
+```
 
 ## Running the Mutation Verifier
 
@@ -66,10 +69,10 @@ In `prover.conf`:
 In `mutation.conf`:
 
 ```json
-{ "gambit": {
+{ "gambit": [{
     "filename" : "C.sol",
-    "num-mutants": 5
-  }
+    "num_mutants": 5
+  }]
 }
 ```
 
@@ -77,10 +80,10 @@ In `mutation.conf`:
 You can add manual mutations to `mutation.conf` like so:
 
 ```json
-{ "gambit": {
+{ "gambit": [{
     "filename" : "C.sol",
-    "num-mutants": 5
-  },
+    "num_mutants": 5
+  }],
   "manual_mutants": {
      "C.sol": "path/to/dir/with/manual_mutants/for/C"
   }
