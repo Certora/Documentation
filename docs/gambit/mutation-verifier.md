@@ -1,7 +1,7 @@
 # Using Gambit with the Prover
 
 The mutation verifier checks that variants of the original
-  Solidity program do not pass the specification.
+  Solidity program do not pass verification against a given specification.
 It uses mutations from the {doc}`Gambit <gambit>`
   mutation generator.
 It also allows users to include manually generated mutants.
@@ -178,11 +178,8 @@ At the moment, there are a few ways in which `certoraMutate` can fail.
 Here are some suggestions on how to troubleshoot when that happens. 
 We are actively working on mitigating them.
 
-- Sometimes it is easier to understand the problem by running `gambit` directly.
-  `gambit` can be found under the `site-packages` directory under `certora_bins`.
-  * Run `gambit mutate --json foo.json` or `gambit mutate --filename solidity.sol` to identify the issue.
-  * Here, `foo.json` can also be `foo.conf`.
-  * **Note:** you must remove the field `manual_mutants` from the `json` if it is present before running `gambit`.
+- Sometimes, the problem stems from Gambit's mutant generation.
+  Try running with `--gambit_only` and look at the generated mutations.
 - Try running the Prover on your mutants individually using `certoraRun`. 
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
   It is also possible that you are encountering a bug with the underlying version of the Prover.
