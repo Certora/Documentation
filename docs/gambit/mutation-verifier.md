@@ -50,6 +50,11 @@ When it finishes successfully, you should see the following lines printed:
 You will receive an email notification when this mutation test is completed. It may take several hours.
 ```
 
+Verifying all the mutants is a heavy computational process that may take several hours.
+Once it is completed, you should receive an email that looks like this:
+
+![Mutation suceeded email](doc/email_mutation_success.png)
+
 ```{note}
 You must run `certoraMutate` from the root of the Solidity project directory.
 The files `prover.conf` and `mutation.conf` can be in their own directories, 
@@ -58,11 +63,6 @@ All paths in `mutation.conf` are relative to the parent directory containing `mu
 Paths in `prover.conf` are all relative to the project directory's root, 
   which is assumed to be the working directory.
 ```
-
-Verifying all the mutants is a heavy computational process that may take several hours.
-Once it is completed, you should receive an email that looks like this:
-
-![Mutation suceeded email](doc/email_mutation_success.png)
 
 
 ## Mutation Configuration
