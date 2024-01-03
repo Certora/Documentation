@@ -34,7 +34,7 @@ If you are on Linux, you will need pip version 20.3 or above.
 
 ## Running the Mutation Verifier
 
-The mutation verification script is called `certoraMutate`. TESTTTTTTTT
+The mutation verification script is called `certoraMutate`.
 Run it from the command line:
 
 ```sh
@@ -43,6 +43,16 @@ certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation
 
 If you do, the script will generate code mutants, 
   then submit a verification job per mutant to Certora's server.
+
+```{note}
+You must run `certoraMutate` from the root of the Solidity project directory.
+The files `prover.conf` and `mutation.conf` can be in their own directories, 
+  but must always be within the project directory.
+All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
+Paths in `prover.conf` are all relative to the project directory's root, 
+  which is assumed to be the working directory.
+```
+
 When it finishes successfully, you should see the following lines printed:
 
 ```
@@ -54,15 +64,6 @@ Verifying all the mutants is a heavy computational process that may take several
 Once it is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
-
-```{note}
-You must run `certoraMutate` from the root of the Solidity project directory.
-The files `prover.conf` and `mutation.conf` can be in their own directories, 
-  but must always be within the project directory.
-All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
-Paths in `prover.conf` are all relative to the project directory's root, 
-  which is assumed to be the working directory.
-```
 
 
 ## Mutation Configuration
