@@ -15,7 +15,7 @@ Built-in rules can be included in any spec file by writing `use builtin rule
 Syntax
 ------
 
-The syntax for rules is given by the following [EBNF grammar](syntax):
+The syntax for rules is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 built_in_rule ::= "use" "builtin" "rule" built_in_rule_name ";"
