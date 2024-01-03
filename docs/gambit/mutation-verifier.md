@@ -59,6 +59,12 @@ Paths in `prover.conf` are all relative to the project directory's root,
   which is assumed to be the working directory.
 ```
 
+Verifying all the mutants is a heavy computational process that may take several hours.
+Once it is completed, you should receive an email that looks like this:
+
+![Mutation suceeded email](doc/email_mutation_success.png)
+
+
 ## Mutation Configuration
 The tool expects a configuration file which defines the execution of 
   mutant generation (`--mutation_conf`).
