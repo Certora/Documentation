@@ -175,7 +175,7 @@ Here is a simple configuration file setup using the example above in `prover.con
 
 `certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
 
-| <div style="width:170px">Option</div> | Description                                                                                                           |
+| <div style="width:150px">Option</div> | Description                                                                                                           |
 |:--------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | `--mutation_conf`                     | Specify the configuration file for mutant generation                                                                  |
 | `--orig_run`                          | Specify the {ref}`orig-verification-link`                                                            |
