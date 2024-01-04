@@ -230,6 +230,9 @@ follow the next steps:
     source .zshenv
     ```
 
+When running the Certora Prover in the Visual Studio Code Extension, you may need
+to restart VSCode or your computer.
+
 </details>
 
 <details>
