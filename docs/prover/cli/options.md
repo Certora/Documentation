@@ -430,7 +430,7 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 ### `--summary_recursion_limit`
 
 **What does it do?**
-Summaries can cause recursion (see {ref}`--optimistic_summary_recurion`). This
+Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
 option sets the summary recursion level, which is the number of recursive calls
 that the Prover will consider.
 
