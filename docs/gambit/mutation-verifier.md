@@ -184,7 +184,6 @@ Here is a simple configuration file setup using the example above in `prover.con
 | `--prover_version`             | Specify the `certoraRun` version for verification. If not specified, the installed `certoraRun` version is used by default.        |
 | `--msg`                        | Add a message to identify the `certoraMutate` run |
 | `--gambit_only`                | Stop processing after generating mutations |
-| `--dump_link`                  | Specify a text file to write the UI report link                                                                       |
 | `--dump_failed_collects`       | Specify a log file to capture mutant collection failures |
 | `--debug`                      | Show additional logging information during execution                                                                  |
 
