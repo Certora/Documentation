@@ -177,7 +177,7 @@ Step 3: Set the personal access key as an environment variable
 -------------------------------------------------------------
 
 The Certora Prover requires a personal access key. 
-You can get a personal access key by registering on the 
+You can get a free personal access key by registering on the 
 [Certora website](https://www.certora.com/signup?plan=prover).
 
 Before running the Prover, 
