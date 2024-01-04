@@ -387,34 +387,64 @@ Options regarding summarization
 ### `--optimistic_summary_recursion`
 
 **What does it do?**
-In case there's a call to some Solidity function within a summary, we may end up with recursive calls to this summary. For example, if in the summary of `foo` we call the Solidity function `bar`, and `bar`'s Solidity code contains a call to `foo`, we'll summarize `foo` again, which will lead to another call to `bar` etc. In this case if this flag is set to `false` we may get an assertion failure with a message along the lines of
-```
+In case there's a call to some Solidity function within a summary, we may end up
+with recursive calls to this summary. For example, if in the summary of `foo` we
+call the Solidity function `bar`, and `bar`'s Solidity code contains a call to
+`foo`, we'll summarize `foo` again, which will lead to another call to `bar`
+etc. In this case if this flag is set to `false` we may get an assertion failure
+with a message along the lines of
+```text
 Recursion limit (...) for calls to ..., reached during compilation of summary ...
 ```
-Alternatively, such recursion could happen with {ref}`dispatcher` summaries - if both contract A and B have a function `foo()`, and `A.foo()` contains a call to `someContractAddress.foo()`, then if `foo()` is summarized with {ref}`dispatcher`, and `B.foo()` is unresolved, the dispatching may choose `A.foo()` as one of the possible targets and we end up with recursion. In this case if this flag is set to `false` we may get an assertion failure message along the lines of
-```
+Such recursion can also happen with {ref}`dispatcher summaries <dispatcher>` &mdash;
+if a contract method `f` makes an unresolved external call to a different method
+`f`, and if `f` is summarized with a `DISPATCHER` summary, then the Prover will
+consider paths where `f` recursively calls itself. Without `--optimistic_summary_recursion`,
+the Prover may report a rule violation with the following assert message:
+```text
 When summarizing a call with dispatcher, found we already have it in the stack: ... consider removing its dispatcher summary.
 ```
-The default behavior in this case is to assert if the recursion limit is reached (the limit is controlled by the {ref}`--summary_recursion_limit` flag). Setting this flag to `true` will instead assume that the limit is never reached.
+The default behavior in this case is to assert that the recursion limit is not
+reached (the limit is controlled by the {ref}`--summary_recursion_limit` flag).
+With `--optimistic_summary_recursion`, the Prover will instead assume that the
+limit is never reached.
 
 **When to use it**
-There's recursion due to summaries calling Solidity functions, and this leads to an assertion failure due to this. In this case one can either make the limit larger (via {ref}`--summary_recursion_limit`) or set this flag to `true`.
+Use this flag when there is recursion due to summaries calling Solidity
+functions, and this causes an undesired assertion failure. In this case one can
+either make the limit larger (via {ref}`--summary_recursion_limit`) or set this
+flag to `true`.
 
 **Example**
 
 ```
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion true
 ```
+
+```{caution}
+Note that this flag could be another cause for unsoundness - even if such recursion
+_could_ actually happen in the deployed contract, this code-path won't be verified.
+```
+
 (--summary_recursion_limit)=
 ### `--summary_recursion_limit`
 
 **What does it do?**
-In case there's a call to some Solidity function within a summary, we may end up with recursive calls to this summary. For example, if in the summary of `foo` we call the Solidity function `bar`, and `bar`'s Solidity code contains a call to `foo`, we'll summarize `foo` again, which will lead to another call to `bar` etc.
-This flag controls the number of such recursive calls we verify. Note that {ref}`--optimistic_summary_recursion` controls whether reaching the limit is a failure or just assumed to never happen.
+Summaries can cause recursion (see {ref}`--optimistic_summary_recurion`). This
+option sets the summary recursion level, which is the number of recursive calls
+that the Prover will consider.
+
+If a counterexample causes a function to be called recursively more than the
+summary recursion limit, it will report an assertion failure (unless
+{ref}`--optimistic_summary_recursion` is set, in which case the counterexample
+will be ignored).
 The default value is zero (i.e. no recursion is allowed).
 
 **When to use it**
-There's recursion due to summaries calling Solidity functions, and this leads to an assertion failure due to this. In this case one can either make the limit larger or set (via {ref}`--optimistic_summary_recursion`)  flag to `true`.
+Use this option when there is recursion due to summaries calling Solidity
+functions, and this leads to an assertion failure. In this case one can either
+make the limit larger or set (via {ref}`--optimistic_summary_recursion`) flag
+to `true`.
 
 **Example**
 
