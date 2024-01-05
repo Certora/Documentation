@@ -380,73 +380,52 @@ Solidity functions.  The only exception is that hooks may not contain
 parametric method calls.  Expressions in hook bodies may reference variables
 bound by the hook pattern.
 
+
 Hook bodies may also refer to the special CVL variable `executingContract`,
 which contains the address of the contract whose code triggered the hook.
 
-````{todo}
-Questions about the following:
- - does this have to do with the fact that the call is from a hook, or from a
-   summary?
- - for example, if a hook calls a contract function that performs a store that
-   has a hook on it, would the inner hook get called?  Similarly, if a contract
-   calls a summarized function and the summary calls a contract function that
-   then performs a store with a hook, does the hook execute?
+### Reentrant hooks
 
+While a hook is executing, additional hooks are skipped.  If
+a hook calls a contract function which would normally cause another hook to
+execute, the inner hook will not execute.
 
-Hooks are not recursively applied.
-That is, if a hook calls a Solidity function `foo`, and the Solidity function
-call triggers a summarization that also calls another Solidity function `bar`,
-then any hooks that would have applied to `bar` would not be instrumented from
-this context.
+For example, suppose the contract function `updateX()` always assigned to the
+value `x`, and consider the following hook (see
+[`HookReentrancy.spec` here][hook-reentrance-example] for the complete example):
 
-For example, given the following contract and specification, the rule `check` will fail.
+% TODO: maybe update link to `master` when Examples PR #46 is accepted?
+[hook-reentrance-example]: https://github.com/Certora/Examples/tree/28cb774fc03767e8aeaf00ea1bb0fac7db595fc9/ReferenceManual/HookReentrancy
 
-```solidity
-contract C {
-  uint public x;
-  function main() external {
-    x = 3;
-  }
+```{code-block} cvl
+:linenos:
 
-  function foo() external {
-    myInternalFoo();
-  }
+/// the number of stores to `x`
+ghost mathint xStoreCount;
 
-  function myInternalFoo() internal {
-    // ...
-  }
-
-  function bar() external {
-    x = 5;
-  }
-
-}
-```
-
-```cvl
-methods {
-  function myInternalFoo() internal => callBar();
-  function x() external returns (uint256) envfree;
-}
-
-function callBar() {
-  env e;
-  bar(e);
-}
-
-ghost uint xGhost;
+/// increment xStoreCount and recursively update `x`
 hook Sstore x uint v STORAGE {
-  xGhost = v;
-  env e;
-  foo(e);
+    xStoreCount = xStoreCount + 1;
+    if (xStoreCount < 5) {
+        updateX();
+    }
 }
 
-rule check() {
-  env e;
-  main(e);
-  assert xGhost == x(); // will fail - bar()'s hooks are not instrumented. xGhost == 3 while x == 5
+/// This rule will pass because hooks are not recursively applied
+rule checkStoreCount {
+    require xStoreCount == 0;
+    updateX();
+    assert xStoreCount == 1;
 }
 ```
 
-````
+In this example, the rule `checkStoreCount` calls `updateX` on line 15, which
+updates `x`, triggering the hook on line 5.  The hook then calls `updateX`
+again on line 8.  The recursive call to `updateX` will then update `x` a second
+time.
+
+At this point, you may expect that the hook will be triggered a second time,
+but because there is already a hook executing, this second update to `x` will
+not trigger the hook.  Therefore the `xStoreCount` ghost will *not* be updated
+a second time, so its final value will be `1`.
 
