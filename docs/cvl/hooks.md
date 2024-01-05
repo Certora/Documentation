@@ -194,10 +194,8 @@ use of storage.  In some cases, especially in the presence of inline assembly
 may not be applied.
 
 If storage analysis fails, you will see a message indicating the failure in the
-global problems view of the rule report.
-
-% TODO: reference the prover/techniques section that is currently in progress in
-% a different PR
+global problems view of the rule report.  See {ref}`storage-and-memory-analysis`
+for more details.
 
 (rawhooks)=
 ### Hooking on all loads or stores
