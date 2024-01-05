@@ -52,6 +52,8 @@ Examples
 - [store hook example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L117)
 - [load hook example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L141)
 
+See {ref}`using-opcodes` and {ref}`tracking-changes` for additional examples.
+
 (load-hooks)=
 (store-hooks)=
 Load and store hooks
@@ -426,4 +428,5 @@ At this point, you may expect that the hook will be triggered a second time,
 but because there is already a hook executing, this second update to `x` will
 not trigger the hook.  Therefore the `xStoreCount` ghost will *not* be updated
 a second time, so its final value will be `1`.
+
 
