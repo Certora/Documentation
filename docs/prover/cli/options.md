@@ -224,7 +224,7 @@ Normally, each satisfy statement will be turned into a subrule (similarly to the
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
 Turning on the `independent_satisfy` mode will, for each sub-rule, ignore all currently not-checked satisfy statements.
 
-As an illustrative example, consider the following rule `R` that has two satisfy:
+As an illustrative example, consider the following rule `R` that has two satisfy statements:
 
 ```cvl
 …
