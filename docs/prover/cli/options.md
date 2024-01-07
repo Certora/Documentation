@@ -238,7 +238,7 @@ The `independent_satisfy` mode would generate and check two sub-rules: `R1` wher
 Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b /\ !b`.
 
 **When to use it?**
-When you have a rule with multiple satisfy statements, and you would like to check each case separately.
+When you have a rule with multiple satisfy statements, and you would like to demonstrate each statement separately.
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
