@@ -173,25 +173,24 @@ pip3 install certora-cli-beta
 You can then switch to the standard CVL release by running `deactivate`, and
 back to the beta release using `certora-beta/bin/activate`.
 
-Step 3: Set the premium access key as an environment variable
+Step 3: Set the personal access key as an environment variable
 -------------------------------------------------------------
 
-The Certora Prover is available for all to use in a free trial version. The
-Prover's processing power and storage capacity are limited in the trial
-version. If you are using the tool in this way, you can skip to the next step.
+The Certora Prover requires a personal access key. 
+You can get a free personal access key by registering on the 
+[Certora website](https://www.certora.com/signup?plan=prover).
 
-Otherwise, you should have received a personal _premium key_ from the Certora
-team. Before running the Prover in the premium version, you should register the
-premium key as a system variable.
-
-To do so on macOS or Linux machines, execute the following command on the terminal:
+Before running the Prover, 
+  you should register your access key as a system variable.
+To do so on macOS or Linux machines, 
+  execute the following command on the terminal:
 
 ```bash
-export CERTORAKEY=<premium_key>
+export CERTORAKEY=<personal_access_key>
 ```
 
 This command sets a temporary variable that will be unset once the terminal is
-closed. We recommended storing the premium key in an environment variable named
+closed. We recommended storing the access key in an environment variable named
 `CERTORAKEY`. This way, you will no longer need to execute the above command
 whenever you open a terminal. To set an environment variable permanently,
 follow the next steps:
@@ -230,6 +229,9 @@ follow the next steps:
     ```bash
     source .zshenv
     ```
+
+When running the Certora Prover in the Visual Studio Code Extension, you may need
+to restart VSCode or your computer.
 
 </details>
 
