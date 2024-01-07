@@ -58,6 +58,10 @@ You will receive an email notification when this mutation test is completed. It 
 ```
 
 Verifying all the mutants is a heavy computational process that may take several hours.
+The time required to verify all mutants depends on various factors, 
+  such as the number of mutants, the complexity of the contracts, 
+  and the complexity of the specifications. 
+In some instances, the entire testing process may take several hours.
 Once it is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
