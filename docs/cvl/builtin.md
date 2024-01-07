@@ -106,11 +106,11 @@ rule sanity {
     method f; env e;
     calldataarg arg;
     f(e, arg); 
-    assert false;
+    satisfy true;
 }
 ```
 
-To find a counterexample to the assertion, the Prover must construct an input
+To find a satisfying trace, the Prover must construct an input
 for which `f` doesn't revert.
 
 (built-in-deep-sanity)=
