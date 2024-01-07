@@ -68,8 +68,8 @@ Once it is completed, you should receive an email that looks like this:
 
 
 ## Mutation Configuration
-The tool expects a configuration file which defines the execution of 
-  mutant generation (`--mutation_conf`).
+The mutation tester expects a configuration file which defines the settings for 
+  mutant generation and testing (`--mutation_conf`).
 Here is a simple configuration file setup using the example above in `mutation.mconf`:
 
 ```json
@@ -99,9 +99,8 @@ certoraRun path/to/prover.conf --generate_mutation_conf path/to/generated/mutati
 You have the option to include manually generated mutated files, 
   not produced by Gambit, in your mutation test. 
 We refer to these as 'manual mutations.' 
-They can be beneficial for evaluating verification coverage related to 
-  specific changes that must always be checked, 
-  or mutations that Gambit does not currently support.
+They can be used for regression tests, 
+  or to check mutations that Gambit does not currently support.
 
 ```{note}
 It is recommended to limit each manually mutated file to a single mutation for more accurate coverage analysis and better traceability.
