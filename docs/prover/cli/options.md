@@ -222,7 +222,7 @@ When you have a rule with multiple assertions:
 The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule. 
 Normally, each satisfy statement will be turned into a subrule (similarly to the {ref}`--multi_assert_check` mode), 
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
-Turning on the `independent_satisfy` mode will, for each sub-rule, ignore all currently not-checked satisfy statements.
+Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each subrule.
 
 As an illustrative example, consider the following rule `R` that has two satisfy statements:
 
