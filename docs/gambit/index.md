@@ -7,8 +7,8 @@ mutation testing to evaluate and improve CVL specifications.
 
 Mutation testing is a technique for evaluating and improving
   test suites.
-The key idea is to introduce faults, called mutants, to the program under test
-  and measure a test suite's ability to detect these mutants.
+Mutants are identical copies of the tested program with a single random change.
+The objective is to assess how well a test suite can identify and detect these mutants.
 The more mutants a test suite detects, or _kills_, the better the test suite is.
 _Live_ mutants --- those that pass all tests in the test suite --- are indications
   of potential shortcomings in the test suite and can be used as test goals to
