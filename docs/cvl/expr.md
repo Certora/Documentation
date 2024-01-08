@@ -513,7 +513,7 @@ can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].leng
 ```
 
 ```{warning}
-Direct storage access is an experimental feature, and relies on several internal program analyses which can sometimes fail.
+Direct storage access is an experimental feature, and relies on several internal program analyses which can sometimes fail. For example, attempts to use direct storage access to refer to variable which is actually unused or inaccessible in the contract.
 If these internal static analyses fail, any rules that use direct storage access will fail during processing. If this
 occurs, check the "Global Problems" view of the web report and contact Certora for assistance.
 ```
