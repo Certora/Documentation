@@ -60,6 +60,7 @@ special_vars ::=
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
            | "calledContract"
+           | "executingContract"
 
 cast_functions ::=
     | require_functions | to_functions | assert_functions
@@ -166,7 +167,7 @@ currently undocumented.
    it to `userBalance(address)` otherwise.
 
    Conditional expressions are *short-circuiting*: if `expr1` or `expr2` have
-   side-effects (such as updating a [ghost variable](ghosts)), only the
+   side-effects (such as updating a {ref}`ghost variable <ghost-variables>`), only the
    side-effects of the expression that is chosen are performed.
 
  * A *universal* expression of the form `forall t v . expr` requires `t`
@@ -304,6 +305,8 @@ There are also several built-in variables:
  * `calledContract` is only available in {ref}`function summaries <function-summary>`.
    It refers to the receiver contract of a summarized method call.
 
+ * `executingContract` is only available in {ref}`hooks <hooks>`.  It refers to
+   the contract that is executing when the hook is triggered.
 
 CVL also has several built-in functions for converting between
 numeric types.  See {ref}`math-ops` for details.
