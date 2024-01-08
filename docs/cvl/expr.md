@@ -199,9 +199,9 @@ currently undocumented.
    will ensure that there is some time for which the price is nonzero.
 
 ```{note}
-The symbols `forall` and `exist` are sometimes referred to as *quantifiers*,
+The symbols `forall` and `exist` are sometimes referred to as {term}`quantifier`s,
 and expressions of the form `forall type v . e` and `exist type v . e` are
-referred to as *quantified expressions*.
+referred to as {term}`quantified expression`s.
 ```
 
 ````{caution}
@@ -222,6 +222,19 @@ require priceAtTime(startTime) != 0;
 ```
 
 ````
+
+```{caution}
+Calling contract functions within the body of a quantified expression is an
+experimental feature and may not work as intended.
+```
+
+```{note}
+The Prover uses approximations that may cause spurious counterexamples in rules
+that use quantifiers.  For example, a rule that requires a quantified statement
+may produce a counterexample that doesn't satisfy the requirement.  The
+approximation is {term}`sound`: it won't cause violations to be hidden.  See
+{ref}`grounding` for more detail.
+```
 
 Accessing fields and arrays
 ---------------------------

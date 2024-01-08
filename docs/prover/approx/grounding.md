@@ -15,6 +15,52 @@ You can prevent spurious counterexamples by turning off grounding (by passing
 {ref}`-smt_groundQuantifiers`), but without grounding the Prover may run
 considerably slower, and is likely to time out.
 
+The remainder of this document explains grounding in more detail, and lists the
+specific kinds of quantified expressions that may lead to spurious
+counterexamples.  We also include some suggestions for rewriting your
+quantified statements to avoid spurious counterexamples.
+
+```{contents}
+```
+
+## How grounding works
+
+Quantifier grounding transforms a {term}`quantified <quantifier>` statement
+into a series of non-quantified statements.  For example, suppose a
+specification contains the following {ref}`ghost axiom <ghost-axioms>`:
+
+```cvl
+ghost f(uint x) returns (mathint) {
+    init_state axiom forall uint x . f(x) == 0
+}
+```
+
+This statement logically says that `f(0) == 0` and `f(1) == 1` and `f(2) == 0`
+and so on.  In practice, however, the verification may only make use of a small
+finite number of these facts.  Grounding is the process of automatically
+replacing the `forall` statement with the specific unquantified statements that
+are necessary.
+
+For example, if the program and specification only ever access `f(2)`, `f(9)`,
+`f(y+3)`, and `f(z)`, then the axiom above would be automatically replaced
+with:
+
+```cvl
+ghost f(uint x) returns (mathint) {
+    init_state axiom f(2)   == 0;
+    init_state axiom f(9)   == 0;
+    init_state axiom f(y+3) == 0;
+    init_state axiom f(z)   == 0;
+}
+```
+
+The Prover will also ground more complex quantified expressions, and will ground
+them anywhere that you can write a quantified statement (e.g. `assert` and
+`require` statements, ghost axioms, and invariants).  Grounding also works with
+`exists` quantifiers.
+
+## Limitations on grounding
+
 In some cases, there is an easy way to rewrite your expression with fewer
 quantifiers.  For example, the following quantified statement requires that
 `f(x)` is always odd, but it is written in a way that violates {ref}`one of the
@@ -33,18 +79,9 @@ require forall uint x . f(x) % 2 == 1;
 This rewritten statement obeys the rules listed below, and therefore will not
 produce any spurious counterexamples.
 
-The remainder of this document explains grounding in more detail, and lists the
-specific kinds of quantified expressions that may lead to spurious
-counterexamples.  We also include some suggestions for rewriting your
-quantified statements to avoid spurious counterexamples.
-
-```{contents}
-```
-
-## Limitations on grounding
-
-This section describes specific cases where the Prover cannot ground quantified
-statements, and gives advice on how to work around those limitations.
+The remainder of this section describes specific cases where the Prover cannot
+ground quantified statements, and gives advice on how to work around those
+limitations.
 
 (grounding-alternating)=
 ### Alternating Quantifiers
@@ -132,18 +169,15 @@ the statements `f(8) > f(7)` and `f(7) > f(6)` to prove it, and the grounding
 mechanism is unable to do this.
 
 In these cases, you may see a counterexample that doesn't satisfy the `require`
-statement.
-
-```{todo}
-Do we have general suggestions for rewriting these?
-```
+statement; in this case the best option is to disable grounding with
+{ref}`-smt_groundQuantifiers`.
 
 (grounding-arguments)=
 ### Variables must be arguments
 
 In order for grounding to work, every variable appearing in a quantified
-statement must be used at least once as an argument to a contract function.
-For example, neither of the following examples are allowed:
+statement must be used at least once as an argument to a ghost or contract
+function.  For example, neither of the following examples are allowed:
 
 ```cvl
 require forall mathint x . x * 2 != y;
@@ -158,11 +192,6 @@ Although you are allowed to call functions on complicated expressions that use
 quantified variables, doing so may produce spurious counterexamples.  For
 example, the following is allowed, but is likely to produce spurious
 counterexamples (because `x` itself is not an argument to a function):
-
-```{todo}
-I'm sort of surprised that we allow this.  It would be simpler if we just required
-that `x` must be used as a simple argument to some function, right?
-```
 
 ```cvl
 require forall uint x . f(2 * x) == 0;
@@ -229,46 +258,28 @@ Grounding is disallowed when the quantified expression has double polarity in th
 rule.  For example, the following is disallowed, because the `forall` statement
 has double polarity.
 ```cvl
-assert (forall uint x . f(x) > 0) <=> y;
-```
-
-```{todo}
-advice for rewriting?
-```
-
-## How grounding works
-
-Quantifier grounding transforms a {term}`quantified <quantifier>` statement
-into a series of non-quantified statements.  For example, suppose a
-specification contains the following `ghost` axiom:
-
-```cvl
-ghost f(uint x) returns (mathint) {
-    init_state axiom forall uint x . f(x) == 0
+rule r {
+    ...
+    assert (forall uint x . f(x) > 0) <=> y;
 }
 ```
 
-This statement logically says that `f(0) == 0` and `f(1) == 1` and `f(2) == 0`
-and so on.  In practice, however, the verification may only make use of a small
-finite number of these facts.  Grounding is the process of automatically
-replacing the `forall` statement with the specific unquantified statements that
-are necessary.
-
-For example, if the program and specification only ever access `f(2)`, `f(9)`,
-`f(y+3)`, and `f(z)`, then the axiom above would be automatically replaced
-with:
+In many cases you can split a rule with a quantifier in a double-polarity
+position into multiple rules with single-polarity quantifiers.  For example, the
+above assertion could be split into two rules:
 
 ```cvl
-ghost f(uint x) returns (mathint) {
-    init_state axiom f(2)   == 0;
-    init_state axiom f(9)   == 0;
-    init_state axiom f(y+3) == 0;
-    init_state axiom f(z)   == 0;
+rule r1 {
+    ...
+    assert (forall uint x . f(x) > 0) => y;
+}
+
+rule r2 {
+    ...
+    assert y => (forall uint x . f(x) > 0);
 }
 ```
 
-The Prover will also ground more complex quantified expressions, and will ground
-them anywhere that you can write a quantified statement (e.g. `assert` and
-`require` statements, ghost axioms, and invariants).  Grounding also works with
-`exists` quantifiers.
+Verifying `r1` and `r2` is logically equivalent to verifying `r`, but the
+quantified expression appears with single polarity in each of the two rules.
 
