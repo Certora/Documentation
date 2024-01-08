@@ -29,6 +29,9 @@ If you already have `certora-cli` installed and
 pip install --upgrade certora-cli
 ```
 
+```{note}
+If you are on Linux, you will need pip version 20.3 or above.
+```
 
 ## Running the Mutation Verifier
 
@@ -42,10 +45,9 @@ certoraMutate --prover_conf path/to/prover/prover.conf --mutation_conf path/to/m
 ```{note}
 You must run `certoraMutate` from the root of the Solidity project directory.
 The files `prover.conf` and `mutation.conf`
-can be in their own directories.
+can be in their own directories, but must always be within the project directory.
 All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
 Paths in `prover.conf` are all relative to the project directory's root, which is assumed to be the working directory.
-of the project directory, which is assumed to be the working directory.
 ```
 
 ## Configurations
@@ -67,10 +69,10 @@ In `prover.conf`:
 In `mutation.conf`:
 
 ```json
-{ "gambit": {
+{ "gambit": [{
     "filename" : "C.sol",
-    "num-mutants": 5
-  }
+    "num_mutants": 5
+  }]
 }
 ```
 
@@ -78,10 +80,10 @@ In `mutation.conf`:
 You can add manual mutations to `mutation.conf` like so:
 
 ```json
-{ "gambit": {
+{ "gambit": [{
     "filename" : "C.sol",
-    "num-mutants": 5
-  },
+    "num_mutants": 5
+  }],
   "manual_mutants": {
      "C.sol": "path/to/dir/with/manual_mutants/for/C"
   }

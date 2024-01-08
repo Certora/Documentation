@@ -10,7 +10,7 @@ possible expressions in CVL and explains how they are evaluated.
 Syntax
 ------
 
-The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
+The syntax for CVL expressions is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 expr ::= literal
@@ -60,6 +60,7 @@ special_vars ::=
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
            | "calledContract"
+           | "executingContract"
 
 cast_functions ::=
     | require_functions | to_functions | assert_functions
@@ -94,10 +95,6 @@ are standard.
 One significant difference between CVL and Solidity is that in Solidity, `^`
 denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 `^` denotes exponentiation and `xor` denotes exclusive or.
-```
-
-```{todo}
-The `>>>` operator is currently undocumented.
 ```
 
 % TODO: migrate this information here.
@@ -170,7 +167,7 @@ currently undocumented.
    it to `userBalance(address)` otherwise.
 
    Conditional expressions are *short-circuiting*: if `expr1` or `expr2` have
-   side-effects (such as updating a [ghost variable](ghosts)), only the
+   side-effects (such as updating a {ref}`ghost variable <ghost-variables>`), only the
    side-effects of the expression that is chosen are performed.
 
  * A *universal* expression of the form `forall t v . expr` requires `t`
@@ -274,6 +271,7 @@ if (burnFrom(address,uint256).selector in currentContract) {
 will check that the current contract supports the optional `burnFrom` method.
 
 (special-fields)=
+(currentContract)=
 Special variables and fields
 ----------------------------
 
@@ -281,6 +279,9 @@ Several of the CVL types have special fields; see {doc}`types` (particularly
 {ref}`env`, {ref}`method-type`, and {ref}`arrays`).
 
 There are also several built-in variables:
+
+ * `address currentContract` always refers to the main contract being verified
+   (that is, the contract named in the {ref}`--verify` option).
 
  * `bool lastReverted` and `bool lastHasThrown` are boolean values that
    indicate whether the most recent contract function reverted or threw an
@@ -317,6 +318,8 @@ There are also several built-in variables:
  * `calledContract` is only available in {ref}`function summaries <function-summary>`.
    It refers to the receiver contract of a summarized method call.
 
+ * `executingContract` is only available in {ref}`hooks <hooks>`.  It refers to
+   the contract that is executing when the hook is triggered.
 
 CVL also has several built-in functions for converting between
 numeric types.  See {ref}`math-ops` for details.
@@ -353,7 +356,7 @@ while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
 
-
+(with-revert)=
 After the function name, but before the arguments, you can write an optional
 method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
  * `@norevert` indicates that examples where the method revert should not be
@@ -362,6 +365,9 @@ method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
    considered.  In this case, the method will set the `lastReverted` and
    `lastHasThrown` variables to `true` in case the called method reverts or
    throws an exception.
+
+   [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
+
  * ```{todo}
    The `@dontsummarize` tag is currently undocumented.
    ```
@@ -478,4 +484,65 @@ In particular, these failures can happen if an uninitialized storage slot is
 written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
 clear operation the slot will definitely hold 0, but the Prover will not make any assumptions
 about the value of the uninitialized slot which means they can be considered different.
+```
+
+(direct-storage-access)=
+Direct storage access
+---------------------
+
+The value of contract state variables can be directly accessed from CVL. These direct
+storage accesses are written using the state variable names and struct fields defined
+in the contract. For example, to access the state variable `uint x` defined in the `currentContract`,
+one can simply write `currentContract.x`. More complex structs can be accessed by chaining field selects
+and array/map dereference operations together. For example, if the current contract has the following
+type definitions and state variables:
+
+```solidity
+contract Example {
+   struct Foo {
+      mapping (address => uint[]) bar;
+   }
+   Foo[3] myState;
+   uint32 luckyNumber;
+   address[] public addresses;
+}
+```
+
+one can write `currentContract.myState[0].bar[addr][0]`, where `addr` is a CVL variable of type `address`.
+
+The storage of contracts other than the `currentContract` can be accessed by writing the contract identifier
+bound with a {ref}`using statement <using-stmt>`. For example, if the `myState` definition above appeared in
+a contract called `Test` and the current CVL file included  `using Test as t;` one could write `t.myState[0].bar[addr][0]`.
+
+```{note}
+A contract identifier (or `currentContract`) *must* be included in the direct storage access. In other
+words, writing just `myState[0].bar[addr][0]` will not work, even if `myState` is declared in the current contract.
+```
+
+Currently only primitive values (e.g., `uint`, `bytes3`, `bool`, enums, and user defined value types) can be directly accessed.
+Attempting to access more complex types will yield a type checking error. For example, attempting to access
+an entire array with `currentContract.myState[0].bar[addr]` will fail.
+
+```{note}
+Although entire arrays cannot be accessed, the _length_ or the _number of elements_ of the dynamic arrays
+can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
+```
+
+```{warning}
+Direct storage access is an experimental feature, and relies on several internal program analyses which can sometimes fail. For example, attempts to use direct storage access to refer to variable which is actually unused or inaccessible in the contract.
+If these internal static analyses fail, any rules that use direct storage access will fail during processing. If this
+occurs, check the "Global Problems" view of the web report and contact Certora for assistance.
+```
+
+### Direct storage havoc
+
+The same direct storage syntax can also be used in `havoc` statements. With the previously-mentioned `Example` contract and `using Example as ex`, you can write `havoc ex.luckyNumber` or `havoc addresses[10]` or even `havoc addresses.length`.
+
+While you may use a `havoc assuming` statement, unlike [ghosts](ghosts), you cannot directly refer to the havoced storage path in the `assuming` expression using the `@old` and `@new` syntax. This generally means `assuming` expressions are not as useful with direct storage access, so consider using and unconditional `havoc` statements instead of `havoc assuming`.
+
+```{warning}
+As with direct storage access in general, direct storage havoc is experimental and limited to primitive types. In particular, this mean you _cannot_ currently havoc
+* entire arrays or entire mappings (only arrays at a specific index, or mappings at a specific key)
+* user-defined types such as structs, or arrays/mappings of such types
+* enums
 ```

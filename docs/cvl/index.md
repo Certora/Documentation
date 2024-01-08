@@ -24,15 +24,15 @@ sorts.md
 ghosts.md
 defs.md
 hooks.md
-opcodes.md
 ```
 
-CVL 2
------
+Changes Since CVL 1
+-------------------
 
 ```{toctree}
 :maxdepth: 2
 
 cvl2/changes.md
 cvl2/migration.md
+v5-changes.md
 ```

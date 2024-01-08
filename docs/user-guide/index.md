@@ -12,7 +12,8 @@ properties/index.md
 satisfy.md
 patterns/index.md
 multicontract/index.md
-timeouts.md
+timeouts/index.md
+opcodes.md
 checking.md
 troubleshooting.md
 faq.md
