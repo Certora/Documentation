@@ -24,6 +24,7 @@ A set of examples featuring CVL are available on [github][examples].
 
 [examples]: https://github.com/Certora/Examples
 
+(stanford)=
 Stanford DeFi Security Summit
 -----------------------------
 
@@ -49,6 +50,7 @@ The covered examples are available in the [CVL examples repository](https://gith
 [stanford]: https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA
 
 
+(paris)=
 EthCC Paris
 -----------
 

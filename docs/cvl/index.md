@@ -24,7 +24,6 @@ sorts.md
 ghosts.md
 defs.md
 hooks.md
-opcodes.md
 ```
 
 Changes Since CVL 1
