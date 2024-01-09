@@ -154,7 +154,7 @@ currently undocumented.
    requires `expr1` and `expr2` to have the same type; the entire
    if-then-else expression has the same type as `expr1` and `expr2`.  The
    expression `cond ? expr1 : expr2` should be read "if `cond` then `expr1`
-   else `expr2`.  If `cond` evaluates to `true` then the entire 
+   else `expr2`.  If `cond` evaluates to `true` then the entire
    expression evaluates to `expr1`; otherwise the entire expression evaluates
    to `expr2`.
 
@@ -169,6 +169,10 @@ currently undocumented.
    Conditional expressions are *short-circuiting*: if `expr1` or `expr2` have
    side-effects (such as updating a {ref}`ghost variable <ghost-variables>`), only the
    side-effects of the expression that is chosen are performed.
+
+   Regarding the logical operator precedence, `=>` has higher precedence than `<=>`,
+   and unlike math operators both are _right_ associative, so `expr1 => expr2 => expr3`
+   is equivalent to `expr1 => (expr2 => expr3)`.
 
  * A *universal* expression of the form `forall t v . expr` requires `t`
    to be a [type](types) (such as `uint256` or `address`) and `v` to be
@@ -302,7 +306,7 @@ There are also several built-in variables:
    In this rule, the call to `isPaused` will update `lastReverted` to `true`,
    overwriting the value set by `withdraw`.
    ````
- 
+
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
 
@@ -394,7 +398,7 @@ There are some restrictions on the types that can be converted.  See
 Comparing storage
 -----------------
 
-As described in {ref}`the documentation on storage types <storage-type>`, CVL represents the entirety of the EVM and its 
+As described in {ref}`the documentation on storage types <storage-type>`, CVL represents the entirety of the EVM and its
 {ref}`ghost state <ghost-functions>`
 in variables with `storage` type. Variables of this type can be checked for equality and inequality.
 
@@ -448,7 +452,7 @@ rule compare_state_of_c(env e) {
 }
 ```
 
-will not. 
+will not.
 
 ```{note}
 Comparing contract's state using this method will **not** compare the balance of the contract between the
@@ -456,7 +460,7 @@ two states.
 ```
 
 If the qualifier is the identifier `nativeBalances`, then the account balances
-of all contracts are compared between the two storage states. 
+of all contracts are compared between the two storage states.
 Finally, if the basis is the name of a ghost function or variable, the values of that
 function/variable are compared between storage states.
 
@@ -479,7 +483,7 @@ experimental.
 
 ```{warning}
 The storage comparison checks for exact equality between every single slot of storage which can
-lead to surprising failures of storage equality assertions. 
+lead to surprising failures of storage equality assertions.
 In particular, these failures can happen if an uninitialized storage slot is
 written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
 clear operation the slot will definitely hold 0, but the Prover will not make any assumptions
