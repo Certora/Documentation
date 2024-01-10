@@ -16,6 +16,13 @@ certoraRun contractFile --verify contractName:specFile
 
 A short summary of these options can be seen by invoking `certoraRun --help`
 
+Using Conf Files
+----------------
+For larger projects, the command line for running the Certora Prover can become large
+and cumbersome. It is therefore recommended to use configuration files instead.
+These are [JSON5](https://json5.org/) files (with .conf extension) that hold the parameters and options for the Prover.
+See {ref}`conf-files` for more information.
+
 ```{contents} Overview
 ```
 
@@ -824,9 +831,3 @@ splits generated here is equal to `2^n` where `n` is the initial splitting depth
 (unless the program has less than `n` branchings, which will be rare in
 practice).
 
-Using Conf Files 
-----------------
-For larger projects, the command line for running the Certora Prover can become large 
-and cumbersome. It is therefore recommended to use configuration files instead. 
-These are [JSON5](https://json5.org/) files (with .conf extension) that hold the parameters and options for the Prover.
-See {ref}`conf-files` for more information.
