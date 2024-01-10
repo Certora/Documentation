@@ -31,7 +31,7 @@ is equivalent to running with the following conf file:
 ```
 The values in the map depend on the type of arguments:
 
-* The input files in the CLI API will be stored as list under the key `files`
+* The input files in the CLI API will be stored as a list under the key `files`.  For example,
 
     ```
     certoraRun example.sol  ...
