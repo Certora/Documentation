@@ -142,7 +142,7 @@ run report.
 ### Complete example
 
 The command line
-```
+```sh
 certoraRun SolcArgs/A.sol SolcArgs/A.sol:B SolcArgs/C.sol \
   --verify A:SolcArgs/Trigger.spec \
   --solc_map SolcArgs/A.sol=solc6.1,B=solc6.1,C=solc5.12 \
