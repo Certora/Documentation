@@ -7,7 +7,7 @@ using conf files is identical to the use of the [CLI Options](options.md). Inste
 with a list of shell flags, some or all the flags can be stored in a JSON file 
 (to be more precise the format is [JSON5](https://json5.org/)):
 
-```
+```sh
 certoraRun my_params.conf
 ```
 
