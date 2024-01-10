@@ -215,6 +215,65 @@ When you have a rule with multiple assertions:
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
+(--independent_satisfy)=
+### `--independent_satisfy`
+
+**What does it do?**
+The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule. 
+Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode), 
+but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
+
+As an illustrative example of the default mode, consider the following rule `R` that has two satisfy statements:
+
+```cvl
+rule R {
+  bool b;
+  satisfy b, "R1";
+  satisfy !b, "R2";
+}
+```
+
+The statements for "R1" and "R2" will actually create two sub-rules equivalent to:
+```cvl
+rule R1_default {
+  bool b;
+  satisfy b, "R1";
+}
+
+rule R2_default {
+  bool b;
+  // Previous satisfy statements are required in default mode.
+  require b; // R1
+  // Due to requiring `b`, this satisfy statement is equivalent to 'satisfy b && !b, "R2";'
+  satisfy !b, "R2"; 
+}
+```
+
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction. 
+Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
+It would also generate and check two sub-rules, but with a slight difference: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
+
+The two `independent_satisfy` generated sub-rules will be equivalent to:
+
+```cvl
+rule R1_independent {
+  bool b;
+  satisfy b, "R1";
+}
+
+rule R2_independent {
+  bool b;
+  // require b;
+  satisfy !b, "R2";
+}
+```
+
+**When to use it?**
+When you have a rule with multiple satisfy statements, and you would like to demonstrate each statement separately.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
+
 (--rule_sanity)=
 ### `--rule_sanity`
 
