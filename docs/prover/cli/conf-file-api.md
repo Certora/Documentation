@@ -15,7 +15,7 @@ Conf files must use the `.conf` suffix.
 
 
 
-How CLI Options are mapped to JSON
+How CLI options are mapped to JSON
 ----------------------------------
 
 Command-line arguments are stored as key-value pairs in the conf file. 
