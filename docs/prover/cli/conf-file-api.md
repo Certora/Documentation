@@ -139,7 +139,7 @@ are stored in the VS Code project under the folder  `certora/confs`.
 Once the job is completed, a link to the job's conf file can also be found in the files section of the 
 run report.
 
-### Complete Example
+### Complete example
 
 The command line:
 ```
