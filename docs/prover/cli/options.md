@@ -836,6 +836,12 @@ precisely: the maximum supported integer value is :math:`2^256-1` in this case,
 effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
+(-smt_groundQuantifiers)=
+#### `--settings -smt_groundQuantifiers=false`
+
+This option disables quantifier grounding.  See {ref}`grounding` for more
+information.
+
 (-maxNumberOfReachChecksBasedOnDomination)=
 #### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
 
