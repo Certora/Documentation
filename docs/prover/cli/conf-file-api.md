@@ -125,7 +125,7 @@ After each successful run of `certoraRun` a conf file is generated and is
 stored in the file `run.conf` under the internal directory of that run.
 The conf file of the latest run can be found in:
 
-```
+```sh
 .certora_internal/latest/run.conf
 ```
 
