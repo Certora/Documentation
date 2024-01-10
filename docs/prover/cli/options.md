@@ -746,9 +746,9 @@ set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_ar
 #### `--prover_args '-optimisticFallback=true'`
 
 This option determines whether to optimistically assume unresolved external
-calls with 0 calldata can make arbitrary changes to all states. It makes changes to how 
+calls with an empty input buffer (length 0) can make arbitrary changes to all states. It makes changes to how 
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls with 0 calldata will {term}`havoc` all the storage state of external contracts. When
+calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
 `-optimisticFallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 (-optimisticReturnsize)=
@@ -756,12 +756,28 @@ calls with 0 calldata will {term}`havoc` all the storage state of external contr
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
+It will set the value returned by the `RETURNSIZE` EVM instruction according to the 
+called method.
+Note that certain conditions should hold in order for the option to take effect.
+Namely, if there is a single candidate method in the havoc site, 
+and all instances of this method in the {term}`scene` have exactly the same 
+expected number of return values, then the `RETURNSIZE` value will be set to
+the expected size matching the methods in the scene.
+Otherwise, `RETURNSIZE` will remain non-deterministic.
+
+(-superOptimisticReturnsize)=
+#### `--prover_args '-superOptimisticReturnsize=true'`
+
+This option determines whether {ref}`havoc summaries <havoc-summary>` assume
+that the called method returns the correct number of return values.
+It will set the value returned by the `RETURNSIZE` EVM instruction 
+to the size of the output buffer as specified by the summarized `CALL` instruction.
 
 (-showInternalFunctions)=
 #### `--prover_args '-showInternalFunctions'`
 
-A single occurrence of `--prover_args` can set multiple values
-`--prover_args '-showInternalFunctions -optimisticReturnsize'`
+A single occurrence of `--prover_args` can set multiple values, e.g.:
+`--prover_args '-showInternalFunctions -optimisticReturnsize=true'`
 
 **What does it do?**
 
