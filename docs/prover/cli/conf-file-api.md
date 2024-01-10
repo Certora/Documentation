@@ -93,11 +93,13 @@ are encoded as JSON lists. For example,
   would be encoded as:
     ```json
   
-    "solc_map": {
-        "A": "solc5.11",
-        "B": "solc5.9",
-        "C": "solc6.8"
-    }
+{
+  "solc_map": {
+    "A": "solc5.11",
+    "B": "solc5.9",
+    "C": "solc6.8"
+  }
+}
     
     ```
     and 
