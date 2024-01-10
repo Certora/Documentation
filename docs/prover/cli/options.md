@@ -801,17 +801,42 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
 
+(-optimisticFallback)=
+#### `--prover_args '-optimisticFallback=true'`
+
+This option determines whether to optimistically assume unresolved external
+calls with an empty input buffer (length 0) can make arbitrary changes to all states. It makes changes to how 
+{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
+calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
+`-optimisticFallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
+
 (-optimisticReturnsize)=
-#### `--prover_args '-optimisticReturnsize'`
+#### `--prover_args '-optimisticReturnsize=true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
+It will set the value returned by the `RETURNSIZE` EVM instruction according to the 
+called method.
+Note that certain conditions should hold in order for the option to take effect.
+Namely, if there is a single candidate method in the havoc site, 
+and all instances of this method in the {term}`scene` have exactly the same 
+expected number of return values, then the `RETURNSIZE` value will be set to
+the expected size matching the methods in the scene.
+Otherwise, `RETURNSIZE` will remain non-deterministic.
+
+(-superOptimisticReturnsize)=
+#### `--prover_args '-superOptimisticReturnsize=true'`
+
+This option determines whether {ref}`havoc summaries <havoc-summary>` assume
+that the called method returns the correct number of return values.
+It will set the value returned by the `RETURNSIZE` EVM instruction 
+to the size of the output buffer as specified by the summarized `CALL` instruction.
 
 (-showInternalFunctions)=
 #### `--prover_args '-showInternalFunctions'`
 
-A single occurrence of `--prover_args` can set multiple values
-`--prover_args '-showInternalFunctions -optimisticReturnsize'`
+A single occurrence of `--prover_args` can set multiple values, e.g.:
+`--prover_args '-showInternalFunctions -optimisticReturnsize=true'`
 
 **What does it do?**
 
@@ -895,11 +920,23 @@ precisely: the maximum supported integer value is :math:`2^256-1` in this case,
 effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
+(-smt_groundQuantifiers)=
+#### `--settings -smt_groundQuantifiers=false`
+
+This option disables quantifier grounding.  See {ref}`grounding` for more
+information.
+
 (-maxNumberOfReachChecksBasedOnDomination)=
 #### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
+
+(-enableStorageSplitting)=
+#### `--prover_args '-enableStorageSplitting false'`
+
+This option disables the storage splitting optimization.
+
 
 (--allow_solidity_calls_in_quantifiers)=
 ### --allow_solidity_calls_in_quantifiers

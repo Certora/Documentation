@@ -5,7 +5,7 @@ Ghosts
 Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to 
 - communicate information between {ref}`rules-main` and {ref}`hooks`.
-- define deterministic [function summaries](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/with-env/WithEnvGhostSummary/WithEnv.spec#L10).
+- define deterministic {ref}`function summaries <function-summary>`.
 
 Ghosts can be seen as an 'extension' to the state of the contracts under verification.
 This means that in case a call reverts, the ghost values will revert to their pre-state.
@@ -20,10 +20,10 @@ See {ref}`persistent-ghosts` below for more details and examples.
 ```{contents}
 ```
 
-The syntax for ghost and persistent ghost declarations is given by the following [EBNF grammar](ebnf-syntax):
-
 Syntax
 ------
+
+The syntax for ghost declarations is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 ghost ::= "ghost" type id                             (";" | "{" axioms "}")
@@ -94,6 +94,7 @@ Restrictions on ghost definitions
 
 Using ghost variables
 ---------------------
+
 While verifying a rule or invariant, the Prover considers every possible
 initial value of a ghost variable (subject to its {ref}`ghost-axioms`,
 see below).
