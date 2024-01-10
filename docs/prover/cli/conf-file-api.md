@@ -59,7 +59,7 @@ Since the default value of boolean options is `false` there is no need to set a 
 
 * Options that expect a single argument (for example {ref}`--solc` or {ref}`--loop_iter`) 
  are encoded as a JSON string. For example,
-    ```
+    ```sh
     certoraRun --solc solc4.25 --loop_iter 2
     ```
     would be encoded as:
