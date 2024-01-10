@@ -165,6 +165,10 @@ only to methods that match in the main contract.
 only applies the preserved block to the methods in the named contract.
 - If the contract name is the wildcard character `*`, the Prover applies the
 preserved block to all contracts in the scene.
+
+If an invariant has multiple preserved blocks with the same method signature
+where one signature is more specific and the other is more general (as in 
+the `*.method` case), then the more specific preserved block will apply.
 ```
 
 If a preserved block specifies a method signature, the signature must either be `fallback()` or
