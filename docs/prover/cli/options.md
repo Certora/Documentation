@@ -829,4 +829,4 @@ Using Conf Files
 For larger projects, the command line for running the Certora Prover can become large 
 and cumbersome. It is therefore recommended to use configuration files instead. 
 These are [JSON5](https://json5.org/) files (with .conf extension) that hold the parameters and options for the Prover.
-See more on conf file [here3](./conf-file-api.md)
+See {ref}`conf-files` for more information.
