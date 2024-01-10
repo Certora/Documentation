@@ -21,7 +21,7 @@ How CLI options are mapped to JSON
 Command-line arguments are stored as key-value pairs in the conf file. 
 The keys are the names of the CLI options (with the leading `--` removed). 
 For example,
-```
+```sh
 certoraRun --verify Example:example.spec
 ```
 is equivalent to running with the following conf file:
