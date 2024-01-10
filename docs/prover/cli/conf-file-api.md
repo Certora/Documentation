@@ -53,7 +53,7 @@ Since the default value of boolean options is `false` there is no need to set a 
     ```
 
     would be encoded as:
-    ```
+    ```json
     { "send_only": true }
     ```
 
