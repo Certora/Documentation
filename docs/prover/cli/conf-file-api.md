@@ -104,7 +104,7 @@ are encoded as JSON lists. For example,
     ```
     and 
   
-    ```
+    ```sh
     certoraRun --solc_optimize_map A=200,B=200,C=300
     ```
 
