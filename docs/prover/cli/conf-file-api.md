@@ -63,7 +63,7 @@ Since the default value of boolean options is `false` there is no need to set a 
     certoraRun --solc solc4.25 --loop_iter 2
     ```
     would be encoded as:
-    ```
+    ```json
     { "solc": "solc4.25", "loop_iter": "2" }
     ```
     Note that in conf files numbers are also encoded as strings.
