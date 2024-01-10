@@ -10,7 +10,7 @@ possible expressions in CVL and explains how they are evaluated.
 Syntax
 ------
 
-The syntax for CVL expressions is given by the following [EBNF grammar](syntax):
+The syntax for CVL expressions is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 expr ::= literal
@@ -29,9 +29,8 @@ expr ::= literal
        | expr "in" id
 
 function_call ::=
-       | [ "invoke" | "sinvoke" ]
-         [ id "." ] id
-         [ "@" ( "norevert" | "withrevert" | "dontsummarize" ]
+       | [ id "." ] id
+         [ "@" ( "norevert" | "withrevert" | "dontsummarize" ) ]
          "(" exprs ")"
          [ "at" id ]
 
@@ -59,9 +58,21 @@ special_vars ::=
            | "lastMsgSig"
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
+           | "nativeBalances"
+           | "calledContract"
+           | "executingContract"
 
-special_functions ::=
-           | "to_uint256" | "to_int256" | "to_mathint"
+cast_functions ::=
+    | require_functions | to_functions | assert_functions
+
+require_functions ::=
+    | "require_uint8" | ... | "require_uint256" | "require_int8" | ... | "require_int256"
+
+to_functions ::=
+    | "to_mathint" | "to_bytes1" | ... | "to_bytes32"
+
+assert_functions ::=
+   | "assert_uint8" | ... | "assert_uint256" | "assert_int8" | ... | "assert_int256"
 
 contract ::= id | "currentContract"
 ```
@@ -69,6 +80,7 @@ contract ::= id | "currentContract"
 See {doc}`basics` for the `id`, `number`, and `string` productions.
 See {doc}`types` for the `type` production.
 
+(math-ops)=
 Basic operations
 ----------------
 
@@ -85,11 +97,8 @@ denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 `^` denotes exponentiation and `xor` denotes exclusive or.
 ```
 
-```{todo}
-The `>>>` operator is currently undocumented.
-```
-
-See {doc}`mathops` for more information about the interaction between
+% TODO: migrate this information here.
+See {ref}`cvl2-integer-types` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
 
 (string-interpolation)=
@@ -145,7 +154,7 @@ currently undocumented.
    requires `expr1` and `expr2` to have the same type; the entire
    if-then-else expression has the same type as `expr1` and `expr2`.  The
    expression `cond ? expr1 : expr2` should be read "if `cond` then `expr1`
-   else `expr2`.  If `cond` evaluates to `true` then the entire 
+   else `expr2`.  If `cond` evaluates to `true` then the entire
    expression evaluates to `expr1`; otherwise the entire expression evaluates
    to `expr2`.
 
@@ -158,8 +167,12 @@ currently undocumented.
    it to `userBalance(address)` otherwise.
 
    Conditional expressions are *short-circuiting*: if `expr1` or `expr2` have
-   side-effects (such as updating a [ghost variable](ghosts)), only the
+   side-effects (such as updating a {ref}`ghost variable <ghost-variables>`), only the
    side-effects of the expression that is chosen are performed.
+
+   Regarding the logical operator precedence, `=>` has higher precedence than `<=>`,
+   and unlike math operators both are _right_ associative, so `expr1 => expr2 => expr3`
+   is equivalent to `expr1 => (expr2 => expr3)`.
 
  * A *universal* expression of the form `forall t v . expr` requires `t`
    to be a [type](types) (such as `uint256` or `address`) and `v` to be
@@ -187,9 +200,9 @@ currently undocumented.
    will ensure that there is some time for which the price is nonzero.
 
 ```{note}
-The symbols `forall` and `exist` are sometimes referred to as *quantifiers*,
+The symbols `forall` and `exist` are sometimes referred to as {term}`quantifier`s,
 and expressions of the form `forall type v . e` and `exist type v . e` are
-referred to as *quantified expressions*.
+referred to as {term}`quantified expression`s.
 ```
 
 ````{caution}
@@ -211,6 +224,19 @@ require priceAtTime(startTime) != 0;
 
 ````
 
+```{caution}
+Calling contract functions within the body of a quantified expression is an
+experimental feature and may not work as intended.
+```
+
+```{note}
+The Prover uses approximations that may cause spurious counterexamples in rules
+that use quantifiers.  For example, a rule that requires a quantified statement
+may produce a counterexample that doesn't satisfy the requirement.  The
+approximation is {term}`sound`: it won't cause violations to be hidden.  See
+{ref}`grounding` for more detail.
+```
+
 Accessing fields and arrays
 ---------------------------
 
@@ -231,8 +257,8 @@ which can be used to access the {ref}`method fields <method-type>`.
 For example,
 ```cvl
 method m;
-require m.selector == balanceOf(address).selector
-     || m.selector == transfer(address, uint256).selector;
+require m.selector == sig:balanceOf(address).selector
+     || m.selector == sig:transfer(address, uint256).selector;
 ```
 will constrain `m` to be either the `balanceOf` or the `transfer` method.
 
@@ -248,6 +274,8 @@ if (burnFrom(address,uint256).selector in currentContract) {
 ```
 will check that the current contract supports the optional `burnFrom` method.
 
+(special-fields)=
+(currentContract)=
 Special variables and fields
 ----------------------------
 
@@ -255,6 +283,9 @@ Several of the CVL types have special fields; see {doc}`types` (particularly
 {ref}`env`, {ref}`method-type`, and {ref}`arrays`).
 
 There are also several built-in variables:
+
+ * `address currentContract` always refers to the main contract being verified
+   (that is, the contract named in the {ref}`--verify` option).
 
  * `bool lastReverted` and `bool lastHasThrown` are boolean values that
    indicate whether the most recent contract function reverted or threw an
@@ -275,13 +306,9 @@ There are also several built-in variables:
    In this rule, the call to `isPaused` will update `lastReverted` to `true`,
    overwriting the value set by `withdraw`.
    ````
- 
+
  * `lastStorage` refers to the most recent state of the EVM storage.  See
    {ref}`storage-type` for more details.
-
- * ```{todo}
-   `allContracts` and `lastMsgSig` are currently undocumented.
-   ```
 
  * You can use the variable `_` as a placeholder for a value you are not
    interested in.
@@ -289,8 +316,17 @@ There are also several built-in variables:
  * The maximum values for the different integer types are available as the
    variables `max_uint`, `max_address`, `max_uint8`, `max_uint16` etc.
 
-CVL also has three built-in functions for casting mathematical types:
-`to_uint256`, `to_int256`, and `to_mathint`.  See {doc}`mathops` for details.
+  * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
+    The balance of an `address a` can be expressed using `nativeBalances[a]`.
+
+ * `calledContract` is only available in {ref}`function summaries <function-summary>`.
+   It refers to the receiver contract of a summarized method call.
+
+ * `executingContract` is only available in {ref}`hooks <hooks>`.  It refers to
+   the contract that is executing when the hook is triggered.
+
+CVL also has several built-in functions for converting between
+numeric types.  See {ref}`math-ops` for details.
 
 
 (call-expr)=
@@ -308,16 +344,9 @@ There are many kinds of function-like things that can be called from CVL:
 There are several additional features that can be used when calling contract
 functions (including calling them through {ref}`method variables <method-type>`).
 
-A contract method invocation can optionally be prefixed by `invoke` or `sinvoke`,
-although this syntax is deprecated in favor of the `@norevert` and
-`@withrevert` syntax described below.  Verification of a method called with
-`invoke` will not report a counterexample if the contract method reverts, while
-`sinvoke` will.
-
 The method name can optionally be prefixed by a contract name.  If a contract is
 not explicitly named, the method will be called with `currentContract` as the
 receiver.
-
 
 It is possible for multiple contract methods to match the method call.  This can
 happen in two ways:
@@ -331,7 +360,7 @@ while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
 
-
+(with-revert)=
 After the function name, but before the arguments, you can write an optional
 method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
  * `@norevert` indicates that examples where the method revert should not be
@@ -340,6 +369,9 @@ method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
    considered.  In this case, the method will set the `lastReverted` and
    `lastHasThrown` variables to `true` in case the called method reverts or
    throws an exception.
+
+   [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
+
  * ```{todo}
    The `@dontsummarize` tag is currently undocumented.
    ```
@@ -355,7 +387,166 @@ where `s` is a {ref}`storage variable <storage-type>`.  This indicates that
 before the method is executed, the EVM state should be restored to the saved
 state `s`.
 
-```{todo}
-Unresolved method calls
+### Type restrictions
+
+When calling a contract function, the Prover must convert the arguments and
+return values from their Solidity types to their CVL types and vice-versa.
+There are some restrictions on the types that can be converted.  See
+{ref}`type-conversions` for more details.
+
+(storage-comparison)=
+Comparing storage
+-----------------
+
+As described in {ref}`the documentation on storage types <storage-type>`, CVL represents the entirety of the EVM and its
+{ref}`ghost state <ghost-functions>`
+in variables with `storage` type. Variables of this type can be checked for equality and inequality.
+
+The basic form of this expression is `s1 == s2`, where `s1` and `s2` are variables of type `storage`.
+This expression compares the states represented by `s1` and `s2`; that is, it checks equality of the following:
+
+1. The values in storage for all contracts,
+2. The balances of all contracts,
+3. The state of all ghost variables and functions
+
+Thus, if any field in any contract's storage differs between `s1` and `s2`, the expression will return `false`.
+The expression `s1 != s2` is shorthand for `!(s1 == s2)`.
+
+Storage comparisons also support narrowing the scope of comparison to specific components of the global
+state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1[r] != s2[r]`, where `r` is a "storage comparison basis",
+and `s1` and `s2` are variables of type `storage`. The valid bases of comparison are:
+
+1. The name of a contract imported with a {ref}`using statement <using-stmt>`,
+2. The keyword `nativeBalances`, or
+3. The name of a ghost variable or function
+
+It is an error to use different bases on different sides of the comparison operator, and it is also
+an error to use a comparison basis on one side and not the other.
+The application of the basis restricts the comparison
+to only consider the portion of global state identified by the basis.
+
+If the qualifier is a contract identifier
+imported via `using`, then the comparison operation will only consider the storage fields of that contract. For example:
+
+```cvl
+using MyContract as c;
+using OtherContract as o;
+
+rule compare_state_of_c(env e) {
+   storage init = lastStorage;
+   o.mutateOtherState(e); // changes `o` but not `c`
+   assert lastStorage[c] == init[c];
+}
 ```
 
+will pass verification whereas:
+
+```cvl
+using MyContract as c;
+using OtherContract as o;
+
+rule compare_state_of_c(env e) {
+   storage init = lastStorage;
+   c.mutateContractState(e); // changes `c`
+   assert lastStorage[c] == init[c];
+}
+```
+
+will not.
+
+```{note}
+Comparing contract's state using this method will **not** compare the balance of the contract between the
+two states.
+```
+
+If the qualifier is the identifier `nativeBalances`, then the account balances
+of all contracts are compared between the two storage states.
+Finally, if the basis is the name of a ghost function or variable, the values of that
+function/variable are compared between storage states.
+
+Two ghost functions are considered equal if they have the same outputs for all input arguments.
+
+```{warning}
+The default behavior of the Prover on unresolved external calls is to pessimistically havoc contract
+state and balances. This behavior will render most storage comparisons that incorporate such
+state useless. Care should be taken (using {ref}`summarization <summaries>`) to ensure that rules
+that compare storage do not encounter this behavior.
+```
+
+```{warning}
+The grammar admits storage comparisons for both equality and inequality
+that occur arbitrarily nested within expressions. However, support within the Prover for
+these comparisons is primarily aimed at assertions of storage equality, e.g., `assert s1 == s2`.
+Support for storage inequality as well as nesting comparisons within other expressions is considered
+experimental.
+```
+
+```{warning}
+The storage comparison checks for exact equality between every single slot of storage which can
+lead to surprising failures of storage equality assertions.
+In particular, these failures can happen if an uninitialized storage slot is
+written and then later cleared by Solidity (via the `pop()` function or the `delete` keyword). After the
+clear operation the slot will definitely hold 0, but the Prover will not make any assumptions
+about the value of the uninitialized slot which means they can be considered different.
+```
+
+(direct-storage-access)=
+Direct storage access
+---------------------
+
+The value of contract state variables can be directly accessed from CVL. These direct
+storage accesses are written using the state variable names and struct fields defined
+in the contract. For example, to access the state variable `uint x` defined in the `currentContract`,
+one can simply write `currentContract.x`. More complex structs can be accessed by chaining field selects
+and array/map dereference operations together. For example, if the current contract has the following
+type definitions and state variables:
+
+```solidity
+contract Example {
+   struct Foo {
+      mapping (address => uint[]) bar;
+   }
+   Foo[3] myState;
+   uint32 luckyNumber;
+   address[] public addresses;
+}
+```
+
+one can write `currentContract.myState[0].bar[addr][0]`, where `addr` is a CVL variable of type `address`.
+
+The storage of contracts other than the `currentContract` can be accessed by writing the contract identifier
+bound with a {ref}`using statement <using-stmt>`. For example, if the `myState` definition above appeared in
+a contract called `Test` and the current CVL file included  `using Test as t;` one could write `t.myState[0].bar[addr][0]`.
+
+```{note}
+A contract identifier (or `currentContract`) *must* be included in the direct storage access. In other
+words, writing just `myState[0].bar[addr][0]` will not work, even if `myState` is declared in the current contract.
+```
+
+Currently only primitive values (e.g., `uint`, `bytes3`, `bool`, enums, and user defined value types) can be directly accessed.
+Attempting to access more complex types will yield a type checking error. For example, attempting to access
+an entire array with `currentContract.myState[0].bar[addr]` will fail.
+
+```{note}
+Although entire arrays cannot be accessed, the _length_ or the _number of elements_ of the dynamic arrays
+can be accessed with `.length`, e.g., `currentContract.myState[0].bar[addr].length`.
+```
+
+```{warning}
+Direct storage access is an experimental feature, and relies on several internal program analyses which can sometimes fail. For example, attempts to use direct storage access to refer to variable which is actually unused or inaccessible in the contract.
+If these internal static analyses fail, any rules that use direct storage access will fail during processing. If this
+occurs, check the "Global Problems" view of the web report and contact Certora for assistance.
+```
+
+### Direct storage havoc
+
+The same direct storage syntax can also be used in `havoc` statements. With the previously-mentioned `Example` contract and `using Example as ex`, you can write `havoc ex.luckyNumber` or `havoc addresses[10]` or even `havoc addresses.length`.
+
+While you may use a `havoc assuming` statement, unlike [ghosts](ghosts), you cannot directly refer to the havoced storage path in the `assuming` expression using the `@old` and `@new` syntax. This generally means `assuming` expressions are not as useful with direct storage access, so consider using and unconditional `havoc` statements instead of `havoc assuming`.
+
+```{warning}
+As with direct storage access in general, direct storage havoc is experimental and limited to primitive types. In particular, this mean you _cannot_ currently havoc
+* entire arrays or entire mappings (only arrays at a specific index, or mappings at a specific key)
+* user-defined types such as structs, or arrays/mappings of such types
+* enums
+```

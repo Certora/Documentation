@@ -2,14 +2,15 @@ Certora Prover Documentation
 ============================
 
 ```{toctree}
-:maxdepth: 3
+:maxdepth: 2
 :caption: Contents
 
-docs/whitepaper/index.md
 docs/user-guide/index.md
 docs/cvl/index.md
 docs/prover/index.md
 docs/gambit/index.md
+docs/equiv-check/index.md
+docs/whitepaper/index.md
 docs/confluence/index.md
 ```
 

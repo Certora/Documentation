@@ -1,5 +1,5 @@
-Migration guide
-===============
+CVL2 Migration Guide
+====================
 
 This section gives a step-by-step process for migrating your specs from CVL 1 to
 CVL 2.  It only addresses the changes that are most likely to arise; for full
@@ -83,12 +83,6 @@ listed here.
 This is a good time to try running `certoraRun` on your spec.  The command-line
 interface to `certoraRun` has not changed in CVL 2, so you should try to verify
 your contract the same way you usually would.
-
-```{note}
-There may be changes to the CLI before CVL 2 officially launches; we will update
-this document if and when it does.  In particular, we are planning changes to
-the {ref}`--settings` flags.
-```
 
 If your spec verifies without errors, move on to
 {ref}`cvl2-migration-summaries`!  If `certoraRun` reports errors, you will need

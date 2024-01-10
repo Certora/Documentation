@@ -19,7 +19,7 @@ The additional CVL types are:
 Syntax
 ------
 
-The syntax for types in CVL is given by the following [EBNF grammar](syntax):
+The syntax for types in CVL is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 basic_type ::= "int*" | "uint*" | "address" | "bool"
@@ -39,29 +39,32 @@ cvl_type ::= basic_type
 See {doc}`basics` for the `id` and `number` productions.
 
 
+(solidity-types)=
 Solidity Types
 --------------
 
-CVL currently supports the following [solidity types][]:
+You can declare variables in CVL of any of the following [solidity types][]:
 
- * `bool`, `int`, `uint`, and the sized variants such as `uint256` and `int8`.
- * `address`
- * `string`, `bytes`, and the sized `bytes` variants (`bytes1` through `bytes32`)
- * Tuples
+ * `int`, `uint`, and the sized variants such as `uint256` and `int8`
+ * `bool`, `address`, and the sized `bytes` variants (`bytes1` through `bytes32`)
+ * `string` and `bytes`
  * {ref}`Single-dimensional arrays <arrays>` (both statically- and dynamically-sized)
- * {ref}`Enum types, struct types, and type aliases <user-types>`
+ * {ref}`Enum types, struct types, and type aliases <user-types>` that are
+   defined in Solidity contracts.
 
-The following are unsupported:
+The following are not directly supported in CVL, although you can interact with
+contracts that use them (see {ref}`type-conversions`):
  * Function types
- * Structs with array members
- * References
  * Multi-dimensional arrays
  * Mappings
- * Built-in solidity methods such as `address.balance(...)` and `array.push(...)`
-
-You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
 
 [solidity types]: https://docs.soliditylang.org/en/v0.8.11/types.html
+
+(math-types)=
+### Integer types
+
+CVL integer types are mostly identical to Solidity integer types.  See
+{ref}`math-ops` for details.
 
 (arrays)=
 ### Array access
@@ -74,7 +77,7 @@ By contrast, out-of-bounds array accesses in CVL are treated as undefined
 values: if `i > a.length` then the Prover considers every possible value for
 `a[i]` when constructing counterexamples.
 
-CVL Arrays also have the following limitations:
+CVL arrays also have the following limitations:
  - Only single dimensional arrays are supported
  - The `push` and `pop` methods are not supported.
 You can use [harnessing](/docs/prover/approx/harnessing) to work around these limitations.
@@ -86,26 +89,21 @@ Specifications can use structs, enums, or user-defined value types that are
 defined in Solidity contracts.
 
 Struct types have the following limitations:
- - CVL methods that return struct types are unsupported.
- - Structs with array-typed fields are unsupported.
  - Assignment to struct fields is unsupported.  You can achieve the same effect
    using a {ref}`require <require>` statement.  For example, instead of `s.f = x;` you can
-   write `require s.f == x;`.
+   write `require s.f == x;`.  However, be aware that `require` statements can
+   introduce {term}`vacuity` if there are multiple conflicting constraints.
 
-Unlike Solidity, CVL treats user-defined value types are treated as aliases for
-their underlying type.  Wrapping and unwrapping operations are unnecessary and
-unavailable, and operations on the underlying type are allowed on the
-user-defined types as well.
-
-All user-defined type names (structs, enums, and user-defined values) must
-be explicitly qualified by a contract name that is introduced with a
-{doc}`using statement <using>`:
+All user-defined type names (structs, enums, and user-defined values) must be
+explicitly qualified by the contract name that contains them.
 
  - For types defined within a contract, the named contract must be the contract
-   containing the type definition
+   containing the type definition.  Note that if a contract inherits a type from
+   a supertype, the contract that actually contains the type must be
+   named, not the inheriting contract.
 
- - For types defined at the file level, the type definition must be in scope
-   for the named contract
+ - For types defined at the file level, the named contract can be any contract
+   in the {term}`scene` from which the type is visible.
 
 ```{warning}
 If you do not qualify the type name with a contract name, the type name will be
@@ -145,17 +143,14 @@ Given these definitions, types can be named as follows:
 caption: child.spec
 ---
 
-using Child  as child;
-using Parent as parent;
-
 // valid types
-parent.ParentFileType     valid1;
-child .ParentFileType     valid2;
-parent.ParentContractType valid3;
+Parent.ParentFileType     valid1;
+Child .ParentFileType     valid2;
+Parent.ParentContractType valid3;
 
 // invalid types
-child .ParentContractType invalid1; // struct types are not inherited
-parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
+Child .ParentContractType invalid1; // user-defined types are not inherited
+Parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
 ```
 
 Additional CVL types
@@ -169,7 +164,7 @@ to bugs.  To avoid this complexity, CVL provides the `mathint` type that can
 represent an integer of any size; operations on `mathint`s can never overflow
 or underflow.
 
-See {doc}`mathops` for details on mathematical operations and casting
+See {ref}`math-ops` for details on mathematical operations and casting
 between `mathint` and Solidity integer types.
 
 (env)=
@@ -214,6 +209,12 @@ The remaining solidity global variables are not accessible from CVL.
 (calldataarg)=
 ### The `method` and `calldataarg` types
 
+```{versionchanged} 5.0
+Formerly, parametric method calls would only call methods of `currentContract`;
+now they call methods of all contracts.  This version also introduced the
+`f.contract` field.
+```
+
 An important feature of CVL is the ability to reason about the effects of an
 arbitrary method called with arbitrary arguments.  To support this, CVL
 provides the `method` type to represent an arbitrary method, and the
@@ -240,23 +241,32 @@ rule balance_increasing() {
 
 Since `f`, `e`, and `args` are not given values, the Prover will consider every
 possible assignment.  This means that when evaluating the call to `f(e,args)`,
-the Prover will check the rule on every method of the contract, with every
-possible set of method arguments.
+the Prover will check the rule on every method of every contract on the
+{term}`scene`, with every possible set of method arguments.
 
-Properties of methods can be extracted from methods using a field-like syntax. 
-The following fields are available on a method `m`:
+See {ref}`parametric-rules` for more information about how rules that declare
+method variables are verified.
 
-*   `m.selector`   - the ABI signature of the method 
-*   `m.isPure`     - true when m is declared with the pure attribute
-*   `m.isView`     - true when m is declared with the view attribute
-*   `m.isFallback` - true when `m` is the fallback function
-*   `m.numberOfArguments` - the number of arguments to method m
+Variables of type `method` can only be declared as an argument to the rule or
+directly in the body of a rule.  They may not be nested inside of `if`
+statements or declared in CVL functions.  They may be passed as arguments to
+CVL functions.
+
+Properties of methods can be extracted from `method` variables using a
+field-like syntax.  The following fields are available on a method `m`:
+
+* `m.selector`   - the ABI signature of the method 
+* `m.isPure`     - true when m is declared with the pure attribute
+* `m.isView`     - true when m is declared with the view attribute
+* `m.isFallback` - true when `m` is the fallback function
+* `m.numberOfArguments` - the number of arguments to method m
+* `m.contract`   - the receiver contract for the method
 
 There is no way to examine the contents of a `calldataarg` variable, because
 the type of its contents vary depending on which method the Prover is checking.
-The only thing you can do with it is pass it as an argument to a `method`
-variable.  It is possible to work around this limitation; see {ref}`partially
-parametric rules` for further details.
+The only thing you can do with it is pass it as an argument to a contract
+method call. It is possible to work around this limitation; see
+{ref}`partially parametric rules` for further details.
 
 (storage-type)=
 ### The `storage` type
@@ -271,8 +281,8 @@ Properties that compare the results of different hypothetical executions are
 sometimes called hyperproperties.
 
 CVL supports this kind of specification using the special `storage` type.  A
-variable of type `storage` represents a snapshot of the EVM storage at a given
-point in time.
+variable of type `storage` represents a snapshot of the EVM storage and
+the state of {ref}`ghosts <ghost-functions>` at a given point in time.
 
 The EVM storage can be reset to a saved storage value `s` by appending `at s` to
 the end of a function call.  For example, the following rule checks that "if you
@@ -301,10 +311,50 @@ rule bigger_stake_more_earnings() {
 The `lastStorage` variable contains the state of the EVM after the most recent
 contract function call.
 
+Variables of `storage` type can also be compared for equality, allowing simple
+rules that check the equivalence of different functions.  See
+{ref}`storage-comparison` for details.
+
 (sort)=
 ### Uninterpreted sorts
 
 ```{todo}
 This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
 ```
+
+(type-conversions)=
+Conversions between CVL and Solidity types
+------------------------------------------
+
+When a specification calls a contract function, the Prover must convert the
+arguments from their CVL types to the corresponding Solidity types, and must
+convert the return values from Solidity back to CVL.  The Prover must also apply
+these conversions when inlining {ref}`hooks <hooks>` and {ref}`function
+summaries <function-summary>`.
+
+There are restrictions on what types can be converted from CVL to Solidity and
+vice-versa.  In general, if a contract uses a type that is not convertible, you
+can still interact with it, but you cannot access the corresponding values. For
+example, if a contract function returns a type that isn't convertible to CVL,
+you can call the function from CVL but you cannot access its return type.
+Similarly, if the function accepts an argument of a type that is not
+representable in CVL, you can still call the function from CVL, but only by
+providing it a generic {ref}`` `calldataarg` argument <calldataarg>``.
+
+The following restrictions apply when converting between CVL types and Solidity
+types:
+ - The type must be a {ref}`valid CVL type <solidity-types>` (except for
+   contract or interface types, which are represented by `address`).
+
+ - Reference types (arrays and structs) can only be passed to Solidity
+   functions that expect `calldata` or `memory` arguments; there is no way to
+   pass `storage` arrays.
+
+ - Arrays returned from Solidity can only be converted to CVL if their elements
+   have [value types][solidity-value-types] that are representable in CVL.
+
+There are additional restrictions on the types for arguments and return values
+for internal function summaries; see {ref}`function-summary`.
+
+[solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 

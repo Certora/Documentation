@@ -212,7 +212,7 @@ This section provides more details about how properties are specified and checke
 
 ### Formal Specification
 
-One of the biggest challenges in software development is specifying the intended behavior of the program. Developers often use unit tests to specify the expected outputs for given inputs, but unit tests can only enumerate a finite number of input scenarios to be tested. In contrast to unit tests, specifications in CVL describe the expected output for _every_ possible input. Since this article describes only some of the mechanisms used in CVL specifications; we refer readers to the [reference manual](/docs/user-guide/intro) that contains complete details.
+One of the biggest challenges in software development is specifying the intended behavior of the program. Developers often use unit tests to specify the expected outputs for given inputs, but unit tests can only enumerate a finite number of input scenarios to be tested. In contrast to unit tests, specifications in CVL describe the expected output for _every_ possible input.  Since this article describes only some of the mechanisms used in CVL specifications; we refer readers to the [reference manual](/docs/cvl/index) that contains complete details.
 
 ### Inductive Invariants
 
