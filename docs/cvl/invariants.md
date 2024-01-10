@@ -37,8 +37,11 @@ preserved_block ::= "preserved"
                     [ "with" "(" params ")" ]
                     block
 
-method_signature ::= id "(" [ evm_type [ id ] { "," evm_type [ id ] } ] ")"
+method_signature ::= [ contract_name "." ] id  "(" [ evm_type [ id ] { "," evm_type [ id ] } ] ")"
                      | "fallback" "(" ")"
+
+contract_name ::= id
+                | "*"
 ```
 
 See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
@@ -152,11 +155,16 @@ consists of the keyword `preserved` followed by an optional method signature,
 an optional `with` declaration, and finally the block of commands to execute.
 
 ```{note}
-Although invariants are now checked on methods of all contracts on the scene,
-the method signature in a `preserved` block only allows specifying the method
-signature of the method, and not the receiver contract.  If multiple contracts
-on the scene implement methods with the same signature, you must use the same
-`preserved` block for all of them.
+The method signature of the preserved block may optionally contain a contract
+name followed by a `.` character followed by a contract method name.
+
+- In the case where the preserved block does not have a contract name but does
+have a method name (not the `fallback` case), the preserved block will apply
+only to methods that match in the main contract.
+- If the method signature includes a specific contract name, then the Prover
+only applies the preserved block to the methods in the named contract.
+- If the contract name is the wildcard character `*`, the Prover applies the
+preserved block to all contracts in the scene.
 ```
 
 If a preserved block specifies a method signature, the signature must either be `fallback()` or
