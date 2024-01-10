@@ -119,7 +119,7 @@ are encoded as JSON lists. For example,
 }
     
     ```
-## Generating a Conf File
+## Generating a conf file
 
 After each successful run of `certoraRun` a conf file is generated and is
 stored in the file `run.conf` under the internal directory of that run.
