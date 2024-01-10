@@ -11,7 +11,7 @@ with a list of shell flags, some or all the flags can be stored in a JSON file
 certoraRun my_params.conf
 ```
 
-* Conf files must use the `.conf` suffix
+Conf files must use the `.conf` suffix.
 
 
 
