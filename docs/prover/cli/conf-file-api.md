@@ -110,11 +110,13 @@ are encoded as JSON lists. For example,
 
   would be encoded as:
     ```json
-    "solc_optimize_map": {
-        "A": "200",
-        "B": "200",
-        "C": "300"
-    }
+{
+  "solc_optimize_map": {
+    "A": "200",
+    "B": "200",
+    "C": "300"
+  }
+}
     
     ```
 ## Generating a Conf File
