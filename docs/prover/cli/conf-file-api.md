@@ -152,7 +152,7 @@ certoraRun SolcArgs/A.sol SolcArgs/A.sol:B SolcArgs/C.sol \
 ```
 
 will generate the conf file below:
-```
+```json
 {
     "files": [
         "SolcArgs/A.sol",
