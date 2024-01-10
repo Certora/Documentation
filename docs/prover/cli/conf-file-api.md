@@ -74,7 +74,7 @@ are encoded as JSON lists. For example,
     ```sh
     certoraRun --packages @balancer-labs/v2-solidity-utils=pkg/solidity-utils \
                       @balancer-labs/v2-vault=pkg/vault
-    ```
+    ```json
     would be encoded as:
     ```
     {
