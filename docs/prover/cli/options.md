@@ -249,7 +249,7 @@ rule R2_default {
 }
 ```
 
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`. 
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction. 
 Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
 It would also generate and check two sub-rules, but with a slight difference: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
 
