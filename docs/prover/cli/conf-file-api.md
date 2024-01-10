@@ -141,7 +141,7 @@ run report.
 
 ### Complete example
 
-The command line:
+The command line
 ```
 certoraRun SolcArgs/A.sol SolcArgs/A.sol:B SolcArgs/C.sol \
   --verify A:SolcArgs/Trigger.spec \
