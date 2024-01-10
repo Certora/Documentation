@@ -222,9 +222,8 @@ When you have a rule with multiple assertions:
 The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule. 
 Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode), 
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
-Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
 
-As an illustrative example, consider the following rule `R` that has two satisfy statements:
+As an illustrative example of the default mode, consider the following rule `R` that has two satisfy statements:
 
 ```cvl
 rule R {
@@ -243,13 +242,17 @@ rule R1_default {
 
 rule R2_default {
   bool b;
-  assume b, "R1";
-  satisfy !b, "R2"; // This actually checks b && !b
+  require b;
+  // Due to the require, this satisfy statement is equivalent to 'satisfy b && !b, "R2";'
+  satisfy !b, "R2"; 
 }
 ```
 
-The `independent_satisfy` mode would also generate and check two sub-rules: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`. The two `independent_satisfy` generated sub-rules will be equivalent to:
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`. 
+Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
+It would also generate and check two sub-rules, but with a slight difference: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
+
+The two `independent_satisfy` generated sub-rules will be equivalent to:
 
 ```cvl
 rule R1_independent {
@@ -259,7 +262,7 @@ rule R1_independent {
 
 rule R2_independent {
   bool b;
-  // assume b, "R1";
+  // require b;
   satisfy !b, "R2";
 }
 ```
