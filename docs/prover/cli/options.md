@@ -242,8 +242,9 @@ rule R1_default {
 
 rule R2_default {
   bool b;
-  require b;
-  // Due to the require, this satisfy statement is equivalent to 'satisfy b && !b, "R2";'
+  // Previous satisfy statements are required in default mode.
+  require b; // R1
+  // Due to requiring `b`, this satisfy statement is equivalent to 'satisfy b && !b, "R2";'
   satisfy !b, "R2"; 
 }
 ```
