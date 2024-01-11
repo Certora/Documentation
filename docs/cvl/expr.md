@@ -66,13 +66,13 @@ cast_functions ::=
     | require_functions | to_functions | assert_functions
 
 require_functions ::=
-    | "require_uint8" | ... | "require_uint256" | "require_int8" | ... | "require_int256"
+    | "require_uint8" | ... | "require_uint256" | "require_int8" | ... | "require_int256" | "require_address"
 
 to_functions ::=
     | "to_mathint" | "to_bytes1" | ... | "to_bytes32"
 
 assert_functions ::=
-   | "assert_uint8" | ... | "assert_uint256" | "assert_int8" | ... | "assert_int256"
+   | "assert_uint8" | ... | "assert_uint256" | "assert_int8" | ... | "assert_int256" | "assert_address"
 
 contract ::= id | "currentContract"
 ```
