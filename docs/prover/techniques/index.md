@@ -4,7 +4,7 @@ Techniques Used by Certora Prover
 In this chapter we describe techniques used by the Certora Prover whose understanding can be relevant for an expert-level usage of the Prover.
 
 (control-flow-splitting)=
-# Control Flow Splitting
+## Control Flow Splitting
 
 There is a brief explanation of control flow splitting in the 
 [webinar on timeouts](https://www.youtube.com/watch?v=mntP0_EN-ZQ).
@@ -12,7 +12,7 @@ There is a brief explanation of control flow splitting in the
 % TODO write this -- tracked in https://certora.atlassian.net/browse/DOC-351
 
 (storage-and-memory-analysis)=
-# Storage and Memory Analysis
+## Storage and Memory Analysis
 
 The Certora Prover works on EVM bytecode as its input. To the bytecode, the
 address space of both Storage and Memory are flat number lines. That two
