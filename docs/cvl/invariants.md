@@ -41,7 +41,7 @@ method_signature ::= [ contract_name "." ] id  "(" [ evm_type [ id ] { "," evm_t
                      | "fallback" "(" ")"
 
 contract_name ::= id
-                | "*"
+                | "_"
 ```
 
 See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
@@ -163,12 +163,12 @@ have a method name (not the `fallback` case), the preserved block will apply
 only to methods that match in the main contract.
 - If the method signature includes a specific contract name, then the Prover
 only applies the preserved block to the methods in the named contract.
-- If the contract name is the wildcard character `*`, the Prover applies the
+- If the contract name is the wildcard character `_`, the Prover applies the
 preserved block to all contracts in the scene.
 
 If an invariant has multiple preserved blocks with the same method signature
 where one signature is more specific and the other is more general (as in 
-the `*.method` case), then the more specific preserved block will apply.
+the `_.method` case), then the more specific preserved block will apply.
 ```
 
 If a preserved block specifies a method signature, the signature must either be `fallback()` or
