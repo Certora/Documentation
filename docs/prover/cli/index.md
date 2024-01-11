@@ -8,5 +8,6 @@ Certora Prover CLI
 verification.md
 linking.md
 options.md
+conf-file-api.md
 ```
 
