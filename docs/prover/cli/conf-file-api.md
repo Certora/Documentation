@@ -90,8 +90,8 @@ are encoded as JSON lists. For example,
     certoraRun --solc_map A=solc5.11,B=solc5.9,C=solc6.8
     ```
   would be encoded as:
-    ```json
-  
+    
+```json
 {
   "solc_map": {
     "A": "solc5.11",
@@ -99,8 +99,7 @@ are encoded as JSON lists. For example,
     "C": "solc6.8"
   }
 }
-    
-    ```
+```
     and 
   
     ```sh
