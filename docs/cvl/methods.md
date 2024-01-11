@@ -19,7 +19,9 @@ There are two kinds of declarations:
 * **Summary declarations** are used to replace calls to certain contract methods.
   Summaries allow the Prover to reason about external contracts whose code is
   unavailable.  They can also be useful to simplify the code being verified to
-  circumvent timeouts.  See {ref}`summaries`.
+  circumvent timeouts.  See {ref}`summaries`.  See
+  {doc}`../user-guide/multicontract/index` for an extended example
+  demonstrating summary declarations.
 
 ```{caution}
 Summary declarations change the way that some function calls are interpreted,
