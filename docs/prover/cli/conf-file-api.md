@@ -107,7 +107,7 @@ are encoded as JSON lists. For example,
     ```
 
   would be encoded as:
-    ```json
+```json
 {
   "solc_optimize_map": {
     "A": "200",
@@ -115,8 +115,7 @@ are encoded as JSON lists. For example,
     "C": "300"
   }
 }
-    
-    ```
+```
 ## Generating a conf file
 
 After each successful run of `certoraRun` a conf file is generated and is
