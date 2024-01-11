@@ -596,6 +596,62 @@ mathint x = to_mathint(MyContract.MyEnum.VAL); // good
 ```
 
 Casting integer types to an enum is not supported.
+
+(address-casting)=
+### Casting addresses to bytes32
+
+CVL2 supports casting from the `address` type to the `bytes32` type. For
+example: 
+
+```cvl
+address a = 0xa44f5d3d624DfD660ecc11FF777587AD0a19606d;
+bytes32 b = to_bytes32(a);
+```
+
+The cast from `address` to `bytes32` behaves equivalently to the Solidity
+code:
+
+```solidity
+address a = 0xa44f5d3d624DfD660ecc11FF777587AD0a19606d;
+bytes32 b = bytes32(uint256(uint160(a)));
+```
+
+Among other things, this behavior means that the resulting `bytes32`
+value is right-aligned and zero-padded to the left.
+
+CVL2 also supports casting from the `bytes32` type to the `address` type
+using either the `require_address()` or `assert_address()` cast functions.
+
+```cvl
+bytes32 b = to_bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d);
+address a = assert_address(b);
+```
+
+Note that `require_address()` will silently allow a cast to continue
+when the `bytes32` variable contains a value that lies in the range
+`2^160 < var < 2^256`. The `assert_address()` cast function will fail
+when the `bytes32` variable contains a value in that same range.
+
+```cvl
+bytes32 b = to_bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d0e); // Note this contains one extra byte
+address a = require_address(b);                                       // Silently does the cast.
+```
+
+While when using `assert_address`:
+
+```cvl
+bytes32 b = to_bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d0e); // Note this contains one extra byte
+address a = assert_address(b);                                       // This will fail.
+```
+
+Casting from `bytes32` to `address` behaves equivalently to the Solidity
+code:
+
+```solidity
+bytes32 b = bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d);
+address a = address(uint160(uint256(b)));
+```
+
 ### Modulo operator `%` returns negative values for negative inputs
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
