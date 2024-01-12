@@ -36,8 +36,16 @@ EVM bytecode
   compilers, among others.
   For details on what the EVM is and how it works, the following links provide
   good entry points.
-  [Official documentation](https://ethereum.org/en/developers/docs/evm/)
+  [Official documentation](https://ethereum.org/en/developers/docs/evm/),
   [Wikipedia](https://en.wikipedia.org/wiki/Ethereum#Virtual_machine)
+
+EVM memory
+EVM storage
+  The {term}`EVM` has two major concepts of memory, called *memory* and 
+  *storage*. In brief, memory variables keep data only for the duration of a 
+  single EVM transaction, while storage variables are stored persistently in 
+  the Ethereum blockchain.
+  [Official documentation](https://ethereum.org/en/developers/docs/smart-contracts/anatomy)
 
 havoc
   In some cases, the Certora Prover should assume that some variables can change 
@@ -120,6 +128,8 @@ sanity
   This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
   ```
 
+SAT
+UNSAT
 SAT result
 UNSAT result
   *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a 

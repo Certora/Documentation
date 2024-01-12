@@ -82,7 +82,7 @@ A single splitting step proceeds as follows:
  - Generate two new CFGs, we call them *splits*; both splits are copies of the 
    original CFG, except that in the first (second) split, the edge to the first 
    (second) successor has been removed. The algorithm also removes all nodes and 
-   edges that become unreachable through the initial edge removal.
+   edges that become unreachable through the removal of the edge.
 
 ```{figure} split-step.png
 :name: single_split()
@@ -99,6 +99,14 @@ single splitting step.
 
 The following pseudo-code illustrates how Certora Prover applies the single splitting 
 in a recursive fashion.
+
+```{note}
+In the remainder of this subsection, we'll use the terms {term}`SAT` and
+{term}`UNSAT`. SAT denotes the presence of a {term}`counterexample` (if the rule
+has an `assert` statement) or a {term}`witness example` (if the rule has a
+`satisify` statement). UNSAT denotes the absence of any counter- or witness
+examples.
+```
 
 ```{code-block}
 :name: recursive splitting algorithm
@@ -133,33 +141,33 @@ exploration stops in any of the following three cases:
  - if one split was found that is SAT (reasoning: if one split is SAT, then the
   original program must be SAT, since the behavior of the split is replayable in
   the original program)
- - if all splits have been shown to be unsat
+ - if all splits have been shown to be UNSAT
  - if solving on a split leaf has timed out (except if 
    {ref}`-dontStopAtFirstSplitTimeout` has been set)
 
 The settings with which the user can influence this process are the
 following (each links to a more detailed description of the option):
 
- - [Maximum split depth](-depth) controls the maximum splitting depth.
- - [Medium timeout](-mediumTimeout) controls the timeout that is applied when
+ - {ref}`-depth` controls the maximum splitting depth.
+ - {ref}`-mediumTimeout` controls the timeout that is applied when
    checking splits that are not split leafs, i.e., that are not at the maximum
    depth. 
- - [Smt timeout](--smt_timeout) controls the timeout that is used to solve split 
+ - {ref}`--smt_timeout` controls the timeout that is used to solve split 
    leafs; if this is exceeded, the Prover will give up with a TIMEOUT 
    result, unless [the corresponding setting](-dontStopAtFirstSplitTimeout) says 
    to go on.
- - Setting the [initial splitting depth](-smt_initialSplitDepth) to a value 
+ - Setting {ref}`-smt_initialSplitDepth` to a value 
    above 0 will make the Prover skip the checking and immediately enumerate all 
    splits up to that depth.
 
 (storage-and-memory-analysis)=
-## Storage and Memory analysis
+## Analysis of EVM storage and EVM memory
 
-The Certora Prover works on EVM bytecode as its input. To the bytecode, the
-address space of both Storage and Memory are flat number lines. That two
-contract fields `x` and `y` don't share the same memory is an arithmetic
-property. With more complex data structures like mappings, arrays, and structs,
-this means that every
+The Certora Prover works on {term}`EVM` bytecode as its input. To the bytecode,
+the address space of both {term}`EVM storage` and {term}`EVM memory` are flat number
+lines. That two contract fields `x` and `y` don't share the same memory is an
+arithmetic property. With more complex data structures like mappings, arrays,
+and structs, this means that every
 ["non-aliasing"](https://en.wikipedia.org/wiki/Aliasing_(computing)) argument
 requires reasoning about multiplications, additions, and hash functions. 
 
