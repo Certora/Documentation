@@ -7,7 +7,8 @@ sometimes be helpful when the Prover does not behave as expected, for instance
 in case of a timeout.
 
 (control-flow-splitting)=
-# Control flow splitting
+Control flow splitting
+----------------------
 
 
 ```{note}
@@ -17,14 +18,64 @@ of control flow splitting in the
 ```
 
 
-Control flow splitting (or short "splitting") is one of the techniques that the
-Certora Prover employs to speed up solving. In the remainder of this section, we
-will give an overview of how the technique works. This background should be
-helpful when using the settings described [here](control-flow-splitting-options)
-to prevent Prover timeouts.
+Control flow splitting (or "splitting" for short) is one of the techniques that
+the Certora Prover employs to speed up solving. In the remainder of this
+section, we will give an overview of how the technique works. This background
+should be helpful when using the settings described
+[here](control-flow-splitting-options) to prevent Prover timeouts.
 
-Splitting is best illustrated using the {term}`control flow graph` (CFG) of a given
-CVL rule.
+
+### Idea 
+
+We explain the core idea behind control flow splitting on a simple example.
+
+Whenever there is branching in a program we want to verify, we can look for
+counterexamples on each branch separately. Basically we split the question A:
+"Is there a violating execution in the program?" into the two questions B: "Is
+there a violating execution in the program that takes the first branch?", and C:
+"Is there a violating execution in the program that takes the second branch?". If
+the answer to either B or C is "yes", then we can conclude that the answer to A
+must be "yes". If the answers to B and C are both "no", then we can conclude
+that the answer to A must be "no".
+
+For example, consider a rule with an `if` statement:
+```cvl
+rule example {
+  ...
+  if (owner == spender) {
+    assert balance_after == balance_before;
+  } else {
+    assert balance_after == balance_before + amount;
+  }
+}
+```
+
+To simplify the search for a counterexample, the Prover may internally split this single rule into two rules:
+```cvl
+rule example_split_1 {
+  ...
+  require owner == spender;
+  assert balance_after == balance_before;
+}
+
+rule example_split_2 {
+  ...
+  require owner != spender;
+  assert balance_after == balance_before + amount;
+}
+```
+
+A counterexample for either of the split rules will also be a counterexample for
+the original rule, and any counterexample for the original rule must violate one
+of the two split rules, so this splitting doesn't change the meaning of the
+rule.  However, in some cases the split rule is easier for the Prover to reason
+about.
+
+
+### Technical Description
+
+On a technical level, splitting is best illustrated using the {term}`control
+flow graph` (CFG) of a given CVL rule.
 
 A single splitting step proceeds as follows:
  - Pick a node with two successors in the CFG, the *split point*.
@@ -46,7 +97,7 @@ Illustration of a single splitting step
 There is an internal heuristic deciding which branching nodes to pick for each
 single splitting step.
 
-The following pseudo-code illustrates how Certora prover applies the single splitting 
+The following pseudo-code illustrates how Certora Prover applies the single splitting 
 in a recursive fashion.
 
 ```{code-block}
@@ -77,8 +128,8 @@ return UNSAT
 
 Intuitively, the algorithm explores the tree of all possible recursive
 splittings along a fixed sequence of split points up to the maximum splitting
-depth. We call the splits at maximum splitting depth *split leafs*. The
-exploration stops in either of the following three cases:
+depth. We call the splits at maximum splitting depth *split leaves*. The
+exploration stops in any of the following three cases:
  - if one split was found that is SAT (reasoning: if one split is SAT, then the
   original program must be SAT, since the behavior of the split is replayable in
   the original program)
@@ -102,7 +153,7 @@ following (each links to a more detailed description of the option):
    splits up to that depth.
 
 (storage-and-memory-analysis)=
-# Storage and Memory analysis
+## Storage and Memory analysis
 
 The Certora Prover works on EVM bytecode as its input. To the bytecode, the
 address space of both Storage and Memory are flat number lines. That two
@@ -110,11 +161,12 @@ contract fields `x` and `y` don't share the same memory is an arithmetic
 property. With more complex data structures like mappings, arrays, and structs,
 this means that every
 ["non-aliasing"](https://en.wikipedia.org/wiki/Aliasing_(computing)) argument
-requires reasoning about multiplications, additions, and hash functions. The
-Certora Prover models this reasoning correctly, but this naive low-level
+requires reasoning about multiplications, additions, and hash functions. 
+
+The Certora Prover models this reasoning correctly, but this naive low-level
 modeling can quickly overwhelm SMT solvers. In order to handle storage
-efficiently, the Certora Prover analyzes Storage (Memory) accesses in EVM code in
-order to understand the Storage (Memory) layout, thus making information like
+efficiently, the Certora Prover analyzes Storage (Memory) accesses in EVM code
+in order to understand the Storage (Memory) layout, thus making information like
 "an update to mapping `x` will never overwrite the scalar variable `y`" much
 more obvious to the SMT solvers. For scaling SMT solving to larger programs,
 these simplifications are essential.

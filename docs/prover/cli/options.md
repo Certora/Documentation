@@ -468,7 +468,11 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`.
+for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`. 
+
+Also note that, while the most prominent one, this is not the only timeout that
+applies to SMT solvers, for details see {ref}`-mediumTimeout` and
+{ref}`control-flow-splitting`.
 
 **When to use it?**  
 The default time out for the solvers is 300 seconds. There are two use cases for this option.  
@@ -770,7 +774,7 @@ This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
 (--allow_solidity_calls_in_quantifiers)=
-### --allow_solidity_calls_in_quantifiers
+### `--allow_solidity_calls_in_quantifiers`
 
 **What does it do?**
 
@@ -788,8 +792,8 @@ error on encountering contract method calls in quantified expression bodies.
 
 
 (control-flow-splitting-options)=
-Advanced options that control control flow splitting
-----------------------------------------------------
+Control flow splitting options
+------------------------------
 
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
@@ -802,11 +806,11 @@ Sets the maximum splitting depth.
 
 **When to use it?** 
 
-When the deepest splits are too heavy to solve, but not too high in number,
-increasing this will lead to smaller, but more split leafs, which run at the
-full SMT timeout (as set by {ref}`--smt_timeout`). Conversely, if run time is
-too high because there are too many splits, decreasing this number means that
-more time is spent on fewer, but bigger split leafs.
+When the deepest {term}`split`s are too heavy to solve, but not too high in
+number, increasing this will lead to smaller, but more {term}`split leaves`, which run
+at the full SMT timeout (as set by {ref}`--smt_timeout`). Conversely, if run
+time is too high because there are too many splits, decreasing this number means
+that more time is spent on fewer, but bigger split leaves.
 
 **Example**
 
@@ -818,7 +822,8 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ### `--prover_args '-mediumTimeout <seconds>'`
 
 The "medium timeout" determines how much time the SMT solver gets for checking a
-split that is not a split leaf. 
+{term}`split` that is not a {term}`split leaf`. 
+(For split leaves, the full {ref}`--smt_timeout` is used.) 
 
 **What does it do?**
 
@@ -839,26 +844,15 @@ a given depth.
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
 ```
 
-
-
-% The regular SMT timeout determines how much time is maximally spent on checking
-% a split on the maximum depth. When this is exceeded, Certora Prover will return
-% "TIMEMOUT", unless `-dontStopAtFirstSplitTimeout` is set.
-
-%```
-%-smt_timeout <seconds>
-%```
-
-
 (-dontStopAtFirstSplitTimeout)=
 ### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
 
 **What does it do?**
 
-We can tell the Certora Prover to continue even when the first split has had a
-maximum-depth timeout. Note that this is only useful for {term}`SAT result`s,
-since for an overall {term}`UNSAT result`s, all splits need to be UNSAT, while
-for a SAT result it is enough that one split is SAT.
+We can tell the Certora Prover to continue even when the first {term}`split` has
+had a maximum-depth timeout. Note that this is only useful for {term}`SAT
+result`s, since for an overall {term}`UNSAT result`s, all splits need to be
+UNSAT, while for a SAT result it is enough that one split is SAT.
 
 % TODO: talk about SAT / UNSAT -- violated/not-violated won't due it due to `satisfy`...
 
@@ -876,7 +870,7 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplit
 ### `--prover_args '-smt_initialSplitDepth <number>'`
 
 With this option, the splitting can be configured to skip the SMT solver-based checks 
-at low splitting levels, thus generating sub-splits up to a given depth immediately.
+at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
 
 **What does it do?**
 
@@ -892,7 +886,7 @@ that are very hard, and thus run into a timeout anyway.
 splits generated here is equal to `2^n` where `n` is the initial splitting depth
 (assuming the program has enough branching points, which is usually the case);
 thus, low numbers are advisable. For instance setting this to 5 means that the
-prover will immediately produce 32 splits.
+Prover will immediately produce 32 splits.
 ```
 
 ```{note}

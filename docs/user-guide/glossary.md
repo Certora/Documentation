@@ -163,6 +163,15 @@ unsound
   to be missed by the Prover, and should therefore be used with caution. See
   {doc}`/docs/prover/approx/index` for more details.
 
+split
+split leaf
+split leaves
+  Control flow splitting is a technique to speed up verification by splitting the
+  program into smaller parts and verifying them separately. These smaller programs 
+  are called splits. Splits that cannot be split further are called split leaves.
+  See {ref}`control-flow-splitting`.
+  
+
 summary
 summarize
   A method summary is a user-provided approximation of the behavior of a
