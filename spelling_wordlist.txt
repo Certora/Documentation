@@ -43,6 +43,7 @@ callee
 changelog
 checkmark
 codebase
+conf
 config
 conjoined
 decompilation
