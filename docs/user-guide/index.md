@@ -36,8 +36,6 @@ multicontract/index.md
 timeouts/index.md
 opcodes.md
 checking.md
-troubleshooting.md
-faq.md
 glossary.md
 contact.md
 ```

@@ -362,7 +362,7 @@ each checked method.  Rules that use this feature are referred to as
 
 (with-revert)=
 After the function name, but before the arguments, you can write an optional
-method tag, one of `@norevert`, `@withrevert`, or `@dontsummarize`.
+method tag, one of `@norevert` or `@withrevert`.
  * `@norevert` indicates that examples where the method revert should not be
    considered.  This is the default behavior if no tag is provided
  * `@withrevert` indicates that examples that would revert should still be
