@@ -1,5 +1,5 @@
 (conf-files)=
-Conf Files
+Configuration (Conf) Files
 ==========
 
 Conf files are an alternative way for setting arguments for the
