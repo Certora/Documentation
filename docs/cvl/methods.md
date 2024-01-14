@@ -362,7 +362,7 @@ The decision to replace a call by an approximation is made as follows:
 
  * If the code for the function is known at verification time, either because
    it is a method of `currentContract` or because the receiver contract is
-   {ref}`linked <linking>`, then the function is only summarized if the
+   `linked`, then the function is only summarized if the
    resolution type is `ALL`.
 
  * If the code for the function is not known at verification time, then the
