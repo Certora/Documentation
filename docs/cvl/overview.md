@@ -19,7 +19,7 @@ A spec may contain any of the following:
  - **[Methods blocks](methods):** `methods` blocks contain information on how methods
    should be summarized by the Prover during verification.
 
- - **[Rules](rules):** A rule describes the expected behavior of the methods of a
+ - **[Rules](rules-main):** A rule describes the expected behavior of the methods of a
    contract.
 
  - **{ref}`invariants`:** Invariants describe facts about the state of a contract that
@@ -31,7 +31,7 @@ A spec may contain any of the following:
 
  - **[Sorts](sorts):** Sorts define simple types that can be compared for equality.
 
- - **[Ghosts](ghosts):** Ghosts define additional variables that can be used to keep track
+ - **[Ghosts](ghosts-doc):** Ghosts define additional variables that can be used to keep track
    of state changes in the contracts.
 
  - **{ref}`Hooks <hooks>`:** Hooks allow the specification to instrument the contracts being
@@ -40,7 +40,7 @@ A spec may contain any of the following:
 The remainder of this chapter describes the syntax and semantics of a
 specification file in detail.
 
-(syntax)=
+(ebnf-syntax)=
 Syntactic Conventions
 ---------------------
 

@@ -1,6 +1,6 @@
 (equivcheck-intro)=
-Equivalence Checking Using the Certora Prover
-=================================
+The Certora Equivalence Checker
+===============================
 
 This chapter describes how one can use the Certora Prover to
   check the equivalence of two smart contract functions.

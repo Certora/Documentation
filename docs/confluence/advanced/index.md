@@ -6,5 +6,4 @@ Advanced Subjects
 methods.md
 approximation.md
 debugging.md
-grounding.md
 ```
