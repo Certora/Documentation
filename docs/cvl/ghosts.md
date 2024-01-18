@@ -234,7 +234,7 @@ If we do not apply any linking or dispatching for the call done on the target `a
 During a havoc operation, the Prover conservatively assumes that almost any possible behavior can occur.
 In particular, it must assume that during the execution of the `a.transfer` call, 
 non-persistent ghosts can be updated arbitrarily (e.g. by other contracts),
-and thus (assuming `reentrancy_happenedt` were not marked as persistent), 
+and thus (assuming `reentrancy_happened` were not marked as persistent), 
 the Prover considers the case where `reentrancy_happened` is set to `true` due to the havoc.
 Thus, when the `CALL` hook executes immediately after, 
 it does so where the `reentrancy_happened` value is already `true`, 

@@ -16,11 +16,11 @@ certoraRun contractFile --verify contractName:specFile
 
 A short summary of these options can be seen by invoking `certoraRun --help`
 
-Using Conf Files
+Using Configuration (Conf) Files
 ----------------
 For larger projects, the command line for running the Certora Prover can become large
 and cumbersome. It is therefore recommended to use configuration files instead.
-These are [JSON5](https://json5.org/) files (with .conf extension) that hold the parameters and options for the Prover.
+These are [JSON5](https://json5.org/) files (with `.conf` extension) that hold the parameters and options for the Prover.
 See {ref}`conf-files` for more information.
 
 ```{contents} Overview
@@ -661,8 +661,6 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 
 We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:
 `certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken`
-
-See {doc}`/docs/confluence/advanced/linking` for more information.
 
 (--address)=
 ### `--address`
