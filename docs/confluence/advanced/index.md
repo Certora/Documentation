@@ -8,5 +8,4 @@ multicontract.md
 linking.md
 approximation.md
 debugging.md
-grounding.md
 ```

@@ -5,6 +5,54 @@ Prover Release Notes
 ```{contents}
 ```
 
+6.1.3 (January 11, 2024)
+------------------------
+
+### CVL
+- [feat] Rules can now use both `satisfy` and `assert` statements together
+- [feat] An option for checking `satisfy` statements one-by-one instead of depending on previous `satisfy`-s, enabled with `--independent_satisfy`
+- [feat] {ref}`persistent-ghosts`
+- [feat] support `selector` keyword in `CALL`-like hooks that can be compared to function selectors
+- [feat] New builtin function for hashing `keccak256` in CVL
+- [feat] Support method parameter filters when invariants are imported with `use`
+- [feat] New options {ref}`--optimistic_summary_recursion` and {ref}`--summary_recursion_limit`.
+- [bugfix] improved error messages for hooks
+- [bugfix] Fix compile time checks for ghosts mappings axioms and bad CVL function calls therein
+- [bugfix] Make `CONSTANT` summaries of internal functions consistent
+- [bugfix] Allow Solidity struct fields named hook
+- [bugfix] Fix `to_bytes` in quantifiers
+- [bugfix] Better error message on struct decode failures
+- [bugfix] Proper typing of sub-expressions of bitwise shift operations within quantifiers
+- [UX] Nicer error messages for invalid use of `max_*` constants and hex literals
+- [UX] Sanity builtin rule now succeeds when the sanity check succeeds (using `satisfy` under the hood) (note this can swap the expected result if you use the builtin sanity rule often, but you no longer have to interpret a “violated” result as the good one)
+
+### Performance
+- [feat] New optimization analysis. It can be configured to be more or less aggressive with the option `--prover_args '-intervals_rewriter INT'`
+- [feat] New flag for better performance: `--prover_args '-enableCopyLoopRewrites true'`  - replaces copy loop code blocks with a single copy command. Decreases problem size and obviates loop unrolling for copy loops (i.e., more sound)
+- [feat] New flag for better performance: `--prover_args '-enableAggressivePartitionPruning true'` - for Solidity code that often manipulates - dynamic objects in memory
+
+### Call Trace
+- [feat] Show branch source information (can be disabled with `--prover_args '-enableConditionalSnippets false'`)
+- [bugfix] Fix return value display for ghost reads
+
+### Mutation Testing
+- [feat] Generate mutation configuration automatically
+- [UX] Expose errors emitted by Gambit
+- [UX] `certoraMutate` now uses `.mconf` files instead of `.conf`
+
+### Misc
+- [feat] enable the max constant loop unroll factor inferred with `--prover_args '-loopUnrollBoundGuessUpperLimit INT`
+- [bugfix] Vyper fixes for static arrays, xor patterns, `ABI` fetching in old versions
+- [bugfix] Support for some older versions of Vyper (0.3.7 and earlier)
+- [bugfix] Better decompilation for try/catch in a loop
+- [bugfix] Fix to false negative tautology check
+- [bugfix] Better retry mechanism for job-submission by `certora-cli`
+- [bugfix] Align with EVM by setting `x/0 = 0`
+- [bugfix] Fix storage analysis when Solidity optimizer is enabled
+- [bugfix] Fixes in handling `solc`'s `--via-ir` optimizer mode
+- [UX] Fix wait time in CLI to 2:30 hours, to account for possible long queue times in CI runs
+
+
 5.0.5 (November 21, 2023)
 -------------------------
 
@@ -283,7 +331,7 @@ function foo(MyComplexStruct memory z, uint x) external returns (uint) {
 - Support conversion of `uintN` to `bytesK` with casting {ref}`bytesN-support`
 - Support {ref}`nativeBalances <special-fields>` in CVL
 - Making access of user-defined-types (enums, structs, user-defined type values) in Solidity consistent, whether those types are declared in a contract or outside of a contract. Specifically, for a user-defined type that's declared in a contract, the access to it in a spec file is `DeclaringContract.TypeName`. For top-level user-defined types (declared outside of any contract/library) the access is using the using contract `UsingContract.TypeName`.
-- Support for {ref}`EVM opcode hooks <opcodes>`
+- Support for {ref}`EVM opcode hooks <opcode-hooks>`
 
 #### CallTrace
 - Display CVL functions in Call Trace
