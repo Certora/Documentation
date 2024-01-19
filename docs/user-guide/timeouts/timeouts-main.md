@@ -231,7 +231,7 @@ worth considering no matter which statistic is showing high severity.
 ### Dealing with a high path count
 
 *Control flow splitting* is a natural area to consider when the path count of a
-rule is hight. When applying this technique, the Certora Prover internally
+rule is high. When applying this technique, the Certora Prover internally
 divides each verification condition into smaller subproblems and attempts to
 solve them separately. For a more detailed explanation, see
 {ref}`control-flow-splitting`.
@@ -299,9 +299,9 @@ is different from the default.
 
 For instance, we can prioritize the usage of the [Yices SMT
 solver](https://yices.csl.sri.com/) by decreasing the size of the solver
-portfolio. With the {ref}`-solvers` option set as follows, the Certora Prover
+portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
 will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
-the ordering given in the {ref}`-solvers` option for prioritizing solvers using
+the ordering given in the {ref}`-solver` option for prioritizing solvers using
 the `-smt_overrideSolvers` option.
 
 % TODO reference options, once they have been documented
