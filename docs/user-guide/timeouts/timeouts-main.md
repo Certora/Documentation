@@ -218,10 +218,6 @@ In this section we list some hints for timeout prevention based on which of the
 statistics (path count, number of nonlinear operations, memory/storage 
 complexity) is showing high severity on a given rule.
 
-% In this subsection we list some option combinations that have helped preventing
-% timeouts in the past. We group the options by timeout causes they are most
-% relevant for. 
-
 ```{note}
 The techniques described below under [modular verification](modular-verification) are 
 worth considering no matter which statistic is showing high severity.
@@ -241,15 +237,6 @@ tradeoff between spending time in different places: The Prover can either try to
 spend much time at a low splitting level in the hope that no further splitting
 will be needed, or it can split quickly in the hope that the subproblems will be
 much easier to solve. 
-
-% Two important flags controlling this behavior are
-% {ref}`-smt_initialSplitDepth` and {ref}`-mediumTimeout`. The first variant
-% ("lazy splitting", e.g., `-smt_initialSplitDepth` at its default of 0, and
-% `-mediumTimeout` at 30 seconds.) is weak when the shallow splits are too hard,
-% and time spent on them is wasted. The second variant ("eager splitting", e.g.
-% `-smt_initialSplitDepth` of 5 and `-mediumTimeout` at its default) is weak when
-% we end up with too many subproblems; note that the number of splits is
-% worst-case exponential in the splitting depth.
 
 The options on control flow splitting are described in more detail in the
 [corresponding section of the CLI
@@ -304,8 +291,7 @@ will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
 the ordering given in the {ref}`-solver` option for prioritizing solvers using
 the `-smt_overrideSolvers` option.
 
-% TODO reference options, once they have been documented
-% also, make this subsection a bit more concrete perhaps? not sure how, yet
+% TODO make this subsection a bit more concrete.. not sure how, yet
 
 ```sh
 certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
