@@ -5,6 +5,39 @@ Prover Release Notes
 ```{contents}
 ```
 
+6.X.X (TBD)
+-----------
+
+### CVL
+- [feat] Allow casting between bytes32 and address types https://docs.certora.com/en/latest/docs/cvl/cvl2/changes.html#casting-addresses-to-bytes32
+- [feat] Support ecrecover as a builtin, signature: ecrecover(bytes32,uint8,bytes32,bytes32) returns address
+- [feat] Optimistically assume the extcodesize is positive for calls that are summarized and with a non-HAVOC summary. This behavior can be disabled with --prover_args 'optimisticExtcodesize false'
+- [feat] Support direct storage access in quantifiers and axioms
+- [bugfix] Implication, bi-implication and ternary conditional operators are right-associative
+- [bugfix] Fully support additional env fields. Namely, for env e, one can access e.block.basefee, e.block.coinbase, e.block.difficulty, e.block.gaslimit and e.tx.origin
+- [bugfix] Properly enforce bounds on enums accessed using direct storage access
+- [bugfix] Fix a bug with structs being passed to summaries and not preserving their fields’ values
+- [ux] Emit a global error in rule report if 0 rules are provided in the spec
+- [ux] Cast assertions in CVL are treated like regular user-provided assertions
+- [ux] Warn about, and ignore, unused method arguments
+- [ux] Prevent calling library functions from CVL
+
+### Call Trace and Rule Report
+- [feat] Add presentation of direct storage reads and direct storage havocs, including showing the updates in the Storage State
+- [feat] When the user provided no assertion message, show the assert condition
+- [bugfix] More refined handling of branch snippets within loop iterations
+- [ux] Improved messages for assertions in builtin rules
+
+### Static Analysis and Performance
+- [feat] abi.encodeCall calls will be considered as copy-loops, thus will not require a higher loop_iter if we enable the following option: --prover_args '-enableCopyLoopRewrites true
+- [feat] Better performance on last assertions in a rule
+- [bugfix] Disable prettification of counterexamples for sanity rules
+
+### Misc
+- [bugfix] Various bugfixes to improve stability of the Prover (crashes, static analysis, and SMT solving)
+- [bugfix] Better support of importing user-defined types from Solidity imports even if they are not given in a consistent fashion by solc
+
+
 6.1.3 (January 11, 2024)
 ------------------------
 
