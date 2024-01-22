@@ -1,73 +1,74 @@
-Storage in Call Trace
-=====================
-When the Prover finds a counterexample to an assertion, 
-the resulting trace contains information about the state of the contracts at the beginning of the rule, 
-as well as information about updates to the storage during the execution of the contracts' functions.
-The Call Trace should show the values in the storage of each contract, as can be illustrated in this picture:
-![example storage data](storage-calltrace1.png)
+# Storage in Call Trace
 
+## Introduction
 
-How can the storage change?
----------------------------
-While specific storage slots/fields can be assigned new values,
-it is possible for the storage of the whole contract to revert to the previous state.  
-This is as a result of either a Solidity require statement failing, explicit Solidity revert statement,
-storage being restored to a previously saved state in CVL (e.g., `func() at init)`,
-or havoc’d (due to invoking functions that havoc the state of contracts).  
+When exploring the counterexample to an assertion in a CVL (Certora Verification Language) specification, the Prover provides a Call Trace that includes information about the state of the contracts. This trace contains details about the storage values at the beginning of the rule and tracks updates to the storage during the execution of the contracts' functions.
 
-When do we show the storage state?
-----------------------------------
-In the Call Trace section, the storage state will be presented in 3 kinds of places:
-At the beginning of the execution, right after the failed assert, and after internal function calls.  
+### Example Storage Data
 
-One can enable or disable presentation of the storage state using a toggle button highlighted in red here:
-![example storage toggle](storage-calltrace2.png)
+![Example Storage Data](storage-calltrace1.png)
 
+## How Can the Storage Change?
 
-What do we show?
-----------------
-For each contract in the spec, we show all storage _access paths_ instantiated with concrete indices
-(as determined by the counterexample), used (i.e., read / written) during the execution trace.  
-These access paths are lexicography ordered.  
-For each access path, we show its source-code name, value (if known, `*` if unknown), “computational type”,
-and whether it was changed since the previous time we showed the storage.  
+While specific storage slots or fields can be assigned new values, it is also possible for the storage of the entire contract to revert to the previous state. This can occur due to the failure of a Solidity require statement, an explicit Solidity revert statement, the restoration of storage to a previously saved state in CVL (e.g., `func() at init`), or the application of havoc (invoking functions that havoc the state of contracts).
 
-What are the “computational types”?
------------------------------------
-There are currently four types:  
-* Concrete - the value of this variable in the counterexample is explicitly set to this value in the spec or contract,
-so it must be the same in all counterexamples.
-* Don’t care - the value of this variable is not used before it is written, so its initial value is not relevant.  
-* Havoc - the SMT chooses a random value.  
-* Havoc dependent - the value is a result of some computation involving another havoc or havoc dependent variable.
-We distinguish it from havoc’d variables, because if we know the values of all havoc’d variables,
-this value can be calculated as well (unlike havoc’d variables which are completely random).  
+## When Do We Show the Storage State?
 
-If we are not able to detect the type, it is displayed as Unknown.
+In the Call Trace section, the storage state is presented in three key places:
 
-Limitations of the current “computational type” resolution
-----------------------------------------------------------
-We currently only consider assignments and storage changes (store, havoc, restore (`func() at init` and revert).  
-However, we don’t consider requires or values that cause revert so in
-```
-uint256 a;
-require a == 10
-```
-we consider `a` as havoc instead of concrete.
-Additionally, in the following example
-Solidity:
-```
-function foo(address sender) {
-    require(sender == OWNER);
-}
-```
-CVL:
-```
-address addr;
-foo(addr);
-```
-we consider `addr` as havoc instead of concrete.
+1. At the beginning of the execution.
+2. Right after the failed assert.
+3. After internal function calls.
 
-We don’t support showing strings / bytes keys of maps, so if `balances` is a map with such keys,
-they will be shown as `balances[*]` or `balances[hash_X]`.  
-As a result, distinct keys may collide with each other when shown in the Call Trace.
+The presentation of the storage state can be toggled on or off using a button highlighted in red, as shown below:
+
+![Example Storage Toggle](storage-calltrace2.png)
+
+## What Do We Show?
+
+For each contract in the specification, the Call Trace displays all storage access paths instantiated with concrete indices (as determined by the counterexample) used during the execution trace.
+The information provided for each access path includes:
+
+- Source-code name
+- Value (if known, represented as `*` if unknown)
+- Computational type
+- Whether it was changed since the previous time the storage was shown
+
+## Computational Types
+
+There are four computational types:
+
+1. **Concrete:** The value of this variable is explicitly set in the spec or contract, making it the same in all counterexamples.
+2. **Don't Care:** The value of this variable is not used before it is written, so its initial value is not relevant.
+3. **Havoc:** The SMT solver chooses a random value.
+4. **Havoc Dependent:** The value results from some computation involving another havoc or havoc-dependent variable. Unlike havoc variables, if the values of all havoc variables are known, this value can be calculated.
+
+If the type cannot be determined, it is displayed as Unknown.
+
+## Limitations of the Current "Computational Type" Resolution
+
+The current resolution for "computational types" has limitations:
+
+- Only assignments and storage changes (store, havoc, restore) are considered.
+- Requires or values that cause revert are not considered in the type resolution.
+- Strings or bytes keys of maps are not supported in the Call Trace display.
+
+Improvements in these aspects are areas for potential enhancements in future versions. 
+
+## Reverts
+
+When a contract execution encounters an issue that violates a require statement or explicitly invokes a revert, the entire state changes may be reverted to the previous state. This is crucial for understanding and debugging issues in contracts.
+The call trace provides a clear view of the revert reason and the path that caused the revert as present in the following picture.
+![Example Revert](storage-calltrace3.png)
+
+## Havocs
+
+Havoc operations introduce non-determinism into the contract execution, allowing the SMT solver to choose a random value. Identifying and understanding havoc points in the Call Trace is essential for comprehending the unpredictable aspects of the contract's behavior.
+Havoc values are displayed in the Call Trace like the following picture.
+![Example Havoc](storage-calltrace4.png)
+
+## Call Resolution
+
+A Call Resolution is a representation that correlates the summarization called during the execution trace with the corresponding storage changes. This helps in understanding the flow of the contract execution and associating storage modifications with specific summarization calls.
+The Call Resolution is displayed in the Call Trace like the following picture.
+![Example Call Resolution](storage-calltrace5.png)
