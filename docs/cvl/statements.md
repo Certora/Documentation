@@ -1,5 +1,5 @@
-Statements
-==========
+# Statements
+
 
 The bodies of {doc}`rules <rules>`, {doc}`functions <functions>`, and
 {doc}`hooks <hooks>` in CVL are made up of statements.  Statements describe the
@@ -12,8 +12,7 @@ CVL commands.
 ```{contents}
 ```
 
-Syntax
-------
+## Syntax
 
 The syntax for statements in CVL is given by the following [EBNF grammar](ebnf-syntax):
 
@@ -50,8 +49,8 @@ See {doc}`basics` for the `id` and `string` productions.  See {doc}`types` for
 the `type` production.  See {doc}`expr` for the `expr` and `function_call` productions.
 
 (declarations)=
-Variable declarations
----------------------
+## Variable declarations
+
 
 Unlike undefined variables in most programming languages, undefined variables
 in CVL are a centrally important language feature.  If a variable is declared
@@ -66,8 +65,8 @@ variables declared in the rule are displayed in the report.  Variables declared
 in CVL functions are not currently visible in the report.
 
 (require)=
-`assert` and `require`
-----------------------
+## `assert` and `require`
+
 
 The `assert` and `require` commands are similar to the corresponding statements
 in Solidity.  The `require` statement is used to specify the preconditions for
@@ -121,8 +120,8 @@ rule totalFundsAfterDeposit(uint256 amount) {
 - [`require` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L44)
 
 (satisfy)=
-`satisfy` statements
---------------------
+## `satisfy` statements
+
 
 A `satisfy` statement is used to check that the rule can be executed in such a
 way that the `satisfy` statement is true.  A rule with a `satisfy` statement is
@@ -156,8 +155,8 @@ state has an execution that satisfies the condition.
 - [`satisfy` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L243)
 
 (requireInvariant)=
-`requireInvariant` statements
------------------------------
+## `requireInvariant` statements
+
 
 `requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/ variables for which the invariant should hold.
 
@@ -169,26 +168,193 @@ state has an execution that satisfies the condition.
 ```
 
 (havoc-stmt)=
-`havoc` statements
-------------------
+## Havoc Statements
 
-```{todo}
-This section is currently incomplete.  See
-[ghosts](/docs/confluence/anatomy/ghosts) and {ref}`two-state-old`
-for the old documentation.
+Havoc statements introduce non-determinism into the contract execution, allowing the SMT solver to choose random values for specific variables. Havoc points are crucial for modeling uncertainty and verifying a wide range of possible scenarios.
 
-```{todo}
-Be sure to document `@old` and `@new` (two-state contexts).  They are not documented in {doc}`expr`
-because I think `havoc ... assuming ...` is the only place that they are
-available.
+### Syntax
+
+The syntax for a `havoc` statement is as follows:
+
+```cvl
+havoc identifier [ assuming condition ];
 ```
+
+- **`identifier`:** The variable or expression for which non-deterministic values will be chosen.
+- **`condition`:** An optional condition that restricts the possible values for the havoc variable.
+
+### Usage
+
+#### Basic Havoc
+
+The basic use of a havoc statement involves introducing non-deterministic values for a specific variable. This is useful when the exact value of a variable is unknown or when exploring various scenarios.
+
+##### Example:
+
+```cvl
+uint256 x;
+havoc x;
+```
+
+In this example, the value of variable `x` is chosen randomly by the SMT solver.
+**Note:** The havoc statement is not really necessary as unassigned values are havoc by default.
+
+#### Havoc with Condition
+
+Havoc statements can include a condition that restricts the possible values for the havoc variable. This allows for more fine-grained control over the non-deterministic choices made by the SMT solver.
+
+##### Example:
+
+```cvl
+uint256 y;
+havoc y assuming y > 10;
+```
+
+In this example, the havoc statement introduces non-deterministic values for variable `y`, but only values greater than 10 are considered valid.
+
+### Two-State Contexts: `@old` and `@new`
+
+Two-state contexts, denoted by `@old` and `@new`, are essential when dealing with havoc statements. They provide a mechanism to reference the old and new states of a variable within the havoc statement, allowing for more nuanced control over the non-deterministic choices.
+
+#### `@old` - Referencing the Old State
+
+The `@old` annotation allows referencing the old state of a variable within a havoc statement. It is particularly useful in expressing conditions based on the previous state of a variable.
+
+##### Example:
+
+```cvl
+uint256 z;
+havoc z assuming z > @old(z);
+```
+
+In this example, the havoc statement introduces non-deterministic values for variable `z`, but only values greater than its old state are considered valid.
+
+#### `@new` - Referencing the New State
+
+The `@new` annotation allows referencing the new state of a variable within a havoc statement. It is valuable when expressing conditions based on the updated state of a variable.
+
+##### Example:
+
+```cvl
+uint256 w;
+havoc w assuming w != @new(w);
+```
+
+In this example, the havoc statement introduces non-deterministic values for variable `w`, but values different from its new state are considered valid.
+
+### Advanced Usage: `havoc assuming`
+
+The `havoc assuming` construct allows introducing non-deterministic choices for variables while imposing specific conditions. This can be particularly useful for modeling complex scenarios where certain constraints must be satisfied.
+
+#### Example:
+
+```cvl
+uint256 a;
+uint256 b;
+havoc a assuming a < b;
+havoc b assuming a + b == 100;
+```
+
+In this example, havoc statements are used to introduce non-deterministic values for variables `a` and `b` while ensuring that `a` is less than `b` and their sum is equal to 100.
+
+### Conclusion
+
+Havoc statements play a critical role in making CVL specifications more expressive and capable of handling uncertainty. When used judiciously, they enhance the modeling of various contract scenarios, making verification more robust and comprehensive. Understanding two-state contexts (`@old` and `@new`) and the `havoc assuming` construct is essential for harnessing the full power of havoc statements in CVL.
 
 (control-flow)=
-Solidity-like statements
-------------------------
+## Solidity-like Statements
 
-```{todo}
-This feature is currently undocumented.
+Solidity-like statements provide a familiar syntax for expressing conditions and behaviors similar to Solidity, These statements enhance the readability and ease of writing specifications by adopting a syntax that resembles Solidity.
+
+### 1. Assert Statement
+
+#### Syntax:
+
+```cvl
+assert condition;
 ```
 
+#### Usage:
 
+The `assert` statement is used to assert a condition that must be true during the execution of the contract. If the condition evaluates to false, it will trigger a verification failure.
+
+##### Example:
+
+```cvl
+uint256 balance;
+assert balance >= 0;
+```
+
+In this example, the `assert` statement ensures that the balance variable is non-negative.
+
+### 2. Require Statement
+
+#### Syntax:
+
+```cvl
+require condition;
+```
+
+#### Usage:
+
+The `require` statement is similar to the `assert` statement but is used for expressing preconditions that must be satisfied for the execution to continue. If the condition evaluates to false, it will cause the contract execution to revert.
+
+##### Example:
+
+```cvl
+uint256 amount;
+require amount > 0;
+```
+
+Here, the `require` statement ensures that the `amount` must be greater than zero for the contract execution to proceed.
+
+### 3. Revert Statement
+
+#### Syntax:
+
+```cvl
+f@withrevert(args);
+lastReverted;
+```
+
+#### Usage:
+
+The `@withrevert` modifier is used to check if a specific function call results in a revert during contract execution. The `lastReverted` variable is a boolean flag that indicates whether the last function call resulted in a revert.
+
+##### Example:
+
+```cvl
+uint256 limit = 100;
+uint256 value;
+require value > limit;
+Deposit@withrevert(value);
+assert lastReverted, "Expected revert when value exceeds limit";
+```
+
+In this example, the `@withrevert` modifier is applied to the `Deposit` function call, which is expected to revert if the `value` exceeds the specified `limit`. The `assert` statement checks whether `lastReverted` is true, ensuring that the contract execution does revert as anticipated when the condition is violated. The error message in the `assert` provides additional context about the expectation.
+
+### 4. Return Statement
+
+#### Syntax:
+
+```cvl
+return expression;
+```
+
+#### Usage:
+
+The `return` statement is used to terminate the execution of a function and return a value. It is commonly used in functions to specify the value to be returned.
+
+##### Example:
+
+```cvl
+function calculateSum(uint256 a, uint256 b) public pure returns (uint256) {
+    return a + b;
+}
+```
+
+This example defines a function `calculateSum` that takes two parameters and returns their sum.
+
+### Conclusion
+
+Solidity-like statements in CVL simplify the process of writing specifications by using a syntax that closely resembles Solidity. These statements align with the familiar patterns and structures used in Solidity smart contracts, making it easier for developers and auditors to express and verify the desired behaviors and conditions in a contract. Understanding and using these statements contributes to more readable and expressive CVL specifications.
