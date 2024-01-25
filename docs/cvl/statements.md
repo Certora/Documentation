@@ -259,7 +259,7 @@ In this example, havoc statements are used to introduce non-deterministic values
 
 ### Conclusion
 
-Havoc statements play a critical role in making CVL specifications more expressive and capable of handling uncertainty. When used judiciously, they enhance the modeling of various contract scenarios, making verification more robust and comprehensive. Understanding two-state contexts (`@old` and `@new`) and the `havoc assuming` construct is essential for harnessing the full power of havoc statements in CVL.
+Havoc statements play a critical role in making CVL specifications more expressive and capable of handling uncertainty. They widen the coverage of possible contract behaviors making verification more robust and comprehensive. Understanding two-state contexts (`@old` and `@new`) and the `havoc assuming` construct is useful for harnessing the full power of CVL, in particular when combined with ghosts.
 
 (control-flow)=
 ## Solidity-like Statements
