@@ -341,7 +341,7 @@ return expression;
 
 #### Usage:
 
-The `return` statement is used to terminate the execution of a function and return a value. It is commonly used in functions to specify the value to be returned.
+The `return` statement is used to terminate the execution of a function and return a value. It can only be used in functions to specify the value to be returned.
 
 ##### Example:
 
