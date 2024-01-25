@@ -170,7 +170,7 @@ state has an execution that satisfies the condition.
 (havoc-stmt)=
 ## Havoc Statements
 
-Havoc statements introduce non-determinism into the contract execution, allowing the SMT solver to choose random values for specific variables. Havoc points are crucial for modeling uncertainty and verifying a wide range of possible scenarios.
+Havoc statements introduce non-determinism into the contract execution, allowing the SMT solver to choose random values for specific variables. Havoc statements are helpful for modeling uncertainty and verifying a wider range of possible scenarios.
 
 ### Syntax
 
