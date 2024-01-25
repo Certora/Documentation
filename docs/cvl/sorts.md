@@ -6,7 +6,7 @@ CVL specifications support both Solidity primitives (`uint256`, `address`, etc.)
 
 To declare an uninterpreted sort in CVL, use the following syntax:
 
-```text
+```cvl
 Sort MyUninterpSort;
 Sort Foo;
 ```
@@ -14,19 +14,19 @@ Sort Foo;
 These uninterpreted sorts can be utilized in various ways within a CVL specification:
 
 1. **Declare Variables:** 
-   ```text
+   ```cvl
    Foo x;
    ```
 
 2. **Test Equality:**
-   ```text
+   ```cvl
    Foo x; 
    Foo y; 
    assert x == y;
    ```
 
 3. **Use in Signatures:**
-   ```text
+   ```cvl
    ghost myGhost(uint256 x, Foo f) returns Foo;
    ```
 
@@ -34,7 +34,7 @@ These uninterpreted sorts can be utilized in various ways within a CVL specifica
 
 Consider the following illustrative example:
 
-```text
+```cvl
 Sort Foo;
 
 ghost bar(Foo, Foo) returns Foo;
@@ -53,15 +53,23 @@ This example demonstrates the use of an uninterpreted sort `Foo`. The `bar` ghos
 
 Uninterpreted sorts can also be employed in ghosts, as shown in the following example:
 
-```text
+```cvl
 ghost mapping(uint256 => Node) toNode;
 ghost mapping(Node => mapping(Node => bool)) reach {
   // Axioms for reachability relation
-  
+  axiom forall Node X. reach[X][X];
+  axiom forall Node X. forall Node Y.
+      reach[X][Y] && reach[Y][X] => X == Y;
+  axiom forall Node X. forall Node Y. forall Node Z.
+      reach[X][Y] && reach[Y][Z] => reach[X][Z];
+  axiom forall Node X. forall Node Y. forall Node Z.
+      reach[X][Y] && reach[X][Z] => (reach[Y][Z] || reach[Z][Y]);
 }
 
 definition isSucc(Node a, Node b) returns bool =
     // Definition for successor relationship
+   reach[a][b] && a != b &&
+      (forall Node X. reach[a][X] && reach[X][b] => (a == X || b == X));
     
 rule checkGetSucc {
   uint256 key;

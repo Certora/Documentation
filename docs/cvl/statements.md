@@ -212,35 +212,24 @@ havoc y assuming y > 10;
 
 In this example, the havoc statement introduces non-deterministic values for variable `y`, but only values greater than 10 are considered valid.
 
+**Note:** The above is really equivalent to uint256 y; require y > 0;.
+
 ### Two-State Contexts: `@old` and `@new`
 
 Two-state contexts, denoted by `@old` and `@new`, are essential when dealing with havoc statements. They provide a mechanism to reference the old and new states of a variable within the havoc statement, allowing for more nuanced control over the non-deterministic choices.
 
-#### `@old` - Referencing the Old State
-
-The `@old` annotation allows referencing the old state of a variable within a havoc statement. It is particularly useful in expressing conditions based on the previous state of a variable.
-
 ##### Example:
-
 ```cvl
-uint256 z;
-havoc z assuming z > @old(z);
+havoc sumAllBalance assuming sumAllBalance@new() == sumAllBalance@old() + balance - old_balance;
 ```
 
-In this example, the havoc statement introduces non-deterministic values for variable `z`, but only values greater than its old state are considered valid.
+In the given example, the havoc statement introduces non-deterministic values for the variable sumAllBalance. The assuming clause adds a condition: the new state of sumAllBalance should be the old state plus the change in the balance variable.
 
-#### `@new` - Referencing the New State
+sumAllBalance@new(): Value in the updated state.
+sumAllBalance@old(): Value in the previous state.
+balance - old_balance: Change in the balance variable.
+This usage of two-state contexts (@old and @new) provides nuanced control, allowing the introduction of non-deterministic choices with a specific condition based on the old and new states of the variable and related changes.
 
-The `@new` annotation allows referencing the new state of a variable within a havoc statement. It is valuable when expressing conditions based on the updated state of a variable.
-
-##### Example:
-
-```cvl
-uint256 w;
-havoc w assuming w != @new(w);
-```
-
-In this example, the havoc statement introduces non-deterministic values for variable `w`, but values different from its new state are considered valid.
 
 ### Advanced Usage: `havoc assuming`
 
@@ -249,13 +238,16 @@ The `havoc assuming` construct allows introducing non-deterministic choices for 
 #### Example:
 
 ```cvl
-uint256 a;
-uint256 b;
-havoc a assuming a < b;
-havoc b assuming a + b == 100;
+ghost uint256 a;
+ghost uint256 b;
+rule example(){
+havoc a assuming a@new < b;
+havoc b assuming a + b@new == 100;
+assert a < b && a + b == 100;
+}
 ```
 
-In this example, havoc statements are used to introduce non-deterministic values for variables `a` and `b` while ensuring that `a` is less than `b` and their sum is equal to 100.
+In this example, havoc statements are used to introduce non-deterministic values for ghosts `a` and `b` while ensuring that `a` is less than `b` and their sum is equal to 100.
 
 ### Conclusion
 
@@ -309,6 +301,12 @@ require amount > 0;
 Here, the `require` statement ensures that the `amount` must be greater than zero for the contract execution to proceed.
 
 ### 3. Revert Statement
+
+The default method of calling Solidity functions within CVL is to assume they do not revert.
+This behavior can be adjusted with the @withrevert modifier.
+After every Solidity call, even if it is not marked with @withrevert, a builtin variable called lastReverted is updated according to whether the Solidity call reverted or not.
+
+Note: For calls without @withrevert, lastReverted is automatically set to to false.
 
 #### Syntax:
 

@@ -4,10 +4,6 @@
 
 **Method summarization** is a mechanism that allows the user to provide a concise, high-level description of the behavior of a method. It serves as a guide for the underlying solvers to more efficiently reason about the method's behavior and helps to avoid timeouts, especially in cases where complex computations or undecidable problems are involved.
 
-## What is Summarization?
-
-In CVL, method summarization involves specifying a simplified, abstract view of a method's behavior that captures the essential properties without delving into intricate details. The purpose is to guide the verification process by providing a higher-level understanding of the method, especially when dealing with complex computations or undecidable problems that may cause the solver to struggle.
-
 ## How Summarization Helps Solvers
 
 1. **Efficiency Improvement:**
@@ -27,9 +23,12 @@ methods {
 }
 
 // Example: Summarization for a complex function
+function multiply(uint256 x, uint256 y) returns uint256 {
+    return x * y;
+}
 methods {
     complexFunction(uint256 x, uint256 y) returns bool =>
-        EXISTS uint256 z . z == x * y;
+        EXISTS uint256 z . z == multiply(x, y);
 }
 
 rule myRule(uint256 a, uint256 b) {
