@@ -315,7 +315,7 @@ Here, the `require` statement ensures that the `amount` must be greater than zer
 
 ```cvl
 f@withrevert(args);
-lastReverted;
+assert !lastReverted;
 ```
 
 #### Usage:
