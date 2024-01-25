@@ -32,7 +32,7 @@ These uninterpreted sorts can be utilized in various ways within a CVL specifica
 
 ## Example Usage
 
-Consider the following illustrative example:
+Consider the following example:
 
 ```text
 Sort Foo;
