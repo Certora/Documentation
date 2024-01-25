@@ -282,7 +282,7 @@ The `assert` statement is used to assert a condition that must be true during th
 
 ```cvl
 uint256 balance;
-assert balance >= 0;
+assert balance > 0;
 ```
 
 In this example, the `assert` statement ensures that the balance variable is non-negative.
