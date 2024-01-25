@@ -43,7 +43,7 @@ In the example above, `complexFunction` involves a complex multiplication of `x`
 ## Important Considerations
 
 1. **Limitations of Summarization:**
-   - Summarization is a trade-off between precision and efficiency. While it can significantly improve solver performance, it may introduce over- or under-apprxoimations. Overapproximation means we may use too general behaviors to prove the desired property. Underapproximation means we potentially miss out on behaviors.
+   - Summarization is a trade-off between precision and efficiency. While it can significantly improve solver performance, it may introduce over- or under-approximations. over-approximation means we may use too general behaviors to prove the desired property. under-approximations means we potentially miss out on behaviors.
    - Care should be taken to ensure that the summarization captures the critical aspects of the method's behavior.
 
 2. **Choosing Summarization Techniques:**

@@ -212,21 +212,25 @@ havoc y assuming y > 10;
 
 In this example, the havoc statement introduces non-deterministic values for variable `y`, but only values greater than 10 are considered valid.
 
-**Note:** The above is really equivalent to uint256 y; require y > 0;.
+**Note:** The above is really equivalent to:
+```cvl
+uint256 y;
+require y > 0;
+```.
 
 ### Two-State Contexts: `@old` and `@new`
 
 Two-state contexts, denoted by `@old` and `@new`, are essential when dealing with havoc statements. They provide a mechanism to reference the old and new states of a variable within the havoc statement, allowing for more nuanced control over the non-deterministic choices.
 
-##### Example:
+#### Example:
 ```cvl
 havoc sumAllBalance assuming sumAllBalance@new() == sumAllBalance@old() + balance - old_balance;
 ```
 
-In the given example, the havoc statement introduces non-deterministic values for the variable sumAllBalance. The assuming clause adds a condition: the new state of sumAllBalance should be the old state plus the change in the balance variable.
+In the given example, the havoc statement introduces non-deterministic values for the variable `sumAllBalance`. The assuming clause adds a condition: the new state of `sumAllBalance` should be the old state plus the change in the balance variable.
 
-sumAllBalance@new(): Value in the updated state.
-sumAllBalance@old(): Value in the previous state.
+`sumAllBalance@new()`: Value in the updated state.
+`sumAllBalance@old()`: Value in the previous state.
 balance - old_balance: Change in the balance variable.
 This usage of two-state contexts (@old and @new) provides nuanced control, allowing the introduction of non-deterministic choices with a specific condition based on the old and new states of the variable and related changes.
 
@@ -304,10 +308,10 @@ Here, the `require` statement ensures that the `amount` must be greater than zer
 ### 3. Modeling Reverts in Solidity Calls
 
 The default method of calling Solidity functions within CVL is to assume they do not revert.
-This behavior can be adjusted with the @withrevert modifier.
-After every Solidity call, even if it is not marked with @withrevert, a builtin variable called lastReverted is updated according to whether the Solidity call reverted or not.
+This behavior can be adjusted with the `@withrevert` modifier.
+After every Solidity call, even if it is not marked with `@withrevert`, a builtin variable called `lastReverted` is updated according to whether the Solidity call reverted or not.
 
-Note: For calls without @withrevert, lastReverted is automatically set to to false.
+Note: For calls without `@withrevert`, `lastReverted` is automatically set to to false.
 
 #### Syntax:
 
