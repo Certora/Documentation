@@ -7,7 +7,7 @@
 ## How Summarization Helps Solvers
 
 1. **Efficiency Improvement:**
-   - **Timeout Avoidance:** Solvers may struggle with undecidable problems or complex computations, leading to timeouts. Summarization provides a way to guide the solver efficiently by providing a more abstract, high-level view of the method, potentially avoiding the need for detailed exploration.
+   - **Timeout Avoidance:** Summarization provides a way to guide the solver efficiently by providing a more abstract, high-level view of the method, potentially avoiding the need for detailed exploration.
    - **Faster Analysis:** By focusing on essential properties, summarization can lead to faster analysis, as the solver doesn't need to explore every intricate detail of the method.
 
 2. **Abstraction of Complex Logic:**
@@ -43,7 +43,7 @@ In the example above, `complexFunction` involves a complex multiplication of `x`
 ## Important Considerations
 
 1. **Limitations of Summarization:**
-   - Summarization is a trade-off between precision and efficiency. While it can significantly improve solver performance, it may introduce overapproximations and potentially miss subtle details.
+   - Summarization is a trade-off between precision and efficiency. While it can significantly improve solver performance, it may introduce over- or under-apprxoimations. Overapproximation means we may use too general behaviors to prove the desired property. Underapproximation means we potentially miss out on behaviors.
    - Care should be taken to ensure that the summarization captures the critical aspects of the method's behavior.
 
 2. **Choosing Summarization Techniques:**

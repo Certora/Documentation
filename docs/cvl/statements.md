@@ -170,7 +170,7 @@ state has an execution that satisfies the condition.
 (havoc-stmt)=
 ## Havoc Statements
 
-Havoc statements introduce non-determinism into the contract execution, allowing the SMT solver to choose random values for specific variables. Havoc points are crucial for modeling uncertainty and verifying a wide range of possible scenarios.
+Havoc statements introduce non-determinism into the contract execution, allowing the SMT solver to choose random values for specific variables. Havoc statements are helpful for modeling uncertainty and verifying a wider range of possible scenarios.
 
 ### Syntax
 
@@ -251,7 +251,7 @@ In this example, havoc statements are used to introduce non-deterministic values
 
 ### Conclusion
 
-Havoc statements play a critical role in making CVL specifications more expressive and capable of handling uncertainty. When used judiciously, they enhance the modeling of various contract scenarios, making verification more robust and comprehensive. Understanding two-state contexts (`@old` and `@new`) and the `havoc assuming` construct is essential for harnessing the full power of havoc statements in CVL.
+Havoc statements play a critical role in making CVL specifications more expressive and capable of handling uncertainty. They widen the coverage of possible contract behaviors making verification more robust and comprehensive. Understanding two-state contexts (`@old` and `@new`) and the `havoc assuming` construct is useful for harnessing the full power of CVL, in particular when combined with ghosts.
 
 (control-flow)=
 ## Solidity-like Statements
@@ -274,10 +274,10 @@ The `assert` statement is used to assert a condition that must be true during th
 
 ```cvl
 uint256 balance;
-assert balance >= 0;
+assert balance > 0;
 ```
 
-In this example, the `assert` statement ensures that the balance variable is non-negative.
+In this example, the `assert` statement ensures that the balance variable is positive.
 
 ### 2. Require Statement
 
@@ -289,18 +289,19 @@ require condition;
 
 #### Usage:
 
-The `require` statement is similar to the `assert` statement but is used for expressing preconditions that must be satisfied for the execution to continue. If the condition evaluates to false, it will cause the contract execution to revert.
+The `require` statement is similar to the `assert` statement but is used for expressing preconditions that must be satisfied for the execution to continue. Values that make the condition evaluate to false will not be considered as violations of a later `assert` statement or witnesses to a later `satisfy` statement.
 
 ##### Example:
 
 ```cvl
 uint256 amount;
 require amount > 0;
+satisfy amount >= 0;
 ```
 
-Here, the `require` statement ensures that the `amount` must be greater than zero for the contract execution to proceed.
+Here, the `require` statement ensures that the `amount` must be greater than zero. This means there cannot be a witness of the `satisfy` command with `amount` equal to zero.
 
-### 3. Revert Statement
+### 3. Modeling Reverts in Solidity Calls
 
 The default method of calling Solidity functions within CVL is to assume they do not revert.
 This behavior can be adjusted with the @withrevert modifier.
@@ -312,12 +313,9 @@ Note: For calls without @withrevert, lastReverted is automatically set to to fal
 
 ```cvl
 f@withrevert(args);
-lastReverted;
+assert !lastReverted;
 ```
-
-#### Usage:
-
-The `@withrevert` modifier is used to check if a specific function call results in a revert during contract execution. The `lastReverted` variable is a boolean flag that indicates whether the last function call resulted in a revert.
+In this example, we call to `f` without pruning the reverting paths, and then we assert that the call to `f` did not revert on any given input.
 
 ##### Example:
 
@@ -341,7 +339,7 @@ return expression;
 
 #### Usage:
 
-The `return` statement is used to terminate the execution of a function and return a value. It is commonly used in functions to specify the value to be returned.
+The `return` statement is used to terminate the execution of a function and return a value. It can only be used in functions to specify the value to be returned.
 
 ##### Example:
 
