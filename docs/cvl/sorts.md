@@ -47,7 +47,7 @@ rule myRule {
 }
 ```
 
-This example demonstrates the use of an uninterpreted sort `Foo`. The `bar` ghost function takes two arguments of type `Foo` and returns a value of the same type. The `myRule` rule declares variables `x`, `y`, and `z`, and asserts that they are all equal. While this example may seem useless, it serves to highlight the flexibility of uninterpreted sorts.
+This example demonstrates the use of an uninterpreted sort `Foo`. The `bar` ghost function takes two arguments of type `Foo` and returns a value of the same type. The `myRule` rule declares variables `x`, `y`, and `z`, and asserts that they are all equal.
 
 ## Using Uninterpreted Sorts with Ghosts
 
