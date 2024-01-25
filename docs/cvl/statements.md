@@ -311,7 +311,7 @@ Here, the `require` statement ensures that the `amount` must be greater than zer
 
 ### 3. Modeling Reverts in Solidity Calls
 
-#### Syntax:
+#### Example:
 
 ```cvl
 f@withrevert(args);
