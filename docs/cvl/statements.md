@@ -297,7 +297,7 @@ require condition;
 
 #### Usage:
 
-The `require` statement is similar to the `assert` statement but is used for expressing preconditions that must be satisfied for the execution to continue. If the condition evaluates to false, it will cause the contract execution to revert.
+The `require` statement is similar to the `assert` statement but is used for expressing preconditions that must be satisfied for the execution to continue. Values that make the condition evaluate to false will not be considered as violations of a later `assert` statement or witnesses to a later `satisfy` statement.
 
 ##### Example:
 
