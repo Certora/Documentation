@@ -317,7 +317,7 @@ Here, the `require` statement ensures that the `amount` must be greater than zer
 f@withrevert(args);
 assert !lastReverted;
 ```
-
+In this example, we call to `f` without pruning the reverting paths, and then we assert that the call to `f` did not revert on any given input.
 #### Usage:
 
 The `@withrevert` modifier is used to check if a specific function call results in a revert during contract execution. The `lastReverted` variable is a boolean flag that indicates whether the last function call resulted in a revert.
