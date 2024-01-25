@@ -285,7 +285,7 @@ uint256 balance;
 assert balance > 0;
 ```
 
-In this example, the `assert` statement ensures that the balance variable is non-negative.
+In this example, the `assert` statement ensures that the balance variable is positive.
 
 ### 2. Require Statement
 
