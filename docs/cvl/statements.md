@@ -304,6 +304,7 @@ The `require` statement is similar to the `assert` statement but is used for exp
 ```cvl
 uint256 amount;
 require amount > 0;
+satisfy amount >= 0;
 ```
 
 Here, the `require` statement ensures that the `amount` must be greater than zero for the contract execution to proceed.
