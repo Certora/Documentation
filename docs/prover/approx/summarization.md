@@ -11,7 +11,7 @@ In CVL, method summarization involves specifying a simplified, abstract view of 
 ## How Summarization Helps Solvers
 
 1. **Efficiency Improvement:**
-   - **Timeout Avoidance:** Solvers may struggle with undecidable problems or complex computations, leading to timeouts. Summarization provides a way to guide the solver efficiently by providing a more abstract, high-level view of the method, potentially avoiding the need for detailed exploration.
+   - **Timeout Avoidance:** Summarization provides a way to guide the solver efficiently by providing a more abstract, high-level view of the method, potentially avoiding the need for detailed exploration.
    - **Faster Analysis:** By focusing on essential properties, summarization can lead to faster analysis, as the solver doesn't need to explore every intricate detail of the method.
 
 2. **Abstraction of Complex Logic:**
