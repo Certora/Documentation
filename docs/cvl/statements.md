@@ -309,7 +309,7 @@ satisfy amount >= 0;
 
 Here, the `require` statement ensures that the `amount` must be greater than zero. This means there cannot be a witness of the `satisfy` command with `amount` equal to zero.
 
-### 3. Revert Statement
+### 3. Modeling Reverts in Solidity Calls
 
 #### Syntax:
 
