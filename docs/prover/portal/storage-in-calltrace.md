@@ -53,7 +53,6 @@ The current resolution for "computational types" has limitations:
 - Requires or values that cause revert are not considered in the type resolution.
 - Strings or bytes keys of maps are not supported in the Call Trace display.
 
-Improvements in these aspects are areas for potential enhancements in future versions. 
 
 ## Reverts
 
