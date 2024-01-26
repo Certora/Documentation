@@ -46,6 +46,13 @@ See {doc}`statements` for information about the `statement` production; see
 {doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
 production.
 
+It is generally prohibited to hook more than once on any specific opcode or
+storage location to avoid ambiguities on the order of hook applications.
+For opcode hooks, there can only be a single hook present for a specific opcode.
+For load (and store) hooks, the access paths of all hooks need to be distinct;
+this rests on the observation that the resolution of access paths to storage
+locations is injective.
+
 Examples
 --------
 
