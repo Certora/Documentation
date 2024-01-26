@@ -9,6 +9,5 @@ sums.md
 partial-apply.md
 safe-assum.md
 states.md
-general.md
 ```
 

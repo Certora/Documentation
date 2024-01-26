@@ -8,14 +8,23 @@ Tutorial
 The Certora Tutorial is a series of guided lessons that covers installation and
 basic usage of the Certora Prover.
 
-It is available [on github][tutorial].
+It is available [here][tutorial].
 
 The Tutorial is organized as a series of lessons and exercises.  You are
-encouraged to clone the git repository and work through the exercises yourself.
-Each directory has a `README` file that explains the lesson.
+encouraged to clone the [git repository][tutorial-code] and work through the exercises yourself.
 
-[tutorial]: https://github.com/Certora/Tutorials/blob/master/README.md
 
+[tutorial]: https://docs.certora.com/projects/tutorials
+
+[tutorial-code]: https://github.com/Certora/tutorials-code
+
+Examples
+--------
+A set of examples featuring CVL are available on [github][examples].
+
+[examples]: https://github.com/Certora/Examples
+
+(stanford)=
 Stanford DeFi Security Summit
 -----------------------------
 
@@ -36,11 +45,12 @@ following topics:
 | [The Certora Prover pipeline](https://youtu.be/vg6da3A7lSs) | ({download}`slides <basics/stanford/09-pipeline.pdf>`)        |
 | [SMT solvers                ](https://youtu.be/9QuS_8cL91w) | ({download}`slides <basics/stanford/10-smt.pdf>`)             |
 
-The covered examples are available on [github][examples].
+The covered examples are available in the [CVL examples repository](https://github.com/Certora/Examples).
 
 [stanford]: https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA
-[examples]: https://github.com/Certora/Examples
 
+
+(paris)=
 EthCC Paris
 -----------
 

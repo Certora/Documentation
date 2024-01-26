@@ -6,6 +6,15 @@ Step 1: prerequisites
 ---------------------
 
 <details>
+  <summary>Linux or MacOS</summary>
+  Windows users should use [WSL][wsl].
+
+  % TODO: more information?
+  </details>
+
+[wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
+
+<details>
   <summary>Python3.8.16 or newer</summary>
 
   Check your Python3 version by executing the following command on the
@@ -61,32 +70,6 @@ to `PATH` to avoid errors.
 
 The following section presents some, but maybe not all, possible warnings that
 can arise during installation and how to deal with them:
-
-<details>
-  <summary>Windows</summary>
-
-  So far we haven't encountered any warnings at installation that's needed to be
-  resolved to use the tool freely, however it doesn't mean that you won't
-  encounter one.
-
-  If you do encounter a warning try the following solutions in descending order:
-
-  * Follow the warning's instructions.
-
-  * If you do not understand the warning and don't know how to fix it, try to
-    compare it to the warning of the other OS and follow their instructions.
-   * The warnings in the other OS suggest to add the installation folder to the PATH.
-
-   * To get the location of the `certora-cli` installation re-execute on `cmd`:
-
-     ```bash
-     pip install certora-cli
-     ```
-
-  * Contact the Certora team.
-
-  Please also share the warning with us so we could write a walkthrough for fixing it.
-</details>
 
 <details>
   <summary>macOS</summary>
@@ -190,39 +173,27 @@ pip3 install certora-cli-beta
 You can then switch to the standard CVL release by running `deactivate`, and
 back to the beta release using `certora-beta/bin/activate`.
 
-Step 3: Set the premium access key as an environment variable
+Step 3: Set the personal access key as an environment variable
 -------------------------------------------------------------
 
-The Certora Prover is available for all to use in a free trial version. The
-Prover's processing power and storage capacity are limited in the trial
-version. If you are using the tool in this way, you can skip to the next step.
+The Certora Prover requires a personal access key. 
+You can get a free personal access key by registering on the 
+[Certora website](https://www.certora.com/signup?plan=prover).
 
-Otherwise, you should have received a personal _premium key_ from the Certora
-team. Before running the Prover in the premium version, you should register the
-premium key as a system variable.
-
-To do so on macOS or Linux machines, execute the following command on the terminal:
+Before running the Prover, 
+  you should register your access key as a system variable.
+To do so on macOS or Linux machines, 
+  execute the following command on the terminal:
 
 ```bash
-export CERTORAKEY=<premium_key>
+export CERTORAKEY=<personal_access_key>
 ```
 
 This command sets a temporary variable that will be unset once the terminal is
-closed. We recommended storing the premium key in an environment variable named
+closed. We recommended storing the access key in an environment variable named
 `CERTORAKEY`. This way, you will no longer need to execute the above command
 whenever you open a terminal. To set an environment variable permanently,
 follow the next steps:
-
-<details>
-  <summary>Windows</summary>
-
-  * Open the cmd terminal and execute:
-
-    ```bash
-    setx CERTORAKEY <premium_key>
-    ```
-</details>
-
 
 <details>
   <summary>macOS</summary>
@@ -259,6 +230,9 @@ follow the next steps:
     source .zshenv
     ```
 
+When running the Certora Prover in the Visual Studio Code Extension, you may need
+to restart VSCode or your computer.
+
 </details>
 
 <details>
@@ -293,38 +267,6 @@ follow the next steps:
 
 Step 4: Add the Solidity compiler (`solc`) executable's folder to your `PATH`
 ---------------------------------------------------------------------------
-
-<details>
-  <summary>Windows</summary>
-
-  The following instructions are for Windows 11; for other versions of Windows the instructions might slightly differ.
-
-  * Press `"Windows key" + x` to access the Power User Task Menu.
-
-  * In the Power User Task Menu, select the System option.
-
-  * In the System window, scroll to the bottom and click the About option.
-
-  * In the System > About window, click the Advanced system settings link at the bottom of the Device specifications section.
-
-  * In the System Properties window, click the Advanced tab, then click the Environment Variables button near the bottom of that tab.
-
-  * In the Environment Variables window, highlight the Path variable in the System variables section and click the Edit button.
-
-  * Add the full path to the directory that contains the `solc` executables, e.g.:
-
-    ```bash
-    C:\full\path\to\solc\executable\folder
-    ```
-
-  * Quit and reopen all opened terminals for the change to take effect in the terminals.
-
-  * You can check that the variable was set correctly by running the following in the cmd terminal:
-
-    ```bash
-    echo %PATH%
-    ```
-</details>
 
 <details>
   <summary>macOS</summary>

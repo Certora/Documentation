@@ -10,3 +10,7 @@ The following resources are available for learning CVL from examples:
 
 
 [videos]: https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA "Certora workshop playlist"
+
+```{toctree}
+ghosts.md
+```
