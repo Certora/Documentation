@@ -246,35 +246,6 @@ contracts are accessing the same slot the same hook code will be called with
 the same slot number.
 ```
 
-
-(call-hooks)=
-Call hooks
---------------------
-
-We provide hooks for all four call opcodes: [`CALL`](https://www.evm.codes/#f1),
-[`CALLCODE`](https://www.evm.codes/#f2), [`DELEGATECALL`](https://www.evm.codes/#f4),
-and [`STATICCALL`](https://www.evm.codes/#fa).
-The hook parameters match the stack inputs of the respective opcodes.
-
-The arguments for the call arguments and return values (`argsOffset`, `argsSize`,
-`retOffset`, and `retSize`) only exist for future use, they can not be used to
-access the respective data right now.
-
-These hooks can be very useful to establish sensible security invariants.
-For example, both `CALLCODE` and `DELEGATECALL` can call external code on the
-current context which exposes private data to the called external code:
-```cvl
-hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
-    assert(executingContract != currentContract,"we should not use `callcode`");
-}
-hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
-    assert(executingContract != currentContract || addr == currentContract,
-        "we should only `delegatecall` into ourselves"
-    );
-}
-```
-
-
 (opcode-hooks)=
 EVM opcode hooks
 ----------------
@@ -389,6 +360,32 @@ hook SELFDESTRUCT(address a)
 % 
 % The standard stack-manipulating instructions `DUP*`, `SWAP*`, `PUSH*` and `POP`
 % are not modeled.  `MLOAD` and `MSTORE` are also not modeled.
+
+(call-hooks)=
+### Call hooks
+
+We provide hooks for all four call opcodes: [`CALL`](https://www.evm.codes/#f1),
+[`CALLCODE`](https://www.evm.codes/#f2), [`DELEGATECALL`](https://www.evm.codes/#f4),
+and [`STATICCALL`](https://www.evm.codes/#fa).
+The hook parameters match the stack inputs of the respective opcodes.
+
+The arguments for the call arguments and return values (`argsOffset`, `argsSize`,
+`retOffset`, and `retSize`) only exist for future use, they can not be used to
+access the respective data right now.
+
+These hooks can be very useful to establish sensible security invariants.
+For example, both `CALLCODE` and `DELEGATECALL` can call external code on the
+current context which exposes private data to the called external code:
+```cvl
+hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    assert(executingContract != currentContract,"we should not use `callcode`");
+}
+hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    assert(executingContract != currentContract || addr == currentContract,
+        "we should only `delegatecall` into ourselves"
+    );
+}
+```
 
 ### Known inter-dependencies and common pitfalls
 
