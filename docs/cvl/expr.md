@@ -616,7 +616,7 @@ In general, the `keccak256` built-in function supports two kinds of inputs:
 - a list of primitive (e.g., `uint256`, `uint8`, `addresss`) parameters
 
 ```{note}
-`keccak256` is currently unsupported in quantified expressions.
+`keccak256` is currently ***unsupported*** in quantified expressions.
 ```
 
 ### ECRecover
@@ -625,7 +625,7 @@ The `ecrecover` function in Solidity is helpful in recovering the signer's addre
 It exists in very similar form in CVL and receives exactly the same parameter types as its Solidity counterpart.
 
 ```{note}
-`ecrecover` is supported in quantified expressions.
+`ecrecover` ***is supported*** in quantified expressions.
 ```
 
 In the Prover, `ecrecover` is implemented as an {ref}`uninterpreted functions <uninterp-functions>` uninterpreted function.
