@@ -935,7 +935,7 @@ effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
 (-smt_groundQuantifiers)=
-#### `--settings -smt_groundQuantifiers=false`
+#### `--prover_args -smt_groundQuantifiers=false`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
@@ -986,10 +986,13 @@ Sets the maximum splitting depth.
 **When to use it?** 
 
 When the deepest {term}`split`s are too heavy to solve, but not too high in
-number, increasing this will lead to smaller, but more {term}`split leaves`, which run
-at the full SMT timeout (as set by {ref}`--smt_timeout`). Conversely, if run
-time is too high because there are too many splits, decreasing this number means
-that more time is spent on fewer, but bigger split leaves.
+number, increasing this will lead to smaller, but more numerous 
+{term}`split leaves`, which run at the full SMT timeout (as set by 
+{ref}`--smt_timeout`).
+Conversely, if run time is too high because there are too many splits,
+decreasing this number means that more time is spent on fewer, but bigger split
+leaves.
+Default for this option is 10 seconds.
 
 **Example**
 
@@ -1039,6 +1042,7 @@ this option is only useful if the rule is correct.)
 **When to use it?** 
 
 When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
+The default value for this option is `false`.
 
 **Example**
 
