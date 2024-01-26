@@ -335,7 +335,7 @@ Step 4: Add the Solidity compiler (`solc`) executable's folder to your `PATH`
 Step 5 (optional, for Vyper users): Install the Vyper compiler (`vyper`)
 --------------------------------------------------------------------------------
 
-[Vyper](https://github.com/vyperlang/vyper) is an EVM-compatible Pythonic smart contract language.
+[Vyper](https://github.com/vyperlang/vyper) is an EVM compatible Pythonic smart contract language.
 Since the Certora Prover operates on the bytecode, it can be applied to any source-level language
 that compiles to EVM bytecode.
 
