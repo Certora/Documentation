@@ -992,7 +992,7 @@ number, increasing this will lead to smaller, but more numerous
 Conversely, if run time is too high because there are too many splits,
 decreasing this number means that more time is spent on fewer, but bigger split
 leaves.
-Default for this option is 10 seconds.
+The default value for this option is 10 seconds.
 
 **Example**
 
