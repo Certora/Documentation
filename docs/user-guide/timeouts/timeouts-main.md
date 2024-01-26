@@ -213,17 +213,24 @@ There is also some helpful information in the section on
 Some of the information in these references is out of date.
 ```
 
-## Prover settings
+## Dealing with different kinds of complexity
 
-In this subsection we list some option combinations that have helped preventing
-timeouts in the past. We group the options by timeout causes they are most
-relevant for. 
+In this section we list some hints for timeout prevention based on which of the
+statistics (path count, number of nonlinear operations, memory/storage 
+complexity) is showing high severity on a given rule.
 
+```{note}
+The techniques described below under [modular verification](modular-verification) are 
+worth considering no matter which statistic is showing high severity.
+```
+
+(high-path-count)=
 ### Dealing with a high path count
 
-The Certora Prover internally divides each verification condition into smaller
-subproblems and attempts to solve them separately. This technique is called
-control flow splitting. For a more detailed explanation, see
+*Control flow splitting* is a natural area to consider when the path count of a
+rule is high. When applying this technique, the Certora Prover internally
+divides each verification condition into smaller subproblems and attempts to
+solve them separately. For a more detailed explanation, see
 {ref}`control-flow-splitting`.
 
 We list a few option combinations that can help in various settings. There is a
@@ -231,15 +238,6 @@ tradeoff between spending time in different places: The Prover can either try to
 spend much time at a low splitting level in the hope that no further splitting
 will be needed, or it can split quickly in the hope that the subproblems will be
 much easier to solve. 
-
-% Two important flags controlling this behavior are
-% {ref}`-smt_initialSplitDepth` and {ref}`-mediumTimeout`. The first variant
-% ("lazy splitting", e.g., `-smt_initialSplitDepth` at its default of 0, and
-% `-mediumTimeout` at 30 seconds.) is weak when the shallow splits are too hard,
-% and time spent on them is wasted. The second variant ("eager splitting", e.g.
-% `-smt_initialSplitDepth` of 5 and `-mediumTimeout` at its default) is weak when
-% we end up with too many subproblems; note that the number of splits is
-% worst-case exponential in the splitting depth.
 
 The options on control flow splitting are described in more detail in the
 [corresponding section of the CLI
@@ -278,6 +276,7 @@ useful.
 certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediumTimeout 5' --smt_timeout 10
 ```
 
+(high-nonlinear-op-count)=
 ### Dealing with nonlinear arithmetic
 
 Nonlinear integer arithmetic is often the hardest part of the formulas that
@@ -288,17 +287,75 @@ is different from the default.
 
 For instance, we can prioritize the usage of the [Yices SMT
 solver](https://yices.csl.sri.com/) by decreasing the size of the solver
-portfolio. With the `-solvers` option set as follows, the Certora Prover will
-run only CVC5 and Yices. Furthermore, we can make the Certora Prover use the
-ordering given in the `-solvers` option for prioritizing solvers using the
-`-smt_overrideSolvers` option.
+portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
+will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
+the ordering given in the {ref}`-solver` option for prioritizing solvers using
+the `-smt_overrideSolvers` option.
 
-% TODO reference options, once they have been documented
-% also, make this subsection a bit more concrete perhaps? not sure how, yet
+% TODO make this subsection a bit more concrete.. not sure how, yet
 
 ```sh
 certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
 ```
+
+(high-memory-complexity)=
+### Dealing with high memory (or storage) complexity
+
+In this subsection we consider common culprits for high memory complexity.
+
+#### Passing complex structs
+
+One common reason for high memory complexity are complex data structures that
+are passed from the specification to the program, or also inside the program.
+`struct` types that contain many dynamically-sized arrays are especially
+problematic. 
+
+% TODO: which calls exactly? external calls? all of them?
+
+```cvl
+rule myRule() {
+    MyStruct x;
+    foo(x);
+
+}
+```
+
+```solidity
+struct MyStruct {
+    // several dynamically-sized arrays
+    bytes b;
+    string s;
+    uint[] u1;
+    uint8[] u2;
+}
+
+function foo(MyStruct x) public {
+    ...
+}
+```
+
+In this case, it can help to identify fields of the struct that are not relevant
+for the property of the program that is currently being reasoned about and
+comment out those fields. In our experience these fields exist relatively often
+especially in large structs. Naturally, the removal might be complicated by the
+fact that all usages of these fields also need some munging steps applied to
+them.
+
+#### Memory and storage in inline assembly
+
+The Certora Prover employs [static analyses and
+simplifications](storage-and-memory-analysis) in order to make the reasoning
+about Storage and Memory easier for the SMT solvers. These static analyses are
+sometimes thrown off by unusual code patterns (most often produced when using
+inline assembly), which can make the SMT formulas too hard to solve. 
+
+CVT reports these failures of Storage or Memory analysis in the Global Problems
+pane of the reports, along with pointers to the offending source code positions
+ (typically inline assembly containing `sstore`/`sload`/`mstore`/`mload`
+ operations). To resolve such failures, the relevant code parts need to be
+summarized or munged. (Naturally, the Certora developers are working make such
+failures less frequent as well.)
+
 
 (modular-verification)=
 ## Modular verification
@@ -334,68 +391,3 @@ The above snippet has the effect of summarizing as `NONDET` all external calls
 to the library and _internal_ ones as well. Only `NONDET` and `HAVOC` summaries
 can be applied. 
 For more information on method summaries, see {ref}`summaries`.
-
-## Simplifying the source code 
-% aka  Munging / Verifiable-Code-Antipatterns
-
-Simplifying the source code of the program under verification can be a valuable
-last resort for obtaining useful verification results. In the following, we
-describe some code patterns that have proven to be very difficult for the Prover
-and thus are good targets for code simplification. Note that the occurrence of
-these patterns is not always a problem, so they should be looked at in
-conjunction with the difficulty statistics and generally a holistic view of the
-program under verification.
-
-### Passing complex structs
-
-A common culprit for high memory complexity are complex data structures that are
-passed from the specification to the program, or also inside the program.
-`struct` types that contain many dynamically-sized
-arrays are especially problematic. 
-
-% TODO: which calls exactly? external calls? all of them?
-
-```cvl
-rule myRule() {
-    MyStruct x;
-    foo(x);
-
-}
-```
-
-```solidity
-struct MyStruct {
-    // several dynamically-sized arrays
-    bytes b;
-    string s;
-    uint[] u1;
-    uint8[] u2;
-}
-
-function foo(MyStruct x) public {
-    ...
-}
-```
-
-In this case, it can help to identify fields of the struct that are not relevant
-for the property of the program that is currently being reasoned about and
-comment out those fields. In our experience these fields exist relatively often
-especially in large structs. Naturally, the removal might be complicated by the
-fact that all usages of these fields also need some munging steps applied to
-them.
-
-### Memory and storage in inline assembly
-
-The Certora Prover employs [static analyses and
-simplifications](storage-and-memory-analysis) in order to make the reasoning
-about Storage and Memory easier for the SMT solvers. These static analyses are
-sometimes thrown off by unusual code patterns (most often produced when using
-inline assembly), which can make the SMT formulas too hard to solve. 
-
-CVT reports these failures of Storage or Memory analysis in the Global Problems
-pane of the reports, along with pointers to the offending source code positions
- (typically inline assembly containing `sstore`/`sload`/`mstore`/`mload`
- operations). To resolve such failures, the relevant code parts need to be
-summarized or munged. (Naturally, the Certora developers are working make such
-failures less frequent as well.)
-
