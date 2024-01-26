@@ -622,7 +622,7 @@ In general, the `keccak256` built-in function supports two kinds of inputs:
 ### ECRecover
 
 The `ecrecover` function in Solidity is helpful in recovering the signer's address from a signed message.
-It exists natively in CVL and receives exactly the same parameter types as its Solidity counterpart.
+It exists in very similar form in CVL and receives exactly the same parameter types as its Solidity counterpart.
 
 ```{note}
 `ecrecover` is supported in quantified expressions.
