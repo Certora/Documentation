@@ -212,7 +212,7 @@ havoc y assuming y > 10;
 
 In this example, the havoc statement introduces non-deterministic values for variable `y`, but only values greater than 10 are considered valid.
 
-**Note:** The above is really equivalent to:
+**Note:** The above is equivalent to:
 ```cvl
 uint256 y;
 require y > 0;
@@ -231,8 +231,7 @@ In the given example, the havoc statement introduces non-deterministic values fo
 
 `sumAllBalance@new()`: Value in the updated state.
 `sumAllBalance@old()`: Value in the previous state.
-balance - old_balance: Change in the balance variable.
-This usage of two-state contexts (@old and @new) provides nuanced control, allowing the introduction of non-deterministic choices with a specific condition based on the old and new states of the variable and related changes.
+`balance - old_balance`: Change in the balance variable.
 
 
 ### Advanced Usage: `havoc assuming`
