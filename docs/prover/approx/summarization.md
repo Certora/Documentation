@@ -28,7 +28,7 @@ function multiply(uint256 x, uint256 y) returns uint256 {
 }
 methods {
     complexFunction(uint256 x, uint256 y) returns bool =>
-        EXISTS uint256 z . z == multiply(x, y);
+        exists uint256 z . z == multiply(x, y);
 }
 
 rule myRule(uint256 a, uint256 b) {
@@ -38,7 +38,7 @@ rule myRule(uint256 a, uint256 b) {
 }
 ```
 
-In the example above, `complexFunction` involves a complex multiplication of `x` and `y`. The summarization `EXISTS uint256 z . z == x * y;` provides a high-level description, emphasizing the existence of a product `z` that satisfies the multiplication relationship.
+In the example above, `complexFunction` involves a complex multiplication of `x` and `y`. The summarization `exists uint256 z . z == x * y;` provides a high-level description, emphasizing the existence of a product `z` that satisfies the multiplication relationship.
 
 ## Important Considerations
 
