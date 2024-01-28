@@ -212,7 +212,7 @@ havoc y assuming y > 10;
 
 In this example, the havoc statement introduces non-deterministic values for variable `y`, but only values greater than 10 are considered valid.
 
-**Note:** The above is really equivalent to:
+**Note:** The above is equivalent to:
 ```cvl
 uint256 y;
 require y > 0;
