@@ -232,7 +232,6 @@ In the given example, the havoc statement introduces non-deterministic values fo
 `sumAllBalance@new()`: Value in the updated state.
 `sumAllBalance@old()`: Value in the previous state.
 `balance - old_balance`: Change in the balance variable.
-This usage of two-state contexts (@old and @new) provides nuanced control, allowing the introduction of non-deterministic choices with a specific condition based on the old and new states of the variable and related changes.
 
 
 ### Advanced Usage: `havoc assuming`
