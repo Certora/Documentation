@@ -44,19 +44,6 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-### `--assert_contracts`
-
-**What does it do?**
-Replaces all EVM instructions that cause a non-benign revert in the smart contract with an assertion. Non-benign reverts include division by 0, bad dereference of an array, `throw` command, and more.
-Each contract must have been declared in the input files or have the same name as the source code file it is in.
-
-**When to use it?**
-When you want to see if a suspect instruction can fail in the code, without writing a `.spec` file.
-
-**Example**
-If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:
-`certoraRun Bank.sol:Investor --assert_contracts Investor`
-
 Most frequently used options
 ----------------------------
 
