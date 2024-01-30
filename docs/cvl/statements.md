@@ -347,7 +347,7 @@ The `return` statement is used to terminate the execution of a function and retu
 ##### Example:
 
 ```cvl
-function calculateSum(uint256 a, uint256 b) public pure returns (uint256) {
+function calculateSum(uint256 a, uint256 b) returns (uint256) {
     return a + b;
 }
 ```

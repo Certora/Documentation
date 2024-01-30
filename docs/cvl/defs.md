@@ -62,10 +62,10 @@ Definitions may reference ghost functions. This means that definitions are not a
 #### Example:
 
 ```cvl
-ghost foo(uint256 x) returns uint256;
+ghost foo(uint256) returns uint256;
 
-definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
-definition foo_is_even_at(uint256 x) = is_even(foo(x));
+definition is_even(uint256 x) returns bool = x % 2 == 0;
+definition foo_is_even_at(uint256 x) returns bool = is_even(foo(x));
 
 rule rule_assuming_foo_is_even_at(uint256 x) {
   require foo_is_even_at(x);
@@ -78,9 +78,9 @@ More interestingly, the two-context version of ghosts can be used in a definitio
 #### Example:
 
 ```cvl
-ghost foo(uint256 x) returns uint256;
+ghost foo(uint256) returns uint256;
 
-definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
+definition is_even(uint256 x) returns bool = x % 2 == 0;
 definition foo_add_even(uint256 x) returns bool = is_even(foo@new(x)) &&
     forall uint256 a. is_even(foo@old(x)) => is_even(foo@new(x));
 

@@ -13,21 +13,24 @@
 2. **Abstraction of Complex Logic:**
    - **Complex Computations:** When dealing with functions involving complex mathematical operations or undecidable problems, summarization allows the user to abstract away unnecessary details, making it easier for the solver to reason about the method's behavior.
 
-## Syntax and Examples
+## Syntax
 
 ```cvl
 methods {
     // Method summarization syntax
-    methodName(parameters) returns returnType =>
+    function methodName(parameters) returns returnType =>
         summaryExpression;
 }
+```
 
-// Example: Summarization for a complex function
+## Example: Summarization for a complex function
+
+```cvl
 function multiply(uint256 x, uint256 y) returns uint256 {
     return x * y;
 }
 methods {
-    complexFunction(uint256 x, uint256 y) returns bool =>
+    function complexFunction(uint256 x, uint256 y) returns bool =>
         exists uint256 z . z == multiply(x, y);
 }
 

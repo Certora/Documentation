@@ -7,8 +7,8 @@ CVL specifications support both Solidity primitives (`uint256`, `address`, etc.)
 To declare an uninterpreted sort in CVL, use the following syntax:
 
 ```cvl
-Sort MyUninterpSort;
-Sort Foo;
+sort MyUninterpSort;
+sort Foo;
 ```
 
 These uninterpreted sorts can be utilized in various ways within a CVL specification:
@@ -27,7 +27,7 @@ These uninterpreted sorts can be utilized in various ways within a CVL specifica
 
 3. **Use in Signatures:**
    ```cvl
-   ghost myGhost(uint256 x, Foo f) returns Foo;
+   ghost myGhost(uint256, Foo) returns Foo;
    ```
 
 ## Example Usage
@@ -35,7 +35,7 @@ These uninterpreted sorts can be utilized in various ways within a CVL specifica
 Consider the following example:
 
 ```cvl
-Sort Foo;
+sort Foo;
 
 ghost bar(Foo, Foo) returns Foo;
 
