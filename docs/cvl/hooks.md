@@ -378,10 +378,10 @@ For example, both `CALLCODE` and `DELEGATECALL` can call external code on the
 current context which exposes private data to the called external code:
 ```cvl
 hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
-    assert(executingContract != currentContract,"we should not use `callcode`");
+    assert (executingContract != currentContract, "we should not use `callcode`");
 }
 hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
-    assert(executingContract != currentContract || addr == currentContract,
+    assert (executingContract != currentContract || addr == currentContract,
         "we should only `delegatecall` into ourselves"
     );
 }
