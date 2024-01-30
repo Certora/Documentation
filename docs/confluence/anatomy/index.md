@@ -7,7 +7,6 @@ functions.md
 ghosts.md
 ghostfunctions.md
 hooks.md
-definitions.md
 example.md
 update.md
 ```
