@@ -46,12 +46,17 @@ See {doc}`statements` for information about the `statement` production; see
 {doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
 production.
 
-It is generally prohibited to hook more than once on any specific opcode or
-storage location to avoid ambiguities on the order of hook applications.
-For opcode hooks, there can only be a single hook present for a specific opcode.
-For load (and store) hooks, the access paths of all hooks need to be distinct;
-this rests on the observation that the resolution of access paths to storage
-locations is injective.
+It is prohibited to have multiple hooks with the same hook pattern.
+Two hooks have the same hook pattern if both are `Sstore` hooks with the same
+access path, both are `Sload` hooks with the same access path, or both are
+opcode hooks with the same opcode.
+Doing so will result in an error like this:
+`The declared hook pattern <second hook> duplicates the hook pattern <first hook> at <spec file>. A hook pattern may only be used once.`
+Note that two access paths are considered to be "the same" if they resolve to
+the same storage address. Syntactically different access paths can alias when
+accessing a member by name (`contract.member`), by slot (`contract.(slot n)`),
+or by offset (`contract.(offset n)`).
+
 
 Examples
 --------
