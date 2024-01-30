@@ -370,17 +370,24 @@ and [`STATICCALL`](https://www.evm.codes/#fa).
 The hook parameters match the stack inputs of the respective opcodes.
 
 The arguments for the call arguments and return values (`argsOffset`, `argsSize`,
-`retOffset`, and `retSize`) only exist for future use, they can not be used to
-access the respective data right now.
+`retOffset`, and `retSize`) mostly exist for future use. Their values can be
+consumed, but currently they cannot be used to read data stored in memory before
+or after the call.
 
 These hooks can be very useful to establish sensible security invariants.
-For example, both `CALLCODE` and `DELEGATECALL` can call external code on the
-current context which exposes private data to the called external code:
+As an example, suppose no external code should gain write access to the data of
+the current contract. Both `CALLCODE` and `DELEGATECALL` have the potential to
+do exactly that by calling into another contract but keeping the current context.
+Note that there are exceptions to this property whenever *trusted* 3rd party
+libraries are used. It might also be necessary to restrict these checks to the
+contract of interest.
 ```cvl
 hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    // using CALLCODE is generally not expected in this contract
     assert (executingContract != currentContract, "we should not use `callcode`");
 }
 hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    // DELEGATECALL is used in this contract, but it only ever calls into itself
     assert (executingContract != currentContract || addr == currentContract,
         "we should only `delegatecall` into ourselves"
     );
