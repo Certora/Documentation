@@ -8,24 +8,3 @@ refer to as "harnesses".
 
 Harnesses involve systematically altering the behavior of the code being
 verified.  They are therefore {term}`unsound`.
-
-
-Harnessing by extension
------------------------
-
-```{todo}
-This technique is currently undocumented.  See our [OpenZeppelin verification
-project](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/certora) for an example.
-```
-
-(munging)=
-Harnessing by munging
----------------------
-
-```{todo}
-This technique is currently undocumented.  See our [OpenZeppelin verification
-project][oz-readme] for an example.
-```
-
-[oz-readme]: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/certora/README.md
-

@@ -136,11 +136,16 @@ CVL also adds several useful logical operations:
    For example, the statement `assert initialized => x > 0;` will only report
    counterexamples where `initialized` is true but `x` is not positive.
 
-```{todo}
-Whether implications (and other boolean connectors) are short-circuiting is
-currently undocumented.
-```
-
+ * The short-circuiting behavior of implications (`=>`), bidirectional implications     
+   (`<=>`), and other boolean connectors in CVL is currently expected to mirror the 
+   short-circuiting behavior seen in standard logical operators (`&&` and `||`). In practical 
+   terms, this implies that the evaluation process is terminated as soon as the final result 
+   can be determined without necessitating further computation.
+   For example, when dealing with an implication expression like `expr1 => expr2`, if the 
+   evaluation of `expr1` results in false, there is no need to proceed with evaluating 
+   `expr2` since the overall result is already known. This aligns with the common 
+   short-circuiting behavior found in traditional logical operators.
+   
  * Similarly, an *if and only if* expression (also called a *bidirectional implication*)
    `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
    expressions and is itself a boolean expression.  `expr1 <=> expr2` evaluates
@@ -371,10 +376,6 @@ method tag, one of `@norevert` or `@withrevert`.
    throws an exception.
 
    [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
-
- * ```{todo}
-   The `@dontsummarize` tag is currently undocumented.
-   ```
 
 After the method tag, the method arguments are provided.  Unless the method
 is declared {ref}`envfree <envfree>`, the first argument must be an
