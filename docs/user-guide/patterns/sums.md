@@ -6,7 +6,7 @@ invariant directSumOfTwo(address a, address b)
     (a != b) => (balanceOf(a) + balanceOf(b) <= to_mathint(totalSupply()));
 ```
 
-Ensure that the sum of balances for any two distinct addresses, 'a' and 'b', does not exceed the total supply.
+Ensure that the sum of balances for any two distinct addresses, `a` and `b`, does not exceed the total supply.
 
 ## Maintaining Equality Between Sum of Balances and Total Supply
 ```cvl
@@ -23,4 +23,4 @@ invariant totalIsSumBalances()
     to_mathint(totalSupply()) == sumBalances;
 ```
 
-Track the sum of all balances and ensure that it remains equal to the total supply. The 'sumBalances' ghost variable is updated with changes in individual balances using a storage hook, ensuring accuracy and consistency in the overall sum.
+Track the sum of all balances and ensure that it remains equal to the total supply. The `sumBalances` ghost variable is updated with changes in individual balances using a storage hook, ensuring accuracy and consistency in the overall sum.
