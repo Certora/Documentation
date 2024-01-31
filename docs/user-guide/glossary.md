@@ -40,8 +40,16 @@ EVM bytecode
   compilers, among others.
   For details on what the EVM is and how it works, the following links provide
   good entry points.
-  [Official documentation](https://ethereum.org/en/developers/docs/evm/)
+  [Official documentation](https://ethereum.org/en/developers/docs/evm/),
   [Wikipedia](https://en.wikipedia.org/wiki/Ethereum#Virtual_machine)
+
+EVM memory
+EVM storage
+  The {term}`EVM` has two major concepts of memory, called *memory* and 
+  *storage*. In brief, memory variables keep data only for the duration of a 
+  single EVM transaction, while storage variables are stored persistently in 
+  the Ethereum blockchain.
+  [Official documentation](https://ethereum.org/en/developers/docs/smart-contracts/anatomy)
 
 havoc
   In some cases, the Certora Prover should assume that some variables can change 
@@ -75,7 +83,6 @@ witness example
   In the context of {term}`SMT solver`s, a model is a valuation of the logical 
   constants and uninterpreted functions in the input formula that makes the formula
   evaluate to `true`, also see {term}`SAT result`.
-
 
 linear arithmetic
 nonlinear arithmetic
@@ -125,6 +132,8 @@ sanity
   This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
   ```
 
+SAT
+UNSAT
 SAT result
 UNSAT result
   *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a 
@@ -167,6 +176,15 @@ unsound
   such as loop unrolling or certain kinds of harnessing may cause real bugs 
   to be missed by the Prover, and should therefore be used with caution. See
   {doc}`/docs/prover/approx/index` for more details.
+
+split
+split leaf
+split leaves
+  Control flow splitting is a technique to speed up verification by splitting the
+  program into smaller parts and verifying them separately. These smaller programs 
+  are called splits. Splits that cannot be split further are called split leaves.
+  See {ref}`control-flow-splitting`.
+  
 
 summary
 summarize
