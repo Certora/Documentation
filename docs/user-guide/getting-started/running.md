@@ -62,7 +62,7 @@ This command triggers a verification run on the `ERC20` contract from the solidi
 
 While running, the Prover will print various information to the console about the run. In the end, the output will look similar to this:
 
-```plaintext
+```text
 ...
 [INFO]: Process returned with 100
 
