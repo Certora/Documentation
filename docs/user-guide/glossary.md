@@ -4,6 +4,9 @@ Glossary
 
 ````{glossary}
 
+axiom
+  a statement accepted as true without proof.
+
 control flow graph
   Control flow graphs (short: CFGs) are a program representation that 
   illustrates in which order the program's instructions are processed during 

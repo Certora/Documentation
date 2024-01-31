@@ -555,14 +555,10 @@ As with direct storage access in general, direct storage havoc is experimental a
 
 ### Hashing
 
-Many contracts employ hashing in order to create `mapping` keys from more complex data structures.
-A native hashing function in Solidity is `keccak256`.
-We expose `keccak256` in CVL, in order to be able to create such mapping keys directly in CVL.
-The alternative to using the CVL built-in for `keccak256` is to use pre-existing
-functionality from the contract, or creating a dedicated harness function,
-which is usually undesirable from both usability and Prover performance perspectives.
+CVL allows to use Solidity's `keccak256` hashing function directly in spec. Below are two usage examples: one using a `bytes` array, another using primitives.
+As `bytes32` is the return type of `keccak256` and is a primitive type, calls to `keccak256` can be nested.
 
-Currently, only the `keccak256` hash is supported in CVL as a built-in.
+(Currently, only the `keccak256` hash is supported in CVL as a built-in.)
 
 #### Example
 
@@ -611,7 +607,7 @@ function hashingScheme3CVL(HashingExample.SignedMessage s) returns bytes32 {
 ```
 
 The scheme implemented in `hashingScheme4` is not supported at the moment, as it combines a `bytes` type with primitives.
-In general, the `keccak256` built-in function supports two kinds of inputs:
+The `keccak256` built-in function supports two kinds of inputs:
 - a single `bytes` parameter
 - a list of primitive (e.g., `uint256`, `uint8`, `addresss`) parameters
 
@@ -628,7 +624,7 @@ It exists in very similar form in CVL and receives exactly the same parameter ty
 `ecrecover` is ***supported*** in quantified expressions.
 ```
 
-In the Prover, `ecrecover` is implemented as an {ref}`uninterpreted functions <uninterp-functions>` uninterpreted function.
+The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`uninterpreted functions <uninterp-functions>`. Like all uninterpreted functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
 
 There is a useful set of axioms that can be encoded in CVL to make the modeled behavior of `ecrecover` more precise and less likely to create false counterexamples:
 ```cvl
