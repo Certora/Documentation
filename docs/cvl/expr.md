@@ -550,3 +550,112 @@ As with direct storage access in general, direct storage havoc is experimental a
 * user-defined types such as structs, or arrays/mappings of such types
 * enums
 ```
+
+## Built-in Functions
+
+### Hashing
+
+CVL allows to use Solidity's `keccak256` hashing function directly in spec. Below are two usage examples: one using a `bytes` array, another using primitives.
+As `bytes32` is the return type of `keccak256` and is a primitive type, calls to `keccak256` can be nested.
+
+(Currently, only the `keccak256` hash is supported in CVL as a built-in.)
+
+#### Example
+
+Given the following Solidity snippet:
+```solidity
+contract HashingExample {
+  struct SignedMessage {
+    address sender;
+    uint256 nonce;
+    bytes signature;
+  }
+
+  mapping (bytes32 => uint256) messageToValue;
+
+  function hashingScheme1(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(abi.encode(s.sender, s.nonce));
+  }
+
+  function hashingScheme2(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(s.signature);
+  }
+
+  function hashingScheme3(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(abi.encode(s.sender, s.nonce, keccak256(s.signature)));
+  }
+
+  function hashingScheme4(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(abi.encode(s.sender, s.nonce, s.signature));
+  }
+}
+```
+
+The hashing schemes described by `hashingScheme1`, `hashingScheme2`, and `hashingScheme3` can be replicated in CVL as follows:
+```
+function hashingScheme1CVL(HashingExample.SignedMessage s) returns bytes32 {
+  return keccak256(s.sender, s.nonce);
+}
+
+function hashingScheme2CVL(HashingExample.SignedMessage s) returns bytes32 {
+  return keccak256(s.signature);
+}
+
+function hashingScheme3CVL(HashingExample.SignedMessage s) returns bytes32 {
+  return keccak256(s.sender, s.nonce, keccak256(s.signature));
+}
+```
+
+The scheme implemented in `hashingScheme4` is not supported at the moment, as it combines a `bytes` type with primitives.
+The `keccak256` built-in function supports two kinds of inputs:
+- a single `bytes` parameter
+- a list of primitive (e.g., `uint256`, `uint8`, `addresss`) parameters
+
+```{note}
+`keccak256` is currently ***unsupported*** in quantified expressions.
+```
+
+### ECRecover
+
+The `ecrecover` function in Solidity is helpful in recovering the signer's address from a signed message.
+It exists in very similar form in CVL and receives exactly the same parameter types as its Solidity counterpart.
+
+```{note}
+`ecrecover` is ***supported*** in quantified expressions.
+```
+
+The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`uninterpreted function <uninterp-functions>`. Like all uninterpreted functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
+
+There is a useful set of axioms that can be encoded in CVL to make the modeled behavior of `ecrecover` more precise and less likely to create false counterexamples:
+```cvl
+function ecrecoverAxioms() {
+  // zero value:
+  require (forall uint8 v. forall bytes32 r. forall bytes32 s. ecrecover(to_bytes32(0), v, r, s) == 0);
+  // uniqueness of signature
+  require (forall uint8 v. forall bytes32 r. forall bytes32 s. forall bytes32 h1. forall bytes32 h2.
+    h1 != h2 => ecrecover(h1, v, r, s) != 0 => ecrecover(h2, v, r, s) == 0);
+  // dependency on r and s
+  require (forall bytes32 h. forall uint8 v. forall bytes32 s. forall bytes32 r1. forall bytes32 r2.
+    r1 != r2 => ecrecover(h, v, r1, s) != 0 => ecrecover(h, v, r2, s) == 0);
+  require (forall bytes32 h. forall uint8 v. forall bytes32 r. forall bytes32 s1. forall bytes32 s2.
+    s1 != s2 => ecrecover(h, v, r, s1) != 0 => ecrecover(h, v, r, s2) == 0);
+}
+```
+
+#### Example
+
+Given the following Solidity snippet:
+```solidity
+contract ECExample {
+  function wrap_ecrecover(bytes32 digest, uint8 v, bytes32 r, bytes32 s) public pure returns (address) {
+    return ecrecover(digest,v,r,s);
+  }
+}
+```
+
+The following CVL function is equivalent to the `wrap_ecrecover` function in the Solidity snippet:
+```cvl
+function wrap_ecrecoverCVL(bytes32 digest, uint8 v, bytes32 r, bytes32 s) returns address {
+  return ecrecover(digest,v,r,s);
+}
+```
