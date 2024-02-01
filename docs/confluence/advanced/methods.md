@@ -144,7 +144,7 @@ Ghost Summaries
 ---------------
 
 What we refer to as [ghost functions](../anatomy/ghostfunctions.md) are simply
-{ref}`uninterpreted functions <uninterp-functions>` uninterpreted functions.
+{ref}`uninterpreted functions <uninterp-functions>`.
 Because these can be axiomatized, they can be used to express any number of
 [approximating](approximation.md) semantics (rather than summarizing a function
 as simply a constant). For example, say we wanted to give some approximation
