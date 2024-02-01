@@ -59,7 +59,7 @@ invariant zero_message(uint8 v, bytes32 r, bytes32 s)
 
 ## Context:
 
-In the example, we focus on cryptographic functions, specifically the `ecrecover` function used for signature verification. The objective is to articulate and validate key assumptions associated with this function to bolster the security of smart contracts.
+In the example, we focus on the `ecrecover` function used for signature verification. The objective is to articulate and validate key assumptions associated with this function to bolster the security of smart contracts.
 
 ## Importance of Listing Safe Assumptions:
 
