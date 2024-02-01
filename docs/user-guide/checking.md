@@ -1,4 +1,4 @@
-# Verifying Specifications with Certora
+# Checking Specifications
 
 Effective formal verification relies on accurate specifications. A flaw in the specification could lead to critical bugs slipping through undetected. Certora offers a set of tools to enhance the accuracy of specifications and identify potential issues. This chapter outlines these tools and demonstrates their application.
 
