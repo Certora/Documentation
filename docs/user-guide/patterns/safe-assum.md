@@ -70,9 +70,8 @@ In the example, we focus on cryptographic functions, specifically the `ecrecover
    - The axioms established in the example, such as the zero message axiom and uniqueness of signature axiom, act as preventive measures against unexpected behavior. They set clear expectations for how the `ecrecover` function should behave under different circumstances, neglect all the counter-examples that are not relevant to the function intended behavior.
 
 3. **Easy To Use:**
-   - By encapsulating assumptions within the cvl function, this design pattern allow us to easily use those assumptions in any rule or invariant we desire.
+   - By encapsulating assumptions within the CVL function, this design pattern allow us to easily use those assumptions in any rule or invariant we desire.
 
-In conclusion, the "Listing Safe Assumptions" design pattern, exemplified through the ecrecover function in the provided example, 
+In conclusion, the "Listing Safe Assumptions" design pattern, exemplified through the `ecrecover` function in the provided example, 
 serves a broader purpose in specs writing. It systematically documents assumptions, prevents unexpected behaviors, 
-and offers ease of use throughout the rules and invariants. Embracing this pattern is a fundamental step toward building 
-resilient and trustworthy smart contracts.
+and offers ease of use throughout the rules and invariants.
