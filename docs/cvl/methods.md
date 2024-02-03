@@ -341,7 +341,7 @@ There are several kinds of summaries available:
 To decide whether to summarize a given internal or external function call, the
 Prover first determines whether it matches any of the declarations in the
 methods block, and then uses the declaration and the calling context to
-determine whether the call should be replaced by an approximation.[^dont-summarize]
+determine whether the call should be replaced by an approximation.
 
 To determine whether a function call is replaced by an approximation, the
 Prover considers the context in which the function is called in addition to the
@@ -362,7 +362,7 @@ The decision to replace a call by an approximation is made as follows:
 
  * If the code for the function is known at verification time, either because
    it is a method of `currentContract` or because the receiver contract is
-   {ref}`linked <linking>`, then the function is only summarized if the
+   `linked`, then the function is only summarized if the
    resolution type is `ALL`.
 
  * If the code for the function is not known at verification time, then the
@@ -370,9 +370,6 @@ The decision to replace a call by an approximation is made as follows:
    type is {ref}`AUTO <auto-summary>`, whose behavior is determined by the type of
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
-
-[^dont-summarize]: The `@dontsummarize` tag on method calls affects the
-  summarization behavior.  See {ref}`call-expr`.
   
 (summary-resolution)=
 ### Summary resolution

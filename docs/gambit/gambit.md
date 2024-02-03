@@ -187,6 +187,10 @@ For projects that have complex dependencies and imports, you may need to:
     --solc_remappings @openzeppelin=node_modules/@openzeppelin @foo=node_modules/@foo
   ```
 
+  ```{warning}
+  The paths should ***NOT*** end with a trailing /
+  ```
+
 * **Specify allow paths:** To include additional allowed paths via `solc`'s
   [`--allow-paths`][allowed] argument, use `--solc_allow_paths`:
 

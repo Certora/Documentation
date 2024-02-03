@@ -46,6 +46,18 @@ See {doc}`statements` for information about the `statement` production; see
 {doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
 production.
 
+It is prohibited to have multiple hooks with the same hook pattern.
+Two hooks have the same hook pattern if both are `Sstore` hooks with the same
+access path, both are `Sload` hooks with the same access path, or both are
+opcode hooks with the same opcode.
+Doing so will result in an error like this:
+`The declared hook pattern <second hook> duplicates the hook pattern <first hook> at <spec file>. A hook pattern may only be used once.`
+Note that two access paths are considered to be "the same" if they resolve to
+the same storage address. Syntactically different access paths can alias, e.g.,
+when accessing a member by name (`contract.member`) or by slot
+(`contract.(slot n)`).
+
+
 Examples
 --------
 

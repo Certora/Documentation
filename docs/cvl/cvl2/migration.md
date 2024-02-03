@@ -17,8 +17,6 @@ If you have any questions, please {ref}`ask for help <contact>`!
 ## Step 0: Install CVL 2
 
 The `certora-cli` python package will use CVL 2 starting with version 4.0.0.
-CVL 2 is currently in beta; you can install the pre-release version using our
-`certora-cli-beta` package.  See {ref}`beta-install` for details.
 
 If you aren't ready to migrate your specs yet, Certora will continue supporting
 CVL 1 for three months after the official release of CVL 2.  You can keep
