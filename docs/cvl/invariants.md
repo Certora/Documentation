@@ -154,22 +154,46 @@ block, if any), inside a set of curly braces (`{ ... }`).  Each preserved block
 consists of the keyword `preserved` followed by an optional method signature, 
 an optional `with` declaration, and finally the block of commands to execute.
 
-```{note}
+### Contract and method-specific preserved blocks
 The method signature of the preserved block may optionally contain a contract
 name followed by a `.` character followed by a contract method name.
 
 - In the case where the preserved block does not have a contract name but does
 have a method name (not the `fallback` case), the preserved block will apply
-only to methods that match in the main contract.
+only to methods that match in the main contract. 
+For example, here the preserved block will apply only to the method `withdrawExcess(address)` that appears in the main contract:
+```cvl
+invariant solvencyAsInv() asset.balanceOf() >= internalAccounting() {
+  preserved withdrawExcess(address token)  {
+      require token != asset; 
+  }
+}
+```
 - If the method signature includes a specific contract name, then the Prover
 only applies the preserved block to the methods in the named contract.
+For example, here the preserved block only applies to the `asset` contract method `transfer(address,uint)`. The preserved block does not apply to the `transfer(address,uint)` method in any other contract.
+```cvl
+invariant solvencyAsInv() asset.balanceOf() >= internalAccounting() {
+  preserved asset.transfer(address x, uint y) with (env e) {
+      require e.msg.sender != currentContract 
+  }
+}
+```
+
 - If the contract name is the wildcard character `_`, the Prover applies the
-preserved block to all contracts in the scene.
+preserved block to instances of the method in all contracts in the scene.
+For example, this preserve block applies to all contracts containing a method matching the `transfer(address,uint)` method signature.
+```cvl
+invariant solvencyAsInv() asset.balanceOf() >= internalAccounting() {
+  preserved _.transfer(address x, uint y) with (env e) {
+      require e.msg.sender != currentContract 
+  }
+}
+```
 
 If an invariant has multiple preserved blocks with the same method signature
 where one signature is more specific and the other is more general (as in 
 the `_.method` case), then the more specific preserved block will apply.
-```
 
 If a preserved block specifies a method signature, the signature must either be `fallback()` or
 match one of the contract methods, and the preserved block only applies when
@@ -177,12 +201,14 @@ checking preservation of that contract method.  The `fallback()` preserved block
 applies only to the `fallback()` function that should be defined in the contract.
 The arguments of the method are in scope within the preserved block.
 
+### Generic preserved blocks
 If there is no method signature, the preserved block is a default block that is
 used for all methods that don't have a specific preserved block, including the
 `fallback()` method.  If an invariant has both a default preserved block and a
 specific preserved block for a method, the specific preserved block is used;
 the default preserved block will not be executed.
 
+### Binding the environment
 The `with` declaration is used to give a name to the {term}`environment` used
 while invoking the method.  It can be used to restrict the transactions that are
 considered.  For example, the following preserved block rules out
