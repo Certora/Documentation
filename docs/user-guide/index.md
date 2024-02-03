@@ -35,6 +35,7 @@ patterns/index.md
 multicontract/index.md
 timeouts/index.md
 opcodes.md
+gaps.md
 checking.md
 glossary.md
 contact.md
