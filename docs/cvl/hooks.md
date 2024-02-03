@@ -392,7 +392,7 @@ Solidity functions.  The only exception is that hooks may not contain
 parametric method calls.  Expressions in hook bodies may reference variables
 bound by the hook pattern.
 
-#### Keywords available in hook bodies
+### Keywords available in hook bodies
 Hook bodies may refer to the special CVL variable `executingContract`,
 which contains the address of the contract whose code triggered the hook.
 
