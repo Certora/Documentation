@@ -11,7 +11,7 @@ contracts other than the main contract being verified.
 
 Examples
 --------
-- [Accessing  additional contracts from CVL]{ref}`using-example`
+- {ref}`using-example`
 - [An example for `using`](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool_link.spec#L14)
 
 Syntax
