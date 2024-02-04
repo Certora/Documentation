@@ -88,16 +88,16 @@ contract CometHarnessWrappers is CometHarnessGetters {
 
 Here's a brief overview:
 
-call_isInAsset: An external wrapper for isInAsset providing access to the original function.
+`call_isInAsset`: An external wrapper for `isInAsset` providing access to the original function.
 
-call_updateAssetsIn: An external wrapper for updateAssetsIn ensuring calls to the genuine function.
+`call_updateAssetsIn`: An external wrapper for `updateAssetsIn` ensuring calls to the genuine function.
 
-call_getPackedAsset: An external wrapper for _getPackedAsset to obtain results from the authentic function, not the summarized one.
+`call_getPackedAsset`: An external wrapper for `_getPackedAsset` to obtain results from the authentic function, not the summarized one.
 
-call_principalValue and call_presentValue: External wrappers for functions from CometCore providing access to the underlying logic.
+`call_principalValue` and `call_presentValue`: External wrappers for functions from CometCore providing access to the underlying logic.
 
-call_accrueInternal and call_getNowInternal: External wrappers facilitating access to internal functions like accrueInternal and getNowInternal.
+`call_accrueInternal` and `call_getNowInternal`: External wrappers facilitating access to internal functions like `accrueInternal` and `getNowInternal`.
 
-powerOfTen: A utility function to compute the n-th power of 10.
+`powerOfTen`: A utility function to compute the n-th power of 10.
 
 In essence, these wrappers allow us to extend CVL's functionality for a more comprehensive verification until CVL itself incorporates these needed features.
