@@ -616,6 +616,7 @@ The `keccak256` built-in function supports two kinds of inputs:
 `keccak256` is currently ***unsupported*** in quantified expressions.
 ```
 
+(ecrecover)=
 ### ECRecover
 
 The `ecrecover` function in Solidity is helpful in recovering the signer's address from a signed message.
