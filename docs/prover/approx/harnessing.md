@@ -50,5 +50,3 @@ Here's a brief overview:
 
 ### define complex functionally  (view/pure)
 `powerOfTen`: A utility function to compute the n-th power of 10.
-
-In essence, these wrappers allow us to extend CVL's functionality for a more comprehensive verification until CVL itself incorporates these needed features.

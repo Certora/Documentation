@@ -17,6 +17,7 @@ ghost mathint sumBalances {
 
 hook Sstore balanceOf[KEY address user] uint256 newBalance (uint256 oldBalance) STORAGE
 {
+    # ghost variables do not accept += operator
     sumBalances = sumBalances + newBalance - oldBalance;
 }
 

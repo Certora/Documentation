@@ -4,7 +4,7 @@ Approximation
 The Problem
 -----------
 
-Many potential questions we may like to ask about programs in any language are inherently undecidable. For example, in general, it is impossible to know whether or not a program will halt (the "Halting Problem"). In the case of the Certora Prover, questions about nonlinear arithmetic tend to be very difficult to answer (nonlinear arithmetic is undecidable in general).
+Many potential questions we may like to ask about programs in any language are inherently undecidable. For example, in general, it is impossible to know whether or not a program will halt (known as the "Halting Problem"). In the case of the Certora Prover, questions about nonlinear arithmetic tend to be very difficult to answer (nonlinear arithmetic is undecidable in general).
 Ultimately this means that the Prover will spend forever trying to get an answer and will eventually time out.
 
 Solution 1: Overapproximation
