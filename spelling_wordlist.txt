@@ -35,6 +35,7 @@ boolean
 booleans
 bootcamp
 boundedness
+branching
 branchings
 bugfix
 bytecode
@@ -43,6 +44,7 @@ callee
 changelog
 checkmark
 codebase
+coinbase
 conf
 config
 conjoined
@@ -121,6 +123,7 @@ reentrancy
 reentrant
 relatedly
 remappings
+replayable
 representable
 reproducibility
 satisfiability
@@ -138,6 +141,8 @@ subdirectories
 subdirectory
 subgraph
 subproblems
+subtree
+subtrees
 subtype
 subtypes
 summarizable

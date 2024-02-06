@@ -44,19 +44,6 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-### `--assert_contracts`
-
-**What does it do?**
-Replaces all EVM instructions that cause a non-benign revert in the smart contract with an assertion. Non-benign reverts include division by 0, bad dereference of an array, `throw` command, and more.
-Each contract must have been declared in the input files or have the same name as the source code file it is in.
-
-**When to use it?**
-When you want to see if a suspect instruction can fail in the code, without writing a `.spec` file.
-
-**Example**
-If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:
-`certoraRun Bank.sol:Investor --assert_contracts Investor`
-
 Most frequently used options
 ----------------------------
 
@@ -612,7 +599,11 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`.
+for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`. 
+
+Also note that, while the most prominent one, this is not the only timeout that
+applies to SMT solvers, for details see {ref}`-mediumTimeout` and
+{ref}`control-flow-splitting`.
 
 **When to use it?**
 The default time out for the solvers is 300 seconds. There are two use cases for this option.
@@ -931,7 +922,7 @@ effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
 (-smt_groundQuantifiers)=
-#### `--settings -smt_groundQuantifiers=false`
+#### `--prover_args -smt_groundQuantifiers=false`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
@@ -949,7 +940,7 @@ This option disables the storage splitting optimization.
 
 
 (--allow_solidity_calls_in_quantifiers)=
-### --allow_solidity_calls_in_quantifiers
+### `--allow_solidity_calls_in_quantifiers`
 
 **What does it do?**
 
@@ -967,34 +958,117 @@ error on encountering contract method calls in quantified expression bodies.
 
 
 (control-flow-splitting-options)=
-Advanced options that control control flow splitting
-----------------------------------------------------
+Control flow splitting options
+------------------------------
 
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
+(-depth)=
+### `--prover_args '-depth <number>'`
+
+**What does it do?**
+
+Sets the maximum splitting depth.
+
+**When to use it?** 
+
+When the deepest {term}`split`s are too heavy to solve, but not too high in
+number, increasing this will lead to smaller, but more numerous 
+{term}`split leaves`, which run at the full SMT timeout (as set by 
+{ref}`--smt_timeout`).
+Conversely, if run time is too high because there are too many splits,
+decreasing this number means that more time is spent on fewer, but bigger split
+leaves.
+The default value for this option is 10.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
+```
 
 (-mediumTimeout)=
 ### `--prover_args '-mediumTimeout <seconds>'`
 
-The "medium timeout" determines how much time is given to checking a split at
-not max-depth before we split again.
+The "medium timeout" determines how much time the SMT solver gets for checking a
+{term}`split` that is not a {term}`split leaf`. 
+(For split leaves, the full {ref}`--smt_timeout` is used.) 
 
+**What does it do?**
+
+Sets the time that non-leaf splits get before being split again. 
+
+**When to use it?** 
+
+When a little more time can close some splitting subtrees early, this can save a
+lot of time, since the subtree's size is exponential in the remaining depth. On
+the other hand, if something will be split further anyway, this can save the
+run time spent on intermediate "TIMEOUT" results. Use
+{ref}`-smt_initialSplitDepth` to eliminate that time investment altogether up to
+a given depth.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
+```
 
 (-dontStopAtFirstSplitTimeout)=
 ### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
 
-We can tell the Certora Prover to not stop when the first split has had a
-maximum-depth timeout. Note that this is only useful for SAT results, since for
-an overall UNSAT results, all splits need to be UNSAT, while for a SAT result it
-is enough that one split is UNSAT.
+**What does it do?**
 
+We can tell the Certora Prover to continue even when the a {term}`split` has had
+a maximum-depth timeout. Note that this is only useful when there exists a
+{term}`counterexample` for the rule under verification, since in order to prove
+the absence of counterexamples (i.e. correctness), all splits need to be
+counterexample-free. (In case of a rule using `satisfy` rather than `assert`,
+the corresponding statements hold for {term}`witness example`s. In that case,
+this option is only useful if the rule is correct.)
+
+**When to use it?** 
+
+When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
+The default value for this option is `false`.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
+```
 
 (-smt_initialSplitDepth)=
 ### `--prover_args '-smt_initialSplitDepth <number>'`
 
-Splitting can be configured to skip the checks at low splitting levels, thus
-generating sub-splits up to a given depth immediately. Note that the number of
+With this option, the splitting can be configured to skip the SMT solver-based checks 
+at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
+
+**What does it do?**
+
+The first `<number>` split levels are not checked with the SMT solver, but rather 
+split immediately.
+
+**When to use it?** 
+
+When there is a lot of overhead induced by processing and trying to solve splits
+that are very hard, and thus run into a timeout anyway. 
+
+```{note} The number of
 splits generated here is equal to `2^n` where `n` is the initial splitting depth
-(unless the program has less than `n` branchings, which will be rare in
-practice).
+(assuming the program has enough branching points, which is usually the case);
+thus, low numbers are advisable. For instance setting this to 5 means that the
+Prover will immediately produce 32 splits.
+```
+
+```{note}
+The {ref}`-depth` setting has precedence over this setting. I.e., if `-depth`
+is set to a lower value than `-smt_initialSplitDepth`, the initial splitting 
+will only proceed up to the splitting depth given via `-depth`.
+```
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-smt_initialSplitDepth 3'
+```
 

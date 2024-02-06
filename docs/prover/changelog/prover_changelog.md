@@ -5,6 +5,43 @@ Prover Release Notes
 ```{contents}
 ```
 
+6.3.1 (February 2, 2024)
+------------------------
+### CVL
+- [feat] {ref}`address-casting`
+- [feat] {ref}`ecrecover` builtin support
+- [feat] Optimistically assume the `extcodesize` is positive for calls that are summarized and with a non-`HAVOC` summary. This behavior can be disabled with `--prover_args 'optimisticExtcodesize false'`
+- [feat] Support direct storage access in quantifiers and axioms
+- [bugfix] Implication, bi-implication and ternary conditional operators are right-associative
+- [bugfix] {ref}`Fully support additional environment fields <env>`. Namely, for `env e`, one can access `e.block.basefee`, `e.block.coinbase`, `e.block.difficulty`, `e.block.gaslimit` and `e.tx.origin`
+- [bugfix] Properly enforce bounds on enums accessed using direct storage access
+- [bugfix] Fix a bug with structs being passed to summaries and not preserving their fields’ values
+- [bugfix] Avoid hook inlining due to direct storage access
+- [bugfix] Type checker will error in presence of non-boolean expressions in quantifiers' bodies
+- [UX] Emit a global error in rule report if 0 rules are provided in the spec
+- [UX] Cast assertions in CVL are treated like regular user-provided assertions
+- [UX] Warn about, and ignore, unused `method` arguments
+- [UX] Prevent calling library functions from CVL
+
+### Call Trace and Rule Report
+- [feat] Add presentation of direct storage reads and direct storage havocs, including showing the updates in the Storage State
+- [feat] When the user provided no assertion message, show the assert condition
+- [bugfix] More refined handling of branch snippets within loop iterations
+- [bugfix] Ensure we get the correct TAC dump link
+- [UX] Improved messages for assertions in builtin rules
+- [UX] New presentation for invariants
+- [UX] Branch snippets are now flattened, can be made hierarchical using `--prover_args '-flattenBranchesInCallTrace false'`
+
+### Static analysis and Performance
+- [feat] `abi.encodeCall` calls will be considered as copy-loops, thus will not require a higher `--loop_iter` if we enable the following option: `--prover_args '-enableCopyLoopRewrites true'`
+- [feat] Better performance on last assertions in a rule if `--prover_args '-calltraceFreeOpt true'` is enabled
+
+### Misc
+- [feat] Support Vyper v0.3.10
+- [bugfix] Various bug fixes to improve stability of the Prover (crashes, static analysis, and SMT solving)
+- [bugfix] Better support of importing user-defined types from Solidity imports even if they are not given in a consistent fashion by `solc`
+
+
 6.1.3 (January 11, 2024)
 ------------------------
 

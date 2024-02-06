@@ -49,7 +49,7 @@ class CVLLexer(RegexLexer):
                     "events", "description", "good_description", "filtered",
                     "reset_storage", "invoke", "sinvoke", "invoke_fallback",
                     "invoke_whole", "if", "else", "as", "using", "import", "use",
-                    "builtin", "override")),
+                    "builtin", "override"), suffix=r'\b', prefix=r'\b'),
                 Keyword),
             (words((">", "<", "<=", ">=", "==", "!=",
                     "+", "-", "*", "/", "%", "^",

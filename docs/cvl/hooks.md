@@ -46,6 +46,18 @@ See {doc}`statements` for information about the `statement` production; see
 {doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
 production.
 
+It is prohibited to have multiple hooks with the same hook pattern.
+Two hooks have the same hook pattern if both are `Sstore` hooks with the same
+access path, both are `Sload` hooks with the same access path, or both are
+opcode hooks with the same opcode.
+Doing so will result in an error like this:
+`The declared hook pattern <second hook> duplicates the hook pattern <first hook> at <spec file>. A hook pattern may only be used once.`
+Note that two access paths are considered to be "the same" if they resolve to
+the same storage address. Syntactically different access paths can alias, e.g.,
+when accessing a member by name (`contract.member`) or by slot
+(`contract.(slot n)`).
+
+
 Examples
 --------
 
@@ -413,9 +425,27 @@ Solidity functions.  The only exception is that hooks may not contain
 parametric method calls.  Expressions in hook bodies may reference variables
 bound by the hook pattern.
 
-
-Hook bodies may also refer to the special CVL variable `executingContract`,
+### Keywords available in hook bodies
+Hook bodies may refer to the special CVL variable `executingContract`,
 which contains the address of the contract whose code triggered the hook.
+
+The call opcodes (`CALL`, `CALLCODE`, `STATICCALL` and `DELEGATECALL`) may also
+refer to a special CVL variable `selector`, which can be used to compare
+to a specific method signature selector.
+For example, here the hook body will assert that the native token value passed in the call is 0, only for a `transfer(address,uint)` call:
+```cvl
+hook CALL(uint g, address addr, uint value, uint argsOffs, uint argLength, uint retOffset, uint retLength) uint rc {
+    if(selector == sig:transfer(address, uint).selector) {
+      assert value == 0;
+    }
+}
+```
+
+```{note}
+In case the size of the input to the call is less than 4 bytes, 
+the value of `selector` is 0.
+This can be checked by comparing the `argLength` argument of the hook to 4.
+```
 
 ### Reentrant hooks
 
