@@ -71,7 +71,7 @@ ERROR: Prover found violations:
 ERROR: [rule] transferSpec
 ```
 
-The output indicates that the Prover completed the verification request, and it provides a link to view the results on the Certora platform. However, it also reports that the Prover found violations in the specified rule (`transferSpec`). The details of the violation and the counterexample can be further explored by visiting the provided link or accessing the Certora platform directly.
+The output indicates that the Prover completed the verification request, and it provides a link to view the results on the Certora platform. However, it also reports that the Prover found violations in the specified rule (`transferSpec`). The details of the violation and the counterexample can be further explored by visiting the provided link or accessing the job from the [Certora job dashboard](https://prover.certora.com) directly.
 
 ## Using Configuration (Conf) Files
 
