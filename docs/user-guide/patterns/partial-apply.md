@@ -7,7 +7,7 @@ The provided code snippet illustrates a partially parametric rule in CVL that de
 rule partially_parametric_rule(env e, method f, calldataargs args)
 {
     if (f.selector == sig:withdraw(uint256, address).selector) {
-		uint256 shares;
+	uint256 shares;
         address to;
 		require e.msg.sender != currentContract;
 		require shares == totalSupply();
