@@ -53,7 +53,7 @@ rule transferSpec(address recipient, uint amount) {
 You can run the Certora Prover with the following command:
 
 ```bash
-certoraRun ERC20.sol --verify ERC20:ERC20.spec --solc solc8.0
+certoraRun ERC20.sol --verify ERC20:ERC20.spec
 ```
 
 This command triggers a verification run on the `ERC20` contract from the solidity file `ERC20.sol`, checking all rules in the specification file `ERC20.spec`. The `--solc` option specifies the version of the Solidity compiler to be used (in this case, version 0.8.0).
