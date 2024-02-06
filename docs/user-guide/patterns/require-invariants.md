@@ -54,6 +54,9 @@ rule sharesRoundingTripFavoursContract(env e) {
     enable the specification writer to disregard counterexamples in states that are not relevant to the 
     intended behavior.
 
+```{todo}
+show example run links where we try to remove one of the requireInvariants and get a false violation, and explain it.
+```
 
 In conclusion, the "Require Invariants" design pattern, as demonstrated through the provided example, offers a 
 systematic methodology to define, validate, and uphold critical conditions within smart contract 
