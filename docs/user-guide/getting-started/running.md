@@ -64,8 +64,6 @@ While running, the Prover will print various information to the console about th
 
 ```text
 ...
-[INFO]: Process returned with 100
-
 Job is completed! View the results at [Certora Prover Platform](https://prover.certora.com/)
 
 Finished verification request
