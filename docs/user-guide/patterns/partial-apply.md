@@ -1,13 +1,13 @@
 (partially parametric rules)=
 # Partially Parametric Rules
 
-The provided code snippet illustrates a partially parametric rule in CVL that defines specific behavior based on the method invoked (`f`) and its arguments (`calldataargs`). Let's break down the example for better understanding:
+The provided code snippet illustrates a partially parametric rule in CVL that defines specific behavior based on the method invoked (`f`) and its arguments (`calldataarg`). Let's break down the example for better understanding:
 
 ```cvl
-rule partially_parametric_rule(env e, method f, calldataargs args)
+rule partially_parametric_rule(env e, method f, calldataarg args)
 {
     if (f.selector == sig:withdraw(uint256, address).selector) {
-	uint256 shares;
+        uint256 shares;
         address to;
 		require e.msg.sender != currentContract;
 		require shares == totalSupply();
