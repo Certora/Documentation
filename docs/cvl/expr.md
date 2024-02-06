@@ -136,8 +136,7 @@ CVL also adds several useful logical operations:
    For example, the statement `assert initialized => x > 0;` will only report
    counterexamples where `initialized` is true but `x` is not positive.
 
- * The short-circuiting behavior of implications (`=>`), bidirectional implications     
-   (`<=>`), and other boolean connectors in CVL mirrors the 
+ * The short-circuiting behavior of implications (`=>`) and other boolean connectors in CVL mirrors the 
    short-circuiting behavior seen in standard logical operators (`&&` and `||`). In practical 
    terms, this implies that the evaluation process is terminated as soon as the final result 
    can be determined without necessitating further computation.
