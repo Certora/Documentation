@@ -373,6 +373,39 @@ hook SELFDESTRUCT(address a)
 % The standard stack-manipulating instructions `DUP*`, `SWAP*`, `PUSH*` and `POP`
 % are not modeled.  `MLOAD` and `MSTORE` are also not modeled.
 
+(call-hooks)=
+### Call hooks
+
+We provide hooks for all four call opcodes: [`CALL`](https://www.evm.codes/#f1),
+[`CALLCODE`](https://www.evm.codes/#f2), [`DELEGATECALL`](https://www.evm.codes/#f4),
+and [`STATICCALL`](https://www.evm.codes/#fa).
+The hook parameters match the stack inputs of the respective opcodes.
+
+The arguments for the call arguments and return values (`argsOffset`, `argsSize`,
+`retOffset`, and `retSize`) mostly exist for future use. Their values can be
+consumed, but currently they cannot be used to read data stored in memory before
+or after the call.
+
+These hooks can be very useful to establish sensible security invariants.
+As an example, suppose no external code should gain write access to the data of
+the current contract. Both `CALLCODE` and `DELEGATECALL` have the potential to
+do exactly that by calling into another contract but keeping the current context.
+Note that there are exceptions to this property whenever *trusted* 3rd party
+libraries are used. It might also be necessary to restrict these checks to the
+contract of interest.
+```cvl
+hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    // using CALLCODE is generally not expected in this contract
+    assert (executingContract != currentContract, "we should not use `callcode`");
+}
+hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    // DELEGATECALL is used in this contract, but it only ever calls into itself
+    assert (executingContract != currentContract || addr == currentContract,
+        "we should only `delegatecall` into ourselves"
+    );
+}
+```
+
 ### Known inter-dependencies and common pitfalls
 
 Hooks are instrumented for every appearance of the matching instruction in the
