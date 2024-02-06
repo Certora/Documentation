@@ -2,7 +2,7 @@
 
 The`requireInvariant` statements can be used to establish 
 crucial conditions that must persist throughout the execution of a smart contract. Let's explore the 
-importance of this design pattern and illustrate its application using the provided example.
+usefulness of the `requireInvariant` statement and illustrate its application using the provided example.
 
 ```cvl
 invariant totalSharesLessThanDepositedAmount()
