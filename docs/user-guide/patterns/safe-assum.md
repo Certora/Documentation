@@ -1,6 +1,6 @@
 # Listing Safe Assumptions
 
-The "Listing Safe Assumptions" design pattern introduces a structured approach to document and validate essential assumptions, providing a foundation for secure design in Ethereum contracts. Let's delve into the importance of this design pattern using the provided example.
+The "Listing Safe Assumptions" design pattern introduces a structured approach to document and validate essential assumptions. Let's delve into the importance of this design pattern using the provided example.
 
 
 ```cvl

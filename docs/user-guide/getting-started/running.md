@@ -1,6 +1,6 @@
 # Running the Certora Prover
 
-The `certoraRun` utility simplifies the verification process by invoking the Solidity compiler and then sending the job to Certora’s servers.
+The `certoraRun` utility simplifies the verification process by invoking the contract compiler (e.g., Solidity) and then sending the verification job to Certora’s servers.
 
 The most commonly used command is:
 
@@ -53,10 +53,10 @@ rule transferSpec(address recipient, uint amount) {
 You can run the Certora Prover with the following command:
 
 ```bash
-certoraRun ERC20.sol --verify ERC20:ERC20.spec --solc solc8.0
+certoraRun ERC20.sol --verify ERC20:ERC20.spec
 ```
 
-This command triggers a verification run on the `ERC20` contract from the solidity file `ERC20.sol`, checking all rules in the specification file `ERC20.spec`. The `--solc` option specifies the version of the Solidity compiler to be used (in this case, version 0.8.0).
+This command triggers a verification run on the `ERC20` contract from the solidity file `ERC20.sol`, checking all rules in the specification file `ERC20.spec`. 
 
 ## Results
 
@@ -64,8 +64,6 @@ While running, the Prover will print various information to the console about th
 
 ```text
 ...
-[INFO]: Process returned with 100
-
 Job is completed! View the results at [Certora Prover Platform](https://prover.certora.com/)
 
 Finished verification request
@@ -73,7 +71,7 @@ ERROR: Prover found violations:
 ERROR: [rule] transferSpec
 ```
 
-The output indicates that the Prover completed the verification request, and it provides a link to view the results on the Certora platform. However, it also reports that the Prover found violations in the specified rule (`transferSpec`). The details of the violation and the counterexample can be further explored by visiting the provided link or accessing the Certora platform directly.
+The output indicates that the Prover completed the verification request, and it provides a link to view the results on the Certora platform. However, it also reports that the Prover found violations in the specified rule (`transferSpec`). The details of the violation and the counterexample can be further explored by visiting the provided link or accessing the job from the [Certora job dashboard](https://prover.certora.com) directly.
 
 ## Using Configuration (Conf) Files
 

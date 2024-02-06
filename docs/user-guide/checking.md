@@ -50,7 +50,7 @@ rule something_is_always_transferred{
 }
 ```
 
-In this case, the `assert` statement is always true since it compares equal values, neglecting any meaningful checks related to the transfer behavior. Certora introduces [Assert tautology checks](https://docs.certora.com/en/latest/docs/prover/checking/sanity.html?highlight=rule%20sanity#assert-tautology-checks) to address such instances. By removing preconditions and operations, these checks focus solely on the `assert` statement, revealing whether it is always true regardless of the process being examined.
+In this case, the `assert` statement is always true since it compares equal values, neglecting any meaningful checks related to the transfer behavior. Certora allows to run [Assert tautology checks](https://docs.certora.com/en/latest/docs/prover/checking/sanity.html?highlight=rule%20sanity#assert-tautology-checks) to address such instances. By removing preconditions and operations, these checks focus solely on the `assert` statement, revealing whether it is always true regardless of the process being examined.
 
 ## Conclusion
 
