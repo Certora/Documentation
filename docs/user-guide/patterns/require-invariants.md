@@ -58,4 +58,4 @@ rule sharesRoundingTripFavoursContract(env e) {
 In conclusion, the "Require Invariants" design pattern, as demonstrated through the provided example, offers a 
 systematic methodology to define, validate, and uphold critical conditions within smart contract 
 specifications.
-for more information, please visit the [documentation](https://docs.certora.com/en/latest/docs/cvl/statements.html#requireinvariant).
+for more information, please visit the [documentation](../../cvl/statements.md#requireInvariant).
