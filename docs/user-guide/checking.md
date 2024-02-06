@@ -26,7 +26,7 @@ rule held_token_should_exist{
 }
 ```
 
-The specification contains a flaw; the statement `balanceOf(0, token) == 0;` will always revert due to the `require` in the contract, resulting in an empty starting state. To address such issues, Certora introduces [Vacuity checks](https://docs.certora.com/en/latest/docs/prover/checking/sanity.html?highlight=rule%20sanity#sanity-vacuity). These checks append `assert false` to each rule, exposing vacuously proven assumptions. This ensures that every rule in the specification is rigorously examined, detecting vacuity even in complex scenarios.
+The specification contains a flaw; the statement `balanceOf(0, token) == 0;` will always revert due to the `require` in the contract, resulting in an empty starting state. To address such issues, Certora allows to run [Vacuity checks](https://docs.certora.com/en/latest/docs/prover/checking/sanity.html?highlight=rule%20sanity#sanity-vacuity). These checks append `assert false` to each rule, exposing vacuously proven assumptions. This ensures that every rule in the specification has at least one input that reaches all the assertions. It is a useful check, but nevertheless, it is not a good measure for coverage.
 
 *Note: Vacuity in real-world examples often arises from combinations of requirements, not just isolated statements.*
 
