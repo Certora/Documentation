@@ -1,6 +1,6 @@
 # Require Invariants: Proving inter-dependent invariants
 
-The "Require Invariants" design pattern utilizes `requireInvariant` statements strategically to establish 
+The`requireInvariant` statements can be used to establish 
 crucial conditions that must persist throughout the execution of a smart contract. Let's explore the 
 importance of this design pattern and illustrate its application using the provided example.
 
