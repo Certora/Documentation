@@ -5,26 +5,14 @@ of a contract.  We are working to extend the feature set of CVL to cover these
 cases, but in the mean time we have developed a set of workarounds that we
 refer to as "harnesses".
 
-## Example: CometHarnessWrappers
+## Example:
 
-Consider a scenario where we want to write a unit test for an internal functions of a contract. The CometHarnessWrappers contract serves as a workaround, allowing us to call original functions rather than relying on summarized implementations. 
+Consider a scenario where we want to write a unit test for an internal functions of a contract. The contract serves as a workaround, allowing us to call original functions rather than relying on summarized implementations. 
 
 
 ```solidity
-// SPDX-License-Identifier: XXX ADD VALID LICENSE
-pragma solidity ^0.8.11;
-
-import "./CometHarnessGetters.sol";
-import "../munged/ERC20.sol";
-import "../munged/vendor/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-
-/**
- * @title Certora's comet harness wrappers contract
- * @notice wrappers for internal function checks
- * @author Certora
- */
-contract CometHarnessWrappers is CometHarnessGetters {
-    constructor(Configuration memory config) CometHarnessGetters(config) { }
+contract ExampleHarnessing is ExampleHarnessingGetter {
+    constructor(Configuration memory config) ExampleHarnessingGetter(config) { }
     
     // External wrapper for accrueInternal
     function call_accrueInternal() external {
@@ -42,6 +30,7 @@ contract CometHarnessWrappers is CometHarnessGetters {
     }
 }
 ```
+for more details checkout the [source code](https://github.com/Certora/comet/blob/certora/certora/harness/CometHarnessWrappers.sol)
 
 Here's a brief overview:
 
