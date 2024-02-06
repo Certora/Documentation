@@ -28,3 +28,5 @@ invariant totalIsSumBalances()
 Track the sum of all balances and ensure that it remains equal to the total supply. The 
 `sumBalances` ghost variable is updated with changes in individual balances using a storage 
 hook, ensuring accuracy and consistency in the overall sum.
+
+for more information about the example checkout [this tutorial](https://docs.certora.com/projects/tutorials/en/latest/lesson4_invariants/ghosts/sum_two.html#lesson4-ghost-sum-balances).
