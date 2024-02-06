@@ -1,4 +1,4 @@
-# Require Invariants: Elevating Smart Contract Specification Quality
+# Require Invariants: Proving inter-dependent invariants
 
 The "Require Invariants" design pattern utilizes `requireInvariant` statements strategically to establish 
 crucial conditions that must persist throughout the execution of a smart contract. Let's explore the 
