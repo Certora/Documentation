@@ -510,7 +510,7 @@ could prove an invariant to this effect and add it to our rule using
 {ref}`requireInvariant`.  We won't describe this here, but it is implemented in
 the [final spec][pool-spec] for this example.
 
-For more examples of `requireInvariant`, check out the [user guide](../patterns/require-invariants.md).
+For more examples of `requireInvariant` usage, check out the [user guide](../patterns/require-invariants.md).
 
 Nevertheless, this example shows that having too few dispatchees can cause a
 rule to pass, even though the property it describes is not necessarily true in
