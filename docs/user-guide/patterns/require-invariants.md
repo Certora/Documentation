@@ -55,10 +55,10 @@ rule sharesRoundingTripFavoursContract(env e) {
     intended behavior.
 
 ```{todo}
-show example run links where we try to remove one of the requireInvariants and get a false violation, and explain it.
+show example run links where we try to remove one of the `requireInvariant` and get a false violation, and explain it.
 ```
 
 In conclusion, the "Require Invariants" design pattern, as demonstrated through the provided example, offers a 
 systematic methodology to define, validate, and uphold critical conditions within smart contract 
 specifications.
-for more information, please visit the [documentation](../../cvl/statements.md#requireInvariant).
+for more information, please visit the [documentation](../../cvl/statements.md).
