@@ -1,6 +1,6 @@
 # Running the Certora Prover
 
-The `certoraRun` utility simplifies the verification process by invoking the Solidity compiler and then sending the job to Certora’s servers.
+The `certoraRun` utility simplifies the verification process by invoking the contract compiler (e.g., Solidity) and then sending the verification job to Certora’s servers.
 
 The most commonly used command is:
 
