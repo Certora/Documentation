@@ -77,4 +77,4 @@ The output indicates that the Prover completed the verification request, and it 
 
 ## Using Configuration (Conf) Files
 
-For larger projects, managing the command line for Certora Prover can become complex. It is advisable to use configuration files (with a `.conf` extension) that hold the parameters and options for the Prover. These JSON5 configuration files simplify the process and enhance manageability. Refer to [Configuration (Conf) Files](https://docs.certora.com/en/latest/docs/prover/cli/conf-file-api.html#conf-files) for more detailed information.
+For larger projects, managing the command line for Certora Prover can become complex. It is advisable to use configuration files (with a `.conf` extension) that hold the parameters and options for the Prover. These JSON5 configuration files simplify the process and enhance manageability. Refer to [Configuration (Conf) Files](../../../docs/prover/cli/conf-file-api.md) for more detailed information.
