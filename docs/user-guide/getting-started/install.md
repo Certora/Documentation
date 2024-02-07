@@ -272,7 +272,7 @@ Step 4: Install the relevant Solidity compiler versions
 The Solidity compiler (`solc`) is a verification requirement.
 There are two ways to install it: via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
 
-## Using `solc-select`
+### Using `solc-select`
 
 <details>
 
@@ -297,7 +297,7 @@ There are two ways to install it: via [solc-select](https://github.com/crytic/so
     ```
 </details>
 
-## Download binaries
+### Download binaries
 
 You can download the `solc` binaries directly from [Solidity's release page on GitHub](https://github.com/ethereum/solidity/releases).
 
