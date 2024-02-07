@@ -9,7 +9,7 @@ Step 1: prerequisites
   <summary>Linux or MacOS</summary>
   Windows users should use [WSL][wsl].
 
-  [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
+  % TODO: more information?
   </details>
 
 [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
@@ -44,8 +44,8 @@ Step 1: prerequisites
 <details>
   <summary>Solidity compiler (ideally v0.5 and up)</summary>
 
-  <!-- * We recommend using [solc-select](https://github.com/crytic/solc-select)
-    to download and switch between Solidity compiler versions. -->
+  * We recommend using [solc-select](https://github.com/crytic/solc-select)
+    to download and switch between Solidity compiler versions.
 
   * You can also download the Solidity compiler binaries from the [official Solidity repository](https://github.com/ethereum/solidity/releases) on GitHub. 
   Make sure to place all the binaries that you download in the same path.
