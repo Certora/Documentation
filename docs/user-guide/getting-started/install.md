@@ -44,11 +44,11 @@ Step 1: prerequisites
 <details>
   <summary>Solidity compiler (ideally v0.5 and up)</summary>
 
-  * We recommend using [solc-select](https://github.com/crytic/solc-select)
-    to download and switch between Solidity compiler versions.
+  <!-- * We recommend using [solc-select](https://github.com/crytic/solc-select)
+    to download and switch between Solidity compiler versions. -->
 
-  * You can also download the needed Solidity compiler from the [official Solidity repository](https://github.com/ethereum/solidity/releases) on GitHub. 
-  Make sure to place all the compilers that you download in the same path.
+  * You can also download the Solidity compiler binaries from the [official Solidity repository](https://github.com/ethereum/solidity/releases) on GitHub. 
+  Make sure to place all the binaries that you download in the same path.
 
   * Certora employees can clone the `CVT_Executables` repository suitable for
     their OS from [GitHub](https://github.com/orgs/Certora/repositories).
@@ -272,7 +272,7 @@ Step 4: Install the relevant Solidity compiler versions
 The Solidity compiler (`solc`) is a verification requirement.
 There are two ways to install it: via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
 
-# Using solc-select
+# Using `solc-select`
 
 * Open a terminal and install `solc-select` via `pip`:
 
@@ -292,7 +292,7 @@ There are two ways to install it: via [solc-select](https://github.com/crytic/so
   solc-select use 0.8.0
   ```
 
-# Download solc binaries
+# Download binaries
 
 You can download the `solc` binaries directly from [Solidity's release page on GitHub](https://github.com/ethereum/solidity/releases).
 
