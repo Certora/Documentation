@@ -14,3 +14,8 @@ sphinx:
   configuration: conf.py
   fail_on_warning: true
 
+# Submodules
+submodules:
+  include:
+    - Examples
+  recursive: true
