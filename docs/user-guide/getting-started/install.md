@@ -9,7 +9,7 @@ Step 1: prerequisites
   <summary>Linux or MacOS</summary>
   Windows users should use [WSL][wsl].
 
-  % TODO: more information?
+  [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
   </details>
 
 [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
