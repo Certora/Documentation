@@ -13,7 +13,7 @@ some execution of the code.  Not every example is interesting &mdash; users
 should inspect the example to ensure that it demonstrates the expected
 behavior.
 
-For {clink}`example <DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec>`,
+For {clink}`example </DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec>`,
 we may be interested in showing that it is
 possible for someone to deposit some assets into a pool and then immediately
 withdraw them.  The following rule demonstrates this scenario:

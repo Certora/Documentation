@@ -82,7 +82,7 @@ html_logo = "static/logo.svg"
 
 
 # -- codelink_extension configuration ----------------------------------------
-code_path = "Examples/"
+code_path_override = "Examples/"
 link_to_github = True
 
 
