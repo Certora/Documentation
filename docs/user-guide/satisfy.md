@@ -13,37 +13,14 @@ some execution of the code.  Not every example is interesting &mdash; users
 should inspect the example to ensure that it demonstrates the expected
 behavior.
 
-For [example][constant-product-spec], we may be interested in showing that it is
+For {clink}`example <DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec>`,
+we may be interested in showing that it is
 possible for someone to deposit some assets into a pool and then immediately
 withdraw them.  The following rule demonstrates this scenario:
 
-[constant-product-spec]: https://github.com/Certora/Examples/blob/master/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec
-
-```cvl
-/// Demonstrate that one can fully withdraw deposited assets
-rule uninterestingPossibleToFullyWithdraw(address sender, uint256 amount) {
-    // record initial balance
-    uint256 balanceBefore = _token0.balanceOf(sender);
-
-    // transfer `amount` tokens from `sender` to the pool
-    env eTransfer;
-    require eTransfer.msg.sender == sender;
-    _token0.transfer(eTransfer, currentContract, amount);
-
-    // mint and then immediately withdraw tokens for `sender`
-    env eMint;
-    require eMint.msg.sender == sender;
-    uint256 amountOut0 = mint(eMint,sender);
-
-    // withdraw tokens immediately after minting
-    env eBurn;
-    require eBurn.msg.sender == sender;
-    require eBurn.block.timestamp == eMint.block.timestamp;
-    burnSingle(eBurn, _token0, amountOut0, sender);
-
-    // demonstrate that it is possible that `sender`'s balance is unchanged
-    satisfy balanceBefore == _token0.balanceOf(sender);
-}
+```{cvlinclude} /Examples/DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec
+:cvlobject: possibleToFullyWithdraw
+:caption: Positive example
 ```
 
 Although the Prover produces an example ([report][zero-amount]) that satisfies
