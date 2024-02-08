@@ -192,7 +192,7 @@ At the moment, there are a few ways in which `certoraMutate` can fail.
 Here are some suggestions on how to troubleshoot when that happens. 
 We are actively working on mitigating them.
 
-- There are currently no official Gambit binaries for Linux arm or Windows. That means that Gambit will not be installed with `pip install certora-cli`, and must be {ref}`built from source <build-gambit-from-source>`.
+- There are currently no official Gambit binaries for Linux ARM or Windows. That means that Gambit will not be installed with `pip install certora-cli`, and must be {ref}`built from source <build-gambit-from-source>`.
 
 - Sometimes, the problem stems from Gambit's mutant generation.
   Try running with `--gambit_only` and look at the generated mutations.
