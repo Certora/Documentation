@@ -44,10 +44,11 @@ Step 1: prerequisites
 <details>
   <summary>Solidity compiler (ideally v0.5 and up)</summary>
 
-  * If you use a specific version of Solidity in your contract, download the
-    needed Solidity compiler from the [official Solidity repository](https://github.com/ethereum/solidity/releases)
-    on GitHub. Make sure to place all the compilers that you download in the same
-    path.
+  * We recommend using [solc-select](https://github.com/crytic/solc-select)
+    to download and switch between Solidity compiler versions.
+
+  * You can also download the Solidity compiler binaries from the [official Solidity repository](https://github.com/ethereum/solidity/releases) on GitHub. 
+  Make sure to place all the binaries that you download in the same path.
 
   * Certora employees can clone the `CVT_Executables` repository suitable for
     their OS from [GitHub](https://github.com/orgs/Certora/repositories).
@@ -265,8 +266,42 @@ to restart VSCode or your computer.
     ```
 </details>
 
-Step 4: Add the Solidity compiler (`solc`) executable's folder to your `PATH`
+Step 4: Install the relevant Solidity compiler versions
 ---------------------------------------------------------------------------
+
+The Solidity compiler (`solc`) is a verification requirement.
+There are two ways to install it: via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
+
+### Using `solc-select`
+
+<details>
+
+  <summary>solc-select instructions</summary>
+
+  * Open a terminal and install `solc-select` via `pip`:
+
+    ```bash
+    pip install solc-select
+    ```
+
+  * Download the required compiler version. For example, if you want to install version 0.8.0, run:
+
+    ```bash
+    solc-select install 0.8.0
+    ```
+
+  * Set `solc` to point to the required compiler version. For example:
+
+    ```bash
+    solc-select use 0.8.0
+    ```
+</details>
+
+### Download binaries
+
+You can download the `solc` binaries directly from [Solidity's release page on GitHub](https://github.com/ethereum/solidity/releases).
+
+To run the Prover, you will need to add the `solc` executable's folder to your `PATH.`
 
 <details>
   <summary>macOS</summary>
