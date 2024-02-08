@@ -71,7 +71,7 @@ Once it is completed, you should receive an email that looks like this:
 
 ### Following test with the mutations dashboard
 
-The mutation tests can be tracked at the [mutations dashboard](https://prover.certora.com/mutations).
+You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
 A test that just started would look like this:
 
 ![Mutation test running](doc/mutation_test_started_dashboard.png)
@@ -79,18 +79,18 @@ A test that just started would look like this:
 The `Mutation ID` is a unique identifier for the test. 
 
 The `Message` column includes the description given either in the command line 
- via the `--msg` flag or in the conf file's `"msg"` key.
-It is used for conveniently identifying and documenting mutation tests.
-By default it will show `None`.
+ via the `--msg` flag or the conf file's `"msg"` key.
+It aids in identifying and documenting mutation tests.
+By default, it will show `None`.
 
 The `Status` column of a test includes two different parts - the status of the test and a progress counter.
-THe progress counter shows how many of the mutants verification jobs that were sent have already been executed.
+The progress counter shows how many of the sent mutant verification jobs have already been executed.
 
 A mutation test can have one of five different statuses:
 
 - `Running`, as seen above, indicates that the verification jobs are still being computed.
 
-- `Calculating` indicates that all the verification jopbs have finished, and the results are now gathered and processed into a verification report.
+- `Calculating` indicates that all the verification jobs have finished, and the results are now gathered and processed into a verification report.
 
 ![Mutation test calculating](doc/mutation_test_calculating.png)
 
