@@ -15,7 +15,7 @@ Built-in rules can be included in any spec file by writing `use builtin rule
 Syntax
 ------
 
-The syntax for rules is given by the following [EBNF grammar](syntax):
+The syntax for rules is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 built_in_rule ::= "use" "builtin" "rule" built_in_rule_name ";"
@@ -106,11 +106,11 @@ rule sanity {
     method f; env e;
     calldataarg arg;
     f(e, arg); 
-    assert false;
+    satisfy true;
 }
 ```
 
-To find a counterexample to the assertion, the Prover must construct an input
+To find a satisfying trace, the Prover must construct an input
 for which `f` doesn't revert.
 
 (built-in-deep-sanity)=

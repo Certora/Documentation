@@ -19,7 +19,7 @@ The additional CVL types are:
 Syntax
 ------
 
-The syntax for types in CVL is given by the following [EBNF grammar](syntax):
+The syntax for types in CVL is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 basic_type ::= "int*" | "uint*" | "address" | "bool"
@@ -199,6 +199,10 @@ environment `e`:
 * `e.msg.value` - number of Wei sent with the message
 * `e.block.number` - current block number
 * `e.block.timestamp` - current block's time stamp
+* `e.block.basefee` - current block's base fee
+* `e.block.coinbase` - current block's coinbase
+* `e.block.difficulty` - current block's difficulty
+* `e.block.gaslimit` - current block's gas limit
 * `e.tx.origin` - original message sender
 
 The remaining solidity global variables are not accessible from CVL.

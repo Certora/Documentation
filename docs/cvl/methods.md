@@ -38,7 +38,7 @@ Syntax
 The syntax for methods block entries {doc}`changed in CVL 2 <cvl2/changes>`.
 ```
 
-The syntax for the `methods` block is given by the following [EBNF grammar](syntax):
+The syntax for the `methods` block is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 methods          ::= "methods" "{" { method_spec } "}"
@@ -48,7 +48,7 @@ method_spec      ::= "function"
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "optional" ]
-                     [ "=>" method_summary [ "UNRESOLVED" | "ALL" ] ]
+                     [ "=>" method_summary [ "" | "UNRESOLVED" | "ALL" | "DELETE" ] ]
                      ";"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
@@ -67,7 +67,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | id "(" [ id { "," id } ] ")"
+                   | id "(" [ id { "," id } ] ")" [ "expect" id ]
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
@@ -335,26 +335,34 @@ There are several kinds of summaries available:
 
  - {ref}`auto-summary` are the default for unresolved calls.
 
+(delete-summary)=
 ### Summary application
 
 To decide whether to summarize a given internal or external function call, the
 Prover first determines whether it matches any of the declarations in the
 methods block, and then uses the declaration and the calling context to
-determine whether the call should be replaced by an approximation.[^dont-summarize]
+determine whether the call should be replaced by an approximation.
 
 To determine whether a function call is replaced by an approximation, the
 Prover considers the context in which the function is called in addition to the
 application policy for its signature.  If present, the application policy must
-be either `ALL` or `UNRESOLVED`; the default policy is `ALL` with the exception
-of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.  The decision
-to replace a call by an approximation is made as follows:
+be either `ALL`, `UNRESOLVED`, or `DELETE`; the default policy is `ALL` with the exception
+of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.
+
+A `DELETE` summary is similar to an `ALL` summary, except that the `DELETE`
+summary removes the method from the {term}`scene` entirely.  Calling the method
+from CVL will produce a rule violation, and {term}`parametric rule`s will not
+be instantiated on the deleted method.  This can drastically improve
+performance if the deleted method is complex.
+
+The decision to replace a call by an approximation is made as follows:
 
  * If the function is called from CVL rather than from contract code then it is
    never replaced by a summary.
 
  * If the code for the function is known at verification time, either because
    it is a method of `currentContract` or because the receiver contract is
-   {ref}`linked <linking>`, then the function is only summarized if the
+   `linked`, then the function is only summarized if the
    resolution type is `ALL`.
 
  * If the code for the function is not known at verification time, then the
@@ -362,9 +370,6 @@ to replace a call by an approximation is made as follows:
    type is {ref}`AUTO <auto-summary>`, whose behavior is determined by the type of
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
-
-[^dont-summarize]: The `@dontsummarize` tag on method calls affects the
-  summarization behavior.  See {ref}`call-expr`.
   
 (summary-resolution)=
 ### Summary resolution
@@ -512,13 +517,16 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
  * Calls to non-library `view` and `pure` methods use the `NONDET` approximation:
    they keep all state unchanged.
 
- * Normal calls and constructors use the `HAVOC_ECF` approximation: they are
-   assumed to change the state of external contracts arbitrarily but to leave
-   the caller's state unchanged.
 
  * Calls to library methods and `delegatecall`s are assumed to change
    the caller's storage in an arbitrary way, but are assumed to leave ETH
    balances and the storage of other contracts unchanged.
+
+ * All other calls and constructors use the `HAVOC_ECF` approximation: they are
+   assumed to change the state of external contracts arbitrarily but to leave
+   the caller's state unchanged.
+   `AUTO` summary behavior for the `CALL` opcode 
+   with 0 length `calldata` can be changed with {ref}`-optimisticFallback`.
 
 [^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
   opcode used to make the call: calls made using the `STATICCALL` opcode use
@@ -538,9 +546,52 @@ Contract methods can also be summarized using CVL {doc}`functions` or
 are replaced by calls to the specified CVL functions.
 
 To use a CVL function or ghost as a summary, use a call to the function in
-place of the summary type.  The function call can only refer directly to the
-variables defined as arguments in the summary declarations; expressions
-that combine those variables are not supported.
+place of the summary type.
+
+If a wildcard entry has a ghost or function summary, the user must explicitly
+provide an `expect` clause to the summary.  The `expect` clause tells the
+Prover how to interpret the value returned by the summary.  For example:
+
+```cvl
+methods {
+    function _.foo() external => fooImpl() expect uint256 ALL;
+}
+```
+
+This entry will replace any call to any external function `foo()` with a call to
+the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
+`uint256`.
+
+If a function does not return any value, the summary should be declared with
+`expect void`.
+
+````{warning}
+You must check that your `expect` clauses are correct.
+
+The Prover cannot always check that the return type declared in the `expect`
+clause matches the return type that the contract expects.  Continuing the above
+example, suppose the contract being verified declared a method `foo()` that
+returns a type other than `uint256`:
+
+```solidity
+function foo() external returns(address) {
+    ...
+}
+
+function bar() internal {
+    address x = y.foo();
+}
+```
+
+In this case, the Prover would encode the value returned by `fooImpl()` as a
+`uint256`, and the `bar` method would then attempt to decode this value as an
+`address`.  This will cause undefined behavior, and in some cases the Prover
+will not be able to detect the error.
+````
+
+The function call can only refer directly to the variables defined as arguments
+in the summary declarations; expressions that combine those variables are not
+supported.
 
 The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
@@ -592,7 +643,7 @@ method:
 ```cvl
 methods {
     function _.transfer(address to, uint256 amount) external with(env e)
-        => cvlTransfer(calledContract, e, to, amount);
+        => cvlTransfer(calledContract, e, to, amount) expect void;
 }
 
 function cvlTransfer(address token, env passedEnv, address to, uint amount) {
