@@ -69,7 +69,7 @@ Once it is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
 
-### Following test with the mutations dashboard
+### Following tests with the mutations dashboard
 
 You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
 A test that just started would look like this:
