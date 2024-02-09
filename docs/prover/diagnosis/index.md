@@ -10,11 +10,11 @@ Diagnostic Tools
 % TODO: writing "verification condition" should write "rule", or what?..
 
 {term}`TAC` Reports provide an under-the-hood view on a given verification
-condition as well as the result that the prover produced for that verification
+condition as well as the result that the Prover produced for that verification
 condition, if available. There are four variants of TAC reports, one each for the
 results SAT, UNSAT, TIMEOUT, and one that contains no information from the
 result. In the following, we will discuss these variants one by one. We will
-begin with the TAC report without prover result information, since its
+begin with the TAC report without Prover result information, since its
 constituents are present in the other variants as well.
 
 ## Plain TAC reports
@@ -143,7 +143,7 @@ In case of a Timeout result, the TAC report contains additional information that
 is meant to help with preventing the timeout in the future.
 
 ```{figure} timeout-tac-report-plain.png
-:name: timeout tac report
+:name: timeout tac report plain
 :align: center
 
 example TAC report for a run with a Timeout result
@@ -171,7 +171,7 @@ node colors as well as statistical information pertaining to how difficult the
 program is to solve and what might be the particularly difficult parts.   
 
 ```{figure} timeout-tac-report-explanation-box.png
-:name: timeout tac report
+:name: timeout tac report explanation box
 :align: center
 
 Timeout TAC report with expanded statistics- and explanation-box
