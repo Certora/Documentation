@@ -253,7 +253,8 @@ function testPush(address where, bool executed) public {
 
 When we update `myArray[0]` with `data2`, the Solidity compiler will put zeroes
 in the space that was occupied by `data` beyond the length of `data2`. 
-
+As the difference between `data.length` and `data2.length` 
+could theoretically be unbounded (e.g. if instead of `"bb"` we had an arbitrary `bytes` buffer).
 
 To test our configuration, we use the following specification:
 ```cvl
