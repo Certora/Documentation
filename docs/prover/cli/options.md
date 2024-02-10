@@ -688,6 +688,54 @@ struct TokenPair {
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --structLink Bank:0=BankToken Bank:1=LoanToken`
 
+(--contract_recursion_limit)=
+### `--contract_recursion_limit`
+
+**What does it do?**
+Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
+option sets the contract recursion level, which is the number of recursive calls
+that the Prover will consider when inlining contracts linked using e.g. `--link` or `--struct_link`.
+
+If a counterexample causes a function to be called recursively more than the
+contract recursion limit, it will report an assertion failure (unless
+{ref}`--optimistic_contract_recursion` is set, in which case the counterexample
+will be ignored).
+The default value is zero (i.e. no recursion is allowed).
+
+**When to use it**
+Use this option when there is recursion due to linking calling Solidity
+functions, and this leads to an assertion failure. In this case one can either
+make the limit larger or set (via {ref}`--optimistic_contract_recursion`) flag
+to `true`.
+
+Note that making the limit larger is not always sufficient, 
+as the code may in fact allow theoretically unbounded recursion.
+
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
+```
+
+(--optimistic_contract_recursion)=
+### `--optimistic_contract_recursion`
+
+**What does it do?**
+Contract linking can cause recursion (see also {ref}`--contract_recursion_limit`).
+This option sets the Prover to optimistically assume that recursion cannot go 
+beyond what is defined by {ref}`--contract_recursion_limit`, 
+but only if {ref}`--contract_recursion_limit` is set to a number higher than 0.
+
+**When to use it?**
+1. When the recursion due to contract linking is unbounded.
+2. When we are interested only in a limited recursion depth due to contract linking.
+
+**Example**
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true --contract_recursion_limit 1
+```
+
 Options for controlling contract creation
 -----------------------------------------
 
