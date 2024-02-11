@@ -4,14 +4,15 @@ Approximation
 The Problem
 -----------
 
-Many potential questions we may like to ask about programs in any language are inherently undecidable. For example, in general, it is impossible to know whether or not a program will halt (the "Halting Problem"). In the case of the Certora Prover, questions about nonlinear arithmetic tend to be very difficult to answer (nonlinear arithmetic is undecidable in general). Other questions, while not undecidable, get exponentially harder with the size of the program (TODO: example?). Ultimately this means that the Prover will spend forever trying to get an answer and will eventually time out.
+Many potential questions we may like to ask about programs in any language are inherently undecidable. For example, in general, it is impossible to know whether or not a program will halt (known as the "Halting Problem"). In the case of the Certora Prover, questions about nonlinear arithmetic tend to be very difficult to answer (nonlinear arithmetic is undecidable in general).
+Ultimately this means that the Prover will spend forever trying to get an answer and will eventually time out.
 
 Solution 1: Overapproximation
 -----------------------------
 
 In essence, overapproximation means that we consider _more_ possible program states than are actually possible. Because this includes _all original behavior_, this approach is **sound**. That is to say, we will never falsely prove something correct when it is not. However, because we consider extra program behavior, there is a chance that we will find a bug in this extra program behavior that does not exist in the actual program.
 
-Imagine we have the following Hoare logic (TODO: what is Hoare logic?) snippet:
+Imagine we have the following logic expression snippet:
 
 ```
 uint256 x;
