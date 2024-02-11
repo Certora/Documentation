@@ -192,8 +192,11 @@ At the moment, there are a few ways in which `certoraMutate` can fail.
 Here are some suggestions on how to troubleshoot when that happens. 
 We are actively working on mitigating them.
 
+- There are currently no official Gambit binaries for Linux ARM or Windows. That means that Gambit will not be installed with `pip install certora-cli`, and must be {ref}`built from source <build-gambit-from-source>`.
+
 - Sometimes, the problem stems from Gambit's mutant generation.
   Try running with `--gambit_only` and look at the generated mutations.
+
 - Try running the Prover on your mutants individually using `certoraRun`. 
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
   It is also possible that you are encountering a bug with the underlying version of the Prover.

@@ -499,10 +499,12 @@ will be ignored).
 The default value is zero (i.e. no recursion is allowed).
 
 **When to use it**
-Use this option when there is recursion due to summaries calling Solidity
+1. Use this option when there is recursion due to summaries calling Solidity
 functions, and this leads to an assertion failure. In this case one can either
 make the limit larger or set (via {ref}`--optimistic_summary_recursion`) flag
 to `true`.
+
+2. Use it if you get the following assertion failure, and disabling {ref}`optimistic fallback <-optimisticFallback>` is not possible: `When inlining a fallback function, found it was already on the stack. Consider disabling optimistic fallback mode.`
 
 **Example**
 
