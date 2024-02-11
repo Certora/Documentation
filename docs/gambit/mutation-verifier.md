@@ -52,7 +52,7 @@ Paths in `prover.conf` are all relative to the project directory's root,
 
 When it finishes successfully, you should see the following lines printed:
 
-```plaintext
+```text
 ******************** PROVER END ********************
 
 You will receive an email notification when this mutation test is completed. It may take several hours.
