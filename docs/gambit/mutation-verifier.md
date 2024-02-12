@@ -92,7 +92,7 @@ A mutation test can have one of five different statuses:
 
 - `Running`, as seen above, indicates that the verification jobs are still being computed.
 
-- `Calculating` indicates that all the verification jobs have finished, and the results are now gathered and processed into a verification report.
+- `Calculating` indicates that all the verification jobs have finished, and the results are now being gathered and processed into a verification report.
 
 ![Mutation test calculating](doc/mutation_test_calculating.png)
 
@@ -100,7 +100,7 @@ A mutation test can have one of five different statuses:
 
 ![Mutation test executed](doc/mutation_test_executed.png)
 
-- `Halted` indicates that the mutation test reached a global time limit and was stopped. The partial verification results that were collected before the time limit are available in the verification report.
+- `Halted` indicates that the mutation test reached a global time limit and was stopped. The partial verification results that were collected before the time limit are available in the verification report. This usually happens when too many mutants are used in a single test. 
 
 ![Mutation test halted](doc/halted_mutation_test.png)
 
