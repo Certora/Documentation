@@ -24,7 +24,7 @@ We classify Certora Prover timeouts as follows:
 Types 1. and 2. are signified by a hard stop of the Prover. That means the
 Prover ran into the timeout of the cloud job, which is set at 2 hours, and was
 forcefully shut down from everything it was doing (it is possible to lower that
-timeout using the {ref}`-globalTimeout` flag). A message like "hard stop
+timeout using the {ref}`--global_timeout` flag). A message like "hard stop
 reached" appears in the "Global problems" pane of the
 [report](verification-report), and error symbols next to one or many rules.
 

@@ -601,7 +601,7 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`. 
+for parametric rules).  To set the global timeout, see {ref}`--global_timeout`. 
 
 Also note that, while the most prominent one, this is not the only timeout that
 applies to SMT solvers, for details see {ref}`-mediumTimeout` and
@@ -623,6 +623,17 @@ Gets an integer input, which represents seconds.
 
 The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
 Users may opt to set this number lower to facilitate faster iteration on specifications.
+Values larger than two hours (7200 seconds) are ignored.
+
+Jobs that exceed the global timeout will simply be terminated, so the result
+reports may not be generated.
+
+The global timeout is different from the {ref}`--smt_timeout` option: the
+`--smt_timeout` flag constrains the amount of time allocated to the processing
+of each individual rule, while the `--global_timeout` flag constrains the
+processing of the entire job, including static analysis and other
+preprocessing.
+
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
@@ -868,21 +879,6 @@ reported under the entry for `f`.
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-showInternalFunctions'
 ```
-
-(-globalTimeout)=
-#### `--prover_args '-globalTimeout <seconds>'`
-
-This option sets the global timeout in seconds.  By default, the global timeout
-is two hours.  Values larger than two hours (7200 seconds) are ignored.
-
-The global timeout is different from the {ref}`--smt_timeout` option: the
-`--smt_timeout` flag constrains the amount of time allocated to the processing
-of each individual rule, while the `-globalTimeout` flag constrains the
-processing of the entire job, including static analysis and other
-preprocessing.
-
-Jobs that exceed the global timeout will simply be terminated, so the result
-reports may not be generated.
 
 (-solver)=
 #### `--prover_args '-solver <solver spec>'`
