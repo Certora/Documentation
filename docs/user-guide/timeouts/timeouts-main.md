@@ -285,18 +285,18 @@ Certora Prover is solving.
 Sometimes it helps to choose a selection and prioritization of solvers that
 is different from the default.
 
-For instance, we can prioritize the usage of the [Yices SMT
-solver](https://yices.csl.sri.com/) by decreasing the size of the solver
-portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
-will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
-the ordering given in the {ref}`-solver` option for prioritizing solvers using
-the `-smt_overrideSolvers` option.
+% For instance, we can prioritize the usage of the [Yices SMT
+% solver](https://yices.csl.sri.com/) by decreasing the size of the solver
+% portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
+% will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
+% the ordering given in the {ref}`-solver` option for prioritizing solvers using
+% the `-smt_overrideSolvers` option.
 
 % TODO make this subsection a bit more concrete.. not sure how, yet
 
-```sh
-certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
-```
+% ```sh
+% certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
+% ```
 
 (high-memory-complexity)=
 ### Dealing with high memory (or storage) complexity
