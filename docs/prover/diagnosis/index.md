@@ -6,13 +6,12 @@ Diagnostic Tools
 ## TAC Reports
 
 {term}`TAC` Reports provide an under-the-hood view on a given
-{term}`verification condition` (i.e. rule or sub-rule) as well as the result
-that the Prover produced for that {term}`verification condition`, if available.
-There are four variants of TAC reports, one each for the results SAT, UNSAT,
-TIMEOUT, and one that contains no information from the result. In the following,
-we will discuss these variants one by one. We will begin with the TAC report
-without Prover result information, since its constituents are present in the
-other variants as well.
+{term}`verification condition` as well as the result that the Prover produced
+for that verification condition, if available. There are four variants
+of TAC reports, one each for the results SAT, UNSAT, TIMEOUT, and one that
+contains no information from the result. In the following, we will discuss these
+variants one by one. We will begin with the TAC report without Prover result
+information, since its constituents are present in the other variants as well.
 
 ```{note}
 In addition to the information below, there is a brief explanation of how to 
