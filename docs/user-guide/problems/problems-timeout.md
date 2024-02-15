@@ -1,5 +1,5 @@
 (timeouts-introduction)=
-# Introduction
+# Reasons for timeouts
 
 In the following, we will give a basic classification of timeouts, explain some
 candidate causes for timeouts, and show ways to sometimes prevent them. See
@@ -213,6 +213,18 @@ There is also some helpful information in the section on
 Some of the information in these references is out of date.
 ```
 
+(timeout-single-rule)=
+## Running rules individually
+
+The Certora Prover works on the rules of the specification in parallel.
+Even if no rule is very expensive on its own, working on all of them in parallel
+can add up quickly and thereby exceed the timeout.
+Try running individual rules only via the {ref}`--rule` option, or split the
+specification into separate files. Keep in mind that a {term}`parametric rule`,
+as well as an {term}`invariant`, spawns a subrule for every contract method.
+This can further be reduced via the {ref}`--method` option.
+
+
 ## Dealing with different kinds of complexity
 
 In this section we list some hints for timeout prevention based on which of the
@@ -391,3 +403,17 @@ The above snippet has the effect of summarizing as `NONDET` all external calls
 to the library and _internal_ ones as well. Only `NONDET` and `HAVOC` summaries
 can be applied. 
 For more information on method summaries, see {ref}`summaries`.
+
+
+(timeout-cli-options)=
+## Commandline options
+
+There are a number of commandline options that influence specific parts of the
+prover's pipeline. While their default values generally yield the best results,
+changing them is known to improve running time in certain cases.
+
+
+### `--prover_args '-calltraceFreeOpt true'`
+
+This option allows for some rather aggressive simplifications. However, it
+possibly breaks calltrace generation.

@@ -1,22 +1,24 @@
 (managing-problems)=
-Managing Problems
-=================
+Timeouts, memouts and other problems
+====================================
 
-Sometimes, the Certora Prover encounters issues it can not resolve and fails in
-some way or another. A job status may show as "Problem", but also a job shown as
-successfully finished may show possibly problems in the "Global Problems" view
-at the bottom of the web report. The underlying causes of these issues are
-manifold, e.g.
-subtle errors in the input not caught during type checking;
-incorrect usage of command line options;
-not yet supported features of specific solidity compiler version;
-plain regular software bugs;
-issues in the cloud environment;
-insufficient system memory.
+
+Unfortunately, the Certora Prover regularly encounters issues it can not resolve
+and fails in some way or another. A job may run out of time or memory, or hit a
+variety of further issues so that it is shown as "Problem". Even a job shown as
+successfully finished may have problems in the "Global Problems" view at the
+bottom of the web report.
+The "Job Info" page provides the "Logs page", essentially the log file of the
+Certora Prover.
+For experienced users, the "Status page" contains the download link for a zip
+archive that contains all the Certora Prover output, including further log files
+and dumps of intermediate code.
 
 
 ```{toctree}
-problems-triaging.md
+problems-identification.md
+problems-timeout.md
+problems-timeout-theory.md
 problems-memout.md
 ```
 

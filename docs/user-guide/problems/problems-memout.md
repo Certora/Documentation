@@ -2,17 +2,13 @@
 # Out of memory problems
 
 
-In this chapter, we discuss a number of contributors to high memory usage, how
-to figure out what actually happens, and possible remedies.
-
-
+(problems-memout-indicators)=
 ## General indicators
 
 An out-of-memory issue can be hard to diagnose. When the free memory drops below
-a certain threshold, we issue the following warning to the "General Problems"
-panel, as well as the prover log:
-
-> Extremely low available memory: ... out of a total of ... are left. The prover likely crashes soon and results will be incomplete.
+a certain threshold, we usually  issue the following warning to the
+"General Problems" panel, as well as the prover log:
+`Extremely low available memory`.
 
 This warning might occasionally be a false positive: the JVM is sometimes able
 to clean up enough memory on-demand to avert any crashes, or the memory might be
@@ -22,6 +18,7 @@ threshold fails. Both cases are pretty rare, though.
 
 The prover log oftentimes contains other warnings that point to an out-of-memory
 issue.
+
 
 ### SMT solvers dying
 
@@ -47,31 +44,42 @@ The `"system-mem"` data series shows total memory usage; high usage, while
 backend.
 
 
-## Some common scenarios
+### Specific exceptions
+
+Oftentimes, running out of memory produces exceptions that are written to the
+log file. Below is a list of exceptions or error messages that almost certainly
+indicate an out-of-memory issue, even if some seem completely unrelated at first
+glance:
+
+- `java.io.IOException: ... Cannot allocate memory`
+- `java.lang.NoClassDefFoundError`
 
 
-### High number of rules
+(memout-scenarios)=
+## Reducing memory usage
 
-The Certora Prover works on the rules of the specification in parallel.
-While the analysis done by the prover is not very memory intensive per se, doing
-this in parallel for many rules can add up quickly and thereby exhaust the
-available memory. Try running individual rules only via the {ref}`--rule`
-option, or split the specification into separate files. Keep in mind that a
-{term}`parametric rule`, as well as an {term}`invariant`, spawns a subrule for
-every contract method. This can further be reduced via the {ref}`--method`
-option.
+In most cases, high memory usage and long running times go hand in hand and
+thus {ref}`timeouts-introduction` is applicable for out-of-memory issues as well.
+
+There are a number of ways that can help avoiding memory exhaustion, either by
+{ref}`checking less rules <timeout-single-rule>`,
+{ref}`modularizes the verification <library_timeouts>` or fine-tuning
+{ref}`which SMT solvers are run <memout-smt-portfolio>`.
+Furthermore, there is a number of {ref}`heuristic options <timeout-cli-options>`
+that sometimes help to in reducing memory usage in some way or another.
 
 
+(memout-smt-portfolio)=
 ### High memory usage of SMT solvers
 
-If the memory is consumed by the backend SMT solvers, although the job has been
-reduced to very few rules, it can help to reduce the solver portfolio.
-Roughly speaking, this should only help if there are less calls to the SMT
-solvers than there are CPU cores available. Otherwise, reducing the portfolio
-only enables the prover to run more rules in parallel while the number of
-solvers running in parallel - and competing for memory - remains the same.
-It can still help if you happen to know that a particular solver uses much more
-memory in this particular case than the other solvers.
-To change the solver portfolio {ref}`-solver` can be used.
-
+As discussed in {ref}`high-nonlinear-op-count`, using different SMT solvers or
+changing their order is sometimes beneficial. It is important to keep in mind
+for out-of-memory issues that simply removing some solvers rarely helps as the
+maximum memory usage needs to be reduced.
+Roughly speaking, this technique only helps if there are less calls to the SMT
+solvers than there are CPU cores available or if a particular solver or solver
+configuration uses much more memory than the other solvers in this case.
+Otherwise, reducing the portfolio only enables the prover to run more rules in
+parallel while the number of solvers running - and competing for memory - at any
+given point in time remains the same.
 
