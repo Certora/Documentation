@@ -24,7 +24,7 @@ We classify Certora Prover timeouts as follows:
 Types 1. and 2. are signified by a hard stop of the Prover. That means the
 Prover ran into the timeout of the cloud job, which is set at 2 hours, and was
 forcefully shut down from everything it was doing (it is possible to lower that
-timeout using the {ref}`-globalTimeout` flag). A message like "hard stop
+timeout using the {ref}`--global_timeout` flag). A message like "hard stop
 reached" appears in the "Global problems" pane of the
 [report](verification-report), and error symbols next to one or many rules.
 
@@ -297,18 +297,18 @@ Certora Prover is solving.
 Sometimes it helps to choose a selection and prioritization of solvers that
 is different from the default.
 
-For instance, we can prioritize the usage of the [Yices SMT
-solver](https://yices.csl.sri.com/) by decreasing the size of the solver
-portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
-will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
-the ordering given in the {ref}`-solver` option for prioritizing solvers using
-the `-smt_overrideSolvers` option.
+% For instance, we can prioritize the usage of the [Yices SMT
+% solver](https://yices.csl.sri.com/) by decreasing the size of the solver
+% portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
+% will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
+% the ordering given in the {ref}`-solver` option for prioritizing solvers using
+% the `-smt_overrideSolvers` option.
 
 % TODO make this subsection a bit more concrete.. not sure how, yet
 
-```sh
-certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
-```
+% ```sh
+% certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
+% ```
 
 (high-memory-complexity)=
 ### Dealing with high memory (or storage) complexity

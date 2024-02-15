@@ -52,9 +52,11 @@ Paths in `prover.conf` are all relative to the project directory's root,
 
 When it finishes successfully, you should see the following lines printed:
 
-```
-********************  PROVER END  ********************
+```text
+******************** PROVER END ********************
+
 You will receive an email notification when this mutation test is completed. It may take several hours.
+You can follow the test's progress at https://prover.certora.com/mutations
 ```
 
 Verifying all the mutants is a heavy computational process that may take several hours.
@@ -62,9 +64,49 @@ The time required to verify all mutants depends on various factors,
   such as the number of mutants, the complexity of the contracts, 
   and the complexity of the specifications. 
 In some instances, the entire testing process may take several hours.
+
 Once it is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
+
+### Following tests with the mutations dashboard
+
+You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
+A test that just started would look like this:
+
+![Mutation test running](doc/mutation_test_started_dashboard.png)
+
+- The `Mutation ID` is a unique identifier for the test. 
+
+- The `Message` column includes the description given either in the command line 
+ via the `--msg` flag or the conf file's `"msg"` key.
+It aids in identifying and documenting mutation tests.
+By default, it will show `None`.
+
+- The `Status` column of a test includes two different parts - the status of the test (see below) and a progress counter.
+The progress counter shows how many of the sent mutant verification jobs have already been executed.
+
+#### Mutation test statuses
+
+A mutation test can have one of five different statuses:
+
+- `Running`, as seen above, indicates that the verification jobs are still being computed.
+
+- `Calculating` indicates that all the verification jobs have finished, and the results are now being gathered and processed into a verification report.
+
+![Mutation test calculating](doc/mutation_test_calculating.png)
+
+- `Executed` indicates that all mutant verification jobs were executed correctly and are available in the report, which can be accessed by clicking on the `Mutation ID`.
+
+![Mutation test executed](doc/mutation_test_executed.png)
+
+- `Halted` indicates that the mutation test reached a global time limit and was stopped. The partial verification results that were collected before the time limit are available in the verification report. This usually happens when too many mutants are used in a single test. 
+
+![Mutation test halted](doc/halted_mutation_test.png)
+
+- `Problem` indicates the test had errors. A report is usually not generated.
+
+![Mutation test problem](doc/mutation_test_problem.png)
 
 
 ## Mutation Configuration

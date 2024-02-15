@@ -601,7 +601,7 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`. 
+for parametric rules).  To set the global timeout, see {ref}`--global_timeout`. 
 
 Also note that, while the most prominent one, this is not the only timeout that
 applies to SMT solvers, for details see {ref}`-mediumTimeout` and
@@ -623,6 +623,17 @@ Gets an integer input, which represents seconds.
 
 The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
 Users may opt to set this number lower to facilitate faster iteration on specifications.
+Values larger than two hours (7200 seconds) are ignored.
+
+Jobs that exceed the global timeout will simply be terminated, so the result
+reports may not be generated.
+
+The global timeout is different from the {ref}`--smt_timeout` option: the
+`--smt_timeout` flag constrains the amount of time allocated to the processing
+of each individual rule, while the `--global_timeout` flag constrains the
+processing of the entire job, including static analysis and other
+preprocessing.
+
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
@@ -834,81 +845,6 @@ This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction 
 to the size of the output buffer as specified by the summarized `CALL` instruction.
-
-(-showInternalFunctions)=
-#### `--prover_args '-showInternalFunctions'`
-
-A single occurrence of `--prover_args` can set multiple values, e.g.:
-`--prover_args '-showInternalFunctions -optimisticReturnsize=true'`
-
-**What does it do?**
-
-This option causes the Prover to output a list of all the potentially
-summarizable internal function calls on the command line.  The output is also
-visible in the log file that you can download from the report.
-
-**When to use it?**
-
-In some cases the Prover is unable to locate all internal function calls, and
-so summaries may not be applied.  This option can be useful to determine
-whether summary is applied or not.
-
-The Prover's ability to locate a summarizable call depends on the call site,
-rather than the method declaration.  In particular, it is possible that the
-same internal function is called from two different contract functions, but
-only one of those calls is summarizable.
-
-The list that is output by this setting is grouped under the public and external
-methods of the contract.  If an external method `f` calls an internal method `g`
-which in turn calls another internal method `h`, then both `g` and `h` will be
-reported under the entry for `f`.
-
-**Example**
-
-```sh
-certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-showInternalFunctions'
-```
-
-(-globalTimeout)=
-#### `--prover_args '-globalTimeout <seconds>'`
-
-This option sets the global timeout in seconds.  By default, the global timeout
-is two hours.  Values larger than two hours (7200 seconds) are ignored.
-
-The global timeout is different from the {ref}`--smt_timeout` option: the
-`--smt_timeout` flag constrains the amount of time allocated to the processing
-of each individual rule, while the `-globalTimeout` flag constrains the
-processing of the entire job, including static analysis and other
-preprocessing.
-
-Jobs that exceed the global timeout will simply be terminated, so the result
-reports may not be generated.
-
-(-solver)=
-#### `--prover_args '-solver <solver spec>'`
-
-By default, a portfolio of SMT solvers using various configurations is used
-within the Prover.  It can be useful to specify only a subset of these to save
-on computation time.  In rare cases, solver specific options can improve
-performance as well.  Setting `-solver <solver spec>` filters the predefined
-portfolio to only use those configuration that match the given solver
-specification.
-
-The `solver spec` can be a single solver (`-solver z3:def`), or a list of
-solver configurations (`-solver [z3:def,cvc5:def]`), where each such solver can
-be further modified.  For example, `cvc5` (as in `-solver cvc5`) refers to the
-set of pre-configured configurations of `cvc5` whereas `cvc5:nonlin` is a
-specific configuration used for nonlinear problems.  Additional options can be
-set via `z3{randomSeed=17}`.
-
-With `-smt_overrideSolvers true`, the portfolio can be replaced instead of
-filtered. For example, in conjunction with `-solver [cvc5:def,z3:def]`, the
-portfolio is replaced with the default configurations of `cvc5` and `z3`,
-irrespective of their presence in the predefined portfolio.
-For even better control of which solvers are used in which situation, solver
-specification for certain logics can be given via
-`-smt_LIASolvers <solver spec>`, `-smt_NIASolvers <solver spec>`, and
-`-smt_BVSolvers<solver spec>` for linear, non-linear and bit-vector formulas.
 
 (-smt_useBV)=
 #### `--prover_args '-smt_useBV true'`
