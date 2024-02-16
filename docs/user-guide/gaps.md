@@ -236,8 +236,11 @@ use builtin rule sanity;
 
 Therefore:
 ```bash
-certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 3 // Passes
-certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 2 // Violates sanity
+// Passes:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 3
+
+// Violates sanity:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 2
 ```
 
 2. Do we need to set `--optimistic_loop`?
@@ -265,8 +268,11 @@ rule simpleAssert {
 
 We have that:
 ```bash
-certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3 --optimistic_loop // Passes
-certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3 // Violated with "Unwinding condition in a loop"
+// Passes:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3 --optimistic_loop
+
+// Violated with "Unwinding condition in a loop":
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3
 ```
 
 ##### Is `--loop_iter 3` always sufficient?
@@ -303,6 +309,9 @@ However, here we require the previous buffer size to be 225, which means we need
 thus requiring a minimal `--loop_iter` value of 4.
 
 ```bash
-certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 3 // Violates sanity
-certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 4 // Passes
+// Violates sanity:
+certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 3
+
+ // Passes:
+certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 4
 ```
