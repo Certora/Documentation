@@ -410,10 +410,10 @@ at offset `0x4`, which is in fact holding the pointer to the string in calldata,
 It is a usual sanity check instrumented by Solidity to avoid huge calldata buffers
 that consume a high amount of gas to process.
 
-### Strings-in-storage invariant
-
-TODO
-
-### Assumptions on array elements
-
-TODO
+;### Strings-in-storage invariant
+;
+;TODO
+;
+;### Assumptions on array elements
+;
+;TODO
