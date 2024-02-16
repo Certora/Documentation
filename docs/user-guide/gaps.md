@@ -315,3 +315,106 @@ certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.
  // Passes:
 certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 4
 ```
+
+
+## Reverts
+
+The Solidity compiler is generating checks for revert conditions that are not always spelled-out by the user
+using `require` and `assert` statements.
+Usually, these involve assumptions on the structure of the provided user data.
+
+This section will present a few examples where Prover-presented revert causes
+are stemming from compiler-generated checks, so that users can be more informed
+about debugging such revert causes.
+
+### Payability
+
+Payability is the simplest kind of compiler-generated checks, as they are controlled by the user.
+
+Consider the example contract:
+```solidity
+contract Payability {
+  function foo() external {}
+}
+```
+
+Specification:
+```cvl
+rule revertCheck {
+  env e;
+  foo@withrevert(e);
+  assert !lastReverted;
+}
+```
+
+We are expected to get the following revert cause:
+```
+!(safe_math_narrow:bif(e.msg.value)==0x0)
+```
+
+Which is telling us, that `e.msg.value` being non-zero is the cause for the revert.
+(`safe_math_narrow` is a Prover-internal cast operation.)
+This can be easily fixed with the revised rule:
+```cvl
+rule revertCheck {
+  env e;
+  require e.msg.value == 0;
+  foo@withrevert(e);
+  assert !lastReverted;
+}
+```
+
+### Basic type assumptions when passing arguments from CVL
+
+When we pass arguments from CVL to Solidity, 
+CVL attempts to add the same assumptions that Solidity code has on the 
+sizes of the arguments provided to it.
+This holds for types such as `bytes` and `string`, 
+but not for generalized `calldata` buffers (passed with `calldataarg` variable type in CVL).
+
+Therefore, given the following trivial Solidity code:
+```solidity
+contract StringInput {
+  function foo(string memory s) external {}
+}
+```
+
+the following rule would be proven:
+```cvl
+rule revertCheckString {
+    env e;
+    string s;
+    require e.msg.value == 0;
+    foo@withrevert(e, s);
+    assert !lastReverted;
+}
+```
+
+While using `calldataarg` instead would lead to a violation:
+```cvl
+rule revertCheckCalldataarg {
+    env e;
+    calldataarg arg;
+    require e.msg.value == 0;
+    foo@withrevert(e, arg);
+    assert !lastReverted;
+}
+```
+
+The run could trigger a few different kinds of reverts. 
+Even the simplest revert cause is a bit tricky to parse:
+`CANON12[0x4]>MASK64`
+
+It says that the value of `CANON12` (an internal name representing the `calldata` input to `foo`)
+at offset `0x4`, which is in fact holding the pointer to the string in calldata, is bigger than `2^64-1` 
+(shortened as `MASK64`, a mask where the 64 less-significant-bits are set to 1).
+It is a usual sanity check instrumented by Solidity to avoid huge calldata buffers
+that consume a high amount of gas to process.
+
+;### Strings-in-storage invariant
+;
+;TODO
+;
+;### Assumptions on array elements
+;
+;TODO
