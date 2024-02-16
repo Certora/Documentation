@@ -197,19 +197,19 @@ Consider the following contract:
 // MemoryToStorage.sol
 contract MemoryToStorage {
   struct ScheduledExecution {
-        address where;
-        bool execute;
-        bytes data;
+    address where;
+    bool execute;
+    bytes data;
   }
 
   ScheduledExecution[] myArray;
 
   function testPush(address where, bool executed) public {
-        bytes memory data = abi.encodeWithSelector(
-          this.testPush.selector,
-          "aa"
-        );
-        myArray.push(ScheduledExecution(where, executed, data));
+    bytes memory data = abi.encodeWithSelector(
+      this.testPush.selector,
+      "aa"
+    );
+    myArray.push(ScheduledExecution(where, executed, data));
   }
 }
 ```
@@ -258,11 +258,11 @@ Given the following specification:
 ```cvl
 // simpleAssert.spec
 rule simpleAssert {
-    env e; 
-    calldataarg arg; 
-    method f; 
-    f(e,arg); 
-    assert true;
+  env e;
+  calldataarg arg;
+  method f;
+  f(e,arg);
+  assert true;
 }
 ```
 
