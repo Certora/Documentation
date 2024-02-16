@@ -301,7 +301,24 @@ is different from the default.
 (high-memory-complexity)=
 ### Dealing with high memory (or storage) complexity
 
-In this subsection we consider common culprits for high memory complexity.
+The memory complexity of each rule or parametric rule is displayed in the Live
+Statistics panel in the Certora Prover reports. Memory complexity is measured by
+two values *graph size*, and *longest path*. Graph size indicates how often
+memory is updated in the rule overall.  Longest path indicates how many updates
+any given internal memory variable (e.g. the storage of a given contract, or a
+given ghost variable) is getting at the most. Note that form of memory, i.e. EVM
+memory, EVM storage, ghost variables, or ghost functions, is counted here. Both
+measures indicate how much work the SMT solvers have to do to figure out
+(non-)aliasing of memory references.
+
+% :align: center
+```{figure} memory-complexity-field.png
+:name: memory complexity field
+:height: 90px
+Entry in the Live Statistics panel indicating memory complexity
+```
+
+In the following we consider common culprits for high memory complexity.
 
 #### Passing complex structs
 
