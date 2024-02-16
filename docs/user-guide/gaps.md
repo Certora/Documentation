@@ -269,6 +269,8 @@ certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop
 certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3 // Violated with "Unwinding condition in a loop"
 ```
 
+##### Is `--loop_iter 3` always sufficient?
+
 Note that running with `--optimistic_loop` on the above example imposes an assumption
 on the size of the previous buffer written in `myArray[0].data`.
 One could have more complex flows where `--loop_iter 3` is not sufficient to properly
