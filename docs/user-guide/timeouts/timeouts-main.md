@@ -215,6 +215,10 @@ Some of the information in these references is out of date.
 
 ## Dealing with different kinds of complexity
 
+% screenshots in this subsection are taken from this run:
+% https://vaas-stg.certora.com/output/80942/9101c7e51a27456eb51bd9d088949c92?anonymousKey=25cca030b7594b795d994e937b5a027812d9406d
+% and from the (usual) delvtech/element example
+
 In this section we list some hints for timeout prevention based on which of the
 statistics (path count, number of nonlinear operations, memory/storage 
 complexity) is showing high severity on a given rule.
@@ -226,6 +230,24 @@ worth considering no matter which statistic is showing high severity.
 
 (high-path-count)=
 ### Dealing with a high path count
+
+The number of control flow paths is a major indication of how difficult a rule
+is to solve. Intuitively, in order to obtain a correctness proof for the rule, 
+an argument for the correctness of each of its paths has to be found.
+
+The Certora Prover indicates the path count in the Live Statistics panel of its
+reports. There, the path count is given both globally, and per call.
+
+```{figure} path-count-stats.png
+:name: path-count-stats
+Global and per-call path counts are displayed in the Live Statistics panel for 
+each rule.
+```
+
+In order to reduce the path count of a rule, modularization techniques
+(typically: method summarization) can be applied. However, altering the
+parameters of certain control flow splitting, a technique built into the Certora
+Prover has been shown to prevent timeouts as well. 
 
 *Control flow splitting* is a natural area to consider when the path count of a
 rule is high. When applying this technique, the Certora Prover internally
@@ -280,23 +302,58 @@ certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediu
 ### Dealing with nonlinear arithmetic
 
 Nonlinear integer arithmetic is often the hardest part of the formulas that
-Certora Prover is solving.
+Certora Prover is solving. 
 
-Sometimes it helps to choose a selection and prioritization of solvers that
-is different from the default.
+The Certora Prover displays the absolute number of nonlinear operations, as well
+as their number per external call, in the Live Statistics panel. In the per-call
+display, there is a warning-sign next to the call when there is a non-trivial
+number of nonlinear operations in the call or its sub-call. Currently,
+everything above and including two nonlinear operations is marked in this way.
 
-% For instance, we can prioritize the usage of the [Yices SMT
-% solver](https://yices.csl.sri.com/) by decreasing the size of the solver
-% portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
-% will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
-% the ordering given in the {ref}`-solver` option for prioritizing solvers using
-% the `-smt_overrideSolvers` option.
+```{figure} nonlinear-ops-field.png
+:name: nonlinear ops field
+Field in the Live Statistics panel indicating the number of nonlinear operations 
+in the selected rule
+```
 
-% TODO make this subsection a bit more concrete.. not sure how, yet
+```{note}
+Counting the number of nonlinear operations is a rather coarse
+statistic. There are formulas with 10 nonlinear operations that are out of reach
+of current SMT solvers, and in other cases formulas with 120 operations are
+solved. Nevertheless, reducing the number of nonlinear operations has often
+proven a successful measure in timeout prevention even if some remained.
+```
 
-% ```sh
-% certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
-% ```
+The main techniques in reducing these numbers are modularization and
+underapproximation. 
+
+Modularization, typically by introducing method summaries, can help reduce the
+size of the rule, thus reducing the nonlinear operations. The per-call
+statistics in the Live Statistics panel (picture below) can help with
+identifying nonlinearity hot spots. Summarizing these hot spots in particular
+can help reduce the number of nonlinear operations, especially when a method is 
+called multiple times.
+
+```{figure} nonlinear-ops-call.png
+:name: nonlinear-ops-call
+Entry in Live Statistics indicating how many nonlinear operations are made in a given 
+call, including its sub-calls
+```
+
+In some rules it is feasible to only consider an underapproximation of the
+actual behavior by fixing some value that is used very often in nonlinear
+computations to a concrete value. A typical example would be the decimal digits
+in fixed decimal arithmetic -- having this unconstrained can increase
+nonlinearity in the rule massively, although only a small range of values is
+actually feasible. Of course, great care has to be taken in choosing these
+underapproximations, since they lead to missed bugs otherwise.
+
+A weaker form of underapproximation would be to introduce an extra requirement
+on the range of some variable that contributes to nonlinearity. For example for
+the number of decimals in a fixed decimal computation only values between 0 and
+256 make sense, and in practice values from an even smaller range are likely to
+be used. This measure will not change the values in the Live Statistics panel, 
+but it has prevented timeouts in some cases nonetheless.
 
 (high-memory-complexity)=
 ### Dealing with high memory (or storage) complexity
