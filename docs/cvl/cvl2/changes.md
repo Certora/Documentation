@@ -321,8 +321,7 @@ methods {
 ```
 
 Contract functions that take or return function types are not currently
-supported.  Users can use {ref}`munging <munging>` to work around this
-limitation.
+supported.
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
