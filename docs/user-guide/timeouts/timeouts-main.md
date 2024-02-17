@@ -213,6 +213,48 @@ There is also some helpful information in the section on
 Some of the information in these references is out of date.
 ```
 
+(detect-candidates-for-summarization)=
+## Detect candidates for summarization
+
+In a large codebase it can be hard to find all the functions that may be difficult for the Prover.
+A traditional approach would be to run a simple parametric rule to explore all functions in the 
+relevant contracts, and studying resulting potential timeouts. 
+However such an approach prolongs the feedback loop of working with the Prover.
+
+As an alternative approach, the Prover supports an {ref}`overapproximating <glossary>` _auto-summarization_ mode.
+It is based on the idea that internal view or pure functions (in Solidity) that are analyzed
+and found to be heuristically difficult for the Prover can be automatically summarized as `NONDET`, 
+resulting in two positive outcomes:
+1. The run is faster since complex code is summarized early in the Prover's pipeline
+2. The Prover emits the list of _new_ summaries it auto-generated, so that the user can then adapt the list
+and make the summaries more precise, or remove them altogether if the user wishes so.
+
+The Prover will not auto-summarize methods that were already summarized by the user.
+
+To enable this mode, add {ref}`--auto_nondet_difficult_internal_funcs` to the `certoraRun` command.
+The minimal difficulty threshold used for the auto-summarization
+can be adjusted using {ref}`--auto_nondet_minimal_difficulty`.
+
+### Example usage
+
+Many DeFi protocols use the `openzeppelin` math libraries.
+One such library is `MathUpgradeable`, providing a `mulDiv` functionality:
+`function mulDiv(uint256 x, uint256 y, uint256 denominator) internal pure returns (uint256 result)`.
+The implementation is known to be difficult for the Prover due to 
+applying numerous multiplication, division and `mulmod` operations, 
+and thus is often summarized.
+
+However, it is sometimes easy to miss the library also contains a more generalized version
+of `mulDiv` that supports either rounding-up or rounding down:
+`function mulDiv(uint256 x, uint256 y, uint256 denominator, Rounding rounding) internal pure returns (uint256)`.
+Sometimes it can be beneficial to summarize the generalized function as well. 
+The auto-summarization will highlight the generalized function in its output:
+![auto-summarizer-output-example](auto-summarizer-output-example.png)
+The contents can be copy-pasted into the `methods` block directly for future runs.
+
+The "Contracts Call Resolutions" tab and the "Rule Call Resolution" bar also show
+the instrumented auto-summaries, and distinguishes between them and user-defined summaries.
+
 ## Dealing with different kinds of complexity
 
 In this section we list some hints for timeout prevention based on which of the
