@@ -367,7 +367,18 @@ To run the Prover, you will need to add the `solc` executable's folder to your `
     ```
 </details>
 
-Step 5 (for VS Code users): Install the Certora IDE Extension
+Step 5 (optional, for Vyper users): Install the Vyper compiler (`vyper`)
+--------------------------------------------------------------------------------
+
+[Vyper](https://github.com/vyperlang/vyper) is an EVM compatible Pythonic smart contract language.
+Since the Certora Prover operates on the bytecode, it can be applied to any source-level language
+that compiles to EVM bytecode.
+
+We recommend to install Vyper either from PyPi (i.e., `pip install vyper`) or to get a 
+binary executable for the desired version.
+
+
+Step 6 (for VS Code users): Install the Certora IDE Extension
 --------------------------------------------------------------------------------
 
 All users of the Certora Prover can access the tool using the command line 
