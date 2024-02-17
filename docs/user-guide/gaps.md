@@ -411,6 +411,20 @@ at offset `0x4`, which is in fact holding the pointer to the string in calldata,
 It is a usual sanity check instrumented by Solidity to avoid huge calldata buffers
 that consume a high amount of gas to process.
 
+A trickier sanity check instrumented by the Solidity compiler that could be highlighted by
+the Prover is the following:
+`(0x20+0x4+arg34_data[0x4]+arg34_data[0x4+arg34_data[0x4]])>arg34_length`
+
+It says that a certain complex expression is greater than `arg34_length`.
+`arg34` is the internal Prover-generated name of the `calldataarg arg` variable, and
+`arg34_length` is the variable holding its size (as would be returned by `CALLDATASIZE` instruction),
+and `arg34_data` is the raw `calldata` buffer itself.
+So we can see it is a bound check that makes sure we are not accessing beyond `CALLDATASIZE`.
+Specifically, `0x20 + 0x4 + arg34_data[0x4]` is a pointer to the beginning of the `string`
+argument in calldata (first 4 bytes are the `sighash`, another word is for the pointer slot,
+`arg34_data[0x4]` holds the relative offset to the string)
+`arg34_data[0x4+arg34_data[0x4]]` holds the length of the string.
+
 ;### Strings-in-storage invariant
 ;
 ;TODO
