@@ -425,10 +425,52 @@ argument in calldata (first 4 bytes are the `sighash`, another word is for the p
 `arg34_data[0x4]` holds the relative offset to the string)
 `arg34_data[0x4+arg34_data[0x4]]` holds the length of the string.
 
-;### Strings-in-storage invariant
-;
-;TODO
-;
+### Strings-in-storage invariant
+
+We consider the following code and specification:
+```solidity
+contract StringInStorage {
+  string name;
+  function setName() external {
+    name = "Certora";
+  }
+}
+```
+
+```cvl
+methods {
+  function setName() external envfree;
+}
+
+rule revertSetName {
+  setName@withrevert();
+  assert !lastReverted;
+}
+```
+
+This revert check would fail, because the Prover has no assumptions on the integrity
+of the state of the contract prior to the call, and the Solidity compiler instruments 
+an invariant check on the state before setting the string in storage.
+
+Let's consider first the revert cause emitted by the Prover:
+`!(((tacSCANON0!!5[skey_basic:bif(0x0)]&0x1)-(((tacSCANON0!!5[skey_basic:bif(0x0)]&0x1)>0x0 ? tacSCANON0!!5[skey_basic:bif(0x0)]/0x2 : (tacSCANON0!!5[skey_basic:bif(0x0)]/0x2)&0x7f)<0x20 ? 0x1 : 0x0))>0x0)`
+It looks very complicated, so to ease on reading we do some trivial logical simplifications:
+```
+(tacSCANON0!!5[skey_basic:bif(0x0)]&0x1)==0x1 // 0 or 1 - is odd check
+<=> (
+  (
+    (tacSCANON0!!5[skey_basic:bif(0x0)]&0x1)>0x0 
+      ? tacSCANON0!!5[skey_basic:bif(0x0)]/0x2 
+      : (tacSCANON0!!5[skey_basic:bif(0x0)]/0x2)&0x7f
+  ) < 0x20
+)
+ 
+
+(tacSCANON0!!5[skey_basic:bif(0x0)]&0x1) == 0x1 && tacSCANON0!!5[skey_basic:bif(0x0)]/0x2 < 0x20
+||
+(tacSCANON0!!5[skey_basic:bif(0x0)]&0x1) == 0x0 && (tacSCANON0!!5[skey_basic:bif(0x0)]/0x2)&0x7f < 0x20
+```
+
 ;### Assumptions on array elements
 ;
 ;TODO
