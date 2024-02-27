@@ -346,8 +346,18 @@ determine whether the call should be replaced by an approximation.
 To determine whether a function call is replaced by an approximation, the
 Prover considers the context in which the function is called in addition to the
 application policy for its signature.  If present, the application policy must
-be either `ALL`, `UNRESOLVED`, or `DELETE`; the default policy is `ALL` with the exception
-of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.
+be either `ALL`, `UNRESOLVED`, or `DELETE`.
+The `ALL` policy indicates the summary should be applied to all instances of the 
+specified method, while `UNRESOLVED` applies only to methods that cannot be fully
+resolved (i.e., both target contract and method identifier are known).
+For internal summaries, the default is `ALL`, as all internal functions
+are always resolvable; thus `UNRESOLVED` is impossible and will yield an error. 
+Similarly, for external summaries with contract-specific entries, 
+the default policy is `ALL`. 
+Conversely, for any external summary on wildcard contracts, the default 
+policy is `UNRESOLVED`. One may apply the `ALL` policy to make the summary apply
+on all instances of the wildcard method, even on target contracts for which
+it was resolved, e.g. by {ref}`linking <--link>`.
 
 A `DELETE` summary is similar to an `ALL` summary, except that the `DELETE`
 summary removes the method from the {term}`scene` entirely.  Calling the method
