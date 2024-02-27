@@ -49,7 +49,7 @@ ghost ghostSupply() returns uint256;
 //                              the new value ↓ written:
 hook Sstore balances[KEY address a] uint256 balance
 // the old value ↓ already there
-    (uint256 old_balance) STORAGE {
+    (uint256 old_balance) {
   havoc ghostSupply assuming ghostSupply@new() == ghostSupply@old() +
       (balance - old_balance);
 }

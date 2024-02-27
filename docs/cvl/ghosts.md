@@ -119,7 +119,7 @@ user:
 ```cvl
 ghost mapping(address => bool) updated;
 
-hook Sstore userInfo[KEY address u] uint i STORAGE {
+hook Sstore userInfo[KEY address u] uint i {
     updated[u] = true;
 }
 

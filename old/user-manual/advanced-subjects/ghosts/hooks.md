@@ -24,19 +24,19 @@ Inside each rule, CVT takes these hooks and looks for any reads or writes to sto
 `Sload` and `Sstore` are two `TAC` primitives representing a _read_ from storage and a _write_ to storage, respectively. A pattern for an `Sload` will bind a variable to provide access to "the value loaded", and a pattern for an `Sstore` will bind a variable both for "the value stored" and \(optionally\) "the old value that was overwritten." For example:
 
 ```text
-hook Sload uint256 v <pattern> STORAGE {
+hook Sload uint256 v <pattern> {
     // inside this block, "v" provides access to the value that was loaded
     // by this command (i.e. the lhs of the Sload command). Another variable
     // name other than "v" could have been used
 }
 
-hook Sstore <pattern> uint256 v STORAGE {
+hook Sstore <pattern> uint256 v {
     // inside this block, "v" provides access to the value that was written
     // to storage by this command (i.e. the rhs of the Sload command) Another
     // variable name other than "v" could have been used
 }
 
-hook Sstore <pattern> uint256 v (uint256 v_old) STORAGE {
+hook Sstore <pattern> uint256 v (uint256 v_old) {
     // inside this block:
     //  - "v" provides access to the value that was written to storage by
     //    this command
@@ -125,7 +125,7 @@ contract Test {
 In static slots we can reason about packing from the hook pattern. For example, if we wanted to hook on a write to `s_1.second` we would write the following hook \(remember offsets are in bytes\):
 
 ```text
-hook Sstore s_1.(offset 16) uint64 second (uint64 old_second) STORAGE {
+hook Sstore s_1.(offset 16) uint64 second (uint64 old_second) {
     // hook body
 }
 ```
@@ -135,7 +135,7 @@ hook Sstore s_1.(offset 16) uint64 second (uint64 old_second) STORAGE {
 When a struct is inside a mapping or an array, it becomes a bit trickier to reason about. However, 1 word/32 byte offsets are fine. So if we wanted to hook on a write to `m_1[k].third` we would write:
 
 ```text
-hook Sstore m_1[KEY uint256 k].(offset 64) uint256 third STORAGE {
+hook Sstore m_1[KEY uint256 k].(offset 64) uint256 third {
     // hook body
 }
 ```
@@ -168,7 +168,7 @@ definition MyPackedStruct_third(uint256 s) returns uint256 =
 And so to write a hook to `m_2[k].{first, second, third}` we can write the following:
 
 ```text
-hook Sstore m_2[KEY uint256 k].(offset 0) uint256 s STORAGE {
+hook Sstore m_2[KEY uint256 k].(offset 0) uint256 s {
     uint256 first  = MyPackedStruct_first(s);
     uint256 second = MyPackedStruct_second(s);
     uint256 third  = MyPackedStruct_third(s);
@@ -185,7 +185,7 @@ This hook will be triggered on writes to all fields of the struct packed into th
 The combination of `Sload`/`Sstore` and the slot pattern combine to create a complete specification of a **hook pattern**. For example:
 
 ```text
-hook Sstore balances[KEY address account] uint256 v (uint256 v_old) STORAGE {
+hook Sstore balances[KEY address account] uint256 v (uint256 v_old) {
     // inside this block:
     //  - "account" provides access to the key into the mapping that was
     //    was used in this storage access
@@ -203,7 +203,7 @@ The body of a hook may include straight-line commands \(i.e., _neither_ if state
 ```text
 ghost ghostBalances(address) returns uint256;
 
-hook Sload uint256 v balances[KEY address account] STORAGE {
+hook Sload uint256 v balances[KEY address account] {
     require ghostBalances(account) == v;
 }
 ```
@@ -266,7 +266,7 @@ Finally, as shown in the section on [definitions,](definitions.md#reference-ghos
 ```text
 ghost ghostBalances(address) returns uint256;
 
-hook Sstore balances[KEY address account] uint256 v STORAGE {
+hook Sstore balances[KEY address account] uint256 v {
     havoc ghostBalances assuming ghostBalances@new(account) == v &&
         forall address a. a != account =>
                 ghostBalances@new(a) == ghostBalances@old(a);

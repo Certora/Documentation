@@ -245,7 +245,7 @@ the contract variable `i`.
 ```{code-block} cvl
 ghost uint gI;
 
-hook Sstore i uint256 v STORAGE {
+hook Sstore i uint256 v {
     gI = v;
 }
 ```

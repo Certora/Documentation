@@ -103,12 +103,12 @@ definition updateSucc(Node a, Node b) returns bool =
             (reach@old(X, a) && reach@old(b, Y)));
 
 hook Sstore (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
-        bytes32 newNextKey STORAGE {
+        bytes32 newNextKey {
     havoc reach assuming updateSucc(toNode(key), toNode(newNextKey));
 }
 
 hook Sload bytes32 nextKey (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
-        STORAGE {
+{
     require isSucc(toNode(key), toNode(nextKey));
 }
 
