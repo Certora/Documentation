@@ -1,3 +1,4 @@
+(white-paper)=
 # Certora Technology White Paper
 
 June 29, 2022

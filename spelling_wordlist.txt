@@ -1,6 +1,7 @@
 ABI
 Aave
 Balancer
+CFGs
 CVL
 Certora
 Devcon
@@ -85,6 +86,7 @@ injective
 injectivity
 inlined
 inlining
+inlinings
 instantiation
 invariant
 invariants
