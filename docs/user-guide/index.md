@@ -1,3 +1,4 @@
+(user-guide)=
 Certora User's Guide
 ====================
 
@@ -11,7 +12,7 @@ The Certora Prover is based on well-studied techniques from the formal
 verification community. _**Specifications**_ define a set of rules that call
 into the contract under analysis and make various assertions about its
 behavior. Together with the contract under analysis, these rules are compiled
-to a logical formula called a _**verification condition**_, which is then
+to a logical formula called a {term}`verification condition`, which is then
 proved or disproved by an SMT solver. If the rule is disproved, the solver also
 provides a concrete test case demonstrating the violation.
 
