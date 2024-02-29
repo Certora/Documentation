@@ -86,6 +86,19 @@ code_path_override = "Examples/"
 link_to_github = True
 
 
+# -- prologue and epilog -------------------------------------------------------
+# A string of reStructuredText that will be included at the beginning of every source
+# file that is read.
+# Here we use the prologue to add inline cvl code and solidity code.
+rst_prolog = """
+.. role:: cvl(code)
+   :language: cvl
+
+.. role:: solidity(code)
+   :language: solidity
+"""
+
+
 # -- Custom setup ------------------------------------------------------------
 
 # Do not show todo list unless in dev build
