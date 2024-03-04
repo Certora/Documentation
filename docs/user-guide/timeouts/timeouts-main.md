@@ -86,6 +86,7 @@ far can be traced back to one or more of these causes. While these are not the
 only sources of complexity, they provide a good idea of the probable causes for
 a given timeout. 
 
+
 ## Complexity feedback from Certora Prover
 
 Certora Prover provides help with diagnosing timeouts. We present these features
@@ -127,6 +128,8 @@ The meanings of the LOW/MEDIUM/HIGH classifications are as follows:
 %| Nonlinear operations | 0 to 10 | 10 to 30 | > 30 |
 % TODO: memory/storage complexity, once we have a feeling for that
 
+For more details on the individual statistics and how to make use of them, also
+see the section on {ref}`dealing-with-complexity` below.
 
 (timeout-tac-reports)=
 ### Timeout TAC reports
@@ -213,6 +216,7 @@ There is also some helpful information in the section on
 Some of the information in these references is out of date.
 ```
 
+(dealing-with-complexity)=
 ## Dealing with different kinds of complexity
 
 % screenshots in this subsection are taken from this run:
@@ -224,8 +228,8 @@ statistics (path count, number of nonlinear operations, memory/storage
 complexity) is showing high severity on a given rule.
 
 ```{note}
-The techniques described below under [modular verification](modular-verification) are 
-worth considering no matter which statistic is showing high severity.
+The techniques described further down under [modular verification](modular-verification) 
+are worth considering no matter which statistic is showing high severity.
 ```
 
 (high-path-count)=
@@ -235,8 +239,11 @@ The number of control flow paths is a major indication of how difficult a rule
 is to solve. Intuitively, in order to obtain a correctness proof for the rule, 
 an argument for the correctness of each of its paths has to be found.
 
-The Certora Prover indicates the path count in the Live Statistics panel of its
-reports. There, the path count is given both globally, and per call.
+The Certora Prover indicates the path count in the Live Statistics panel. 
+The path count is given once for the whole rule and, separately on a per-call 
+basis.
+The per-call path count always includes the paths of all deeper calls (the 
+same holds for the count of nonlinear operations of the call).
 
 ```{figure} path-count-stats.png
 :name: path-count-stats
@@ -244,16 +251,56 @@ Global and per-call path counts are displayed in the Live Statistics panel for
 each rule.
 ```
 
-In order to reduce the path count of a rule, modularization techniques
-(typically: method summarization) can be applied. However, altering the
-parameters of certain control flow splitting, a technique built into the Certora
-Prover has been shown to prevent timeouts as well. 
+#### Path explosion
 
-*Control flow splitting* is a natural area to consider when the path count of a
-rule is high. When applying this technique, the Certora Prover internally
-divides each verification condition into smaller subproblems and attempts to
-solve them separately. For a more detailed explanation, see
-{ref}`control-flow-splitting`.
+The number of paths that are given in the path count statistic might seem very high 
+to users. The essential reason for these high number is known as the 
+[path explosion problem](https://en.wikipedia.org/wiki/Path_explosion): The path count
+is usually exponential in the number of nodes and edges in the control flow graph.
+
+For some intuition on how this happens, see the following illustration. Whenever there 
+is a sequence of subgraphs that branch and then join again, the simplest variant of this
+being the diamond shapes in the picture, the final path count is the product of the 
+subgraph's path counts. Thus the resulting overall path count grows exponentially in the
+number of these diamonds.
+
+```{figure} path-diamonds.png
+:name: path diamonds
+:height: 400px
+Illustration of path explosion through a sequence of *n* "diamond" shapes in the control 
+flow graph. The shown control flow graph has 2<sup>n</sup> paths.
+```
+
+The path count statistic for a given rule is based on the control flow graph of
+the rule with all calls (and their calls and so forth) inlined. For example, if
+some method with 5 paths is called 10 times within the rule, its control flow
+graph will appear 10 times as a subgraph of the rule's control flow graph. If,
+for instance all these calls were made in sequence, and there was no further
+branching in the rule, the path count would be 5<sup>10</sup>. 
+
+A particular potential cause for path explosion are {ref}`dispatcher`. How much a 
+`DISPATCHER` summary contributes to the path count depends on three factors:
+ - how many potential call targets there are (how many known implementations)
+ - how often the summarized function is called
+ - whether the function is called in sequence or in parallel in the control flow 
+   (generally control flow branchings in sequence lead to an exponential path explosion)
+
+#### Mitigation approaches
+
+In order to reduce the path count of a rule, the usual modularization techniques,
+like method summarization, can be applied. (See also the section 
+{ref}`modular-verification` below.)
+
+As pointed out in the previous sub-section, `DISPATCHER` summaries can lead to a path 
+explosion, so replacing them for instance with `AUTO` summaries can have a significant 
+impact. (See also {ref}`auto-summaries`.)
+
+Furthermore, it can help to change the parameters of the *control flow
+splitting* feature of the Certora Prover. Control flow splitting is a natural
+area to consider when the path count of a rule is high. When applying this
+technique, the Certora Prover internally divides each verification condition
+into smaller subproblems and attempts to solve them separately. For a more
+detailed explanation, see {ref}`control-flow-splitting`.
 
 We list a few option combinations that can help in various settings. There is a
 tradeoff between spending time in different places: The Prover can either try to
@@ -319,7 +366,7 @@ in the selected rule
 ```{note}
 Counting the number of nonlinear operations is a rather coarse
 statistic. There are formulas with 10 nonlinear operations that are out of reach
-of current SMT solvers, and in other cases formulas with 120 operations are
+of current SMT solvers, while in other cases formulas with 120 operations are
 solved. Nevertheless, reducing the number of nonlinear operations has often
 proven a successful measure in timeout prevention even if some remained.
 ```
@@ -359,14 +406,29 @@ but it has prevented timeouts in some cases nonetheless.
 ### Dealing with high memory (or storage) complexity
 
 The memory complexity of each rule or parametric rule is displayed in the Live
-Statistics panel in the Certora Prover reports. Memory complexity is measured by
-two values *graph size*, and *longest path*. Graph size indicates how often
-memory is updated in the rule overall.  Longest path indicates how many updates
-any given internal memory variable (e.g. the storage of a given contract, or a
-given ghost variable) is getting at the most. Note that form of memory, i.e. EVM
-memory, EVM storage, ghost variables, or ghost functions, is counted here. Both
-measures indicate how much work the SMT solvers have to do to figure out
-(non-)aliasing of memory references.
+Statistics panel in the Certora Prover reports. 
+
+% if we would want to slim it down to graph size only, we could write this:
+% Memory complexity is measured by
+% the *number of updates* statistic. This statistic indicates how often an update
+% to memory is performed anywhere in the rule. Note that any form of memory, i.e.
+%  EVM memory, EVM storage, ghost variables, or ghost functions, is counted here.
+% This number gives rough estimate of how much work the SMT solvers have to do to
+% reason about (non-)aliasing of memory references.
+
+The Certora Prover performs a decompilation of bytecode in a way that all EVM
+primitives can ultimately be modeled as SMT constructs. This process introduces
+key-to-value mappings for EVM memory and EVM storage. Additionally the CVL
+specification may introduce ghost mappings. The Prover runs static analyses to
+reduce the load on these mappings by splitting them into smaller pieces,
+(smaller mappings or scalar variables), but this is not always possible and some
+mappings usually remain in the final SMT formula.
+
+Under this model, the "Graph size" is a measure of how many times we store into
+a key-value mapping such as memory, storage, or a ghost function. The "Path" is
+a measure of the longest chain of writes performed on one of the mappings. In
+both cases, a smaller number indicates a less difficult problem for the Prover
+to solve.
 
 % :align: center
 ```{figure} memory-complexity-field.png
