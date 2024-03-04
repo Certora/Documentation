@@ -260,9 +260,9 @@ is usually exponential in the number of nodes and edges in the control flow grap
 
 For some intuition on how this happens, see the following illustration. Whenever there 
 is a sequence of subgraphs that branch and then join again, the simplest variant of this
-being the diamond shapes in the picture, the final path count is the product of the 
-subgraph's path counts. Thus the resulting overall path count grows exponentially in the
-number of these diamonds.
+being the diamond shapes in the picture, the path count of the whole graph is the product 
+of these subgraph's path counts. Thus it is typical for the path count of a control flow
+graph to grow exponentially in its number of nodes (or edges).
 
 ```{figure} path-diamonds.png
 :name: path diamonds
