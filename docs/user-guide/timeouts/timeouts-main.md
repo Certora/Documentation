@@ -293,7 +293,7 @@ like method summarization, can be applied. (See also the section
 
 As pointed out in the previous sub-section, `DISPATCHER` summaries can lead to a path 
 explosion, so replacing them for instance with `AUTO` summaries can have a significant 
-impact. (See also {ref}`auto-summaries`.)
+impact. (See also {ref}`auto-summary`.)
 
 Furthermore, it can help to change the parameters of the *control flow
 splitting* feature of the Certora Prover. Control flow splitting is a natural
