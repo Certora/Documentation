@@ -424,11 +424,12 @@ reduce the load on these mappings by splitting them into smaller pieces,
 (smaller mappings or scalar variables), but this is not always possible and some
 mappings usually remain in the final SMT formula.
 
-Under this model, the "Total Updates" is a measure of how many times we store
+Under this model, the "#total updates" is a measure of how many times we store
 into a key-value mapping such as memory, storage, or a ghost function. The
-"Longest Update Sequence" statistic represents the length the longest sequence of
-writes performed on one of the mappings. In both cases, a smaller number
-indicates a less difficult problem for the Prover to solve.
+"longest update sequence" statistic represents the length the longest sequence
+of updates (i.e. store operations) performed on one of the mappings. In both
+cases, a smaller number indicates a less difficult problem for the Prover to
+solve.
 
 % :align: center
 ```{figure} memory-complexity-field.png
