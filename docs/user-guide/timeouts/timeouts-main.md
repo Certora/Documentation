@@ -348,7 +348,7 @@ certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediu
 (high-nonlinear-op-count)=
 ### Dealing with nonlinear arithmetic
 
-Nonlinear integer arithmetic is often the hardest part of the formulas that
+Nonlinear integer arithmetic is often the hardest part of the formulas that the
 Certora Prover is solving. 
 
 The Certora Prover displays the absolute number of nonlinear operations, as well
@@ -424,11 +424,11 @@ reduce the load on these mappings by splitting them into smaller pieces,
 (smaller mappings or scalar variables), but this is not always possible and some
 mappings usually remain in the final SMT formula.
 
-Under this model, the "Graph size" is a measure of how many times we store into
-a key-value mapping such as memory, storage, or a ghost function. The "Path" is
-a measure of the longest chain of writes performed on one of the mappings. In
-both cases, a smaller number indicates a less difficult problem for the Prover
-to solve.
+Under this model, the "Total Updates" is a measure of how many times we store
+into a key-value mapping such as memory, storage, or a ghost function. The
+"Longest Update Sequence" statistic represents the length the longest sequence of
+writes performed on one of the mappings. In both cases, a smaller number
+indicates a less difficult problem for the Prover to solve.
 
 % :align: center
 ```{figure} memory-complexity-field.png
