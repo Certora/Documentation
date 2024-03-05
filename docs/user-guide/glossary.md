@@ -12,6 +12,7 @@ call trace
 
 CFG
 control flow graph
+control flow path
   Control flow graphs (short: CFGs) are a program representation that 
   illustrates in which order the program's instructions are processed during 
   program execution. 
@@ -25,7 +26,14 @@ control flow graph
   a rule has a CFG like regular programs.
   The Certora Prover's [TAC reports](tac-reports) contain a control flow graph 
   of the {term}`TAC` intermediate representation of each given CVL rule.
-  Further reading: [Wikipedia](https://en.wikipedia.org/wiki/Control-flow_graph)
+  The control flow paths are the paths from source to sink in a given CFG.
+  In general (and in practice) the number of control flow paths grows 
+  exponentially with the size of the CFG. This is known as the path explosion 
+  problem.
+  Further reading: 
+  [Wikipedia: Control-flow graph](https://en.wikipedia.org/wiki/Control-flow_graph)
+  [Wikipedia: Path explosion problem](https://en.wikipedia.org/wiki/Path_explosion)
+
   % TODO: ok to mention TAC here?
 
 environment
