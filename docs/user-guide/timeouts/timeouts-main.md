@@ -224,13 +224,14 @@ A traditional approach would be to run a simple parametric rule to explore all f
 relevant contracts, and studying resulting potential timeouts. 
 However such an approach prolongs the feedback loop of working with the Prover.
 
-As an alternative approach, the Prover supports an {ref}`overapproximating <glossary>` _auto-summarization_ mode.
-It is based on the idea that internal view or pure functions (in Solidity) that are analyzed
+As an alternative approach, the Prover supports an {term}`overapproximating <overapproximation>` _auto-summarization_ mode.
+It is based on the idea that internal `view` or `pure` functions (in Solidity) that are analyzed
 and found to be heuristically difficult for the Prover can be automatically summarized as `NONDET`, 
 resulting in two positive outcomes:
-1. The run is faster since complex code is summarized early in the Prover's pipeline
-2. The Prover emits the list of _new_ summaries it auto-generated, so that the user can then adapt the list
-and make the summaries more precise, or remove them altogether if the user wishes so.
+1. The run is faster since complex code is summarized early in the Prover's pipeline.
+2. The Prover emits the list of _new_ summaries (i.e., for functions that were not summarized already in the given specification) 
+it auto-generated, so that the user can then adapt the list
+and make the user-specified summaries more precise, or remove them altogether if the user wishes so.
 
 The Prover will not auto-summarize methods that were already summarized by the user.
 
