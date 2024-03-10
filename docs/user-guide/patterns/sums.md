@@ -17,7 +17,7 @@ ghost mathint sumBalances {
 
 hook Sstore balanceOf[KEY address user] uint256 newBalance (uint256 oldBalance) STORAGE
 {
-    # there is no `+=` operator in CVL
+    // there is no `+=` operator in CVL
     sumBalances = sumBalances + newBalance - oldBalance;
 }
 

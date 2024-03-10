@@ -1,4 +1,15 @@
+# Repo specifics
 build
+
+# Python
 __pycache__
-.certora_internal
 **/__pycache__
+
+# Certora
+.certora_internal/
+.certora_recent_jobs.json
+.zip-output-url.txt
+
+# vim
+.*.swp
+.*.swo
