@@ -344,6 +344,7 @@ methods block, and then uses the declaration and the _calling context_ to
 determine whether the call should be replaced by an approximation.
 
 Specifically, the matching is based on three attributes:
+
 (1) The contract in which the method is defined, or a wildcard contract denoted with `_`.
 
 (2) The method signature, with optional named parameters.
@@ -354,7 +355,7 @@ either `external` or `internal`, and this affects which call sites of the functi
 be summarized.
 
 The ability of the Prover to match a particular call site to a method declaration
-depends on whether the call was _resolved_ or not, i.e. whether we know which target
+depends on whether the call was _resolved_ or not, i.e., whether we know which target
 contract is called and which method signature is called.
 Internal calls are always resolved, but for external calls it is not always the case.
 For example, the target contract may be given by a user input, and there is
