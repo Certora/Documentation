@@ -492,9 +492,9 @@ Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
 option sets the summary recursion level, which is the number of recursive calls
 that the Prover will consider.
 
-If a counterexample causes a function to be called recursively more than the
-summary recursion limit, it will report an assertion failure (unless
-{ref}`--optimistic_summary_recursion` is set, in which case the counterexample
+If the prover finds an execution in which a function is called recursively more
+than the contract recursion limit, the prover will report an assertion failure (unless
+{ref}`--optimistic_summary_recursion` is set, in which case the execution
 will be ignored).
 The default value is zero (i.e. no recursion is allowed).
 
@@ -694,18 +694,28 @@ We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of t
 **What does it do?**
 Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
 option sets the contract recursion level, which is the number of recursive calls
-that the Prover will consider when inlining contracts linked using e.g. `--link` or `--struct_link`.
+that the Prover will consider when inlining contracts linked using, e.g., `--link` or `--struct_link`.
+
+```{note}
+In this context, recursion refers to the state where the same _external_ function
+appears twice in the call stack.
+Contracts can also exhibit recursive behavior due to recursive calls to _internal_ functions,
+which is unrelated to this option.
+```
 
 If a counterexample causes a function to be called recursively more than the
 contract recursion limit, it will report an assertion failure (unless
 {ref}`--optimistic_contract_recursion` is set, in which case the counterexample
 will be ignored).
-The default value is zero (i.e. no recursion is allowed).
+The default value is zero (i.e., no recursion is allowed).
 
 **When to use it**
-Use this option when there is recursion due to linking calling Solidity
-functions, and this leads to an assertion failure. In this case one can either
-make the limit larger or set (via {ref}`--optimistic_contract_recursion`) flag
+Use this option when after linking the resulting program may have paths
+with recursive calls to external Solidity
+functions, and this leads to a recursion-specific assertion failure,
+showing the message `Contract recursion limit reached`.
+In this case one can either
+make the limit larger or set `--optimistic_contract_recursion` flag
 to `true`.
 
 Note that making the limit larger is not always sufficient, 
@@ -731,10 +741,25 @@ but only if {ref}`--contract_recursion_limit` is set to a number higher than 0.
 1. When the recursion due to contract linking is unbounded.
 2. When we are interested only in a limited recursion depth due to contract linking.
 
+```{caution}
+Note that this flag could be another cause for unsoundness - even if such recursion
+_could_ actually happen in the deployed contract, this code-path won't be verified
+beyond the specified recursion limit ({ref}`--contract_recursion_limit`).
+```
+
 **Example**
 ```
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true --contract_recursion_limit 1
 ```
+
+(-optimisticFallback)=
+#### `--optimistic_fallback true`
+
+This option determines whether to optimistically assume unresolved external
+calls with an empty input buffer (length 0) can make arbitrary changes to all states. It makes changes to how 
+{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
+calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
+`--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 Options for controlling contract creation
 -----------------------------------------
@@ -850,16 +875,6 @@ The `--prover_args` option allows you to provide fine-grained tuning options to 
 Prover.  `--prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
 `--prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `--t` is
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
-
-
-(-optimisticFallback)=
-#### `--prover_args '-optimisticFallback=true'`
-
-This option determines whether to optimistically assume unresolved external
-calls with an empty input buffer (length 0) can make arbitrary changes to all states. It makes changes to how 
-{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
-`-optimisticFallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 (-optimisticReturnsize)=
 #### `--prover_args '-optimisticReturnsize=true'`
