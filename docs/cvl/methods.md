@@ -338,18 +338,47 @@ There are several kinds of summaries available:
 (delete-summary)=
 ### Summary application
 
-To decide whether to summarize a given internal or external function call, the
+To decide whether to summarize a given function call at a given call site, the
 Prover first determines whether it matches any of the declarations in the
-methods block, and then uses the declaration and the calling context to
+methods block, and then uses the declaration and the _calling context_ to
 determine whether the call should be replaced by an approximation.
 
-To determine whether a function call is replaced by an approximation, the
-Prover considers the context in which the function is called in addition to the
-application policy for its signature.  If present, the application policy must
+Specifically, the matching is based on three attributes:
+(1) The contract in which the method is defined, or a wildcard contract denoted with `_`.
+
+(2) The method signature, with optional named parameters.
+
+(3) The context in which it is called, either `external` or `internal`. 
+A Solidity function which is defined as `public` can be specified in the methods block as
+either `external` or `internal`, and this affects which call sites of the function will
+be summarized.
+
+The ability of the Prover to match a particular call site to a method declaration
+depends on whether the call was _resolved_ or not, i.e. whether we know which target
+contract is called and which method signature is called.
+Internal calls are always resolved, but for external calls it is not always the case.
+For example, the target contract may be given by a user input, and there is
+no single match for the target contract:
+```solidity
+function callIt(address it) external {
+  IERC20(it).transfer(...); // cast `it` to an IERC20 contract and call the `transfer` method
+}
+```
+Similarly, the method signature may also be unresolvable:
+```solidity
+function callIt(bytes memory data) external {
+  address(this).call(data);
+}
+```
+
+To determine whether a function call is replaced by an approximation summary, the
+Prover considers all three aforementioned attributes, the resolved information,
+and in addition to that, also the
+application policy.  If present, the application policy must
 be either `ALL`, `UNRESOLVED`, or `DELETE`.
 The `ALL` policy indicates the summary should be applied to all instances of the 
 specified method, while `UNRESOLVED` applies only to methods that cannot be fully
-resolved (i.e., both target contract and method identifier are known).
+resolved (i.e., either target contract or the method signature are unknown).
 For internal summaries, the default is `ALL`, as all internal functions
 are always resolvable; thus `UNRESOLVED` is impossible and will yield an error. 
 Similarly, for external summaries with contract-specific entries, 
