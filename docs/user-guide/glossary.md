@@ -7,7 +7,12 @@ Glossary
 axiom
   a statement accepted as true without proof.
 
+call trace
+  TODO
+
+CFG
 control flow graph
+control flow path
   Control flow graphs (short: CFGs) are a program representation that 
   illustrates in which order the program's instructions are processed during 
   program execution. 
@@ -21,7 +26,14 @@ control flow graph
   a rule has a CFG like regular programs.
   The Certora Prover's [TAC reports](tac-reports) contain a control flow graph 
   of the {term}`TAC` intermediate representation of each given CVL rule.
-  Further reading: [Wikipedia](https://en.wikipedia.org/wiki/Control-flow_graph)
+  The control flow paths are the paths from source to sink in a given CFG.
+  In general (and in practice) the number of control flow paths grows 
+  exponentially with the size of the CFG. This is known as the path explosion 
+  problem.
+  Further reading: 
+  [Wikipedia: Control-flow graph](https://en.wikipedia.org/wiki/Control-flow_graph)
+  [Wikipedia: Path explosion problem](https://en.wikipedia.org/wiki/Path_explosion)
+
   % TODO: ok to mention TAC here?
 
 environment
@@ -147,7 +159,7 @@ UNSAT result
   corresponds to a witness example.
   Conversely, UNSAT means that an `assert` is never violated or a `satisfy` never
   fulfilled respectively.
-  (See also {ref}`rule-overview`.)
+  See also {ref}`rule-overview`.
 
 scene
   The *scene* refers to the set of contract instances that the Certora Prover 
@@ -218,6 +230,16 @@ vacuity
   doesn't say anything about the program being verified.
   The {doc}`../prover/checking/sanity` help detect vacuous rules.
 
+verification condition
+  The Certora Prover works by translating a program an a specification into 
+  a single logical formula that is satisfiable if and only if the program
+  violates the specification. This formula is called a 
+  *verification condition*.
+  Usually, a run of the Certora Prover generates many verification conditions.
+  For instance a verification condition is generated for every 
+  {term}`parametric rule`, and also for each of the sanity checks triggered by 
+  {ref}`--rule_sanity`.
+  See also {ref}`white-paper`, {ref}`user-guide`.
 
 wildcard
 exact
