@@ -24,7 +24,7 @@ We classify Certora Prover timeouts as follows:
 Types 1. and 2. are signified by a hard stop of the Prover. That means the
 Prover ran into the timeout of the cloud job, which is set at 2 hours, and was
 forcefully shut down from everything it was doing (it is possible to lower that
-timeout using the {ref}`-globalTimeout` flag). A message like "hard stop
+timeout using the {ref}`--global_timeout` flag). A message like "hard stop
 reached" appears in the "Global problems" pane of the
 [report](verification-report), and error symbols next to one or many rules.
 
@@ -86,6 +86,7 @@ far can be traced back to one or more of these causes. While these are not the
 only sources of complexity, they provide a good idea of the probable causes for
 a given timeout. 
 
+
 ## Complexity feedback from Certora Prover
 
 Certora Prover provides help with diagnosing timeouts. We present these features
@@ -127,6 +128,8 @@ The meanings of the LOW/MEDIUM/HIGH classifications are as follows:
 %| Nonlinear operations | 0 to 10 | 10 to 30 | > 30 |
 % TODO: memory/storage complexity, once we have a feeling for that
 
+For more details on the individual statistics and how to make use of them, also
+see the section on {ref}`dealing-with-complexity` below.
 
 (timeout-tac-reports)=
 ### Timeout TAC reports
@@ -213,25 +216,91 @@ There is also some helpful information in the section on
 Some of the information in these references is out of date.
 ```
 
+(dealing-with-complexity)=
 ## Dealing with different kinds of complexity
+
+% screenshots in this subsection are taken from this run:
+% https://vaas-stg.certora.com/output/80942/9101c7e51a27456eb51bd9d088949c92?anonymousKey=25cca030b7594b795d994e937b5a027812d9406d
+% and from the (usual) delvtech/element example
 
 In this section we list some hints for timeout prevention based on which of the
 statistics (path count, number of nonlinear operations, memory/storage 
 complexity) is showing high severity on a given rule.
 
 ```{note}
-The techniques described below under [modular verification](modular-verification) are 
-worth considering no matter which statistic is showing high severity.
+The techniques described further down under [modular verification](modular-verification) 
+are worth considering no matter which statistic is showing high severity.
 ```
 
 (high-path-count)=
 ### Dealing with a high path count
 
-*Control flow splitting* is a natural area to consider when the path count of a
-rule is high. When applying this technique, the Certora Prover internally
-divides each verification condition into smaller subproblems and attempts to
-solve them separately. For a more detailed explanation, see
-{ref}`control-flow-splitting`.
+The number of control flow paths is a major indication of how difficult a rule
+is to solve. Intuitively, in order to obtain a correctness proof for the rule, 
+an argument for the correctness of each of its paths has to be found.
+
+The Certora Prover indicates the path count in the Live Statistics panel. 
+The path count is given once for the whole rule and, separately on a per-call 
+basis.
+The per-call path count always includes the paths of all deeper calls (the 
+same holds for the count of nonlinear operations of the call).
+
+```{figure} path-count-stats.png
+:name: path-count-stats
+Global and per-call path counts are displayed in the Live Statistics panel for 
+each rule.
+```
+
+#### Path explosion
+
+The number of paths that are given in the path count statistic might seem very high 
+to users. The essential reason for these high number is known as the 
+[path explosion problem](https://en.wikipedia.org/wiki/Path_explosion): The path count
+is usually exponential in the number of nodes and edges in the control flow graph.
+
+For some intuition on how this happens, see the following illustration. Whenever there 
+is a sequence of subgraphs that branch and then join again, the simplest variant of this
+being the diamond shapes in the picture, the path count of the whole graph is the product 
+of these subgraph's path counts. Thus it is typical for the path count of a control flow
+graph to grow exponentially in its number of nodes (or edges).
+
+```{figure} path-diamonds.png
+:name: path diamonds
+:height: 400px
+Illustration of path explosion through a sequence of *n* "diamond" shapes in the control 
+flow graph. The shown control flow graph has 2<sup>n</sup> paths.
+```
+
+The path count statistic for a given rule is based on the control flow graph of
+the rule with all calls (and their calls and so forth) inlined. For example, if
+some method with 5 paths is called 10 times within the rule, its control flow
+graph will appear 10 times as a subgraph of the rule's control flow graph. If,
+for instance all these calls were made in sequence, and there was no further
+branching in the rule, the path count would be 5<sup>10</sup>. 
+
+A particular potential cause for path explosion are {ref}`dispatcher`. How much a 
+`DISPATCHER` summary contributes to the path count depends on three factors:
+ - how many potential call targets there are (how many known implementations)
+ - how often the summarized function is called
+ - whether the function is called in sequence or in parallel in the control flow 
+   (generally control flow branchings in sequence lead to an exponential path explosion)
+
+#### Mitigation approaches
+
+In order to reduce the path count of a rule, the usual modularization techniques,
+like method summarization, can be applied. (See also the section 
+{ref}`modular-verification` below.)
+
+As pointed out in the previous sub-section, `DISPATCHER` summaries can lead to a path 
+explosion, so replacing them for instance with `AUTO` summaries can have a significant 
+impact. (See also {ref}`auto-summary`.)
+
+Furthermore, it can help to change the parameters of the *control flow
+splitting* feature of the Certora Prover. Control flow splitting is a natural
+area to consider when the path count of a rule is high. When applying this
+technique, the Certora Prover internally divides each verification condition
+into smaller subproblems and attempts to solve them separately. For a more
+detailed explanation, see {ref}`control-flow-splitting`.
 
 We list a few option combinations that can help in various settings. There is a
 tradeoff between spending time in different places: The Prover can either try to
@@ -279,29 +348,97 @@ certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediu
 (high-nonlinear-op-count)=
 ### Dealing with nonlinear arithmetic
 
-Nonlinear integer arithmetic is often the hardest part of the formulas that
-Certora Prover is solving.
+Nonlinear integer arithmetic is often the hardest part of the formulas that the
+Certora Prover is solving. 
 
-Sometimes it helps to choose a selection and prioritization of solvers that
-is different from the default.
+The Certora Prover displays the absolute number of nonlinear operations, as well
+as their number per external call, in the Live Statistics panel. In the per-call
+display, there is a warning-sign next to the call when there is a non-trivial
+number of nonlinear operations in the call or its sub-call. Currently,
+everything above and including two nonlinear operations is marked in this way.
 
-For instance, we can prioritize the usage of the [Yices SMT
-solver](https://yices.csl.sri.com/) by decreasing the size of the solver
-portfolio. With the {ref}`-solver` option set as follows, the Certora Prover
-will run only CVC5 and Yices. Furthermore, we can make the Certora Prover use
-the ordering given in the {ref}`-solver` option for prioritizing solvers using
-the `-smt_overrideSolvers` option.
-
-% TODO make this subsection a bit more concrete.. not sure how, yet
-
-```sh
-certoraRun ... --prover_args '-solvers [yices, cvc5] -smt_overrideSolvers true'
+```{figure} nonlinear-ops-field.png
+:name: nonlinear ops field
+Field in the Live Statistics panel indicating the number of nonlinear operations 
+in the selected rule
 ```
+
+```{note}
+Counting the number of nonlinear operations is a rather coarse
+statistic. There are formulas with 10 nonlinear operations that are out of reach
+of current SMT solvers, while in other cases formulas with 120 operations are
+solved. Nevertheless, reducing the number of nonlinear operations has often
+proven a successful measure in timeout prevention even if some remained.
+```
+
+The main techniques in reducing these numbers are modularization and
+underapproximation. 
+
+Modularization, typically by introducing method summaries, can help reduce the
+size of the rule, thus reducing the nonlinear operations. The per-call
+statistics in the Live Statistics panel (picture below) can help with
+identifying nonlinearity hot spots. Summarizing these hot spots in particular
+can help reduce the number of nonlinear operations, especially when a method is 
+called multiple times.
+
+```{figure} nonlinear-ops-call.png
+:name: nonlinear-ops-call
+Entry in Live Statistics indicating how many nonlinear operations are made in a given 
+call, including its sub-calls
+```
+
+In some rules it is feasible to only consider an underapproximation of the
+actual behavior by fixing some value that is used very often in nonlinear
+computations to a concrete value. A typical example would be the decimal digits
+in fixed decimal arithmetic -- having this unconstrained can increase
+nonlinearity in the rule massively, although only a small range of values is
+actually feasible. Of course, great care has to be taken in choosing these
+underapproximations, since they lead to missed bugs otherwise.
+
+A weaker form of underapproximation would be to introduce an extra requirement
+on the range of some variable that contributes to nonlinearity. For example for
+the number of decimals in a fixed decimal computation only values between 0 and
+256 make sense, and in practice values from an even smaller range are likely to
+be used. This measure will not change the values in the Live Statistics panel, 
+but it has prevented timeouts in some cases nonetheless.
 
 (high-memory-complexity)=
 ### Dealing with high memory (or storage) complexity
 
-In this subsection we consider common culprits for high memory complexity.
+The memory complexity of each rule or parametric rule is displayed in the Live
+Statistics panel in the Certora Prover reports. 
+
+% if we would want to slim it down to graph size only, we could write this:
+% Memory complexity is measured by
+% the *number of updates* statistic. This statistic indicates how often an update
+% to memory is performed anywhere in the rule. Note that any form of memory, i.e.
+%  EVM memory, EVM storage, ghost variables, or ghost functions, is counted here.
+% This number gives rough estimate of how much work the SMT solvers have to do to
+% reason about (non-)aliasing of memory references.
+
+The Certora Prover performs a decompilation of bytecode in a way that all EVM
+primitives can ultimately be modeled as SMT constructs. This process introduces
+key-to-value mappings for EVM memory and EVM storage. Additionally the CVL
+specification may introduce ghost mappings. The Prover runs static analyses to
+reduce the load on these mappings by splitting them into smaller pieces,
+(smaller mappings or scalar variables), but this is not always possible and some
+mappings usually remain in the final SMT formula.
+
+Under this model, the "#total updates" is a measure of how many times we store
+into a key-value mapping such as memory, storage, or a ghost function. The
+"longest update sequence" statistic represents the length the longest sequence
+of updates (i.e. store operations) performed on one of the mappings. In both
+cases, a smaller number indicates a less difficult problem for the Prover to
+solve.
+
+% :align: center
+```{figure} memory-complexity-field.png
+:name: memory complexity field
+:height: 90px
+Entry in the Live Statistics panel indicating memory complexity
+```
+
+In the following we consider common culprits for high memory complexity.
 
 #### Passing complex structs
 

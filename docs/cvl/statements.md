@@ -216,7 +216,7 @@ In this example, the havoc statement introduces non-deterministic values for var
 ```cvl
 uint256 y;
 require y > 0;
-```.
+```
 
 ### Two-State Contexts: `@old` and `@new`
 

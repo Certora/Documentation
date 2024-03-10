@@ -321,8 +321,7 @@ methods {
 ```
 
 Contract functions that take or return function types are not currently
-supported.  Users can use {ref}`munging <munging>` to work around this
-limitation.
+supported.
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
@@ -913,7 +912,7 @@ in `--prover_args`.
 Example:
 
 Consider this call to `certoraRun` using CVL 1 syntax
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
@@ -925,7 +924,7 @@ In order to convert this call to CVL 2 we:
 2. replaced `-assumeUnwindCond` with the flag `--optimistic_loop`
 3. removed the comma and equal sign separators
 
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
@@ -941,7 +940,7 @@ a string that is sent as is to the Solidity compiler.
 Example:
 
 Consider this call to `certoraRun` using CVL 1 syntax
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
@@ -949,7 +948,7 @@ certoraRun Compound.sol \
 ```
 In CVL 2 calling optimize is using `--solc_optimize`
 
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \

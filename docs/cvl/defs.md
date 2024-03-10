@@ -47,7 +47,8 @@ The following examples would result in a type error due to a circular dependency
 // example 1
 // cycle: is_even -> is_odd -> is_even
 definition is_even(uint256 x) returns bool = !is_odd(x);
-definition is_odd(uint256 x) returns bool = !is_even(x);​
+definition is_odd(uint256 x) returns bool = !is_even(x);
+
 // example 2
 // cycle: circular1->circular2->circular3->circular1
 definition circular1(uint x) returns uint = circular2(x) + 5;
