@@ -31,6 +31,7 @@ If you are on Linux, you will need pip version 20.3 or above.
 
 ## Running the Mutation Verifier
 
+You will need to extend a Prover configuration file to a {ref}`mut-conf`.
 The mutation verification script is called `certoraMutate`.
 Run it from the command line:
 
@@ -40,10 +41,6 @@ certoraMutate --conf path/to/prover.conf
 
 If you do, the script will generate code mutants, 
   then submit a verification job per mutant to Certora's server.
-
-```{note}
-The {ref}`mut-conf` must include the key `mutations`.
-```
 
 Submitting the verification jobs of the mutants may take several minutes.
 When it finishes successfully, you should see the following lines printed:
@@ -60,14 +57,12 @@ The time required to verify all mutants depends on various factors,
   and the complexity of the specifications. 
 In some instances, the entire testing process may take several hours.
 
-Once it is completed, you should receive an email that looks like this:
+You can follow the test's progress in the {ref}`mutations-dashboard`.
+The results will be available in the dashboard when they are ready.
+
+Once the test is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
-
-```{note}
-If you don't get an email, you can still see the the test results at the 
-  {ref}`mutations-dashboard` mutation tests dashboard.
-```
 
 (mutations-dashboard)=
 ### The mutations dashboard
