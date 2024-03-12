@@ -35,21 +35,17 @@ The mutation verification script is called `certoraMutate`.
 Run it from the command line:
 
 ```sh
-certoraMutate --prover_conf path/to/prover.conf --mutation_conf path/to/mutation.mconf
+certoraMutate --conf path/to/prover.conf
 ```
 
 If you do, the script will generate code mutants, 
   then submit a verification job per mutant to Certora's server.
 
 ```{note}
-You must run `certoraMutate` from the root of the Solidity project directory.
-The files `prover.conf` and `mutation.conf` can be in their own directories, 
-  but must always be within the project directory.
-All paths in `mutation.conf` are relative to the parent directory containing `mutation.conf`.
-Paths in `prover.conf` are all relative to the project directory's root, 
-  which is assumed to be the working directory.
+The configuration file must include the key `mutations`.
 ```
 
+Submitting the verification jobs of the mutants may take several minutes.
 When it finishes successfully, you should see the following lines printed:
 
 ```text
@@ -59,7 +55,6 @@ You will receive an email notification when this mutation test is completed. It 
 You can follow the test's progress at https://prover.certora.com/mutations
 ```
 
-Verifying all the mutants is a heavy computational process that may take several hours.
 The time required to verify all mutants depends on various factors, 
   such as the number of mutants, the complexity of the contracts, 
   and the complexity of the specifications. 
@@ -69,6 +64,12 @@ Once it is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
 
+```{note}
+If you don't get an email, you can still see the the test results at the 
+  {ref}`mutations-dashboard` mutation tests dashboard.
+```
+
+(mutations-dashboard)=
 ### Following tests with the mutations dashboard
 
 You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
