@@ -42,7 +42,7 @@ If you do, the script will generate code mutants,
   then submit a verification job per mutant to Certora's server.
 
 ```{note}
-The configuration file must include the key `mutations`.
+The {ref}`mut-conf` must include the key `mutations`.
 ```
 
 Submitting the verification jobs of the mutants may take several minutes.
@@ -70,7 +70,7 @@ If you don't get an email, you can still see the the test results at the
 ```
 
 (mutations-dashboard)=
-### Following tests with the mutations dashboard
+### The mutations dashboard
 
 You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
 A test that just started would look like this:
@@ -109,35 +109,29 @@ A mutation test can have one of five different statuses:
 
 ![Mutation test problem](doc/mutation_test_problem.png)
 
-
+(mut-conf)=
 ## Mutation Configuration
-The mutation tester expects a configuration file which defines the settings for 
-  mutant generation and testing (`--mutation_conf`).
-Here is a simple configuration file setup using the example above in `mutation.mconf`:
+The mutation tester requires a Prover configuration file that includes a `mutations` key. 
+Within this key, an object is defined to specify the behavior of mutation testing. 
+Notably, all other settings, including those influencing compilation or verification, 
+  remain consistent with those defined outside the `mutations` object.
+
+For a straightforward configuration file setup, refer to the example below found in `mutation.conf`:
 
 ```json
 { 
-  "gambit": [{
-    "filename" : "C.sol",
-    "num_mutants": 5
-  }]
+  "mutations": {
+    "gambit": [{
+      "filename" : "C.sol",
+      "num_mutants": 5
+    }],
+    "msg": "An exexmplary mutation test"
+  }
 }
 ```
 
-### Automatic Generation
-You can generate a mutation configuration automatically from a Prover configuration 
-  with the flag `--generate_mutation_conf`.
-The resulting configuration may need some manual path fixing or the addition of other
- `certoraMutate` specific options.
-
-Example usage:
-```sh
-certoraRun path/to/prover.conf --generate_mutation_conf path/to/generated/mutation.mconf
-```
-
-
 (man-mutants)=
-### Manual Mutations
+## Manual Mutations
 
 You have the option to include manually generated mutated files, 
   not produced by Gambit, in your mutation test. 
