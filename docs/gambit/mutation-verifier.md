@@ -64,49 +64,9 @@ Once the test is completed, you should receive an email that looks like this:
 
 ![Mutation suceeded email](doc/email_mutation_success.png)
 
-(mutations-dashboard)=
-### The mutations dashboard
-
-You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
-A test that just started would look like this:
-
-![Mutation test running](doc/mutation_test_started_dashboard.png)
-
-- The `Mutation ID` is a unique identifier for the test. 
-
-- The `Message` column includes the description given either in the command line 
- via the `--msg` flag or the conf file's `"msg"` key.
-It aids in identifying and documenting mutation tests.
-By default, it will show `None`.
-
-- The `Status` column of a test includes two different parts - the status of the test (see below) and a progress counter.
-The progress counter shows how many of the sent mutant verification jobs have already been executed.
-
-#### Mutation test statuses
-
-A mutation test can have one of five different statuses:
-
-- `Running`, as seen above, indicates that the verification jobs are still being computed.
-
-- `Calculating` indicates that all the verification jobs have finished, and the results are now being gathered and processed into a verification report.
-
-![Mutation test calculating](doc/mutation_test_calculating.png)
-
-- `Executed` indicates that all mutant verification jobs were executed correctly and are available in the report, which can be accessed by clicking on the `Mutation ID`.
-
-![Mutation test executed](doc/mutation_test_executed.png)
-
-- `Halted` indicates that the mutation test reached a global time limit and was stopped. The partial verification results that were collected before the time limit are available in the verification report. This usually happens when too many mutants are used in a single test. 
-
-![Mutation test halted](doc/halted_mutation_test.png)
-
-- `Problem` indicates the test had errors. A report is usually not generated.
-
-![Mutation test problem](doc/mutation_test_problem.png)
-
 (mut-conf)=
 ## Mutation Configuration
-The mutation tester requires a Prover configuration file that includes a `mutations` key. 
+The mutation tester requires a Prover JSON configuration file that includes a `mutations` key. 
 Within this key, an object is defined to specify the behavior of mutation testing. 
 Notably, all other settings, including those influencing compilation or verification, 
   remain consistent with those defined outside the `mutations` object.
@@ -203,40 +163,50 @@ Here is a simple configuration file setup using the example above in `prover.con
 }
 ```
 
-## CLI Options
+(mutations-dashboard)=
+### The mutations dashboard
 
-`certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
+You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
+A test that just started would look like this:
 
-| <div style="width:160px">Option</div> | Description                                                                                                           |
-|:--------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
-| `--mutation_conf`                     | Specify the configuration file for mutant generation                                                                  |
-| `--orig_run`                          | Specify the {ref}`orig-verification-link`                                                            |
-| `--orig_run_dir`                      | Specify the folder where the files will be downloaded from the {ref}`orig-verification-link` |
-| `--prover_conf`                       | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
-| `--msg`                               | Add a message to identify the `certoraMutate` run |
-| `--gambit_only`                       | Stop processing after generating mutations |
-| `--dump_failed_collects`              | Specify a log file to capture mutant collection failures |
-| `--debug`                             | Show additional logging information during execution                                                                  |
+![Mutation test running](doc/mutation_test_started_dashboard.png)
 
-## Troubleshooting
+- The `Mutation ID` is a unique identifier for the test. 
 
-At the moment, there are a few ways in which `certoraMutate` can fail. 
-Here are some suggestions on how to troubleshoot when that happens. 
-We are actively working on mitigating them.
+- The `Message` column includes the description given either in the command line 
+ via the `--msg` flag or the conf file's `"msg"` key.
+It aids in identifying and documenting mutation tests.
+By default, it will show `None`.
 
-- There are currently no official Gambit binaries for Linux ARM or Windows. That means that Gambit will not be installed with `pip install certora-cli`, and must be {ref}`built from source <build-gambit-from-source>`.
+- The `Status` column of a test includes two different parts - the status of the test (see below) and a progress counter.
+The progress counter shows how many of the sent mutant verification jobs have already been executed.
 
-- Sometimes, the problem stems from Gambit's mutant generation.
-  Try running with `--gambit_only` and look at the generated mutations.
+#### Mutation test statuses
 
-- Try running the Prover on your mutants individually using `certoraRun`. 
-  Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
-  It is also possible that you are encountering a bug with the underlying version of the Prover.
+A mutation test can have one of five different statuses:
 
-## Visualization
+- `Running`, as seen above, indicates that the verification jobs are still being computed.
+
+- `Calculating` indicates that all the verification jobs have finished, and the results are now being gathered and processed into a verification report.
+
+![Mutation test calculating](doc/mutation_test_calculating.png)
+
+- `Executed` indicates that all mutant verification jobs were executed correctly and are available in the report, which can be accessed by clicking on the `Mutation ID`.
+
+![Mutation test executed](doc/mutation_test_executed.png)
+
+- `Halted` indicates that the mutation test reached a global time limit and was stopped. The partial verification results that were collected before the time limit are available in the verification report. This usually happens when too many mutants are used in a single test. 
+
+![Mutation test halted](doc/halted_mutation_test.png)
+
+- `Problem` indicates the test had errors. A report is usually not generated.
+
+![Mutation test problem](doc/mutation_test_problem.png)
+
+## Mutation Test Report
 
 The mutation verification results are
-  summarized in a user-friendly visualization.
+  summarized in a user-friendly visual report.
 
 
 [Here](https://mutation-testing-beta.certora.com/?id=01623b02-0cda-435b-8c31-af9306d6d302&anonymousKey=857c3aeb-169c-4c93-8021-e82058603ca1) 
@@ -269,4 +239,32 @@ At the top bar of the report there are different coverage metrics.
 - The Solo Rules metric shows the ratio between the rules that caught a unique mutation 
   and all rules that caught at least one mutation.
 
+## CLI Options
 
+`certoraMutate` supports the following options; for a comprehensive list, run `certoraMutate --help`:
+
+| <div style="width:160px">Option</div> | Description                                                                                                           |
+|:--------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
+| `--mutation_conf`                     | Specify the configuration file for mutant generation                                                                  |
+| `--orig_run`                          | Specify the {ref}`orig-verification-link`                                                            |
+| `--orig_run_dir`                      | Specify the folder where the files will be downloaded from the {ref}`orig-verification-link` |
+| `--prover_conf`                       | Specify the {ref}`prover-conf` file for verifying mutants                                                           |
+| `--msg`                               | Add a message to identify the `certoraMutate` run |
+| `--gambit_only`                       | Stop processing after generating mutations |
+| `--dump_failed_collects`              | Specify a log file to capture mutant collection failures |
+| `--debug`                             | Show additional logging information during execution                                                                  |
+
+## Troubleshooting
+
+At the moment, there are a few ways in which `certoraMutate` can fail. 
+Here are some suggestions on how to troubleshoot when that happens. 
+We are actively working on mitigating them.
+
+- There are currently no official Gambit binaries for Linux ARM or Windows. That means that Gambit will not be installed with `pip install certora-cli`, and must be {ref}`built from source <build-gambit-from-source>`.
+
+- Sometimes, the problem stems from Gambit's mutant generation.
+  Try running with `--gambit_only` and look at the generated mutations.
+
+- Try running the Prover on your mutants individually using `certoraRun`. 
+  Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
+  It is also possible that you are encountering a bug with the underlying version of the Prover.
