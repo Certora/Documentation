@@ -279,9 +279,9 @@ At the top bar of the report there are different coverage metrics.
 
 | <div style="width:160px">Option</div> | Description                                                                                                           |
 |:--------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
-| `--conf`                     | Specify the path to the {ref}`mut-conf` file                                                                 |
-| `--orig_run`                          | Specify the {ref}`orig-verification-link`                                                            |
-| `--orig_run_dir`                      | Specify the folder where the files will be downloaded from the {ref}`orig-verification-link` |
+| `--conf`                     | Specify the path to the {ref}`configuration <mut-conf>` file                                                                 |
+| `--orig_run`                          | Specify the {ref}`link to a previous verification job<orig-verification-link>`                                                            |
+| `--orig_run_dir`                      | Specify the folder where the files will be downloaded from the {ref}`original verification job <orig-verification-link>` |
 | `--msg`                               | Add a message to identify the `certoraMutate` run |
 | `--gambit_only`                       | Stop processing after generating mutations |
 | `--dump_failed_collects`              | Specify a log file to capture mutant collection failures |
