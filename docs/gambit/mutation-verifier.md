@@ -132,12 +132,24 @@ For example, if you want to generate manual mutations for `C.sol` and `D.sol`,
 
 ## Original Verification Run
 
-A mutation test requires an original verification job that was completed successfully without halting. All mutant checks will be run with the same verification configuration as the original run, 
-  and their results will be compared to the original run. 
-Rules that are not verified on the original run will be ignored.
+A mutation test requires a verification job that was completed successfully without halting
+  as a basis for comparison, called the original run. 
+All mutant checks will be run with the same verification configuration as the 
+  original run, and their results will be compared to the original run. 
+Rules that are not verified or did not pass {ref}`built-in-sanity` on the original run will be ignored.
+
+### Generating the Original Run
+
+Usually, the original run is sent for verification with the mutants.
+An unmutated file is sent for verification before all mutant verification runs.
+The mutation test will be aborted if the original run fails to compile.
 
 (orig-verification-link)=
 ### Original Verification Link
+
+You can also provide a link to a run that was already executed.
+The mutants will run with the same specification and configuration as that run.
+The files relevant for that run will be downloaded to your local machine.
 
 You can provide the original run job's link via `--orig_run`, for example: 
 ```sh
@@ -149,27 +161,6 @@ The run must have the job status `Executed` on the [Prover dashboard](https://pr
 ```
 
 The files will be downloaded to either a default directory or to one specified with `--orig_run_dir`.
-
-(prover-conf)=
-### Prover Configuration
-
-Alternatively, you can provide a verification configuration file for the Certora Prover 
-  via `--prover_conf`. 
-If you do, the Prover will execute the verification job using this file on the 
-  code without any mutation, which will be the original run. 
-The original run job runs in parallel to the mutation verification jobs. 
-A mutation testing report will not be produced if the original run job fails or halts.
-
-Here is a simple configuration file setup using the example above in `prover.conf`:
-
-```json
-{
-  "files": [
-    "C.sol"
-  ],
-  "verify": "C:c.spec"
-}
-```
 
 (mutations-dashboard)=
 ## The Mutations Dashboard
