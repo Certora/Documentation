@@ -98,7 +98,10 @@ Mutations can either be randomly generated via {doc}`Gambit <gambit>`, or manual
 
 ### Randomly generated mutations via Gambit
 
-To generated random mutations via {doc}`Gambit <gambit>`, add a `gambit` key inside the `mutations` object. This key should include a list of {ref}`Gambit mutation objects <gambit-config>`.
+To generated random mutations via {doc}`Gambit <gambit>`, 
+  add a `gambit` key inside the `mutations` object. 
+This key should include a list of {ref}`Gambit mutation objects <gambit-config>`. 
+All file paths are relative to the current working directory.
 
 For example, see the `gambit` value from the file `advanced_mutation.conf` 
   of the [CertoraInit](https://github.com/Certora/CertoraInit) repository:
