@@ -154,6 +154,13 @@ hook Sstore C.entries[INDEX uint i] uint e STORAGE {
 }
 ```
 
+One can also refer to the length of the array:
+```cvl
+hook Sstore C.entries.length uint e {
+    // ...
+}
+```
+
 Similarly, if the indicated location holds a mapping, you can refer to an
 arbitrary entry by appending `[KEY <type> <variable>]`.  This pattern will
 match any write to the mapping, and will bind the named variable to the key.
