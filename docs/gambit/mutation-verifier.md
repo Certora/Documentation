@@ -57,7 +57,7 @@ The time required to verify all mutants depends on various factors,
   and the complexity of the specifications. 
 In some instances, the entire testing process may take several hours.
 
-You can follow the test's progress in the {ref}`mutations-dashboard`.
+You can follow the test's progress in the {ref}`mutations dashboard <mutations-dashboard>`.
 The results will be available in the dashboard when they are ready.
 
 Once the test is completed, you should receive an email that looks like this:
