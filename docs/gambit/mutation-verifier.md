@@ -31,7 +31,7 @@ If you are on Linux, you will need pip version 20.3 or above.
 
 ## Running the Mutation Verifier
 
-You will need to extend a Prover configuration file to a {ref}`mut-conf`.
+You need to extend your {ref}`Prover configuration file <conf-files>` by adding a {ref}`mutation object<mut-conf>`.
 The mutation verification script is called `certoraMutate`.
 Run it from the command line:
 
