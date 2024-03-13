@@ -301,6 +301,7 @@ Here are some examples of using the `--sourceroot` option.
 
    Gambit prints an error and exits.
 
+(gambit-config)=
 ### Example 6: Running Gambit using a configuration file
 
 To run gambit with a configuration file, use the `--json` argument:
