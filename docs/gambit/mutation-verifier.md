@@ -136,7 +136,7 @@ A mutation test requires a verification job that was completed successfully with
   as a basis for comparison, called the original run. 
 All mutant checks will be run with the same verification configuration as the 
   original run, and their results will be compared to the original run. 
-Rules that are not verified or did not pass {ref}`built-in-sanity` on the original run will be ignored.
+Rules that are not verified or did not pass {ref}`basic sanity checks <built-in-sanity>` on the original run will be ignored.
 
 ### Generating the original run
 
