@@ -221,8 +221,6 @@ For projects that have complex dependencies and imports, you may need to:
 [basepath]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#base-path-and-include-paths
 [allowed]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
-
-(gambit-config)=
 ### Example 5: The `--sourceroot`  option
 
 Gambit needs to track the location of source files that it mutates within a
