@@ -171,14 +171,14 @@ A test that just started would look like this:
 
 ![Mutation test running](doc/mutation_test_started_dashboard.png)
 
-- The `Mutation ID` is a unique identifier for the test. 
+- The _Mutation ID_ is a unique identifier for the test. 
 
-- The `Message` column includes the description given either in the command line 
+- The _Message_ column includes the description given either in the command line 
  via the `--msg` flag or the conf file's `"msg"` key.
 It aids in identifying and documenting mutation tests.
-By default, it will show `None`.
+By default, it will show _None_.
 
-- The `Status` column of a test includes two different parts - the status of the test (see below) and a progress counter.
+- The _Status_ column of a test includes two different parts - the status of the test (see below) and a progress counter.
 The progress counter shows how many of the sent mutant verification jobs have already been executed.
 
 ### Mutation test statuses
