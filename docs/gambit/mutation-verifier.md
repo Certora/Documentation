@@ -91,7 +91,7 @@ Mutations can either be randomaly generated via {doc}`Gambit <gambit>`, or manua
 
 ### Randomly generated mutation via Gambit
 
-To generated random mutations via {doc}`Gambit <gambit>`, add a `gambit` object inside the `mutations` object. This object is a gambit configuration object {doc}`gambit config <gambit-config>`.
+To generated random mutations via {doc}`Gambit <gambit>`, add a `gambit` key inside the `mutations` object. This key should include a list of Gambit mutation objects {ref}`gambit-config`.
 
 (man-mutants)=
 ### Manual Mutations
