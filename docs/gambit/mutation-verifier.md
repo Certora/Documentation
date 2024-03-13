@@ -71,17 +71,24 @@ Within this key, an object is defined to specify the behavior of mutation testin
 Notably, all other settings, including those influencing compilation or verification, 
   remain consistent with those defined outside the `mutations` object.
 
-For a straightforward configuration file setup, refer to the example below found in `mutation.conf`:
+For example, see the file `default.conf` from the [CertoraInit](https://github.com/Certora/CertoraInit) repository:
 
 ```json
-{ 
+{
+  "files": [
+    "contracts/ERC20.sol"
+  ],
+  "verify": "ERC20:certora/spec/ERC20.spec",
+  "msg": "ERC20Rules",
   "mutations": {
-    "gambit": [{
-      "filename" : "C.sol",
-      "num_mutants": 5
-    }],
-    "msg": "An exemplary mutation test"
-  }
+    "gambit": [
+        {
+            "filename" : "contracts/ERC20.sol",
+            "num_mutants": 5
+        }
+    ],
+    "msg": "basic mutation configuration"
+  } 
 }
 ```
 
@@ -92,6 +99,28 @@ Mutations can either be randomly generated via {doc}`Gambit <gambit>`, or manual
 ### Randomly generated mutations via Gambit
 
 To generated random mutations via {doc}`Gambit <gambit>`, add a `gambit` key inside the `mutations` object. This key should include a list of {ref}`Gambit mutation objects <gambit-config>`.
+
+For example, see the `gambit` value from the file `advanced_mutation.conf` 
+  of the [CertoraInit](https://github.com/Certora/CertoraInit) repository:
+
+```json
+"gambit": [
+  {
+    "filename": "contracts/ERC20.sol",
+    "num_mutants": 2,
+    "mutations": [
+      "require-mutation"
+    ]
+  },
+  {
+    "filename": "contracts/ERC20.sol",
+    "num_mutants": 1,
+    "mutations": [
+      "assignment-mutation"
+    ]
+  }
+],
+```
 
 (man-mutants)=
 ### Manual mutations
@@ -106,19 +135,22 @@ They can be used for regression tests,
 It is recommended to limit each manually mutated file to a single mutation for more accurate coverage analysis and better traceability.
 ```
 
+To add manual mutations, under `mutations` create a key `manual_mutants` containing a list 
+  of manual mutation objects.
+Each manual mutation object must contain two keys:
+- `file_to_mutate`: A file path relative to the current working directory of the file we wish to replace with the mutations
+- `mutants_location`: A relative path to a directory from the current working directory. This directory contains files that will be tested in place of the mutated file. All .sol files in the directory will undergo testing.
 
-To add manual mutations to `mutation.conf`, write:
+For example, see the `manual_mutants` value from the file `advanced_mutation.conf` 
+  of the [CertoraInit](https://github.com/Certora/CertoraInit) repository:
 
 ```json
-{ 
-  "gambit": [{
-    "filename" : "C.sol",
-    "num_mutants": 5
-  }],
-  "manual_mutants": {
-     "C.sol": "path/to/dir/with/manual_mutants/for/C.m1.sol"
+"manual_mutants": [
+  {
+    "file_to_mutate": "contracts/ERC20.sol",
+    "mutants_location": "mutations"
   }
-}
+]
 ```
 If you don't have a `gambit` object in the `mconf` file, 
   `certoraMutate` will run only on the manual mutants, 
