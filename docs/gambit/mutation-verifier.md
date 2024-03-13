@@ -267,5 +267,5 @@ We are actively working on mitigating them.
 
 - Try running the Prover on your mutants individually using `certoraRun`. 
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
-  Manual mutants that don't show up in the report are likely to encounter a Solidity compilation error.
+  {ref}`Manual mutants <man-mutants>` that don't show up in the report may had a Solidity compilation error.
   It is also possible that you are encountering a bug with the underlying version of the Prover.
