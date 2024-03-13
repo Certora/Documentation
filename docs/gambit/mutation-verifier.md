@@ -172,7 +172,7 @@ Here is a simple configuration file setup using the example above in `prover.con
 ```
 
 (mutations-dashboard)=
-## The mutations dashboard
+## The Mutations Dashboard
 
 You can track your mutation tests at the [mutations dashboard](https://prover.certora.com/mutations).
 A test that just started would look like this:
@@ -193,7 +193,9 @@ The progress counter shows how many of the sent mutant verification jobs have al
 
 A mutation test can have one of five different statuses:
 
-- `Running`, as seen above, indicates that the verification jobs are still being computed.
+- `Running` indicates that the verification jobs of the mutants are still being computed.
+
+![Mutation test running](doc/mutation_test_started_dashboard.png)
 
 - `Calculating` indicates that all the verification jobs have finished, and the results are now being gathered and processed into a verification report.
 
@@ -240,11 +242,11 @@ At the top bar of the report there are different coverage metrics.
 
 ![Mutation metrics](doc/mutation_metrics.png)
 
-- The Coverage metric is the ratio of the caught mutants to all mutants tested, 
-  also shown under Caught Mutations.
-- The Rules metric shows the ratio of the rules that caught at least one mutation 
+- The _Coverage_ metric is the ratio of the caught mutants to all mutants tested, 
+  also shown under _Caught Mutations_.
+- The _Rules_ metric shows the ratio of the rules that caught at least one mutation 
   out of all the rules in the tested specification.
-- The Solo Rules metric shows the ratio between the rules that caught a unique mutation 
+- The _Solo Rules_ metric shows the ratio between the rules that caught a unique mutation 
   and all rules that caught at least one mutation.
 
 ## CLI Options
