@@ -4,6 +4,57 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+0.8.0 (Mar 11, 2024)
+---------------------------
+
+### Features
+
+- [feat] Add Jump To Source Feature (works only with certoraRun version later than TODO)
+- [feat] Add tooltips to labels on call trace
+
+### Bugs
+
+- [fix] Fixed tracking points
+- [fix] Fixed sharing button
+
+
+0.7.0 (Feb 12, 2024)
+---------------------------
+
+### Bugs
+
+- [fix] Fixed bug when collapsing the left pane of the main grid
+- [fix] Fixed bug when collapsing entries in the call trace
+
+
+0.6.0 (Jan 31, 2024)
+---------------------------
+
+### Features
+
+- [feat] Live Difficulty Statistics
+- [feat] Adding tool tips to status
+
+### Bugs
+
+- [fix] Fixed file contents were shown to be loading for indefinite time
+
+
+0.5.7 (Nov 26, 2023)
+---------------------------
+
+### Features
+
+- [feat] Improvements on naming for global / rule notifications
+
+0.5.62 (Feb 11, 2024)
+---------------------------
+
+### Bugs
+
+- [hotfix] Fixed removed links to deprecated Certora Forum
+
+
 0.5.6 (October 24, 2023)
 ---------------------------
 
