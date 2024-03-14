@@ -513,6 +513,47 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
 
+(--auto_nondet_difficult_internal_funcs)=
+### `--auto_nondet_difficult_internal_funcs`
+
+**What does it do?**
+When this option is set, the Prover will auto-summarize
+view or pure internal functions that return a value type and are
+currently not summarized, and that are found to be heuristically difficult
+for the Prover.
+
+For more information, see {ref}`detect-candidates-for-summarization`.
+
+**When to use it**
+Using this option is recommended when beginning to work on a large code 
+base that includes functions that could be difficult for the Prover. 
+It can help the user get faster feedback, both in the form of faster
+verification results, as well as highlighting potentially difficult functions.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs
+```
+
+(--auto_nondet_minimal_difficulty)=
+### `--auto_nondet_minimal_difficulty`
+
+**What does it do?**
+This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--auto_nondet_difficult_internal_funcs`.
+
+**When to use it**
+If the results of an initial run with {ref}`--auto_nondet_difficult_internal_funcs` were unsatisfactory,
+one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
+
+The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs --auto_nondet_minimal_difficulty 20
+```
+
 Options regarding hashing of unbounded data
 -------------------------------------------
 
