@@ -154,6 +154,14 @@ hook Sstore C.entries[INDEX uint i] uint e {
 }
 ```
 
+Additionally, if the indicated location holds a _dynamic_ array, you can refer
+to accesses to the length of the array with `.length`:
+```cvl
+hook Sstore C.entries.length uint len {
+    _len = len; // updates a ghost variable `_len` with the length is written to storage.
+}
+```
+
 Similarly, if the indicated location holds a mapping, you can refer to an
 arbitrary entry by appending `[KEY <type> <variable>]`.  This pattern will
 match any write to the mapping, and will bind the named variable to the key.
@@ -350,7 +358,7 @@ hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 
 
 hook CREATE1(uint value, uint offset, uint length) address v
 
-hook CREATE2(uint value, uint offset, uint length, bytes32 salt) address v 
+hook CREATE2(uint value, uint offset, uint length, bytes32 salt) address v
 
 hook CALL(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
 
@@ -369,7 +377,7 @@ hook SELFDESTRUCT(address a)
 % the above list are the only supported codes, since there seem to be many other
 % unsupported codes (e.g. `ADD` and friends)
 % ### Unsupported opcodes
-% 
+%
 % The standard stack-manipulating instructions `DUP*`, `SWAP*`, `PUSH*` and `POP`
 % are not modeled.  `MLOAD` and `MSTORE` are also not modeled.
 
@@ -442,7 +450,7 @@ hook CALL(uint g, address addr, uint value, uint argsOffs, uint argLength, uint 
 ```
 
 ```{note}
-In case the size of the input to the call is less than 4 bytes, 
+In case the size of the input to the call is less than 4 bytes,
 the value of `selector` is 0.
 This can be checked by comparing the `argLength` argument of the hook to 4.
 ```
