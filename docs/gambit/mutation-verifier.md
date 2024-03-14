@@ -305,3 +305,5 @@ We are actively working on mitigating them.
   Usually the mutant setup will be in `.certora_internal/applied_mutants_dir` and can be retried by running the Prover's `.conf` file with `certoraRun`.
   {ref}`Manual mutants <man-mutants>` that don't show up in the report may had a Solidity compilation error.
   It is also possible that you are encountering a bug with the underlying version of the Prover.
+
+- Check if your packages paths have a trailing `/`. The packages paths, both sources and targets, should never end with a `/`.
