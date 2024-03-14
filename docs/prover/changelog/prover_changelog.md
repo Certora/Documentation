@@ -22,7 +22,7 @@ Prover Release Notes
 - [bugfix] Unlinked immutables are properly constrained to respect their types
 - [bugfix] Correct invariant handling of the base case rule for Vyper contracts
 - [bugfix] Fix to `viewReentrancy` builtin rule crash
-- [bugfix] Better typechecking of quantified expressions with definitions
+- [bugfix] Better type checking of quantified expressions with definitions
 - [bugfix] Fix direct storage access to an array of structs
 - [bugfix] Fix for internal summaries using user-defined value types
 
@@ -35,7 +35,7 @@ Prover Release Notes
 
 ### Static analysis and Performance
 - [feat] Automatic full unrolling of copy loops (no need to set `-copyLoopUnroll` option)
-- [bugfix] Proper deduplication of libraries imported by different scene-level contracts
+- [bugfix] Proper de-duplication of libraries imported by different scene-level contracts
 - [bugfix] Fix returns of static arrays
 - [bugfix] make hashing of `encodePacked` `bytes` result deterministic when `-enableCopyLoopRewrites` is set to true
 - [bugfix] Source-based call resolution is disabled by default except for constructor methods. Can be re-enabled with `--prover_args '-enableSolidityBasedInlining true'`
@@ -51,7 +51,7 @@ Prover Release Notes
 ### CLI
 - [feat] Instead of `--prover_args '-optimisticFallback true'` use `--optimistic_fallback`
 - [feat] Instead of `--prover_args '-contractRecursionLimit N'` use `--contract_recursion_limit N`, and a new flag `--optimistic_contract_recursion`
-- [feat] New option `--compiler_map` behaving exactly like `--solc_map`, and `--vyper` behaving exactly like `--solc` but more intuitive for vyper version choice
+- [feat] New option `--compiler_map` behaving exactly like `--solc_map`
 - [bugfix] Fix to `--address` when given without `0x` prefix
 
 6.3.1 (February 2, 2024)
