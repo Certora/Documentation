@@ -19,11 +19,11 @@ ghost _map(uint) returns uint;
 with the hooks:
 
 ```javascript
-hook Sload uint v map[KEY uint k] STORAGE {
+hook Sload uint v map[KEY uint k] {
     require _map(k) == v;
 }
 
-hook Sstore map[KEY uint k] uint v STORAGE {
+hook Sstore map[KEY uint k] uint v {
     havoc _map assuming _map@new(k) == v &&
         (forall uint k2. k2 != k => _map@new(k2) == _map@old(k2));
 }
@@ -39,11 +39,11 @@ ghost arrayLen() returns uint;
 We also define the hooks. For `array`:
 
 ```javascript
-hook Sload uint n keys[INDEX uint index] STORAGE {
+hook Sload uint n keys[INDEX uint index] {
     require array(index) == n;
 }
 
-hook Sstore keys[INDEX uint index] uint n STORAGE {
+hook Sstore keys[INDEX uint index] uint n {
     havoc array assuming array@new(index) == n &&
         (forall uint i. i != index => array@new(i) == array@old(i));
 }
@@ -52,7 +52,7 @@ hook Sstore keys[INDEX uint index] uint n STORAGE {
 For `arrayLen`:
 
 ```javascript
-hook Sstore keys uint lenNew STORAGE {
+hook Sstore keys uint lenNew {
     // the length of a solidity storage array is at the variable's slot
     havoc arrayLen assuming arrayLen@new() == lenNew;
 }

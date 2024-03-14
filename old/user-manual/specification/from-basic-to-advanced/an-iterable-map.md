@@ -169,7 +169,7 @@ This is in fact unsurprising. There is nothing in the spec that links the value 
 For example, we can hook on `SSTORE` operations that write to the underlying map as follows:
 
 ```text
-hook Sstore map[KEY uint k] uint v STORAGE {
+hook Sstore map[KEY uint k] uint v {
     havoc _map assuming _map@new(k) == v &&
         (forall uint k2. k2 != k => _map@new(k2) == _map@old(k2));
 }
@@ -182,7 +182,7 @@ If we run `checkMapGhost` with only the `SSTORE` hook, the rule will pass for al
 Similarly, one could define `SLOAD` hooks:
 
 ```text
-hook Sload uint v map[KEY uint k] STORAGE {
+hook Sload uint v map[KEY uint k] {
     require _map(k) == v;
 }
 ```
