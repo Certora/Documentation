@@ -718,8 +718,8 @@ You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
 
 In case of recursive calls due to the summarization, the recursion limit can be set with 
-`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
-If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+`--summary_recursion_limit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_summary_recursion` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
 Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
