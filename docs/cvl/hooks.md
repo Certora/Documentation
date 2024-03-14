@@ -80,7 +80,7 @@ information on the available access paths.
 
 A load pattern contains the keyword `Sload`, followed by the type and name of a
 variable that will hold the loaded value, followed by an access path indicating
-the location that is read.  Load patterns must end with the keyword `STORAGE`.
+the location that is read.
 
 For example, here is a load hook that will execute whenever a contract reads the
 value of `C.owner`:
@@ -94,7 +94,7 @@ A store pattern contains the keyword `Sstore`, followed by an access path
 indicating the location that is being written to, followed by the type and name
 of a variable to hold the value that is being stored.  Optionally, the pattern
 may also include the type and name of a variable to store the previous value
-that is being overwritten.  Store patterns must end with the keyword `STORAGE`.
+that is being overwritten.
 
 For example, here is a store hook that will execute whenever a contract writes
 the value of `C.totalSupply`:
