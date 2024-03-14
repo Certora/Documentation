@@ -5,6 +5,55 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.0.7 (March 15, 2024)
+----------------------
+
+### CVL
+- [feat] `if` conditions in CVL must be wrapped with parenthesis. Namely, `if cond` is illegal, use `if (cond)`
+- [feat] It is no longer needed to specify the `STORAGE` keyword for `Sload` and `Sstore` hooks. Please find-replace in your current specs!
+- [feat] The default summarization policy for wildcard external functions (e.g. `_.foo(..) =>`) is `UNRESOLVED`, meaning that the summary will only apply to calls to `foo` whose target contract is unknown. If you wish to apply to all call sites of `foo`, including for properly linked contracts, write `_.foo(..) => some_summary ALL;`
+- [feat] Allow 'tuple like' syntax for assignments, e.g. `(x,y) = foo();`
+- [feat] Support `blobbasefee` variable in environment variables
+- [feat] {ref}`Auto-summarization mode for heuristically expensive internal functions <detect-candidates-for-summarization>`
+- [feat] Support hooking on length of dynamic storage arrays
+- [feat] {ref}`Support basic struct comparison <struct-comparison>`
+- [bugfix] Wildcards properly constrained when assigned e.g. in summarization
+- [bugfix] Ensure cleanliness of CVL strings in the last word
+- [bugfix] Unlinked immutables are properly constrained to respect their types
+- [bugfix] Correct invariant handling of the base case rule for Vyper contracts
+- [bugfix] Fix to `viewReentrancy` builtin rule crash
+- [bugfix] Better typechecking of quantified expressions with definitions
+- [bugfix] Fix direct storage access to an array of structs
+- [bugfix] Fix for internal summaries using user-defined value types
+
+### Rule Report
+- [feat] Display array length in variables tab
+- [feat] Display array length in CVL to CVL function calls
+- [bugfix] No false match on Vyper constructors in invariants and parametric rules
+- [bugfix] Consistent rule ordering
+- [bugfix] Show message in report when `--prover_args` are incorrect
+
+### Static analysis and Performance
+- [feat] Automatic full unrolling of copy loops (no need to set `-copyLoopUnroll` option)
+- [bugfix] Proper deduplication of libraries imported by different scene-level contracts
+- [bugfix] Fix returns of static arrays
+- [bugfix] make hashing of `encodePacked` `bytes` result deterministic when `-enableCopyLoopRewrites` is set to true
+- [bugfix] Source-based call resolution is disabled by default except for constructor methods. Can be re-enabled with `--prover_args '-enableSolidityBasedInlining true'`
+
+### Mutation Testing
+- [feat] Instead of running with 2 `conf` files, one for the Prover and one for mutation, now the mutation settings are stored in the Prover `conf` under the key mutations
+- [feat] Relative paths to files to mutate are not relative to the mutation conf, but relative to current working directory
+- [feat] Nicer help message for `certoraMutate`
+- [bugfix] Minor mutation testing `csv` output
+- [bugfix] Default to optimistically running all mutants, not waiting for the original run
+- [bugfix] Improved error messages for manual mutations
+
+### CLI
+- [feat] Instead of `--prover_args '-optimisticFallback true'` use `--optimistic_fallback`
+- [feat] Instead of `--prover_args '-contractRecursionLimit N'` use `--contract_recursion_limit N`, and a new flag `--optimistic_contract_recursion`
+- [feat] New option `--compiler_map` behaving exactly like `--solc_map`, and `--vyper` behaving exactly like `--solc` but more intuitive for vyper version choice
+- [bugfix] Fix to `--address` when given without `0x` prefix
+
 6.3.1 (February 2, 2024)
 ------------------------
 ### CVL
