@@ -84,9 +84,7 @@ evaluate to `false`, the Prover will construct one of them and report a
 violation.
 
 Assert conditions may be followed by a message string describing the condition;
-this message will be included in the reported violation.  Assertion messages
-may use {ref}`string interpolation <string-interpolation>` to add information
-about the counterexamples to the message.
+this message will be included in the reported violation.
 
 ```{note}
 Unlike Solidity's `assert` and `require`, the CVL syntax for `assert` and
@@ -103,13 +101,13 @@ rule withdraw_succeeds {
 }
 
 rule totalFundsAfterDeposit(uint256 amount) {
-	 env e; 
-	
+	 env e;
+
 	 deposit(e, amount);
-	
+
 	 uint256 userFundsAfter = getFunds(e, e.msg.sender);
 	 uint256 totalAfter = getTotalFunds(e);
-	
+
 	 // Verify that the total funds of the system is at least the current funds of the msg.sender.
 	 assert totalAfter >= userFundsAfter;
 }
