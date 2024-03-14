@@ -35,7 +35,7 @@ Prover Release Notes
 
 ### Static analysis and Performance
 - [feat] Automatic full unrolling of copy loops (no need to set `-copyLoopUnroll` option)
-- [bugfix] Proper de-duplication of libraries imported by different scene-level contracts
+- [bugfix] Proper deduplication of libraries imported by different scene-level contracts
 - [bugfix] Fix returns of static arrays
 - [bugfix] make hashing of `encodePacked` `bytes` result deterministic when `-enableCopyLoopRewrites` is set to true
 - [bugfix] Source-based call resolution is disabled by default except for constructor methods. Can be re-enabled with `--prover_args '-enableSolidityBasedInlining true'`

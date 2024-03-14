@@ -365,7 +365,7 @@ function callIt(address it) external {
   IERC20(it).transfer(...); // cast `it` to an IERC20 contract and call the `transfer` method
 }
 ```
-Similarly, the method signature may also be unresolvable:
+Similarly, the method signature may also be not resolvable:
 ```solidity
 function callIt(bytes memory data) external {
   address(this).call(data);
