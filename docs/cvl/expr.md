@@ -101,23 +101,24 @@ denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 See {ref}`cvl2-integer-types` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
 
-(string-interpolation)=
-String interpolation
+(struct-comparison)=
+Struct Comparison
 --------------------
 
-String literals that appear in assertion messages or rule descriptions can
-contain placeholders that are replaced by explicit values in the verification
-report.  A variable can be included by prefixing it with a `$`, while more
-complex expressions can be included by surrounding them with `${...}`.
+CVL supports equality comparison of structs under the following restrictions:
+
+ * The structs must be of the same type.
+ * The structs (or any nested structs) don't contain dynamic types (dynamic arrays, string, bytes).
+ * There's no support for comparison for structs fetched using direct-storage-access.
+
+Two structs will be evaluated as equal if and only if all the fields are equal.
 
 For example:
 
 ```cvl
-rule example(method f, uint x)
-description "$f should output 0 on $x with ${e.msg.sender}"
-{
+rule example(MyContract.MyStruct s) {
     env e;
-    assert f(e,x) == 0, "failed with timestamp ${e.block.timestamp}";
+    assert s == currentContract.myStructGetter(e);
 }
 ```
 
@@ -136,15 +137,15 @@ CVL also adds several useful logical operations:
    For example, the statement `assert initialized => x > 0;` will only report
    counterexamples where `initialized` is true but `x` is not positive.
 
- * The short-circuiting behavior of implications (`=>`) and other boolean connectors in CVL mirrors the 
-   short-circuiting behavior seen in standard logical operators (`&&` and `||`). In practical 
-   terms, this implies that the evaluation process is terminated as soon as the final result 
+ * The short-circuiting behavior of implications (`=>`) and other boolean connectors in CVL mirrors the
+   short-circuiting behavior seen in standard logical operators (`&&` and `||`). In practical
+   terms, this implies that the evaluation process is terminated as soon as the final result
    can be determined without necessitating further computation.
-   For example, when dealing with an implication expression like `expr1 => expr2`, if the 
-   evaluation of `expr1` results in false, there is no need to proceed with evaluating 
-   `expr2` since the overall result is already known. This aligns with the common 
+   For example, when dealing with an implication expression like `expr1 => expr2`, if the
+   evaluation of `expr1` results in false, there is no need to proceed with evaluating
+   `expr2` since the overall result is already known. This aligns with the common
    short-circuiting behavior found in traditional logical operators.
-   
+
  * Similarly, an *if and only if* expression (also called a *bidirectional implication*)
    `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
    expressions and is itself a boolean expression.  `expr1 <=> expr2` evaluates
