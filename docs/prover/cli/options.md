@@ -492,8 +492,8 @@ Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
 option sets the summary recursion level, which is the number of recursive calls
 that the Prover will consider.
 
-If the prover finds an execution in which a function is called recursively more
-than the contract recursion limit, the prover will report an assertion failure (unless
+If the Prover finds an execution in which a function is called recursively more
+than the contract recursion limit, the Prover will report an assertion failure (unless
 {ref}`--optimistic_summary_recursion` is set, in which case the execution
 will be ignored).
 The default value is zero (i.e. no recursion is allowed).
