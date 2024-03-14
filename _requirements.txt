@@ -1,0 +1,7 @@
+# The basic requirements file used by pip-compile 
+myst-parser
+sphinx-rtd-theme
+sphinxcontrib-spelling
+sphinx
+
+git+https://github.com/Certora/docs-infrastructure.git@master#egg=docsinfra

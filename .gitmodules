@@ -9,3 +9,6 @@
 	path = docs/cvl/cvl2/cvl2
 	url = git@github.com:Certora/CVL2Migration.git
 	branch = cvl2
+[submodule "Examples"]
+	path = Examples
+	url = https://github.com/Certora/Examples.git

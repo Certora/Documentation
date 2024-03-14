@@ -9,7 +9,7 @@ The Certora Prover verifies that a smart contract satisfies a set of rules writt
 Consider the following contract interface to implement a simple bank:
 
 ```solidity
-pragma solidity >= 0.4.24 < 0.8;
+pragma solidity >=0.4.24 <0.8.0;
 contract Bank {
   mapping (address => uint) public funds;
   uint public totalFunds;
