@@ -309,16 +309,16 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
 (--solc_map)=
-### `--solc_map`
+### `--compiler_map`
 
 **What does it do?**
-Compiles every smart contract with a different Solidity compiler executable. All used contracts must be listed.
+Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
 
 **When to use it?**
 When different contracts have to be compiled for different Solidity versions.
 
 **Example**
-`certoraRun Bank.sol Exchange.sol --verify Bank:Bank.spec --solc_map Bank=solc4.25,Exchange=solc6.7`
+`certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10`
 
 (--solc_optimize)=
 ### `--solc_optimize`
