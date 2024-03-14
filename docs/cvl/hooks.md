@@ -24,8 +24,8 @@ The syntax for hooks is given by the following EBNF grammar:
 ```
 hook ::= "hook" pattern block
 
-pattern ::= "Sstore" access_path param [ "(" param ")" ] "STORAGE"
-          | "Sload"  param access_path "STORAGE"
+pattern ::= "Sstore" access_path param [ "(" param ")" ]
+          | "Sload"  param access_path
           | opcode   [ "(" params ")" ] [ param ]
 
 access_path ::= id
@@ -80,12 +80,12 @@ information on the available access paths.
 
 A load pattern contains the keyword `Sload`, followed by the type and name of a
 variable that will hold the loaded value, followed by an access path indicating
-the location that is read.  Load patterns must end with the keyword `STORAGE`.
+the location that is read.
 
 For example, here is a load hook that will execute whenever a contract reads the
 value of `C.owner`:
 ```cvl
-hook Sload address o C.owner STORAGE { ... }
+hook Sload address o C.owner { ... }
 ```
 Inside the body of this hook, the variable `o` will be bound to the value that
 was read.
@@ -94,12 +94,12 @@ A store pattern contains the keyword `Sstore`, followed by an access path
 indicating the location that is being written to, followed by the type and name
 of a variable to hold the value that is being stored.  Optionally, the pattern
 may also include the type and name of a variable to store the previous value
-that is being overwritten.  Store patterns must end with the keyword `STORAGE`.
+that is being overwritten.
 
 For example, here is a store hook that will execute whenever a contract writes
 the value of `C.totalSupply`:
 ```cvl
-hook Sstore C.totalSupply uint ts (uint old_ts) STORAGE { ... }
+hook Sstore C.totalSupply uint ts (uint old_ts) { ... }
 ```
 Inside the body of this hook, the variable `ts` will be bound to the value that
 is being written to the `totalSupply` variable, while `old_ts` is bound to the
@@ -109,7 +109,7 @@ If you do not need to refer to the old value, you can omit the variable
 declaration for it.  For example, the following hook only binds the new value
 of `C.totalSupply`:
 ```cvl
-hook Sstore C.totalSupply uint ts STORAGE { ... }
+hook Sstore C.totalSupply uint ts { ... }
 ```
 
 (access-paths)=
@@ -139,7 +139,7 @@ If the indicated location holds a struct, you can refer to a specific field of
 the struct by appending `.<field-name>` to the path.  For example, the following
 hook will execute on every store to the `balance` field of the struct `C.owner`:
 ```cvl
-hook Sstore C.owner.balance uint b STORAGE { ... }
+hook Sstore C.owner.balance uint b { ... }
 ```
 
 If the indicated location holds an array, you can refer to an arbitrary element
@@ -149,7 +149,7 @@ index of the access.  For example, the following hook will execute on any write
 to the array `C.entries` and will update the corresponding entry of the ghost
 mapping `_entries` to match:
 ```cvl
-hook Sstore C.entries[INDEX uint i] uint e STORAGE {
+hook Sstore C.entries[INDEX uint i] uint e {
     _entries[i] = e;
 }
 ```
@@ -161,7 +161,7 @@ For example, the following hook will execute on any write to the mapping
 `C.balances`, and will update the `_balances` ghost accordingly:
 
 ```cvl
-hook Sstore C.balances[KEY address user] uint balance STORAGE {
+hook Sstore C.balances[KEY address user] uint balance {
     _balances[user] = balance;
 }
 ```
@@ -173,7 +173,7 @@ byte of slot 1 (these two bytes are matched because the type of the variable is
 `uint16`:
 
 ```cvl
-hook Sstore (slot 1).(offset 2) uint16 b STORAGE { ... }
+hook Sstore (slot 1).(offset 2) uint16 b { ... }
 ```
 
 These different kinds of paths can be combined, subject to restrictions listed
@@ -181,7 +181,7 @@ below.  For example, the following hook will execute whenever the contract
 writes to the `balance` field of a struct in the `users` mapping of contract
 `C`:
 ```cvl
-hook C.users[KEY address user].balance uint v (uint old_value) STORAGE { ... }
+hook C.users[KEY address user].balance uint v (uint old_value) { ... }
 ```
 Inside the body of the hook, the variable `user` will refer to the address that
 was used as the key into the mapping `C.users`; the variable `v` will contain
@@ -467,7 +467,7 @@ value `x`, and consider the following hook (see
 ghost mathint xStoreCount;
 
 /// increment xStoreCount and recursively update `x`
-hook Sstore x uint v STORAGE {
+hook Sstore x uint v {
     xStoreCount = xStoreCount + 1;
     if (xStoreCount < 5) {
         updateX();
