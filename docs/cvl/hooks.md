@@ -154,6 +154,7 @@ hook Sstore C.entries[INDEX uint i] uint e {
 }
 ```
 
+
 Additionally, if the indicated location holds a _dynamic_ array, you can refer
 to accesses to the length of the array with `.length`:
 ```cvl
