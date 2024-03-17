@@ -190,10 +190,10 @@ shown in the web report can indicate whether a summary was applied.
 
 ```
 
-(catch-unresolved-calls-entries)=
-### Catch unresolved-calls entries
+(catch-unresolved-calls-entry)=
+### Catch unresolved-calls entry
 The catch unresolved-calls entry is a special type of summary declaration that instructs the Prover to replace calls to unresolved external function calls with a specific kind of summary, dispatch list.
-By default, the prover will use an AUTO summary for unresolved function calls, but that may produce spurious counter examples. 
+By default, the Prover will use an AUTO summary for unresolved function calls, but that may produce spurious counter examples. 
 The catch unresolved-calls entry let's the user refine the summary used for unresolved function calls.
 
 ```{note}
@@ -227,7 +227,7 @@ methods {
 Entry flags (`envfree`, `returns`, and `optional`) are not allowed on an unresolved-calls entry. 
 Also, the visibility is always external, and no policy should be specified.
 
-For an unresolved function call being summarized with the dispatch list above, the prover will replace the call with a dynamic resolution of the function call. That is something in the lines of:
+For an unresolved function call being summarized with the dispatch list above, the Prover will replace the call with a dynamic resolution of the function call. That is something in the lines of:
 ```solidity
 function summarized(address a, bytes calldata data) external {
   if (uint32(data[0:4]) == 0x11111111 && address == address(c)) {
