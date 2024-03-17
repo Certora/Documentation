@@ -194,7 +194,7 @@ shown in the web report can indicate whether a summary was applied.
 ### Catch unresolved-calls entry
 The catch unresolved-calls entry is a special type of summary declaration that instructs the Prover to replace calls to unresolved external function calls with a specific kind of summary, dispatch list.
 By default, the Prover will use an AUTO summary for unresolved function calls, but that may produce spurious counter examples. 
-The catch unresolved-calls entry let's the user refine the summary used for unresolved function calls.
+The catch unresolved-calls entry lets the user refine the summary used for unresolved function calls.
 
 ```{note}
 Only one catch unresolved-calls entry is allowed per a specification file```
