@@ -44,7 +44,7 @@ The syntax for the `methods` block is given by the following [EBNF grammar](ebnf
 methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
-                     ( exact_pattern | wildcard_pattern | catch_all_pattern)
+                     ( exact_pattern | wildcard_pattern | catch_all_pattern | catch_unresolved_calls_pattern )
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "optional" ]
@@ -53,7 +53,8 @@ method_spec      ::= "function"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
-catch_all_pattern :: id "." "_" "external"
+catch_all_pattern ::= id "." "_" "external"
+catch_unresolved_calls_pattern ::= "_" "." "_" "external"
 
 visibility ::= "internal" | "external"
 
@@ -68,6 +69,14 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
                    | id "(" [ id { "," id } ] ")" [ "expect" id ]
+                   | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
+
+dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
+                          | dispatch_pattern
+
+dispatch_pattern ::= | "_" "." id "(" evm_params ")" 
+                     | id "." "_" 
+                     | id "." id "(" evm_params ")"
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
@@ -82,6 +91,9 @@ contract functions.
 
  - {ref}`exact-methods-entries` match a single method of a single contract.
  - {ref}`wildcard-methods-entries` match a single method signature on all contracts.
+ - {ref}`catch-all-entries` apply a single summary to all methods of a specific contract.
+ - {ref}`catch-unresolved-calls-entry` apply a summary to all calls that cannot be statically resolved in any contract.
+
 
 (exact-methods-entries)=
 ### Exact entries
@@ -177,6 +189,63 @@ apply the `NONDET` summary for the call `t.burn()`, unless it can prove that
 shown in the web report can indicate whether a summary was applied.
 
 ```
+
+(catch-unresolved-calls-entries)=
+### Catch unresolved-calls entries
+The catch unresolved-calls entry is a special type of summary declaration that instructs the Prover to replace calls to unresolved external function calls with a specific kind of summary, dispatch list.
+By default, the prover will use an AUTO summary for unresolved function calls, but that may produce spurious counter examples. 
+The catch unresolved-calls entry let's the user refine the summary used for unresolved function calls.
+
+```{note}
+Only one catch unresolved-calls entry is allowed per a specification file```
+
+Catch unresolved-calls entry can only be summarized with a dispatch list summary (and a dispatch list summary is only applicable for a catch unresolved-calls entry). 
+A dispatch list summary directs the Prover to construct a summary that encapsulates the functionality of the method as a selector for multiple functions specified by their signatures. 
+The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
+The possible patterns are:
+1. Exact function - a pattern specifying both the primary or a linked contract, and the function signature.
+   Example: `C.foo(uint)`
+2. Wildcard contract - a pattern specifying the function signature to match this signature on the primary contract and all linked contracts.
+   Example: `_.bar(address)`
+3. Wildcard function - a pattern specifying the primary or a linked contract, and matches all external functions in specified contract.
+For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`, `NONDET`.
+
+To better understand this functionality an example entry is useful.
+The following entry will specify three functions to route calls to:
+1. `C.foo(uint)`
+2. `Other.bar(address)`
+3. `C.baz(bool)`
+```cvl
+methods {
+   function _._ external => DISPATCH [
+      C.foo(uint),
+      _.bar(address), // Will resolve to all linked function with the signature "bar(address)", specifically Other.bar(address)
+      C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
+   ] default NONDET;
+}
+```
+Entry flags (`envfree`, `returns`, and `optional`) are not allowed on an unresolved-calls entry. 
+Also, the visibility is always external, and no policy should be specified.
+
+For an unresolved function call being summarized with the dispatch list above, the prover will replace the call with a dynamic resolution of the function call. That is something in the lines of:
+```solidity
+function summarized(address a, bytes calldata data) external {
+  if (uint32(data[0:4]) == 0x11111111 && address == address(c)) {
+    // Function selector was equal to foo's
+    // Call C.foo(...)
+  } else if (uint32(data[0:4]) == 0x22222222 && address == address(o)) {
+    // Function selector was equal to bar's
+    // Call O.bar(...)
+  } else if (uint32(data[0:4]) == 0x33333333 && address == address(c)) {
+    // Function selector was equal to baz's
+    // Call C.baz(...)
+  } else {
+    // Use the default summary which is, in this case, NONDET.
+  }
+}
+```
+
+Dynamic resolution in Solidity refers to the process of determining the specific function to call at runtime based on the function signature and the target contract address. In the provided example, when an unresolved function call is encountered, the Prover dynamically resolves it by inspecting the function selector in the transaction data and the target contract address. By comparing the function selector against known signatures and verifying the contract address, the Prover identifies the appropriate function to call. This dynamic resolution mechanism is crucial for refining specifications because it enables the Prover to accurately model the behavior of smart contracts, even when the exact function being called is not known statically. By replacing unresolved calls with dynamically resolved calls in the dispatch list summary, the specification becomes more precise, leading to more accurate verification results and improved assurance in the correctness of the smart contract.
 
 ### Location annotations
 
@@ -446,6 +515,9 @@ was instead `function Token.burn() external envfree;` without a summary,
 the `HAVOC_ALL` of the wildcard entry will apply.
 ```
 
+```{note}
+Dispatch list summary for unresolved calls is not included, as above summaries will only be applied for resolved calls.
+```
 
 ### Summary types
 
