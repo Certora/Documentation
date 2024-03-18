@@ -208,7 +208,7 @@ By default, the Prover will use an AUTO summary for unresolved function calls, b
 The catch unresolved-calls entry lets the user refine the summary used for unresolved function calls.
 
 ```{note}
-Only one catch unresolved-calls entry is allowed per a specification file. When importing a specification with a catch unresolved-calls entry it will be included as part of the current specification, and cannot be overriden.
+Only one catch unresolved-calls entry is allowed per a specification file. When importing a specification with a catch unresolved-calls entry it will be included as part of the current specification, and cannot be overridden.
 ```
 
 Catch unresolved-calls entry can only be summarized with a dispatch list summary (and a dispatch list summary is only applicable for a catch unresolved-calls entry). 
