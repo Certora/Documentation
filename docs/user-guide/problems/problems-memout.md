@@ -41,7 +41,7 @@ indicates excessive memory usage in the static analysis or the generation of the
 verification condition.
 The `"system-mem"` data series shows total memory usage; high usage, while
 `"vm-mem"` is low, indicates high memory usage of the SMT solvers used in the
-backend.
+back-end.
 
 
 ### Specific exceptions

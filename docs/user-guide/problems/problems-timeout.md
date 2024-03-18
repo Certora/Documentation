@@ -224,7 +224,7 @@ Even if no rule is very expensive on its own, working on all of them in parallel
 can add up quickly and thereby exceed the timeout.
 Try running individual rules only via the {ref}`--rule` option, or split the
 specification into separate files. Keep in mind that a {term}`parametric rule`,
-as well as an {term}`invariant`, spawns a subrule for every contract method.
+as well as an {term}`invariant`, spawns a sub-rule for every contract method.
 This can further be reduced via the {ref}`--method` option.
 
 
@@ -586,9 +586,9 @@ For more information on method summaries, see {ref}`summaries`.
 
 
 (timeout-cli-options)=
-## Commandline options
+## Command line options
 
-There are a number of commandline options that influence specific parts of the
+There are a number of command line options that influence specific parts of the
 prover's pipeline. While their default values generally yield the best results,
 changing them is known to improve running time in certain cases.
 
@@ -596,4 +596,4 @@ changing them is known to improve running time in certain cases.
 ### `--prover_args '-calltraceFreeOpt true'`
 
 This option allows for some rather aggressive simplifications. However, it
-possibly breaks calltrace generation.
+possibly breaks call trace generation.
