@@ -805,10 +805,10 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 ```
 
 (-optimisticFallback)=
-#### `--optimistic_fallback true`
+#### `--optimistic_fallback`
 
 This option determines whether to optimistically assume unresolved external
-calls with an empty input buffer (length 0) can make arbitrary changes to all states. It makes changes to how 
+calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how 
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
 calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
 `--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
