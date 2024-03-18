@@ -62,7 +62,7 @@ Above we saw an example where we made sure that the ghost state matched a read 
 ```cvl
 ghost ghostBalances(address) returns uint256;
 
-hook Sstore balances[KEY address account] uint256 v STORAGE {
+hook Sstore balances[KEY address account] uint256 v {
   havoc ghostBalances assuming ghostBalances@new(account) == v &&
     forall address a. a != account =>
         ghostBalances@new(a) == ghostBalances@old(a);

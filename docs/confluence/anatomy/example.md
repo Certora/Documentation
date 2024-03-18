@@ -11,14 +11,14 @@ contract LinkedList {
     bytes32 nextKey;
     uint256 exists;
   }
-  
+
   struct List {
     bytes32 head;
     mapping(bytes32 => Element) elements;
   }
-  
+
   List list;
-  
+
   /**
    * @notice Inserts an element into a doubly linked list.
    * @param  key The key of the element to insert.
@@ -29,7 +29,7 @@ contract LinkedList {
     require(key != bytes32(0), "Key must be defined");
     require(!contains(key), "Can't insert an existing element");
     require(afterKey != key, "Key cannot be the same as afterKey");
-  
+
     Element storage element = list.elements[key];
     element.exists = 1;
     if (afterKey == 0) {
@@ -43,11 +43,11 @@ contract LinkedList {
       list.elements[afterKey].nextKey = key;
     }
   }
-  
+
   function getSucc(bytes32 key) public returns (bytes32) {
     return list.elements[key].nextKey;
   }
-  
+
   function head() public returns (bytes32) {
     return list.head;
   }
@@ -89,21 +89,20 @@ ghost reach(Node, Node) returns bool {
 definition isSucc(Node a, Node b) returns bool =
     reach(a, b) && a != b &&
         (forall Node X. reach(a, X) && reach(X, b) => (a == X || b == X));
-        
+
 definition updateSucc(Node a, Node b) returns bool =
     forall Node X. forall Node Y. reach@new(X, Y) ==
         (X == Y ||
         (reach@old(X, Y) && !(reach@old(X, a) && a != Y &&
             reach@old(a, Y))) ||
         (reach@old(X, a) && reach@old(b, Y)));
-        
+
 hook Sstore (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
-    bytes32 newNextKey STORAGE {
+    bytes32 newNextKey {
   havoc reach assuming updateSucc(toNode(key), toNode(newNextKey));
 }
 
-hook Sload bytes32 nextKey (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
-    STORAGE {
+hook Sload bytes32 nextKey (slot 0).(offset 32)[KEY bytes32 key].(offset 0) {
   require isSucc(toNode(key), toNode(nextKey));
 }
 
@@ -140,7 +139,7 @@ rule checkInsert {
   bytes32 afterKey;
   bytes32 randoBoi;
   bytes32 oldHeadKey = head@norevert();
-  require reach(toNode(oldHeadKey), toNode(randoBoi));    
+  require reach(toNode(oldHeadKey), toNode(randoBoi));
   // this could be replaced by a hook, but we need to be able to
   // put invokes in hooks for that to work
   require contains(key) <=> reach(toNode(oldHeadKey), toNode(key));

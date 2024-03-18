@@ -191,7 +191,7 @@ For example, we can hook on `SSTORE` operations that write to the underlying
 map as follows:
 
 ```cvl
-hook Sstore map[KEY uint k] uint v STORAGE {
+hook Sstore map[KEY uint k] uint v {
     _map[k] = v;
 }
 ```
@@ -208,7 +208,7 @@ is possible to specify initial state axioms on ghosts.
 Similarly, one could define `SLOAD` hooks:
 
 ```cvl
-hook Sload uint v map[KEY uint k] STORAGE {
+hook Sload uint v map[KEY uint k] {
     require _map[k] == v;
 }
 ```

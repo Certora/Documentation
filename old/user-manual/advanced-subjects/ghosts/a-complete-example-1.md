@@ -53,7 +53,7 @@ contract LinkedList {
   }
 
   /**
-   * @notice Returns whether or not a particular key is present in 
+   * @notice Returns whether or not a particular key is present in
    *         the sorted list.
    * @param  key The element key.
    * @return Whether or not the key is in the sorted list.
@@ -83,7 +83,7 @@ ghost toNode(bytes32) returns Node;
 ghost reach(Node, Node) returns bool
 {
     axiom forall Node X. reach(X, X);
-    axiom forall Node X. forall Node Y. 
+    axiom forall Node X. forall Node Y.
             reach(X, Y) && reach(Y, X) => X == Y;
     axiom forall Node X. forall Node Y. forall Node Z.
             reach(X, Y) && reach(Y, Z) => reach(X, Z);
@@ -96,19 +96,18 @@ definition isSucc(Node a, Node b) returns bool =
             (forall Node X. reach(a, X) && reach(X, b) => (a == X || b == X));
 
 definition updateSucc(Node a, Node b) returns bool =
-        forall Node X. forall Node Y. reach@new(X, Y) == 
+        forall Node X. forall Node Y. reach@new(X, Y) ==
             (X == Y ||
             (reach@old(X, Y) && !(reach@old(X, a) && a != Y &&
                 reach@old(a, Y))) ||
             (reach@old(X, a) && reach@old(b, Y)));
 
 hook Sstore (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
-        bytes32 newNextKey STORAGE {
+        bytes32 newNextKey {
     havoc reach assuming updateSucc(toNode(key), toNode(newNextKey));
 }
 
-hook Sload bytes32 nextKey (slot 0).(offset 32)[KEY bytes32 key].(offset 0)
-        STORAGE {
+hook Sload bytes32 nextKey (slot 0).(offset 32)[KEY bytes32 key].(offset 0) {
     require isSucc(toNode(key), toNode(nextKey));
 }
 
