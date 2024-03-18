@@ -1,6 +1,7 @@
 ABI
 Aave
 Balancer
+CFGs
 CVL
 Certora
 Devcon
@@ -50,6 +51,7 @@ config
 conjoined
 decompilation
 decompiler
+deduplication
 dereference
 dereferences
 destructuring
@@ -85,6 +87,7 @@ injective
 injectivity
 inlined
 inlining
+inlinings
 instantiation
 invariant
 invariants
@@ -101,6 +104,7 @@ modularly
 monotonicity
 multicontract
 namespace
+nonlinearity
 nonterminal
 nonterminals
 onboarding
@@ -140,6 +144,7 @@ structs
 subdirectories
 subdirectory
 subgraph
+subgraphs
 subproblems
 subtree
 subtrees

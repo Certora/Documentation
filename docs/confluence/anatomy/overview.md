@@ -24,7 +24,7 @@ ghost myGhostFunction(uint256, address) returns bool {
 
 // a way to interact with state changes in the contract via storage
 // reads and writes
-hook Sstore my_storage_mapping[KEY address key] uint256 value STORAGE {
+hook Sstore my_storage_mapping[KEY address key] uint256 value {
   havoc myGhostFunction assuming myGhostFunction@new(value, key);
 }
 
