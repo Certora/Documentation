@@ -192,39 +192,42 @@ shown in the web report can indicate whether a summary was applied.
 
 (catch-unresolved-calls-entry)=
 ### Catch unresolved-calls entry
+Example:
+```cvl
+methods {
+   function _._ external => DISPATCH [
+      C.foo(uint),
+      _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
+      C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
+   ] default NONDET;
+}
+```
+
 The catch unresolved-calls entry is a special type of summary declaration that instructs the Prover to replace calls to unresolved external function calls with a specific kind of summary, dispatch list.
 By default, the Prover will use an AUTO summary for unresolved function calls, but that may produce spurious counter examples. 
 The catch unresolved-calls entry let's the user refine the summary used for unresolved function calls.
 
 ```{note}
-Only one catch unresolved-calls entry is allowed per a specification file```
+Only one catch unresolved-calls entry is allowed per a specification file. When importing a specification with a catch unresolved-calls entry it will be included as part of the current specification, and cannot be overriden.
+```
 
 Catch unresolved-calls entry can only be summarized with a dispatch list summary (and a dispatch list summary is only applicable for a catch unresolved-calls entry). 
 A dispatch list summary directs the Prover to construct a summary that encapsulates the functionality of the method as a selector for multiple functions specified by their signatures. 
 The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
 The possible patterns are:
-1. Exact function - a pattern specifying both the primary or a linked contract, and the function signature.
+1. Exact function - a pattern specifying both a contract, and the function signature.
    Example: `C.foo(uint)`
-2. Wildcard contract - a pattern specifying the function signature to match this signature on the primary contract and all linked contracts.
+2. Wildcard contract - a pattern specifying the function signature to match this signature on all available contracts (including the primary contract).
    Example: `_.bar(address)`
-3. Wildcard function - a pattern specifying the primary or a linked contract, and matches all external functions in specified contract.
+3. Wildcard function - a pattern specifying a contract, and matches all external functions in specified contract.
 For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`, `NONDET`.
-
-To better understand this functionality an example entry is useful.
-The following entry will specify three functions to route calls to:
+The example entry at the head of this section will specify three functions to route calls to:
 1. `C.foo(uint)`
 2. `Other.bar(address)`
 3. `C.baz(bool)`
-```cvl
-methods {
-   function _._ external => DISPATCH [
-      C.foo(uint),
-      _.bar(address), // Will resolve to all linked function with the signature "bar(address)", specifically Other.bar(address)
-      C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
-   ] default NONDET;
-}
-```
-Entry flags (`envfree`, `returns`, and `optional`) are not allowed on an unresolved-calls entry. 
+With the default being `NONDET`.
+
+Entry annotations ({ref}`envfree`, {ref}`optional`) and the `returns` clause are not allowed on an unresolved-calls entry. 
 Also, the visibility is always external, and no policy should be specified.
 
 For an unresolved function call being summarized with the dispatch list above, the Prover will replace the call with a dynamic resolution of the function call. That is something in the lines of:
@@ -245,7 +248,7 @@ function summarized(address a, bytes calldata data) external {
 }
 ```
 
-Dynamic resolution in Solidity refers to the process of determining the specific function to call at runtime based on the function signature and the target contract address. In the provided example, when an unresolved function call is encountered, the Prover dynamically resolves it by inspecting the function selector in the transaction data and the target contract address. By comparing the function selector against known signatures and verifying the contract address, the Prover identifies the appropriate function to call. This dynamic resolution mechanism is crucial for refining specifications because it enables the Prover to accurately model the behavior of smart contracts, even when the exact function being called is not known statically. By replacing unresolved calls with dynamically resolved calls in the dispatch list summary, the specification becomes more precise, leading to more accurate verification results and improved assurance in the correctness of the smart contract.
+The dispatch list summary will create a dynamic resolution process that determines the specific function to call at runtime based on the function signature and the target contract address. In the provided example, when an unresolved function call is encountered, the Prover dynamically resolves it by inspecting the function selector in the transaction data and the target contract address. By comparing the function selector against known signatures and verifying the contract address, the Prover identifies the appropriate function to call. This dynamic resolution mechanism is crucial for refining specifications because it enables the Prover to accurately model the behavior of smart contracts, even when the exact function being called is not known statically. By replacing unresolved calls with dynamically resolved calls in the dispatch list summary, the specification becomes more precise, leading to more accurate verification results and improved assurance in the correctness of the smart contract.
 
 ### Location annotations
 
@@ -513,10 +516,6 @@ An entry that does not have a summary attached does *not* factor into the
 precedence of summary application. For example, if the first entry in the above
 was instead `function Token.burn() external envfree;` without a summary,
 the `HAVOC_ALL` of the wildcard entry will apply.
-```
-
-```{note}
-Dispatch list summary for unresolved calls is not included, as above summaries will only be applied for resolved calls.
 ```
 
 ### Summary types
