@@ -217,7 +217,7 @@ When importing a specification with a catch unresolved-calls entry it will be
 included as part of the current specification, and cannot be overridden.
 ```
 
-Catch unresolved-calls entry can only be summarized with a dispatch list 
+A catch unresolved-calls entry can only be summarized with a dispatch list 
 summary (and a dispatch list summary is only applicable for a catch 
 unresolved-calls entry). 
 A dispatch list summary directs the Prover to consider each of the methods 
@@ -228,8 +228,7 @@ It is done accurately by matching the selector from the call's arguments
 to that of the methods described in the dispatch list.
 If no such a method is in the list, it will use the `default` summary, see 
 below.
-The dispatch list will contain a list of patterns and the default summary to 
-use in case no function matched the selector.
+The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
 The possible patterns are:
 1. Exact function - a pattern specifying both a contract, and the 
    function signature.
