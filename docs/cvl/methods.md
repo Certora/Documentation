@@ -222,11 +222,11 @@ summary (and a dispatch list summary is only applicable for a catch
 unresolved-calls entry). 
 A dispatch list summary directs the Prover to consider each of the methods 
 described in the list as possible candidates for this unresolved call. 
-The prover will choose dynamically, that is, for each potential run of the 
+The Prover will choose dynamically, that is, for each potential run of the 
 program, which of them to call. 
 It is done accurately by matching the selector from the call's arguments
 to that of the methods described in the dispatch list.
-If no such a method is in the list, it will use the `default` summary, see 
+If no method from the list matches, it will use the `default` summary, see 
 below.
 The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
 The possible patterns are:
@@ -239,6 +239,7 @@ The possible patterns are:
 3. Wildcard function - a pattern specifying a contract, and matches all 
    external functions in specified contract.
    Example: `C._`
+
 For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`, 
 `NONDET`.
 The example entry at the head of this section will specify three functions to 
@@ -246,6 +247,7 @@ route calls to:
 1. `C.foo(uint)`
 2. `Other.bar(address)`
 3. `C.baz(bool)`
+
 With the default being `NONDET`.
 
 Entry annotations ({ref}`envfree`, {ref}`optional`) and the `returns` clause 
