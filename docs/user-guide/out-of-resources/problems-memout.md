@@ -1,23 +1,26 @@
-(problems-memout)=
+(memout-introduction)=
 # Out of memory problems
 
+In this section, we show how to diagnose and remedy out-of-memory problems.
+Since the remediation of these problems is often similar to that of certain
+kinds of  timeouts, this section is kept short and links to the corresponding
+places in the documentation on timeout prevention.
 
-(problems-memout-indicators)=
+(memout-indicators)=
 ## General indicators
 
-An out-of-memory issue can be hard to diagnose. When the free memory drops below
-a certain threshold, we usually  issue the following warning to the
-"General Problems" panel, as well as the prover log:
-`Extremely low available memory`.
+When the free memory drops below a certain threshold, the Prover issues the
+following warning to the "General Problems" panel: `Extremely low available
+memory`.
 
 This warning might occasionally be a false positive: the JVM is sometimes able
 to clean up enough memory on-demand to avert any crashes, or the memory might be
 just enough. It might also not show up although the job fails due to
-insufficient memory, e.g., if a single allocation that is greater than the warning
-threshold fails. Both cases are pretty rare, though.
+insufficient memory, e.g., if a single allocation that is greater than the
+warning threshold fails. Both cases are expected to be rare.
 
-The prover log oftentimes contains other warnings that point to an out-of-memory
-issue.
+% The prover log oftentimes contains other warnings that point to an out-of-memory
+% issue.
 
 
 % ### SMT solvers dying
@@ -62,10 +65,9 @@ In most cases, high memory usage and long running times go hand in hand and
 thus {ref}`timeouts-introduction` is applicable for out-of-memory issues as well.
 
 There are a number of ways that can help avoiding memory exhaustion, either by
-
  - {ref}`checking fewer rules <timeout-single-rule>`,
- - {ref}`modularizes the verification <library_timeouts>` or fine-tuning
- - {ref}`which SMT solvers are run <memout-smt-portfolio>`.
+ - {ref}`modularizing the verification <library_timeouts>`, or 
+ - fine-tuning {ref}`which SMT solvers are run <memout-smt-portfolio>`.
 
 Furthermore, there is a number of {ref}`heuristic options <timeout-cli-options>`
 that sometimes help to in reducing memory usage in some way or another.
@@ -81,7 +83,7 @@ maximum memory usage needs to be reduced.
 Roughly speaking, this technique only helps if there are less calls to the SMT
 solvers than there are CPU cores available or if a particular solver or solver
 configuration uses much more memory than the other solvers in this case.
-Otherwise, reducing the portfolio only enables the prover to run more rules in
+Otherwise, reducing the portfolio only enables the Prover to run more rules in
 parallel while the number of solvers running - and competing for memory - at any
 given point in time remains the same.
 
