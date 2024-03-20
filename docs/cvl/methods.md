@@ -203,34 +203,59 @@ methods {
 }
 ```
 
-The catch unresolved-calls entry is a special type of summary declaration that instructs the Prover to replace calls to unresolved external function calls with a specific kind of summary, dispatch list.
-By default, the Prover will use an AUTO summary for unresolved function calls, but that may produce spurious counter examples. 
-The catch unresolved-calls entry lets the user refine the summary used for unresolved function calls.
+The catch unresolved-calls entry is a special type of summary declaration that 
+instructs the Prover to replace calls to unresolved external function calls 
+with a specific kind of summary, dispatch list.
+By default, the Prover will use an {ref}`AUTO summary <auto-summary>` for 
+unresolved function calls, but that may produce spurious counter examples. 
+The catch unresolved-calls entry lets the user refine the summary used for 
+unresolved function calls.
 
 ```{note}
-Only one catch unresolved-calls entry is allowed per a specification file. When importing a specification with a catch unresolved-calls entry it will be included as part of the current specification, and cannot be overridden.
+Only one catch unresolved-calls entry is allowed per a specification file. 
+When importing a specification with a catch unresolved-calls entry it will be 
+included as part of the current specification, and cannot be overridden.
 ```
 
-Catch unresolved-calls entry can only be summarized with a dispatch list summary (and a dispatch list summary is only applicable for a catch unresolved-calls entry). 
-A dispatch list summary directs the Prover to construct a summary that encapsulates the functionality of the method as a selector for multiple functions specified by their signatures. 
-The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
+Catch unresolved-calls entry can only be summarized with a dispatch list 
+summary (and a dispatch list summary is only applicable for a catch 
+unresolved-calls entry). 
+A dispatch list summary directs the Prover to consider each of the methods 
+described in the list as possible candidates for this unresolved call. 
+The prover will choose dynamically, that is, for each potential run of the 
+program, which of them to call. 
+It is done accurately by matching the selector from the call's arguments
+to that of the methods described in the dispatch list.
+If no such a method is in the list, it will use the `default` summary, see 
+below.
+The dispatch list will contain a list of patterns and the default summary to 
+use in case no function matched the selector.
 The possible patterns are:
-1. Exact function - a pattern specifying both a contract, and the function signature.
+1. Exact function - a pattern specifying both a contract, and the 
+   function signature.
    Example: `C.foo(uint)`
-2. Wildcard contract - a pattern specifying the function signature to match this signature on all available contracts (including the primary contract).
+2. Wildcard contract - a pattern specifying the function signature to match 
+   this signature on all available contracts (including the primary contract).
    Example: `_.bar(address)`
-3. Wildcard function - a pattern specifying a contract, and matches all external functions in specified contract.
-For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`, `NONDET`.
-The example entry at the head of this section will specify three functions to route calls to:
+3. Wildcard function - a pattern specifying a contract, and matches all 
+   external functions in specified contract.
+   Example: `C._`
+For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`, 
+`NONDET`.
+The example entry at the head of this section will specify three functions to 
+route calls to:
 1. `C.foo(uint)`
 2. `Other.bar(address)`
 3. `C.baz(bool)`
 With the default being `NONDET`.
 
-Entry annotations ({ref}`envfree`, {ref}`optional`) and the `returns` clause are not allowed on an unresolved-calls entry. 
+Entry annotations ({ref}`envfree`, {ref}`optional`) and the `returns` clause 
+are not allowed on an unresolved-calls entry. 
 Also, the visibility is always external, and no policy should be specified.
 
-For an unresolved function call being summarized with the dispatch list above, the Prover will replace the call with a dynamic resolution of the function call. That is something in the lines of:
+For an unresolved function call being summarized with the dispatch list above, 
+the Prover will replace the call with a dynamic resolution of the function call.
+That is something in the lines of:
 ```solidity
 function summarized(address a, bytes calldata data) external {
   if (uint32(data[0:4]) == 0x11111111 && address == address(c)) {
@@ -248,7 +273,22 @@ function summarized(address a, bytes calldata data) external {
 }
 ```
 
-The dispatch list summary will create a dynamic resolution process that determines the specific function to call at runtime based on the function signature and the target contract address. In the provided example, when an unresolved function call is encountered, the Prover dynamically resolves it by inspecting the function selector in the transaction data and the target contract address. By comparing the function selector against known signatures and verifying the contract address, the Prover identifies the appropriate function to call. This dynamic resolution mechanism is crucial for refining specifications because it enables the Prover to accurately model the behavior of smart contracts, even when the exact function being called is not known statically. By replacing unresolved calls with dynamically resolved calls in the dispatch list summary, the specification becomes more precise, leading to more accurate verification results and improved assurance in the correctness of the smart contract.
+The dispatch list summary will create a dynamic resolution process that 
+determines the specific function to call at runtime based on the function 
+signature and the target contract address. 
+In the provided example, when an unresolved function call is encountered, the 
+Prover dynamically resolves it by inspecting the function selector in the 
+transaction data and the target contract address. 
+By comparing the function selector against known signatures and verifying the 
+contract address, the Prover identifies the appropriate function to call. 
+
+This dynamic resolution mechanism is crucial for refining specifications 
+because it enables the Prover to accurately model the behavior of smart 
+contracts, even when the exact function being called is not known statically. 
+By replacing unresolved calls with dynamically resolved calls in the dispatch 
+list summary, the specification becomes more precise, leading to more accurate 
+verification results and improved assurance in the correctness of the smart 
+contract.
 
 ### Location annotations
 
