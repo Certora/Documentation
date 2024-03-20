@@ -211,7 +211,7 @@ The catch unresolved-calls entry lets the user refine the summary used for unres
 Only one catch unresolved-calls entry is allowed per a specification file. When importing a specification with a catch unresolved-calls entry it will be included as part of the current specification, and cannot be overridden.
 ```
 
-Catch unresolved-calls entry can only be summarized with a dispatch list summary (and a dispatch list summary is only applicable for a catch unresolved-calls entry). 
+A catch unresolved-calls entry can only be summarized with a dispatch list summary (and a dispatch list summary is only applicable for a catch unresolved-calls entry). 
 A dispatch list summary directs the Prover to construct a summary that encapsulates the functionality of the method as a selector for multiple functions specified by their signatures. 
 The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
 The possible patterns are:
