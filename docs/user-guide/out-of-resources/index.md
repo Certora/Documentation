@@ -27,9 +27,9 @@ to the rule, if that particular rule timed out.
 % problems-identification.md
 
 ```{toctree}
-problems-memout.md
-problems-timeout.md
-problems-timeout-theory.md
+memout.md
+timeout.md
+timeout-theory.md
 ```
 
 
