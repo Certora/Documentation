@@ -34,7 +34,7 @@ properties/index.md
 satisfy.md
 patterns/index.md
 multicontract/index.md
-timeouts/index.md
+out-of-resources/index.md
 opcodes.md
 gaps.md
 checking.md
