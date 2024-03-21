@@ -97,8 +97,6 @@ iteratively
 lifecycle
 logics
 macOS
-memout
-memouts
 modularity
 modularization
 modularize
