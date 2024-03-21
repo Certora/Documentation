@@ -19,45 +19,6 @@ just enough. It might also not show up although the job fails due to
 insufficient memory, e.g., if a single allocation that is greater than the
 warning threshold fails. Both cases are expected to be rare.
 
-% The prover log oftentimes contains other warnings that point to an out-of-memory
-% issue.
-
-
-% ### SMT solvers dying
-% 
-% A common indication for insufficient is when SMT solvers terminate unexpectedly,
-% which can be seen in the log file as `solver process died`.
-% If the solver could not even be started, an explanation like
-% `Cannot run program ... Cannot allocate memory` is given.
-% If the solver was already started, it is usually followed by a message like
-% `solver process did not respond to ... command`.
-% Both variants usually point to an out-of-memory issue.
-
-
-% ### Memory statistics
-% 
-% We store statistics about resource usage in the `statsdata.json` file under the
-% `"resource-usage"` key. It can be helpful to check whether memory exhaustion is
-% plausible, as well as to start to work out who is using memory.
-% The `"vm-mem"` data series shows memory usage of the java process; high usage
-% indicates excessive memory usage in the static analysis or the generation of the
-% verification condition.
-% The `"system-mem"` data series shows total memory usage; high usage, while
-% `"vm-mem"` is low, indicates high memory usage of the SMT solvers used in the
-% back-end.
-
-
-% ### Specific exceptions
-% 
-% Oftentimes, running out of memory produces exceptions that are written to the
-% log file. Below is a list of exceptions or error messages that almost certainly
-% indicate an out-of-memory issue, even if some seem completely unrelated at first
-% glance:
-% 
-% - `java.io.IOException: ... Cannot allocate memory`
-% - `java.lang.NoClassDefFoundError`
-
-
 (memout-scenarios)=
 ## Reducing memory usage
 
