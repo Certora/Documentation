@@ -5,12 +5,12 @@ Managing Timeouts and Out of Memory Problems
 In this chapter, we describe how to diagnose and remedy when the Certora Prover
 ran out of time or out of memory.
 
-We start with a rough classification, more details are given in the respective
-sections. Out-of-memory problems are signified by an 
-`Extremely low available memory` in the Global Problems tab of the Prover reports. 
-Timeouts are signified either by a `Global timeout reached` message in the Global 
-Problems tab, if the whole Prover job timed out, or by a yellow "watch" symbol next 
-to the rule, if that particular rule timed out.
+Out-of-memory problems are signified by an `Extremely low available memory`
+message in the Global Problems tab of the Prover reports, see
+{ref}`memout-introduction` for more details. Timeouts are signified either by a
+`Global timeout reached` message in the Global Problems tab, if the whole Prover
+job timed out, or by a yellow "watch" symbol next to the rule, if that
+particular rule timed out, see {ref}`timeouts-introduction` for more details.
 
 % Unfortunately, the Certora Prover regularly encounters issues it can not resolve
 % and fails in some way or another. A job may run out of time or memory, or hit a

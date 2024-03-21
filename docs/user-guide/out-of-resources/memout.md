@@ -13,7 +13,7 @@ When the free memory drops below a certain threshold, the Prover issues the
 following warning to the "General Problems" panel: `Extremely low available
 memory`.
 
-This warning might occasionally be a false positive: the JVM is sometimes able
+This warning might occasionally not be conclusive: the JVM is sometimes able
 to clean up enough memory on-demand to avert any crashes, or the memory might be
 just enough. It might also not show up although the job fails due to
 insufficient memory, e.g., if a single allocation that is greater than the
