@@ -9,7 +9,7 @@ Out-of-memory problems are signified by an `Extremely low available memory`
 message in the Global Problems tab of the Prover reports, see
 {ref}`memout-introduction` for more details. Timeouts are signified either by a
 `Global timeout reached` message in the Global Problems tab, if the whole Prover
-job timed out, or by a yellow "watch" symbol next to the rule, if that
+job timed out, or by an orange clock symbol next to the rule, if that
 particular rule timed out, see {ref}`timeouts-introduction` for more details.
 
 % Unfortunately, the Certora Prover regularly encounters issues it can not resolve
