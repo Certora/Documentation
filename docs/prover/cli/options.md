@@ -171,6 +171,27 @@ CLI to not block the terminal.
 certoraRun Example.sol --verify Example:Example.spec --send_only
 ```
 
+(--compilation_steps_only)=
+### `--compilation_steps_only`
+
+**What does it do?**
+Exits the program after source code and spec compilation without sending
+a verification request to the cloud.
+
+**When to use it?**
+When you want to check if the spec has correct syntax but do not wish
+to send a verification request and wait for its results.
+
+Here are a few example scenarios:
+1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
+2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
+3. When you have no internet connection but still want to develop spec offline.
+
+**Example**
+```sh
+certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
+```
+
 Options affecting the type of verification run
 ----------------------------------------------
 
