@@ -41,8 +41,3 @@ Useful Links
    -----
 .. _Certora Prover Tutorials: https://docs.certora.com/projects/tutorials
 .. _Certora Prover and CVL Examples Repository: https://github.com/Certora/Examples/
-
-   ../Examples/DEFI/LiquidityPool/certora/specs/Full.spec
-   ../Examples/DEFI/LiquidityPool/runFullPool.conf
-   
-   
