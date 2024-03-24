@@ -40,6 +40,5 @@ opcodes.md
 gaps.md
 checking.md
 glossary.md
-contact.md
 ```
 
