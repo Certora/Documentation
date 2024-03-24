@@ -266,6 +266,7 @@ to restart VSCode or your computer.
     ```
 </details>
 
+(selecting-solidity-compiler)=
 Step 4: Install the relevant Solidity compiler versions
 ---------------------------------------------------------------------------
 
