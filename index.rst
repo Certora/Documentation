@@ -10,11 +10,16 @@ Certora Prover Documentation
    docs/gambit/index.md
 
 
-Useful Links
-------------
+Learning resources
+------------------
 
+* :doc:`docs/user-guide/index` -- in this Documentation
 * `Certora Prover Tutorials`_
-* `Certora Prover and CVL Examples Repository`_
+* `Certora Prover and CVL Examples Repository`_ -- learn CVL from examples
+* :doc:`docs/user-guide/tutorials` lists workshops and tutorials that
+  cover basic Prover usage
+* The :doc:`old documentation<docs/confluence/examples>`
+  introduces Prover features by walking through some examples in CVL1.
 
 
 .. Advanced topics
@@ -35,9 +40,24 @@ Useful Links
 
    docs/confluence/index.md
    genindex
-   
+
+.. _contact:
+
+Contacting Certora
+------------------
+
+If you have questions about Certora's products, the best ways to contact us is
+on our `Help Desk channel on Discord`_.
+
+For sales, please use the `contact form on our website`_.
+
 
 .. Links
    -----
 .. _Certora Prover Tutorials: https://docs.certora.com/projects/tutorials
 .. _Certora Prover and CVL Examples Repository: https://github.com/Certora/Examples/
+
+.. _Help Desk channel on Discord:
+   https://discord.com/channels/795999272293236746/1104825071450718338
+
+.. _contact form on our website: https://www.certora.com/#Request_Early_Access
