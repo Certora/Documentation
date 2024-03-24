@@ -155,20 +155,24 @@ certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
-(--send_only)=
-### `--send_only`
+(--wait_for_results)=
+### `--wait_for_results`
 
 **What does it do?**
-Causes the CLI to exit immediately when the job is submitted, rather than waiting
-for it to complete.
+Wait for verification results after sending the verification request.
+By default, the program exits after the request.
+The return code will not be zero if the verification finds a violation.
 
 **When to use it?**
-When you want to run many jobs concurrently in a script, or otherwise want the
-CLI to not block the terminal.
+Use it to receive verification results in the terminal or a wrapping script.
+
+```{note}
+This flag is the default in CI environments.
+```
 
 **Example**
 ```sh
-certoraRun Example.sol --verify Example:Example.spec --send_only
+certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
 Options affecting the type of verification run
@@ -625,7 +629,7 @@ Exits the program after source code and spec compilation without sending
 a verification request to the cloud.
 
 **When to use it?**
-When you want to check if the spec has correct syntax but do not wish
+Use it to check if the spec has correct syntax but do not wish
 to send a verification request and wait for its results.
 
 Here are a few example scenarios:
@@ -636,6 +640,26 @@ Here are a few example scenarios:
 **Example**
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
+```
+
+(--send_only)=
+### `--send_only`
+
+**What does it do?**
+Causes the CLI to exit immediately when the job is submitted, not waiting
+for its results.
+
+**When to use it?**
+Use it to run many jobs concurrently in a script, 
+or otherwise want the CLI not to block the terminal.
+
+```{note}
+This flag is only useful in CI environments. It is the default otherwise.
+```
+
+**Example**
+```sh
+certoraRun Example.sol --verify Example:Example.spec --send_only
 ```
 
 (--smt_timeout)=
