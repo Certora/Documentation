@@ -171,27 +171,6 @@ CLI to not block the terminal.
 certoraRun Example.sol --verify Example:Example.spec --send_only
 ```
 
-(--compilation_steps_only)=
-### `--compilation_steps_only`
-
-**What does it do?**
-Exits the program after source code and spec compilation without sending
-a verification request to the cloud.
-
-**When to use it?**
-When you want to check if the spec has correct syntax but do not wish
-to send a verification request and wait for its results.
-
-Here are a few example scenarios:
-1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
-2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
-3. When you have no internet connection but still want to develop spec offline.
-
-**Example**
-```sh
-certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
-```
-
 Options affecting the type of verification run
 ----------------------------------------------
 
@@ -638,16 +617,26 @@ When you are trying to solve/understand a counterexample of a parametric rule on
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
 
-### `--cache`
+(--compilation_steps_only)=
+### `--compilation_steps_only`
 
 **What does it do?**
-A cache in the cloud for optimizing the analysis before running the SMT solvers. The cache used is the argument this option gets. If a cache with this name does not exist, it creates one with this name.
+Exits the program after source code and spec compilation without sending
+a verification request to the cloud.
 
 **When to use it?**
-By default, we do not use a cache. If you want to use a cache to speed up the building process, use this option.
+When you want to check if the spec has correct syntax but do not wish
+to send a verification request and wait for its results.
+
+Here are a few example scenarios:
+1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
+2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
+3. When you have no internet connection but still want to develop spec offline.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
+```sh
+certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
+```
 
 (--smt_timeout)=
 ### `--smt_timeout <seconds>`
