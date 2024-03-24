@@ -815,7 +815,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 ```
 
 (-optimisticFallback)=
-#### `--optimistic_fallback`
+### `--optimistic_fallback`
 
 This option determines whether to optimistically assume unresolved external
 calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how 
