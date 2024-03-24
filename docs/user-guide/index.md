@@ -29,7 +29,6 @@ think about and write high-level properties.
 
 tutorials.md
 getting-started/index.md
-basics/index.md
 properties/index.md
 satisfy.md
 patterns/index.md
