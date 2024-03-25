@@ -35,6 +35,7 @@ satisfy.md
 patterns/index.md
 multicontract/index.md
 out-of-resources/index.md
+ghosts.md
 opcodes.md
 gaps.md
 checking.md
