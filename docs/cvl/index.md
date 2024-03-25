@@ -25,6 +25,7 @@ sorts.md
 ghosts.md
 defs.md
 hooks.md
+transient.md
 ```
 
 Changes Since CVL 1
