@@ -155,20 +155,24 @@ certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
-(--send_only)=
-### `--send_only`
+(--wait_for_results)=
+### `--wait_for_results`
 
 **What does it do?**
-Causes the CLI to exit immediately when the job is submitted, rather than waiting
-for it to complete.
+Wait for verification results after sending the verification request.
+By default, the program exits after the request.
+The return code will not be zero if the verification finds a violation.
 
 **When to use it?**
-When you want to run many jobs concurrently in a script, or otherwise want the
-CLI to not block the terminal.
+Use it to receive verification results in the terminal or a wrapping script.
+
+```{note}
+This flag is the default in CI environments.
+```
 
 **Example**
 ```sh
-certoraRun Example.sol --verify Example:Example.spec --send_only
+certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
 Options affecting the type of verification run
@@ -617,16 +621,46 @@ When you are trying to solve/understand a counterexample of a parametric rule on
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
 
-### `--cache`
+(--compilation_steps_only)=
+### `--compilation_steps_only`
 
 **What does it do?**
-A cache in the cloud for optimizing the analysis before running the SMT solvers. The cache used is the argument this option gets. If a cache with this name does not exist, it creates one with this name.
+Exits the program after source code and spec compilation without sending
+a verification request to the cloud.
 
 **When to use it?**
-By default, we do not use a cache. If you want to use a cache to speed up the building process, use this option.
+Use it to check if the spec has correct syntax but do not wish
+to send a verification request and wait for its results.
+
+Here are a few example scenarios:
+1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
+2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
+3. When you have no internet connection but still want to develop spec offline.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
+```sh
+certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
+```
+
+(--send_only)=
+### `--send_only`
+
+**What does it do?**
+Causes the CLI to exit immediately when the job is submitted, not waiting
+for its results.
+
+**When to use it?**
+Use it to run many jobs concurrently in a script, 
+or otherwise want the CLI not to block the terminal.
+
+```{note}
+This flag is only useful in CI environments. It is the default otherwise.
+```
+
+**Example**
+```sh
+certoraRun Example.sol --verify Example:Example.spec --send_only
+```
 
 (--smt_timeout)=
 ### `--smt_timeout <seconds>`
@@ -805,7 +839,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 ```
 
 (-optimisticFallback)=
-#### `--optimistic_fallback`
+### `--optimistic_fallback`
 
 This option determines whether to optimistically assume unresolved external
 calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how 
