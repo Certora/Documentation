@@ -1,23 +1,34 @@
 Certora Prover Documentation
 ============================
 
+Contents
+--------
+
+* :doc:`docs/user-guide/index` -- explains how to use the Prover to verify smart
+  contracts. Organized by topic and focuses on the most useful features.
+* :doc:`docs/cvl/index` -- a reference manual for CVL.
+* :doc:`docs/gambit/index` -- use mutation testing to improve you specifications.
+* :doc:`docs/prover/index` -- a reference manual for the Certora Prover.
+
 .. toctree::
    :maxdepth: 1
    :caption: Contents
+   :hidden:
 
    docs/user-guide/index.md
    docs/cvl/index.md
    docs/gambit/index.md
+   docs/prover/index.md
 
 
 Learning resources
 ------------------
 
-* :doc:`docs/user-guide/index` -- in this Documentation
-* `Certora Prover Tutorials`_
-* `Certora Prover and CVL Examples Repository`_ -- learn CVL from examples
-* :doc:`docs/user-guide/tutorials` lists workshops and tutorials that
-  cover basic Prover usage
+* :doc:`docs/user-guide/index` (in this Documentation).
+* `Certora Prover Tutorials`_ -- learning to use the Prover and CVL through exercises.
+* `Certora Prover and CVL Examples Repository`_ -- learn CVL from examples.
+* :doc:`docs/user-guide/tutorials` -- lists workshops and tutorials that
+  cover basic Prover usage.
 * The :doc:`old documentation<docs/confluence/examples>`
   introduces Prover features by walking through some examples in CVL1.
 
@@ -28,7 +39,6 @@ Learning resources
    :maxdepth: 1
    :caption: Additional information
 
-   docs/prover/index.md
    docs/equiv-check/index.md
    docs/whitepaper/index.md
 
