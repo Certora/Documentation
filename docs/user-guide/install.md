@@ -1,3 +1,6 @@
+```{index} single: install
+```
+
 (installation)=
 Installation
 ============
@@ -40,14 +43,17 @@ Step 1: prerequisites
   [Oracle](https://www.oracle.com/java/technologies/downloads/).
 </details>
 
+```{index} single: solc
+```
 <details>
   <summary>Solidity compiler (ideally v0.5 and up)</summary>
 
   * We recommend using [solc-select](https://github.com/crytic/solc-select)
     to download and switch between Solidity compiler versions.
 
-  * You can also download the Solidity compiler binaries from the [official Solidity repository](https://github.com/ethereum/solidity/releases) on GitHub. 
-  Make sure to place all the binaries that you download in the same path.
+  * You can also download the Solidity compiler binaries from the
+    [official Solidity repository](https://github.com/ethereum/solidity/releases) on GitHub. 
+    It is best to place all the `solc` binaries in the same path.
 
   * Certora employees can clone the `CVT_Executables` repository suitable for
     their OS from [GitHub](https://github.com/orgs/Certora/repositories).
@@ -163,6 +169,12 @@ can arise during installation and how to deal with them:
    
               source .profile
    
+```
+
+```{eval-rst}
+.. index::
+   single: install; beta version
+   single: beta version
 ```
 
 (beta-install)=
@@ -297,6 +309,9 @@ Step 4: Install the relevant Solidity compiler versions
 The Solidity compiler (`solc`) is a verification requirement.
 There are two ways to install it: via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
 
+```{index} single: solc; solc-select
+```
+
 ### Using `solc-select`
 
 <details>
@@ -309,7 +324,8 @@ There are two ways to install it: via [solc-select](https://github.com/crytic/so
     pip install solc-select
     ```
 
-  * Download the required compiler version. For example, if you want to install version 0.8.0, run:
+  * Download the required compiler version. For example,
+    if you want to install version 0.8.0, run:
 
     ```bash
     solc-select install 0.8.0
@@ -322,11 +338,19 @@ There are two ways to install it: via [solc-select](https://github.com/crytic/so
     ```
 </details>
 
+
+```{index} single: solc; solc executables
+```
+
 ### Download binaries
 
-You can download the `solc` binaries directly from [Solidity's release page on GitHub](https://github.com/ethereum/solidity/releases).
+You can download the `solc` binaries directly from
+[Solidity's release page on GitHub](https://github.com/ethereum/solidity/releases).
 
-To run the Prover, you will need to add the `solc` executable's folder to your `PATH.`
+To run the Prover, you may find it useful to add the
+`solc` executables folder to your `PATH`. This way
+you will not need to provide the Prover with the
+full path to the `solc` executables folder every time.
 
 ```{eval-rst}
 .. tab-set::
@@ -400,6 +424,9 @@ To run the Prover, you will need to add the `solc` executable's folder to your `
            source .profile
 ```
 
+```{index} single: VS code; extension
+```
+
 Step 5 (for VS Code users): Install the Certora IDE Extension
 --------------------------------------------------------------------------------
 
@@ -421,5 +448,6 @@ the extension's marketplace page.
 Congratulations! You have just completed Certora Prover's installation and setup.
 
 ```{caution}
-We strongly recommend trying the tool on basic examples to verify correct installation.  See {doc}`running` for a detailed walkthrough.
+We strongly recommend trying the tool on basic examples to verify correct installation.
+See {doc}`running` for a detailed walkthrough.
 ```
