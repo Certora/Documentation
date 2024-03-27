@@ -25,4 +25,3 @@ search:
     docs/confluence/*: -7
     docs/whitepaper/*: -6
     docs/equiv-check/*: -8
-    docs/prover/*: -1
