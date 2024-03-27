@@ -230,7 +230,7 @@ follow the next steps:
 ```{eval-rst}
 .. tab-set::
 
-   .. tab-item:: macos
+   .. tab-item:: macOs
       :sync: macos
 
       * Open a terminal and make sure you're in the home directory:
@@ -355,7 +355,7 @@ full path to the `solc` executables folder every time.
 ```{eval-rst}
 .. tab-set::
 
-   .. tab-item:: macos
+   .. tab-item:: macOs
       :sync: macos
 
       * Open a terminal and move to the :file:`etc/paths.d` directory from root:
