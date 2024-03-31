@@ -17,8 +17,8 @@ Contents
 
    docs/user-guide/index.md
    docs/cvl/index.md
-   docs/gambit/index.md
    docs/prover/index.md
+   docs/gambit/index.md
 
 
 Learning resources
@@ -29,8 +29,6 @@ Learning resources
 * `Certora Prover and CVL Examples Repository`_ -- learn CVL from examples.
 * :doc:`docs/user-guide/tutorials` -- lists workshops and tutorials that
   cover basic Prover usage.
-* The :doc:`old documentation<docs/confluence/examples>`
-  introduces Prover features by walking through some examples in CVL1.
 
 
 .. Advanced topics

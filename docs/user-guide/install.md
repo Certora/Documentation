@@ -93,29 +93,29 @@ can arise during installation and how to deal with them:
       .. tab-item:: macOs
          :sync: macos
    
-         .. caution::
+         .. code-block:: text
+            :caption: The warning
          
-            The script ``certoraRun`` is installed in
-            :file:`/Users/user\_name/Library/Python/3.8/bin` which is not on PATH.
-   	    Consider adding this directory to PATH
+            The script certoraRun is installed in /Users/<user name>/Library/Python/3.8/bin
+            which is not on PATH. Consider adding this directory to PATH.
        
          * Open a terminal and move to the :file:`etc/paths.d` directory from root:
        
            .. code-block:: bash
-   	
+        
               cd /etc/paths.d
        
          * Use root privileges to create a file with an informative name such as
            ``PythonForProver``, and open it with your favorite text editor:
        
            .. code-block:: bash
-   	
+        
               sudo nano PythonForProver
        
          * Write the specified path from the warning:
        
            .. code-block:: bash
-   	
+        
               /specified/path/in/warning
        
          * If needed, more than one path can be added on a single file,
@@ -126,16 +126,16 @@ can arise during installation and how to deal with them:
        
            .. code-block:: bash
    
-   	      echo $PATH
+              echo $PATH
    
       .. tab-item:: Linux
          :sync: linux
    
-         .. caution::
+         .. code-block:: text
+            :caption: The warning
          
-            Known warning - “The script ``certoraRun`` is installed in
-   	    ':file:`/home/user_name/.local/bin`' which is not on PATH.
-   	    Consider adding this directory to PATH"
+            The script certoraRun is installed in /home/<user name>/.local/bin
+            which is not on PATH. Consider adding this directory to PATH.
        
          * Open a terminal and make sure you're in the home directory:
        
@@ -353,97 +353,93 @@ you will not need to provide the Prover with the
 full path to the `solc` executables folder every time.
 
 ```{eval-rst}
-.. tab-set::
+.. dropdown:: Downloading binaries
 
-   .. tab-item:: macOs
-      :sync: macos
-
-      * Open a terminal and move to the :file:`etc/paths.d` directory from root:
-
-        .. code-block:: bash
- 
-           cd /etc/paths.d
-
-      * Use root privileges to create a file with an informative
-        name such as ``SolidityCertoraProver``, and open it with your favorite text editor:
-
-        .. code-block:: bash
- 
-           sudo nano SolidityCertoraProver
-
-      * Write the full path to the directory that contains the ``solc`` executables:
-
-        .. code-block:: bash
- 
-           /full/path/to/solc/executable/folder
-
-        * If needed, more than one path can be added on a single file,
-	  just separate the path with colon a (``:``).
-
-      * Quit the terminal to load the new addition to ``$PATH``,
-        and reopen to check that the ``$PATH`` was updated correctly:
-
-        .. code-block:: bash
- 
-           echo $PATH
-
-   .. tab-item:: Linux
-      :sync: linux
-      
-      * Open a terminal and make sure you're in the home directory:
+   .. tab-set::
+   
+      .. tab-item:: macOs
+         :sync: macos
+   
+         * Open a terminal and move to the :file:`etc/paths.d` directory from root:
+   
+           .. code-block:: bash
     
-        .. code-block:: bash
- 
-           cd ~
+              cd /etc/paths.d
+   
+         * Use root privileges to create a file with an informative
+           name such as ``SolidityCertoraProver``, and open it with your favorite text editor:
+   
+           .. code-block:: bash
     
-      * open the .profile file with your favorite text editor:
+              sudo nano SolidityCertoraProver
+   
+         * Write the full path to the directory that contains the ``solc`` executables:
+   
+           .. code-block:: bash
     
-        .. code-block:: bash
- 
-           nano .profile
+              /full/path/to/solc/executable/folder
+   
+           * If needed, more than one path can be added on a single file,
+             just separate the path with colon a (``:``).
+   
+         * Quit the terminal to load the new addition to ``$PATH``,
+           and reopen to check that the ``$PATH`` was updated correctly:
+   
+           .. code-block:: bash
     
-      * At the bottom of the file, add to ``PATH="..."`` the full
-        path to the directory that contains the `solc` executables.
-	To add an additional path just separate with a colon (``:``) :
+              echo $PATH
+   
+      .. tab-item:: Linux
+         :sync: linux
+         
+         * Open a terminal and make sure you're in the home directory:
+       
+           .. code-block:: bash
     
-        .. code-block:: bash
- 
-           PATH="$PATH:/full/path/to/solc/executable/folder"
+              cd ~
+       
+         * open the .profile file with your favorite text editor:
+       
+           .. code-block:: bash
     
-      * You can make sure that the file was modified correctly by opening
-        it again with the text editor:
+              nano .profile
+       
+         * At the bottom of the file, add to ``PATH="..."`` the full
+           path to the directory that contains the `solc` executables.
+           To add an additional path just separate with a colon (``:``) :
+       
+           .. code-block:: bash
     
-        .. code-block:: bash
- 
-           nano .profile
+              PATH="$PATH:/full/path/to/solc/executable/folder"
+       
+         * You can make sure that the file was modified correctly by opening
+           it again with the text editor:
+       
+           .. code-block:: bash
     
-      * Make sure to apply the changes to the ``$PATH`` by executing the script:
+              nano .profile
+       
+         * Make sure to apply the changes to the ``$PATH`` by executing the script:
+       
+           .. code-block:: bash
     
-        .. code-block:: bash
- 
-           source .profile
+              source .profile
 ```
 
 ```{index} single: VS code; extension
 ```
 
-Step 5 (for VS Code users): Install the Certora IDE Extension
---------------------------------------------------------------------------------
+Step 5 (for VS Code users): Install the Certora Verification Language LSP
+-------------------------------------------------------------------------
 
 All users of the Certora Prover can access the tool using the command line 
 interface, or [CLI](https://docs.certora.com/en/latest/docs/prover/cli/index.html). 
 Those who use Microsoft's Visual Studio Code editor (VS Code) also have the 
-option of using the Certora IDE Extension for that program.
+option of using the
+[Certora Verification Language LSP](https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp).
+This will provide both syntax checking and syntax highlighting for CVL.
 
-To install VS Code, follow the platform specific instructions found on the 
-[Visual Studio Code website](https://code.visualstudio.com/).
-
-Once VS Code is installed, search for "Certora IDE" in VS Code's extension pane 
-or [navigate there directly](https://marketplace.visualstudio.com/items?itemName=Certora.vscode-certora-prover) 
-and follow the prompts to install the extension.
-
-Instructions on how to use the Certora IDE extension are available directly from 
-the extension's marketplace page.
+----
 
 Congratulations! You have just completed Certora Prover's installation and setup.
 
