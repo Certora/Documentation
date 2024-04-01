@@ -988,7 +988,7 @@ to the size of the output buffer as specified by the summarized `CALL` instructi
 #### `--precise_bitwise_ops`
 
 This option models bitwise operations exactly instead of using the default
-{term}`overapproximation`s.  It is useful when the Prover reports a
+{term}`overapproximation`s. It is useful when the Prover reports a
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
