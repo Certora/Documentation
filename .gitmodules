@@ -1,6 +1,3 @@
-[submodule "docs/user-guide/multicontract/LiquidityPoolExample"]
-	path = docs/user-guide/multicontract/LiquidityPoolExample
-	url = https://github.com/Certora/LiquidityPoolExample.git
 [submodule "docs/cvl/cvl2/cvl1"]
 	path = docs/cvl/cvl2/cvl1
 	url = git@github.com:Certora/CVL2Migration.git
