@@ -984,8 +984,8 @@ that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction 
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
-(-smt_useBV)=
-#### `--prover_args '-smt_useBV true'`
+(--precise_bitwise_ops)=
+#### `--precise_bitwise_ops`
 
 This option models bitwise operations exactly instead of using the default
 {term}`overapproximation`s.  It is useful when the Prover reports a
