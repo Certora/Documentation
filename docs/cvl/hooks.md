@@ -112,6 +112,11 @@ of `C.totalSupply`:
 hook Sstore C.totalSupply uint ts { ... }
 ```
 
+```{note}
+A hook will **not** be triggered by CVL code, including access to solidity 
+storage from CVL.
+```
+
 (access-paths)=
 ### Access paths
 
