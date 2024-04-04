@@ -6,7 +6,7 @@ Installation
 ============
 
 ```{attention}
-These instuctions are for Linux and macOs systems.
+These instructions are for Linux and macOS systems.
 Windows users should use [WSL][wsl] and follow the
 Linux installation instructions.
 ```
@@ -90,7 +90,7 @@ can arise during installation and how to deal with them:
 
    .. tab-set::
    
-      .. tab-item:: macOs
+      .. tab-item:: macOS
          :sync: macos
    
          .. code-block:: text
@@ -230,7 +230,7 @@ follow the next steps:
 ```{eval-rst}
 .. tab-set::
 
-   .. tab-item:: macOs
+   .. tab-item:: macOS
       :sync: macos
 
       * Open a terminal and make sure you're in the home directory:
@@ -357,7 +357,7 @@ full path to the `solc` executables folder every time.
 
    .. tab-set::
    
-      .. tab-item:: macOs
+      .. tab-item:: macOS
          :sync: macos
    
          * Open a terminal and move to the :file:`etc/paths.d` directory from root:
