@@ -114,7 +114,7 @@ If we want to skip both rules we could run
 ```{note}
 When used together with the {ref}`--rule` flag the logic is to collect all rules
 that pass the `--rule` flag(s) and then subtract from them all rules that match
-any `--exclude_rule` flags`
+any `--exclude_rule` flags.
 ```
 
 (--method)=
