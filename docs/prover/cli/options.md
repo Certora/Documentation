@@ -90,7 +90,7 @@ If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
 
 Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
-run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
+simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
 
 (--exclude_rule)=
 ### `--exclude_rule <rule_name_pattern>`
@@ -110,6 +110,12 @@ If `Bank.spec` includes the following properties:
 
 If we want to skip both rules we could run
 `certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
+
+```{note}
+When used together with the {ref}`--rule` flag the logic is to collect all rules
+that pass the `--rule` flag(s) and then subtract from them all rules that match
+any `--exclude_rule` flags`
+```
 
 (--method)=
 ### `--method <method_signature>`
