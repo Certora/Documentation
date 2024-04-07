@@ -368,24 +368,6 @@ To run the Prover, you will need to add the `solc` executable's folder to your `
     ```
 </details>
 
-Step 5 (for VS Code users): Install the Certora IDE Extension
---------------------------------------------------------------------------------
-
-All users of the Certora Prover can access the tool using the command line 
-interface, or [CLI](https://docs.certora.com/en/latest/docs/prover/cli/index.html). 
-Those who use Microsoft's Visual Studio Code editor (VS Code) also have the 
-option of using the Certora IDE Extension for that program.
-
-To install VS Code, follow the platform specific instructions found on the 
-[Visual Studio Code website](https://code.visualstudio.com/).
-
-Once VS Code is installed, search for "Certora IDE" in VS Code's extension pane 
-or [navigate there directly](https://marketplace.visualstudio.com/items?itemName=Certora.vscode-certora-prover) 
-and follow the prompts to install the extension.
-
-Instructions on how to use the Certora IDE extension are available directly from 
-the extension's marketplace page.
-
 Congratulations! You have just completed Certora Prover's installation and setup.
 
 ```{caution}
