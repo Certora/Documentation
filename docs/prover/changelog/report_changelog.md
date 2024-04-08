@@ -12,7 +12,7 @@ Rules Report Release Notes
 - [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all prover flags and CLI options)
 - [feat] Browser tab title now indicates the main contract and the message of the job to simplify identification of a job
 - [feat] Files with extension `.yul` - yul assembly files - can be displayed in the editor
-- [bug] When a job has been canceled or halted, only rules that were running are being displayed as killed 
+- [fix] When a job has been canceled or halted, only rules that were running are being displayed as killed 
   
 0.8.0 (Mar 11, 2024)
 ---------------------------
