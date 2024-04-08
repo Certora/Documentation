@@ -29,6 +29,7 @@ think about and write high-level properties.
 
 tutorials.md
 install.md
+ci.md
 running.rst
 properties/index.md
 satisfy.md
