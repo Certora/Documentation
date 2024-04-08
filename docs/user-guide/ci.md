@@ -1,5 +1,5 @@
 CI Configuration
 ================
 
-'''{code-block} yaml
+.. code-block:: yaml
     name: certora-verifications
