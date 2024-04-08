@@ -1,6 +1,6 @@
+```{index} single: ci
+```
+
+(ciconfiguration)=
 CI Configuration
 ================
-
-.. code-block:: yaml
-
-   name: certora-verifications
