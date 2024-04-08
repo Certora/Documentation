@@ -1,15 +1,18 @@
+.. role:: bash(code)
+   :language: bash
+
 CI Configuration
 ================
 
 Follow these steps to configure CI for GitHub Actions on your repository:
 
 * Step 1:
-   Add the certora cli key `as a secret`_ to your repository, the secret name is "CERTORAKEY"
+   Add the Certora CLI key `as a secret`_ to your repository, the secret name is "CERTORAKEY"
    and the value is the key provided.
 
 * Step 2:
-   Create a "certora_verification.yml" file under ".github" directory and 
-   use the following .yaml example as a template you can use to start running certora cli.
+   Create a :bash:`certora_verification.yml` file under :bash:`.github` directory and 
+   use the following `.yaml` example as a template you can use to start running `certora-cli`.
 
 .. code-block:: yaml
 
