@@ -1,9 +1,0 @@
-Learning from Examples
-======================
-
-The following resources are available for learning CVL from examples:
-
-
- - {doc}`../tutorials` lists workshops and tutorials that cover basic Prover usage
- - The [Examples Repository](https://github.com/Certora/Examples) contains examples and links to real projects
- - The [old documentation](/docs/confluence/examples.md) introduces Prover features by walking through some examples in CVL1.
