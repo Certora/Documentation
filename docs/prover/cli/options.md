@@ -642,26 +642,6 @@ Here are a few example scenarios:
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
 
-(--send_only)=
-### `--send_only`
-
-**What does it do?**
-Causes the CLI to exit immediately when the job is submitted, not waiting
-for its results.
-
-**When to use it?**
-Use it to run many jobs concurrently in a script, 
-or otherwise want the CLI not to block the terminal.
-
-```{note}
-This flag is only useful in CI environments. It is the default otherwise.
-```
-
-**Example**
-```sh
-certoraRun Example.sol --verify Example:Example.spec --send_only
-```
-
 (--smt_timeout)=
 ### `--smt_timeout <seconds>`
 

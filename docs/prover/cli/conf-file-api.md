@@ -46,16 +46,16 @@ The values in the map depend on the type of arguments:
     }
     ```
 
-* Boolean options are options that take no arguments (for example {ref}`--send_only`). In 
+* Boolean options are options that take no arguments (for example {ref}`----multi_assert_check`). In 
 the conf file all keys must come with a value, the value for boolean options is `true`. 
 Since the default value of boolean options is `false` there is no need to set a boolean attribute to values other than `true`.  For example,
     ```sh
-    certoraRun --send_only
+    certoraRun --multi_assert_check
     ```
 
     would be encoded as:
     ```json
-    { "send_only": true }
+    { "multi_assert_check": true }
     ```
 
 * Options that expect a single argument (for example {ref}`--solc` or {ref}`--loop_iter`) 
