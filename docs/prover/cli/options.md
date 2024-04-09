@@ -166,9 +166,10 @@ The return code will not be zero if the verification finds a violation.
 **When to use it?**
 Use it to receive verification results in the terminal or a wrapping script.
 
-```{note}
-This flag is the default in CI environments.
-```
+In CI, the default behavior is different: the Prover waits for verification results,
+and the return code will not be zero if a violation is found. 
+You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
+In that case, the return code will be zero if the jobs were sent successfully.
 
 **Example**
 ```sh
