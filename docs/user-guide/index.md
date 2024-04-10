@@ -33,6 +33,7 @@ ci.rst
 running.rst
 properties/index.md
 satisfy.md
+invariants.rst
 ghosts.md
 patterns/index.md
 opcodes.md
