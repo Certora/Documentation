@@ -26,6 +26,7 @@ UX
 Unary
 Vyper
 Yices
+Yul
 autofinders
 axiomatization
 axiomatized
@@ -131,6 +132,7 @@ remappings
 replayable
 representable
 reproducibility
+runtime
 satisfiability
 satisfiable
 scalable

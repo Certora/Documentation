@@ -8,46 +8,46 @@ Prover Release Notes
 7.3.0 (April 11, 2024)
 ----------------------
 ### CVL
-[feat] An option to make autofinders for internal functions less likely to cause compilation failures, `--use_memory_safe_autofinders`
-[feat] {ref}`Dispatch-list summarization for calls with unresolved method identifiers <catch-unresolved-calls-entry>`
-[feat] Preliminary support for `tload`, `tstore` operations in inline-assembly Solidity and EVM, along with `ALL_TLOAD` and `ALL_TSTORE` hooks, see {ref}`transient-storage` and {ref}`rawhooks`
-[feat] {ref}`Support direct access to immutables, including private immutables <direct-immutable-access>`
-[feat] grounding of quantifiers supported with direct storage access expressions
-[feat] Support asterisk (*) wildcard in `--rule`, and a new option for `--exclude_rule`, see {ref}`--exclude_rule`
-[feat] Support using `requireInvariant` with unused invariants from imported contracts
-[feat] Support `blobhash` instruction and opcode hooks
-[bugfix] Fix `--address` setting of fixed addresses to contracts to reflect in counterexamples properly
-[bugfix] Fixes to internal function detection
-[bugfix] Fix issue when dealing with contract-types
-[bugfix] Support multiple havoc-assuming statements inside a rule, hook, or function
-[bugfix] Support unary minus in quantifier expressions
-[bugfix] A helper option for detecting internal functions with Yul-optimizations enabled, `--finder_friendly_optimizer`
-[bugfix] A collection of fixes to internal function detection and summarization
-[bugfix] Support of summarization in old code using patterns like MakerDAO’s `note` modifier, enabled with `--prover_args '-rewriteMSizeAllocations true'` (the Global Warnings tab will advise when it’s recommended to be enabled)
+- [feat] An option to make autofinders for internal functions less likely to cause compilation failures, `--use_memory_safe_autofinders`
+- [feat] {ref}`Dispatch-list summarization for calls with unresolved method identifiers <catch-unresolved-calls-entry>`
+- [feat] Preliminary support for `tload`, `tstore` operations in inline-assembly Solidity and EVM, along with `ALL_TLOAD` and `ALL_TSTORE` hooks, see {ref}`transient-storage` and {ref}`rawhooks`
+- [feat] {ref}`Support direct access to immutables, including private immutables <direct-immutable-access>`
+- [feat] grounding of quantifiers supported with direct storage access expressions
+- [feat] Support asterisk (*) wildcard in `--rule`, and a new option for `--exclude_rule`, see {ref}`--exclude_rule`
+- [feat] Support using `requireInvariant` with unused invariants from imported contracts
+- [feat] Support `blobhash` instruction and opcode hooks
+- [bugfix] Fix `--address` setting of fixed addresses to contracts to reflect in counterexamples properly
+- [bugfix] Fixes to internal function detection
+- [bugfix] Fix issue when dealing with contract-types
+- [bugfix] Support multiple havoc-assuming statements inside a rule, hook, or function
+- [bugfix] Support unary minus in quantifier expressions
+- [bugfix] A helper option for detecting internal functions with Yul-optimizations enabled, `--finder_friendly_optimizer`
+- [bugfix] A collection of fixes to internal function detection and summarization
+- [bugfix] Support of summarization in old code using patterns like MakerDAO’s `note` modifier, enabled with `--prover_args '-rewriteMSizeAllocations true'` (the Global Warnings tab will advise when it’s recommended to be enabled)
 
 ### Rule Report
-[feat] Improved presentation of arrays and arrays’ length in the call trace
-[bugfix] Do not show rules as verified if the sanity check timedout
-[ux] Show internal functions that could not be detected (and as a result, summarized) in the global problems view
-[ux] Avoid showing redundant and irrelevant analysis failures
+- [feat] Improved presentation of arrays and arrays’ length in the call trace
+- [bugfix] Do not show rules as verified if the sanity check timed-out
+- [UX] Show internal functions that could not be detected (and as a result, summarized) in the global problems view
+- [UX] Avoid showing redundant and irrelevant analysis failures
 
 ### Performance
-[bugfix] Better safe math optimization for multiplication by constants
-[bugfix] Fixes to new parallel splitter mode
+- [bugfix] Better safe math optimization for multiplication by constants
+- [bugfix] Fixes to new parallel splitter mode
 
 ### CLI
-[feat] {ref}`--compilation_steps_only` option is exposed (runs only compilation and typechecking)
-[feat] {ref}`--precise_bitwise_ops` to easily enable bitvector-theory solvers
+- [feat] {ref}`--compilation_steps_only` option is exposed (runs only compilation and type checking)
+- [feat] {ref}`--precise_bitwise_ops` to easily enable bit-vector theory solvers
 Mutation Testing
 
 ### Mutation Testing
-[feat] Allow omitting the `--conf` flag to perform collection only
-[bugfix] Fix root directory issue for mutated files in subdirectories
-[bugfix] Rules that failed sanity during the run on the original code but capture mutants will not be ignored when computing caught mutants
+- [feat] Allow omitting the `--conf` flag to perform collection only
+- [bugfix] Fix root directory issue for mutated files in subdirectories
+- [bugfix] Rules that failed sanity during the run on the original code but capture mutants will not be ignored when computing caught mutants
 
 ### Misc.
-[feat] Preliminary support for running the Prover on `.yul` contracts
-[bugfix] Assume strictly monotonic increasing free memory pointer, to avoid counterexamples due to overflow in memory access
+- [feat] Preliminary support for running the Prover on `.yul` contracts
+- [bugfix] Assume strictly monotonic increasing free memory pointer, to avoid counterexamples due to overflow in memory access
 
 
 7.0.7 (March 15, 2024)
