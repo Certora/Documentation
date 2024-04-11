@@ -26,6 +26,7 @@ UX
 Unary
 Vyper
 Yices
+autofinders
 axiomatization
 axiomatized
 bitwidth

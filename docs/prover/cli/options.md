@@ -383,6 +383,7 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
+(--solc_via_ir)=
 ### `--solc_via_ir`
 
 **What does it do?**
@@ -589,6 +590,27 @@ The notification in the rule report that contains the applied summaries will pre
 ```bash
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs --auto_nondet_minimal_difficulty 20
 ```
+
+(--use_memory_safe_autofinders)
+### `--use_memory_safe_autofinders`
+
+**What does it do?**
+Avoids compilation errors when using `certoraRun` by marking auto-generated instrumented assembly
+code as `memory-safe`.
+
+**When to use it**
+If you see `solc` failures right after the `certoraRun` prints
+`Compiling XXX to expose internal function information...`,
+and the compiled contract is compiled with Solidity version 0.8.13 and above.
+
+It is usually useful in conjunction with {ref}`--solc_via_ir`.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir --use_memory_safe_autofinders
+```
+
 
 Options regarding hashing of unbounded data
 -------------------------------------------
