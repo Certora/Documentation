@@ -555,7 +555,7 @@ The notification in the rule report that contains the applied summaries will pre
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs --auto_nondet_minimal_difficulty 20
 ```
 
-(--use_memory_safe_autofinders)
+(--use_memory_safe_autofinders)=
 ### `--use_memory_safe_autofinders`
 
 **What does it do?**
