@@ -552,6 +552,7 @@ As with direct storage access in general, direct storage havoc is experimental a
 * enums
 ```
 
+(direct-immutable-access)=
 ### Direct immutable access
 
 The Certora Prover allows to access immutable variables in a contract, in
