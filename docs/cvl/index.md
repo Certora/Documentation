@@ -1,3 +1,4 @@
+(cvl-language)=
 The Certora Verification Language
 =================================
 
@@ -24,6 +25,7 @@ sorts.md
 ghosts.md
 defs.md
 hooks.md
+transient.md
 ```
 
 Changes Since CVL 1

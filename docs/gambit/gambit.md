@@ -221,9 +221,7 @@ For projects that have complex dependencies and imports, you may need to:
 [basepath]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#base-path-and-include-paths
 [allowed]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
-
-(gambit-config)=
-### Example 5: The `--sourceroot`  option
+### Example 5: The `--sourceroot` option
 
 Gambit needs to track the location of source files that it mutates within a
 project: for instance, imagine there are files `foo/Foo.sol` and `bar/Foo.sol`.
@@ -301,6 +299,7 @@ Here are some examples of using the `--sourceroot` option.
 
    Gambit prints an error and exits.
 
+(gambit-config)=
 ### Example 6: Running Gambit using a configuration file
 
 To run gambit with a configuration file, use the `--json` argument:

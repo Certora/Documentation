@@ -552,6 +552,46 @@ As with direct storage access in general, direct storage havoc is experimental a
 * enums
 ```
 
+### Direct immutable access
+
+The Certora Prover allows to access immutable variables in a contract, in
+a similar way to direct storage access.
+For example, given a contract:
+```solidity
+contract WithImmutables {
+  address private immutable myImmutAddr;
+  bool public immutable myImmutBool;
+
+  constructor() { ... }
+  function publicGetterForPrivateImmutableAddr() external returns (address) {
+    return myImmutAddr;
+  }
+}
+``` 
+
+We can access both `myImmutAddr` and `myImmutBool` directly from CVL
+like this:
+```cvl
+using WithImmutables as withImmutables;
+
+methods {
+  function publicGetterForPrivateImmutableAddr() external returns (address) envfree;
+  function myImmutBool() external returns (bool) envfree;
+}
+
+rule accessPrivateImmut {
+  assert withImmutables.myImmutAddr == publicGetterForPrivateImmutableAddr();
+}
+
+rule accessPublicImmut {
+  assert withImmutables.myImmutBool == withImmutables.myImmutBool();
+}
+```
+
+The advantages of direct immutable access is that there is no need to 
+declare `envfree` methods for the public immutables, and even more importantly, nor is there a need to harness contracts in order to
+expose the private immutables.
+
 ## Built-in Functions
 
 ### Hashing

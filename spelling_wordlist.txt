@@ -26,6 +26,7 @@ UX
 Unary
 Vyper
 Yices
+autofinders
 axiomatization
 axiomatized
 bitwidth
@@ -51,6 +52,7 @@ config
 conjoined
 decompilation
 decompiler
+deduplication
 dereference
 dereferences
 destructuring

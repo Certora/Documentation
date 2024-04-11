@@ -45,10 +45,8 @@ often there are slight variations on the input that do not impact the property
 being proven and that make the problem tractable. This practice is likely to
 require experience, which we collect in the {ref}`timeout-prevention` section.
 
-In the section on the [theoretical background of verification
-timeouts](timeouts-theory.md) we gave a few details on SMT solver architecture.
-We can use the parts of the SMT solver for some intuition on different kinds of
-complexity explosions.
+We can use the parts of an SMT solver that we discussed before for some
+intuition on different kinds of complexity explosions.
 
 | Difficulty         | Solver parts  |
 |--------------------|---------------|
