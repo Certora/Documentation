@@ -39,7 +39,7 @@ The corresponding spec file is named
 :clink:`ERC20Fixed.spec </DEFI/ERC20/certora/specs/ERC20Fixed.spec>`.
 Here is a rule from this spec:
 
-.. cvlinclude:: ../../../Examples/DEFI/ERC20/certora/specs/ERC20Fixed.spec
+.. cvlinclude:: ../../Examples/DEFI/ERC20/certora/specs/ERC20Fixed.spec
    :cvlobject: transferSpec
    :caption: :clink:`from ERC20Fixed.spec </DEFI/ERC20/certora/specs/ERC20Fixed.spec>`
 
