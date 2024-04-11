@@ -12,7 +12,7 @@ Rules Report Release Notes
 - [feat] Jump To Source: Animation to highlight already selected line on button click
 - [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all prover flags and CLI options)
 - [feat] Browser tab title now indicates the main contract and the message of the job to simplify identification of a job
-- [feat] Files with extension `.yul` - yul assembly files - can be displayed in the editor
+- [feat] Files with extension `.yul` - [Yul files](https://docs.soliditylang.org/en/latest/yul.html) - can be displayed in the editor
 - [fix] When a job has been canceled or halted, only rules that were running are being displayed as killed 
   
 0.8.0 (Mar 11, 2024)
@@ -20,7 +20,7 @@ Rules Report Release Notes
 
 ### Features
 
-- [feat] Jump To Source Feature (works only in combination with certora-cli version later than 7.1.0)
+- [feat] Jump To Source Feature (works only in combination with Certora version later than 7.1.0)
 - [feat] New tooltips on labels for the call trace
 
 ### Bugs
@@ -63,7 +63,7 @@ Rules Report Release Notes
 
 ### Bugs
 
-- [hotfix] Fixed removed links to deprecated Certora Forum
+- [fix] Fixed removed links to deprecated Certora Forum
 
 
 0.5.6 (October 24, 2023)
