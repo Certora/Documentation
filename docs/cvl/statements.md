@@ -231,6 +231,10 @@ In the given example, the havoc statement introduces non-deterministic values fo
 `sumAllBalance@old()`: Value in the previous state.
 `balance - old_balance`: Change in the balance variable.
 
+```{note} 
+{doc}`hooks` will not be triggered for havoc statements. That is, if there is a hook defined on load, or store, of the `sumAllBalance` variable,
+it will not be triggered from the havoc statement. 
+```
 
 ### Advanced Usage: `havoc assuming`
 

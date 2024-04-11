@@ -13,8 +13,8 @@ verification community. _**Specifications**_ define a set of rules that call
 into the contract under analysis and make various assertions about its
 behavior. Together with the contract under analysis, these rules are compiled
 to a logical formula called a {term}`verification condition`, which is then
-proved or disproved by an SMT solver. If the rule is disproved, the solver also
-provides a concrete test case demonstrating the violation.
+proved or disproved by an {term}`SMT solver`. If the rule is disproved, the
+solver also provides a concrete test case demonstrating the violation.
 
 The rules of the specification play a crucial role in the analysis. Without
 adequate rules, only very basic properties can be checked (e.g., no assertions
@@ -28,17 +28,16 @@ think about and write high-level properties.
 :maxdepth: 1
 
 tutorials.md
-getting-started/index.md
-basics/index.md
+install.md
+running.rst
 properties/index.md
 satisfy.md
+ghosts.md
 patterns/index.md
-multicontract/index.md
-timeouts/index.md
 opcodes.md
+multicontract/index.md
+out-of-resources/index.md
 gaps.md
 checking.md
 glossary.md
-contact.md
 ```
-
