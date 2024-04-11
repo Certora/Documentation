@@ -35,7 +35,7 @@ access_path ::= id
               | access_path "[" "INDEX" basic_type id "]"
               | access_path "." "(" "offset" number ")"
 
-opcode ::= "ALL_SLOAD" | "ALL_SSTORE" | ...
+opcode ::= "ALL_SLOAD" | "ALL_SSTORE" | "ALL_TLOAD" | "ALL_TSTORE" | ...
 
 param  ::= evm_type id
 ```
@@ -226,7 +226,7 @@ global problems view of the rule report.  See {ref}`storage-and-memory-analysis`
 for more details.
 
 (rawhooks)=
-### Hooking on all loads or stores
+### Hooking on all storage loads or stores
 
 Load and store hooks apply to reads and writes to specific storage locations.
 In some cases, it is useful to instrument every load or store, regardless of
@@ -271,6 +271,21 @@ hook.  Therefore, in a rule that models calls to multiple contracts, if two
 contracts are accessing the same slot the same hook code will be called with
 the same slot number.
 ```
+
+#### Notes on transient storage.
+In a similar vein to `ALL_SLOAD` and `ALL_SSTORE` hooks, CVL also allows
+to hook on `TLOAD` and `TSTORE` instructions for updating the transient 
+storage, using the `ALL_TLOAD` and `ALL_TSTORE` hooks. 
+The hooks for transient storage access share the syntax of their regular storage counterparts.
+
+Given that Solidity only allows (as of v0.8.25) access to transient 
+storage via inline-assembly, and has no notion of structure to 
+transient storage, Prover currently does not expose access-path based
+access like for the regular storage hooks.
+
+For more information on how the Prover models transient storage, 
+please refer to the relevant section on {ref}`transient storage <transient-storage>`.
+
 
 (opcode-hooks)=
 EVM opcode hooks
