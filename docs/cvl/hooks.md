@@ -376,6 +376,8 @@ hook STATICCALL(uint g, address addr, uint argsOffset, uint argsLength, uint ret
 
 hook REVERT(uint offset, uint size)
 
+hook BLOBHASH(uint n) bytes32 hash
+
 hook SELFDESTRUCT(address a)
 ```
 
