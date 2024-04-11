@@ -4,6 +4,68 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+1.0.0 (Apr 11, 2024)
+---------------------------
+
+### Features
+
+- [feat] Jump To Source: Animation to highlight already selected line on button click
+- [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all prover flags and CLI options)
+- [feat] Browser tab title now indicates the main contract and the message of the job to simplify identification of a job
+- [feat] Files with extension `.yul` - [Yul files](https://docs.soliditylang.org/en/latest/yul.html) - can be displayed in the editor
+- [fix] When a job has been canceled or halted, only rules that were running are being displayed as killed 
+  
+0.8.0 (Mar 11, 2024)
+---------------------------
+
+### Features
+
+- [feat] Jump To Source Feature (works only in combination with Certora version later than 7.1.0)
+- [feat] New tooltips on labels for the call trace
+
+### Bugs
+
+- [fix] Fixed tracking points
+- [fix] Fixed sharing button
+
+
+0.7.0 (Feb 12, 2024)
+---------------------------
+
+### Bugs
+
+- [fix] Fixed bug when collapsing the left pane of the main grid
+- [fix] Fixed bug when collapsing entries in the call trace
+
+
+0.6.0 (Jan 31, 2024)
+---------------------------
+
+### Features
+
+- [feat] Live Difficulty Statistics
+- [feat] Adding tool tips to status
+
+### Bugs
+
+- [fix] Fixed file contents were shown to be loading for indefinite time
+
+
+0.5.7 (Nov 26, 2023)
+---------------------------
+
+### Features
+
+- [feat] Improvements on naming for global / rule notifications
+
+0.5.62 (Feb 11, 2024)
+---------------------------
+
+### Bugs
+
+- [fix] Fixed removed links to deprecated Certora Forum
+
+
 0.5.6 (October 24, 2023)
 ---------------------------
 
