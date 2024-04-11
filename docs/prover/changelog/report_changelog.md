@@ -4,11 +4,12 @@ Rules Report Release Notes
 ```{contents}
 ```
 
-0.9.0 (Mar 11, 2024)
+1.0.0 (Apr 11, 2024)
 ---------------------------
 
 ### Features
 
+- [feat] Jump To Source: Animation to highlight already selected line on button click
 - [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all prover flags and CLI options)
 - [feat] Browser tab title now indicates the main contract and the message of the job to simplify identification of a job
 - [feat] Files with extension `.yul` - yul assembly files - can be displayed in the editor
