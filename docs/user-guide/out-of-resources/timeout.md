@@ -1,10 +1,13 @@
 (timeouts-introduction)=
-# Introduction
+# Timeouts
 
 In the following, we will give a basic classification of timeouts, explain some
 candidate causes for timeouts, and show ways to sometimes prevent them. See
 {ref}`timeouts-background` for a glimpse into some of the theoretical background
 on verification timeouts.
+
+(timeouts-classification)=
+## Classification of Timeouts
 
 For a first classification of timeouts in Certora Prover, we consider on where
 in the Prover's pipeline they occur. The pipeline starts by compiling a CVL rule
@@ -61,7 +64,7 @@ In the remainder, we will focus on the mitigation of SMT timeouts, i.e., types
 %  delete (and also document DELETE summaries)
 
 (timeout_causes)=
-# Identifying timeout causes
+## Identifying timeout causes
 
 As a first step towards resolving an SMT timeout, we need to diagnose its root
 causes. In our experience, the following are some of the most common reasons for
@@ -87,12 +90,12 @@ only sources of complexity, they provide a good idea of the probable causes for
 a given timeout. 
 
 
-## Complexity feedback from Certora Prover
+### Complexity feedback from Certora Prover
 
 Certora Prover provides help with diagnosing timeouts. We present these features
 in this section.
 
-### Difficulty statistics
+#### Difficulty statistics
 
 Certora Prover provides statistics on the problem sizes it encounters. These
 statistics are available in the {ref}`tac-reports` that are generated in case of
@@ -132,7 +135,7 @@ For more details on the individual statistics and how to make use of them, also
 see the section on {ref}`dealing-with-complexity` below.
 
 (timeout-tac-reports)=
-### Timeout TAC reports
+#### Timeout TAC reports
 
 For each verification item, there is a TAC graph linked in the verification
 report. In case of a timeout this graph contains information on which parts of
@@ -145,7 +148,7 @@ In the timeout case, the TAC reports contain some additional information that
 should help with diagnosing the timeout.
 
 
-### Finding timeout causes through modularization
+#### Finding timeout causes through modularization
 
 In addition to the other techniques described here, it can be insightful to
 remove parts of the code in order to isolate the timeout reason. If timeouts are
@@ -154,7 +157,7 @@ order to prove correctness of the parts separately.
 These techniques are a relatively blunt instrument, but can be necessary in 
 particular with large or complex code bases.
 
-#### Sanity rules
+##### Sanity rules
 
 One way of isolating the timeout cause is by running with a trivial
 specification.  This way, the specification is ruled out as the source of
@@ -166,7 +169,7 @@ Sanity rules are such trivial specifications. For documentation on them, see
 {ref}`sanity <built-in-sanity>` and {ref}`deep sanity <built-in-deep-sanity>`. 
 
 (timeout-causes-library-contracts)=
-#### Library contracts
+##### Library contracts
 
 Some systems are based on multiple library contracts which implement the
 business logic. They also forward storage updates to a single external contract
@@ -190,7 +193,7 @@ subject to summarizations specified in the spec file's `methods` block.
 ```
 
 (timeout-prevention)=
-# Timeout prevention
+## Timeout prevention
 
 Timeout prevention approaches fall into these categories.
 1. changing tool settings
@@ -216,8 +219,20 @@ There is also some helpful information in the section on
 Some of the information in these references is out of date.
 ```
 
+(timeout-single-rule)=
+### Running rules individually
+
+The Certora Prover works on the rules of the specification in parallel.
+Even if no rule is very expensive on its own, working on all of them in parallel
+can add up quickly and thereby exceed the timeout.
+Try running individual rules only via the {ref}`--rule` option, or split the
+specification into separate files. Keep in mind that a {term}`parametric rule`,
+as well as an {term}`invariant`, spawns a sub-rule for every contract method.
+This can further be reduced via the {ref}`--method` option.
+
+
 (detect-candidates-for-summarization)=
-## Detect candidates for summarization
+### Detect candidates for summarization
 
 In a large codebase it can be hard to find all the functions that may be difficult for the Prover.
 A traditional approach would be to run a simple parametric rule to explore all functions in the 
@@ -239,7 +254,7 @@ To enable this mode, add {ref}`--auto_nondet_difficult_internal_funcs` to the `c
 The minimal difficulty threshold used for the auto-summarization
 can be adjusted using {ref}`--auto_nondet_minimal_difficulty`.
 
-### Example usage
+#### Example usage
 
 Many DeFi protocols use the `openzeppelin` math libraries.
 One such library is `MathUpgradeable`, providing a `mulDiv` functionality:
@@ -260,7 +275,7 @@ The "Contracts Call Resolutions" tab and the "Rule Call Resolution" bar also sho
 the instrumented auto-summaries, and distinguishes between them and user-defined summaries.
 
 (dealing-with-complexity)=
-## Dealing with different kinds of complexity
+### Dealing with different kinds of complexity
 
 % screenshots in this subsection are taken from this run:
 % https://vaas-stg.certora.com/output/80942/9101c7e51a27456eb51bd9d088949c92?anonymousKey=25cca030b7594b795d994e937b5a027812d9406d
@@ -276,7 +291,7 @@ are worth considering no matter which statistic is showing high severity.
 ```
 
 (high-path-count)=
-### Dealing with a high path count
+#### Dealing with a high path count
 
 The number of control flow paths is a major indication of how difficult a rule
 is to solve. Intuitively, in order to obtain a correctness proof for the rule, 
@@ -294,7 +309,7 @@ Global and per-call path counts are displayed in the Live Statistics panel for
 each rule.
 ```
 
-#### Path explosion
+##### Path explosion
 
 The number of paths that are given in the path count statistic might seem very high 
 to users. The essential reason for these high number is known as the 
@@ -328,7 +343,7 @@ A particular potential cause for path explosion are {ref}`dispatcher`. How much 
  - whether the function is called in sequence or in parallel in the control flow 
    (generally control flow branchings in sequence lead to an exponential path explosion)
 
-#### Mitigation approaches
+##### Mitigation approaches
 
 In order to reduce the path count of a rule, the usual modularization techniques,
 like method summarization, can be applied. (See also the section 
@@ -389,7 +404,7 @@ certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediu
 ```
 
 (high-nonlinear-op-count)=
-### Dealing with nonlinear arithmetic
+#### Dealing with nonlinear arithmetic
 
 Nonlinear integer arithmetic is often the hardest part of the formulas that the
 Certora Prover is solving. 
@@ -446,7 +461,7 @@ be used. This measure will not change the values in the Live Statistics panel,
 but it has prevented timeouts in some cases nonetheless.
 
 (high-memory-complexity)=
-### Dealing with high memory (or storage) complexity
+#### Dealing with high memory (or storage) complexity
 
 The memory complexity of each rule or parametric rule is displayed in the Live
 Statistics panel in the Certora Prover reports. 
@@ -483,7 +498,7 @@ Entry in the Live Statistics panel indicating memory complexity
 
 In the following we consider common culprits for high memory complexity.
 
-#### Passing complex structs
+##### Passing complex structs
 
 One common reason for high memory complexity are complex data structures that
 are passed from the specification to the program, or also inside the program.
@@ -521,7 +536,7 @@ especially in large structs. Naturally, the removal might be complicated by the
 fact that all usages of these fields also need some munging steps applied to
 them.
 
-#### Memory and storage in inline assembly
+##### Memory and storage in inline assembly
 
 The Certora Prover employs [static analyses and
 simplifications](storage-and-memory-analysis) in order to make the reasoning
@@ -538,7 +553,7 @@ failures less frequent as well.)
 
 
 (modular-verification)=
-## Modular verification
+### Modular verification
 
 Often it is useful to break a complex problem into simpler subproblems; this
 process is called modularization. You can modularize a verification problem by
@@ -549,7 +564,7 @@ prevention.
 
 
 (library_timeouts)=
-### Library-based systems
+#### Library-based systems
 
 As mentioned here [before](timeout-causes-library-contracts), systems with
 libraries are a natural candidate for modularization.
@@ -571,3 +586,17 @@ The above snippet has the effect of summarizing as `NONDET` all external calls
 to the library and _internal_ ones as well. Only `NONDET` and `HAVOC` summaries
 can be applied. 
 For more information on method summaries, see {ref}`summaries`.
+
+
+(timeout-cli-options)=
+### Command line options
+
+There are a number of command line options that influence specific parts of the
+Prover's pipeline. While their default values generally yield the best results,
+changing them is known to improve running time in certain cases.
+
+
+#### `--prover_args '-calltraceFreeOpt true'`
+
+This option allows for some rather aggressive simplifications. However, it
+possibly breaks call trace generation.

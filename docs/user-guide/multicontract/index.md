@@ -1,3 +1,8 @@
+```{eval-rst}
+.. role:: cvl(code)
+   :language: cvl
+```
+
 Working with Multiple Contracts
 ===============================
 
@@ -15,7 +20,7 @@ is not known at verification time.  Finally, we give a concrete and reusable
 setup for a very common case: a contract that can work with many different ERC20
 implementations.
 
-The entire running example for this chapter can be found [here][example-repo].
+The entire running example for this chapter can be found {clink}`here</DEFI/LiquidityPool/>`.
 
 ```{contents}
 ```
@@ -23,63 +28,59 @@ The entire running example for this chapter can be found [here][example-repo].
 Example protocol
 ----------------
 
-To demonstrate these concepts, we work with a simplified liquidity pool called
-`Pool`.  The [completed specification][pool-spec] is in
-`certora/specs/pool.spec` (although this chapter only discusses the
+To demonstrate these concepts, we work with a simplified liquidity pool contract called
+{clink}`Pool</DEFI/LiquidityPool/contracts/Pool.sol>`.
+The {clink}`full specification</DEFI/LiquidityPool/certora/specs/Full.spec>` is in
+`certora/specs/Full.spec` (although this chapter only discusses the
 `integrityOfDeposit` and `flashLoanIncreasesBalance` properties) and the
-[final run script][pool-script] is in `certora/scripts/verifyPool.sh`.
+{clink}`final run conf</DEFI/LiquidityPool/runFullPool.conf>` is in `runFullPool.conf`.
 
 The liquidity pool allows users to deposit and withdraw a single fixed type of
-ERC20 token (the `asset`).  The liquidity pool itself also acts as an ERC20
-token; depositing assets into the pool increases the user's balance, while
-withdrawing decreases their balance ([full contract][pool]).
+ERC20 token (the `asset`). The liquidity pool itself is an ERC20 token and
+balance in the liquidity pool token denotes the _shares_ in the pool.
+We'll reserve the words _amount_ and _assets_ to denote balance in the `asset`.
+So, in return for depositing _assets_ the user receives _shares_ in the pool.
+Withdrawing decreases the user's shares and increases the user' assets.
 
-```solidity
-contract Pool
-      is ERC20
-{
-    IERC20 public immutable asset;
+Here is the interface for the pool, followed by the Pool's code.
 
-    /// transfers `amount` of `asset` from `msg.sender` to `this`;
-    /// mints `amount` of `this` for `msg.sender`
-    function deposit(uint256 amount)  external returns(uint256 shares) { ... }
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/contracts/IPool.sol
+   :language: solidity
+   :caption: :clink:`IPool interface</DEFI/LiquidityPool/contracts/IPool.sol>`
+```
 
-    /// transfers `sharesToAmount(shares)` of `asset` from `this` to `msg.sender`;
-    /// burns `shares` of `this` from `msg.sender`
-    function withdraw(uint256 shares) external returns(uint256 amount) { ... }
+```{eval-rst}
+.. dropdown:: :clink:`Pool.sol </DEFI/LiquidityPool/contracts/Pool.sol>`
 
-    ...
-}
+   .. literalinclude:: ../../../Examples/DEFI/LiquidityPool/contracts/Pool.sol
+      :language: solidity
 ```
 
 For demonstration purposes, we have also added function `assetBalance`, which
 returns the pool's balance of the underlying asset (we'll see
 {ref}`later <using-example>` that this is not necessary):
 
-```solidity
-function assetBalance() public view returns (uint256) {
-    return asset.balanceOf(this);
-}
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/contracts/Pool.sol
+   :language: solidity
+   :caption: :clink:`assetBalance</DEFI/LiquidityPool/contracts/IPool.sol>`
+   :lines: 82-84
 ```
 
-
-Users can also take out flash loans - loans that must be repaid within the same
+Users can also take out _flash loans_ - loans that must be repaid within the same
 transaction.  To do so, the user calls `flashLoan`, passing in a
 `FlashLoanReceiver` contract and the desired number of tokens.  The `flashLoan`
 method transfers the tokens to the receiver, calls the `executeOperation`
 method on the receiver, and finally transfers the tokens (plus a fee) from the
 receiver back to the pool:
 
-```solidity
-function flashLoan(IFlashLoanReceiver receiver, uint256 amount) external {
-    uint fee = ...;
 
-    asset.transferFrom(address(this), msg.sender, amount);
-
-    receiver.executeOperation(amount, fee, msg.sender);
-
-    asset.transferFrom(msg.sender, address(this), amount + fee);
-}
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/contracts/Pool.sol
+   :language: solidity
+   :caption: :clink:`flashLoan</DEFI/LiquidityPool/contracts/IPool.sol>`
+   :lines: 67-76
 ```
 
 Our goal is to prove properties about the `Pool` contract, but we will need to
@@ -87,7 +88,7 @@ interact with the entire combined protocol consisting of the `Pool` contract,
 the `Asset` contract, and the `FlashLoanReceiver` contracts.  We will begin by
 explaining the default behavior of the Prover when making external calls to
 unknown contracts.  We will then show how to link the specific `Asset` contract
-implementation to the `Pool` contract.  Finally, we will show some techniques
+implementation to the `Pool` contract. Finally, we will show some techniques
 for reasoning about the open-ended set of possible `FlashLoanReceiver`
 implementations.
 
@@ -98,24 +99,12 @@ Handling unresolved method calls
 To start, let's write a basic property of the pool and run the Prover on the
 `Pool` contract to see how it handles calls to unknown code.
 
-Here is a simple property ([full spec][pool-havoc]):
+Here is a simple property:
 
-```cvl
-/// `deposit` must increase the pool's underlying asset balance
-rule integrityOfDeposit {
-
-    mathint balance_before = assetBalance();
-
-    env e; uint256 amount;
-    require e.msg.sender != currentContract;
-
-    deposit(e, amount);
-
-    mathint balance_after = assetBalance();
-
-    assert balance_after == balance_before + amount,
-        "deposit must increase the underlying balance of the pool";
-} 
+```{eval-rst}
+.. cvlinclude:: ../../../Examples/DEFI/LiquidityPool/certora/specs/pool_havoc.spec
+   :cvlobject: integrityOfDeposit
+   :caption: :clink:`integrityOfDeposit</DEFI/LiquidityPool/certora/specs/pool_havoc.spec>`
 ```
 
 This rule makes a call to `Pool.deposit(...)`, which in turn makes a call to
@@ -140,10 +129,12 @@ calling contract*[^reentrancy] (a `HAVOC_ECF` summary).  See
   summary; see {ref}`havoc-summary` for details.
 
 We can see this behavior by verifying the `integrityOfDeposit` rule against the
-`Pool` contract without giving the Prover access to the `Asset` contract ([full script][havoc-script]):
+`Pool` contract without giving the Prover access to the `Asset` contract.
+The {clink}`JustPool.conf</DEFI/LiquidityPool/JustPool.conf>` config file does
+just that, run it using:
 
 ```sh
-$ certoraRun contracts/Pool.sol --verify Pool:certora/specs/pool_havoc.spec ...
+$ certoraRun JustPool.conf
 ```
 
 In this case, the `integrityOfDeposit` rule fails.  To understand why, we can
@@ -188,7 +179,8 @@ the Prover knows about.  This set of contracts is called the {term}`scene`.  You
 can add a contract to the scene by passing the solidity source as a
 [command line argument](/docs/prover/cli/options.md)
 to `certoraRun`.  The Prover creates a contract instance (with a corresponding
-address[^addressOption]) in the scene for each source contract provided on the command line:
+address[^addressOption]) in the scene for each source contract provided on the command
+line (or the config file).
 
 ```sh
 $ certoraRun contracts/Pool.sol contracts/Asset.sol --verify Pool:certora/specs/pool_havoc.spec ...
@@ -205,13 +197,13 @@ bytecode the field is just treated as an `address`, and at run time the field
 could point to any contract.
 
 To connect the `Asset` code to the `Pool.asset` field, we can use the
-{ref}`--link` option ([full script][pool-link-script]):
+{ref}`--link` option:
 
-```sh
-$ certoraRun contracts/Pool.sol contracts/Asset.sol \
-    --verify Pool:certora/specs/pool_havoc.spec \
-    --link   Pool:asset=Asset \
-    ...
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/WithLinking.conf
+   :language: json
+   :caption: :clink:`WithLinking.conf</DEFI/LiquidityPool/WithLinking.conf>`
+   :emphasize-lines: 8-10
 ```
 
 The `--link Pool:asset=Asset` option tells the Prover to assume that the `asset`
@@ -220,7 +212,7 @@ contract instance in the scene.  With this information, the Prover is able to
 resolve the calls to the methods on `Pool.asset` using the code in `Asset.sol`.
 
 With this option, the Prover is no longer able to construct a counterexample to
-the `integrityOfDeposit` rule, so the rule passes.  Note that the external calls
+the `integrityOfDeposit` rule, so the rule passes. Note that the external calls
 to the `Asset` contract no longer appear in the "Call Resolution" tab, because
 the Prover does not report linked calls here.
 
@@ -238,7 +230,7 @@ a variable `underlying` to refer to the `Asset` contract instance[^using-positio
 
 ```cvl
 using Asset as underlying;
-using Pool  as pool;
+using Pool as pool;
 ```
 
 We can then call methods on the contract `underlying`.  For example, instead of
@@ -253,6 +245,8 @@ rule integrityOfDeposit {
     mathint balance_before = underlying.balanceOf(e1, pool);
 
     env e; uint256 amount;
+    require e.msg.sender != pool;
+   
     deposit(e, amount);
 
     env e2;
@@ -263,18 +257,17 @@ rule integrityOfDeposit {
 }
 ```
 
-We can simplify this rule in two ways.  First, we can declare the
+We can simplify this rule in two ways. First, we can declare the
 `underlying.balanceOf` method `envfree` to avoid explicitly passing in `env`
-variables.  This works the same way as `envfree` {ref}`declarations for the
+variables. This works the same way as `envfree` {ref}`declarations for the
 main contract <envfree>`, except that you must indicate that the method is for
 the `underlying` contract instance [^wildcards]:
 
-```cvl
-methods {
-    ...
 
-    function underlying.balanceOf(address) external returns(uint256) envfree;
-}
+```{eval-rst}
+.. cvlinclude:: ../../../Examples/DEFI/LiquidityPool/certora/specs/pool_link.spec
+   :cvlobject: methods
+   :lines: 12-14
 ```
 
 [^wildcards]: instead of `underlying.balanceOf` in the methods block, you could
@@ -285,25 +278,16 @@ methods {
 The second simplification is that we can use the special variable
 `currentContract` to refer to the main contract being verified (the one passed
 to {ref}`--verify`), so we don't need to add the `using` statement for `Pool`.
-With these changes, the rule looks as follows ([spec file][pool-link], [run script][pool-link-script]):
+With these changes, the rule looks as follows:
 
-```cvl
-/// `deposit` must increase the pool's underlying asset balance
-rule integrityOfDeposit {
-
-    mathint balance_before = underlying.balanceOf(currentContract);
-
-    env e; uint256 amount;
-    require e.msg.sender != currentContract;
-
-    deposit(e, amount);
-
-    mathint balance_after = underlying.balanceOf(currentContract);
-
-    assert balance_after == balance_before + amount,
-        "deposit must increase the underlying balance of the pool";
-}
+```{eval-rst}
+.. cvlinclude:: ../../../Examples/DEFI/LiquidityPool/certora/specs/pool_link.spec
+   :cvlobject: integrityOfDeposit
+   :caption: :clink:`integrityOfDeposit from pool_link.spec</DEFI/LiquidityPool/certora/specs/pool_link.spec>`
 ```
+
+You can run this rule using the
+{clink}`WithLinking.conf</DEFI/LiquidityPool/WithLinking.conf>` config file.
 
 (unknown-contracts)=
 Working with unknown contracts
@@ -341,23 +325,10 @@ flash loans.  For example, we might like to show that flash loans can only
 increase the underlying balance of the pool.  We can write the property as
 follows:
 
-```cvl
-/// flash loans must increase the pool's underlying asset balance, assuming the
-/// receiver has no pool balance.
-rule flashLoanIncreasesBalance {
-    address receiver; uint256 amount; env e;
-
-    require e.msg.sender != currentContract;
-
-    mathint balance_before = underlying.balanceOf(currentContract);
-
-    flashLoan(e, receiver, amount);
-
-    mathint balance_after = underlying.balanceOf(currentContract);
-
-    assert balance_after >= balance_before,
-        "flash loans must not decrease the contract's underlying balance";
-}
+```{eval-rst}
+.. cvlinclude:: ../../../Examples/DEFI/LiquidityPool/certora/specs/flashLoan_dispatcher.spec
+   :cvlobject: flashLoanIncreasesBalance
+   :caption: :clink:`flashLoanIncreasesBalance</DEFI/LiquidityPool/certora/specs/flashLoan_dispatcher.spec>`
 ```
 
 Verifying this rule without any summarization will fail, for the same reasons
@@ -370,10 +341,10 @@ balance.  This is possible because the default `HAVOC_ECF` summary allows
 To use a `DISPATCHER` summary for the `executeOperation` method, we add it to
 the `methods` block[^optimistic-dispatcher]:
 
-```cvl
-methods {
-    function _.executeOperation(uint256,uint256,address) external => DISPATCHER(true);
-}
+```{eval-rst}
+.. cvlinclude:: ../../../Examples/DEFI/LiquidityPool/certora/specs/flashLoan_dispatcher.spec
+   :cvlobject: methods
+   :lines: 1, 4-5
 ```
 
 [^optimistic-dispatcher]: The `true` in `DISPATCHER(true)` tells the Prover to
@@ -394,31 +365,27 @@ dispatcher summary, we need to add a contract to the scene that implements the
 method.
 
 Let's start by adding a trivial receiver
-(in [`certora/harness/TrivialReceiver.sol`][trivial-receiver])
+(in {clink}`TrivialReceiver.sol</DEFI/LiquidityPool/certora/harness/TrivialReceiver.sol>`)
 that implements `executeOperation` but does nothing:
 
-```solidity
-contract TrivialReceiver is IFlashLoanReceiver {
-    function executeOperation(...) ... {
-        // do nothing
-        return true;
-    }
-}
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/certora/harness/TrivialReceiver.sol
+   :language: solidity
+   :caption: :clink:`TrivialReceiver.sol</DEFI/LiquidityPool/certora/harness/TrivialReceiver.sol>`
+   :lines: 5-
 ```
 
-Adding `TrivialReceiver.sol` to the scene allows the Prover to dispatch to it
-([spec file][flashloan-dispatcher], [full script][trivial-script]):
+Adding `TrivialReceiver.sol` to the scene allows the Prover to dispatch to it.
+To run, use the {clink}`FlashLoanTrivial.conf</DEFI/LiquidityPool/FlashLoanTrivial.conf>`
+config file.
 
-```sh
-$ certoraRun contracts/Pool.sol certora/harness/TrivialReceiver.sol ...
-```
-
-With this dispatcher in place, the rule passes.  Examining the call resolution
+With this dispatcher in place, the rule passes. Examining the call resolution
 tab shows that the Prover used the dispatcher summary for `executeOperation`
 and considered only `TrivialReceiver.executeOperation` as a possible
 implementation:
 
-![Call resolution tab showing `Pool.flashLoan` summarized with a Dispatcher.  The "alternatives" list contains `[TrivialReceiver.executeOperation]`](trivial-resolution.png)
+![Call resolution tab showing `Pool.flashLoan` summarized with a Dispatcher.
+The "alternatives" list contains `[TrivialReceiver.executeOperation]`](trivial-resolution.png)
 
 Although the rule passes, it is important to pause and think about what we have
 proved; the next section shows that we shouldn't rest easy yet.
@@ -443,43 +410,35 @@ In fact, we can easily construct a flash loan receiver that decreases the
 pool's underlying balance.  For example, if the receiver somehow got an
 approval to transfer underlying tokens away from the pool, it could just
 transfer them, thereby decreasing the underlying balance of the pool.
-We can write such a [receiver][transfer-receiver]:
+We can write such a receiver:
 
-```solidity
-contract TransferReceiver is IFlashLoanReceiver {
-    address underlying;
-    uint    transfer_amount;
-    address pool;
-
-    function executeOperation(...) ... {
-        underlying.transferFrom(pool, address(this), transfer_amount);
-        return true;
-    }
-}
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/certora/harness/TransferReceiver.sol
+   :language: solidity
+   :caption: :clink:`TransferReceiver.sol</DEFI/LiquidityPool/certora/harness/TransferReceiver.sol>`
+   :lines: 6-
 ```
 
 Note that this isn't a complete working example; we haven't provided a
 constructor, or linked the `pool` address to the actual pool, or any way to
 ensure that the pool has given the receiver an allowance.  Nevertheless, if we
 add it to the scene, the Prover is able to use it to construct a
-counterexample.  Since the Prover explores every possible value of the `pool`
+counterexample. Since the Prover explores every possible value of the `pool`
 variable, and every possible value for the underlying's allowances, it is able
 to set up the details of the counterexample automatically.
 
 We do need to do one more piece of setup to get this receiver to work the way
-we'd like.  If we just add `TransferReceiver` to the scene, the Prover will not
+we'd like. If we just add `TransferReceiver` to the scene, the Prover will not
 be able to resolve its call to `transferFrom`.  This will cause the same kind
-of havoc we saw above.  We could remedy this using a `DISPATCHER` summary for
+of havoc we saw above. We could remedy this using a `DISPATCHER` summary for
 `transferFrom` (see {ref}`erc20-dispatcher`), but for now, we'll simply
-link the `underlying` variable to the `Asset` contract instance
-([full script][transfer-script]):
+link the `underlying` variable to the `Asset` contract instance:
 
-```sh
-certoraRun contracts/Pool.sol \
-           certora/harness/TrivialReceiver.sol \
-           certora/harness/TransferReceiver.sol \
-           --link TransferReceiver:underlying=Asset \
-           ...
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/FlashLoanTransfer.conf
+   :language: json
+   :caption: :clink:`FlashLoanTransfer.conf</DEFI/LiquidityPool/FlashLoanTransfer.conf>`
+   :emphasize-lines: 10-13
 ```
 
 With the additional receiver implementation on the scene, we see that the Prover
@@ -507,8 +466,7 @@ we see that the Prover chose the pool's allowance for the recipient to be
 It turns out that this particular violation can't actually happen, because the
 pool contract never approves any other contract to transfer its funds.  We
 could prove an invariant to this effect and add it to our rule using
-{ref}`requireInvariant`.  We won't describe this here, but it is implemented in
-the [final spec][pool-spec] for this example.
+{ref}`requireInvariant`.
 
 For more examples of `requireInvariant` usage, check out the [user guide](../patterns/require-invariants.md).
 
@@ -547,7 +505,8 @@ contract.  The Prover helpfully provides such a list whenever we verify a rule[^
   the source code to determine which ones are non-view functions.
 
 Now, we can write an `executeOperation` method that could call any of the
-non-view functions.  We can do this with a big `if`-`then`-`else` statement ([full contract][flexible-contract])[^no-recursion]:
+non-view functions.  We can do this with a big `if`-`then`-`else` statement (
+:clink:`full contract</DEFI/LiquidityPool/certora/harness/FlexibleReceiver.sol>`)[^no-recursion]:
 
 ```solidity
 contract FlexibleReceiver is IFlashLoanReceiver {
@@ -575,16 +534,16 @@ contract FlexibleReceiver is IFlashLoanReceiver {
   cause potentially infinite recursion, which will cause the Prover to fail.
 
 The value of the `callbackChoice` variable determines which `Pool` method
-`executeOperation` will call.  We would like the Prover to consider every
+`executeOperation` will call. We would like the Prover to consider every
 possible value of the `callbackChoice` field, so that it can choose to call any
-of the pool's methods.  We would also like the Prover to consider every choice
+of the pool's methods. We would also like the Prover to consider every choice
 of arguments to these method calls.
 
 For this to be valid solidity code, we need to actually give values to the
-`callbackChoice` and the arguments to the called methods.  To do this, we use a
-clever trick.  Since the Prover considers every possible value for storage
+`callbackChoice` and the arguments to the called methods. To do this, we use a
+clever trick. Since the Prover considers every possible value for storage
 variables, we can simply use a storage variable for `callbackChoice` and for
-the arguments.  For example, we could write
+the arguments. For example, we could write
 
 ```solidity
 contract FlexibleReceiver is IFlashLoanReceiver {
@@ -592,7 +551,7 @@ contract FlexibleReceiver is IFlashLoanReceiver {
 
     uint arbitraryCallback;
     function executeOperation(...) ... {
-        uint  callbackChoice = arbitraryCallback;
+        uint callbackChoice = arbitraryCallback;
 
         ...
     }
@@ -632,35 +591,19 @@ With this version, the Prover is able to choose a new value of
 on each call, this means that it can choose a different value of
 `callbackChoice` for each call.
 
-The abstract contract `ArbitraryValues` ([source][arbitrary-values]) makes this
-simple.  For each value type, it provides an `arbitraryType()` method that
+The abstract contract {clink}`ArbitraryValues</DEFI/LiquidityPool/certora/helpers/ArbitraryValues.sol>`
+makes this simple. For each value type, it provides an `arbitraryType()` method that
 returns an undefined value that the Prover can fill in arbitrarily as it is
 constructing counterexamples.  For example, the `arbitraryInt192()` method
 returns a newly selected `int192` each time it called.  In this case, we can
 use the `arbitraryUint` and `arbitraryAddress` methods to choose the callback
-and the arguments
-([full source][flexible-contract], [run script][flexible-linked]):
+and the arguments (conf file {clink}`WithFlexibleLinked.conf</DEFI/LiquidityPool/WithFlexibleLinked.conf>`).
 
-```solidity
-contract FlexibleReceiver is IFlashLoanReceiver, ArbitraryValues {
-    ...
-
-    function executeOperation(...) ... {
-        uint callbackChoice = arbitraryUint();
-
-        if (callbackChoice == 0)
-            token.deposit(arbitraryUint());
-        else if (callbackChoice == 1)
-            token.transferFrom(arbitraryAddress(), arbitraryAddress(), arbitraryUint());
-        else if (callbackChoice == 2)
-            token.withdraw(arbitraryUint());
-        ...
-        else
-            assert(false, "invalid callbackChoice value");
-
-        return arbitraryBool();
-    }
-}
+```{eval-rst}
+.. literalinclude:: ../../../Examples/DEFI/LiquidityPool/certora/harness/FlexibleReceiver.sol
+   :language: solidity
+   :caption: :clink:`FlexibleReceiver.sol</DEFI/LiquidityPool/certora/harness/FlexibleReceiver.sol>`
+   :lines: 7-
 ```
 
 With this implementation, the Prover will consider every possible value for
@@ -671,8 +614,8 @@ arguments.
 This approach still doesn't give perfect coverage.  If the `token` field is
 linked to the pool, it will only call methods on the pool.  In fact, this
 receiver will miss the violation that the `TransferReceiver` uncovered, because
-that requires calling `transferFrom` on the `Asset` rather than the `Pool`
-([full script][flexible-linked]), although this particular shortcoming can be
+that requires calling `transferFrom` on the `Asset` rather than the `Pool`,
+although this particular shortcoming can be
 addressed by {ref}`using a dispatcher for the ERC20 methods <erc20-dispatcher>`
 instead of linking to the pool.
 
@@ -699,22 +642,21 @@ contract is designed to work with arbitrary ERC20 tokens.  In this case, it is
 common to summarize all of the ERC20 methods using `DISPATCHER` summaries, and
 to provide several ERC20 implementations to the Prover.
 
-To facilitate this, the [`helpers` directory of the example code][helpers]
-contains a [spec file][erc20] called `erc20.spec` as well as a variety of ERC20
-token implementations (inside `tokens/`).  The `erc20.spec` file simply contains
-a methods block that summarizes all of the ERC20 methods as `DISPATCHER`.  You
-can use an {doc}`import statement </docs/cvl/imports>` to include this in your spec ([full spec][pool-spec]):
+To facilitate this, the {clink}`helpers</DEFI/LiquidityPool/certora/helpers/>`
+directory of the example code contains a
+{clink}`spec file called erc20.spec</DEFI/LiquidityPool/certora/helpers/erc20.spec>`
+as well as a variety of ERC20 token implementations
+(inside {clink}`tokens</DEFI/LiquidityPool/certora/helpers/tokens>` folder).
+The `erc20.spec` file simply contains a methods block that summarizes all of the
+ERC20 methods as `DISPATCHER`.  You can use an
+{doc}`import statement </docs/cvl/imports>` to include this in your spec:
 
 ```cvl
 import "../helpers/erc20.spec";
 ```
 
 This gives a concise way to handle this situation.  Be sure to include the
-tokens in the scene ([full script][pool-script])!
-
-```sh
-certoraRun certora/helpers/tokens/* ...
-```
+tokens in the scene!
 
 Conclusion
 ----------
@@ -729,23 +671,3 @@ We've seen that `DISPATCHER` summaries are not completely safe &mdash; they
 constrain the possible implementations of external contracts, so they may miss
 bugs that those implementations don't trigger.  However, we have seen a useful
 technique that can explore a wide range of behaviors with little effort.
-
-[example-repo]:     https://github.com/Certora/LiquidityPoolExample
-[pool]:             https://github.com/Certora/LiquidityPoolExample/blob/main/contracts/Pool.sol
-[pool-spec]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool.spec
-[pool-script]:      https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyPool.sh
-[pool-havoc]:       https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_havoc.spec
-[havoc-script]:     https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyJustPool.sh
-[pool-link]:        https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/pool_link.spec
-[pool-link-script]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyWithLinking.sh
-[flashloan-dispatcher]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/specs/flashLoan_dispatcher.spec
-[trivial-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TrivialReceiver.sol
-[trivial-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTrivial.sh
-[transfer-receiver]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/TransferReceiver.sol
-[transfer-script]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlashLoanTransfer.sh
-[arbitrary-values]:  https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/ArbitraryValues.sol
-[flexible-contract]: https://github.com/Certora/LiquidityPoolExample/blob/main/certora/harness/FlexibleReceiver.sol
-[flexible-linked]:   https://github.com/Certora/LiquidityPoolExample/blob/main/certora/scripts/verifyFlexibleLinked.sh
-[helpers]:           https://github.com/Certora/LiquidityPoolExample/tree/main/certora/helpers/
-[erc20]:             https://github.com/Certora/LiquidityPoolExample/blob/main/certora/helpers/erc20.spec
-

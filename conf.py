@@ -37,6 +37,7 @@ extensions = [
     "myst_parser",
     "sphinx.ext.todo",
     "sphinx_rtd_theme",
+    "sphinx_design",
     "docsinfra.sphinx_utils.codelink_extension",
     "docsinfra.sphinx_utils.includecvl",
 ]
@@ -78,7 +79,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["static"]
 
 # The Certora logo
-html_logo = "static/logo.svg"
+html_logo = "static/Certora_Logo_Black.svg"
 
 
 # -- codelink_extension configuration ----------------------------------------
