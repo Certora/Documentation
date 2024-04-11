@@ -160,6 +160,7 @@ supercontract
 supertype
 supertypes
 th
+tooltips
 traceback
 tracebacks
 tradeoff
