@@ -559,7 +559,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_fun
 ### `--use_memory_safe_autofinders`
 
 **What does it do?**
-Avoids compilation errors when using `certoraRun` by marking auto-generated instrumented assembly
+This option avoids compilation errors when using `certoraRun` by marking auto-generated instrumented assembly
 code as `memory-safe`.
 
 **When to use it**
