@@ -19,3 +19,9 @@ submodules:
   include:
     - Examples
   recursive: true
+
+search:
+  ranking:
+    docs/confluence/*: -7
+    docs/whitepaper/*: -6
+    docs/equiv-check/*: -8

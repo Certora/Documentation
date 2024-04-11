@@ -112,6 +112,11 @@ of `C.totalSupply`:
 hook Sstore C.totalSupply uint ts { ... }
 ```
 
+```{note}
+A hook will **not** be triggered by CVL code, including access to solidity 
+storage from CVL.
+```
+
 (access-paths)=
 ### Access paths
 
@@ -385,6 +390,8 @@ hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint r
 hook STATICCALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
 
 hook REVERT(uint offset, uint size)
+
+hook BLOBHASH(uint n) bytes32 hash
 
 hook SELFDESTRUCT(address a)
 ```
