@@ -1,1 +1,1 @@
-This page moved to https://docs.certora.com/en/latest/docs/user-guide/index.html
+This page [moved](https://docs.certora.com/en/latest/docs/user-guide/index.html)
