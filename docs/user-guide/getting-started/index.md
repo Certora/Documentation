@@ -1,1 +1,1 @@
-This page is outdated, please see https://docs.certora.com/en/latest/docs/user-guide/index.html
+This page moved to https://docs.certora.com/en/latest/docs/user-guide/index.html
