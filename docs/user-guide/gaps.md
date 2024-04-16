@@ -181,3 +181,254 @@ and if loops appear only under certain conditions,
 to write specialized sanity rules that force the Prover to reason about these 
 particular code paths.
 Mutation testing can also be useful here.
+
+### 'Hidden' compiler-generated loops
+
+#### Copying Solidity memory arrays to storage
+
+When the Solidity compiler generates code for copying 
+a non-primitive object (could be a `bytes` buffer or a `struct` with a `bytes` field),
+it generates two loops.
+The first loop resets any previous remaining data written into the target storage slot.
+The second loop copies the new object into the relevant storage slot.
+
+Consider the following contract:
+```solidity
+// MemoryToStorage.sol
+contract MemoryToStorage {
+  struct ScheduledExecution {
+    address where;
+    bool execute;
+    bytes data;
+  }
+
+  ScheduledExecution[] myArray;
+
+  function testPush(address where, bool executed) public {
+    bytes memory data = abi.encodeWithSelector(
+      this.testPush.selector,
+      "aa"
+    );
+    myArray.push(ScheduledExecution(where, executed, data));
+  }
+}
+```
+
+The push to `myArray` generates the two aforementioned loops. 
+If we wish to analyze this code with the Prover, there are two questions to be answered:
+
+1. Do we need to set a value for `--loop_iter` which is bigger than 1?
+
+Yes - the `data` local variable is put into a `struct ScheduledExecution` that is
+put into an array in storage. 
+This is done by the compiler using a 'copy-loop'.
+The selector component `this.testPush.selector` requires one iteration.
+the string `aa` requires three iterations: according to the [ABI specification](https://docs.soliditylang.org/en/v0.8.24/abi-spec.html),
+it consists of an offset to a dynamic buffer, the size of the buffer, 
+and then the (short) data element fitting in one word (32 bytes).
+Therefore, `--loop_iter` should be set to 3.
+
+To test our configuration, we use the following specification:
+```cvl
+// sanity.spec
+use builtin rule sanity;
+```
+
+Therefore:
+```bash
+// Passes:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 3
+
+// Violates sanity:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 2
+```
+
+2. Do we need to set `--optimistic_loop`?
+
+Yes - when we copy `data` from memory to storage, the Solidity compiler
+also generates code that nullifies the previous data. 
+As we do not know (and probably not wishing to constrain) the size of the previous data,
+we have to enable `--optimistic_loop`.
+
+While the sanity rule does not check for auto-generated assertions, 
+any run with assertions would generate an additional sub-rule for auto-generated assertions
+that will fail without `--optimistic_loop`.
+
+Given the following specification:
+```cvl
+// simpleAssert.spec
+rule simpleAssert {
+  env e;
+  calldataarg arg;
+  method f;
+  f(e,arg);
+  assert true;
+}
+```
+
+We have that:
+```bash
+// Passes:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3 --optimistic_loop
+
+// Violated with "Unwinding condition in a loop":
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3
+```
+
+##### Is `--loop_iter 3` always sufficient?
+
+Note that running with `--optimistic_loop` on the above example imposes an assumption
+on the size of the previous buffer written in `myArray[0].data`.
+One could have more complex flows where `--loop_iter 3` is not sufficient to properly
+unroll the erasure loop.
+
+Consider for example this revised contract:
+```solidity
+// MemoryToStorage2.sol
+contract MemoryToStorage {
+  ...
+
+  function testPush(address where, bool executed) public {
+    require (myArray[0].data.length == 225);
+    bytes memory data = abi.encodeWithSelector(
+      this.testPush.selector,
+      "aa"
+    );
+    myArray[0] = ScheduledExecution(where, executed, data);
+  }
+}
+```
+
+The only difference in this new functionality is that we assume that the previous data has size of 225 bytes.
+When we update `myArray[0]` with `data`, the Solidity compiler will put zeroes
+in the space that was occupied by `myArray[0].data` beyond the length of `data`. 
+If the previous buffer size was 224 for example, then since the size of the new `data` is 128,
+it means we need to clean `224 - 128 = 96` bytes, or 3 words.
+This is of course feasible with `--loop_iter 3`.
+However, here we require the previous buffer size to be 225, which means we need to clean 4 extra words,
+thus requiring a minimal `--loop_iter` value of 4.
+
+```bash
+// Violates sanity:
+certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 3
+
+ // Passes:
+certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 4
+```
+
+
+## Reverts
+
+The Solidity compiler is generating checks for revert conditions that are not always spelled-out by the user
+using `require` and `assert` statements.
+Usually, these involve assumptions on the structure of the provided user data.
+
+This section will present a few examples where Prover-presented revert causes
+are stemming from compiler-generated checks, so that users can be more informed
+about debugging such revert causes.
+
+### Payability
+
+Payability is the simplest kind of compiler-generated checks, as they are controlled by the user.
+
+Consider the example contract:
+```solidity
+contract Payability {
+  function foo() external {}
+}
+```
+
+Specification:
+```cvl
+rule revertCheck {
+  env e;
+  foo@withrevert(e);
+  assert !lastReverted;
+}
+```
+
+We are expected to get the following revert cause:
+```
+!(safe_math_narrow:bif(e.msg.value)==0x0)
+```
+
+Which is telling us, that `e.msg.value` being non-zero is the cause for the revert.
+(`safe_math_narrow` is a Prover-internal cast operation.)
+This can be easily fixed with the revised rule:
+```cvl
+rule revertCheck {
+  env e;
+  require e.msg.value == 0;
+  foo@withrevert(e);
+  assert !lastReverted;
+}
+```
+
+### Basic type assumptions when passing arguments from CVL
+
+When we pass arguments from CVL to Solidity, 
+CVL attempts to add the same assumptions that Solidity code has on the 
+sizes of the arguments provided to it.
+This holds for types such as `bytes` and `string`, 
+but not for generalized `calldata` buffers (passed with `calldataarg` variable type in CVL).
+
+Therefore, given the following trivial Solidity code:
+```solidity
+contract StringInput {
+  function foo(string memory s) external {}
+}
+```
+
+the following rule would be proven:
+```cvl
+rule revertCheckString {
+    env e;
+    string s;
+    require e.msg.value == 0;
+    foo@withrevert(e, s);
+    assert !lastReverted;
+}
+```
+
+While using `calldataarg` instead would lead to a violation:
+```cvl
+rule revertCheckCalldataarg {
+    env e;
+    calldataarg arg;
+    require e.msg.value == 0;
+    foo@withrevert(e, arg);
+    assert !lastReverted;
+}
+```
+
+The run could trigger a few different kinds of reverts. 
+Even the simplest revert cause is a bit tricky to parse:
+`CANON12[0x4]>MASK64`
+
+It says that the value of `CANON12` (an internal name representing the `calldata` input to `foo`)
+at offset `0x4`, which is in fact holding the pointer to the string in calldata, is bigger than `2^64-1` 
+(shortened as `MASK64`, a mask where the 64 less-significant-bits are set to 1).
+It is a usual sanity check instrumented by Solidity to avoid huge calldata buffers
+that consume a high amount of gas to process.
+
+A trickier sanity check instrumented by the Solidity compiler that could be highlighted by
+the Prover is the following:
+`(0x20+0x4+arg34_data[0x4]+arg34_data[0x4+arg34_data[0x4]])>arg34_length`
+
+It says that a certain complex expression is greater than `arg34_length`.
+`arg34` is the internal Prover-generated name of the `calldataarg arg` variable, and
+`arg34_length` is the variable holding its size (as would be returned by `CALLDATASIZE` instruction),
+and `arg34_data` is the raw `calldata` buffer itself.
+So we can see it is a bound check that makes sure we are not accessing beyond `CALLDATASIZE`.
+Specifically, `0x20 + 0x4 + arg34_data[0x4]` is a pointer to the beginning of the `string`
+argument in calldata (first 4 bytes are the `sighash`, another word is for the pointer slot,
+`arg34_data[0x4]` holds the relative offset to the string)
+`arg34_data[0x4+arg34_data[0x4]]` holds the length of the string.
+
+;### Strings-in-storage invariant
+;
+;TODO
+;
+;### Assumptions on array elements
+;
+;TODO
