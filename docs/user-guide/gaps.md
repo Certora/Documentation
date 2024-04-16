@@ -181,3 +181,137 @@ and if loops appear only under certain conditions,
 to write specialized sanity rules that force the Prover to reason about these 
 particular code paths.
 Mutation testing can also be useful here.
+
+### 'Hidden' compiler-generated loops
+
+#### Copying Solidity memory arrays to storage
+
+When the Solidity compiler generates code for copying 
+a non-primitive object (could be a `bytes` buffer or a `struct` with a `bytes` field),
+it generates two loops.
+The first loop resets any previous remaining data written into the target storage slot.
+The second loop copies the new object into the relevant storage slot.
+
+Consider the following contract:
+```solidity
+// MemoryToStorage.sol
+contract MemoryToStorage {
+  struct ScheduledExecution {
+    address where;
+    bool execute;
+    bytes data;
+  }
+
+  ScheduledExecution[] myArray;
+
+  function testPush(address where, bool executed) public {
+    bytes memory data = abi.encodeWithSelector(
+      this.testPush.selector,
+      "aa"
+    );
+    myArray.push(ScheduledExecution(where, executed, data));
+  }
+}
+```
+
+The push to `myArray` generates the two aforementioned loops. 
+If we wish to analyze this code with the Prover, there are two questions to be answered:
+
+1. Do we need to set a value for `--loop_iter` which is bigger than 1?
+
+Yes - the `data` local variable is put into a `struct ScheduledExecution` that is
+put into an array in storage. 
+This is done by the compiler using a 'copy-loop'.
+The selector component `this.testPush.selector` requires one iteration.
+the string `aa` requires three iterations: according to the [ABI specification](https://docs.soliditylang.org/en/v0.8.24/abi-spec.html),
+it consists of an offset to a dynamic buffer, the size of the buffer, 
+and then the (short) data element fitting in one word (32 bytes).
+Therefore, `--loop_iter` should be set to 3.
+
+To test our configuration, we use the following specification:
+```cvl
+// sanity.spec
+use builtin rule sanity;
+```
+
+Therefore:
+```bash
+// Passes:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 3
+
+// Violates sanity:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:sanity.spec --loop_iter 2
+```
+
+2. Do we need to set `--optimistic_loop`?
+
+Yes - when we copy `data` from memory to storage, the Solidity compiler
+also generates code that nullifies the previous data. 
+As we do not know (and probably not wishing to constrain) the size of the previous data,
+we have to enable `--optimistic_loop`.
+
+While the sanity rule does not check for auto-generated assertions, 
+any run with assertions would generate an additional sub-rule for auto-generated assertions
+that will fail without `--optimistic_loop`.
+
+Given the following specification:
+```cvl
+// simpleAssert.spec
+rule simpleAssert {
+  env e;
+  calldataarg arg;
+  method f;
+  f(e,arg);
+  assert true;
+}
+```
+
+We have that:
+```bash
+// Passes:
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3 --optimistic_loop
+
+// Violated with "Unwinding condition in a loop":
+certoraRun MemoryToStorage.sol --verify MemoryToStorage:simpleAssert.spec --loop_iter 3
+```
+
+##### Is `--loop_iter 3` always sufficient?
+
+Note that running with `--optimistic_loop` on the above example imposes an assumption
+on the size of the previous buffer written in `myArray[0].data`.
+One could have more complex flows where `--loop_iter 3` is not sufficient to properly
+unroll the erasure loop.
+
+Consider for example this revised contract:
+```solidity
+// MemoryToStorage2.sol
+contract MemoryToStorage {
+  ...
+
+  function testPush(address where, bool executed) public {
+    require (myArray[0].data.length == 225);
+    bytes memory data = abi.encodeWithSelector(
+      this.testPush.selector,
+      "aa"
+    );
+    myArray[0] = ScheduledExecution(where, executed, data);
+  }
+}
+```
+
+The only difference in this new functionality is that we assume that the previous data has size of 225 bytes.
+When we update `myArray[0]` with `data`, the Solidity compiler will put zeroes
+in the space that was occupied by `myArray[0].data` beyond the length of `data`. 
+If the previous buffer size was 224 for example, then since the size of the new `data` is 128,
+it means we need to clean `224 - 128 = 96` bytes, or 3 words.
+This is of course feasible with `--loop_iter 3`.
+However, here we require the previous buffer size to be 225, which means we need to clean 4 extra words,
+thus requiring a minimal `--loop_iter` value of 4.
+
+```bash
+// Violates sanity:
+certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 3
+
+ // Passes:
+certoraRun MemoryToStorage2.sol:MemoryToStorage --verify MemoryToStorage:sanity.spec --loop_iter 4
+```
