@@ -16,57 +16,55 @@ Follow these steps to configure CI for GitHub Actions on your repository:
 
 .. code-block:: yaml
 
-   name: certora-verification
+  name: certora-verification
 
-   on:
-   push:
-   branches:
-      - main
-   pull_request:
-   branches:
-      - main
-
-   workflow_dispatch:
-
-   jobs:
-   verify:
+  on:
+    push:
+      branches:
+        - main
+    pull_request:
+      branches:
+        - main
+    workflow_dispatch:
+  jobs:
+    verify:
       runs-on: ubuntu-latest
       steps:
-         - uses: actions/checkout@v4
-         with:
+        - uses: actions/checkout@v4
+          with:
             submodules: recursive
 
-         - name: Install python
-         uses: actions/setup-python@v2
-         with: { python-version: 3.9 }
+        - name: Install python
+          uses: actions/setup-python@v2
+          with: { python-version: 3.9 }
 
-         - name: Install java
-         uses: actions/setup-java@v1
-         with: { java-version: "11", java-package: jre }
+        - name: Install java
+          uses: actions/setup-java@v1
+          with: { java-version: "11", java-package: jre }
 
-         # It's recommended to pin the latest certora-cli version available in https://pypi.org/project/certora-cli/
-         - name: Install certora cli
-         run: pip3 install certora-cli==7.3.0
+        # It's recommended to pin the latest certora-cli version available in https://pypi.org/project/certora-cli/
+        - name: Install certora cli
+          run: pip3 install certora-cli==7.3.0
 
-         - name: Install solc
-         run: |
+        - name: Install solc
+          run: |
             wget https://github.com/ethereum/solidity/releases/download/v0.8.23/solc-static-linux
             chmod +x solc-static-linux
             sudo mv solc-static-linux /usr/local/bin/solc8.23
 
-         - name: Verify ${{ matrix.rule }}
-         env:
+        - name: Verify ${{ matrix.rule }}
+          env:
             CERTORAKEY: ${{ secrets.CERTORAKEY }}
-         run: certoraRun  ${{ matrix.rule }}
+          run: certoraRun  ${{ matrix.rule }}
 
-   strategy:
-      fail-fast: false
-      max-parallel: 16
-      matrix:
-         rule:
-         - path-to-conf1.conf --rule rule1 # run specific rule
-         - path-to-conf1.conf --exclude_rule rule2
-         - path-to-conf2.conf # run the entire conf
+      strategy:
+        fail-fast: false
+        max-parallel: 16
+        matrix:
+          rule:
+              - path-to-conf1.conf --rule rule1 # run specific rule
+              - path-to-conf1.conf --exclude_rule rule2
+              - path-to-conf2.conf # run the entire conf
 
 .. Links
    -----
