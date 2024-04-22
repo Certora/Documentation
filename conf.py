@@ -40,6 +40,7 @@ extensions = [
     "sphinx_design",
     "docsinfra.sphinx_utils.codelink_extension",
     "docsinfra.sphinx_utils.includecvl",
+    "sphinx_copybutton"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
