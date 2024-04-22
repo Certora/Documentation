@@ -44,7 +44,7 @@ Follow these steps to configure CI for GitHub Actions on your repository:
 
         # It's recommended to pin the latest certora-cli version available in https://pypi.org/project/certora-cli/
         - name: Install certora cli
-          run: pip3 install certora-cli==7.3.0
+          run: pip install certora-cli==7.3.0
 
         # If your project depends on compiling with multiple solc versions, you can install and differentiate them using these commands.
         - name: Install solc
