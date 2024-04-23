@@ -73,10 +73,13 @@ cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
 
+One can either specify a specific rule name, or use pattern matching with a `*`.
+
+Note that you can specify this flag multiple times to filter in several rules or rule patterns.
 **Example**
 If `Bank.spec` includes the following properties:
-`invariant address_zero_cannot_become_an_account()`
 
+`invariant address_zero_cannot_become_an_account()`
 `rule withdraw_succeeds()`
 `rule withdraw_fails()`
 
@@ -85,6 +88,34 @@ If we want to verify only `withdraw_succeeds`, we run
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
+
+Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
+simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
+
+(--exclude_rule)=
+### `--exclude_rule <rule_name_pattern>`
+
+**What does it do?**
+It is the opposite flag to {ref}`--rule` - use it to specify a list of rules that
+should _not_ be run.
+
+Note that you can specify this flag multiple times to filter out several rules or rule patterns.
+
+**Example**
+If `Bank.spec` includes the following properties:
+
+`invariant address_zero_cannot_become_an_account()`
+`rule withdraw_succeeds()`
+`rule withdraw_fails()`
+
+If we want to skip both rules we could run
+`certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
+
+```{note}
+When used together with the {ref}`--rule` flag the logic is to collect all rules
+that pass the `--rule` flag(s) and then subtract from them all rules that match
+any `--exclude_rule` flags.
+```
 
 (--method)=
 ### `--method <method_signature>`
@@ -155,20 +186,25 @@ certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
-(--send_only)=
-### `--send_only`
+(--wait_for_results)=
+### `--wait_for_results`
 
 **What does it do?**
-Causes the CLI to exit immediately when the job is submitted, rather than waiting
-for it to complete.
+Wait for verification results after sending the verification request.
+By default, the program exits after the request.
+The return code will not be zero if the verification finds a violation.
 
 **When to use it?**
-When you want to run many jobs concurrently in a script, or otherwise want the
-CLI to not block the terminal.
+Use it to receive verification results in the terminal or a wrapping script.
+
+In CI, the default behavior is different: the Prover waits for verification results,
+and the return code will not be zero if a violation is found. 
+You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
+In that case, the return code will be zero if the jobs were sent successfully.
 
 **Example**
 ```sh
-certoraRun Example.sol --verify Example:Example.spec --send_only
+certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
 Options affecting the type of verification run
@@ -213,8 +249,8 @@ When you have a rule with multiple assertions:
 ### `--independent_satisfy`
 
 **What does it do?**
-The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule. 
-Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode), 
+The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule.
+Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode),
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
 
 As an illustrative example of the default mode, consider the following rule `R` that has two satisfy statements:
@@ -239,11 +275,11 @@ rule R2_default {
   // Previous satisfy statements are required in default mode.
   require b; // R1
   // Due to requiring `b`, this satisfy statement is equivalent to 'satisfy b && !b, "R2";'
-  satisfy !b, "R2"; 
+  satisfy !b, "R2";
 }
 ```
 
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction. 
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction.
 Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
 It would also generate and check two sub-rules, but with a slight difference: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
 
@@ -327,7 +363,7 @@ When different contracts have to be compiled for different Solidity versions.
 Passes the value of this option as is to the solidity compiler's option `--optimize` and `--optimize-runs`.
 
 **When to use it?**
-When we want to activate in the solidity compiler the opcode-based optimizer for the generated bytecode and control the 
+When we want to activate in the solidity compiler the opcode-based optimizer for the generated bytecode and control the
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
 
 **Example**
@@ -336,8 +372,8 @@ number of times the optimizer will be activated (if no value is set, the compile
 (--solc_optimize_map)=
 ### `--solc_optimize_map`
 
-**What does it do?**  
-Set optimize values when different files run with different number of runs 
+**What does it do?**
+Set optimize values when different files run with different number of runs
 Passes the value of this option as is to the solidity compiler's option `--optimize` and `--optimize-runs`.
 
 **When to use it?**
@@ -347,6 +383,7 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
+(--solc_via_ir)=
 ### `--solc_via_ir`
 
 **What does it do?**
@@ -525,8 +562,8 @@ for the Prover.
 For more information, see {ref}`detect-candidates-for-summarization`.
 
 **When to use it**
-Using this option is recommended when beginning to work on a large code 
-base that includes functions that could be difficult for the Prover. 
+Using this option is recommended when beginning to work on a large code
+base that includes functions that could be difficult for the Prover.
 It can help the user get faster feedback, both in the form of faster
 verification results, as well as highlighting potentially difficult functions.
 
@@ -553,6 +590,27 @@ The notification in the rule report that contains the applied summaries will pre
 ```bash
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs --auto_nondet_minimal_difficulty 20
 ```
+
+(--use_memory_safe_autofinders)=
+### `--use_memory_safe_autofinders`
+
+**What does it do?**
+This option avoids compilation errors when using `certoraRun` by marking auto-generated instrumented assembly
+code as `memory-safe`.
+
+**When to use it**
+If you see `solc` failures right after the `certoraRun` prints
+`Compiling XXX to expose internal function information...`,
+and the compiled contract is compiled with Solidity version 0.8.13 and above.
+
+It is usually useful in conjunction with {ref}`--solc_via_ir`.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir --use_memory_safe_autofinders
+```
+
 
 Options regarding hashing of unbounded data
 -------------------------------------------
@@ -617,16 +675,26 @@ When you are trying to solve/understand a counterexample of a parametric rule on
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
 
-### `--cache`
+(--compilation_steps_only)=
+### `--compilation_steps_only`
 
 **What does it do?**
-A cache in the cloud for optimizing the analysis before running the SMT solvers. The cache used is the argument this option gets. If a cache with this name does not exist, it creates one with this name.
+Exits the program after source code and spec compilation without sending
+a verification request to the cloud.
 
 **When to use it?**
-By default, we do not use a cache. If you want to use a cache to speed up the building process, use this option.
+Use it to check if the spec has correct syntax but do not wish
+to send a verification request and wait for its results.
+
+Here are a few example scenarios:
+1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
+2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
+3. When you have no internet connection but still want to develop spec offline.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
+```sh
+certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
+```
 
 (--smt_timeout)=
 ### `--smt_timeout <seconds>`
@@ -642,7 +710,7 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`--global_timeout`. 
+for parametric rules).  To set the global timeout, see {ref}`--global_timeout`.
 
 Also note that, while the most prominent one, this is not the only timeout that
 applies to SMT solvers, for details see {ref}`-mediumTimeout` and
@@ -770,7 +838,7 @@ In this case one can either
 make the limit larger or set `--optimistic_contract_recursion` flag
 to `true`.
 
-Note that making the limit larger is not always sufficient, 
+Note that making the limit larger is not always sufficient,
 as the code may in fact allow theoretically unbounded recursion.
 
 
@@ -785,8 +853,8 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 
 **What does it do?**
 Contract linking can cause recursion (see also {ref}`--contract_recursion_limit`).
-This option sets the Prover to optimistically assume that recursion cannot go 
-beyond what is defined by {ref}`--contract_recursion_limit`, 
+This option sets the Prover to optimistically assume that recursion cannot go
+beyond what is defined by {ref}`--contract_recursion_limit`,
 but only if {ref}`--contract_recursion_limit` is set to a number higher than 0.
 
 **When to use it?**
@@ -805,10 +873,10 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 ```
 
 (-optimisticFallback)=
-#### `--optimistic_fallback`
+### `--optimistic_fallback`
 
 This option determines whether to optimistically assume unresolved external
-calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how 
+calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
 calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
 `--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
@@ -933,11 +1001,11 @@ set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_ar
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
-It will set the value returned by the `RETURNSIZE` EVM instruction according to the 
+It will set the value returned by the `RETURNSIZE` EVM instruction according to the
 called method.
 Note that certain conditions should hold in order for the option to take effect.
-Namely, if there is a single candidate method in the havoc site, 
-and all instances of this method in the {term}`scene` have exactly the same 
+Namely, if there is a single candidate method in the havoc site,
+and all instances of this method in the {term}`scene` have exactly the same
 expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
@@ -947,14 +1015,14 @@ Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
-It will set the value returned by the `RETURNSIZE` EVM instruction 
+It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
-(-smt_useBV)=
-#### `--prover_args '-smt_useBV true'`
+(--precise_bitwise_ops)=
+#### `--precise_bitwise_ops`
 
 This option models bitwise operations exactly instead of using the default
-{term}`overapproximation`s.  It is useful when the Prover reports a
+{term}`overapproximation`s. It is useful when the Prover reports a
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
@@ -1012,11 +1080,11 @@ See [here](control-flow-splitting) for an explanation of control flow splitting.
 
 Sets the maximum splitting depth.
 
-**When to use it?** 
+**When to use it?**
 
 When the deepest {term}`split`s are too heavy to solve, but not too high in
-number, increasing this will lead to smaller, but more numerous 
-{term}`split leaves`, which run at the full SMT timeout (as set by 
+number, increasing this will lead to smaller, but more numerous
+{term}`split leaves`, which run at the full SMT timeout (as set by
 {ref}`--smt_timeout`).
 Conversely, if run time is too high because there are too many splits,
 decreasing this number means that more time is spent on fewer, but bigger split
@@ -1033,14 +1101,14 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ### `--prover_args '-mediumTimeout <seconds>'`
 
 The "medium timeout" determines how much time the SMT solver gets for checking a
-{term}`split` that is not a {term}`split leaf`. 
-(For split leaves, the full {ref}`--smt_timeout` is used.) 
+{term}`split` that is not a {term}`split leaf`.
+(For split leaves, the full {ref}`--smt_timeout` is used.)
 
 **What does it do?**
 
-Sets the time that non-leaf splits get before being split again. 
+Sets the time that non-leaf splits get before being split again.
 
-**When to use it?** 
+**When to use it?**
 
 When a little more time can close some splitting subtrees early, this can save a
 lot of time, since the subtree's size is exponential in the remaining depth. On
@@ -1068,7 +1136,7 @@ counterexample-free. (In case of a rule using `satisfy` rather than `assert`,
 the corresponding statements hold for {term}`witness example`s. In that case,
 this option is only useful if the rule is correct.)
 
-**When to use it?** 
+**When to use it?**
 
 When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
 The default value for this option is `false`.
@@ -1082,18 +1150,18 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplit
 (-smt_initialSplitDepth)=
 ### `--prover_args '-smt_initialSplitDepth <number>'`
 
-With this option, the splitting can be configured to skip the SMT solver-based checks 
+With this option, the splitting can be configured to skip the SMT solver-based checks
 at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
 
 **What does it do?**
 
-The first `<number>` split levels are not checked with the SMT solver, but rather 
+The first `<number>` split levels are not checked with the SMT solver, but rather
 split immediately.
 
-**When to use it?** 
+**When to use it?**
 
 When there is a lot of overhead induced by processing and trying to solve splits
-that are very hard, and thus run into a timeout anyway. 
+that are very hard, and thus run into a timeout anyway.
 
 ```{note} The number of
 splits generated here is equal to `2^n` where `n` is the initial splitting depth
@@ -1104,7 +1172,7 @@ Prover will immediately produce 32 splits.
 
 ```{note}
 The {ref}`-depth` setting has precedence over this setting. I.e., if `-depth`
-is set to a lower value than `-smt_initialSplitDepth`, the initial splitting 
+is set to a lower value than `-smt_initialSplitDepth`, the initial splitting
 will only proceed up to the splitting depth given via `-depth`.
 ```
 

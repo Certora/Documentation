@@ -33,10 +33,10 @@ If you are on Linux, you will need pip version 20.3 or above.
 
 You need to extend your {ref}`Prover configuration file <conf-files>` by adding a {ref}`mutation object<mut-conf>`.
 The mutation verification script is called `certoraMutate`.
-Run it from the command line:
+Run it from the command line just like `certoraRun`:
 
 ```sh
-certoraMutate --conf path/to/prover.conf
+certoraMutate path/to/prover.conf
 ```
 
 If you do, the script will generate code mutants, 
@@ -155,7 +155,7 @@ For example, see the `manual_mutants` value from the file `advanced_mutation.con
   }
 ]
 ```
-If you don't have a `gambit` object in the `mconf` file, 
+If you don't have a `gambit` object in the `conf` file, 
   `certoraMutate` will run only on the manual mutants, 
   and no other mutants will be generated.
 
@@ -282,7 +282,6 @@ At the top bar of the report there are different coverage metrics.
 
 | <div style="width:160px">Option</div> | Description                                                                                                           |
 |:--------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
-| `--conf`                     | Specify the path to the {ref}`configuration <mut-conf>` file                                                                 |
 | `--orig_run`                          | Specify the {ref}`link to a previous verification job<orig-verification-link>`                                                            |
 | `--orig_run_dir`                      | Specify the folder where the files will be downloaded from the {ref}`original verification job <orig-verification-link>` |
 | `--msg`                               | Add a message to identify the `certoraMutate` run |
