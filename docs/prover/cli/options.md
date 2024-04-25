@@ -60,7 +60,7 @@ To create the message above, we used
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
 (--rule)=
-### `--rule <rule name> ...`
+### `--rule <rule_name_pattern> ...`
 
 **What does it do?**
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
