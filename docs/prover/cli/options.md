@@ -573,8 +573,8 @@ verification results, as well as highlighting potentially difficult functions.
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
-(--auto_nondet_minimal_difficulty)=
-### `--auto_nondet_minimal_difficulty`
+(--nondet_minimal_difficulty)=
+### `--nondet_minimal_difficulty`
 
 **What does it do?**
 This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcss`.
@@ -588,7 +588,7 @@ The notification in the rule report that contains the applied summaries will pre
 **Example**
 
 ```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --auto_nondet_minimal_difficulty 20
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
 
 (--use_memory_safe_autofinders)=
