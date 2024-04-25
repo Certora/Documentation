@@ -550,8 +550,8 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
 
-(--auto_nondet_difficult_internal_funcs)=
-### `--auto_nondet_difficult_internal_funcs`
+(--nondet_difficult_funcs)=
+### `--nondet_difficult_funcss`
 
 **What does it do?**
 When this option is set, the Prover will auto-summarize
@@ -570,17 +570,17 @@ verification results, as well as highlighting potentially difficult functions.
 **Example**
 
 ```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
 (--auto_nondet_minimal_difficulty)=
 ### `--auto_nondet_minimal_difficulty`
 
 **What does it do?**
-This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--auto_nondet_difficult_internal_funcs`.
+This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcss`.
 
 **When to use it**
-If the results of an initial run with {ref}`--auto_nondet_difficult_internal_funcs` were unsatisfactory,
+If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
 one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
 
 The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
@@ -588,7 +588,7 @@ The notification in the rule report that contains the applied summaries will pre
 **Example**
 
 ```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --auto_nondet_difficult_internal_funcs --auto_nondet_minimal_difficulty 20
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --auto_nondet_minimal_difficulty 20
 ```
 
 (--use_memory_safe_autofinders)=
