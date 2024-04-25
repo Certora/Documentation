@@ -591,24 +591,21 @@ The notification in the rule report that contains the applied summaries will pre
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
 
-(--use_memory_safe_autofinders)=
-### `--use_memory_safe_autofinders`
+(--no_memory_safe_autofinders)=
+### `--no_memory_safe_autofinders`
 
 **What does it do?**
-This option avoids compilation errors when using `certoraRun` by marking auto-generated instrumented assembly
-code as `memory-safe`.
+This option allows compilation errors when using `certoraRun` by not marking auto-generated 
+instrumented assembly code as `memory-safe`.
 
 **When to use it**
-If you see `solc` failures right after the `certoraRun` prints
-`Compiling XXX to expose internal function information...`,
-and the compiled contract is compiled with Solidity version 0.8.13 and above.
-
-It is usually useful in conjunction with {ref}`--solc_via_ir`.
+When internal functions are not found or internal function summaries are not applied 
+and the contract was compiled with Solidity version 0.8.13 and above.
 
 **Example**
 
 ```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir --use_memory_safe_autofinders
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir --no_memory_safe_autofinders
 ```
 
 
