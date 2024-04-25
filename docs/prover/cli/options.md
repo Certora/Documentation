@@ -551,7 +551,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 
 
 (--nondet_difficult_funcs)=
-### `--nondet_difficult_funcss`
+### `--nondet_difficult_funcs`
 
 **What does it do?**
 When this option is set, the Prover will auto-summarize
@@ -577,7 +577,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ### `--nondet_minimal_difficulty`
 
 **What does it do?**
-This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcss`.
+This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
 
 **When to use it**
 If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
