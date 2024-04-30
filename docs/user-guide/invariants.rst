@@ -5,7 +5,7 @@ Invariants
 ==========
 
 An :term:`invariant` is a property of the contract's storage state that should
-hold between calls to the contract. For example, in some ERC20 contract the balance
+hold between calls to the contract. For example, in some ERC20 contracts the balance
 of :solidity:`address(0)` is always zero.
 
 Below, we provide examples of using invariants. You can read more about invariants

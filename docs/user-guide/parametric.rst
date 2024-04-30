@@ -27,7 +27,7 @@ The template for such checks is:
        calldataarg args;
        f(e, args)
 
-       // Get storage values before
+       // Get storage values after
        uint after = ...;
        ...
 
