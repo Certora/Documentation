@@ -119,3 +119,5 @@ sphinxcontrib-youtube==1.2.0
     # via docsinfra
 urllib3==2.2.0
     # via requests
+sphinx-copybutton==0.5.2
+    # via sphinx
