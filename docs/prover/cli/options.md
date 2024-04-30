@@ -591,23 +591,6 @@ The notification in the rule report that contains the applied summaries will pre
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
 
-(--no_memory_safe_autofinders)=
-### `--no_memory_safe_autofinders`
-
-**What does it do?**
-This option allows compilation errors when using `certoraRun` by not marking auto-generated 
-instrumented assembly code as `memory-safe`.
-
-**When to use it**
-When internal functions are not found or internal function summaries are not applied 
-and the contract was compiled with Solidity version 0.8.13 and above.
-
-**Example**
-
-```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir --no_memory_safe_autofinders
-```
-
 
 Options regarding hashing of unbounded data
 -------------------------------------------
