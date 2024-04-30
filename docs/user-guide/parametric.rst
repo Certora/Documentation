@@ -8,8 +8,9 @@ Parametric rules
 General
 -------
 A :term:`parametric rule` is a rule that uses a :cvl:`method f` parameter.
-Such a rule will be tested against all possible methods :cvl:`f`. It is possible to
-limit the methods tested, see :ref:`parametric-rules`.
+Such a rule will be tested against all possible methods :cvl:`f`, including methods from
+other contracts in the :term:`scene`.
+It is possible to limit the methods tested, see :ref:`parametric-rules`.
 
 Parametric rules can be used to verify properties of the changes in storage values.
 The template for such checks is:
