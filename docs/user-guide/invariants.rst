@@ -93,9 +93,10 @@ We can write this condition as:
    :cvlobject: nonExistTeamHasNoPlayers
    :caption: :clink:`nonExistTeamHasNoPlayers without preserved block</CVLByExample/Teams/NoPreserved.spec>`
 
-Running this rule, the Prover will find the following violation. The function
-called is :solidity:`changeLeader(address(0))`, changing the leader from address
-:solidity:`a` (where :solidity:`a` is not zero) to zero.
+Running this rule, the Prover will find the following violation,
+which you can see in this rule report `nonExistTeamHasNoPlayers violation report`_.
+The function called is :solidity:`changeLeader(address(0))`, changing the leader
+from address :solidity:`a` (where :solidity:`a` is not zero) to zero.
 Before the call :solidity:`address(0)` is a member of team :solidity:`i`, where
 :solidity:`i > 0`. After the call the left hand side of the invariant condition
 holds true: :cvl:`i != 0 && leaderOf(i) == 0`. But the right hand side
@@ -181,3 +182,10 @@ that the team had players *before it was created*.
 .. seealso::
 
    You can find out more about preserved blocks in :ref:`preserved` section.
+
+
+.. Links
+   -----
+
+.. _nonExistTeamHasNoPlayers violation report:
+   https://prover.certora.com/output/98279/65d0cd795ba640d6bdd7877074fca175?anonymousKey=55ad7f5a7130e367993082addf32fc7898494db3
