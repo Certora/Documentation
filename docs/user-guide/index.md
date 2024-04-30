@@ -29,9 +29,12 @@ think about and write high-level properties.
 
 tutorials.md
 install.md
+ci.rst
 running.rst
 properties/index.md
 satisfy.md
+invariants.rst
+parametric.rst
 ghosts.md
 patterns/index.md
 opcodes.md
