@@ -1,4 +1,9 @@
-(invariants)=
+```{eval-rst}
+.. index::
+   single: invariant
+   :name: invariants
+```
+
 Invariants
 ==========
 
@@ -128,7 +133,13 @@ used with care.
 There is an additional source of unsoundness that occurs if the invariant
 expression reverts in the before state but not in the after state.
 
-(preserved)=
+```{eval-rst}
+.. index::
+   single: preserved block
+   single: invariant; preserved block
+   :name: preserved
+```
+
 Preserved blocks
 ----------------
 
@@ -387,7 +398,14 @@ filtered {
 }
 ```
 
-(invariant-induction)=
+```{eval-rst}
+.. index::
+   single: induction
+   single: invariant; and induction
+   single: requireInvariant
+   :name: invariant-induction
+```
+
 Invariants and induction
 ------------------------
 
