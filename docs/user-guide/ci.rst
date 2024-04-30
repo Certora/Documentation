@@ -46,12 +46,16 @@ Follow these steps to configure CI for GitHub Actions on your repository:
         - name: Install certora cli
           run: pip install certora-cli==7.3.0
 
-        # If your project depends on compiling with multiple solc versions, you can install and differentiate them using these commands.
         - name: Install solc
           run: |
             pip install solc-select
             solc-select install 0.8.23
             solc-select use 0.8.23
+
+            # If your project depends on compiling with multiple solc versions, you can install and differentiate them using these commands.
+            # wget https://github.com/ethereum/solidity/releases/download/v0.8.23/solc-static-linux
+            # chmod +x solc-static-linux
+            # sudo mv solc-static-linux /usr/local/bin/solc8.23
 
         - name: Verify ${{ matrix.rule }}
           env:
