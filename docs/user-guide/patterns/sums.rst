@@ -115,9 +115,9 @@ as shown below.
 
 .. todo::
 
-   * Explain that the :cvl:`require` statement in the hook is equivalent to a forall
-     statement.
+   * Explain that the :cvl:`require` statement in the hook is equivalent to a
+     :cvl:`forall` statement.
    * Show this might be unsound - for example if we added balances in the constructor
      not through minting.
-   * A sound approach is proving an invariant that forall addresses :cvl:`totalSupply()`
+   * A sound approach is proving an invariant that for all addresses :cvl:`totalSupply()`
      is greater than  :cvl:`balanceOf(address)`.
