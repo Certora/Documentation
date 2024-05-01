@@ -112,3 +112,12 @@ as shown below.
 
    Note that the :cvl:`Sload` hook adds a require statement for every balance read.
    One should always be cautious with such require statements, as they can be unsound.
+
+.. todo::
+
+   * Explain that the :cvl:`require` statement in the hook is equivalent to a forall
+     statement.
+   * Show this might be unsound - for example if we added balances in the constructor
+     not through minting.
+   * A sound approach is proving an invariant that forall addresses :cvl:`totalSupply()`
+     is greater than  :cvl:`balanceOf(address)`.
