@@ -15,7 +15,7 @@ Prover Release Notes
 
 ### Rule Report
 - [feat] Support jump-to-source for calls, local variables, and storage accesses
-- [feat] Show structs passed to CVL functions in the calltrace
+- [feat] Show structs passed to CVL functions in the call trace
 - [feat] Show loop statistics in the live difficulty tab
 - [feat] Show split-solving progress in live stats
 - [feat] Show a notification if there are unresolved calls that can be resolved with `--optimistic_fallback`
