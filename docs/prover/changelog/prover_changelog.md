@@ -11,7 +11,7 @@ Prover Release Notes
 - [feat] Allow the use of contract aliases (`using ERC20 as token`) that were defined in the imported spec files.
 - [feat] Can use `filtered` expressions for `builtin` rules
 - [bugfix] Always run `envfree` checks, even if rule filters are applied
-- [bugfix] `envfree` will be checked on the inlined code
+- [bugfix] `envfree` will be checked on the code after linking
 
 ### Rule Report
 - [feat] Support jump-to-source for calls, local variables, and storage accesses
@@ -28,10 +28,6 @@ Prover Release Notes
 ### CLI
 - [feat] Automatically set function-finder options depending on `solc` version and configuration
 - [feat] New option `--build_cache` for faster re-compilation of previously compiled Solidity code
-- [bugfix] ensuring we do not print superfluous messages to `stdout` in CI
-
-### Mutation Testing
-- [bugfix] fixing a bug where not all mutants were processed
 
 ### Misc.
 - [feat] Support for `MCOPY` EVM instruction
