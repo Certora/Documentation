@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath("./util"))
 # -- Project information -----------------------------------------------------
 
 project = "Certora Prover Documentation"
-copyright = "2022, Certora, Inc"
+copyright = "2024, Certora, Inc"
 author = "Certora, Inc"
 
 # The full version, including alpha/beta/rc tags
@@ -40,6 +40,7 @@ extensions = [
     "sphinx_design",
     "docsinfra.sphinx_utils.codelink_extension",
     "docsinfra.sphinx_utils.includecvl",
+    "sphinx_copybutton"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
