@@ -5,6 +5,38 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.6.1 (May 15, 2024)
+----------------------
+### CVL
+- [feat] Allow to use contract aliases (`using ERC20 as token`) that were defined in the imported spec files.
+- [feat] Can use `filtered` expressions for `builtin` rules
+- [bugfix] Always run envfree checks, even if rule filters are applied
+
+
+### Rule Report
+- [feat] Support jump-to-source for calls, local variables and storage accesses
+- [feat] Show loop statistics in live difficulty tab
+- [feat] Show a notification if there are unresolved calls that can be resolved with `--optimistic_fallback`
+- [feat] Show more info on procedures with nonlinear operations
+- [UX] Prioritize `ERROR` states over other rule states
+
+### Performance
+- [feat] The `-splitParallel` option will now enable the new parallel splitter
+
+### CLI
+- [feat] Automatically set function-finder options depending on `solc` version and configuration
+- [feat] New option `--build_cache` for faster re-compilation of previously compiled Solidity code
+- [bugfix] ensuring we do not print superfluous messages to `stdout` in CI
+
+
+### Mutation Testing
+- [feat] Support `--collect` flag to only gather results from a previous `certoraMutate` run
+- [bugfix] fixing a bug where not all mutants were processed
+
+### Misc.
+- [feat] Support for `MCOPY` EVM instruction
+
+
 7.3.0 (April 11, 2024)
 ----------------------
 ### CVL
