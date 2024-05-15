@@ -250,9 +250,9 @@ and make the user-specified summaries more precise, or remove them altogether if
 
 The Prover will not auto-summarize methods that were already summarized by the user.
 
-To enable this mode, add {ref}`--auto_nondet_difficult_internal_funcs` to the `certoraRun` command.
+To enable this mode, add {ref}`--nondet_difficult_funcs` to the `certoraRun` command.
 The minimal difficulty threshold used for the auto-summarization
-can be adjusted using {ref}`--auto_nondet_minimal_difficulty`.
+can be adjusted using {ref}`--nondet_minimal_difficulty`.
 
 #### Example usage
 
