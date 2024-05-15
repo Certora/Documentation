@@ -11,11 +11,13 @@ Prover Release Notes
 - [feat] Allow to use contract aliases (`using ERC20 as token`) that were defined in the imported spec files.
 - [feat] Can use `filtered` expressions for `builtin` rules
 - [bugfix] Always run envfree checks, even if rule filters are applied
-
+- [bugfix] `envfree` will be checked on the inlined code
 
 ### Rule Report
 - [feat] Support jump-to-source for calls, local variables and storage accesses
+- [feat] Show structs passed to CVL functions in the calltrace
 - [feat] Show loop statistics in live difficulty tab
+- [feat] Show split solving progress in live stats
 - [feat] Show a notification if there are unresolved calls that can be resolved with `--optimistic_fallback`
 - [feat] Show more info on procedures with nonlinear operations
 - [UX] Prioritize `ERROR` states over other rule states
