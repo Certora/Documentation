@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.6.1 (May 15, 2024)
+7.6.3 (May 15, 2024)
 ----------------------
 ### CVL
 - [feat] Allow the use of contract aliases (`using ERC20 as token`) that were defined in the imported spec files.
