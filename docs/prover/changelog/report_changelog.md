@@ -4,6 +4,19 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+2.0.1 (May 15, 2024)
+---------------------------
+
+### Features
+
+- [feat] Support for jump to source from variables tab
+- [feat] Support for jump to source from live statistics tab
+- [feat] Allow the call trace to be expanded to full screen
+
+### Fixed Bugs
+- [fix] Expansion bug on the main UI grid
+- [fix] Fixes for the call trace tracking points
+
 1.0.0 (Apr 11, 2024)
 ---------------------------
 
@@ -13,6 +26,9 @@ Rules Report Release Notes
 - [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all prover flags and CLI options)
 - [feat] Browser tab title now indicates the main contract and the message of the job to simplify identification of a job
 - [feat] Files with extension `.yul` - [Yul files](https://docs.soliditylang.org/en/latest/yul.html) - can be displayed in the editor
+
+### Fixed Bugs
+
 - [fix] When a job has been canceled or halted, only rules that were running are being displayed as killed 
   
 0.8.0 (Mar 11, 2024)
@@ -23,7 +39,7 @@ Rules Report Release Notes
 - [feat] Jump To Source Feature (works only in combination with Certora version later than 7.1.0)
 - [feat] New tooltips on labels for the call trace
 
-### Bugs
+### Fixed Bugs
 
 - [fix] Fixed tracking points
 - [fix] Fixed sharing button
@@ -32,7 +48,7 @@ Rules Report Release Notes
 0.7.0 (Feb 12, 2024)
 ---------------------------
 
-### Bugs
+### Fixed Bugs
 
 - [fix] Fixed bug when collapsing the left pane of the main grid
 - [fix] Fixed bug when collapsing entries in the call trace
@@ -46,7 +62,7 @@ Rules Report Release Notes
 - [feat] Live Difficulty Statistics
 - [feat] Adding tool tips to status
 
-### Bugs
+### Fixed Bugs
 
 - [fix] Fixed file contents were shown to be loading for indefinite time
 
@@ -61,7 +77,7 @@ Rules Report Release Notes
 0.5.62 (Feb 11, 2024)
 ---------------------------
 
-### Bugs
+### Fixed Bugs
 
 - [fix] Fixed removed links to deprecated Certora Forum
 
@@ -93,7 +109,7 @@ Rules Report Release Notes
 - [feat] Added upload failed view
 
 
-### Bugs
+### Fixed Bugs
 
 - [bugfix] Fixed the issue of selected file not being shown in the file tree
 - [bugfix] Fixed call resolution empty state issue
