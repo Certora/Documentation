@@ -14,6 +14,7 @@ Rules Report Release Notes
 - [feat] Allow the call trace to be expanded to full screen
 
 ### Fixed Bugs
+
 - [fix] Expansion bug on the main UI grid
 - [fix] Fixes for the call trace tracking points
 
