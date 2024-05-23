@@ -345,6 +345,7 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
 (--compiler_map)=
+(--solc_map)=
 ### <a id="compiler_map"></a>`--compiler_map`
 
 **What does it do?**
