@@ -205,7 +205,7 @@ certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 
 Options affecting the type of verification run
 ----------------------------------------------
-
+(--multi_assert_check)=
 ### <a id="multi_assert_check"></a>`--multi_assert_check`
 
 **What does it do?**
@@ -298,6 +298,7 @@ When you have a rule with multiple satisfy statements, and you would like to dem
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
 
+(--rule_sanity)=
 ### <a id="rule_sanity"></a>`--rule_sanity`
 
 **What does it do?**
