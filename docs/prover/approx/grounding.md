@@ -35,7 +35,7 @@ ghost f(uint x) returns (mathint) {
 }
 ```
 
-This statement logically says that `f(0) == 0` and `f(1) == 1` and `f(2) == 0`
+This statement logically says that `f(0) == 0` and `f(1) == 0` and `f(2) == 0`
 and so on.  In practice, however, the verification may only make use of a small
 finite number of these facts.  Grounding is the process of automatically
 replacing the `forall` statement with the specific unquantified statements that
