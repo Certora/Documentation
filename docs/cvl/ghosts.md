@@ -194,6 +194,8 @@ Restrictions on ghost axioms
 Ghosts vs. persistent ghosts
 ----------------------------
 
+A `persistent ghost` is a `ghost` that will never be {ref}`havoc <glossary>`. This typically happens for unresolved calls, when the Prover will automatically {ref}`havoc <glossary>` the storage. 
+
 In most cases, non-persistent ghosts are the natural choice for a specification 
 that requires extra tracking of information.
 
