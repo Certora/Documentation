@@ -655,9 +655,9 @@ of the unknown contract is determined by the optional boolean argument to the
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
 all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since 
-certora CLI version 7.7.0 when using `_.someFunc() => DISPATCHER(true)` the prover
+Certora CLI version 7.7.0 when using `_.someFunc() => DISPATCHER(true)` the prover
 first tests that a method `someFunc()` exists in the scene, and if not will fail. 
-In the past, this caused vacuousy.
+Before this version, this may cause vacuous results.
 ```
 
 ```{note}
