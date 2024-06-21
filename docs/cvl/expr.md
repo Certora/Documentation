@@ -108,7 +108,6 @@ Struct Comparison
 CVL supports equality comparison of structs under the following restrictions:
 
  * The structs must be of the same type.
- * The structs (or any nested structs) don't contain dynamic types (dynamic arrays, string, bytes).
  * There's no support for comparison for structs fetched using direct-storage-access.
 
 Two structs will be evaluated as equal if and only if all the fields are equal.
