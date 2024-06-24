@@ -66,12 +66,12 @@ possible values of the parameters.
 
 While verifying an invariant, the Prover checks two things.  First, it checks
 that the invariant is established after calling any constructor.  Second, it checks
-that the invariant holds after the execution of any methods, assuming
+that the invariant holds after the execution of any `public` or `external` method, assuming
 that it held before the method was executed (if it does hold, we say the method
-*preserves* the invariant). By default, an invariant fill be checked for all (non-view) method
-on all contracts in the scene - this can be further configured by {ref}`-parametric-contracts`.
-View methods are excluded from invariant checking as by definition they cannot change the state 
-of the contract. 
+*preserves* the invariant). By default, an invariant fill be checked for any `public` or `external` 
+(non-`view`/`pure`) method in the scene - this can be further configured by {ref}`-parametric-contracts`.
+`View` and `pure` methods are excluded from invariant checking as by definition they cannot change the state 
+of their contract. 
 
 If an invariant is proven, it is safe to assume that it holds in other rules
 and invariants.  The
