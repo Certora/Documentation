@@ -332,10 +332,10 @@ Induction Step for Transient Storage
 ------------------------------
 With the introduction of transient storage in Solidity ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153),
 Solidity contracts can now use a `tload` or `tstore` instruction to perform `load` and `store` on transient storage.
-A storage that will be reset after the transaction has terminated. 
+The transient storage will be reset after a transaction has terminated. 
 
-The Prover will automatically detect the usage of `tload` and `tstore` in the solidity contract
-and if that's the case add another induction step for transient storage. This induction step
+The Prover will automatically detect if any contract in the scene uses `tload` and `tstore`
+and adds another induction step for transient storage. This induction step
 verifies the invariant is independent from the transient storage, i.e, it will assume the 
 invariant in pre-state, perform a reset of the transient storage and `assert` the invariant 
 in post-state. 
