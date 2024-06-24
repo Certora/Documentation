@@ -331,7 +331,7 @@ be verified even if the filter would normally exclude it.
 Induction Step for Transient Storage 
 ------------------------------
 With the introduction of transient storage in Solidity ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153),
-solidity contracts can now use a `tload` or `tstore` instruction to perform load and stores on transient storage.
+Solidity contracts can now use a `tload` or `tstore` instruction to perform `load` and `store` on transient storage.
 A storage that will be reset after the transaction has terminated. 
 
 The Prover will automatically detect the usage of `tload` and `tstore` in the solidity contract
