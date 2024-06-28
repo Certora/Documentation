@@ -157,7 +157,7 @@ Rules without any explicit `assert` statements will not check the "pessimistic"
 assertions, i.e., the implicit assertions that we insert in rules with `assert` 
 statements when at least one of the "optimistic" flags
 (i.e. {ref}`--optimistic_loop`, {ref}`--optimistic_hashing`, etc.) is not set.
-In order to trigger creation of a sub-rule that constains these checks, users
+In order to trigger creation of a sub-rule that contains these checks, users
 can insert an `assert true` statement right before the last `satisfy`.
 ```
 
