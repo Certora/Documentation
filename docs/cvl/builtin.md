@@ -106,12 +106,19 @@ rule sanity {
     method f; env e;
     calldataarg arg;
     f(e, arg); 
+    assert true; // for checking "pessimistic" assertions
     satisfy true;
 }
 ```
 
-To find a satisfying trace, the Prover must construct an input
-for which `f` doesn't revert.
+This will create two sub-rules, which will be visible in the report. One
+sub-rule checks the `satisfy true` statement, which is fulfilled if there is an
+input such that `f(e, arg)` runs to completion without reverting. The other
+sub-rule checks the `assert true` statement. Of course, this assertion itself is
+never violated, but the sub-rule contains the "pessimistic" assertions that we
+insert when at least one of the "optimistic" flags (e.g.
+{ref}`--optimistic_loop`, {ref}`--optimistic_hashing`, etc.) is not active. Note
+that rules with only {ref}`satisfy` do not check these assertions.
 
 (built-in-deep-sanity)=
 Thorough complexity checks &mdash; `deepSanity`
