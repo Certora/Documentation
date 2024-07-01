@@ -90,7 +90,7 @@ to be relative to the configuration file's parent directory.
 
 In the following section we provide examples of how to run Gambit using both
 `--filename` and `--json`. We provide more complete documentation in the
-{ref}`configuration-files` and {ref}`cli-options` sections below.
+{ref}`configuration-files` and {ref}`gambit-cli-options` sections below.
 
 ## Examples
 
@@ -429,7 +429,7 @@ This has the following structure:
 + `mutants.log`: a log file with all mutant information. This is similar to
   `results.json` but in a different format and with different information
 
-(cli-options)=
+(gambit-cli-options)=
 ## CLI Options
 
  `gambit mutate` supports the following options; for a comprehensive list, run
