@@ -147,7 +147,7 @@ pessimistic assertions
   excludes the relevant behavior from checking for one occurrence of the problematic
   construct, e.g., for each loop.
 
-  For a list of all "optimistic" settings see the {ref}`cli-options` page.
+  For a list of all "optimistic" settings see {ref}`prover-cli-options`.
   Examples include {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`, 
   {ref}`--optimistic_summary_recursion`, and more. Also see 
   {ref}`prover-approximations` for more background on some of the 
