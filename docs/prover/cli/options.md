@@ -1,3 +1,4 @@
+(prover-cli-options)=
 CLI Options
 ===========
 

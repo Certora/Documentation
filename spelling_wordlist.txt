@@ -27,6 +27,7 @@ Unary
 Vyper
 Yices
 Yul
+approximative
 autofinders
 axiomatization
 axiomatized
