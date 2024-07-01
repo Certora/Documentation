@@ -134,8 +134,7 @@ pessimistic assertions
   behavior induced by a loop being unrolled beyond a fixed number of times. 
   For each of these constructs the Prover provides a flag controlling whether 
   it should handle them optimistically or pessimistically. (See the links at the 
-  end of this paragraph for examples besides the mentioned 
-  {ref}`--optimistic_loop`).
+  end of this paragraph for examples of "optimistic" flags.)
 
   In pessimistic mode (which is the default) _pessimistic assertions_ are 
   inserted into the program that check whether there is any behavior that needs 
