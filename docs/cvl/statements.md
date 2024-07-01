@@ -153,14 +153,15 @@ state has an execution that satisfies the condition.
 ```
 
 ```{note}
-Rules without any explicit `assert` statements will not check the "pessimistic" 
-assertions, i.e., the implicit assertions that we insert in rules with `assert` 
-statements when at least one of the "optimistic" flags
-(i.e. {ref}`--optimistic_loop`, {ref}`--optimistic_hashing`, etc.) is not set.
-In order to trigger creation of a sub-rule that contains these checks, users
-can insert an `assert true` statement into the rule. This assert itself will 
-never be violated, but the sub-rule we create for it will contain all the 
-"pessimistic" assertions for the program.
+`satisfy` statements are never checked in the same sub-rule with `assert` statements, 
+and they are always checked under `optimistic assumptions`.
+This means that rules without any explicit `assert` statements will not check the 
+{term}`pessimistic assertions`, i.e., the implicit assertions that we insert 
+in rules with `assert` statements when at least one of the "optimistic" flags 
+is not set. In order to trigger creation of a sub-rule that contains these 
+checks, users can insert an `assert true` statement into the rule. This assert 
+itself will never be violated, but the sub-rule we create for it will contain 
+all the pessimistic assertions for the program.
 ```
 
 - [`satisfy` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L243)

@@ -126,6 +126,34 @@ underapproximation
   that is successfully verified on the underapproximation may not hold on the
   approximated code.
 
+optimistic assumptions
+pessimistic assertions
+  Some input programs contain constructs that the Prover can only handle in 
+  an approximative way. This approximation entails that the Prover will  
+  disregard some specific parts of the programs behavior, like for example the 
+  behavior induced by a loop being unrolled beyond a fixed number of times. 
+  For each of these constructs the Prover provides a flag controlling whether 
+  it should handle them optimistically or pessimistically. (See the links at the 
+  end of this paragraph for examples besides the mentioned 
+  {ref}`--optimistic_loop`).
+
+  In pessimistic mode (which is the default) _pessimistic assertions_ are 
+  inserted into the program that check whether there is any behavior that needs 
+  to be approximated, for instance whether loops are present with bounds 
+  exceeding {ref}`--loop_iter`). If this is the case, the rule will fail with 
+  a corresponding message. 
+
+  In optimistic mode, instead of the assertions, _optimistic assumptions_ are 
+  introduced in each of the places where an approximation happens. Each assumption 
+  excludes the relevant behavior from checking for one occurrence of the problematic
+  construct, e.g., for each loop.
+
+  See also {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`, 
+  {ref}`--optimistic_summary_recursion`, and more (also listed on the 
+  {ref}`cli-options` page. Also see {ref}`prover-approximations` for more 
+  background on some of the approximations.
+
+
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
   method variable, or using an overloaded function name. The Certora Prover 

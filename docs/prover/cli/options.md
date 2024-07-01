@@ -1,3 +1,4 @@
+(cli-options)=
 CLI Options
 ===========
 

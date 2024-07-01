@@ -115,9 +115,9 @@ This will create two sub-rules, which will be visible in the report. One
 sub-rule checks the `satisfy true` statement, which is fulfilled if there is an
 input such that `f(e, arg)` runs to completion without reverting. The other
 sub-rule checks the `assert true` statement. Of course, this assertion itself is
-never violated, but the sub-rule contains the "pessimistic" assertions that we
+never violated, but the sub-rule contains the `pessimistic assertions` that we
 insert when at least one of the "optimistic" flags (e.g.
-{ref}`--optimistic_loop`, {ref}`--optimistic_hashing`, etc.) is not active. Note
+{ref}`--optimistic_loops`, {ref}`--optimistic_hashing`, etc.) is not active. Note
 that rules with only {ref}`satisfy` do not check these assertions.
 
 (built-in-deep-sanity)=
