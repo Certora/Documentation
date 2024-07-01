@@ -8,7 +8,18 @@ axiom
   a statement accepted as true without proof.
 
 call trace
-  TODO
+  A call trace illustrates a rule execution that leads up to the violation
+  of an `assert` statement or the fulfillment of a `satisfy` statement. The
+  trace is a sequence of nodes that correspond to commands in the rule (or in
+  the contracts the rule was calling into), starting at the beginning of the 
+  rule and ending with the violated `assert` / fulfilled `satisfy` statement.
+  In addition to the commands, the call trace also contains information about
+  the values of variables and expressions at each point in the execution.
+  The purpose of a call trace is to give the users a means of understanding why 
+  the rule was violated/not violated.
+
+  The call trace can be found in the "Call Trace" tab in the report for each 
+  rule for which it was generated.
 
 CFG
 control flow graph
