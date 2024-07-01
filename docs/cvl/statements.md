@@ -135,7 +135,7 @@ will produce a witness for a valid execution of the rule.  It will show an
 execution trace containing values for each input variable and each state
 variable where all `require` and `satisfy` statements are executed successfully.
 In case there is no such execution, for example if the `require` statements are
-already inconsistent or if a solidity function always reverts, the rule will
+already inconsistent or if a Solidity function always reverts, the rule will
 show as "Violated".
 
 If the rule contains multiple `satisfy` statements, then all executed `satisfy`
@@ -158,7 +158,9 @@ assertions, i.e., the implicit assertions that we insert in rules with `assert`
 statements when at least one of the "optimistic" flags
 (i.e. {ref}`--optimistic_loop`, {ref}`--optimistic_hashing`, etc.) is not set.
 In order to trigger creation of a sub-rule that contains these checks, users
-can insert an `assert true` statement right before the last `satisfy`.
+can insert an `assert true` statement into the rule. This assert itself will 
+never be violated, but the sub-rule we create for it will contain all the 
+"pessimistic" assertions for the program.
 ```
 
 - [`satisfy` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L243)
