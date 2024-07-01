@@ -130,13 +130,6 @@ The conf file of the latest run can be found in:
 Instead of generating a complete conf file from scratch, users can take 
 one of these generated conf files as a basis for their modifications.
 
-## Conf files in the VS Code IDE extension
-The [Certora IDE Extension](https://marketplace.visualstudio.com/items?itemName=Certora.vscode-certora-prover)
-automatically generates conf files for each configured job; these conf files
-are stored in the VS Code project under the folder  `certora/confs`.
-Once the job is completed, a link to the job's conf file can also be found in the files section of the 
-run report.
-
 ### Complete example
 
 The command line
