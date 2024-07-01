@@ -154,7 +154,7 @@ state has an execution that satisfies the condition.
 
 ```{note}
 `satisfy` statements are never checked in the same sub-rule with `assert` statements, 
-and they are always checked under `optimistic assumptions`.
+and they are always checked under {term}`optimistic assumptions`.
 This means that rules without any explicit `assert` statements will not check the 
 {term}`pessimistic assertions`, i.e., the implicit assertions that we insert 
 in rules with `assert` statements when at least one of the "optimistic" flags 
