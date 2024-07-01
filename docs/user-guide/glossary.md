@@ -140,7 +140,7 @@ pessimistic assertions
   In pessimistic mode (which is the default) _pessimistic assertions_ are 
   inserted into the program that check whether there is any behavior that needs 
   to be approximated, for instance whether loops are present with bounds 
-  exceeding {ref}`--loop_iter`). If this is the case, the rule will fail with 
+  exceeding {ref}`--loop_iter`. If this is the case, the rule will fail with 
   a corresponding message. 
 
   In optimistic mode, instead of the assertions, _optimistic assumptions_ are 
@@ -148,10 +148,11 @@ pessimistic assertions
   excludes the relevant behavior from checking for one occurrence of the problematic
   construct, e.g., for each loop.
 
-  See also {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`, 
-  {ref}`--optimistic_summary_recursion`, and more (also listed on the 
-  {ref}`cli-options` page. Also see {ref}`prover-approximations` for more 
-  background on some of the approximations.
+  For a list of all "optimistic" settings see the {ref}`cli-options` page.
+  Examples include {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`, 
+  {ref}`--optimistic_summary_recursion`, and more. Also see 
+  {ref}`prover-approximations` for more background on some of the 
+  approximations.
 
 
 parametric rule
