@@ -16,8 +16,10 @@ call trace
   trace is a sequence of commands in the rule (or in the contracts the rule 
   was calling into), starting at the beginning of the rule and ending with the 
   violated `assert` or fulfilled `satisfy` statement.
-  In addition to the commands, the call trace also contains information about
-  the values of variables and expressions at each point in the execution.
+  In addition to the commands, the call trace also does a best effort at 
+  showing information about the program state at each poin in the exexution.
+  It contains information about the state of global variables at crucial points 
+  as well as the values of call parameters, return values, and more.
 
   If a call trace exists, it can be found in the "Call Trace" tab in the report 
   after selecting the corresponding (sub-)rule.
