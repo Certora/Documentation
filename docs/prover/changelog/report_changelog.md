@@ -4,6 +4,15 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+
+2.1.7 (Jul 8, 2024)
+---------------------------
+
+### Features
+
+- [feat] Call trace replaced by a new tree to Improve performance for large trees
+
+  
 2.0.1 (May 15, 2024)
 ---------------------------
 
