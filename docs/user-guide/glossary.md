@@ -9,7 +9,7 @@ axiom
 
 call trace
   A call trace is the Prover's visualization of either a 
-  {term}`counter example` or a {term}`witness example`. 
+  {term}`counterexample` or a {term}`witness example`. 
 
   A call trace illustrates a rule execution that leads up to the violation
   of an `assert` statement or the fulfillment of a `satisfy` statement. The
@@ -17,7 +17,7 @@ call trace
   was calling into), starting at the beginning of the rule and ending with the 
   violated `assert` or fulfilled `satisfy` statement.
   In addition to the commands, the call trace also does a best effort at 
-  showing information about the program state at each poin in the exexution.
+  showing information about the program state at each point in the execution.
   It contains information about the state of global variables at crucial points 
   as well as the values of call parameters, return values, and more.
 
