@@ -8,6 +8,9 @@ axiom
   a statement accepted as true without proof.
 
 call trace
+  A call trace is the Prover's visualization of either a 
+  {term}`counter example` or a {term}`witness example`. 
+
   A call trace illustrates a rule execution that leads up to the violation
   of an `assert` statement or the fulfillment of a `satisfy` statement. The
   trace is a sequence of nodes that correspond to commands in the rule (or in
@@ -16,9 +19,6 @@ call trace
   In addition to the commands, the call trace also contains information about
   the values of variables and expressions at each point in the execution.
 
-  Note that a call trace only exists for `assert`s that are violated, and for
-  `satisfy`s that are fulfilled. The purpose of the call trace is to give users
-  a means of understanding the reasons for each of these results.
   If a call trace exists, it can be found in the "Call Trace" tab in the report 
   after selecting the corresponding (sub-)rule.
 
