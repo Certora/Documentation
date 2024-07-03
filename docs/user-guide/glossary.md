@@ -15,11 +15,12 @@ call trace
   rule and ending with the violated `assert` or fulfilled `satisfy` statement.
   In addition to the commands, the call trace also contains information about
   the values of variables and expressions at each point in the execution.
-  The purpose of a call trace is to give the users a means of understanding why 
-  the rule was violated, or not violated.
 
-  The call trace can be found in the "Call Trace" tab in the report for each 
-  rule for which it was generated.
+  Note that a call trace only exists for `assert`s that are violated, and for
+  `satisfy`s that are fulfilled. The purpose of the call trace is to give users
+  a means of understanding the reasons for each of these results.
+  If a call trace exists, it can be found in the "Call Trace" tab in the report 
+  after selecting the corresponding (sub-)rule.
 
 CFG
 control flow graph
