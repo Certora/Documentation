@@ -13,9 +13,9 @@ call trace
 
   A call trace illustrates a rule execution that leads up to the violation
   of an `assert` statement or the fulfillment of a `satisfy` statement. The
-  trace is a sequence of nodes that correspond to commands in the rule (or in
-  the contracts the rule was calling into), starting at the beginning of the 
-  rule and ending with the violated `assert` or fulfilled `satisfy` statement.
+  trace is a sequence of commands in the rule (or in the contracts the rule 
+  was calling into), starting at the beginning of the rule and ending with the 
+  violated `assert` or fulfilled `satisfy` statement.
   In addition to the commands, the call trace also contains information about
   the values of variables and expressions at each point in the execution.
 
