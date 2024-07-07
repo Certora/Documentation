@@ -156,6 +156,12 @@ the contract or the spec to rerun, we can just rerun on the `deposit` method:
 certoraRun --method 'deposit(uint)'
 ```
 
+If we discover a counterexample in several methods, we could rerun just those:
+
+```sh
+certoraRun --method 'deposit(uint)' --method 'transfer(address,uint256)'
+```
+
 Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
 
