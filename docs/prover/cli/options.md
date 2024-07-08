@@ -655,9 +655,6 @@ Options that help reduce the running time
 
 See {ref}`--method`
 
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
-
 (--compilation_steps_only)=
 ### <a id="compilation_steps_only"></a>`--compilation_steps_only`
 
