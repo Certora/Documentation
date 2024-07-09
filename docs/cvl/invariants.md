@@ -89,7 +89,7 @@ is an unresolved external call that is able to modify the state of the current c
  2. Assume the invariant holds after the call `c`. The semantics is that the call did not break the invariant.  
  3. In the case `c` is a `delegatecall` havoc the current's contact storage and assert the invariant once more. 
 
-The havoc'ing logic in step 3 models the scenario that a `delegatecall` modifies the current contract's storage.
+The havocing logic in step 3 models the scenario that a `delegatecall` modifies the current contract's storage.
 
 ```{note}
 An invariant that is neither declared as `strong` nor `weak` will be treated as a `weak` invariant by default. 
