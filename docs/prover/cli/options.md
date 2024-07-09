@@ -680,7 +680,7 @@ Here are a few example scenarios:
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
 
-(--smt-timeout)=
+(--smt_timeout)=
 ### `--smt_timeout <seconds>`
 
 **What does it do?**
@@ -709,7 +709,7 @@ The second use is when the solvers can prove the property, they just need more t
 `certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`
 
 
-(--global-timeout)=
+(--global_timeout)=
 ### `--global_timeout <seconds>`
 Sets the maximal timeout for the Prover.
 Gets an integer input, which represents seconds.
@@ -769,7 +769,7 @@ When we have an external contract with a constant address. By default, the Pytho
 If we wish the `Oracle` contract to be at address 12, we use
 `certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12`
 
-(--struct-link)=
+(--struct_link)=
 ### `--struct_link`
 
 **What does it do?**
@@ -793,7 +793,7 @@ struct TokenPair {
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
 
-(--contract-recursion-limit)=
+(--contract_recursion_limit)=
 ### `--contract_recursion_limit`
 
 **What does it do?**
@@ -833,7 +833,7 @@ as the code may in fact allow theoretically unbounded recursion.
 certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ```
 
-(--optimistic-contract-recursion)=
+(--optimistic_contract_recursion)=
 ### `--optimistic_contract_recursion`
 
 **What does it do?**
@@ -858,7 +858,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 ```
 
 (-optimisticFallback)=
-(--optimistic-fallback)=
+(--optimistic_fallback)=
 ### `--optimistic_fallback`
 
 This option determines whether to optimistically assume unresolved external
@@ -870,7 +870,7 @@ calls with an empty input buffer will {term}`havoc` all the storage state of ext
 Options for controlling contract creation
 -----------------------------------------
 
-(--dynamic-bound)=
+(--dynamic_bound)=
 ### `--dynamic_bound <n>`
 
 **What does it do?**
@@ -883,7 +883,7 @@ When you wish to model contract creation, that is, simulating the actual creatio
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
 `certoraRun C.sol Foo.sol --dynamic_bound 1`
 
-(--dynamic-dispatch)=
+(--dynamic_dispatch)=
 ### `--dynamic_dispatch`
 
 **What does it do?**
@@ -961,7 +961,7 @@ When you suspect you have an old installation. To install the newest version, us
 Advanced options
 ----------------
 
-(--java-args)=
+(--java_args)=
 ### `--java_args`
 
 **What does it do?**
@@ -976,7 +976,7 @@ Upon instruction from the Certora team.
 
 `--java_args '"-Dcvt.default.parallelism=2"'` - will set the number of “tasks” that can run in parallel to 2.
 
-(--prover-args)=
+(--prover_args)=
 ### `--prover_args`
 
 The `--prover_args` option allows you to provide fine-grained tuning options to the
@@ -1006,7 +1006,7 @@ that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
-(--precise-bitwise-ops)=
+(--precise_bitwise_ops)=
 #### `--precise_bitwise_ops`
 
 This option models bitwise operations exactly instead of using the default
@@ -1019,7 +1019,7 @@ precisely: the maximum supported integer value is :math:`2^256-1` in this case,
 effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
-(-smt-groundquantifiers)=
+(-smt_groundquantifiers)=
 #### `--prover_args -smt_groundQuantifiers=false`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
@@ -1037,7 +1037,7 @@ built-in rule.  See {ref}`built-in-deep-sanity`.
 This option disables the storage splitting optimization.
 
 
-(--allow-solidity-calls-in-quantifiers)=
+(--allow_solidity_calls_in_quantifiers)=
 ### --allow_solidity_calls_in_quantifiers`
 
 **What does it do?**
