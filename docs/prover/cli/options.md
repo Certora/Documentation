@@ -92,7 +92,7 @@ If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
 simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
 
-(--exclude-rule)=
+(--exclude_rule)=
 ### `--exclude_rule <rule_name_pattern>`
 
 **What does it do?**
