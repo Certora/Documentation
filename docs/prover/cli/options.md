@@ -210,7 +210,7 @@ certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 Options affecting the type of verification run
 ----------------------------------------------
 
-(--multi-assert-check)=
+(--multi_assert_check)=
 ### `--multi_assert_check`
 
 **What does it do?**
@@ -245,7 +245,7 @@ When you have a rule with multiple assertions:
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
-(--independent-satisfy)=
+(--independent_satisfy)=
 ### -`--independent_satisfy`
 
 **What does it do?**
@@ -304,7 +304,7 @@ When you have a rule with multiple satisfy statements, and you would like to dem
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
 
-(--rule-sanity)=
+(--rule_sanity)=
 ### `--rule_sanity`
 
 **What does it do?**
@@ -319,7 +319,7 @@ useful check if you notice rules passing surprisingly quickly or easily.
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
 
-(--short-output)=
+(--short_output)=
 ### `--short_output`
 
 **What does it do?**
@@ -345,8 +345,8 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
-(--compiler-map)=
-(--solc-map)=
+(--compiler_map)=
+(--solc_map)=
 ### `--compiler_map`
 
 **What does it do?**
@@ -358,7 +358,7 @@ When different contracts have to be compiled for different Solidity versions.
 **Example**
 `certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10`
 
-(--solc-optimize)=
+(--solc_optimize)=
 ### `--solc_optimize`
 
 **What does it do?**
@@ -371,7 +371,7 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300`
 
-(--solc-optimize-map)=
+(--solc_optimize_map)=
 ### `--solc_optimize_map`
 
 **What does it do?**
@@ -385,7 +385,7 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
-(--solc-via-ir)=
+(--solc_via_ir)=
 ### `--solc_via_ir`
 
 **What does it do?**
@@ -397,7 +397,7 @@ When we want to enable the IR-based code generator
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
 
-(--solc-evm-version)=
+(--solc_evm_version)=
 ### `--solc_evm_version`
 
 **What does it do?**
@@ -409,7 +409,7 @@ When we want to select the Solidity compiler EVM version
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
 
-(--solc-allow-path)=
+(--solc_allow_path)=
 ### `--solc_allow_path`
 
 **What does it do?**
@@ -422,7 +422,7 @@ When we want to add an additional location the Solidity compiler to load sources
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
 
-(--packages-path)=
+(--packages_path)=
 ### `--packages_path`
 
 **What does it do?**
@@ -449,7 +449,7 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 Options regarding source code loops
 -----------------------------------
 
-(--optimistic-loop)=
+(--optimistic_loop)=
 ### `--optimistic_loop`
 
 **What does it do?**
@@ -464,7 +464,7 @@ When you have loops in your code and are getting a counterexample labeled `loop 
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 ```
 
-(--loop-iter)=
+(--loop_iter)=
 ### `--loop_iter`
 
 **What does it do?**
@@ -482,7 +482,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 Options regarding summarization
 -------------------------------
 
-(--optimistic-summary-recursion)=
+(--optimistic_summary_recursion)=
 ### `--optimistic_summary_recursion`
 
 **What does it do?**
@@ -525,7 +525,7 @@ Note that this flag could be another cause for unsoundness - even if such recurs
 _could_ actually happen in the deployed contract, this code-path won't be verified.
 ```
 
-(--summary-recursion-limit)=
+(--summary_recursion_limit)=
 ### `--summary_recursion_limit`
 
 **What does it do?**
@@ -554,7 +554,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
 
-(--nondet-difficult-funcs)=
+(--nondet_difficult_funcs)=
 ### `--nondet_difficult_funcs`
 
 **What does it do?**
@@ -577,7 +577,7 @@ verification results, as well as highlighting potentially difficult functions.
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
-(--nondet-minimal-difficulty)=
+(--nondet_minimal_difficulty)=
 ### `--nondet_minimal_difficulty`
 
 **What does it do?**
@@ -599,7 +599,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_mi
 Options regarding hashing of unbounded data
 -------------------------------------------
 
-(--optimistic-hashing)=
+(--optimistic_hashing)=
 ### `--optimistic_hashing`
 
 **What does it do?**
@@ -619,7 +619,7 @@ When the assertion regarding unbounded hashing is thrown, but it is acceptable f
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ```
 
-(--hashing-length-bound)=
+(--hashing_length_bound)=
 ### `--hashing_length_bound`
 
 **What does it do?**
@@ -659,7 +659,7 @@ When you are trying to solve/understand a counterexample of a parametric rule on
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
 
-(--compilation-steps-only)=
+(--compilation_steps_only)=
 ### `--compilation_steps_only`
 
 **What does it do?**
