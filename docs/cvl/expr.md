@@ -667,7 +667,7 @@ It exists in very similar form in CVL and receives exactly the same parameter ty
 `ecrecover` is ***supported*** in quantified expressions.
 ```
 
-The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`uninterpreted function <uninterp-functions>`. Like all uninterpreted functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
+The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`ghost function <ghost-functions>`. Like all ghost functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
 
 There is a useful set of axioms that can be encoded in CVL to make the modeled behavior of `ecrecover` more precise and less likely to create false counterexamples:
 ```cvl
