@@ -323,7 +323,8 @@ rules that check the equivalence of different functions.  See
 ### Uninterpreted sorts
 
 ```{todo}
-This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
+This section is incomplete.
+See :file:`/docs/confluence/anatomy/ghostfunctions` from the Old Documentation.
 ```
 
 (type-conversions)=

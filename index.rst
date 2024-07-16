@@ -41,12 +41,11 @@ Learning resources
    docs/whitepaper/index.md
 
 .. Hidden stuff that will only appear in the sidebar.
-   E.g. the old documentation and the index.
+   E.g. the index.
 
 .. toctree::
    :hidden:
 
-   docs/confluence/index.md
    genindex
 
 .. _contact:
@@ -58,6 +57,17 @@ If you have questions about Certora's products, the best ways to contact us is
 on our `Help Desk channel on Discord`_.
 
 For sales, please use the `contact form on our website`_.
+
+.. Adding TODO list visible only in dev-build.
+   To create a dev-build locally run:
+   sphinx-build -b html . build/html -t is_dev_build
+
+.. only:: is_dev_build
+
+   To do list
+   ----------
+
+   .. todolist::
 
 
 .. Links
