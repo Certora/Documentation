@@ -5,11 +5,11 @@ about certain classes of mistakes in specifications.
 
 There are several kinds of sanity checks:
 
- * {ref}`sanity-vacuity` determine whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
- * {ref}`sanity-assert-tautology` determine whether individual `assert` statements are {term}`tautologies <tautology>`.
- * {ref}`sanity-trivial-invariant` detect invariants that hold in all states, rather than just reachable states.
- * {ref}`sanity-assert-structure` detect unnecessarily complex `assert` statements.
- * {ref}`sanity-redundant-require` detect unnecessary `require` statements.
+ * {ref}`sanity-vacuity` determines whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
+ * {ref}`sanity-assert-tautology` determines whether individual `assert` statements are {term}`tautologies <tautology>`.
+ * {ref}`sanity-trivial-invariant` detects invariants that hold in all states, rather than just reachable states.
+ * {ref}`sanity-assert-structure` detects unnecessarily complex `assert` statements.
+ * {ref}`sanity-redundant-require` detects unnecessary `require` statements.
 
 The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 `advanced` options to control which sanity checks should be executed:
@@ -23,17 +23,11 @@ The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 We recommend starting with the `basic` mode, since not all rules flagged by the
 `advanced` mode are incorrect.
 
-When the Prover is run with any of these options, it first checks that the rule
-passes; if it does pass then the sanity checks are performed.  If the sanity
-checks also pass, the rule is marked as verified with a green checkmark; if the
-sanity check fails, the rule is marked with a yellow symbol:
+Each option add a new child rule for every rule in the specification.  If any of the sanity check subrules fails, it will be marked with a yellow icon, and so will the parent rule:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
-If a sanity check fails, you can expand the problems view to see the details
-of the failure:
-
-![Screenshot of rule report showing the expanded details of a sanity failure](sanity-details.png)
+Sanity checks have no call trace.  If a sanity subrule is halted, then the parent rule will also have the status halted.
 
 The remainder of this document describes these checks in detail.
 
@@ -126,7 +120,7 @@ For example, the following invariant is trivial:
 
 ```cvl
 invariant squaresNonNeg(int x)
-    x * x >= 0
+    x * x >= 0;
 ```
 
 While it does hold in every reachable state, it also holds in every
