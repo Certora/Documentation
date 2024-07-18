@@ -23,7 +23,7 @@ The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 We recommend starting with the `basic` mode, since not all rules flagged by the
 `advanced` mode are incorrect.
 
-Each option add a new child rule for every rule in the specification.  If any of the sanity check sub-rules fails, it will be marked with a yellow icon, and so will the parent rule:
+Each option adds new child rules for every rule in the specification.  If any of the sanity check sub-rules fails, it will be marked with a yellow icon, and so will the parent rule:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
@@ -56,6 +56,10 @@ Since there are no models satisfying both `x > 2` and `x < 1`, this rule
 will always pass, regardless of the behavior of the contract.  This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
+
+A vacuity check adds a sub-rule called `vacuity` for each rule.  For example, the rule report for the above `vacuous` rule will look like this:
+
+![Screenshot of vacuity subrule](vacuity_subrule.png)
 
 The vacuity check also flags situations where counterexamples are ruled
 out for reasons other than `require` statements.  A common example comes from
