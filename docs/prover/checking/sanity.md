@@ -23,11 +23,11 @@ The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 We recommend starting with the `basic` mode, since not all rules flagged by the
 `advanced` mode are incorrect.
 
-Each option add a new child rule for every rule in the specification.  If any of the sanity check subrules fails, it will be marked with a yellow icon, and so will the parent rule:
+Each option add a new child rule for every rule in the specification.  If any of the sanity check sub-rules fails, it will be marked with a yellow icon, and so will the parent rule:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
-Sanity checks have no call trace.  If a sanity subrule is halted, then the parent rule will also have the status halted.
+Sanity checks have no call trace.  If a sanity sub-rule is halted, then the parent rule will also have the status halted.
 
 The remainder of this document describes these checks in detail.
 
