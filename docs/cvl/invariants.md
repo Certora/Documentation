@@ -80,10 +80,10 @@ invariant checking as by definition they cannot change the state
 of their contract. 
 
 A strong invariant performs the same checks as a weak invariant - i.e. it will be checked for the constructor
-and for any other method it will be assumed before executing the method (pre-state) and asserted afterward execution of the method (post-state). 
+and for any other method, it will be assumed before executing the method (pre-state) and asserted afterward execution of the method (post-state). 
 In addition to these steps, a strong invariant also asserts and assumes the invariant _during_ method
-execution at location that potentially break the invariant. The invariant can be violated if there
-is an unresolved external call that is able to modify the state of the current contract. To verify the strong invariant, for every unresolved external call `c` 
+execution at locations that potentially break the invariant. The invariant can be violated if there
+is an unresolved external call that can modify the state of the current contract. To verify the strong invariant, for every unresolved external call `c` 
 (a call that will force the prover to havoc storage), a strong invariant will insert the following steps:
 
  1. _Before_ the call `c`: Assert that the invariant holds - if the invariant does not hold due to some logic of the current method, this will yield a counter example that ends with the `assert` before `c`.
