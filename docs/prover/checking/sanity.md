@@ -112,7 +112,7 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-The tautology check will add a subrule per assert or satisfy statement for each rule.  The tautology check sub-rules are named with the prefix `assert_tautology_` followed by a numerical ID.  For example, the rule report for the above `tautology` rule will look like this:
+The tautology check will add a sub-rule per assert or satisfy statement for each rule.  The tautology check sub-rules are named with the prefix `assert_tautology_` followed by a numerical ID.  For example, the rule report for the above `tautology` rule will look like this:
 
 ![Screenshot of assert tautology subrule](tautology_subrule.png)
 
