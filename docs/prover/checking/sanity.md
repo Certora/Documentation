@@ -227,6 +227,7 @@ In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
 
 The redundant require check will add a sub-rule per `require` statement for each rule.  The redundant require check sub-rules are named with the prefix `redundant_require_` followed by a numerical ID.
+
 ![Screenshot of rule report showing a redundant require check](sanity-icons.png)
 
 Redundant require is an exhaustive check and will only be executed if neither of the checks for {ref}`sanity-trivial-invariant` and {ref}`sanity-assert-tautology` fail.
