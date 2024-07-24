@@ -146,7 +146,7 @@ invocations.
 
 The trivial invariant check will add a node to each method under the induction step of invariants named `invariant_not_trivial_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
 
-![Screenshot of trivial invariant subrule](trivial_invariant_subrule.png)
+![Screenshot of trivial invariant subrule](trivial_invariant_node.png)
 
 (sanity-assert-structure)=
 Assertion structure checks
