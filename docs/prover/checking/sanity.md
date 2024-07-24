@@ -144,7 +144,7 @@ The rule version is more efficient because it can do a single check in an
 arbitrary state rather than separately checking states after arbitrary method
 invocations.
 
-The trivial invariant check will add a sub-rule for each method under the induction step of invariants named `trivial_invariant_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
+The trivial invariant check will add a sub-rule for each method under the induction step of invariants named `invariant_not_trivial_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
 
 ![Screenshot of trivial invariant subrule](trivial_invariant_subrule.png)
 
