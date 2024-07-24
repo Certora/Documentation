@@ -112,7 +112,7 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_` followed by a numerical ID.  For example, the rule report for the above `tautology` rule will look like this:
+The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_<ID>`.  For example, the rule report for the above `tautology` rule will look like this:
 
 ![Screenshot of assert tautology subrule](tautology_subrule.png)
 
@@ -189,9 +189,13 @@ The assertion structure check tries to prove some complex logical statements by
 breaking them into simpler parts.  The following situations are reported by the
 assertion structure check:
 
-1. `assert p => q;` is reported as a sanity violation if `p` is false whenever the
-  assertion is reached (in which case the simpler assertion `assert !p;` more
-  clearly describes the situation). In that case the node named `assertion_left_operand_check_` followed by a numerical ID will have a yellow icon. Sanity will also be violated if `q` is always true (in which case `assert q;` is a clearer alternative). In that case the node named `assertion_left_operand_check_` followed by a numerical ID will have a yellow icon.
+1. `assert p => q;` is reported as a sanity violation if whenever the assertion is reached:
+
+  1. `p` is always false. In this case, `q` is never checked. A simpler way to write this assertion is `assert !p;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+
+  2. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+
+  3. `q` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_right_operand_check_<ID>`.
 
   ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
@@ -227,7 +231,7 @@ rule require_redundant {
 In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
 
-The redundant require check will add a node per `require` statement to each rule.  The nodes are named with the prefix `require_not_redundant_` followed by a numerical ID.
+The redundant require check will add a node per `require` statement to each rule.  The nodes are named with the prefix `require_not_redundant_<ID>`.
 
 ![Screenshot of rule report showing a redundant require check](sanity-icons.png)
 
