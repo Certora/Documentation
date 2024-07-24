@@ -191,8 +191,9 @@ assertion structure check:
 
 * `assert p => q;` is reported as a sanity violation if `p` is false whenever the
   assertion is reached (in which case the simpler assertion `assert !p;` more
-  clearly describes the situation), or if `q` is always true (in which case
-  `assert q;` is a clearer alternative).
+  clearly describes the situation). In that case the node named `assertion_left_operand_check_` followed by a numerical ID will have a yellow icon. Sanity will also be violated if `q` is always true (in which case `assert q;` is a clearer alternative). In that case the node named `assertion_left_operand_check_` followed by a numerical ID will have a yellow icon.
+
+  ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
 * `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
   both true whenever the assertion is reached (in which case the simpler
@@ -226,7 +227,7 @@ rule require_redundant {
 In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
 
-The redundant require check will add a sub-rule per `require` statement for each rule.  The redundant require check sub-rules are named with the prefix `require_not_redundant_` followed by a numerical ID.
+The redundant require check will add a node per `require` statement for each rule.  The redundant require check sub-rules are named with the prefix `require_not_redundant_` followed by a numerical ID.
 
 ![Screenshot of rule report showing a redundant require check](sanity-icons.png)
 
