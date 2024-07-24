@@ -59,7 +59,7 @@ preconditions are contradictory.
 
 A vacuity check adds a node called `rule_not_vacuous` to each rule.  For example, the rule report for the above `vacuous` rule will look like this:
 
-![Screenshot of vacuity subrule](vacuity_subrule.png)
+![Screenshot of vacuity subrule](vacuity_node.png)
 
 The vacuity check also flags situations where counterexamples are ruled
 out for reasons other than `require` statements.  A common example comes from
