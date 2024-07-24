@@ -191,23 +191,23 @@ assertion structure check:
 
 1. `assert p => q;` is reported as a sanity violation if whenever the assertion is reached:
 
-  1. `p` is always false. In this case, `q` is never checked. A simpler way to write this assertion is `assert !p;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+  * 1. `p` is always false. In this case, `q` is never checked. A simpler way to write this assertion is `assert !p;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
 
-  2. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+  * 2. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
 
-  3. `q` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_right_operand_check_<ID>`.
+  * 3. `q` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_right_operand_check_<ID>`.
 
 2. `assert p <=> q;`  is reported as a sanity violation if whenever the assertion is reached:
 
-  1. `p` and `q` are both always true. A simpler way to write this assertion is `assert p; assert q;`. The node named `assertion_iff_not_both_true_<ID>` will have a yellow icon.
+  * 1. `p` and `q` are both always true. A simpler way to write this assertion is `assert p; assert q;`. The node named `assertion_iff_not_both_true_<ID>` will have a yellow icon.
 
-  2. `p` and `q` are both always false. A simpler way to write this assertion is `assert !p; assert !q;`. The node named `assertion_iff_not_both_false_<ID>` will have a yellow icon.
+  * 2. `p` and `q` are both always false. A simpler way to write this assertion is `assert !p; assert !q;`. The node named `assertion_iff_not_both_false_<ID>` will have a yellow icon.
 
 3. `assert p || q;` is reported as a sanity violation if whenever the assertion is reached:
 
-  1. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+  * 1. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
 
-  2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<ID>` will have a yellow icon.
+  * 2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<ID>` will have a yellow icon.
 
 ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
