@@ -57,7 +57,7 @@ will always pass, regardless of the behavior of the contract.  This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
 
-A vacuity check adds a sub-rule called `vacuity` for each rule.  For example, the rule report for the above `vacuous` rule will look like this:
+A vacuity check adds a sub-rule called `rule_not_vacuous` for each rule.  For example, the rule report for the above `vacuous` rule will look like this:
 
 ![Screenshot of vacuity subrule](vacuity_subrule.png)
 
