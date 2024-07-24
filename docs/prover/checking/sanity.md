@@ -189,19 +189,19 @@ The assertion structure check tries to prove some complex logical statements by
 breaking them into simpler parts.  The following situations are reported by the
 assertion structure check:
 
-* `assert p => q;` is reported as a sanity violation if `p` is false whenever the
+1. `assert p => q;` is reported as a sanity violation if `p` is false whenever the
   assertion is reached (in which case the simpler assertion `assert !p;` more
   clearly describes the situation). In that case the node named `assertion_left_operand_check_` followed by a numerical ID will have a yellow icon. Sanity will also be violated if `q` is always true (in which case `assert q;` is a clearer alternative). In that case the node named `assertion_left_operand_check_` followed by a numerical ID will have a yellow icon.
 
   ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
-* `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
+2. `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
   both true whenever the assertion is reached (in which case the simpler
   assertions `assert p; assert q;` more clearly describe the situation), or if
   neither `p` nor `q` are ever true (in which case `assert !p; assert !q;` is a
   clearer alternative).
 
-* `assert p || q;` is reported as a sanity violation if either `p` is true
+3. `assert p || q;` is reported as a sanity violation if either `p` is true
   whenever the assertion is reached
   (in which case `assert p;` more clearly describes the situation) or if `q` is
   always true (in which case `assert q;` is a clearer alternative).
