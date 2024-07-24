@@ -199,16 +199,17 @@ assertion structure check:
 
   ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
-2. `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
-  both true whenever the assertion is reached (in which case the simpler
-  assertions `assert p; assert q;` more clearly describe the situation), or if
-  neither `p` nor `q` are ever true (in which case `assert !p; assert !q;` is a
-  clearer alternative).
+2. `assert p <=> q;`  is reported as a sanity violation if whenever the assertion is reached:
 
-3. `assert p || q;` is reported as a sanity violation if either `p` is true
-  whenever the assertion is reached
-  (in which case `assert p;` more clearly describes the situation) or if `q` is
-  always true (in which case `assert q;` is a clearer alternative).
+  1. `p` and `q` are both always true. A simpler way to write this assertion is `assert p; assert q;`. The node named `assertion_iff_not_both_true_<ID>` will have a yellow icon.
+
+  2. `p` and `q` are both always false. A simpler way to write this assertion is `assert !p; assert !q;`. The node named `assertion_iff_not_both_false_<ID>` will have a yellow icon.
+
+3. `assert p || q;` is reported as a sanity violation if whenever the assertion is reached:
+
+  1. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+
+  2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<ID>` will have a yellow icon.
 
 (sanity-redundant-require)=
 Redundant require checks
