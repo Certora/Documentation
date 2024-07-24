@@ -5,4 +5,4 @@ sphinx-rtd-theme
 sphinxcontrib-spelling
 sphinx-copybutton
 
-git+https://github.com/Certora/docs-infrastructure.git@shoham/upgrade-packages#egg=docsinfra
+git+https://github.com/Certora/docs-infrastructure.git@master#egg=docsinfra
