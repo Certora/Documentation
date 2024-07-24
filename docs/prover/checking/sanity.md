@@ -23,11 +23,11 @@ The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 We recommend starting with the `basic` mode, since not all rules flagged by the
 `advanced` mode are incorrect.
 
-Each option adds new child rules for every rule in the specification.  If any of the sanity check sub-rules fails, it will be marked with a yellow icon, and so will the parent rule:
+Each option adds new child nodes to every rule in the specification.  If any of the sanity check nodes fails, that node will be marked with a yellow icon, and so will the parent rule's node:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
-Sanity checks have no call trace.  If a sanity sub-rule is halted, then the parent rule will also have the status halted.
+Sanity checks have no call trace.  If a sanity node is `halted`, then the parent rule will also have the status `halted`.
 
 The remainder of this document describes these checks in detail.
 
@@ -57,7 +57,7 @@ will always pass, regardless of the behavior of the contract.  This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
 
-A vacuity check adds a sub-rule called `rule_not_vacuous` for each rule.  For example, the rule report for the above `vacuous` rule will look like this:
+A vacuity check adds a node called `rule_not_vacuous` to each rule.  For example, the rule report for the above `vacuous` rule will look like this:
 
 ![Screenshot of vacuity subrule](vacuity_subrule.png)
 
@@ -112,7 +112,7 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-The tautology check will add a sub-rule per `assert` or `satisfy` statement for each rule.  The tautology check sub-rules are named with the prefix `assert_not_tautological_` followed by a numerical ID.  For example, the rule report for the above `tautology` rule will look like this:
+The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_` followed by a numerical ID.  For example, the rule report for the above `tautology` rule will look like this:
 
 ![Screenshot of assert tautology subrule](tautology_subrule.png)
 
@@ -144,7 +144,7 @@ The rule version is more efficient because it can do a single check in an
 arbitrary state rather than separately checking states after arbitrary method
 invocations.
 
-The trivial invariant check will add a sub-rule for each method under the induction step of invariants named `invariant_not_trivial_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
+The trivial invariant check will add a node to each method under the induction step of invariants named `invariant_not_trivial_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
 
 ![Screenshot of trivial invariant subrule](trivial_invariant_subrule.png)
 
@@ -227,7 +227,7 @@ rule require_redundant {
 In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
 
-The redundant require check will add a node per `require` statement for each rule.  The redundant require check sub-rules are named with the prefix `require_not_redundant_` followed by a numerical ID.
+The redundant require check will add a node per `require` statement to each rule.  The nodes are named with the prefix `require_not_redundant_` followed by a numerical ID.
 
 ![Screenshot of rule report showing a redundant require check](sanity-icons.png)
 
