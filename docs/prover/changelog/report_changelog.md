@@ -4,13 +4,21 @@ Rules Report Release Notes
 ```{contents}
 ```
 
-
-2.1.7 (Jul 8, 2024)
+2.2.0 (Jul 24, 2024)
 ---------------------------
 
 ### Features
 
-- [feat] Call trace replaced by a new tree to Improve performance for large trees
+- [feat] Job execution status in browser tab
+
+2.1.6 (Jul 8, 2024)
+---------------------------
+
+### Features
+
+- [bugfix] Call trace performance improvements
+- [feat] Re-run feature: A rule that timed out can be re-submitted as individual job (experimental, for selected users only)
+- [feat] Allow the user to logout from rule report
 
   
 2.0.1 (May 15, 2024)
