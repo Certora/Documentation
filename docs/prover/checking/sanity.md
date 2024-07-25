@@ -112,7 +112,7 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
-The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_<ID>`.  For example, the rule report for the above `tautology` rule will look like this:
+The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_<LINE>_<COL>`.  For example, the rule report for the above `tautology` rule will look like this:
 
 ![Screenshot of assert tautology subrule](tautology_subrule.png)
 
@@ -191,23 +191,23 @@ assertion structure check:
 
 1. `assert p => q;` is reported as a sanity violation if whenever the assertion is reached:
 
-  * 1. `p` is always false. In this case, `q` is never checked. A simpler way to write this assertion is `assert !p;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+  * 1. `p` is always false. In this case, `q` is never checked. A simpler way to write this assertion is `assert !p;`. The node named `assertion_left_operand_check_<LINE>_<COL>` will have a yellow icon.
 
-  * 2. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+  * 2. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<LINE>_<COL>` will have a yellow icon.
 
-  * 3. `q` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_right_operand_check_<ID>`.
+  * 3. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<LINE>_<COL>`.
 
 2. `assert p <=> q;`  is reported as a sanity violation if whenever the assertion is reached:
 
-  * 1. `p` and `q` are both always true. A simpler way to write this assertion is `assert p; assert q;`. The node named `assertion_iff_not_both_true_<ID>` will have a yellow icon.
+  * 1. `p` and `q` are both always true. A simpler way to write this assertion is `assert p; assert q;`. The node named `assertion_iff_not_both_true_<LINE>_<COL>` will have a yellow icon.
 
-  * 2. `p` and `q` are both always false. A simpler way to write this assertion is `assert !p; assert !q;`. The node named `assertion_iff_not_both_false_<ID>` will have a yellow icon.
+  * 2. `p` and `q` are both always false. A simpler way to write this assertion is `assert !p; assert !q;`. The node named `assertion_iff_not_both_false_<LINE>_<COL>` will have a yellow icon.
 
 3. `assert p || q;` is reported as a sanity violation if whenever the assertion is reached:
 
-  * 1. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<ID>` will have a yellow icon.
+  * 1. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<LINE>_<COL>` will have a yellow icon.
 
-  * 2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<ID>` will have a yellow icon.
+  * 2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<LINE>_<COL>` will have a yellow icon.
 
 ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
@@ -232,7 +232,7 @@ rule require_redundant {
 In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
 
-The redundant require check will add a node per `require` statement to each rule.  The nodes are named with the prefix `require_not_redundant_<ID>`.
+The redundant require check will add a node per `require` statement to each rule.  The nodes are named with the prefix `require_not_redundant_<LINE>_<COL>`.
 
 ![Screenshot of rule report showing a redundant require check](sanity-icons.png)
 
