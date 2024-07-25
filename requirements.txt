@@ -6,11 +6,9 @@
 #
 alabaster==0.7.16
     # via sphinx
-babel==2.14.0
+babel==2.15.0
     # via sphinx
-beautifulsoup4==4.12.3
-    # via furo
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -18,26 +16,24 @@ cvldoc==1.0.1
     # via docsinfra
 cvldoc-parser==1.0.1
     # via cvldoc
-docsinfra @ git+https://github.com/Certora/docs-infrastructure.git@master
+docsinfra @ git+https://github.com/Certora/docs-infrastructure.git@shoham/upgrade-packages
     # via -r _requirements.txt
-docutils==0.19
+docutils==0.20.1
     # via
     #   myst-parser
     #   sphinx
     #   sphinx-rtd-theme
-furo==2023.5.20
-    # via docsinfra
 gitdb==4.0.11
     # via gitpython
-gitpython==3.1.41
+gitpython==3.1.43
     # via docsinfra
-idna==3.6
+idna==3.7
     # via requests
 imagesize==1.4.1
     # via sphinx
 inflection==0.5.1
     # via cvldoc
-jinja2==3.1.3
+jinja2==3.1.4
     # via
     #   myst-parser
     #   sphinx
@@ -47,23 +43,21 @@ markdown-it-py==3.0.0
     #   myst-parser
 markupsafe==2.1.5
     # via jinja2
-mdit-py-plugins==0.4.0
+mdit-py-plugins==0.4.1
     # via myst-parser
 mdurl==0.1.2
     # via markdown-it-py
-myst-parser==2.0.0
+myst-parser==3.0.1
     # via -r _requirements.txt
-packaging==23.2
+packaging==24.1
     # via sphinx
 pyenchant==3.2.2
     # via sphinxcontrib-spelling
-pygments==2.17.2
-    # via
-    #   furo
-    #   sphinx
+pygments==2.18.0
+    # via sphinx
 pyyaml==6.0.1
     # via myst-parser
-requests==2.31.0
+requests==2.32.3
     # via
     #   sphinx
     #   sphinxcontrib-youtube
@@ -71,16 +65,13 @@ smmap==5.0.1
     # via gitdb
 snowballstemmer==2.2.0
     # via sphinx
-soupsieve==2.5
-    # via beautifulsoup4
-sphinx==6.2.1
+sphinx==7.4.5
     # via
     #   -r _requirements.txt
     #   docsinfra
-    #   furo
     #   myst-parser
     #   sphinx-argparse
-    #   sphinx-basic-ng
+    #   sphinx-copybutton
     #   sphinx-design
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
@@ -89,9 +80,9 @@ sphinx==6.2.1
     #   sphinxcontrib-youtube
 sphinx-argparse==0.4.0
     # via docsinfra
-sphinx-basic-ng==1.0.0b2
-    # via furo
-sphinx-design==0.4.1
+sphinx-copybutton==0.5.2
+    # via -r _requirements.txt
+sphinx-design==0.6.0
     # via docsinfra
 sphinx-rtd-theme==2.0.0
     # via -r _requirements.txt
@@ -113,11 +104,11 @@ sphinxcontrib-spelling==8.0.0
     # via
     #   -r _requirements.txt
     #   docsinfra
-sphinxcontrib-video==0.2.0
+sphinxcontrib-video==0.2.1
     # via docsinfra
 sphinxcontrib-youtube==1.2.0
     # via docsinfra
-urllib3==2.2.0
-    # via requests
-sphinx-copybutton==0.5.2
+tomli==2.0.1
     # via sphinx
+urllib3==2.2.2
+    # via requests
