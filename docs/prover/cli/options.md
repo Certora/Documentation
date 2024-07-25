@@ -1,3 +1,4 @@
+(prover-cli-options)=
 CLI Options
 ===========
 
@@ -156,6 +157,12 @@ the contract or the spec to rerun, we can just rerun on the `deposit` method:
 certoraRun --method 'deposit(uint)'
 ```
 
+If we discover a counterexample in several methods, we could rerun just those:
+
+```sh
+certoraRun --method 'deposit(uint)' --method 'transfer(address,uint256)'
+```
+
 Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
 
@@ -198,7 +205,7 @@ The return code will not be zero if the verification finds a violation.
 Use it to receive verification results in the terminal or a wrapping script.
 
 In CI, the default behavior is different: the Prover waits for verification results,
-and the return code will not be zero if a violation is found. 
+and the return code will not be zero if a violation is found.
 You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
 In that case, the return code will be zero if the jobs were sent successfully.
 
@@ -650,14 +657,7 @@ Options that help reduce the running time
 
 ### `--method`
 
-**What does it do?**
-Parametric rules will only verify the method with the given signature, instead of all public and external methods of the contract. Note that you will need to wrap the method's signature with quotes, as the shell doesn't interpret parenthesis correctly otherwise.
-
-**When to use it?**
-When you are trying to solve/understand a counterexample of a parametric rule on a specific method.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
+See {ref}`--method`
 
 (--compilation_steps_only)=
 ### `--compilation_steps_only`

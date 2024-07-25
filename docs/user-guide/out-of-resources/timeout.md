@@ -597,7 +597,7 @@ Prover's pipeline. While their default values generally yield the best results,
 changing them is known to improve running time in certain cases.
 
 
-#### `--prover_args '-calltraceFreeOpt true'`
+#### `--prover_args '-destructiveOptimizations enable'`
 
-This option allows for some rather aggressive simplifications. However, it
-possibly breaks call trace generation.
+This option enables some aggressive simplifications that speed up the prover
+in many cases but breaks call trace generation in case a rule is violated.
