@@ -9,14 +9,14 @@ Prover Release Notes
 ----------------------
 ### CVL
 - [bugfix] Make builtin sanity rule also check auto-generated assertions such as unwinding loop unroll assertions.
-- [feat] `DISPATCHER(true)` summaries will hard fail on typechecking if there is no method in the scene that should be dispatched to.
+- [feat] `DISPATCHER(true)` summaries will hard fail on type checking if there is no method in the scene that should be dispatched to.
 - [feat] Adding a warning when a contract alias conflicts with a contract in the scene.
 - [feat] View functions of contracts *other* than the current contract are now also excluded when checking invariants.
 - [feat] It's now possible to compare strings and bytes natively in CVL.
 - [feat] The dispatcher list summary now will also inline the fallback handler when using the `Contract._` syntax.
 - [feat] Transient storage support in invariants.
 - [feat] It's now possible to also write CVL summaries that include structs.
-- [syntax check] The usage of the keyword `lastReverted` led to incorrect specifications in cases when the last call was not using the `@withrevert` syntax. During typechecking, the CVL parser will now fail and report an error.
+- [syntax check] The usage of the keyword `lastReverted` led to incorrect specifications in cases when the last call was not using the `@withrevert` syntax. During type checking, the CVL parser will now fail and report an error.
 - [feature] The dispatcher summary `DISPATCHER(false|true)` has been enhanced to also include fallbacks.
 - [feature] There are two new keywords `strong` and `weak` as prefix for `invariant`. A `strong invariant` is a regular `invariant` that will be additionally `asserted` before a havoc’d external unresolved call and `assumed` afterwards. `weak invariant` is an alias for `invariant` explicitly stating that the `invariant` will only hold pre- and post-method execution.
 - [feature] It’s now possible to write rules for Solidity functions whose name matches a CVL keyword.
