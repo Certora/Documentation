@@ -122,25 +122,27 @@ rule totalFundsAfterDeposit(uint256 amount) {
 
 
 A `satisfy` statement is used to check that the rule can be executed in such a
-way that the `satisfy` statement is true.  A rule with a `satisfy` statement is
-describing a scenario and must not contain `assert` statements.  We require that
-each rule ends with either a `satisfy` statement or an `assert` statement.
+way that the `satisfy` statement is reached and that its condition is fulfilled. 
+
+We require that each rule ends with either a `satisfy` statement or an `assert` 
+statement.
 
 See {ref}`producing-examples` for an example demonstrating the `satisfy`
 command.
 
-For each `satisfy` statement, the Certora verifier will produce a witness for a
-valid execution of the rule.  It will show an execution trace containing values
-for each input variable and each state variable where all `require` and `satisfy`
-statements are executed successfully.  In case there is no such execution, for
-example if the `require` statements are already inconsistent or if a solidity
-function always reverts, an error is reported.
+For each `satisfy` statement that is checked successfully, the Certora verifier
+will produce a witness for a valid execution of the rule.  It will show an
+execution trace containing values for each input variable and each state
+variable where all `require` and `satisfy` statements are executed successfully.
+In case there is no such execution, for example if the `require` statements are
+already inconsistent or if a Solidity function always reverts, the rule will
+show as "Violated".
 
 If the rule contains multiple `satisfy` statements, then all executed `satisfy`
 statements must hold.   However, a `satisfy` statement on a conditional branch
 that is not executed does not need to hold.
 
-If at least one `satisfy` statement is not satisfiable an error is reported.
+If at least one `satisfy` statement is not satisfiable, an error is reported.
 If all `satisfy` statements can be fulfilled on at least one path, the rule
 succeeds.
 
@@ -148,6 +150,18 @@ succeeds.
 A success only guarantees that there is some satisfying execution starting in
 some arbitrary state.  It is not possible to check that every possible starting
 state has an execution that satisfies the condition.
+```
+
+```{note}
+`satisfy` statements are never checked in the same sub-rule with `assert` statements, 
+and they are always checked under {term}`optimistic assumptions`.
+This means that rules without any explicit `assert` statements will not check the 
+{term}`pessimistic assertions`, i.e., the implicit assertions that we insert 
+in rules with `assert` statements when at least one of the "optimistic" flags 
+is not set. In order to trigger creation of a sub-rule that contains these 
+checks, users can insert an `assert true` statement into the rule. This assert 
+itself will never be violated, but the sub-rule we create for it will contain 
+all the pessimistic assertions for the program.
 ```
 
 - [`satisfy` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L243)
