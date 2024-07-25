@@ -17,7 +17,7 @@ Prover Release Notes
 - [feat] Transient storage support in invariants.
 - [feat] It's now possible to also write CVL summaries that include structs.
 - [syntax check] The usage of the keyword `lastReverted` led to incorrect specifications in cases when the last call was not using the `@withrevert` syntax. During type checking, the CVL parser will now fail and report an error.
-- [feature] The dispatcher summary `DISPATCHER(false|true)` has been enhanced to also include fallbacks.
+- [feat] The dispatcher summary `DISPATCHER(false|true)` has been enhanced to also include fallbacks.
 - [feature] There are two new keywords `strong` and `weak` as prefix for `invariant`. A `strong invariant` is a regular `invariant` that will be additionally `asserted` before a havoc’d external unresolved call and `assumed` afterwards. `weak invariant` is an alias for `invariant` explicitly stating that the `invariant` will only hold pre- and post-method execution.
 - [feature] It’s now possible to write rules for Solidity functions whose name matches a CVL keyword.
 
@@ -33,7 +33,7 @@ Prover Release Notes
 - The `-prover_args` option `-smt_easy_LIA` is now set to `true` by default.
 
 ### CLI
-- [feature] The `—method` flag now also accepts a list of methods
+- [feature] The `—method` flag now also accepts a list of methods.
 
 ### Misc
 - Supporting precise bytemap semantics (unaligned reads, overlapping, etc.). Disabled by default, can be enabled via `-prover_args "-smt_preciseBytemaps true"`.
