@@ -27,7 +27,7 @@ we may be interested in showing that it is
 possible for someone to deposit some assets into a pool and then immediately
 withdraw them.  The following rule demonstrates this scenario:
 
-```{cvlinclude} /Examples/DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec
+```{cvlinclude} ../../Examples/DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec
 :cvlobject: possibleToFullyWithdraw
 :caption: Positive example
 ```
