@@ -16,7 +16,7 @@ cvldoc==1.0.1
     # via docsinfra
 cvldoc-parser==1.0.1
     # via cvldoc
-docsinfra @ git+https://github.com/Certora/docs-infrastructure.git@shoham/upgrade-packages
+docsinfra @ git+https://github.com/Certora/docs-infrastructure.git@master
     # via -r _requirements.txt
 docutils==0.20.1
     # via
