@@ -654,7 +654,10 @@ of the unknown contract is determined by the optional boolean argument to the
 
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
-all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
+all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since 
+Certora CLI version 7.7.0 when using `_.someFunc() => DISPATCHER(true)` the Prover
+first tests that a method `someFunc()` exists in the scene, and if not will fail. 
+Before this version, this may cause vacuous results.
 ```
 
 ```{note}
@@ -819,12 +822,6 @@ There is a restriction on the functions that can be used as approximations.
 Namely, the types of any arguments passed to or values returned from the summary
 must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
 Arguments that are not accessed in the summary may have any type.
-  
-Function summaries for *internal* methods have a few additional restrictions on 
-their arguments and return types:
- - arrays (including static arrays, `bytes`, and `string`) are not supported
- - struct fields must have [value types][solidity-value-types]
- - `storage` and `calldata` structs are not supported, only `memory`
 
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
