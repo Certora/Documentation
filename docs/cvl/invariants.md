@@ -333,6 +333,19 @@ If there is a {ref}`preserved block <preserved>` for a method, the method will
 be verified even if the filter would normally exclude it.
 ```
 
+Induction Step for Transient Storage 
+------------------------------
+With the introduction of transient storage in Solidity ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153),
+Solidity contracts can now use a `tload` or `tstore` instruction to perform `load` and `store` on transient storage.
+The transient storage will be reset after a transaction has terminated. 
+
+The Prover will automatically detect if any contract in the scene uses `tload` and `tstore`
+and adds another induction step for transient storage. This induction step
+verifies the invariant is independent from the transient storage, i.e, it will assume the 
+invariant in pre-state, perform a reset of the transient storage and `assert` the invariant 
+in post-state. 
+
+
 (invariant-as-rule)=
 Writing an invariant as a rule
 ------------------------------
