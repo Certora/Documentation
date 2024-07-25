@@ -5,6 +5,43 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.10.1 (July 25, 2024)
+----------------------
+### CVL
+- [bugfix] Make builtin sanity rule also check auto-generated assertions such as unwinding loop unroll assertions.
+- [feat] `DISPATCHER(true)` summaries will hard fail on typechecking if there is no method in the scene that should be dispatched to.
+- [feat] Adding a warning when a contract alias conflicts with a contract in the scene.
+- [feat] View functions of contracts *other* than the current contract are now also excluded when checking invariants.
+- [feat] It's now possible to compare strings and bytes natively in CVL.
+- [feat] The dispatcher list summary now will also inline the fallback handler when using the `Contract._` syntax.
+- [feat] Transient storage support in invariants.
+- [feat] It's now possible to also write CVL summaries that include structs.
+- [syntax check] The usage of the keyword `lastReverted` led to incorrect specifications in cases when the last call was not using the `@withrevert` syntax. During typechecking, the CVL parser will now fail and report an error.
+- [feature] The dispatcher summary `DISPATCHER(false|true)` has been enhanced to also include fallbacks.
+- [feature] There are two new keywords `strong` and `weak` as prefix for `invariant`. A `strong invariant` is a regular `invariant` that will be additionally `asserted` before a havoc’d external unresolved call and `assumed` afterwards. `weak invariant` is an alias for `invariant` explicitly stating that the `invariant` will only hold pre- and post-method execution.
+- [feature] It’s now possible to write rules for Solidity functions whose name matches a CVL keyword.
+
+### Performance
+- The `-prover_args` option `-smt_easy_LIA` is now set to `true` by default.
+
+### Rule Report
+- [feat] Ensuring storage snippets are shown even if there is no storage layout information.
+- [feat] Return statements of CVL functions are now shown in the call trace.
+- [feature] Model values for CVL-declared strings are now shown in the Variables Tab of the report.
+- [feature] Sanity rules are now explicitly shown as independent nodes in the rule view.
+- [feature] The browser tab icon in the rule report now displays the job execution status of a run: blue for running, green when the job has successfully been completed, and red when the job is halted or ends in an error state.
+
+### Call Trace
+- [feature] Improved display of ghost variable reads in the call trace.
+
+### CLI
+- [feature] The `—method` flag now also accepts a list of methods
+
+### Misc
+- Supporting precise bytemap semantics (unaligned reads, overlapping, etc.). Disabled by default, can be enabled via `-prover_args "-smt_preciseBytemaps true"`.
+
+
+
 7.6.3 (May 15, 2024)
 ----------------------
 ### CVL
