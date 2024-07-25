@@ -4,6 +4,23 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+2.2.0 (Jul 24, 2024)
+---------------------------
+
+### Features
+
+- [feat] Job execution status in browser tab
+
+2.1.6 (Jul 8, 2024)
+---------------------------
+
+### Features
+
+- [bugfix] Call trace performance improvements
+- [feat] Re-run feature: A rule that timed out can be re-submitted as individual job (experimental, for selected users only)
+- [feat] Allow the user to logout from rule report
+
+  
 2.0.1 (May 15, 2024)
 ---------------------------
 
@@ -24,7 +41,7 @@ Rules Report Release Notes
 ### Features
 
 - [feat] Jump To Source: Animation to highlight already selected line on button click
-- [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all prover flags and CLI options)
+- [feat] New Job Configuration Tab that provides details on all arguments and inputs of a job that has been executed with (main contract, solidity version, all Prover flags and CLI options)
 - [feat] Browser tab title now indicates the main contract and the message of the job to simplify identification of a job
 - [feat] Files with extension `.yul` - [Yul files](https://docs.soliditylang.org/en/latest/yul.html) - can be displayed in the editor
 
