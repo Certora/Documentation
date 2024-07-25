@@ -21,18 +21,16 @@ Prover Release Notes
 - [feature] There are two new keywords `strong` and `weak` as prefix for `invariant`. A `strong invariant` is a regular `invariant` that will be additionally `asserted` before a havoc’d external unresolved call and `assumed` afterwards. `weak invariant` is an alias for `invariant` explicitly stating that the `invariant` will only hold pre- and post-method execution.
 - [feature] It’s now possible to write rules for Solidity functions whose name matches a CVL keyword.
 
-### Performance
-- The `-prover_args` option `-smt_easy_LIA` is now set to `true` by default.
-
 ### Rule Report
 - [feat] Ensuring storage snippets are shown even if there is no storage layout information.
 - [feat] Return statements of CVL functions are now shown in the call trace.
 - [feature] Model values for CVL-declared strings are now shown in the Variables Tab of the report.
 - [feature] Sanity rules are now explicitly shown as independent nodes in the rule view.
 - [feature] The browser tab icon in the rule report now displays the job execution status of a run: blue for running, green when the job has successfully been completed, and red when the job is halted or ends in an error state.
-
-### Call Trace
 - [feature] Improved display of ghost variable reads in the call trace.
+
+### Performance
+- The `-prover_args` option `-smt_easy_LIA` is now set to `true` by default.
 
 ### CLI
 - [feature] The `—method` flag now also accepts a list of methods
