@@ -210,12 +210,13 @@ In the following we will discuss some concrete approaches to timeout prevention.
 This collection will be extended over time based on user's experiences and tool
 improvements.
 
-```{note}
-The old documentation has a section on
-{doc}`troubleshooting </docs/confluence/perplexed>` that addresses timeouts, 
-which might complement the information given here.  
+```{todo}
+The old documentation had a section on
+troubleshooting in :file:`/docs/confluence/perplexed` that addresses timeouts, 
+which might complement the information given here.
 There is also some helpful information in the section on
-{ref}`summarization <old-summary-example>`.
+summarization :file:`docs/confluence/advanced/methods.html`
+under `old-summary-example` label.
 Some of the information in these references is out of date.
 ```
 
