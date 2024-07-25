@@ -108,7 +108,7 @@ Struct Comparison
 CVL supports equality comparison of structs under the following restrictions:
 
  * The structs must be of the same type.
- * The structs (or any nested structs) don't contain dynamic types (dynamic arrays, string, bytes).
+ * The structs (or any nested structs) don't contain dynamic arrays. (`string` and `bytes` can be part of the struct) 
  * There's no support for comparison for structs fetched using direct-storage-access.
 
 Two structs will be evaluated as equal if and only if all the fields are equal.
@@ -667,7 +667,7 @@ It exists in very similar form in CVL and receives exactly the same parameter ty
 `ecrecover` is ***supported*** in quantified expressions.
 ```
 
-The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`uninterpreted function <uninterp-functions>`. Like all uninterpreted functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
+The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`ghost function <ghost-functions>`. Like all ghost functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
 
 There is a useful set of axioms that can be encoded in CVL to make the modeled behavior of `ecrecover` more precise and less likely to create false counterexamples:
 ```cvl
