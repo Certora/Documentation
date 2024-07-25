@@ -237,8 +237,12 @@ The possible patterns are:
    this signature on all available contracts (including the primary contract).
    Example: `_.bar(address)`
 3. Wildcard function - a pattern specifying a contract, and matches all
+<<<<<<< HEAD
+   external functions in specified contract.
+=======
    external functions in specified contract (This pattern will also include the
    contract's fallback if it's implemented).
+>>>>>>> origin/master
    Example: `C._`
 
 For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`,
@@ -652,6 +656,18 @@ of the unknown contract is determined by the optional boolean argument to the
    considered as a possibility
 
  * With `DISPATCHER(true)`, only the known contract instances are considered
+
+There is an alternative syntax for determining the presence or absence of the
+unknown contract:
+
+ * `DISPATCHER(optimistic=<true|false>)` with `true` and 'false` having the same
+   meaning as in the other syntax.
+
+In some cases there's a proxy contract that only has a fallback function and
+that fallback then delegates function calls it receives to some other contract.
+For this case it could be useful for `DISPATCHER` summaries to also inline the
+`fallback` function of known contracts. To enable this use the following syntax:
+ * `DISPATCHER(optimistic=<true|false>, use_fallback<true|false>)`
 
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
