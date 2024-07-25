@@ -10,7 +10,9 @@ When the Prover is invoked with the {ref}`--verify` option, it generates a
 report for each rule and invariant present in the spec file (as well as any
 {ref}`imported rules <use>`).
 
-See {doc}`/docs/confluence/bank/index` for an example demonstrating some of
+You can find examples for rules in the
+[Certora Prover and CVL Examples Repository](https://github.com/Certora/Examples/).
+For example, the specs in {clink}`/CVLByExample/Teams/` demonstrate some of
 these features.
 
 ```{contents}
