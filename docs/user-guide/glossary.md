@@ -181,6 +181,12 @@ quantified expression
   referred to as *quantified expressions*.  See {ref}`logic-exprs` for
   details about quantifiers in CVL.
 
+receiveOrFallback
+  A special function we introduce in every contract to model the behaviour of solidity
+  for calls with no data or that do not resolve to any contract function.
+  It will call the receive function if present for calls with no data, and otherwise the fallback function.
+  Shows up in the parametric rules or invariants, as well as in the call trace for such calls, written `<receiveOrFallback>()`.
+
 sanity
   ```{todo}
   This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
