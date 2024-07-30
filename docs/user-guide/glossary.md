@@ -186,6 +186,7 @@ receiveOrFallback
   for calls with no data or that do not resolve to any contract function.
   It will call the receive function if present for calls with no data, and otherwise the fallback function.
   Shows up in the parametric rules or invariants, as well as in the call trace for such calls, written `<receiveOrFallback>()`.
+  See also [Solidity Documentation](https://docs.soliditylang.org/en/latest/contracts.html#fallback-function).
 
 sanity
   ```{todo}
