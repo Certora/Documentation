@@ -31,7 +31,7 @@ Syntax
 The syntax for invariants is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
-invariant ::= "invariant" id
+invariant ::= [ "weak" | "strong" ] "invariant" id
               [ "(" params ")" ]
               expression
               [ "filtered" "{" id "->" expression "}" ]
@@ -55,20 +55,42 @@ production, and {doc}`statements` for the `block` production.
 Overview
 --------
 
-In CVL, an invariant is a property of the contract state that is expected to be
+In CVL, we distinguish between strong and weak invariants.
+A *weak* invariant is a property that is expected to be
 true whenever a contract method is not currently executing.  This kind of
-invariant is sometimes called a "representation invariant".
+invariant is sometimes called a "representation invariant". A *strong* invariant is 
+an invariant that also holds before and after execution of an unresolved call, i.e. a call that
+potentially calls to another contract which could modify the current contract's state. 
+Essentially, a strong invariants ensures to hold whenever control is yielded to an external function, providing enhanced security, especially for contracts without global locks.
 
 Each invariant has a name, possibly followed by a set of parameters, followed
 by a boolean expression.  We say the invariant *holds* if the expression
 evaluates to true in every reachable state of the contract, and for all
 possible values of the parameters.
 
-While verifying an invariant, the Prover checks two things.  First, it checks
+While verifying a weak invariant, the Prover checks two things.  First, it checks
 that the invariant is established after calling any constructor.  Second, it checks
-that the invariant holds after the execution of any contract method, assuming
-that it held before the method was executed (if it does hold, we say the method
-*preserves* the invariant).
+that the invariant holds after the execution of any methods, assuming that it held 
+before the method was executed (if it does hold, we say the method *preserves* the invariant). 
+By default, an invariant will be checked for any `public` or `external` 
+(non-`view`/`pure`) method of any contract in the scene - the set of methods
+an invariant will be checked for can be further configured by filters {ref}`invariant-filters` 
+and by {ref}`--parametric_contracts`. `View` and `pure` methods are excluded from 
+invariant checking as by definition they cannot change the state 
+of their contract. 
+
+A strong invariant performs the same checks as a weak invariant - i.e. it will be checked for the constructor
+and for any other method, it will be assumed before executing the method (pre-state) and asserted afterward execution of the method (post-state). 
+In addition to these steps, a strong invariant also asserts and assumes the invariant _during_ method
+execution at locations that potentially break the invariant. The invariant can be violated if there
+is an unresolved external call that can modify the state of the current contract. To verify the strong invariant, for every unresolved external call `c` 
+(a call that will force the prover to havoc storage), a strong invariant will insert the following steps:
+
+ 1. _Before_ the call `c`: Assert that the invariant holds - if the invariant does not hold due to some logic of the current method, this will yield a counter example that ends with the `assert` before `c`.
+ 2. _After_ the call `c`: Assume the invariant holds. The semantics is that the call did not break the invariant.  
+ 3. In the case `c` is a `delegatecall`, after assuming the invariant in step 2, havoc the current's contact storage and assert the invariant once more. This step simulates the scenario that a `delegatecall` modifies the current contract's storage.
+
+ A full example for `weak` and `strong invariant` can be found in our [Examples Repository](https://github.com/Certora/Examples/blob/cli-beta/CVLByExample/StrongInvariants/README.md). 
 
 If an invariant is proven, it is safe to assume that it holds in other rules
 and invariants.  The
@@ -81,6 +103,7 @@ Invariants are intended to describe the state of a contract at a particular
 point in time.  Therefore, you should only use view functions inside of an
 invariant.  Non-view functions are allowed, but the behavior is undefined.
 ```
+
 
 (invariant-revert)=
 Invariants that revert
@@ -327,6 +350,19 @@ method will be skipped.
 If there is a {ref}`preserved block <preserved>` for a method, the method will
 be verified even if the filter would normally exclude it.
 ```
+
+Induction Step for Transient Storage 
+------------------------------
+With the introduction of transient storage in Solidity ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153),
+Solidity contracts can now use a `tload` or `tstore` instruction to perform `load` and `store` on transient storage.
+The transient storage will be reset after a transaction has terminated. 
+
+The Prover will automatically detect if any contract in the scene uses `tload` and `tstore`
+and adds another induction step for transient storage. This induction step
+verifies the invariant is independent from the transient storage, i.e, it will assume the 
+invariant in pre-state, perform a reset of the transient storage and `assert` the invariant 
+in post-state. 
+
 
 (invariant-as-rule)=
 Writing an invariant as a rule

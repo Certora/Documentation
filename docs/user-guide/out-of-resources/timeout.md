@@ -210,12 +210,13 @@ In the following we will discuss some concrete approaches to timeout prevention.
 This collection will be extended over time based on user's experiences and tool
 improvements.
 
-```{note}
-The old documentation has a section on
-{doc}`troubleshooting </docs/confluence/perplexed>` that addresses timeouts, 
-which might complement the information given here.  
+```{todo}
+The old documentation had a section on
+troubleshooting in :file:`/docs/confluence/perplexed` that addresses timeouts, 
+which might complement the information given here.
 There is also some helpful information in the section on
-{ref}`summarization <old-summary-example>`.
+summarization :file:`docs/confluence/advanced/methods.html`
+under `old-summary-example` label.
 Some of the information in these references is out of date.
 ```
 
@@ -596,7 +597,7 @@ Prover's pipeline. While their default values generally yield the best results,
 changing them is known to improve running time in certain cases.
 
 
-#### `--prover_args '-calltraceFreeOpt true'`
+#### `--prover_args '-destructiveOptimizations enable'`
 
-This option allows for some rather aggressive simplifications. However, it
-possibly breaks call trace generation.
+This option enables some aggressive simplifications that speed up the prover
+in many cases but breaks call trace generation in case a rule is violated.
