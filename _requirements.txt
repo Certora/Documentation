@@ -1,7 +1,8 @@
 # The basic requirements file used by pip-compile 
+sphinx~=7.4.5
 myst-parser
 sphinx-rtd-theme
 sphinxcontrib-spelling
-sphinx
+sphinx-copybutton
 
 git+https://github.com/Certora/docs-infrastructure.git@master#egg=docsinfra
