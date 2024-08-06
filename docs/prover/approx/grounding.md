@@ -201,7 +201,7 @@ This particular example requires that all even inputs to `f` produce `0` as
 output; it could be rewritten as follows:
 
 ```cvl
-require forall uint y . (y % 2 == 0) => f(y);
+require forall uint y . (y % 2 == 0) => f(y) == 0;
 ```
 
 If you use a quantified variable in an argument to two different functions,

@@ -27,6 +27,7 @@ Unary
 Vyper
 Yices
 Yul
+approximative
 autofinders
 axiomatization
 axiomatized
@@ -43,6 +44,7 @@ branchings
 bugfix
 bytecode
 bytecodes
+bytemap
 callee
 changelog
 checkmark
@@ -106,6 +108,7 @@ modularly
 monotonicity
 multicontract
 namespace
+natively
 nonlinearity
 nonterminal
 nonterminals
