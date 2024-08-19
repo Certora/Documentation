@@ -145,7 +145,7 @@ caption: child.spec
 
 // valid types
 Parent.ParentFileType     valid1;
-Child .ParentFileType     valid2;
+Child .ChildFileType      valid2;
 Parent.ParentContractType valid3;
 
 // invalid types
