@@ -237,12 +237,8 @@ The possible patterns are:
    this signature on all available contracts (including the primary contract).
    Example: `_.bar(address)`
 3. Wildcard function - a pattern specifying a contract, and matches all
-<<<<<<< HEAD
-   external functions in specified contract.
-=======
    external functions in specified contract (This pattern will also include the
    contract's fallback if it's implemented).
->>>>>>> origin/master
    Example: `C._`
 
 For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`,
@@ -671,9 +667,9 @@ For this case it could be useful for `DISPATCHER` summaries to also inline the
 
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
-all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since 
+all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since
 Certora CLI version 7.7.0 when using `_.someFunc() => DISPATCHER(true)` the Prover
-first tests that a method `someFunc()` exists in the scene, and if not will fail. 
+first tests that a method `someFunc()` exists in the scene, and if not will fail.
 Before this version, this may cause vacuous results.
 ```
 
