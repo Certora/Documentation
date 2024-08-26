@@ -217,7 +217,8 @@ unresolved function calls, but that may produce spurious counter examples.
 Catch unresolved-calls entries let the user refine the summary used for
 unresolved function calls.
 
-One can specify the scope for which the unresolved summary will apply. The options are:
+One can specify the scope (`unresolved external in <scope>`) for which the
+unresolved summary will apply. The options are:
 * `Contract.functionSignature()` for summarizing unresolved calls within this function
 * `_.functionSignature()` for summarizing unresolved calls within this function in any contract
 * `Contract._` for summarizing unresolved calls in any function of the given contract
