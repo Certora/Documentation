@@ -145,12 +145,13 @@ caption: child.spec
 
 // valid types
 Parent.ParentFileType     valid1;
-Child .ChildFileType      valid2;
+Child.ChildFileType       valid2;
 Parent.ParentContractType valid3;
 
 // invalid types
-Child .ParentContractType invalid1; // user-defined types are not inherited
-Parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
+Child.ParentContractType  invalid1; // user-defined types are not inherited
+Child.ParentFileType      invalid2; // user-defined types are not inherited
+Parent.ChildFileType      invalid3; // ChildFileType is not visible in Parent
 ```
 
 Additional CVL types
