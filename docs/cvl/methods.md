@@ -68,7 +68,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-                   | id "(" [ id { "," id } ] ")" [ "expect" id ]
+                   | expr [ "expect" id ]
                    | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
 
 dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
@@ -80,7 +80,7 @@ dispatch_pattern ::= | "_" "." id "(" evm_params ")"
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
-for the `id` production.  See {doc}`expr` for the `expression` production.
+for the `id` production.  See {doc}`expr` for the `expr` production.
 
 (methods-entries)=
 Methods entry patterns
@@ -444,7 +444,7 @@ There are several kinds of summaries available:
  - {ref}`dispatcher` assume that the receiver of the method call could be any
    contract that implements the method.
 
- - {ref}`function-summary` replace calls to the summarized method with {doc}`functions`
+ - {ref}`expression-summary` replace calls to the summarized method with a cvl expression, typically {doc}`functions`
    or {ref}`ghost-axioms`.
 
  - {ref}`auto-summary` are the default for unresolved calls.
@@ -706,12 +706,12 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
   in the Solidity manual for details.
 
-(function-summary)=
-#### Function summaries
+(expression-summary)=
+#### Expression summaries
 
-Contract methods can also be summarized using CVL {doc}`functions` or
+Contract methods can also be summarized using CVL expressions, typically {doc}`functions` or
 {ref}`ghost-axioms` as approximations.  Contract calls to the summarized method
-are replaced by calls to the specified CVL functions.
+are replaced by evaluation of the CVL expression.
 
 To use a CVL function or ghost as a summary, use a call to the function in
 place of the summary type.
