@@ -444,7 +444,7 @@ There are several kinds of summaries available:
  - {ref}`dispatcher` assume that the receiver of the method call could be any
    contract that implements the method.
 
- - {ref}`expression-summary` replace calls to the summarized method with a cvl expression, typically {doc}`functions`
+ - {ref}`expression-summary` replace calls to the summarized method with a CVL expression, typically {doc}`functions`
    or {ref}`ghost-axioms`.
 
  - {ref}`auto-summary` are the default for unresolved calls.
