@@ -195,31 +195,49 @@ shown in the web report can indicate whether a summary was applied.
 Example:
 ```cvl
 methods {
-   function _._ external => DISPATCH [
-      C.foo(uint),
-      _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
-      C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
-   ] default NONDET;
+    // Applies to all unresolved calls called within `C.foo()`
+    unresolved external in C.foo() => DISPATCH [
+        D.baz()
+    ] default HAVOC_ECF;
+
+    // Applies to all unresolved calls in the scene (except ones specified by more refined catch-unresolved-calls entries)
+    unresolved external in _._ => DISPATCH [
+        C.foo(uint),
+        _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
+        C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
+    ] default NONDET;
 }
 ```
 
-The catch unresolved-calls entry is a special type of summary declaration that
+Catch unresolved-calls entries are a special type of summary declaration that
 instructs the Prover to replace calls to unresolved external function calls
 with a specific kind of summary, dispatch list.
 By default, the Prover will use an {ref}`AUTO summary <auto-summary>` for
 unresolved function calls, but that may produce spurious counter examples.
-The catch unresolved-calls entry lets the user refine the summary used for
+Catch unresolved-calls entries let the user refine the summary used for
 unresolved function calls.
 
+One can specify the scope (`unresolved external in <scope>`) for which the
+unresolved summary will apply. The options are:
+* `Contract.functionSignature()` for summarizing unresolved calls within this function
+* `_.functionSignature()` for summarizing unresolved calls within this function in any contract
+* `Contract._` for summarizing unresolved calls in any function of the given contract
+* `_._` for summarizing all unresolved calls in the scene.
+
+If multiple catch unresolved-calls entries exist, the order of precedence is the
+order of the above list, from top to bottom.
+
 ```{note}
-Only one catch unresolved-calls entry is allowed per a specification file.
-When importing a specification with a catch unresolved-calls entry it will be
-included as part of the current specification, and cannot be overridden.
+If `C.foo` has a (resolved) external call to `D.bar`, and `D.bar` contains an
+unresolved call, a catch-unresolved-calls entry that applies to `C.foo` will
+_not_ be applied to this unresolved call - only an entry that matches `D.bar`
+will be used.
 ```
 
-A catch unresolved-calls entry can only be summarized with a dispatch list
+Catch unresolved-calls entries can only be summarized with a dispatch list
 summary (and a dispatch list summary is only applicable for a catch
-unresolved-calls entry).
+unresolved-calls entries).
+
 A dispatch list summary directs the Prover to consider each of the methods
 described in the list as possible candidates for this unresolved call.
 The Prover will choose dynamically, that is, for each potential run of the
