@@ -5,6 +5,18 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.14.1 (September 2, 2024)
+----------------------
+### CVL
+- CVL
+- [feat] Functions can now be called on address-typed variables, allowing methods to dispatch on all contracts that implement the specified function.
+- [feat] Added a new `ASSERT_FALSE` summary type to assert that a function call to the summarized function should never occur.
+- [feat] Introduced new syntax for summarizing unresolved calls with dispatch lists, offering more precise control over which functions are inlined for unresolved calls. The old syntax remains available but now triggers a deprecation warning.
+- [feat] Added `nativeCodesize`, enabling direct access to the result of the extcodesize instruction from CVL. It functions similarly to nativeBalances in terms of blockchain state comparison and manipulation.
+- [bugfix] Hooks are no longer inlined on the reset_storage command. This change may affect "induction base" cases for invariant rules that previously relied on implicit hook inlining.
+- [typecheck] Explicit casting to `mathint` is no longer required when comparing the result of an arithmetic operation with a non-`mathint` value. Non-`mathint` values are now implicitly upcasted to `mathint`.
+
+
 7.10.1 (July 25, 2024)
 ----------------------
 ### CVL
