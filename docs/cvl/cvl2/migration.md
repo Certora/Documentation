@@ -119,17 +119,6 @@ If you have errors that indicate problems with number types, try the following:
    potential vacuity pitfalls caused by mixing `to_mathint` and `havoc ...
    assuming`.
 
- - If you need to compare two different types of integers with with a comparison
-   like `==`, `>=`, you probably want to convert them to `mathint` using
-   `to_mathint` unless they are part of a `havoc ... assuming` statement or a
-   `require` statement.  See {ref}`cvl2-comparisons-identical-types` for an example
-   of why you might *not* want to use `to_mathint`.
-
-```{note}
-The only place you need `to_mathint` is in comparisons!  It won't hurt in other
-places, but it is unnecessary.
-```
-
  - If you need to modify the output of one contract function and pass it to
    another contract function, you will need to think carefully about how you
    want to handle overflow.  If you think the computation won't go out of bounds,
