@@ -14,7 +14,7 @@ Prover Release Notes
 - [feat] Introduced new syntax for summarizing unresolved calls with dispatch lists, offering more precise control over which functions are inlined for unresolved calls. The old syntax remains available but now triggers a deprecation warning.
 - [feat] Added `nativeCodesize`, enabling direct access to the result of the `extcodesize` instruction from CVL. It functions similarly to `nativeBalances` in terms of blockchain state comparison and manipulation.
 - [bugfix] Hooks are no longer inlined on the reset_storage command. This change may affect "induction base" cases for invariant rules that previously relied on implicit hook inlining.
-- [bugfix] Explicit casting to `mathint` is no longer required when comparing the result of an arithmetic operation with a non-`mathint` value. Non-`mathint` values are now implicitly casted to `mathint`.
+- [bugfix] Explicit casting to `mathint` is no longer required when comparing the result of an arithmetic operation with a non-`mathint` value. Non-`mathint` values are now implicitly cast to `mathint`.
 
 
 7.10.1 (July 25, 2024)
