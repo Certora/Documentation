@@ -68,6 +68,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
+                   | "ASSERT_FALSE"
                    | id "(" [ id { "," id } ] ")" [ "expect" id ]
                    | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
 
@@ -466,6 +467,8 @@ There are several kinds of summaries available:
    or {ref}`ghost-axioms`.
 
  - {ref}`auto-summary` are the default for unresolved calls.
+   
+ - {ref}`assert-false-summary`. These replace the method with an assert false, effectively checking that no such method is called.
 
 (delete-summary)=
 ### Summary application
@@ -723,6 +726,12 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   description, but older versions behave differently.  See
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
   in the Solidity manual for details.
+
+(assert-false-summary)=
+#### `ASSERT_FALSE` summaries
+
+This summary is a short syntax for a summary that contains an `assert false;` and checks that the summarized method is not reached.
+This can be useful for instance, in the presence of unresolved calls in combination with the `unresolved external` syntax to ensure that every unresolved call is actually dispatched correctly (i.e. use `unresolved external in _._ => DISPATCH [...] default ASSERT_FALSE`). It also enables more optimizations in the Prover and may lead to shorter running times.
 
 (function-summary)=
 #### Function summaries
