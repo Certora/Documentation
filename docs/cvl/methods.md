@@ -255,12 +255,8 @@ The possible patterns are:
    this signature on all available contracts (including the primary contract).
    Example: `_.bar(address)`
 3. Wildcard function - a pattern specifying a contract, and matches all
-<<<<<<< HEAD
-   external functions in specified contract.
-=======
    external functions in specified contract (This pattern will also include the
    contract's fallback if it's implemented).
->>>>>>> origin/master
    Example: `C._`
 
 For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`,
