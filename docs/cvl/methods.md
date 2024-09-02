@@ -237,12 +237,8 @@ The possible patterns are:
    this signature on all available contracts (including the primary contract).
    Example: `_.bar(address)`
 3. Wildcard function - a pattern specifying a contract, and matches all
-<<<<<<< HEAD
-   external functions in specified contract.
-=======
    external functions in specified contract (This pattern will also include the
    contract's fallback if it's implemented).
->>>>>>> origin/master
    Example: `C._`
 
 For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`,
@@ -671,9 +667,9 @@ For this case it could be useful for `DISPATCHER` summaries to also inline the
 
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
-all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since 
+all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since
 Certora CLI version 7.7.0 when using `_.someFunc() => DISPATCHER(true)` the Prover
-first tests that a method `someFunc()` exists in the scene, and if not will fail. 
+first tests that a method `someFunc()` exists in the scene, and if not will fail.
 Before this version, this may cause vacuous results.
 ```
 
@@ -768,8 +764,11 @@ supported.
 The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
 This is useful for identifying the called contract in {ref}`wildcard summaries
-<cvl2-wildcards>`.  The `calledContract` keyword is only defined in the `methods`
-block.
+<cvl2-wildcards>`. For internal functions, the `calledContract` is also
+the calling contract, since they are the same.
+For library functions the `calledContract` is the contract calling the library
+function.
+The `calledContract` keyword may only be used inside the `methods` block.
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
