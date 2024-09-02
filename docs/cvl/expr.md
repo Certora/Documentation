@@ -369,9 +369,9 @@ Another possible way to have the Prover consider options for a function is by
 prefixing the function name with an `address` typed variable. In this case the
 Prover will consider every possible contract in the scene that implements a
 function that matches the signature provided by the call (if no such function
-exists in the scene the prover will fail with an error). If there are no
+exists in the scene the Prover will fail with an error). If there are no
 constraints on the `address` variable that prevent the Prover from choosing a
-value that doesn't match the address of any contract in the scene, the prover
+value that doesn't match the address of any contract in the scene, the Prover
 will also consider this case and will consider it as a violation of the rule.
 
 (with-revert)=
