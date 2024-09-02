@@ -68,6 +68,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
+                   | "ASSERT_FALSE"
                    | id "(" [ id { "," id } ] ")" [ "expect" id ]
                    | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
 
@@ -195,31 +196,49 @@ shown in the web report can indicate whether a summary was applied.
 Example:
 ```cvl
 methods {
-   function _._ external => DISPATCH [
-      C.foo(uint),
-      _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
-      C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
-   ] default NONDET;
+    // Applies to all unresolved calls called within `C.foo()`
+    unresolved external in C.foo() => DISPATCH [
+        D.baz()
+    ] default HAVOC_ECF;
+
+    // Applies to all unresolved calls in the scene (except ones specified by more refined catch-unresolved-calls entries)
+    unresolved external in _._ => DISPATCH [
+        C.foo(uint),
+        _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
+        C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
+    ] default NONDET;
 }
 ```
 
-The catch unresolved-calls entry is a special type of summary declaration that
+Catch unresolved-calls entries are a special type of summary declaration that
 instructs the Prover to replace calls to unresolved external function calls
 with a specific kind of summary, dispatch list.
 By default, the Prover will use an {ref}`AUTO summary <auto-summary>` for
 unresolved function calls, but that may produce spurious counter examples.
-The catch unresolved-calls entry lets the user refine the summary used for
+Catch unresolved-calls entries let the user refine the summary used for
 unresolved function calls.
 
+One can specify the scope (`unresolved external in <scope>`) for which the
+unresolved summary will apply. The options are:
+* `Contract.functionSignature()` for summarizing unresolved calls within this function
+* `_.functionSignature()` for summarizing unresolved calls within this function in any contract
+* `Contract._` for summarizing unresolved calls in any function of the given contract
+* `_._` for summarizing all unresolved calls in the scene.
+
+If multiple catch unresolved-calls entries exist, the order of precedence is the
+order of the above list, from top to bottom.
+
 ```{note}
-Only one catch unresolved-calls entry is allowed per a specification file.
-When importing a specification with a catch unresolved-calls entry it will be
-included as part of the current specification, and cannot be overridden.
+If `C.foo` has a (resolved) external call to `D.bar`, and `D.bar` contains an
+unresolved call, a catch-unresolved-calls entry that applies to `C.foo` will
+_not_ be applied to this unresolved call - only an entry that matches `D.bar`
+will be used.
 ```
 
-A catch unresolved-calls entry can only be summarized with a dispatch list
+Catch unresolved-calls entries can only be summarized with a dispatch list
 summary (and a dispatch list summary is only applicable for a catch
-unresolved-calls entry).
+unresolved-calls entries).
+
 A dispatch list summary directs the Prover to consider each of the methods
 described in the list as possible candidates for this unresolved call.
 The Prover will choose dynamically, that is, for each potential run of the
@@ -448,6 +467,8 @@ There are several kinds of summaries available:
    or {ref}`ghost-axioms`.
 
  - {ref}`auto-summary` are the default for unresolved calls.
+   
+ - {ref}`assert-false-summary`. These replace the method with an assert false, effectively checking that no such method is called.
 
 (delete-summary)=
 ### Summary application
@@ -705,6 +726,12 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   description, but older versions behave differently.  See
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
   in the Solidity manual for details.
+
+(assert-false-summary)=
+#### `ASSERT_FALSE` summaries
+
+This summary is a short syntax for a summary that contains an `assert false;` and checks that the summarized method is not reached.
+This can be useful for instance, in the presence of unresolved calls in combination with the `unresolved external` syntax to ensure that every unresolved call is actually dispatched correctly (i.e. use `unresolved external in _._ => DISPATCH [...] default ASSERT_FALSE`). It also enables more optimizations in the Prover and may lead to shorter running times.
 
 (function-summary)=
 #### Function summaries
