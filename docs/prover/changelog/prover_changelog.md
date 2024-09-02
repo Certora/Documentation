@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.14.1 (September 2, 2024)
+7.14.2 (September 2, 2024)
 ----------------------
 ### CVL
 - CVL
