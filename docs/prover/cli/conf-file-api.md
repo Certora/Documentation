@@ -46,16 +46,16 @@ The values in the map depend on the type of arguments:
     }
     ```
 
-* Boolean options are options that take no arguments (for example {ref}`--send_only`). In 
+* Boolean options are options that take no arguments (for example {ref}`--multi_assert_check`). In 
 the conf file all keys must come with a value, the value for boolean options is `true`. 
 Since the default value of boolean options is `false` there is no need to set a boolean attribute to values other than `true`.  For example,
     ```sh
-    certoraRun --send_only
+    certoraRun --multi_assert_check
     ```
 
     would be encoded as:
     ```json
-    { "send_only": true }
+    { "multi_assert_check": true }
     ```
 
 * Options that expect a single argument (for example {ref}`--solc` or {ref}`--loop_iter`) 
@@ -129,13 +129,6 @@ The conf file of the latest run can be found in:
 
 Instead of generating a complete conf file from scratch, users can take 
 one of these generated conf files as a basis for their modifications.
-
-## Conf files in the VS Code IDE extension
-The [Certora IDE Extension](https://marketplace.visualstudio.com/items?itemName=Certora.vscode-certora-prover)
-automatically generates conf files for each configured job; these conf files
-are stored in the VS Code project under the folder  `certora/confs`.
-Once the job is completed, a link to the job's conf file can also be found in the files section of the 
-run report.
 
 ### Complete example
 

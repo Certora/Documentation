@@ -4,7 +4,29 @@ Glossary
 
 ````{glossary}
 
+axiom
+  a statement accepted as true without proof.
+
+call trace
+  A call trace is the Prover's visualization of either a 
+  {term}`counterexample` or a {term}`witness example`. 
+
+  A call trace illustrates a rule execution that leads up to the violation
+  of an `assert` statement or the fulfillment of a `satisfy` statement. The
+  trace is a sequence of commands in the rule (or in the contracts the rule 
+  was calling into), starting at the beginning of the rule and ending with the 
+  violated `assert` or fulfilled `satisfy` statement.
+  In addition to the commands, the call trace also does a best effort at 
+  showing information about the program state at each point in the execution.
+  It contains information about the state of global variables at crucial points 
+  as well as the values of call parameters, return values, and more.
+
+  If a call trace exists, it can be found in the "Call Trace" tab in the report 
+  after selecting the corresponding (sub-)rule.
+
+CFG
 control flow graph
+control flow path
   Control flow graphs (short: CFGs) are a program representation that 
   illustrates in which order the program's instructions are processed during 
   program execution. 
@@ -18,7 +40,14 @@ control flow graph
   a rule has a CFG like regular programs.
   The Certora Prover's [TAC reports](tac-reports) contain a control flow graph 
   of the {term}`TAC` intermediate representation of each given CVL rule.
-  Further reading: [Wikipedia](https://en.wikipedia.org/wiki/Control-flow_graph)
+  The control flow paths are the paths from source to sink in a given CFG.
+  In general (and in practice) the number of control flow paths grows 
+  exponentially with the size of the CFG. This is known as the path explosion 
+  problem.
+  Further reading: 
+  [Wikipedia: Control-flow graph](https://en.wikipedia.org/wiki/Control-flow_graph)
+  [Wikipedia: Path explosion problem](https://en.wikipedia.org/wiki/Path_explosion)
+
   % TODO: ok to mention TAC here?
 
 environment
@@ -37,8 +66,16 @@ EVM bytecode
   compilers, among others.
   For details on what the EVM is and how it works, the following links provide
   good entry points.
-  [Official documentation](https://ethereum.org/en/developers/docs/evm/)
+  [Official documentation](https://ethereum.org/en/developers/docs/evm/),
   [Wikipedia](https://en.wikipedia.org/wiki/Ethereum#Virtual_machine)
+
+EVM memory
+EVM storage
+  The {term}`EVM` has two major concepts of memory, called *memory* and 
+  *storage*. In brief, memory variables keep data only for the duration of a 
+  single EVM transaction, while storage variables are stored persistently in 
+  the Ethereum blockchain.
+  [Official documentation](https://ethereum.org/en/developers/docs/smart-contracts/anatomy)
 
 havoc
   In some cases, the Certora Prover should assume that some variables can change 
@@ -73,7 +110,6 @@ witness example
   constants and uninterpreted functions in the input formula that makes the formula
   evaluate to `true`, also see {term}`SAT result`.
 
-
 linear arithmetic
 nonlinear arithmetic
   An arithmetic expression is called linear if it consists only of additions, 
@@ -104,6 +140,34 @@ underapproximation
   that is successfully verified on the underapproximation may not hold on the
   approximated code.
 
+optimistic assumptions
+pessimistic assertions
+  Some input programs contain constructs that the Prover can only handle in 
+  an approximative way. This approximation entails that the Prover will  
+  disregard some specific parts of the programs behavior, like for example the 
+  behavior induced by a loop being unrolled beyond a fixed number of times. 
+  For each of these constructs the Prover provides a flag controlling whether 
+  it should handle them optimistically or pessimistically. (See the links at the 
+  end of this paragraph for examples of "optimistic" flags.)
+
+  In pessimistic mode (which is the default) _pessimistic assertions_ are 
+  inserted into the program that check whether there is any behavior that needs 
+  to be approximated, for instance whether loops are present with bounds 
+  exceeding {ref}`--loop_iter`. If this is the case, the rule will fail with 
+  a corresponding message. 
+
+  In optimistic mode, instead of the assertions, _optimistic assumptions_ are 
+  introduced in each of the places where an approximation happens. Each assumption 
+  excludes the relevant behavior from checking for one occurrence of the problematic
+  construct, e.g., for each loop.
+
+  For a list of all "optimistic" settings see {ref}`prover-cli-options`.
+  Examples include {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`, 
+  {ref}`--optimistic_summary_recursion`, and more. Also see 
+  {ref}`prover-approximations` for more background on some of the 
+  approximations.
+
+
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a
   method variable, or using an overloaded function name. The Certora Prover 
@@ -117,11 +181,20 @@ quantified expression
   referred to as *quantified expressions*.  See {ref}`logic-exprs` for
   details about quantifiers in CVL.
 
+receiveOrFallback
+  A special function we introduce in every contract to model the behavior of solidity
+  for calls with no data or that do not resolve to any contract function.
+  It will call the receive function if present for calls with no data, and otherwise the fallback function.
+  Shows up in the parametric rules or invariants, as well as in the call trace for such calls, written `<receiveOrFallback>()`.
+  See also [Solidity Documentation](https://docs.soliditylang.org/en/latest/contracts.html#fallback-function).
+
 sanity
   ```{todo}
   This section is incomplete.  See {ref}`--rule_sanity` and {ref}`built-in-sanity` for partial information.
   ```
 
+SAT
+UNSAT
 SAT result
 UNSAT result
   *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a 
@@ -135,7 +208,7 @@ UNSAT result
   corresponds to a witness example.
   Conversely, UNSAT means that an `assert` is never violated or a `satisfy` never
   fulfilled respectively.
-  (See also {ref}`rule-overview`.)
+  See also {ref}`rule-overview`.
 
 scene
   The *scene* refers to the set of contract instances that the Certora Prover 
@@ -164,6 +237,15 @@ unsound
   such as loop unrolling or certain kinds of harnessing may cause real bugs 
   to be missed by the Prover, and should therefore be used with caution. See
   {doc}`/docs/prover/approx/index` for more details.
+
+split
+split leaf
+split leaves
+  Control flow splitting is a technique to speed up verification by splitting the
+  program into smaller parts and verifying them separately. These smaller programs 
+  are called splits. Splits that cannot be split further are called split leaves.
+  See {ref}`control-flow-splitting`.
+  
 
 summary
 summarize
@@ -197,6 +279,16 @@ vacuity
   doesn't say anything about the program being verified.
   The {doc}`../prover/checking/sanity` help detect vacuous rules.
 
+verification condition
+  The Certora Prover works by translating a program an a specification into 
+  a single logical formula that is satisfiable if and only if the program
+  violates the specification. This formula is called a 
+  *verification condition*.
+  Usually, a run of the Certora Prover generates many verification conditions.
+  For instance a verification condition is generated for every 
+  {term}`parametric rule`, and also for each of the sanity checks triggered by 
+  {ref}`--rule_sanity`.
+  See also {ref}`white-paper`, {ref}`user-guide`.
 
 wildcard
 exact

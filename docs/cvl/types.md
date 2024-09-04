@@ -145,12 +145,13 @@ caption: child.spec
 
 // valid types
 Parent.ParentFileType     valid1;
-Child .ParentFileType     valid2;
+Child.ChildFileType       valid2;
 Parent.ParentContractType valid3;
 
 // invalid types
-Child .ParentContractType invalid1; // user-defined types are not inherited
-Parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
+Child.ParentContractType  invalid1; // user-defined types are not inherited
+Child.ParentFileType      invalid2; // user-defined types are not inherited
+Parent.ChildFileType      invalid3; // ChildFileType is not visible in Parent
 ```
 
 Additional CVL types
@@ -199,6 +200,10 @@ environment `e`:
 * `e.msg.value` - number of Wei sent with the message
 * `e.block.number` - current block number
 * `e.block.timestamp` - current block's time stamp
+* `e.block.basefee` - current block's base fee
+* `e.block.coinbase` - current block's coinbase
+* `e.block.difficulty` - current block's difficulty
+* `e.block.gaslimit` - current block's gas limit
 * `e.tx.origin` - original message sender
 
 The remaining solidity global variables are not accessible from CVL.
@@ -319,7 +324,8 @@ rules that check the equivalence of different functions.  See
 ### Uninterpreted sorts
 
 ```{todo}
-This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
+This section is incomplete.
+See :file:`/docs/confluence/anatomy/ghostfunctions` from the Old Documentation.
 ```
 
 (type-conversions)=

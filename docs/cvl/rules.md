@@ -10,7 +10,9 @@ When the Prover is invoked with the {ref}`--verify` option, it generates a
 report for each rule and invariant present in the spec file (as well as any
 {ref}`imported rules <use>`).
 
-See {doc}`/docs/confluence/bank/index` for an example demonstrating some of
+You can find examples for rules in the
+[Certora Prover and CVL Examples Repository](https://github.com/Certora/Examples/).
+For example, the specs in {clink}`/CVLByExample/Teams/` demonstrate some of
 these features.
 
 ```{contents}
@@ -67,17 +69,17 @@ output a specific counterexample that causes the assertions to fail.
     ```cvl
     /// `deposit` must increase the pool's underlying asset balance
     rule integrityOfDeposit {
-    
+
         mathint balance_before = underlyingBalance();
-    
-    
+
+
         env e; uint256 amount;
         safeAssumptions(_, e);
-    
+
         deposit(e, amount);
-    
+
         mathint balance_after = underlyingBalance();
-    
+
         assert balance_after == balance_before + amount,
             "deposit must increase the underlying balance of the pool";
     }
@@ -146,7 +148,7 @@ It is an error to call the same `method` variable on two different contracts.
     }
   ```
 - [parameteric rule example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94)
-  
+
 
 (rule-filters)=
 Filters
@@ -207,8 +209,6 @@ Rule descriptions
 Rules may be annotated by writing `description` and/or `good_description` before
 the method body, followed by a string.  These strings are displayed in the
 verification report.
-
-The description strings can use {ref}`string interpolation <string-interpolation>`.
 
 (verification)=
 How rules are verified

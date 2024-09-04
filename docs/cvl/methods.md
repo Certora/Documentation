@@ -44,7 +44,7 @@ The syntax for the `methods` block is given by the following [EBNF grammar](ebnf
 methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
-                     ( exact_pattern | wildcard_pattern | catch_all_pattern)
+                     ( exact_pattern | wildcard_pattern | catch_all_pattern | catch_unresolved_calls_pattern )
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "optional" ]
@@ -53,7 +53,8 @@ method_spec      ::= "function"
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
-catch_all_pattern :: id "." "_" "external"
+catch_all_pattern ::= id "." "_" "external"
+catch_unresolved_calls_pattern ::= "_" "." "_" "external"
 
 visibility ::= "internal" | "external"
 
@@ -67,7 +68,16 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
+                   | "ASSERT_FALSE"
                    | id "(" [ id { "," id } ] ")" [ "expect" id ]
+                   | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
+
+dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
+                          | dispatch_pattern
+
+dispatch_pattern ::= | "_" "." id "(" evm_params ")"
+                     | id "." "_"
+                     | id "." id "(" evm_params ")"
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
@@ -82,6 +92,9 @@ contract functions.
 
  - {ref}`exact-methods-entries` match a single method of a single contract.
  - {ref}`wildcard-methods-entries` match a single method signature on all contracts.
+ - {ref}`catch-all-entries` apply a single summary to all methods of a specific contract.
+ - {ref}`catch-unresolved-calls-entry` apply a summary to all calls that cannot be statically resolved in any contract.
+
 
 (exact-methods-entries)=
 ### Exact entries
@@ -152,9 +165,9 @@ methods {
 Will apply the `NONDET` {ref}`havoc summary <havoc-summary>` in place of
 *every* call to a function in the `SomeLibrary` contract. Note that there are no parameter types
 *or* return types for this entry: it refers to all methods in a contract, and cannot be
-further refined with parameter type information. 
+further refined with parameter type information.
 Catch-all summaries apply only to `external` methods, and therefore
-the `external` {ref}`visibility modifier <methods-visibility>` is required. 
+the `external` {ref}`visibility modifier <methods-visibility>` is required.
 Further, the only purpose of catch-all entries is to apply a summary to all
 external methods in a contract, so a summary is required. However, only
 {ref}`havocing summaries <havoc-summary>` are allowed for these entries.
@@ -177,6 +190,126 @@ apply the `NONDET` summary for the call `t.burn()`, unless it can prove that
 shown in the web report can indicate whether a summary was applied.
 
 ```
+
+(catch-unresolved-calls-entry)=
+### Catch unresolved-calls entry
+Example:
+```cvl
+methods {
+    // Applies to all unresolved calls called within `C.foo()`
+    unresolved external in C.foo() => DISPATCH [
+        D.baz()
+    ] default HAVOC_ECF;
+
+    // Applies to all unresolved calls in the scene (except ones specified by more refined catch-unresolved-calls entries)
+    unresolved external in _._ => DISPATCH [
+        C.foo(uint),
+        _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
+        C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
+    ] default NONDET;
+}
+```
+
+Catch unresolved-calls entries are a special type of summary declaration that
+instructs the Prover to replace calls to unresolved external function calls
+with a specific kind of summary, dispatch list.
+By default, the Prover will use an {ref}`AUTO summary <auto-summary>` for
+unresolved function calls, but that may produce spurious counter examples.
+Catch unresolved-calls entries let the user refine the summary used for
+unresolved function calls.
+
+One can specify the scope (`unresolved external in <scope>`) for which the
+unresolved summary will apply. The options are:
+* `Contract.functionSignature()` for summarizing unresolved calls within this function
+* `_.functionSignature()` for summarizing unresolved calls within this function in any contract
+* `Contract._` for summarizing unresolved calls in any function of the given contract
+* `_._` for summarizing all unresolved calls in the scene.
+
+If multiple catch unresolved-calls entries exist, the order of precedence is the
+order of the above list, from top to bottom.
+
+```{note}
+If `C.foo` has a (resolved) external call to `D.bar`, and `D.bar` contains an
+unresolved call, a catch-unresolved-calls entry that applies to `C.foo` will
+_not_ be applied to this unresolved call - only an entry that matches `D.bar`
+will be used.
+```
+
+Catch unresolved-calls entries can only be summarized with a dispatch list
+summary (and a dispatch list summary is only applicable for a catch
+unresolved-calls entries).
+
+A dispatch list summary directs the Prover to consider each of the methods
+described in the list as possible candidates for this unresolved call.
+The Prover will choose dynamically, that is, for each potential run of the
+program, which of them to call.
+It is done accurately by matching the selector from the call's arguments
+to that of the methods described in the dispatch list.
+If no method from the list matches, it will use the `default` summary, see
+below.
+The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
+The possible patterns are:
+1. Exact function - a pattern specifying both a contract, and the
+   function signature.
+   Example: `C.foo(uint)`
+2. Wildcard contract - a pattern specifying the function signature to match
+   this signature on all available contracts (including the primary contract).
+   Example: `_.bar(address)`
+3. Wildcard function - a pattern specifying a contract, and matches all
+   external functions in specified contract (This pattern will also include the
+   contract's fallback if it's implemented).
+   Example: `C._`
+
+For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`,
+`NONDET`.
+The example entry at the head of this section will specify three functions to
+route calls to:
+1. `C.foo(uint)`
+2. `Other.bar(address)`
+3. `C.baz(bool)`
+
+With the default being `NONDET`.
+
+Entry annotations ({ref}`envfree`, {ref}`optional`) and the `returns` clause
+are not allowed on an unresolved-calls entry.
+Also, the visibility is always external, and no policy should be specified.
+
+For an unresolved function call being summarized with the dispatch list above,
+the Prover will replace the call with a dynamic resolution of the function call.
+That is something in the lines of:
+```solidity
+function summarized(address a, bytes calldata data) external {
+  if (uint32(data[0:4]) == 0x11111111 && address == address(c)) {
+    // Function selector was equal to foo's
+    // Call C.foo(...)
+  } else if (uint32(data[0:4]) == 0x22222222 && address == address(o)) {
+    // Function selector was equal to bar's
+    // Call O.bar(...)
+  } else if (uint32(data[0:4]) == 0x33333333 && address == address(c)) {
+    // Function selector was equal to baz's
+    // Call C.baz(...)
+  } else {
+    // Use the default summary which is, in this case, NONDET.
+  }
+}
+```
+
+The dispatch list summary will create a dynamic resolution process that
+determines the specific function to call at runtime based on the function
+signature and the target contract address.
+In the provided example, when an unresolved function call is encountered, the
+Prover dynamically resolves it by inspecting the function selector in the
+transaction data and the target contract address.
+By comparing the function selector against known signatures and verifying the
+contract address, the Prover identifies the appropriate function to call.
+
+This dynamic resolution mechanism is crucial for refining specifications
+because it enables the Prover to accurately model the behavior of smart
+contracts, even when the exact function being called is not known statically.
+By replacing unresolved calls with dynamically resolved calls in the dispatch
+list summary, the specification becomes more precise, leading to more accurate
+verification results and improved assurance in the correctness of the smart
+contract.
 
 ### Location annotations
 
@@ -334,20 +467,62 @@ There are several kinds of summaries available:
    or {ref}`ghost-axioms`.
 
  - {ref}`auto-summary` are the default for unresolved calls.
+   
+ - {ref}`assert-false-summary`. These replace the method with an assert false, effectively checking that no such method is called.
 
 (delete-summary)=
 ### Summary application
 
-To decide whether to summarize a given internal or external function call, the
+To decide whether to summarize a given function call at a given call site, the
 Prover first determines whether it matches any of the declarations in the
-methods block, and then uses the declaration and the calling context to
+methods block, and then uses the declaration and the _calling context_ to
 determine whether the call should be replaced by an approximation.
 
-To determine whether a function call is replaced by an approximation, the
-Prover considers the context in which the function is called in addition to the
-application policy for its signature.  If present, the application policy must
-be either `ALL`, `UNRESOLVED`, or `DELETE`; the default policy is `ALL` with the exception
-of `DISPATCHER` summaries, which have a default of `UNRESOLVED`.
+Specifically, the matching is based on three attributes:
+
+(1) The contract in which the method is defined, or a wildcard contract denoted with `_`.
+
+(2) The method signature, with optional named parameters.
+
+(3) The context in which it is called, either `external` or `internal`.
+A Solidity function which is defined as `public` can be specified in the methods block as
+either `external` or `internal`, and this affects which call sites of the function will
+be summarized.
+
+The ability of the Prover to match a particular call site to a method declaration
+depends on whether the call was _resolved_ or not, i.e., whether we know which target
+contract is called and which method signature is called.
+Internal calls are always resolved, but for external calls it is not always the case.
+For example, the target contract may be given by a user input, and there is
+no single match for the target contract:
+```solidity
+function callIt(address it) external {
+  IERC20(it).transfer(...); // cast `it` to an IERC20 contract and call the `transfer` method
+}
+```
+Similarly, the method signature may also be not resolvable:
+```solidity
+function callIt(bytes memory data) external {
+  address(this).call(data);
+}
+```
+
+To determine whether a function call is replaced by an approximation summary, the
+Prover considers all three aforementioned attributes, the resolved information,
+and in addition to that, also the
+application policy.  If present, the application policy must
+be either `ALL`, `UNRESOLVED`, or `DELETE`.
+The `ALL` policy indicates the summary should be applied to all instances of the
+specified method, while `UNRESOLVED` applies only to methods that cannot be fully
+resolved (i.e., either target contract or the method signature are unknown).
+For internal summaries, the default is `ALL`, as all internal functions
+are always resolvable; thus `UNRESOLVED` is impossible and will yield an error.
+Similarly, for external summaries with contract-specific entries,
+the default policy is `ALL`.
+Conversely, for any external summary on wildcard contracts, the default
+policy is `UNRESOLVED`. One may apply the `ALL` policy to make the summary apply
+on all instances of the wildcard method, even on target contracts for which
+it was resolved, e.g. by {ref}`linking <--link>`.
 
 A `DELETE` summary is similar to an `ALL` summary, except that the `DELETE`
 summary removes the method from the {term}`scene` entirely.  Calling the method
@@ -370,7 +545,7 @@ The decision to replace a call by an approximation is made as follows:
    type is {ref}`AUTO <auto-summary>`, whose behavior is determined by the type of
    function call.  In this case, the verification report will contain a contract
    call resolution warning.
-  
+
 (summary-resolution)=
 ### Summary resolution
 
@@ -405,7 +580,6 @@ precedence of summary application. For example, if the first entry in the above
 was instead `function Token.burn() external envfree;` without a summary,
 the `HAVOC_ALL` of the wildcard entry will apply.
 ```
-
 
 ### Summary types
 
@@ -500,9 +674,24 @@ of the unknown contract is determined by the optional boolean argument to the
 
  * With `DISPATCHER(true)`, only the known contract instances are considered
 
+There is an alternative syntax for determining the presence or absence of the
+unknown contract:
+
+ * `DISPATCHER(optimistic=<true|false>)` with `true` and 'false` having the same
+   meaning as in the other syntax.
+
+In some cases there's a proxy contract that only has a fallback function and
+that fallback then delegates function calls it receives to some other contract.
+For this case it could be useful for `DISPATCHER` summaries to also inline the
+`fallback` function of known contracts. To enable this use the following syntax:
+ * `DISPATCHER(optimistic=<true|false>, use_fallback<true|false>)`
+
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
-all cases `DISPATCHER(false)` and `AUTO` report the same set of violations.
+all cases `DISPATCHER(false)` and `AUTO` report the same set of violations. Since
+Certora CLI version 7.7.0 when using `_.someFunc() => DISPATCHER(true)` the Prover
+first tests that a method `someFunc()` exists in the scene, and if not will fail.
+Before this version, this may cause vacuous results.
 ```
 
 ```{note}
@@ -525,7 +714,7 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
  * All other calls and constructors use the `HAVOC_ECF` approximation: they are
    assumed to change the state of external contracts arbitrarily but to leave
    the caller's state unchanged.
-   `AUTO` summary behavior for the `CALL` opcode 
+   `AUTO` summary behavior for the `CALL` opcode
    with 0 length `calldata` can be changed with {ref}`-optimisticFallback`.
 
 [^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
@@ -537,6 +726,12 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   description, but older versions behave differently.  See
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
   in the Solidity manual for details.
+
+(assert-false-summary)=
+#### `ASSERT_FALSE` summaries
+
+This summary is a short syntax for a summary that contains an `assert false;` and checks that the summarized method is not reached.
+This can be useful for instance, in the presence of unresolved calls in combination with the `unresolved external` syntax to ensure that every unresolved call is actually dispatched correctly (i.e. use `unresolved external in _._ => DISPATCH [...] default ASSERT_FALSE`). It also enables more optimizations in the Prover and may lead to shorter running times.
 
 (function-summary)=
 #### Function summaries
@@ -596,8 +791,11 @@ supported.
 The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
 This is useful for identifying the called contract in {ref}`wildcard summaries
-<cvl2-wildcards>`.  The `calledContract` keyword is only defined in the `methods`
-block.
+<cvl2-wildcards>`. For internal functions, the `calledContract` is also
+the calling contract, since they are the same.
+For library functions the `calledContract` is the contract calling the library
+function.
+The `calledContract` keyword may only be used inside the `methods` block.
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
@@ -667,19 +865,13 @@ There is a restriction on the functions that can be used as approximations.
 Namely, the types of any arguments passed to or values returned from the summary
 must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
 Arguments that are not accessed in the summary may have any type.
-  
-Function summaries for *internal* methods have a few additional restrictions on 
-their arguments and return types:
- - arrays (including static arrays, `bytes`, and `string`) are not supported
- - struct fields must have [value types][solidity-value-types]
- - `storage` and `calldata` structs are not supported, only `memory`
 
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
 
-In case of recursive calls due to the summarization, the recursion limit can be set with 
-`--prover_args '-contractRecursionLimit N'` where `N` is the number of recursive calls allowed (default 0).
-If `--optimistic_loop` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit. 
+In case of recursive calls due to the summarization, the recursion limit can be set with
+`--summary_recursion_limit N'` where `N` is the number of recursive calls allowed (default 0).
+If `--optimistic_summary_recursion` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit.
 Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types

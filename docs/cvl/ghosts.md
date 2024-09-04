@@ -119,7 +119,7 @@ user:
 ```cvl
 ghost mapping(address => bool) updated;
 
-hook Sstore userInfo[KEY address u] uint i STORAGE {
+hook Sstore userInfo[KEY address u] uint i {
     updated[u] = true;
 }
 
@@ -193,6 +193,8 @@ Restrictions on ghost axioms
 (persistent-ghosts)=
 Ghosts vs. persistent ghosts
 ----------------------------
+
+A `persistent ghost` is a `ghost` that will never be {ref}`havoc <glossary>`. The value of a non-persistent `ghost` will be `havoc'ed` when the Prover `havoc`s the storage, a `persistent ghost` however will keep its value when storage is havoced.
 
 In most cases, non-persistent ghosts are the natural choice for a specification 
 that requires extra tracking of information.

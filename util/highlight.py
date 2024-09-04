@@ -37,7 +37,7 @@ class CVLLexer(RegexLexer):
 #            (words(("mathint", "calldataarg", "storage", "env", "method"), suffix=r'\b'),
 #                Keyword.Type)
             (words(("sort", "mapping", "ghost", "definition", "axiom",
-                    "hook", "Sload", "Sstore", "Create", "STORAGE", 
+                    "hook", "Sload", "Sstore", "Create",
                     "ALWAYS", "CONSTANT", "PER_CALLEE_CONSTANT", "NONDET", "HAVOC_ECF", "HAVOC_ALL", "AUTO", "DISPATCHER",
                     "UNRESOLVED", "ALL",
                     "norevert", "withrevert", "whole", "dontsummarize",
@@ -49,7 +49,7 @@ class CVLLexer(RegexLexer):
                     "events", "description", "good_description", "filtered",
                     "reset_storage", "invoke", "sinvoke", "invoke_fallback",
                     "invoke_whole", "if", "else", "as", "using", "import", "use",
-                    "builtin", "override")),
+                    "builtin", "override"), suffix=r'\b', prefix=r'\b'),
                 Keyword),
             (words((">", "<", "<=", ">=", "==", "!=",
                     "+", "-", "*", "/", "%", "^",

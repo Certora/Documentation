@@ -1,3 +1,4 @@
+(prover-cli-options)=
 CLI Options
 ===========
 
@@ -44,22 +45,9 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-### `--assert_contracts`
-
-**What does it do?**
-Replaces all EVM instructions that cause a non-benign revert in the smart contract with an assertion. Non-benign reverts include division by 0, bad dereference of an array, `throw` command, and more.
-Each contract must have been declared in the input files or have the same name as the source code file it is in.
-
-**When to use it?**
-When you want to see if a suspect instruction can fail in the code, without writing a `.spec` file.
-
-**Example**
-If we have a solidity file `Bank.sol`, with a contract named `Investor` inside it which we want to assert, we write:
-`certoraRun Bank.sol:Investor --assert_contracts Investor`
-
 Most frequently used options
 ----------------------------
-
+(--msg)=
 ### `--msg <description>`
 
 **What does it do?**
@@ -73,7 +61,7 @@ To create the message above, we used
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
 (--rule)=
-### `--rule <rule name> ...`
+### `--rule <rule_name_pattern> ...`
 
 **What does it do?**
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
@@ -86,10 +74,13 @@ cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
 
+One can either specify a specific rule name, or use pattern matching with a `*`.
+
+Note that you can specify this flag multiple times to filter in several rules or rule patterns.
 **Example**
 If `Bank.spec` includes the following properties:
-`invariant address_zero_cannot_become_an_account()`
 
+`invariant address_zero_cannot_become_an_account()`
 `rule withdraw_succeeds()`
 `rule withdraw_fails()`
 
@@ -98,6 +89,34 @@ If we want to verify only `withdraw_succeeds`, we run
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
+
+Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
+simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
+
+(--exclude_rule)=
+### `--exclude_rule <rule_name_pattern>`
+
+**What does it do?**
+It is the opposite flag to {ref}`--rule` - use it to specify a list of rules that
+should _not_ be run.
+
+Note that you can specify this flag multiple times to filter out several rules or rule patterns.
+
+**Example**
+If `Bank.spec` includes the following properties:
+
+`invariant address_zero_cannot_become_an_account()`
+`rule withdraw_succeeds()`
+`rule withdraw_fails()`
+
+If we want to skip both rules we could run
+`certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
+
+```{note}
+When used together with the {ref}`--rule` flag the logic is to collect all rules
+that pass the `--rule` flag(s) and then subtract from them all rules that match
+any `--exclude_rule` flags.
+```
 
 (--method)=
 ### `--method <method_signature>`
@@ -138,6 +157,12 @@ the contract or the spec to rerun, we can just rerun on the `deposit` method:
 certoraRun --method 'deposit(uint)'
 ```
 
+If we discover a counterexample in several methods, we could rerun just those:
+
+```sh
+certoraRun --method 'deposit(uint)' --method 'transfer(address,uint256)'
+```
+
 Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
 
@@ -168,20 +193,25 @@ certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
-(--send_only)=
-### `--send_only`
+(--wait-for-results)=
+### `--wait_for_results`
 
 **What does it do?**
-Causes the CLI to exit immediately when the job is submitted, rather than waiting
-for it to complete.
+Wait for verification results after sending the verification request.
+By default, the program exits after the request.
+The return code will not be zero if the verification finds a violation.
 
 **When to use it?**
-When you want to run many jobs concurrently in a script, or otherwise want the
-CLI to not block the terminal.
+Use it to receive verification results in the terminal or a wrapping script.
+
+In CI, the default behavior is different: the Prover waits for verification results,
+and the return code will not be zero if a violation is found.
+You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
+In that case, the return code will be zero if the jobs were sent successfully.
 
 **Example**
 ```sh
-certoraRun Example.sol --verify Example:Example.spec --send_only
+certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
 Options affecting the type of verification run
@@ -196,11 +226,11 @@ This mode checks each assertion statement that occurs in a rule, separately. The
 As an illustrative example, consider the following rule `R` that has two assertions:
 
 ```cvl
-…
+...
 assert a1
-…
+...
 assert a2
-…
+...
 ```
 
 The `multi_assert_check` mode would generate and check two sub-rules: `R1` where `a1` is proved while `a2` is removed, and `R2` where `a1` is assumed (i.e., transformed into a requirement statement), and `a2` is proved.
@@ -223,11 +253,11 @@ When you have a rule with multiple assertions:
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
 (--independent_satisfy)=
-### `--independent_satisfy`
+### -`--independent_satisfy`
 
 **What does it do?**
-The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule. 
-Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode), 
+The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule.
+Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode),
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
 
 As an illustrative example of the default mode, consider the following rule `R` that has two satisfy statements:
@@ -252,11 +282,11 @@ rule R2_default {
   // Previous satisfy statements are required in default mode.
   require b; // R1
   // Due to requiring `b`, this satisfy statement is equivalent to 'satisfy b && !b, "R2";'
-  satisfy !b, "R2"; 
+  satisfy !b, "R2";
 }
 ```
 
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction. 
+Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction.
 Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
 It would also generate and check two sub-rules, but with a slight difference: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
 
@@ -296,6 +326,7 @@ useful check if you notice rules passing surprisingly quickly or easily.
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
 
+(--short_output)=
 ### `--short_output`
 
 **What does it do?**
@@ -321,17 +352,18 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
 
+(--compiler_map)=
 (--solc_map)=
-### `--solc_map`
+### `--compiler_map`
 
 **What does it do?**
-Compiles every smart contract with a different Solidity compiler executable. All used contracts must be listed.
+Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
 
 **When to use it?**
 When different contracts have to be compiled for different Solidity versions.
 
 **Example**
-`certoraRun Bank.sol Exchange.sol --verify Bank:Bank.spec --solc_map Bank=solc4.25,Exchange=solc6.7`
+`certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10`
 
 (--solc_optimize)=
 ### `--solc_optimize`
@@ -340,7 +372,7 @@ When different contracts have to be compiled for different Solidity versions.
 Passes the value of this option as is to the solidity compiler's option `--optimize` and `--optimize-runs`.
 
 **When to use it?**
-When we want to activate in the solidity compiler the opcode-based optimizer for the generated bytecode and control the 
+When we want to activate in the solidity compiler the opcode-based optimizer for the generated bytecode and control the
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
 
 **Example**
@@ -349,8 +381,8 @@ number of times the optimizer will be activated (if no value is set, the compile
 (--solc_optimize_map)=
 ### `--solc_optimize_map`
 
-**What does it do?**  
-Set optimize values when different files run with different number of runs 
+**What does it do?**
+Set optimize values when different files run with different number of runs
 Passes the value of this option as is to the solidity compiler's option `--optimize` and `--optimize-runs`.
 
 **When to use it?**
@@ -360,6 +392,7 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
+(--solc_via_ir)=
 ### `--solc_via_ir`
 
 **What does it do?**
@@ -371,6 +404,7 @@ When we want to enable the IR-based code generator
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
 
+(--solc_evm_version)=
 ### `--solc_evm_version`
 
 **What does it do?**
@@ -382,6 +416,7 @@ When we want to select the Solidity compiler EVM version
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
 
+(--solc_allow_path)=
 ### `--solc_allow_path`
 
 **What does it do?**
@@ -394,7 +429,7 @@ When we want to add an additional location the Solidity compiler to load sources
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
 
-
+(--packages_path)=
 ### `--packages_path`
 
 **What does it do?**
@@ -505,22 +540,66 @@ Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
 option sets the summary recursion level, which is the number of recursive calls
 that the Prover will consider.
 
-If a counterexample causes a function to be called recursively more than the
-summary recursion limit, it will report an assertion failure (unless
-{ref}`--optimistic_summary_recursion` is set, in which case the counterexample
+If the Prover finds an execution in which a function is called recursively more
+than the contract recursion limit, the Prover will report an assertion failure (unless
+{ref}`--optimistic_summary_recursion` is set, in which case the execution
 will be ignored).
 The default value is zero (i.e. no recursion is allowed).
 
 **When to use it**
-Use this option when there is recursion due to summaries calling Solidity
+1. Use this option when there is recursion due to summaries calling Solidity
 functions, and this leads to an assertion failure. In this case one can either
 make the limit larger or set (via {ref}`--optimistic_summary_recursion`) flag
 to `true`.
+
+2. Use it if you get the following assertion failure, and disabling {ref}`optimistic fallback <-optimisticFallback>` is not possible: `When inlining a fallback function, found it was already on the stack. Consider disabling optimistic fallback mode.`
 
 **Example**
 
 ```
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
+```
+
+
+(--nondet_difficult_funcs)=
+### `--nondet_difficult_funcs`
+
+**What does it do?**
+When this option is set, the Prover will auto-summarize
+view or pure internal functions that return a value type and are
+currently not summarized, and that are found to be heuristically difficult
+for the Prover.
+
+For more information, see {ref}`detect-candidates-for-summarization`.
+
+**When to use it**
+Using this option is recommended when beginning to work on a large code
+base that includes functions that could be difficult for the Prover.
+It can help the user get faster feedback, both in the form of faster
+verification results, as well as highlighting potentially difficult functions.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
+```
+
+(--nondet_minimal_difficulty)=
+### `--nondet_minimal_difficulty`
+
+**What does it do?**
+This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
+
+**When to use it**
+If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
+one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
+
+The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
 
 
@@ -578,25 +657,28 @@ Options that help reduce the running time
 
 ### `--method`
 
-**What does it do?**
-Parametric rules will only verify the method with the given signature, instead of all public and external methods of the contract. Note that you will need to wrap the method's signature with quotes, as the shell doesn't interpret parenthesis correctly otherwise.
+See {ref}`--method`
 
-**When to use it?**
-When you are trying to solve/understand a counterexample of a parametric rule on a specific method.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --method 'withdraw(uint256,bool)'`
-
-### `--cache`
+(--compilation_steps_only)=
+### `--compilation_steps_only`
 
 **What does it do?**
-A cache in the cloud for optimizing the analysis before running the SMT solvers. The cache used is the argument this option gets. If a cache with this name does not exist, it creates one with this name.
+Exits the program after source code and spec compilation without sending
+a verification request to the cloud.
 
 **When to use it?**
-By default, we do not use a cache. If you want to use a cache to speed up the building process, use this option.
+Use it to check if the spec has correct syntax but do not wish
+to send a verification request and wait for its results.
+
+Here are a few example scenarios:
+1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
+2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
+3. When you have no internet connection but still want to develop spec offline.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --cache bank_regulation`
+```sh
+certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
+```
 
 (--smt_timeout)=
 ### `--smt_timeout <seconds>`
@@ -612,7 +694,11 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`-globalTimeout`.
+for parametric rules).  To set the global timeout, see {ref}`--global_timeout`.
+
+Also note that, while the most prominent one, this is not the only timeout that
+applies to SMT solvers, for details see {ref}`-mediumTimeout` and
+{ref}`control-flow-splitting`.
 
 **When to use it?**
 The default time out for the solvers is 300 seconds. There are two use cases for this option.
@@ -630,6 +716,17 @@ Gets an integer input, which represents seconds.
 
 The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
 Users may opt to set this number lower to facilitate faster iteration on specifications.
+Values larger than two hours (7200 seconds) are ignored.
+
+Jobs that exceed the global timeout will simply be terminated, so the result
+reports may not be generated.
+
+The global timeout is different from the {ref}`--smt_timeout` option: the
+`--smt_timeout` flag constrains the amount of time allocated to the processing
+of each individual rule, while the `--global_timeout` flag constrains the
+processing of the entire job, including static analysis and other
+preprocessing.
+
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
@@ -672,6 +769,7 @@ When we have an external contract with a constant address. By default, the Pytho
 If we wish the `Oracle` contract to be at address 12, we use
 `certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12`
 
+(--struct_link)=
 ### `--struct_link`
 
 **What does it do?**
@@ -693,7 +791,81 @@ struct TokenPair {
 ```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
-`certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --structLink Bank:0=BankToken Bank:1=LoanToken`
+`certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
+
+(--contract_recursion_limit)=
+### `--contract_recursion_limit`
+
+**What does it do?**
+Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
+option sets the contract recursion level, which is the number of recursive calls
+that the Prover will consider when inlining contracts linked using, e.g., `--link` or `--struct_link`.
+
+```{note}
+In this context, recursion refers to the state where the same _external_ function
+appears twice in the call stack.
+Contracts can also exhibit recursive behavior due to recursive calls to _internal_ functions,
+which is unrelated to this option.
+```
+
+If a counterexample causes a function to be called recursively more than the
+contract recursion limit, it will report an assertion failure (unless
+{ref}`--optimistic_contract_recursion` is set, in which case the counterexample
+will be ignored).
+The default value is zero (i.e., no recursion is allowed).
+
+**When to use it**
+Use this option when after linking the resulting program may have paths
+with recursive calls to external Solidity
+functions, and this leads to a recursion-specific assertion failure,
+showing the message `Contract recursion limit reached`.
+In this case one can either
+make the limit larger or set `--optimistic_contract_recursion` flag
+to `true`.
+
+Note that making the limit larger is not always sufficient,
+as the code may in fact allow theoretically unbounded recursion.
+
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
+```
+
+(--optimistic_contract_recursion)=
+### `--optimistic_contract_recursion`
+
+**What does it do?**
+Contract linking can cause recursion (see also {ref}`--contract_recursion_limit`).
+This option sets the Prover to optimistically assume that recursion cannot go
+beyond what is defined by {ref}`--contract_recursion_limit`,
+but only if {ref}`--contract_recursion_limit` is set to a number higher than 0.
+
+**When to use it?**
+1. When the recursion due to contract linking is unbounded.
+2. When we are interested only in a limited recursion depth due to contract linking.
+
+```{caution}
+Note that this flag could be another cause for unsoundness - even if such recursion
+_could_ actually happen in the deployed contract, this code-path won't be verified
+beyond the specified recursion limit ({ref}`--contract_recursion_limit`).
+```
+
+**Example**
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true --contract_recursion_limit 1
+```
+
+(-optimisticFallback)=
+(--optimistic_fallback)=
+### `--optimistic_fallback`
+
+This option determines whether to optimistically assume unresolved external
+calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how
+{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
+calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
+`--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 Options for controlling contract creation
 -----------------------------------------
@@ -711,6 +883,7 @@ When you wish to model contract creation, that is, simulating the actual creatio
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
 `certoraRun C.sol Foo.sol --dynamic_bound 1`
 
+(--dynamic_dispatch)=
 ### `--dynamic_dispatch`
 
 **What does it do?**
@@ -737,6 +910,7 @@ and `Foo` calls some method `m()` which you wish to automatically link to the ne
 Note that you must add a `--dynamic_bound` argument as well.
 `certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch true`
 
+(--prototype)=
 ### `--prototype <hex string>=<contract>`
 
 **What does it do?**
@@ -770,7 +944,7 @@ Also note that the hex string must be:
 Version options
 -----------------
 
-
+(--version)=
 ### `--version`
 
 **What does it do?**
@@ -787,7 +961,7 @@ When you suspect you have an old installation. To install the newest version, us
 Advanced options
 ----------------
 
-
+(--java_args)=
 ### `--java_args`
 
 **What does it do?**
@@ -810,118 +984,33 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 `--prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `--t` is
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
-
-(-optimisticFallback)=
-#### `--prover_args '-optimisticFallback=true'`
-
-This option determines whether to optimistically assume unresolved external
-calls with an empty input buffer (length 0) can make arbitrary changes to all states. It makes changes to how 
-{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
-`-optimisticFallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
-
-(-optimisticReturnsize)=
+(-optimisticreturnsize)=
 #### `--prover_args '-optimisticReturnsize=true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
-It will set the value returned by the `RETURNSIZE` EVM instruction according to the 
+It will set the value returned by the `RETURNSIZE` EVM instruction according to the
 called method.
 Note that certain conditions should hold in order for the option to take effect.
-Namely, if there is a single candidate method in the havoc site, 
-and all instances of this method in the {term}`scene` have exactly the same 
+Namely, if there is a single candidate method in the havoc site,
+and all instances of this method in the {term}`scene` have exactly the same
 expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
-(-superOptimisticReturnsize)=
+(-superoptimisticreturnsize)=
 #### `--prover_args '-superOptimisticReturnsize=true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
-It will set the value returned by the `RETURNSIZE` EVM instruction 
+It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
-(-showInternalFunctions)=
-#### `--prover_args '-showInternalFunctions'`
-
-A single occurrence of `--prover_args` can set multiple values, e.g.:
-`--prover_args '-showInternalFunctions -optimisticReturnsize=true'`
-
-**What does it do?**
-
-This option causes the Prover to output a list of all the potentially
-summarizable internal function calls on the command line.  The output is also
-visible in the log file that you can download from the report.
-
-**When to use it?**
-
-In some cases the Prover is unable to locate all internal function calls, and
-so summaries may not be applied.  This option can be useful to determine
-whether summary is applied or not.
-
-The Prover's ability to locate a summarizable call depends on the call site,
-rather than the method declaration.  In particular, it is possible that the
-same internal function is called from two different contract functions, but
-only one of those calls is summarizable.
-
-The list that is output by this setting is grouped under the public and external
-methods of the contract.  If an external method `f` calls an internal method `g`
-which in turn calls another internal method `h`, then both `g` and `h` will be
-reported under the entry for `f`.
-
-**Example**
-
-```sh
-certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-showInternalFunctions'
-```
-
-(-globalTimeout)=
-#### `--prover_args '-globalTimeout <seconds>'`
-
-This option sets the global timeout in seconds.  By default, the global timeout
-is two hours.  Values larger than two hours (7200 seconds) are ignored.
-
-The global timeout is different from the {ref}`--smt_timeout` option: the
-`--smt_timeout` flag constrains the amount of time allocated to the processing
-of each individual rule, while the `-globalTimeout` flag constrains the
-processing of the entire job, including static analysis and other
-preprocessing.
-
-Jobs that exceed the global timeout will simply be terminated, so the result
-reports may not be generated.
-
-(-solver)=
-#### `--prover_args '-solver <solver spec>'`
-
-By default, a portfolio of SMT solvers using various configurations is used
-within the Prover.  It can be useful to specify only a subset of these to save
-on computation time.  In rare cases, solver specific options can improve
-performance as well.  Setting `-solver <solver spec>` filters the predefined
-portfolio to only use those configuration that match the given solver
-specification.
-
-The `solver spec` can be a single solver (`-solver z3:def`), or a list of
-solver configurations (`-solver [z3:def,cvc5:def]`), where each such solver can
-be further modified.  For example, `cvc5` (as in `-solver cvc5`) refers to the
-set of pre-configured configurations of `cvc5` whereas `cvc5:nonlin` is a
-specific configuration used for nonlinear problems.  Additional options can be
-set via `z3{randomSeed=17}`.
-
-With `-smt_overrideSolvers true`, the portfolio can be replaced instead of
-filtered. For example, in conjunction with `-solver [cvc5:def,z3:def]`, the
-portfolio is replaced with the default configurations of `cvc5` and `z3`,
-irrespective of their presence in the predefined portfolio.
-For even better control of which solvers are used in which situation, solver
-specification for certain logics can be given via
-`-smt_LIASolvers <solver spec>`, `-smt_NIASolvers <solver spec>`, and
-`-smt_BVSolvers<solver spec>` for linear, non-linear and bit-vector formulas.
-
-(-smt_useBV)=
-#### `--prover_args '-smt_useBV true'`
+(--precise_bitwise_ops)=
+#### `--precise_bitwise_ops`
 
 This option models bitwise operations exactly instead of using the default
-{term}`overapproximation`s.  It is useful when the Prover reports a
+{term}`overapproximation`s. It is useful when the Prover reports a
 counterexample caused by incorrect modeling of bitwise operations, but can
 dramatically increase the time taken for verification.
 
@@ -930,26 +1019,26 @@ precisely: the maximum supported integer value is :math:`2^256-1` in this case,
 effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
-(-smt_groundQuantifiers)=
-#### `--settings -smt_groundQuantifiers=false`
+(-smt_groundquantifiers)=
+#### `--prover_args -smt_groundQuantifiers=false`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
-(-maxNumberOfReachChecksBasedOnDomination)=
+(-maxnumberofreachchecksbasedondomination)=
 #### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
-(-enableStorageSplitting)=
+(-enablestoragesplitting)=
 #### `--prover_args '-enableStorageSplitting false'`
 
 This option disables the storage splitting optimization.
 
 
 (--allow_solidity_calls_in_quantifiers)=
-### --allow_solidity_calls_in_quantifiers
+### --allow_solidity_calls_in_quantifiers`
 
 **What does it do?**
 
@@ -967,34 +1056,117 @@ error on encountering contract method calls in quantified expression bodies.
 
 
 (control-flow-splitting-options)=
-Advanced options that control control flow splitting
-----------------------------------------------------
+Control flow splitting options
+------------------------------
 
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
+(-depth)=
+### `--prover_args '-depth <number>'`
 
-(-mediumTimeout)=
+**What does it do?**
+
+Sets the maximum splitting depth.
+
+**When to use it?**
+
+When the deepest {term}`split`s are too heavy to solve, but not too high in
+number, increasing this will lead to smaller, but more numerous
+{term}`split leaves`, which run at the full SMT timeout (as set by
+{ref}`--smt_timeout`).
+Conversely, if run time is too high because there are too many splits,
+decreasing this number means that more time is spent on fewer, but bigger split
+leaves.
+The default value for this option is 10.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
+```
+
+(-mediumtimeout)=
 ### `--prover_args '-mediumTimeout <seconds>'`
 
-The "medium timeout" determines how much time is given to checking a split at
-not max-depth before we split again.
+The "medium timeout" determines how much time the SMT solver gets for checking a
+{term}`split` that is not a {term}`split leaf`.
+(For split leaves, the full {ref}`--smt_timeout` is used.)
 
+**What does it do?**
 
-(-dontStopAtFirstSplitTimeout)=
+Sets the time that non-leaf splits get before being split again.
+
+**When to use it?**
+
+When a little more time can close some splitting subtrees early, this can save a
+lot of time, since the subtree's size is exponential in the remaining depth. On
+the other hand, if something will be split further anyway, this can save the
+run time spent on intermediate "TIMEOUT" results. Use
+{ref}`-smt_initialSplitDepth` to eliminate that time investment altogether up to
+a given depth.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
+```
+
+(-dontstopatfirstsplittimeout)=
 ### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
 
-We can tell the Certora Prover to not stop when the first split has had a
-maximum-depth timeout. Note that this is only useful for SAT results, since for
-an overall UNSAT results, all splits need to be UNSAT, while for a SAT result it
-is enough that one split is UNSAT.
+**What does it do?**
 
+We can tell the Certora Prover to continue even when the a {term}`split` has had
+a maximum-depth timeout. Note that this is only useful when there exists a
+{term}`counterexample` for the rule under verification, since in order to prove
+the absence of counterexamples (i.e. correctness), all splits need to be
+counterexample-free. (In case of a rule using `satisfy` rather than `assert`,
+the corresponding statements hold for {term}`witness example`s. In that case,
+this option is only useful if the rule is correct.)
 
-(-smt_initialSplitDepth)=
+**When to use it?**
+
+When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
+The default value for this option is `false`.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
+```
+
+(-smt_initialsplitdepth)=
 ### `--prover_args '-smt_initialSplitDepth <number>'`
 
-Splitting can be configured to skip the checks at low splitting levels, thus
-generating sub-splits up to a given depth immediately. Note that the number of
+With this option, the splitting can be configured to skip the SMT solver-based checks
+at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
+
+**What does it do?**
+
+The first `<number>` split levels are not checked with the SMT solver, but rather
+split immediately.
+
+**When to use it?**
+
+When there is a lot of overhead induced by processing and trying to solve splits
+that are very hard, and thus run into a timeout anyway.
+
+```{note} The number of
 splits generated here is equal to `2^n` where `n` is the initial splitting depth
-(unless the program has less than `n` branchings, which will be rare in
-practice).
+(assuming the program has enough branching points, which is usually the case);
+thus, low numbers are advisable. For instance setting this to 5 means that the
+Prover will immediately produce 32 splits.
+```
+
+```{note}
+The {ref}`-depth` setting has precedence over this setting. I.e., if `-depth`
+is set to a lower value than `-smt_initialSplitDepth`, the initial splitting
+will only proceed up to the splitting depth given via `-depth`.
+```
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-smt_initialSplitDepth 3'
+```
 

@@ -366,3 +366,4 @@ Congratulations! You have just completed Certora Prover's installation and setup
 ```{caution}
 We strongly recommend trying the tool on basic examples to verify correct installation.  See {doc}`running` for a detailed walkthrough.
 ```
+

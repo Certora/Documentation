@@ -24,8 +24,8 @@ The syntax for hooks is given by the following EBNF grammar:
 ```
 hook ::= "hook" pattern block
 
-pattern ::= "Sstore" access_path param [ "(" param ")" ] "STORAGE"
-          | "Sload"  param access_path "STORAGE"
+pattern ::= "Sstore" access_path param [ "(" param ")" ]
+          | "Sload"  param access_path
           | opcode   [ "(" params ")" ] [ param ]
 
 access_path ::= id
@@ -35,7 +35,7 @@ access_path ::= id
               | access_path "[" "INDEX" basic_type id "]"
               | access_path "." "(" "offset" number ")"
 
-opcode ::= "ALL_SLOAD" | "ALL_SSTORE" | ...
+opcode ::= "ALL_SLOAD" | "ALL_SSTORE" | "ALL_TLOAD" | "ALL_TSTORE" | ...
 
 param  ::= evm_type id
 ```
@@ -45,6 +45,18 @@ See {ref}`opcode-hooks` below for the list of available opcodes.
 See {doc}`statements` for information about the `statement` production; see
 {doc}`types` for the `evm_type` production; see {doc}`basics` for the `number`
 production.
+
+It is prohibited to have multiple hooks with the same hook pattern.
+Two hooks have the same hook pattern if both are `Sstore` hooks with the same
+access path, both are `Sload` hooks with the same access path, or both are
+opcode hooks with the same opcode.
+Doing so will result in an error like this:
+`The declared hook pattern <second hook> duplicates the hook pattern <first hook> at <spec file>. A hook pattern may only be used once.`
+Note that two access paths are considered to be "the same" if they resolve to
+the same storage address. Syntactically different access paths can alias, e.g.,
+when accessing a member by name (`contract.member`) or by slot
+(`contract.(slot n)`).
+
 
 Examples
 --------
@@ -68,12 +80,12 @@ information on the available access paths.
 
 A load pattern contains the keyword `Sload`, followed by the type and name of a
 variable that will hold the loaded value, followed by an access path indicating
-the location that is read.  Load patterns must end with the keyword `STORAGE`.
+the location that is read.
 
 For example, here is a load hook that will execute whenever a contract reads the
 value of `C.owner`:
 ```cvl
-hook Sload address o C.owner STORAGE { ... }
+hook Sload address o C.owner { ... }
 ```
 Inside the body of this hook, the variable `o` will be bound to the value that
 was read.
@@ -82,12 +94,12 @@ A store pattern contains the keyword `Sstore`, followed by an access path
 indicating the location that is being written to, followed by the type and name
 of a variable to hold the value that is being stored.  Optionally, the pattern
 may also include the type and name of a variable to store the previous value
-that is being overwritten.  Store patterns must end with the keyword `STORAGE`.
+that is being overwritten.
 
 For example, here is a store hook that will execute whenever a contract writes
 the value of `C.totalSupply`:
 ```cvl
-hook Sstore C.totalSupply uint ts (uint old_ts) STORAGE { ... }
+hook Sstore C.totalSupply uint ts (uint old_ts) { ... }
 ```
 Inside the body of this hook, the variable `ts` will be bound to the value that
 is being written to the `totalSupply` variable, while `old_ts` is bound to the
@@ -97,7 +109,12 @@ If you do not need to refer to the old value, you can omit the variable
 declaration for it.  For example, the following hook only binds the new value
 of `C.totalSupply`:
 ```cvl
-hook Sstore C.totalSupply uint ts STORAGE { ... }
+hook Sstore C.totalSupply uint ts { ... }
+```
+
+```{note}
+A hook will **not** be triggered by CVL code, including access to solidity 
+storage from CVL.
 ```
 
 (access-paths)=
@@ -127,7 +144,7 @@ If the indicated location holds a struct, you can refer to a specific field of
 the struct by appending `.<field-name>` to the path.  For example, the following
 hook will execute on every store to the `balance` field of the struct `C.owner`:
 ```cvl
-hook Sstore C.owner.balance uint b STORAGE { ... }
+hook Sstore C.owner.balance uint b { ... }
 ```
 
 If the indicated location holds an array, you can refer to an arbitrary element
@@ -137,8 +154,17 @@ index of the access.  For example, the following hook will execute on any write
 to the array `C.entries` and will update the corresponding entry of the ghost
 mapping `_entries` to match:
 ```cvl
-hook Sstore C.entries[INDEX uint i] uint e STORAGE {
+hook Sstore C.entries[INDEX uint i] uint e {
     _entries[i] = e;
+}
+```
+
+
+Additionally, if the indicated location holds a _dynamic_ array, you can refer
+to accesses to the length of the array with `.length`:
+```cvl
+hook Sstore C.entries.length uint len {
+    _len = len; // updates a ghost variable `_len` with the length is written to storage.
 }
 ```
 
@@ -149,7 +175,7 @@ For example, the following hook will execute on any write to the mapping
 `C.balances`, and will update the `_balances` ghost accordingly:
 
 ```cvl
-hook Sstore C.balances[KEY address user] uint balance STORAGE {
+hook Sstore C.balances[KEY address user] uint balance {
     _balances[user] = balance;
 }
 ```
@@ -161,7 +187,7 @@ byte of slot 1 (these two bytes are matched because the type of the variable is
 `uint16`:
 
 ```cvl
-hook Sstore (slot 1).(offset 2) uint16 b STORAGE { ... }
+hook Sstore (slot 1).(offset 2) uint16 b { ... }
 ```
 
 These different kinds of paths can be combined, subject to restrictions listed
@@ -169,7 +195,7 @@ below.  For example, the following hook will execute whenever the contract
 writes to the `balance` field of a struct in the `users` mapping of contract
 `C`:
 ```cvl
-hook C.users[KEY address user].balance uint v (uint old_value) STORAGE { ... }
+hook C.users[KEY address user].balance uint v (uint old_value) { ... }
 ```
 Inside the body of the hook, the variable `user` will refer to the address that
 was used as the key into the mapping `C.users`; the variable `v` will contain
@@ -200,7 +226,7 @@ global problems view of the rule report.  See {ref}`storage-and-memory-analysis`
 for more details.
 
 (rawhooks)=
-### Hooking on all loads or stores
+### Hooking on all storage loads or stores
 
 Load and store hooks apply to reads and writes to specific storage locations.
 In some cases, it is useful to instrument every load or store, regardless of
@@ -245,6 +271,21 @@ hook.  Therefore, in a rule that models calls to multiple contracts, if two
 contracts are accessing the same slot the same hook code will be called with
 the same slot number.
 ```
+
+#### Notes on transient storage.
+In a similar vein to `ALL_SLOAD` and `ALL_SSTORE` hooks, CVL also allows
+to hook on `TLOAD` and `TSTORE` instructions for updating the transient 
+storage, using the `ALL_TLOAD` and `ALL_TSTORE` hooks. 
+The hooks for transient storage access share the syntax of their regular storage counterparts.
+
+Given that Solidity only allows (as of v0.8.25) access to transient 
+storage via inline-assembly, and has no notion of structure to 
+transient storage, Prover currently does not expose access-path based
+access like for the regular storage hooks.
+
+For more information on how the Prover models transient storage, 
+please refer to the relevant section on {ref}`transient storage <transient-storage>`.
+
 
 (opcode-hooks)=
 EVM opcode hooks
@@ -338,7 +379,7 @@ hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 
 
 hook CREATE1(uint value, uint offset, uint length) address v
 
-hook CREATE2(uint value, uint offset, uint length, bytes32 salt) address v 
+hook CREATE2(uint value, uint offset, uint length, bytes32 salt) address v
 
 hook CALL(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc
 
@@ -350,6 +391,8 @@ hook STATICCALL(uint g, address addr, uint argsOffset, uint argsLength, uint ret
 
 hook REVERT(uint offset, uint size)
 
+hook BLOBHASH(uint n) bytes32 hash
+
 hook SELFDESTRUCT(address a)
 ```
 
@@ -357,9 +400,42 @@ hook SELFDESTRUCT(address a)
 % the above list are the only supported codes, since there seem to be many other
 % unsupported codes (e.g. `ADD` and friends)
 % ### Unsupported opcodes
-% 
+%
 % The standard stack-manipulating instructions `DUP*`, `SWAP*`, `PUSH*` and `POP`
 % are not modeled.  `MLOAD` and `MSTORE` are also not modeled.
+
+(call-hooks)=
+### Call hooks
+
+We provide hooks for all four call opcodes: [`CALL`](https://www.evm.codes/#f1),
+[`CALLCODE`](https://www.evm.codes/#f2), [`DELEGATECALL`](https://www.evm.codes/#f4),
+and [`STATICCALL`](https://www.evm.codes/#fa).
+The hook parameters match the stack inputs of the respective opcodes.
+
+The arguments for the call arguments and return values (`argsOffset`, `argsSize`,
+`retOffset`, and `retSize`) mostly exist for future use. Their values can be
+consumed, but currently they cannot be used to read data stored in memory before
+or after the call.
+
+These hooks can be very useful to establish sensible security invariants.
+As an example, suppose no external code should gain write access to the data of
+the current contract. Both `CALLCODE` and `DELEGATECALL` have the potential to
+do exactly that by calling into another contract but keeping the current context.
+Note that there are exceptions to this property whenever *trusted* 3rd party
+libraries are used. It might also be necessary to restrict these checks to the
+contract of interest.
+```cvl
+hook CALLCODE(uint g, address addr, uint value, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    // using CALLCODE is generally not expected in this contract
+    assert (executingContract != currentContract, "we should not use `callcode`");
+}
+hook DELEGATECALL(uint g, address addr, uint argsOffset, uint argsLength, uint retOffset, uint retLength) uint rc {
+    // DELEGATECALL is used in this contract, but it only ever calls into itself
+    assert (executingContract != currentContract || addr == currentContract,
+        "we should only `delegatecall` into ourselves"
+    );
+}
+```
 
 ### Known inter-dependencies and common pitfalls
 
@@ -380,9 +456,27 @@ Solidity functions.  The only exception is that hooks may not contain
 parametric method calls.  Expressions in hook bodies may reference variables
 bound by the hook pattern.
 
-
-Hook bodies may also refer to the special CVL variable `executingContract`,
+### Keywords available in hook bodies
+Hook bodies may refer to the special CVL variable `executingContract`,
 which contains the address of the contract whose code triggered the hook.
+
+The call opcodes (`CALL`, `CALLCODE`, `STATICCALL` and `DELEGATECALL`) may also
+refer to a special CVL variable `selector`, which can be used to compare
+to a specific method signature selector.
+For example, here the hook body will assert that the native token value passed in the call is 0, only for a `transfer(address,uint)` call:
+```cvl
+hook CALL(uint g, address addr, uint value, uint argsOffs, uint argLength, uint retOffset, uint retLength) uint rc {
+    if(selector == sig:transfer(address, uint).selector) {
+      assert value == 0;
+    }
+}
+```
+
+```{note}
+In case the size of the input to the call is less than 4 bytes,
+the value of `selector` is 0.
+This can be checked by comparing the `argLength` argument of the hook to 4.
+```
 
 ### Reentrant hooks
 
@@ -404,7 +498,7 @@ value `x`, and consider the following hook (see
 ghost mathint xStoreCount;
 
 /// increment xStoreCount and recursively update `x`
-hook Sstore x uint v STORAGE {
+hook Sstore x uint v {
     xStoreCount = xStoreCount + 1;
     if (xStoreCount < 5) {
         updateX();

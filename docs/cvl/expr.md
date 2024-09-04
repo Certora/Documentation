@@ -101,23 +101,24 @@ denotes bitwise exclusive or and `**` denotes exponentiation, whereas in CVL,
 See {ref}`cvl2-integer-types` for more information about the interaction between
 mathematical types and the meaning of mathematical operations.
 
-(string-interpolation)=
-String interpolation
+(struct-comparison)=
+Struct Comparison
 --------------------
 
-String literals that appear in assertion messages or rule descriptions can
-contain placeholders that are replaced by explicit values in the verification
-report.  A variable can be included by prefixing it with a `$`, while more
-complex expressions can be included by surrounding them with `${...}`.
+CVL supports equality comparison of structs under the following restrictions:
+
+ * The structs must be of the same type.
+ * The structs (or any nested structs) don't contain dynamic arrays. (`string` and `bytes` can be part of the struct) 
+ * There's no support for comparison for structs fetched using direct-storage-access.
+
+Two structs will be evaluated as equal if and only if all the fields are equal.
 
 For example:
 
 ```cvl
-rule example(method f, uint x)
-description "$f should output 0 on $x with ${e.msg.sender}"
-{
+rule example(MyContract.MyStruct s) {
     env e;
-    assert f(e,x) == 0, "failed with timestamp ${e.block.timestamp}";
+    assert s == currentContract.myStructGetter(e);
 }
 ```
 
@@ -136,10 +137,14 @@ CVL also adds several useful logical operations:
    For example, the statement `assert initialized => x > 0;` will only report
    counterexamples where `initialized` is true but `x` is not positive.
 
-```{todo}
-Whether implications (and other boolean connectors) are short-circuiting is
-currently undocumented.
-```
+ * The short-circuiting behavior of implications (`=>`) and other boolean connectors in CVL mirrors the
+   short-circuiting behavior seen in standard logical operators (`&&` and `||`). In practical
+   terms, this implies that the evaluation process is terminated as soon as the final result
+   can be determined without necessitating further computation.
+   For example, when dealing with an implication expression like `expr1 => expr2`, if the
+   evaluation of `expr1` results in false, there is no need to proceed with evaluating
+   `expr2` since the overall result is already known. This aligns with the common
+   short-circuiting behavior found in traditional logical operators.
 
  * Similarly, an *if and only if* expression (also called a *bidirectional implication*)
    `expr1 <=> expr2` requires `expr1` and `expr2` to be boolean
@@ -372,10 +377,6 @@ method tag, one of `@norevert` or `@withrevert`.
 
    [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
 
- * ```{todo}
-   The `@dontsummarize` tag is currently undocumented.
-   ```
-
 After the method tag, the method arguments are provided.  Unless the method
 is declared {ref}`envfree <envfree>`, the first argument must be an
 {ref}`environment value <env>`.  The remaining arguments must either be a
@@ -549,4 +550,155 @@ As with direct storage access in general, direct storage havoc is experimental a
 * entire arrays or entire mappings (only arrays at a specific index, or mappings at a specific key)
 * user-defined types such as structs, or arrays/mappings of such types
 * enums
+```
+
+(direct-immutable-access)=
+### Direct immutable access
+
+The Certora Prover allows to access immutable variables in a contract, in
+a similar way to direct storage access.
+For example, given a contract:
+```solidity
+contract WithImmutables {
+  address private immutable myImmutAddr;
+  bool public immutable myImmutBool;
+
+  constructor() { ... }
+  function publicGetterForPrivateImmutableAddr() external returns (address) {
+    return myImmutAddr;
+  }
+}
+``` 
+
+We can access both `myImmutAddr` and `myImmutBool` directly from CVL
+like this:
+```cvl
+using WithImmutables as withImmutables;
+
+methods {
+  function publicGetterForPrivateImmutableAddr() external returns (address) envfree;
+  function myImmutBool() external returns (bool) envfree;
+}
+
+rule accessPrivateImmut {
+  assert withImmutables.myImmutAddr == publicGetterForPrivateImmutableAddr();
+}
+
+rule accessPublicImmut {
+  assert withImmutables.myImmutBool == withImmutables.myImmutBool();
+}
+```
+
+The advantages of direct immutable access is that there is no need to 
+declare `envfree` methods for the public immutables, and even more importantly, nor is there a need to harness contracts in order to
+expose the private immutables.
+
+## Built-in Functions
+
+### Hashing
+
+CVL allows to use Solidity's `keccak256` hashing function directly in spec. Below are two usage examples: one using a `bytes` array, another using primitives.
+As `bytes32` is the return type of `keccak256` and is a primitive type, calls to `keccak256` can be nested.
+
+(Currently, only the `keccak256` hash is supported in CVL as a built-in.)
+
+#### Example
+
+Given the following Solidity snippet:
+```solidity
+contract HashingExample {
+  struct SignedMessage {
+    address sender;
+    uint256 nonce;
+    bytes signature;
+  }
+
+  mapping (bytes32 => uint256) messageToValue;
+
+  function hashingScheme1(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(abi.encode(s.sender, s.nonce));
+  }
+
+  function hashingScheme2(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(s.signature);
+  }
+
+  function hashingScheme3(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(abi.encode(s.sender, s.nonce, keccak256(s.signature)));
+  }
+
+  function hashingScheme4(SignedMessage memory s) public pure returns (bytes32) {
+    return keccak256(abi.encode(s.sender, s.nonce, s.signature));
+  }
+}
+```
+
+The hashing schemes described by `hashingScheme1`, `hashingScheme2`, and `hashingScheme3` can be replicated in CVL as follows:
+```
+function hashingScheme1CVL(HashingExample.SignedMessage s) returns bytes32 {
+  return keccak256(s.sender, s.nonce);
+}
+
+function hashingScheme2CVL(HashingExample.SignedMessage s) returns bytes32 {
+  return keccak256(s.signature);
+}
+
+function hashingScheme3CVL(HashingExample.SignedMessage s) returns bytes32 {
+  return keccak256(s.sender, s.nonce, keccak256(s.signature));
+}
+```
+
+The scheme implemented in `hashingScheme4` is not supported at the moment, as it combines a `bytes` type with primitives.
+The `keccak256` built-in function supports two kinds of inputs:
+- a single `bytes` parameter
+- a list of primitive (e.g., `uint256`, `uint8`, `addresss`) parameters
+
+```{note}
+`keccak256` is currently ***unsupported*** in quantified expressions.
+```
+
+(ecrecover)=
+### ECRecover
+
+The `ecrecover` function in Solidity is helpful in recovering the signer's address from a signed message.
+It exists in very similar form in CVL and receives exactly the same parameter types as its Solidity counterpart.
+
+```{note}
+`ecrecover` is ***supported*** in quantified expressions.
+```
+
+The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`ghost function <ghost-functions>`. Like all ghost functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
+
+There is a useful set of axioms that can be encoded in CVL to make the modeled behavior of `ecrecover` more precise and less likely to create false counterexamples:
+```cvl
+function ecrecoverAxioms() {
+  // zero value:
+  require (forall uint8 v. forall bytes32 r. forall bytes32 s. ecrecover(to_bytes32(0), v, r, s) == 0);
+  // uniqueness of signature
+  require (forall uint8 v. forall bytes32 r. forall bytes32 s. forall bytes32 h1. forall bytes32 h2.
+    h1 != h2 => ecrecover(h1, v, r, s) != 0 => ecrecover(h2, v, r, s) == 0);
+  // dependency on r and s
+  require (forall bytes32 h. forall uint8 v. forall bytes32 s. forall bytes32 r1. forall bytes32 r2.
+    r1 != r2 => ecrecover(h, v, r1, s) != 0 => ecrecover(h, v, r2, s) == 0);
+  require (forall bytes32 h. forall uint8 v. forall bytes32 r. forall bytes32 s1. forall bytes32 s2.
+    s1 != s2 => ecrecover(h, v, r, s1) != 0 => ecrecover(h, v, r, s2) == 0);
+}
+```
+
+#### Example
+
+Given the following Solidity snippet:
+```solidity
+contract ECExample {
+  function wrap_ecrecover(bytes32 digest, uint8 v, bytes32 r, bytes32 s) public pure returns (address) {
+    return ecrecover(digest,v,r,s);
+  }
+}
+```
+
+The following CVL function is equivalent to the `wrap_ecrecover` function in the Solidity snippet:
+```cvl
+function wrap_ecrecoverCVL(bytes32 digest, uint8 v, bytes32 r, bytes32 s) returns address {
+  return ecrecover(digest,v,r,s);
+}
 ```
