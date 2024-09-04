@@ -15,6 +15,7 @@ Linux
 Mainnet
 OOM
 Prover
+Pythonic
 SMT
 Secureum
 Solana
