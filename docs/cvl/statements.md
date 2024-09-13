@@ -35,9 +35,6 @@ statement ::= type id [ "=" expr ] ";"
             | "return" [ expr ] ";"
 
             | function_call ";"
-            | "call" id "(" exprs ")" ";"
-            | "invoke_fallback" "(" exprs ")" ";"
-            | "invoke_whole" "(" exprs ")" ";"
             | "reset_storage" expr ";"
 
             | "havoc" id [ "assuming" expr ] ";"
