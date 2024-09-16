@@ -9,6 +9,7 @@ Contents
 * :doc:`docs/cvl/index` -- a reference manual for CVL.
 * :doc:`docs/prover/index` -- a reference manual for the Certora Prover.
 * :doc:`docs/gambit/index` -- use mutation testing to improve you specifications.
+* :doc:`Examples/CVLByExample/README`
 
 .. toctree::
    :maxdepth: 1
@@ -19,6 +20,7 @@ Contents
    docs/cvl/index.md
    docs/prover/index.md
    docs/gambit/index.md
+   Examples/CVLByExample/README.md
 
 
 Learning resources

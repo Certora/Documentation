@@ -40,7 +40,7 @@ extensions = [
     "sphinx_design",
     "docsinfra.sphinx_utils.codelink_extension",
     "docsinfra.sphinx_utils.includecvl",
-    "sphinx_copybutton"
+    "sphinx_copybutton",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -63,7 +63,7 @@ exclude_patterns = [
     "docs/cvl/cvl2/cvl1",
     "docs/cvl/cvl2/cvl2",
     ".github",
-    "Examples/*",
+    # "Examples/*",
 ]
 
 
