@@ -413,7 +413,7 @@ Set EVM version values when different files run with different EVM versions
 Passes the value of this option as is to the solidity compiler's option `--evm-version`.
 
 **When to use it?**
-When different contracts have to be compiled with different Solidity evm versions.
+When different contracts have to be compiled with different Solidity EVM versions.
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
