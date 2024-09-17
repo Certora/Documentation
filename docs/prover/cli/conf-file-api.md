@@ -85,7 +85,7 @@ are encoded as JSON lists. For example,
     }
     ```
 
-* Options that are maps ({ref}`--solc_map` and {ref}`--solc_optimize_map`) will be stored as JSON objects.
+* Options that are maps ({ref}`--solc_map`, {ref}`--solc_optimize_map` and {ref}`--solc_evm_version_map`) will be stored as JSON objects.
   For example,
     ```sh
     certoraRun --solc_map A=solc5.11,B=solc5.9,C=solc6.8

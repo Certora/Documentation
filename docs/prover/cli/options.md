@@ -409,7 +409,7 @@ When we want to select the Solidity compiler EVM version
 ### `--solc_evm_version_map`
 
 **What does it do?**
-Set evm version values when different files run with different evm versions
+Set EVM version values when different files run with different EVM versions
 Passes the value of this option as is to the solidity compiler's option `--evm-version`.
 
 **When to use it?**
