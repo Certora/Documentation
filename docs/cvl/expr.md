@@ -370,8 +370,9 @@ prefixing the function name with an `address` typed variable. In this case the
 Prover will consider every possible contract in the scene that implements a
 function that matches the signature provided by the call (if no such function
 exists in the scene the prover will fail with an error).
-If there is a value of the `address` variable that does not match any contract
-address in the scene, the rule will be violated.
+Note: The Prover will ignore possible values of the `address` variable that
+don't match the address of any contract in the scene that implements the given
+function.
 
 (with-revert)=
 After the function name, but before the arguments, you can write an optional
