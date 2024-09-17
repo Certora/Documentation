@@ -392,17 +392,6 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
-(--solc_via_ir)=
-### `--solc_via_ir`
-
-**What does it do?**
-Passes the value of this option  to the solidity compiler's option `--via-ir`.
-
-**When to use it?**
-When we want to enable the IR-based code generator
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
 
 (--solc_evm_version)=
 ### `--solc_evm_version`
@@ -415,6 +404,33 @@ When we want to select the Solidity compiler EVM version
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+
+(--solc_evm_version_map)=
+### `--solc_evm_version_map`
+
+**What does it do?**
+Set evm version values when different files run with different evm versions
+Passes the value of this option as is to the solidity compiler's option `--evm-version`.
+
+**When to use it?**
+When different contracts have to be compiled with different Solidity evm versions.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
+
+
+(--solc_via_ir)=
+### `--solc_via_ir`
+
+**What does it do?**
+Passes the value of this option  to the solidity compiler's option `--via-ir`.
+
+**When to use it?**
+When we want to enable the IR-based code generator
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
+
 
 (--solc_allow_path)=
 ### `--solc_allow_path`
