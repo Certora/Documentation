@@ -366,13 +366,16 @@ each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
 
 Another possible way to have the Prover consider options for a function is by
-prefixing the function name with an `address` typed variable. In this case the
-Prover will consider every possible contract in the scene that implements a
-function that matches the signature provided by the call (if no such function
-exists in the scene the prover will fail with an error).
-Note: The Prover will ignore possible values of the `address` variable that
-don't match the address of any contract in the scene that implements the given
-function.
+using an `address` typed variable and "calling" the function on it, e.g.
+`address a; a.foo(...);`. In this case the Prover will consider every possible
+contract in the {ref}scene that implements a function that matches the signature
+provided by the call (if no such function exists in the {ref}scene the prover will
+fail with an error).
+Note: The values that the address variable can take are the addresses that are
+associated with the relevant contracts in the scene. Notably, other values would
+not be possible: Given an address variable `a`, on which we call a some method
+implemented by contracts `A` and `B`, we will have an implicit
+`require a == A || a == B`.
 
 (with-revert)=
 After the function name, but before the arguments, you can write an optional
