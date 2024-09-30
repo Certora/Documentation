@@ -831,6 +831,9 @@ This tells the prover that `B` is an extension contract of `A`, but that it shou
 "transfer" the getter for n from the extension into the base contract (since the base
 contract already has such a function and this would cause a conflict).
 
+[For a more detailed example click here.](https://github.com/Certora/Examples/tree/master/CVLByExample/ExtensionContracts)
+
+
 (--contract_recursion_limit)=
 ### `--contract_recursion_limit`
 
