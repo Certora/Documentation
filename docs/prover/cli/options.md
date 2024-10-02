@@ -1020,7 +1020,7 @@ effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
 (-smt_groundquantifiers)=
-#### `--prover_args -smt_groundQuantifiers=false`
+#### `--prover_args '-smt_groundQuantifiers false'`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
