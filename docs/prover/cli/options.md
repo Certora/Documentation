@@ -985,7 +985,7 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
 (-optimisticreturnsize)=
-#### `--prover_args '-optimisticReturnsize=true'`
+#### `--prover_args '-optimisticReturnsize true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -999,7 +999,7 @@ the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 (-superoptimisticreturnsize)=
-#### `--prover_args '-superOptimisticReturnsize=true'`
+#### `--prover_args '-superOptimisticReturnsize true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
