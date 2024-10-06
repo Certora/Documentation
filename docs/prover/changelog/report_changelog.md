@@ -4,6 +4,14 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+2.3.2 (Sep 2, 2024)
+---------------------------
+
+### Features
+
+- [feat] Global Notifications New UI
+
+
 2.2.0 (Jul 24, 2024)
 ---------------------------
 
