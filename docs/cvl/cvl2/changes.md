@@ -430,7 +430,7 @@ from the type declared in the `methods` block entry.
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.  If a wildcard entry is summarized
 with a ghost or function summary, the summary must include an `expect` clause;
-see {ref}`function-summary` for more details.
+see {ref}`expression-summary` for more details.
 
 (cvl2-integer-types)=
 Changes to integer types
