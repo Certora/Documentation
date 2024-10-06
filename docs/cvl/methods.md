@@ -431,7 +431,7 @@ After the `optional` annotation, an entry may contain a `with(env e)` clause.
 The `with` clause introduces a new variable (`e` for `with(env e)`) to represent
 the {ref}`environment <env>` that is passed to a summarized function; the
 variable can be used in function summaries.  `with` clauses may only be used if
-the entry has a function summary. See {ref}`function-summary` below for more
+the entry has a function summary. See {ref}`expression-summary` below for more
 information about the environment provided by the `with` clause.
 
 
