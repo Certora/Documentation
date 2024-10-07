@@ -11,8 +11,8 @@ Prover Release Notes
 - [feat] A function can be called on a CVL variable of type address directly. In the following rule, the function `balanceOf` will be called on all contracts that define `balanceOf`:
 ```
     env e;
-	address a;
-	assert a.balanceOf(e) > 0;
+    address a;
+    assert a.balanceOf(e) > 0;
 ```
 If no contract with such a function exists, a `require(false)` will be inserted, which may cause a vacuity.
 - [feat] The Prover now supports verifying code called via proxy contracts. You can specify `extension_contracts` in the `.conf` file to define which contracts are being delegate-called by the proxy.
