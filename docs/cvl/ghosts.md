@@ -5,7 +5,7 @@ Ghosts
 Ghosts are a way of defining additional variables for use during verification.
 These variables are often used to 
 - communicate information between {ref}`rules-main` and {ref}`hooks`.
-- define deterministic {ref}`function summaries <function-summary>`.
+- define deterministic {ref}`expression summaries <expression-summary>`.
 
 Ghosts can be seen as an 'extension' to the state of the contracts under verification.
 This means that in case a call reverts, the ghost values will revert to their pre-state.

@@ -392,17 +392,6 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
-(--solc_via_ir)=
-### `--solc_via_ir`
-
-**What does it do?**
-Passes the value of this option  to the solidity compiler's option `--via-ir`.
-
-**When to use it?**
-When we want to enable the IR-based code generator
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
 
 (--solc_evm_version)=
 ### `--solc_evm_version`
@@ -415,6 +404,33 @@ When we want to select the Solidity compiler EVM version
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+
+(--solc_evm_version_map)=
+### `--solc_evm_version_map`
+
+**What does it do?**
+Set EVM version values when different files run with different EVM versions
+Passes the value of this option as is to the solidity compiler's option `--evm-version`.
+
+**When to use it?**
+When different contracts have to be compiled with different Solidity EVM versions.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
+
+
+(--solc_via_ir)=
+### `--solc_via_ir`
+
+**What does it do?**
+Passes the value of this option  to the solidity compiler's option `--via-ir`.
+
+**When to use it?**
+When we want to enable the IR-based code generator
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
+
 
 (--solc_allow_path)=
 ### `--solc_allow_path`
@@ -1026,7 +1042,7 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
 (-optimisticreturnsize)=
-#### `--prover_args '-optimisticReturnsize=true'`
+#### `--prover_args '-optimisticReturnsize true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -1040,7 +1056,7 @@ the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 (-superoptimisticreturnsize)=
-#### `--prover_args '-superOptimisticReturnsize=true'`
+#### `--prover_args '-superOptimisticReturnsize true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -1061,7 +1077,7 @@ effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
 (-smt_groundquantifiers)=
-#### `--prover_args -smt_groundQuantifiers=false`
+#### `--prover_args '-smt_groundQuantifiers false'`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.

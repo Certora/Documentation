@@ -463,7 +463,7 @@ Minor improvements.
 
 #### CVL
 
-- Better expressivity: Allow binding the called contract in summaries using `calledContract` (see {ref}`function-summary`)
+- Better expressivity: Allow binding the called contract in summaries using `calledContract` (see {ref}`expression-summary`)
 - Ease of use: Support reading and passing complex array and struct types in CVL. For example, you can write now:
 ```cvl
 env e;
