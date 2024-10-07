@@ -68,8 +68,12 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
+<<<<<<< HEAD
+                   | expr [ "expect" id ]
+=======
                    | "ASSERT_FALSE"
                    | id "(" [ id { "," id } ] ")" [ "expect" id ]
+>>>>>>> origin/master
                    | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
 
 dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
@@ -81,7 +85,7 @@ dispatch_pattern ::= | "_" "." id "(" evm_params ")"
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
-for the `id` production.  See {doc}`expr` for the `expression` production.
+for the `id` production.  See {doc}`expr` for the `expr` production.
 
 (methods-entries)=
 Methods entry patterns
@@ -427,7 +431,7 @@ After the `optional` annotation, an entry may contain a `with(env e)` clause.
 The `with` clause introduces a new variable (`e` for `with(env e)`) to represent
 the {ref}`environment <env>` that is passed to a summarized function; the
 variable can be used in function summaries.  `with` clauses may only be used if
-the entry has a function summary. See {ref}`function-summary` below for more
+the entry has a function summary. See {ref}`expression-summary` below for more
 information about the environment provided by the `with` clause.
 
 
@@ -463,7 +467,7 @@ There are several kinds of summaries available:
  - {ref}`dispatcher` assume that the receiver of the method call could be any
    contract that implements the method.
 
- - {ref}`function-summary` replace calls to the summarized method with {doc}`functions`
+ - {ref}`expression-summary` replace calls to the summarized method with a CVL expression, typically {doc}`functions`
    or {ref}`ghost-axioms`.
 
  - {ref}`auto-summary` are the default for unresolved calls.
@@ -727,18 +731,19 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
   [State Mutability](https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability)
   in the Solidity manual for details.
 
+
 (assert-false-summary)=
 #### `ASSERT_FALSE` summaries
 
 This summary is a short syntax for a summary that contains an `assert false;` and checks that the summarized method is not reached.
 This can be useful for instance, in the presence of unresolved calls in combination with the `unresolved external` syntax to ensure that every unresolved call is actually dispatched correctly (i.e. use `unresolved external in _._ => DISPATCH [...] default ASSERT_FALSE`). It also enables more optimizations in the Prover and may lead to shorter running times.
 
-(function-summary)=
-#### Function summaries
+(expression-summary)=
+#### Expression summaries
 
-Contract methods can also be summarized using CVL {doc}`functions` or
+Contract methods can also be summarized using CVL expressions, typically {doc}`functions` or
 {ref}`ghost-axioms` as approximations.  Contract calls to the summarized method
-are replaced by calls to the specified CVL functions.
+are replaced by evaluation of the CVL expression.
 
 To use a CVL function or ghost as a summary, use a call to the function in
 place of the summary type.

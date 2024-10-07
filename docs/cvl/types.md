@@ -336,7 +336,7 @@ When a specification calls a contract function, the Prover must convert the
 arguments from their CVL types to the corresponding Solidity types, and must
 convert the return values from Solidity back to CVL.  The Prover must also apply
 these conversions when inlining {ref}`hooks <hooks>` and {ref}`function
-summaries <function-summary>`.
+summaries <expression-summary>`.
 
 There are restrictions on what types can be converted from CVL to Solidity and
 vice-versa.  In general, if a contract uses a type that is not convertible, you
@@ -360,7 +360,7 @@ types:
    have [value types][solidity-value-types] that are representable in CVL.
 
 There are additional restrictions on the types for arguments and return values
-for internal function summaries; see {ref}`function-summary`.
+for internal function summaries; see {ref}`expression-summary`.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 

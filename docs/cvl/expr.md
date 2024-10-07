@@ -324,7 +324,7 @@ There are also several built-in variables:
   * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
     The balance of an `address a` can be expressed using `nativeBalances[a]`.
 
- * `calledContract` is only available in {ref}`function summaries <function-summary>`.
+ * `calledContract` is only available in {ref}`expression summaries <expression-summary>`.
    It refers to the receiver contract of a summarized method call.
 
  * `executingContract` is only available in {ref}`hooks <hooks>`.  It refers to
