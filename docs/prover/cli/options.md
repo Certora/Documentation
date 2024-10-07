@@ -392,17 +392,6 @@ number of times the optimizer will be activated (if no value is set, the compile
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
-(--solc_via_ir)=
-### `--solc_via_ir`
-
-**What does it do?**
-Passes the value of this option  to the solidity compiler's option `--via-ir`.
-
-**When to use it?**
-When we want to enable the IR-based code generator
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
 
 (--solc_evm_version)=
 ### `--solc_evm_version`
@@ -415,6 +404,33 @@ When we want to select the Solidity compiler EVM version
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+
+(--solc_evm_version_map)=
+### `--solc_evm_version_map`
+
+**What does it do?**
+Set EVM version values when different files run with different EVM versions
+Passes the value of this option as is to the solidity compiler's option `--evm-version`.
+
+**When to use it?**
+When different contracts have to be compiled with different Solidity EVM versions.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
+
+
+(--solc_via_ir)=
+### `--solc_via_ir`
+
+**What does it do?**
+Passes the value of this option  to the solidity compiler's option `--via-ir`.
+
+**When to use it?**
+When we want to enable the IR-based code generator
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
+
 
 (--solc_allow_path)=
 ### `--solc_allow_path`
@@ -793,6 +809,47 @@ struct TokenPair {
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
 
+
+(--contract_extensions)=
+### `--contract_extensions`
+
+**What does it do?**
+In order to support extendability and upgradeability of smart contracts, the proxy
+pattern is used. In this patterns there is a base contract (the proxy) which delegate-calls
+into "extension" contracts (see e.g. https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies
+for more details).
+This flag allows specifying that some contract is actually an extension of another one, to help the Prover
+analyze low-level calls and resolve them correctly in this case.
+In practice the Prover "moves" all the external function implementations from the
+extension contract into the base contract, which means that to access them from CVL
+one should use the _base_ contract as the receiver, and not the extension contract.
+
+**When to use it?**
+If you use the proxy pattern in your smart contracts.
+
+**Example**
+Say we have a base contract `A` that uses an extension contract `B`.
+Since in this pattern the storage of the two contracts may "overlap", let's also
+assume they both have some `uint public n`.
+In the .conf file one should add
+```json
+"contract_extensions": {
+    "A": [
+        {
+            "extension": "B",
+            "exclude": ["n"]
+        }
+    ]
+}
+```
+
+This tells the prover that `B` is an extension contract of `A`, but that it shouldn't
+"transfer" the getter for n from the extension into the base contract (since the base
+contract already has such a function and this would cause a conflict).
+
+[For a more detailed example click here.](https://github.com/Certora/Examples/tree/master/CVLByExample/ExtensionContracts)
+
+
 (--contract_recursion_limit)=
 ### `--contract_recursion_limit`
 
@@ -985,7 +1042,7 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
 
 (-optimisticreturnsize)=
-#### `--prover_args '-optimisticReturnsize=true'`
+#### `--prover_args '-optimisticReturnsize true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -999,7 +1056,7 @@ the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 (-superoptimisticreturnsize)=
-#### `--prover_args '-superOptimisticReturnsize=true'`
+#### `--prover_args '-superOptimisticReturnsize true'`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -1020,7 +1077,7 @@ effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
 (-smt_groundquantifiers)=
-#### `--prover_args -smt_groundQuantifiers=false`
+#### `--prover_args '-smt_groundQuantifiers false'`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
