@@ -108,7 +108,7 @@ Struct Comparison
 CVL supports equality comparison of structs under the following restrictions:
 
  * The structs must be of the same type.
- * The structs (or any nested structs) don't contain dynamic arrays. (`string` and `bytes` can be part of the struct) 
+ * The structs (or any nested structs) don't contain dynamic arrays. (`string` and `bytes` can be part of the struct)
  * There's no support for comparison for structs fetched using direct-storage-access.
 
 Two structs will be evaluated as equal if and only if all the fields are equal.
@@ -349,9 +349,9 @@ There are many kinds of function-like things that can be called from CVL:
 There are several additional features that can be used when calling contract
 functions (including calling them through {ref}`method variables <method-type>`).
 
-The method name can optionally be prefixed by a contract name.  If a contract is
-not explicitly named, the method will be called with `currentContract` as the
-receiver.
+The method name can optionally be prefixed by a contract name (introduced via a
+{ref}`using statement <using-stmt>`). If a contract is not explicitly named, the
+method will be called with `currentContract` as the receiver.
 
 It is possible for multiple contract methods to match the method call.  This can
 happen in two ways:
@@ -364,6 +364,18 @@ In either case, the Prover will consider every possible resolution of the method
 while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
+
+Another possible way to have the Prover consider options for a function is by
+using an `address` typed variable and "calling" the function on it, e.g.
+`address a; a.foo(...);`. In this case the Prover will consider every possible
+contract in the {ref}scene that implements a function that matches the signature
+provided by the call (if no such function exists in the {ref}scene the prover will
+fail with an error).
+Note: The values that the address variable can take are the addresses that are
+associated with the relevant contracts in the scene. Notably, other values would
+not be possible: Given an address variable `a`, on which we call a some method
+implemented by contracts `A` and `B`, we will have an implicit
+`require a == A || a == B`.
 
 (with-revert)=
 After the function name, but before the arguments, you can write an optional
@@ -568,7 +580,7 @@ contract WithImmutables {
     return myImmutAddr;
   }
 }
-``` 
+```
 
 We can access both `myImmutAddr` and `myImmutBool` directly from CVL
 like this:
@@ -589,7 +601,7 @@ rule accessPublicImmut {
 }
 ```
 
-The advantages of direct immutable access is that there is no need to 
+The advantages of direct immutable access is that there is no need to
 declare `envfree` methods for the public immutables, and even more importantly, nor is there a need to harness contracts in order to
 expose the private immutables.
 
