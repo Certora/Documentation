@@ -15,7 +15,7 @@ Built-in rules can be included in any spec file by writing `use builtin rule
 Syntax
 ------
 
-The syntax for rules is given by the following [EBNF grammar](syntax):
+The syntax for rules is given by the following [EBNF grammar](ebnf-syntax):
 
 ```
 built_in_rule ::= "use" "builtin" "rule" built_in_rule_name ";"
@@ -106,12 +106,19 @@ rule sanity {
     method f; env e;
     calldataarg arg;
     f(e, arg); 
-    assert false;
+    assert true;
+    satisfy true;
 }
 ```
 
-To find a counterexample to the assertion, the Prover must construct an input
-for which `f` doesn't revert.
+This will create two sub-rules, which will be visible in the report. One
+sub-rule checks the `satisfy true` statement, which is fulfilled if there is an
+input such that `f(e, arg)` runs to completion without reverting. The other
+sub-rule checks the `assert true` statement. Of course, this assertion itself is
+never violated, but the sub-rule contains the {term}`pessimistic assertions` that 
+we insert when at least one of the "optimistic" flags (e.g.
+{ref}`--optimistic_loop`, {ref}`--optimistic_hashing`, etc.) is not active. Note
+that rules with only {ref}`satisfy` do not check these assertions.
 
 (built-in-deep-sanity)=
 Thorough complexity checks &mdash; `deepSanity`

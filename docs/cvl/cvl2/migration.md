@@ -17,8 +17,6 @@ If you have any questions, please {ref}`ask for help <contact>`!
 ## Step 0: Install CVL 2
 
 The `certora-cli` python package will use CVL 2 starting with version 4.0.0.
-CVL 2 is currently in beta; you can install the pre-release version using our
-`certora-cli-beta` package.  See {ref}`beta-install` for details.
 
 If you aren't ready to migrate your specs yet, Certora will continue supporting
 CVL 1 for three months after the official release of CVL 2.  You can keep
@@ -120,17 +118,6 @@ If you have errors that indicate problems with number types, try the following:
    the {ref}`newer ghost variable syntax <ghost-variables>`.  This can avoid
    potential vacuity pitfalls caused by mixing `to_mathint` and `havoc ...
    assuming`.
-
- - If you need to compare two different types of integers with with a comparison
-   like `==`, `>=`, you probably want to convert them to `mathint` using
-   `to_mathint` unless they are part of a `havoc ... assuming` statement or a
-   `require` statement.  See {ref}`cvl2-comparisons-identical-types` for an example
-   of why you might *not* want to use `to_mathint`.
-
-```{note}
-The only place you need `to_mathint` is in comparisons!  It won't hurt in other
-places, but it is unnecessary.
-```
 
  - If you need to modify the output of one contract function and pass it to
    another contract function, you will need to think carefully about how you

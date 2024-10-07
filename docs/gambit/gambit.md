@@ -27,8 +27,11 @@ Mutants can be used to evaluate test suites or specs used for formal
 
 ## Installation
 
-You can download prebuilt Gambit binaries for Mac and Linux from our
-[releases](https://github.com/Certora/gambit/releases) page.
+You can download prebuilt Gambit binaries for Linux x86-64 and Mac from our
+[releases](https://github.com/Certora/gambit/releases) page. For Windows and Linux ARM, you must build Gambit from source.
+
+(build-gambit-from-source)=
+### Building Gambit from source
 
 To build Gambit from source, clone [the Gambit repository](https://github.com/Certora/gambit) and run
 
@@ -101,7 +104,10 @@ file to mutate.
 
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol
+```
 
+This will generate:
+```
 Generated 34 mutants in 0.69 seconds
 ```
 
@@ -119,7 +125,10 @@ provides a way to randomly downsample the number of mutants with the
 
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 3
+```
 
+which will generate:
+```
 Generated 3 mutants in 0.15 seconds
 ```
 
@@ -132,7 +141,10 @@ Gambit outputs all of its results in `gambit_out`:
 
 ```bash
 tree -L 2 gambit_out
+```
 
+This produces:
+```
 gambit_out
 ├── gambit_results.json
 ├── input_json
@@ -178,6 +190,10 @@ For projects that have complex dependencies and imports, you may need to:
     --solc_remappings @openzeppelin=node_modules/@openzeppelin @foo=node_modules/@foo
   ```
 
+  ```{warning}
+  The paths should ***NOT*** end with a trailing /
+  ```
+
 * **Specify allow paths:** To include additional allowed paths via `solc`'s
   [`--allow-paths`][allowed] argument, use `--solc_allow_paths`:
 
@@ -205,9 +221,7 @@ For projects that have complex dependencies and imports, you may need to:
 [basepath]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#base-path-and-include-paths
 [allowed]: https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
 
-
-(gambit-config)=
-### Example 5: The `--sourceroot`  option
+### Example 5: The `--sourceroot` option
 
 Gambit needs to track the location of source files that it mutates within a
 project: for instance, imagine there are files `foo/Foo.sol` and `bar/Foo.sol`.
@@ -237,6 +251,7 @@ Here are some examples of using the `--sourceroot` option.
    ```
 
    This should output the following:
+
    ```
    Generated 1 mutants in 0.13 seconds
    1,BinaryOpMutation,benchmarks/BinaryOpMutation/BinaryOpMutation.sol,23:10, % ,*
@@ -274,6 +289,7 @@ Here are some examples of using the `--sourceroot` option.
    ```bash
    gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 1 --sourceroot scripts
    ```
+
    This will try to find the specified file inside of `scripts`, and since it
    doesn't exist Gambit reports the error:
 
@@ -283,6 +299,7 @@ Here are some examples of using the `--sourceroot` option.
 
    Gambit prints an error and exits.
 
+(gambit-config)=
 ### Example 6: Running Gambit using a configuration file
 
 To run gambit with a configuration file, use the `--json` argument:
@@ -384,7 +401,11 @@ to the `benchmarks/` directory the `"filename"` would need to be updated to
 ```bash
 gambit mutate -f benchmarks/BinaryOpMutation/BinaryOpMutation.sol -n 5
 tree gambit_out -L 2
+```
 
+which produces:
+
+```
 Generated 5 mutants in 0.15 seconds
 
 gambit_out

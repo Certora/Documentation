@@ -1,3 +1,4 @@
+(prover-approximations)=
 Prover Approximations
 =====================
 
@@ -18,5 +19,6 @@ loops.md
 summarization.md
 harnessing.md
 hashing.md
+grounding.md
 ```
 

@@ -321,8 +321,7 @@ methods {
 ```
 
 Contract functions that take or return function types are not currently
-supported.  Users can use {ref}`munging <munging>` to work around this
-limitation.
+supported.
 
 (cvl2-visibility)=
 ### Required `internal` or `external` annotation
@@ -428,51 +427,10 @@ contract method returns a value.  A specific-contract entry may only omit the
 The Prover will report an error if the contract method's return type differs
 from the type declared in the `methods` block entry.
 
-% TODO: error message
-
 Wildcard entries must not declare return types, because they may apply to
-multiple methods that return different types.
-
-If a wildcard entry has a ghost or function summary, the user must explicitly
-provide an `expect` clause to the summary.  The `expect` clause tells the
-Prover how to interpret the value returned by the summary.  For example:
-
-```cvl
-methods {
-    function _.foo() external => fooImpl() expect uint256 ALL;
-}
-```
-
-This entry will replace any call to any external function `foo()` with a call to
-the CVL function `fooImpl()` and will interpret the output of `fooImpl` as a
-`uint256`.
-
-If a function does not return any value, the summary should be declared with
-`expect void`.
-
-````{warning}
-You must check that your `expect` clauses are correct.
-
-The Prover cannot always check that the return type declared in the `expect`
-clause matches the return type that the contract expects.  Continuing the above
-example, suppose the contract being verified declared a method `foo()` that
-returns a type other than `uint256`:
-
-```solidity
-function foo() external returns(address) {
-    ...
-}
-
-function bar() internal {
-    address x = y.foo();
-}
-```
-
-In this case, the Prover would encode the value returned by `fooImpl()` as a
-`uint256`, and the `bar` method would then attempt to decode this value as an
-`address`.  This will cause undefined behavior, and in some cases the Prover
-will not be able to detect the error.
-````
+multiple methods that return different types.  If a wildcard entry is summarized
+with a ghost or function summary, the summary must include an `expect` clause;
+see {ref}`expression-summary` for more details.
 
 (cvl2-integer-types)=
 Changes to integer types
@@ -503,57 +461,6 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-(cvl2-comparisons-identical-types)=
-### Comparisons require identical types
-
-When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
-require both sides of the equation to have identical types, and {ref}`implicit
-casts <cvl2-casting>` will not be used.  Comparisons with number literals (e.g.
-`0` or `1`) are allowed for any integer type.
-
-If you do not have identical types (and cannot change one of your variables to
-a `mathint`), the best solution is to use the special
-`to_mathint` operator to convert both sides to `mathint`.  For example:
-
-```cvl
-assert to_mathint(balanceOf(user)) == initial + deposit;
-```
-
-Note that in this example, we do not need to cast the right hand side, since
-the result of `+` is always of type `mathint`.
-
-````{note}
-When should you not simply cast to `mathint`?  We have one example: consider the
-following code:
-
-```cvl
-ghost uint256 sum;
-
-hook ... {
-    havoc sum assuming sum@new == sum@old + newBalance - oldBalance;
-}
-```
-
-Simply casting to `mathint` will turn overflows into vacuity.
-
-In this particular example, the right solution is to declare `sum` to be a
-`mathint` instead of a `uint`.  Note that with the more recent update syntax,
-this problem will correctly be reported as an error.  For example, if you
-mistakenly write the following:
-
-```cvl
-ghost uint256 sum;
-
-hook ... {
-    sum = sum + newBalance - oldBalance;
-}
-```
-
-then the Prover will again report a type error, but the only available solutions
-are to change `sum` to a `mathint` (which would prevent the vacuity) or write
-an explicit `assert` or `require` cast (which would make the vacuity explicit).
-````
-
 (cvl2-casting)=
 ### Implicit and explicit casting
 
@@ -573,16 +480,10 @@ complicated; they depended not only on the types involved, but on the context
 in which the conversion happened.  CVL 2 simplifies these rules and improves the
 clarity and predictability of casts.
 
-In CVL 2, with one exception, you can always use a subtype whenever the
+In CVL 2, you can always use a subtype whenever the
 supertype is accepted.  For example, you can always use a `uint8` where an
 `int16` is expected.  We say that the subtype can be "implicitly cast" to the
 supertype.
-
-The one exception is comparison operators; as mentioned {ref}`above <cvl2-mathops-return-mathint>`, you must add an
-explicit conversion if you want to compare two numbers with different types.
-The `to_mathint` operator exists solely for this purpose; in all other contexts
-you can simply use any number when a `mathint` is expected (since all integer
-types are subtypes of `mathint`).
 
 In order to convert from a supertype to a subtype, you must use an explicit
 cast.  In CVL 1, only a few casting operators (such as `to_uint256`) were
@@ -637,6 +538,62 @@ mathint x = to_mathint(MyContract.MyEnum.VAL); // good
 ```
 
 Casting integer types to an enum is not supported.
+
+(address-casting)=
+### Casting addresses to bytes32
+
+CVL2 supports casting from the `address` type to the `bytes32` type. For
+example: 
+
+```cvl
+address a = 0xa44f5d3d624DfD660ecc11FF777587AD0a19606d;
+bytes32 b = to_bytes32(a);
+```
+
+The cast from `address` to `bytes32` behaves equivalently to the Solidity
+code:
+
+```solidity
+address a = 0xa44f5d3d624DfD660ecc11FF777587AD0a19606d;
+bytes32 b = bytes32(uint256(uint160(a)));
+```
+
+Among other things, this behavior means that the resulting `bytes32`
+value is right-aligned and zero-padded to the left.
+
+CVL2 also supports casting from the `bytes32` type to the `address` type
+using either the `require_address()` or `assert_address()` cast functions.
+
+```cvl
+bytes32 b = to_bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d);
+address a = assert_address(b);
+```
+
+Note that `require_address()` will silently allow a cast to continue
+when the `bytes32` variable contains a value that lies in the range
+`2^160 < var < 2^256`. The `assert_address()` cast function will fail
+when the `bytes32` variable contains a value in that same range.
+
+```cvl
+bytes32 b = to_bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d0e); // Note this contains one extra byte
+address a = require_address(b);                                       // Silently does the cast.
+```
+
+While when using `assert_address`:
+
+```cvl
+bytes32 b = to_bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d0e); // Note this contains one extra byte
+address a = assert_address(b);                                       // This will fail.
+```
+
+Casting from `bytes32` to `address` behaves equivalently to the Solidity
+code:
+
+```solidity
+bytes32 b = bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d);
+address a = address(uint160(uint256(b)));
+```
+
 ### Modulo operator `%` returns negative values for negative inputs
 
 As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
@@ -689,7 +646,7 @@ compute the results of bitwise operations.  The approximations are still
 {term}`sound`: the Prover will not report a rule as verified if the original
 code does not satisfy the rule.
 
-The {ref}`-smt_useBV` flag makes the Prover's reasoning about bitwise
+The {ref}`--precise_bitwise_ops` flag makes the Prover's reasoning about bitwise
 operations more precise, but this flag is experimental in CVL 2.
 ```
 
@@ -898,7 +855,7 @@ in `--prover_args`.
 Example:
 
 Consider this call to `certoraRun` using CVL 1 syntax
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
@@ -910,7 +867,7 @@ In order to convert this call to CVL 2 we:
 2. replaced `-assumeUnwindCond` with the flag `--optimistic_loop`
 3. removed the comma and equal sign separators
 
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
@@ -926,7 +883,7 @@ a string that is sent as is to the Solidity compiler.
 Example:
 
 Consider this call to `certoraRun` using CVL 1 syntax
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \
@@ -934,7 +891,7 @@ certoraRun Compound.sol \
 ```
 In CVL 2 calling optimize is using `--solc_optimize`
 
-```cvl
+```bash
 certoraRun Compound.sol \
     --verify Compound:Compound.spec  \
     --solc solc8.13 \

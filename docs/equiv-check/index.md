@@ -1,6 +1,6 @@
 (equivcheck-intro)=
-Equivalence Checking Using the Certora Prover
-=================================
+The Certora Equivalence Checker
+===============================
 
 This chapter describes how one can use the Certora Prover to
   check the equivalence of two smart contract functions.
@@ -119,7 +119,7 @@ where `testGood.conf` is the standard Certora configuration file
 ```
 
 ```{note}
-Use {ref}`-smt_useBV` if you are comparing functions with bitwise operations.
+Use {ref}`--precise_bitwise_ops` if you are comparing functions with bitwise operations.
 This will slow down the tool slightly,
 but ensure that the results are sound.
 ```

@@ -12,12 +12,12 @@ each topic.
 :caption: Contents
 
 intro.md
-/docs/user-guide/getting-started/install.md
+/docs/user-guide/install.md
 approx/index.md
+techniques/index.md
+diagnosis/index.md
 checking/index.md
 cli/index.md
 portal/using.md
 changelog/index.md
-new_login.md
 ```
-

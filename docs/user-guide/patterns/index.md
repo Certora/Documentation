@@ -8,7 +8,6 @@ some of these patterns.
 sums.md
 partial-apply.md
 safe-assum.md
-states.md
-general.md
+require-invariants.md
 ```
 

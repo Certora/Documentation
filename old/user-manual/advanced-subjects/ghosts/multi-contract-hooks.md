@@ -13,7 +13,7 @@ contract MyContract {
 In our specification, we import this contract with a `using` statement, for example `using InnerContract as inner`. Because, in the specification language, contract instances are singleton, `inner == c`. Thus when we write hooks on `inner`, they will "trigger" any time the corresponding storage slot in `c` is modified. Such a hook might look like the following:
 
 ```text
-hook Sload uint256 x inner.someStorageVariable[KEY uint256 k] STORAGE {
+hook Sload uint256 x inner.someStorageVariable[KEY uint256 k] {
     ...
 }
 ```
