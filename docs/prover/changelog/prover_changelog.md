@@ -10,7 +10,7 @@ Prover Release Notes
 ### CVL
 - [feat] A function can be called on a CVL variable of type address directly. In the following rule, the function `balanceOf` will be called on all contracts that define `balanceOf`:
 ```
-  env e;
+    env e;
 	address a;
 	assert a.balanceOf(e) > 0;
 ```
