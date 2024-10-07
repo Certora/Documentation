@@ -5,6 +5,29 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.17.2 (October 8, 2024)
+----------------------
+### CVL
+- [feat] A function can be called on a CVL variable of type address directly. In the following rule, the function balanceOf will be called on all contracts that define `balanceOf`:
+```
+  env e;
+	address a;
+	assert a.balanceOf(e) > 0;
+```
+If no contract with such a function exists, a `require(false)` will be inserted, which may cause a vacuity.
+- [feat] The Prover now supports verifying code called via proxy contracts. You can specify `extension_contracts` in the `.conf` file to define which contracts are being delegate-called by the proxy.
+- [bugfix] The `--rule` filtering now applies also to built-in rules.
+
+### CLI
+- [feat] `prover_args` will now be validated locally before submitting the job to the cloud.
+- [deprecation] The `typechecker_args` option has been removed. Use the new Python CLI flag `--allow_solidity_calls_in_quantifiers` to allow Solidity calls in quantifiers.
+- [deprecation] The `--prover_args` flag  `-adaptiveSolverConfig false` was deprecated. The flag was mainly used in combination with `-smt_useNIA` true to run NIA solvers only. Instead, use: `--prover_args "-backendStrategy singleRace -smt_useLIA false -smt_useNIA true"`.
+
+### Rule Report
+- [feat] Additional jump-to-source buttons were added to the Global Notifications, and some existing buttons were corrected. Specifically, buttons for these types of warnings were targeted: PTA failures, optimistic summary fallback fails, `InternalFuncMiss`, storage analysis failures, memory partitioning failures, and `StorageSplitter`.
+- [feat] Rule progress indicator: The progress of individual rules will be displayed in the tree view. Each node in the rule tree shows how many children have been completed already.
+
+
 7.14.2 (September 2, 2024)
 ----------------------
 ### CVL
