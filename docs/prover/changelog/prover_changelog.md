@@ -8,7 +8,7 @@ Prover Release Notes
 7.17.2 (October 8, 2024)
 ----------------------
 ### CVL
-- [feat] A function can be called on a CVL variable of type address directly. In the following rule, the function balanceOf will be called on all contracts that define `balanceOf`:
+- [feat] A function can be called on a CVL variable of type address directly. In the following rule, the function `balanceOf` will be called on all contracts that define `balanceOf`:
 ```
   env e;
 	address a;
