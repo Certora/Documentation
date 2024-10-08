@@ -68,12 +68,8 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "HAVOC_ALL"
                    | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
                    | "AUTO"
-<<<<<<< HEAD
-                   | expr [ "expect" id ]
-=======
                    | "ASSERT_FALSE"
-                   | id "(" [ id { "," id } ] ")" [ "expect" id ]
->>>>>>> origin/master
+                   | expr [ "expect" id ]
                    | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
 
 dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
