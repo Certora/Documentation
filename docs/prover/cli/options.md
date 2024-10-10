@@ -824,6 +824,47 @@ struct TokenPair {
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
 `certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
 
+
+(--contract_extensions)=
+### `--contract_extensions`
+
+**What does it do?**
+In order to support extendability and upgradeability of smart contracts, the proxy
+pattern is used. In this patterns there is a base contract (the proxy) which delegate-calls
+into "extension" contracts (see e.g. https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies
+for more details).
+This flag allows specifying that some contract is actually an extension of another one, to help the Prover
+analyze low-level calls and resolve them correctly in this case.
+In practice the Prover "moves" all the external function implementations from the
+extension contract into the base contract, which means that to access them from CVL
+one should use the _base_ contract as the receiver, and not the extension contract.
+
+**When to use it?**
+If you use the proxy pattern in your smart contracts.
+
+**Example**
+Say we have a base contract `A` that uses an extension contract `B`.
+Since in this pattern the storage of the two contracts may "overlap", let's also
+assume they both have some `uint public n`.
+In the .conf file one should add
+```json
+"contract_extensions": {
+    "A": [
+        {
+            "extension": "B",
+            "exclude": ["n"]
+        }
+    ]
+}
+```
+
+This tells the prover that `B` is an extension contract of `A`, but that it shouldn't
+"transfer" the getter for n from the extension into the base contract (since the base
+contract already has such a function and this would cause a conflict).
+
+[For a more detailed example click here.](https://github.com/Certora/Examples/tree/master/CVLByExample/ExtensionContracts)
+
+
 (--contract_recursion_limit)=
 ### `--contract_recursion_limit`
 
