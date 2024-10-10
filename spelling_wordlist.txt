@@ -129,7 +129,6 @@ precompiled
 preprocess
 preprocessing
 prestate
-prover
 reachability
 receiveOrFallback
 reentrancy
@@ -194,7 +193,6 @@ verifier
 verifiers
 walkthrough
 whitespace
-prover_args
 upgradeability
 https
 openzeppelin
