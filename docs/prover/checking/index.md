@@ -10,6 +10,7 @@ tools that you can use to help find bugs in your specifications.
 :caption: Contents
 
 sanity.md
+coverage-info.md
 injection.md
 mutation.md
 ```

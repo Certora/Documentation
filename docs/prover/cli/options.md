@@ -326,7 +326,22 @@ useful check if you notice rules passing surprisingly quickly or easily.
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
 
+(--coverage_info)=
+### `--coverage_info`
+
+**What does it do?**
+This option enables .sol and .spec coverage analysis and visualization.  The `--coverage_info` option may
+be followed by one of `none`, `basic`, or `advanced`;
+See {doc}`../checking/coverage-info` for more information about the analysis.
+
+**When to use it?**  
+We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules. 
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
+
 (--short_output)=
+
 ### `--short_output`
 
 **What does it do?**

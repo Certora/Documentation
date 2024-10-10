@@ -88,6 +88,7 @@ hyperproperties
 hyperproperty
 immutable
 immutables
+initializations
 injective
 injectivity
 inlined
@@ -183,6 +184,7 @@ unquantified
 unroller
 unsat
 unsatisfiable
+unsatisfiability
 unsummarized
 untrusted
 upcast
