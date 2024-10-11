@@ -1,6 +1,13 @@
 ```{index} single: install
 ```
 
+```{note}
+Detailed instructions for using Certora's Sunbeam tool for verifying Soroban
+smart contracts will be posted soon. Until then, please refer to the instructions in our
+[tutorial].
+```
+[tutorial]: https://github.com/Certora/meridian2024-workshop/blob/main/README.md
+
 (installation)=
 Installation
 ============
