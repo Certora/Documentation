@@ -146,6 +146,7 @@ se
 sighash
 sighashes
 skolemized
+Soroban
 splitter
 stablecoin
 struct
@@ -162,6 +163,7 @@ subtypes
 summarizable
 summarization
 summarizations
+Sunbeam
 supercontract
 supertype
 supertypes
