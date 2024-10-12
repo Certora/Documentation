@@ -1,18 +1,18 @@
 ```{index} single: install
 ```
 
+(installation)=
+Installation
+============
+
 ```{note}
 We are excited to offer you early access to the Sunbeam tool for verifying [Soroban]
-smart contracts. For detailed instructions on using Sunbeam, please see our [tutorial].
+smart contracts. For detailed instructions on installing and using Sunbeam, please see our [tutorial].
 Note that Sunbeam is still under active development and will continue to evolve and improve!
 ```
 
 [Soroban]: https://stellar.org/soroban
 [tutorial]: https://github.com/Certora/meridian2024-workshop/blob/main/README.md
-
-(installation)=
-Installation
-============
 
 ```{attention}
 These instructions are for Linux and macOS systems.
