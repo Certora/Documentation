@@ -1,8 +1,8 @@
 Troubleshooting
 ===============
 
-Unable to run certoraRun
-------------------------
+Unable to run ``certoraRun``
+----------------------------
 If you are unable to run ``certoraRun``, we recommend trying it from within a ``venv``.
 
 #. First, create a ``venv`` and make sure you are inside the ``venv`` by running the
@@ -20,7 +20,7 @@ If you are unable to run ``certoraRun``, we recommend trying it from within a ``
 
       pip3 install -r requirements.txt
 
-#. Finally, try running certoraRun again:
+#. Finally, try running ``certoraRun`` again:
 
    .. code-block:: bash
 
@@ -28,8 +28,8 @@ If you are unable to run ``certoraRun``, we recommend trying it from within a ``
 
 ----
 
-Build step of certoraRun is failing
------------------------------------
+Build step of ``certoraRun`` is failing
+---------------------------------------
 
 When you execute ``certoraRun``, the project is internally build using ``cargo build``.
 This step requires a successful build. In case ``certoraRun`` fails on the build step,
