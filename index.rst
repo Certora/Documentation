@@ -20,8 +20,8 @@ Contents
    docs/user-guide/index.md
    docs/cvl/index.md
    docs/prover/index.md
-   docs/gambit/index.md
    docs/sunbeam/index.rst
+   docs/gambit/index.md
 
 
 Learning resources
