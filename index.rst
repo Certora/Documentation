@@ -8,9 +8,9 @@ Contents
   contracts. Organized by topic and focuses on the most useful features.
 * :doc:`docs/cvl/index` -- a reference manual for CVL.
 * :doc:`docs/prover/index` -- a reference manual for the Certora Prover.
-* :doc:`docs/gambit/index` -- use mutation testing to improve you specifications.
 * :doc:`docs/sunbeam/index` -- instructions for installing and using *Certora Sunbeam*
   for formal verification of Soroban contracts.
+* :doc:`docs/gambit/index` -- use mutation testing to improve you specifications.
 
 .. toctree::
    :maxdepth: 1
