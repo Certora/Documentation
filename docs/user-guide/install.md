@@ -5,23 +5,6 @@
 Installation
 ============
 
-```{note}
-We are excited to offer you early access to the Sunbeam tool for verifying [Soroban]
-smart contracts. For detailed instructions on installing and using Sunbeam, please see our [tutorial].
-Note that Sunbeam is still under active development and will continue to evolve and improve!
-```
-
-[Soroban]: https://stellar.org/soroban
-[tutorial]: https://github.com/Certora/meridian2024-workshop/blob/main/README.md
-
-```{attention}
-These instructions are for Linux and macOS systems.
-Windows users should use [WSL][wsl] and follow the
-Linux installation instructions.
-```
-
-[wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
-
 Step 1: prerequisites
 ---------------------
 
@@ -214,6 +197,7 @@ pip3 install certora-cli-beta
 You can then switch to the standard CVL release by running `deactivate`, and
 back to the beta release using `certora-beta/bin/activate`.
 
+(installation-step-3)=
 Step 3: Set the personal access key as an environment variable
 -------------------------------------------------------------
 
