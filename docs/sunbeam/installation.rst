@@ -21,7 +21,7 @@ Installing Sunbeam
 #. Next, install Python3.8.16 or newer on your machine.
    If you already have Python3 installed, you can check the version: ``python3 --version``.
    If you need to upgrade, follow these instructions in the
-   `Python Begginers Guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_.
+   `Python Beginners Guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_.
 #. Next, install Java. Check your Java version: ``java -version``.
    If the version is < 11, download and install Java version 11 or later from
    `Oracle <https://www.oracle.com/java/technologies/downloads/>`_.
@@ -32,7 +32,7 @@ Installing Sunbeam
 #. Recall that you received a *Certora Key* in your email (Step 2).
    Use the key to set a temporary environment variable like so
    ``export CERTORAKEY=<personal_access_key>``.
-   Alternative, store the key in your profile see
+   Alternatively, to store the key in your profile see
    :ref:`Step 3 of the Prover installation <installation-step-3>`.
 
 
@@ -55,3 +55,6 @@ Rust and Stellar CLI Setup
 ----
 
 With that, you should be all set for using Certora Sunbeam. Congratulations!
+
+To learn more about using Certora Sunbeam, check out the
+`Sunbeam Tutorials <https://certora-sunbeam-tutorials.readthedocs-hosted.com/en/latest/>`_.
