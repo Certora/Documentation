@@ -1,5 +1,5 @@
-Sunbeam: Formal Verification for Soroban
-========================================
+Sunbeam: Verification for Soroban
+=================================
 
 *Certora Sunbeam* enables formal verification of `Soroban`_ smart contracts.
 
