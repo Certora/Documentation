@@ -11,10 +11,11 @@ Foundry has tooling for writing fuzz tests on smart contracts, see [Foundry Docu
 
 This part of the documentation explains how to utilize the Certora Prover to formally verify tests that are written as Foundry fuzz tests.
 
-### Important
 
+```{caution}
 This feature of the Certora Prover is in alpha state, so issues/unimplemented features are expected. Please contact us if you encounter 
 any issue.
+```
 
 # Usage
 
@@ -32,11 +33,11 @@ A minimal `.conf` file will look like this:
 
 ```json
 {
-    "files": [
-        "path/to/file/with/Foundry/fuzz/tests.sol:<name_of_contract_containing_the_tests>",
-    ],
-    "verify": "name_of_contract_containing_the_tests:path/to/spec/file.spec",
-    "foundry_tests_mode": true,
+  "files": [
+    "path/to/file/with/Foundry/fuzz/tests.sol:<name_of_contract_containing_the_tests>",
+  ],
+  "verify": "name_of_contract_containing_the_tests:path/to/spec/file.spec",
+  "foundry_tests_mode": true,
 }
 ```
 
@@ -59,8 +60,8 @@ that acts as a setup in CVL.
 
 ```solidity
 override function init_fuzz_tests(method f, env e) {
- 		// your initial state assumptions here
- }
+  // your initial state assumptions here
+}
  ```
 Depending on your fuzz test, it may be required to use the `reset_storage` command in the `init_fuzz_tests` function. This will explicitly set all 
 storage fields of a contract to `0` before running the test. Alternatively, one could try to add a call the `setUp()` function in the 
@@ -77,27 +78,26 @@ When setting up the Prover run, the way to handle such storage references to oth
 
 ```solidity
 contract TestContract is Test {
-		MyContract myContract;
-		
-		function setUp() external {
-				myContract = new MyContract();
-		}
-		
-		...
+  MyContract myContract;
+	
+  function setUp() external {
+    myContract = new MyContract();
+  }
+  ...
 }
 ```
 
 then add to the `.conf` file:
 
 ```json
-    "files": [
-        "...",
-        "path/to/MyContract.sol"
-    ],
-    "link": [
-      "...",
-      "TestContract:myContract=MyContract"
-    ]
+  "files": [
+    "...",
+    "path/to/MyContract.sol"
+  ],
+  "link": [
+    "...",
+    "TestContract:myContract=MyContract"
+  ]
 ```
 
 This way when the Prover encounters `myContract.foo()` it knows what the implementation of `foo` is and is able to inline it.
@@ -114,10 +114,10 @@ The latter rule ignores reverting paths in the test function (this  is as oppose
 will fail if a revert happens in the test function). Foundry tests work by running the test function and failing if the function 
 reverted, and the Prover’s builtin rule `verifyFoundryFuzzTests` will also fail in this case. However, it may happen that there 
 are spurious reverts found by the Prover (e.g. if some call is unresolved, it may assume that the call revert, and the revert propagates up).
-
 In some cases however, we do not expect the test to ever have an explicit revert occur, but instead want to use the `assert*` 
 cheatcodes to verify some values/state. In this case one could use `verifyFoundryFuzzTestsNoRevert` instead, which completely 
 ignores any path in the code that leads to a revert, but will still verify the `assert*` cheatcodes.
+
 - In Foundry, the `vm.expectRevert` cheatcode could optionally get a specific revert reason and then Foundry will check that 
 not only did the test revert, but that it reverted with the given reason. The Prover does not reason at about the revert reason, 
 so if the test function reverted but for the wrong reason, the test will still be considered a success.
