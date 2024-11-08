@@ -32,11 +32,11 @@ A minimal `.conf` file will look like this:
 
 ```json
 {
-    files: [
+    "files": [
         "path/to/file/with/Foundry/fuzz/tests.sol:<name_of_contract_containing_the_tests>",
     ],
-    verify: "name_of_contract_containing_the_tests:path/to/spec/file.spec",
-    foundry_tests_mode: true,
+    "verify": "name_of_contract_containing_the_tests:path/to/spec/file.spec",
+    "foundry_tests_mode": true,
 }
 ```
 
@@ -90,12 +90,12 @@ contract TestContract is Test {
 then add to the `.conf` file:
 
 ```json
-    files: [
-        ...
+    "files": [
+        "...",
         "path/to/MyContract.sol"
     ],
-    link: [
-      ...
+    "link": [
+      "...",
       "TestContract:myContract=MyContract"
     ]
 ```
