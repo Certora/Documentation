@@ -98,7 +98,7 @@ Mutations can either be randomly generated via {doc}`Gambit <gambit>`, or manual
 
 ### Randomly generated mutations via Gambit
 
-To generated random mutations via {doc}`Gambit <gambit>`, 
+To generate random mutations via {doc}`Gambit <gambit>`, 
   add a `gambit` key inside the `mutations` object. 
 This key should include a list of {ref}`Gambit mutation objects <gambit-config>`. 
 All file paths are relative to the current working directory.
