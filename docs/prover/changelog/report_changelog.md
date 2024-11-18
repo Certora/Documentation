@@ -17,6 +17,7 @@ Rules Report Release Notes
 ### Features
 
 - [feat] Adding support for syntax highlighting of Rust files in the code editor
+- [feat] Flags in the config tab link to the flags in the documentation.
 
 ### Fixed Bugs
 
