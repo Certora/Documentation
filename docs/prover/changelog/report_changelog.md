@@ -9,7 +9,7 @@ Rules Report Release Notes
 
 ### Features
 
-- [feat] Improved formatting of the call trace: The call trace highlights values of the counter examples as gray boxes and provides tooltip indicating the semantics of the value (e.g. if the value is a return value or a parameter of a function call).
+- [feat] Improved formatting of the call trace: The call trace highlights values of the counter examples as gray boxes and provides tooltips indicating the semantics of the value (e.g. if the value is a return value or a parameter of a function call).
 - [feat] The rule tree automatically opens a node if it only contains a single child element. This reduces the number of user interactions required to get to the call trace and find the counter example.
 
 2.4.4 (Nov 6, 2024)
@@ -20,7 +20,7 @@ Rules Report Release Notes
 
 ### Fixed Bugs
 
-- [bug] The re-run button was reported to not function for non-certora users. This has been fixed.
+- [bug] The re-run button was reported to not function for non-Certora users. This has been fixed.
 
 2.4.1 (Oct 6, 2024)
 ---------------------------
