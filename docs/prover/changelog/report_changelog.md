@@ -14,6 +14,9 @@ Rules Report Release Notes
 
 2.4.4 (Nov 6, 2024)
 ---------------------------
+### Features
+
+- [feat] Adding support for syntax highlighting of Rust files in the code editor
 
 ### Fixed Bugs
 
