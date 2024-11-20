@@ -50,7 +50,7 @@ For a full running example, please also see our [Foundry Integration Examples](h
 In Foundry, fuzz tests start with a blank state as the initial state (i.e. all storage fields are explicitly set to `0`), and one can implement 
 a `setUp()` function in order to bring the state to whatever initial state one wants to run the tests in. In contrast, the Prover starts with 
 an arbitrary initial state and does _not_ assume all storage fields to be initialized with 0 by default. This could cause the Prover to find 
-spurious counter examples. For example, a fuzz test may assumes that a storage value of `balance` is zero for all addresses and the Prover may 
+spurious counter examples. For example, a fuzz test may assume that a storage value of `balance` is zero for all addresses and the Prover may 
 choose some other initial state violating this basic assumption of the test. 
 
 To restrict the Prover's search space to match the setup of the Foundry test, it's possible write a special CVL function  `init_fuzz_tests` 
