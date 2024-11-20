@@ -4,6 +4,25 @@ Rules Report Release Notes
 ```{contents}
 ```
 
+3.0.2 (Nov 18, 2024)
+---------------------------
+
+### Features
+
+- [feat] Improved formatting of the call trace: The call trace highlights values of the counter examples as gray boxes and provides tooltips indicating the semantics of the value (e.g. if the value is a return value or a parameter of a function call).
+- [feat] The rule tree automatically opens a node if it only contains a single child element. This reduces the number of user interactions required to get to the call trace and find the counter example.
+
+2.4.4 (Nov 6, 2024)
+---------------------------
+### Features
+
+- [feat] Adding support for syntax highlighting of Rust files in the code editor
+- [feat] Flags in the config tab link to the flags in the documentation.
+
+### Fixed Bugs
+
+- [bug] The re-run button was reported to not function for non-Certora users. This has been fixed.
+
 2.4.1 (Oct 6, 2024)
 ---------------------------
 
@@ -11,7 +30,6 @@ Rules Report Release Notes
 
 - [feat] Rule progress indicator: The progress of individual rules will be displayed in the tree view. Each node in the rule tree shows how many children have been completed already.
 - [feat] Re-run feature is available to all users. Upon a timeout of a rule, the user is able to re-run the particular rule with a portfolio of configurations aiming to solve the timeout.
-
 
 
 2.3.2 (Sep 2, 2024)
