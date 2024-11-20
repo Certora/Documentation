@@ -1,7 +1,7 @@
 Foundry Integration (Alpha)
 =================
 
-Certora's Foundry Integration allows running foundry fuzz tests that exist for a project. Instead of executing the tests
+Certora's Foundry Integration allows formally verifying [Forge fuzz tests](https://book.getfoundry.sh/forge/fuzz-testing) with the Certora prover instead of writing specifications in CVL.
 as fuzz tests for all inputs explicitly, the tests will be formally verified using the Certora Prover.
 This will yield higher guarantees of correctness as all inputs will be evaluated and tested. 
 
