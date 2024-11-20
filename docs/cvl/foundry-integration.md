@@ -8,7 +8,6 @@ The Prover will yield higher guarantees of correctness than Foundry as all input
 While fuzzing is not as complete as formal verification (a fuzzer might “miss” some inputs that would expose a bug), 
 writing fuzz tests via Foundry is often easier since it uses Solidity.
 
-This part of the documentation explains how to utilize the Certora Prover to formally verify tests that are written as Foundry fuzz tests.
 
 
 ```{caution}
