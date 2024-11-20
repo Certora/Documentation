@@ -19,7 +19,7 @@ any issue.
 
 There is a minimum of 2 required files to get the Prover to verify Foundry fuzz tests: A `.spec` file (written in CVL), and a `.conf` file. 
 
-- First, we need a `.spec` file written in CVL that will tell the Prover what to verify. The file is very simple, and in the minimal case 
+- First, we need a `.spec` file written in CVL to tell the Prover what to verify. The file is very simple, and in the minimal case 
 has exactly one line:
 
 ```solidity
