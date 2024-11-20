@@ -3,7 +3,7 @@ Foundry Integration (Alpha)
 
 Certora's Foundry Integration allows formally verifying [Forge fuzz tests](https://book.getfoundry.sh/forge/fuzz-testing) with the Certora prover instead of writing specifications in CVL.
 as fuzz tests for all inputs explicitly, the tests will be formally verified using the Certora Prover.
-This will yield higher guarantees of correctness as all inputs will be evaluated and tested. 
+The Prover will yield higher guarantees of correctness than Foundry as all inputs will be evaluated. 
 
 While fuzzing is not as complete as formal verification (a fuzzer might “miss” some inputs that would expose a bug), 
 writing fuzz tests via Foundry is often easier since it uses Solidity.
