@@ -49,6 +49,8 @@ bytemap
 callee
 changelog
 checkmark
+cheatcode
+cheatcodes
 codebase
 coinbase
 conf

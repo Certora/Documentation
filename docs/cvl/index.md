@@ -26,6 +26,7 @@ ghosts.md
 defs.md
 hooks.md
 transient.md
+foundry-integration.md
 ```
 
 Changes Since CVL 1
