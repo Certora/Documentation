@@ -53,7 +53,7 @@ an arbitrary initial state and does _not_ assume all storage fields to be initia
 spurious counter examples. For example, a fuzz test may assumes that a storage value of `balance` is zero for all addresses and the Prover may 
 choose some other initial state violating this basic assumption of the test. 
 
-To restrict the Prover's search space to match the setup of the foundry test, it's possible write a special CVL function  `init_fuzz_tests` 
+To restrict the Prover's search space to match the setup of the Foundry test, it's possible write a special CVL function  `init_fuzz_tests` 
 that acts as a setup in CVL. 
 
 ```solidity
