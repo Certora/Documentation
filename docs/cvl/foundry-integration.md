@@ -43,7 +43,7 @@ A minimal `.conf` file will look like this:
 `certoraRun path/to/conf/file.conf`
 - You will receive a link to a report containing the results of the run.
 
-For a full running example, please also see our [Example Repository](https://github.com/Certora/Examples/).
+For a full running example, please also see our [Foundry Integration Examples](https://github.com/Certora/Examples/tree/master/FoundryIntegration).
 
 # Key differences vs. Foundry fuzz testing
 
