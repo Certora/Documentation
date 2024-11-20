@@ -104,7 +104,7 @@ This way when the Prover encounters `myContract.foo()` it knows what the impleme
 The implemented cheatcodes include `vm.assume`, all `assert*` cheatcodes, `vm.expectRevert`, `prank`, `startPrank`, `stopPrank`, 
 `warp`, and `deal`. Some other cheatcodes are irrelevant and are ignored, and many cheatcodes are not yet supported. One could 
 recognize these by checking the **Contracts Call Resolutions** tab of the report - unimplemented cheatcodes will appear there 
-as an unresolved calls (which will usually lead to [havocs](https://docs.certora.com/en/latest/docs/user-guide/glossary.html#term-havoc) 
+as unresolved calls (which will usually lead to [havocs](https://docs.certora.com/en/latest/docs/user-guide/glossary.html#term-havoc) 
 and therefore spurious counter examples). In this case, please contact Certora so we can implement the required cheatcode.
 
 - In cases where no explicit revert is expected, and the goal is to verify values or state using `assert*` cheatcodes, 
