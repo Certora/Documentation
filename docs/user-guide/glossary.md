@@ -78,10 +78,13 @@ EVM storage
   [Official documentation](https://ethereum.org/en/developers/docs/smart-contracts/anatomy)
 
 havoc
-  In some cases, the Certora Prover should assume that some variables can change
-  in an unknown way.  For example, an external function on an unknown contract
+  Havoc means that variables are assigned values chosen non-deterministically.
+  A havoc happens in two cases: the first, at the beginning of the rule all variables
+  "havoced". The second, during certain events when the Certora Prover
+  should assume that some variables can change in an unknown way.
+  For example, an external function on an unknown contract
   may have an arbitrary effect on the state of a third contract.  In this case,
-  we say that the variable was "havoced".  See {ref}`havoc-summary` and
+  we also say that the variable was "havoced".  See {ref}`havoc-summary` and
   {ref}`havoc-stmt` for more details.
 
 hyperproperty
