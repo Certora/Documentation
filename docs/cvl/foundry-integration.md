@@ -109,7 +109,7 @@ as an unresolved calls (which will usually lead to [havocs](https://docs.certora
 and therefore spurious counter examples). In this case, please contact Certora so we can implement the required cheatcode.
 
 - Note that `verifyFoundryFuzzTests` is just one rule that is available to you, the second being `verifyFoundryFuzzTestsNoRevert`. 
-The latter rule ignores reverting paths in the test function (this  is as opposed to the regular definition of foundry tests that 
+The latter rule ignores reverting paths in the test function (this is as opposed to the regular definition of foundry tests that 
 will fail if a revert happens in the test function). Foundry tests work by running the test function and failing if the function 
 reverted, and the Prover’s builtin rule `verifyFoundryFuzzTests` will also fail in this case. However, it may happen that there 
 are spurious reverts found by the Prover (e.g. if some call is unresolved, it may assume that the call revert, and the revert propagates up).
