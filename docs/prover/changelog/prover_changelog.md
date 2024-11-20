@@ -5,6 +5,17 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.21.1 (November 20, 2024)
+----------------------
+### CVL
+- [feat] Certora’s Foundry Integration lets you run Foundry fuzz tests as formal verification tests. If you already use forge test, you can leverage this integration to formally verify your tests or find counterexamples where they fail. Unlike fuzzing, formal verification provides guarantees for all inputs, not just randomized ones. Note that this integration is in alpha version and requires some CVL configuration.
+
+### Rule Report
+- [feat] The Call Trace received a re-design. As part of the re-design, the Call Trace highlights values the Prover found to generate the counter example as gray boxes with tooltips that provides additional information of the semantics of the values. Alongside this change, we also updated the font of the Call Trace. 
+- [feat] It’s now easier to navigate to the Call Trace for a rule as the rule tree automatically opens nodes that contain only a single child.
+- [feat] Within the Call Trace, we added support for assignments to and loads from Solidity variables, structs and arrays. For assignments to primitive types the Call Trace also displays the assigned value.
+- [feat] Prover flags listed in the configuration tab of the rule report now link to their documentation.
+
 7.17.2 (October 8, 2024)
 ----------------------
 ### CVL
