@@ -62,7 +62,7 @@ override function init_fuzz_tests(method f, env e) {
 }
  ```
 Depending on your fuzz test, it may be required to use the `reset_storage` command in the `init_fuzz_tests` function. This will explicitly set all 
-storage fields of a contract to `0` before running the test. Alternatively, one could try to add a call the `setUp()` function in the 
+storage fields of a contract to `0` before running the test. Alternatively, one could try to add a call to the `setUp()` function in the 
 `init_fuzz_tests` function - please note that the `init_fuzz_tests` is an empty method by default.
 
 # Known Limitations 
