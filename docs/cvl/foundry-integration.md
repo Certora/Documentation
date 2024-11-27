@@ -114,6 +114,4 @@ Foundry verifies both that the test function reverted and that it reverted with 
 In contrast, the Prover does not analyze the revert reason. As a result, if the test function reverts for a reason other than 
 the expected one, the test will still be marked as successful.
 
-- The Foundry integration is implemented as a parametric CVL rule with case splitting on the method `.selector` of each method.
-This yields to the call trace containing an `if` statement per methods and makes the call trace hard to read in case where a test 
-contract contains multiple methods. When focusing on a particular test it is helpful to use the `--method` [flag](https://prover.certora.com/output/15800/70e5d5141ce34e4eae0f9966b78b34d9?anonymousKey=40a3a0266ff277d769a873681b1fc7829b0b5c55).
+- The call trace for the Foundry integration can be hard to read as it is internally implemented as a parametric CVL rule with case splitting on the method `.selector` of each method. This leads to the call trace containing an `if` statement per fuzz test method. When focusing on a particular test it is helpful to use the `--method <FUZZ_TEST_METHOD_NAME>` [flag](https://docs.certora.com/en/latest/docs/prover/cli/options.html#method-method-signature).
