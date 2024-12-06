@@ -65,6 +65,24 @@ storage fields of a contract to `0` before running the test. Alternatively, one 
 `init_fuzz_tests` function - please note that the `init_fuzz_tests` is an empty method by default.
 
 # Known Limitations 
+
+- The call trace of the Foundry integration can be hard to read when there is more than one foundry test method in a job. When focusing on a particular violation 
+of a fuzz test method it is helpful to use the `--method "<FUZZ_TEST_METHOD_NAME>"` [flag](https://docs.certora.com/en/latest/docs/prover/cli/options.html#method-method-signature).
+
+The rule `verifyFoundryFuzzTests` is implemented as a parametric rule with parameter `method f` followed by a statement `if(f.selector == <FuzzTestMethod>.selector)`
+for each detected fuzz method. The actual code of the fuzz test method than start within the `Then` block of the condition that evaluated to `true`. 
+
+Here is an example of a call trace of a job that was run _without_ the `--method` flag ([Link to job](https://prover.certora.com/output/15800/70e5d5141ce34e4eae0f9966b78b34d9?anonymousKey=40a3a0266ff277d769a873681b1fc7829b0b5c55)): 
+![Foundry Integraton](foundry-integration-complex-call-trace.png)
+
+The user selected `test_percentMul_fuzz_no_expectRevert(uint256 value, uint256 percentage)` in the rules panel to the left. Observe that in the call trace 
+there is an entry `f.selector == (sig:PercentageMathTests.test_percentMul_fuzz_no_expectRevert(uint256 value, uint256 percentage)).selector ↪ true` and a 
+then block `Then(cvlRange=Fuzz.t.spec:1:1)`. The method has been inlined within the then block, here you can find the parameter assignments that lead to the violation.
+
+If you run the same example the flag `--method "test_percentMul_fuzz_wrong_assert(uint256,uint256)"` ([Link to job](https://prover.certora.com/output/53900/0efb4c7272774df886203375b490300a?anonymousKey=5f95f5d1c2a0b8aac88cd6d5842e577707238747)), the call trace largely simplifies.
+![Foundry Integraton](foundry-integration-simple-call-trace.png)
+
+
 - Foundry's [Invariant testing](https://book.getfoundry.sh/forge/invariant-testing) is not supported, i.e. forge tests prefixed with 
 `invariant` are not formally verified. Under the hood, the built-in rule `verifyFoundryFuzzTests` is a parametric rule that picks up all methods 
 that start in `test*` and will use these to formally verify them. 
@@ -113,5 +131,3 @@ you can use `verifyFoundryFuzzTestsNoRevert`. This ignores all code paths that l
 Foundry verifies both that the test function reverted and that it reverted with the specified reason. 
 In contrast, the Prover does not analyze the revert reason. As a result, if the test function reverts for a reason other than 
 the expected one, the test will still be marked as successful.
-
-- The call trace for the Foundry integration can be hard to read as it is internally implemented as a parametric CVL rule with case splitting on the method `.selector` of each method. This leads to the call trace containing an `if` statement per fuzz test method. When focusing on a particular test it is helpful to use the `--method <FUZZ_TEST_METHOD_NAME>` [flag](https://docs.certora.com/en/latest/docs/prover/cli/options.html#method-method-signature).
