@@ -20,13 +20,13 @@ There is a minimum of 2 required files to get the Prover to verify Foundry fuzz 
 
 - First, we need a `.spec` file written in CVL to tell the Prover what to verify. The file is very simple, and in the minimal case 
 has exactly one line:\
-\
+
 ```solidity
 use builtin rule verifyFoundryFuzzTests;
 ```
 
 - Second, you need a `.conf` file that will provide the Prover the information of which contract to verify, and what `.spec` file to use. 
-A minimal `.conf` file will look like this:
+A minimal `.conf` file will look like this:\
 
 ```json
 {
@@ -91,7 +91,7 @@ that start in `test*` and will use these to formally verify them.
 - One of the usual usages of the `setUp()` function is to create new contract instances for testing.
 When setting up the Prover run, the way to handle such storage references to other contracts is to use linking. If, for example,
 we have the following test code\
-\
+
 ```solidity
 contract TestContract is Test {
   MyContract myContract;
@@ -104,7 +104,7 @@ contract TestContract is Test {
 ```
 \
 then add to the `.conf` file:\
-\
+
 ```json
   "files": [
     "...",
