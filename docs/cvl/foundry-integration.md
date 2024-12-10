@@ -70,7 +70,7 @@ storage fields of a contract to `0` before running the test. Alternatively, one 
 of a fuzz test method it is helpful to use the `--method "<FUZZ_TEST_METHOD_NAME>"` [flag](https://docs.certora.com/en/latest/docs/prover/cli/options.html#method-method-signature).\
 \
 The rule `verifyFoundryFuzzTests` is implemented as a parametric rule with parameter `method f` followed by a statement `if(f.selector == <FuzzTestMethod>.selector)`
-for each detected fuzz method. The actual code of the fuzz test method than start within the `Then` block of the condition that evaluated to `true`.\
+for each detected fuzz method. The actual code of the fuzz test method starts within the `Then` block of the condition that evaluated to `true`.\
 \
 Here is an example of a call trace of a job that was run _without_ the `--method` flag ([Link to job](https://prover.certora.com/output/15800/70e5d5141ce34e4eae0f9966b78b34d9?anonymousKey=40a3a0266ff277d769a873681b1fc7829b0b5c55)).\
 \
