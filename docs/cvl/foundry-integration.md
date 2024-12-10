@@ -80,7 +80,7 @@ Say the user selected `test_percentMul_fuzz_no_expectRevert(uint256 value, uint2
 there is an entry `f.selector == (sig:PercentageMathTests.test_percentMul_fuzz_no_expectRevert(uint256 value, uint256 percentage)).selector ↪ true` and a 
 then block `Then(cvlRange=Fuzz.t.spec:1:1)`. The method has been inlined within the then block, here you can find the parameter assignments that lead to the violation.\
 \
-If you run the same example the flag `--method "test_percentMul_fuzz_wrong_assert(uint256,uint256)"` ([Link to job](https://prover.certora.com/output/53900/0efb4c7272774df886203375b490300a?anonymousKey=5f95f5d1c2a0b8aac88cd6d5842e577707238747)), the call trace largely simplifies.
+If you run the same example the flag `--method "test_percentMul_fuzz_wrong_assert(uint256,uint256)"` ([Link to job](https://prover.certora.com/output/53900/0efb4c7272774df886203375b490300a?anonymousKey=5f95f5d1c2a0b8aac88cd6d5842e577707238747)), the call trace is significantly simpler.
 ![Foundry Integration - Simpler Call Trace](foundry-integration-simple-call-trace.png)
 
 
