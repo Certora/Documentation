@@ -66,7 +66,7 @@ storage fields of a contract to `0` before running the test. Alternatively, one 
 
 # Known Limitations 
 
-- The call trace of the Foundry integration can be hard to read when there is more than one foundry test method in a job. When focusing on a particular violation 
+- The call trace of the Foundry integration can be hard to read when there is more than one Foundry test method in a job. When focusing on a particular violation 
 of a fuzz test method it is helpful to use the `--method "<FUZZ_TEST_METHOD_NAME>"` [flag](https://docs.certora.com/en/latest/docs/prover/cli/options.html#method-method-signature).\
 \
 The rule `verifyFoundryFuzzTests` is implemented as a parametric rule with parameter `method f` followed by a statement `if(f.selector == <FuzzTestMethod>.selector)`
