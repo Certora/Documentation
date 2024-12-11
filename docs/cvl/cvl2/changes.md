@@ -594,9 +594,10 @@ bytes32 b = bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d);
 address a = address(uint160(uint256(b)));
 ```
 
-### Modulo operator `%` returns negative values for negative inputs
+### Modulo operator `%` always returns non-negative values
 
-As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
+The modulo operator `%` follows the semantics of Solidity's unsigned modulo and
+always returns non-negative values, regardless of the signs of its operands.
 
 (bytesN-support)=
 ### Support for `bytes1`...`bytes32`
