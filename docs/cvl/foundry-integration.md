@@ -19,14 +19,14 @@ any issue.
 There is a minimum of 2 required files to get the Prover to verify Foundry fuzz tests: A `.spec` file (written in CVL), and a `.conf` file. 
 
 - First, we need a `.spec` file written in CVL to tell the Prover what to verify. The file is very simple, and in the minimal case 
-has exactly one line:
+has exactly one line:\
 
 ```solidity
 use builtin rule verifyFoundryFuzzTests;
 ```
 
 - Second, you need a `.conf` file that will provide the Prover the information of which contract to verify, and what `.spec` file to use. 
-A minimal `.conf` file will look like this:
+A minimal `.conf` file will look like this:\
 
 ```json
 {
@@ -65,13 +65,32 @@ storage fields of a contract to `0` before running the test. Alternatively, one 
 `init_fuzz_tests` function - please note that the `init_fuzz_tests` is an empty method by default.
 
 # Known Limitations 
+
+- The call trace of the Foundry integration can be hard to read when there is more than one Foundry test method in a job. When focusing on a particular violation 
+of a fuzz test method it is helpful to use the `--method "<FUZZ_TEST_METHOD_NAME>"` [flag](https://docs.certora.com/en/latest/docs/prover/cli/options.html#method-method-signature).\
+\
+The rule `verifyFoundryFuzzTests` is implemented as a parametric rule with parameter `method f` followed by a statement `if(f.selector == <FuzzTestMethod>.selector)`
+for each detected fuzz method. The actual code of the fuzz test method starts within the `Then` block of the condition that evaluated to `true`.\
+\
+Here is an example of a call trace of a job that was run _without_ the `--method` flag ([Link to job](https://prover.certora.com/output/15800/70e5d5141ce34e4eae0f9966b78b34d9?anonymousKey=40a3a0266ff277d769a873681b1fc7829b0b5c55)).\
+\
+![Foundry Integration - Complex Call Trace](foundry-integration-complex-call-trace.png)\
+\
+Say the user selected `test_percentMul_fuzz_no_expectRevert(uint256 value, uint256 percentage)` in the rules panel to the left. Observe that in the call trace 
+there is an entry `f.selector == (sig:PercentageMathTests.test_percentMul_fuzz_no_expectRevert(uint256 value, uint256 percentage)).selector ↪ true` and a 
+then block `Then(cvlRange=Fuzz.t.spec:1:1)`. The method has been inlined within the then block, here you can find the parameter assignments that lead to the violation.\
+\
+If you run the same example the flag `--method "test_percentMul_fuzz_wrong_assert(uint256,uint256)"` ([Link to job](https://prover.certora.com/output/53900/0efb4c7272774df886203375b490300a?anonymousKey=5f95f5d1c2a0b8aac88cd6d5842e577707238747)), the call trace is significantly simpler.
+![Foundry Integration - Simpler Call Trace](foundry-integration-simple-call-trace.png)
+
+
 - Foundry's [Invariant testing](https://book.getfoundry.sh/forge/invariant-testing) is not supported, i.e. forge tests prefixed with 
 `invariant` are not formally verified. Under the hood, the built-in rule `verifyFoundryFuzzTests` is a parametric rule that picks up all methods 
 that start in `test*` and will use these to formally verify them. 
 
 - One of the usual usages of the `setUp()` function is to create new contract instances for testing.
 When setting up the Prover run, the way to handle such storage references to other contracts is to use linking. If, for example,
- we have the following test code
+we have the following test code\
 
 ```solidity
 contract TestContract is Test {
@@ -83,8 +102,8 @@ contract TestContract is Test {
   ...
 }
 ```
-
-then add to the `.conf` file:
+\
+then add to the `.conf` file:\
 
 ```json
   "files": [
@@ -96,7 +115,7 @@ then add to the `.conf` file:
     "TestContract:myContract=MyContract"
   ]
 ```
-
+\
 This way when the Prover encounters `myContract.foo()` it knows what the implementation of `foo` is and is able to inline it.
 
 - Only a subset of the Foundry cheatcodes are currently implemented.
