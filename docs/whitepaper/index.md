@@ -5,7 +5,7 @@ June 29, 2022
 
 Certora is a leading provider of technology and services for eliminating vulnerabilities in smart contracts. This white paper outlines the technology that makes Certora unique, explaining both its power and its current limitations. 
 
-We assume readers are familiar with the basic ideas of smart contracts. More details of the examples mentioned in this document can be found in the [demo](https://demo.certora.com/) area of our website.
+We assume readers are familiar with the basic ideas of smart contracts. More details of the examples mentioned in this document can be found [here](https://github.com/Certora/Examples).
 
 ## Certora Tool Suite
 
