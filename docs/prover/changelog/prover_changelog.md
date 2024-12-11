@@ -5,7 +5,12 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.21.1 (November 20, 2024)
+7.21.1 (December 11, 2024)
+----------------------
+Only bug fixes.
+
+
+7.20.1 (November 20, 2024)
 ----------------------
 ### CVL
 - [feat] Certora’s Foundry Integration lets you run Foundry fuzz tests as formal verification tests. If you already use forge test, you can leverage this integration to formally verify your tests or find counterexamples where they fail. Unlike fuzzing, formal verification provides guarantees for all inputs, not just randomized ones. Note that this integration is in alpha version and requires some CVL configuration.
