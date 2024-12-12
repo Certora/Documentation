@@ -7,7 +7,7 @@ Prover Release Notes
 
 7.21.1 (December 11, 2024)
 ----------------------
-Various bug fixes.
+Various bug fixes and performance improvements.
 
 
 7.20.1 (November 20, 2024)
