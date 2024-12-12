@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.21.1 (December 11, 2024)
+7.21.1 (December 12, 2024)
 ----------------------
 Various bug fixes and performance improvements.
 
