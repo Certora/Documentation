@@ -88,6 +88,7 @@ havocing
 havocs
 hyperproperties
 hyperproperty
+iff
 immutable
 immutables
 initializations
