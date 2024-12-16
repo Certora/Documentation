@@ -66,7 +66,7 @@ in a spec file.  Any functions that can make delegate calls will fail the
 `hasDelegateCalls` rule.
 
 (built-in-trusted-methods)=
-Trusted Methods Call detection &mdash; `trustedMethods`
+Trusted methods call detection &mdash; `trustedMethods`
 --------------------------------------------------
 
 The `trustedMethods` built-in rule allows to find calls within a contract that are potentially untrusted.
@@ -74,25 +74,25 @@ The analysis takes as input a list of trusted methods (defined via their contrac
 further details see below) and iterates over the contract to mark all calls that are _not_ on the list and are therefore
 potentially untrusted. 
 
-I.e. a method call is trusted iff at the call side:
-1. the target contract address is resolvable and is known to be a fixed address (along all possible execution branches) _and_
-2. the method sighash is resolvable and is known to be a fixed (also along all possible execution branches) _and_
+I.e. a method call is trusted iff at the call site:
+1. the target contract address is resolvable and is known to be a fixed address (along all possible execution path) _and_
+2. the method sighash is resolvable and is known to be fixed (also along all possible execution path) _and_
 3. the resolved target contract address and the method sighash are on the list of trusted methods.
 
-Therefore a method call is untrusted iff:
-1. the contract address is not statically computable (cannot be proven to be fixed address), or
+Vice versa, a method call is untrusted iff:
+1. the contract address is not statically computable (cannot be proven to be a fixed address), or
 2. the sighash is not statically computable (cannot be proven to be a fixed sighash), or
-3. the contract address are known and the sighash are known but are untrusted according to the list of trusted methods. 
+3. the contract address and the sighash are known but are untrusted according to the list of trusted methods. 
 
 
-The `trustedMethods` can be enabled by the following steps.
+The `trustedMethods` can be enabled by the following steps:
 
 1. Add to your spec file
 ```cvl
 use builtin rule trustedMethods;
 ```
 
-2. Add the your your config file 
+2. Add to your `.conf` file 
 
 ```
  "prover_resource_files": ["trustedMethods:ExampleTrustedMethod.json"],
@@ -106,11 +106,11 @@ specify the contract address and a list of method sighashes you consider trusted
     "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed": ["0x7e2a6db8","0xb23d4266"]
 }
 ```
-where `["0x7e2a6db8","0xb23d4266"]` is the list of method with signature names `["trusted()","untrusted()"]`. (You can compute the sighashes via `cast sig "trusted()"`).
+Here `["0x7e2a6db8","0xb23d4266"]` is the list of methods with signatures `["trusted()","untrusted()"]`. 
 
-Please note, for both the contract addresses and the sighash it's also allowed to use a wildcard `_`. I.e. a line
-`"_": ["0xb23d4266"]` indicates that any method call to `trusted()` - no matter which target contract address a call is resolved to is trusted.
-A line `"0xe0f5206bbd039e7b0592d8918820024e2a7437b9": ["_"]` indicates that all methods on contract with address `0xe0f5206bbd039e7b0592d8918820024e2a7437b9` are trusted calls.
+Please note, for both the contract addresses and the sighashes it's also possible to use a wildcard `_`. I.e. a line
+`"_": ["0xb23d4266"]` indicates that any method call to `trusted()` - no matter to which target contract address a call resolves to is trusted.
+A line `"0xe0f5206bbd039e7b0592d8918820024e2a7437b9": ["_"]` indicates that all methods on contract with address `0xe0f5206bbd039e7b0592d8918820024e2a7437b9` are considered trusted calls by the analysis.
 
 (built-in-sanity)=
 Basic setup checks &mdash; `sanity`
