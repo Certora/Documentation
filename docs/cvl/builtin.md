@@ -75,8 +75,8 @@ further details see below) and iterates over the contract to mark all calls that
 potentially untrusted. 
 
 I.e. a method call is trusted iff at the call site:
-1. the target contract address is resolvable and is known to be a fixed address (along all possible execution path) _and_
-2. the method sighash is resolvable and is known to be fixed (also along all possible execution path) _and_
+1. the target contract address is resolvable and is known to be a fixed address (along all possible execution paths) _and_
+2. the method sighash is resolvable and is known to be fixed (also along all possible execution paths) _and_
 3. the resolved target contract address and the method sighash are on the list of trusted methods.
 
 Vice versa, a method call is untrusted iff:
@@ -98,18 +98,18 @@ use builtin rule trustedMethods;
  "prover_resource_files": ["trustedMethods:ExampleTrustedMethod.json"],
 ```
 
-3. Create a file called `ExampleTrustedMethod.json` in the folder you are executing `certoraRun` command from. Within the file
+3. Create a file called `ExampleTrustedMethod.json` in the folder from which you are executing the `certoraRun` command. Within the file
 specify the contract address and a list of method sighashes you consider trusted. For instance,
 ```JSON
 {
-    "0xe0f5206bbd039e7b0592d8918820024e2a7437b9": ["0x7e2a6db8"],
-    "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed": ["0x7e2a6db8","0xb23d4266"]
+    "0xe0f5206bbd039e7b0592d8918820024e2a7437b9": ["0xfebb0f7e"],
+    "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed": ["0xfebb0f7e","0xa7916fac"]
 }
 ```
-Here `["0x7e2a6db8","0xb23d4266"]` is the list of methods with signatures `["trusted()","untrusted()"]`. 
+Here `["0xfebb0f7e","0xa7916fac"]` is the list of methods with signatures `["bar()","baz()"]`. 
 
 Please note, for both the contract addresses and the sighashes it's also possible to use a wildcard `_`. I.e. a line
-`"_": ["0xb23d4266"]` indicates that any method call to `trusted()` - no matter to which target contract address a call resolves to is trusted.
+`"_": ["0xfebb0f7e"]` indicates that any method call to `bar()` - no matter to which target contract address a call resolves to is trusted.
 A line `"0xe0f5206bbd039e7b0592d8918820024e2a7437b9": ["_"]` indicates that all methods on contract with address `0xe0f5206bbd039e7b0592d8918820024e2a7437b9` are considered trusted calls by the analysis.
 
 (built-in-sanity)=
