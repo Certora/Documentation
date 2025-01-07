@@ -4,7 +4,7 @@ GUI Release Notes
 ```{contents}
 ```
 
-3.1.0 (Jan 9, 2025)
+3.1.1 (Jan 9, 2025)
 ---------------------------
 
 ### Features
