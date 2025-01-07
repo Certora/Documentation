@@ -4,6 +4,14 @@ GUI Release Notes
 ```{contents}
 ```
 
+3.1.0 (Jan 9, 2025)
+---------------------------
+
+### Features
+- [feat] Support for displaying numeric values in string, decimal, or hexadecimal formats in Call Trace and Variables tabs, with a dropdown to switch formats.
+- [feat] Persist column configuration (display selection and width) across browser sessions on the Prover Dashboard, including between tabs and logins.
+- [feat] Added call traces and TAC dumps for sanity rules in Rule Report.
+
 3.0.2 (Nov 18, 2024)
 ---------------------------
 
