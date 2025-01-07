@@ -1,4 +1,4 @@
-Rules Report Release Notes
+GUI Release Notes
 =============
 
 ```{contents}
