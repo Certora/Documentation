@@ -5,6 +5,16 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.22.2 (Jan 9, 2025)
+----------------------
+### Rule Report
+- [feat] Support for displaying numeric values in string, decimal, or hexadecimal formats in Call Trace and Variables tabs, with a dropdown to switch formats.
+- [feat] Added call traces and TAC dumps for sanity rules in Rule Report.
+
+## Dashboard
+- [feat] Persist column configuration (display selection and width) across browser sessions on the Prover Dashboard, including between tabs and logins.
+
+
 7.21.1 (December 12, 2024)
 ----------------------
 Various bug fixes and performance improvements.
