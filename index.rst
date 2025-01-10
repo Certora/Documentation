@@ -10,6 +10,7 @@ Contents
 * :doc:`docs/prover/index` -- a reference manual for the Certora Prover.
 * :doc:`docs/sunbeam/index` -- instructions for installing and using *Certora Sunbeam*
   for formal verification of `Soroban`_ contracts.
+* :doc:`docs/solana/index` -- instructions for installing and using *Certora Solana Prover*
 * :doc:`docs/gambit/index` -- use mutation testing to improve you specifications.
 
 .. toctree::
@@ -21,6 +22,7 @@ Contents
    docs/cvl/index.md
    docs/prover/index.md
    docs/sunbeam/index.rst
+   docs/solana/index.rst
    docs/gambit/index.md
 
 

@@ -1,4 +1,4 @@
-Troubleshooting
+Solana Prover Troubleshooting
 =================================
 
 This section describes resolution of common issues when using the Solana Prover.
