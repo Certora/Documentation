@@ -1,4 +1,8 @@
-CVLR Specification Language
-=================================
+Certora Verification Language for Rust (CVLR)
+=============================================
 
-The CVLR specification language is a rust module that ...
+CVLR is specification language for formal verification.... 
+
+* What is it?
+* How to use it?
+* Overview of macros (assert, assume, cex_print...)
