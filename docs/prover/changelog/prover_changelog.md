@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.22.2 (Jan 9, 2025)
+7.22.2 (Jan 12, 2025)
 ----------------------
 ### Rule Report
 - [feat] Support for displaying numeric values in string, decimal, or hexadecimal formats in Call Trace and Variables tabs, with a dropdown to switch formats.
