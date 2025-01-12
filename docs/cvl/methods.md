@@ -218,6 +218,17 @@ unresolved function calls, but that may produce spurious counter examples.
 Catch unresolved-calls entries let the user refine the summary used for
 unresolved function calls.
 
+Note that the catch unresolved-calls entry _only applies_ in cases where the called
+function's _sighash_ is unresolved. In the example below there is a function
+call `target.call(data)`. The sighash of the called function depends on the parameter
+`data` and cannot be known beforehand.
+
+```{cvlinclude} /CVLByExample/UnresolvedCallSummarization/TrusterLenderPool.sol
+:start-at: function flashLoan
+:end-at: }
+:emphasize-lines: 13
+```
+
 One can specify the scope (`unresolved external in <scope>`) for which the
 unresolved summary will apply. The options are:
 * `Contract.functionSignature()` for summarizing unresolved calls within this function
