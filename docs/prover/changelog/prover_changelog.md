@@ -11,7 +11,7 @@ Prover Release Notes
 - [feat] Support for displaying numeric values in string, decimal, or hexadecimal formats in Call Trace and Variables tabs, with a dropdown to switch formats.
 - [feat] Added call traces and TAC dumps for sanity rules in Rule Report.
 
-## Dashboard
+### Dashboard
 - [feat] Persist column configuration (display selection and width) across browser sessions on the Prover Dashboard, including between tabs and logins.
 
 
