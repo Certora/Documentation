@@ -1,7 +1,7 @@
 Solana Prover
 =================================
 
-The *Certora Solana Prover* allows formal verification of Solana smart contracts.
+The *Certora Solana Prover* allows formal verification of Solana smart contracts written in Rust.
 
 .. toctree::
    :maxdepth: 1
