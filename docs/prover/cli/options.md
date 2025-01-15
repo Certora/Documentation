@@ -1044,6 +1044,31 @@ Upon instruction from the Certora team.
 
 `--java_args '"-Dcvt.default.parallelism=2"'` - will set the number of “tasks” that can run in parallel to 2.
 
+(--precise_bitwise_ops)=
+### `--precise_bitwise_ops`
+
+This option models bitwise operations exactly instead of using the default
+{term}`overapproximation`s. It is useful when the Prover reports a
+counterexample caused by incorrect modeling of bitwise operations, but can
+dramatically increase the time taken for verification.
+
+The disadvantage of this encoding is that it does not model `mathint`
+precisely: the maximum supported integer value is :math:`2^256-1` in this case,
+effectively restricting a `mathint` to a `uint256`. We currently do not have a
+setting or encoding that models precisely both bitwise operations and `mathint`.
+
+(-smt_groundquantifiers)=
+#### `--prover_args '-smt_groundQuantifiers false'`
+
+This option disables quantifier grounding.  See {ref}`grounding` for more
+information.
+
+(-maxnumberofreachchecksbasedondomination)=
+#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
+
+This option sets the number of program points to test with the `deepSanity`
+built-in rule.  See {ref}`built-in-deep-sanity`.
+
 (--prover_args)=
 ### `--prover_args`
 
@@ -1073,31 +1098,6 @@ This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
-
-(--precise_bitwise_ops)=
-#### `--precise_bitwise_ops`
-
-This option models bitwise operations exactly instead of using the default
-{term}`overapproximation`s. It is useful when the Prover reports a
-counterexample caused by incorrect modeling of bitwise operations, but can
-dramatically increase the time taken for verification.
-
-The disadvantage of this encoding is that it does not model `mathint`
-precisely: the maximum supported integer value is :math:`2^256-1` in this case,
-effectively restricting a `mathint` to a `uint256`. We currently do not have a
-setting or encoding that models precisely both bitwise operations and `mathint`.
-
-(-smt_groundquantifiers)=
-#### `--prover_args '-smt_groundQuantifiers false'`
-
-This option disables quantifier grounding.  See {ref}`grounding` for more
-information.
-
-(-maxnumberofreachchecksbasedondomination)=
-#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
-
-This option sets the number of program points to test with the `deepSanity`
-built-in rule.  See {ref}`built-in-deep-sanity`.
 
 (-enablestoragesplitting)=
 #### `--prover_args '-enableStorageSplitting false'`
