@@ -249,7 +249,7 @@ When you have a rule with multiple assertions:
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
 (--independent_satisfy)=
-### -`--independent_satisfy`
+### `--independent_satisfy`
 
 **What does it do?**
 The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule.
