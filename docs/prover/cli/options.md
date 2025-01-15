@@ -698,6 +698,27 @@ Here are a few example scenarios:
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
 
+### `--disable_local_type_checking`
+
+**What does it do?**
+
+This flag disables the local syntax and type checking of your CVL specifications before they are sent to the cloud for verification. When used, simple syntax or type errors will not be caught locally and will only become visible during the cloud run, potentially causing unnecessary delays and confusion.
+
+**When to use it?**
+
+This flag should only be used in rare cases when you believe the local syntax or type checking has produced an incorrect error, and you are confident that the specification is valid. Using this flag is **strongly discouraged** as it bypasses an essential layer of error detection, increasing the likelihood of issues being encountered later during the verification process.
+
+**Example**
+
+```sh
+certoraRun MyContract.sol --verify MyContract:MySpec --disable_local_typechecking
+```
+
+**Note**
+
+Avoid using this flag unless absolutely necessary. It is always better to fix syntax or type issues locally to ensure a smoother verification process.
+
+
 (--global_timeout)=
 ### `--global_timeout <seconds>`
 Sets the maximal timeout for the Prover.
