@@ -760,22 +760,6 @@ The second use is when the solvers can prove the property, they just need more t
 Options to set addresses and link contracts
 -------------------------------------------
 
-(--link)=
-### `--link`
-
-**What does it do?**
-Links a slot in a contract with another contract.
-
-**When to use it?**
-Many times a contract includes the address of another contract as one of its fields. If we do not use `--link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
-
-**Example**
-Assume we have the contract `Bank.sol` with the following code snippet:
-`IERC20 public underlyingToken;`
-
-We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:
-`certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken`
-
 (--address)=
 ### `--address`
 
@@ -789,31 +773,6 @@ When we have an external contract with a constant address. By default, the Pytho
 
 If we wish the `Oracle` contract to be at address 12, we use
 `certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12`
-
-(--struct_link)=
-### `--struct_link`
-
-**What does it do?**
-Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.
-
-**When to use it?**
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
-
-**Example**
-Assume we have the contract `Bank.sol` with the following code snippet:
-`TokenPair public tokenPair;`
-
-Where `TokenPair` is
-```solidity
-struct TokenPair {
-    IERC20 tokenA;
-    IERC20 tokenB;
-}
-```
-
-We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
-`certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
-
 
 (--contract_extensions)=
 ### `--contract_extensions`
@@ -895,6 +854,22 @@ as the code may in fact allow theoretically unbounded recursion.
 certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ```
 
+(--link)=
+### `--link`
+
+**What does it do?**
+Links a slot in a contract with another contract.
+
+**When to use it?**
+Many times a contract includes the address of another contract as one of its fields. If we do not use `--link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
+
+**Example**
+Assume we have the contract `Bank.sol` with the following code snippet:
+`IERC20 public underlyingToken;`
+
+We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:
+`certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken`
+
 (--optimistic_contract_recursion)=
 ### `--optimistic_contract_recursion`
 
@@ -928,6 +903,30 @@ calls with an empty input buffer (length 0) *cannot* make arbitrary changes to a
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
 calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
 `--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
+
+(--struct_link)=
+### `--struct_link`
+
+**What does it do?**
+Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.
+
+**When to use it?**
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
+
+**Example**
+Assume we have the contract `Bank.sol` with the following code snippet:
+`TokenPair public tokenPair;`
+
+Where `TokenPair` is
+```solidity
+struct TokenPair {
+    IERC20 tokenA;
+    IERC20 tokenB;
+}
+```
+
+We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
+`certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
 
 Options for controlling contract creation
 -----------------------------------------
