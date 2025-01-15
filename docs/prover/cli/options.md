@@ -512,6 +512,47 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 Options regarding summarization
 -------------------------------
 
+(--nondet_difficult_funcs)=
+### `--nondet_difficult_funcs`
+
+**What does it do?**
+When this option is set, the Prover will auto-summarize
+view or pure internal functions that return a value type and are
+currently not summarized, and that are found to be heuristically difficult
+for the Prover.
+
+For more information, see {ref}`detect-candidates-for-summarization`.
+
+**When to use it**
+Using this option is recommended when beginning to work on a large code
+base that includes functions that could be difficult for the Prover.
+It can help the user get faster feedback, both in the form of faster
+verification results, as well as highlighting potentially difficult functions.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
+```
+
+(--nondet_minimal_difficulty)=
+### `--nondet_minimal_difficulty`
+
+**What does it do?**
+This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
+
+**When to use it**
+If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
+one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
+
+The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
+
+**Example**
+
+```bash
+certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
+```
+
 (--optimistic_summary_recursion)=
 ### `--optimistic_summary_recursion`
 
@@ -584,48 +625,6 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
 
-(--nondet_difficult_funcs)=
-### `--nondet_difficult_funcs`
-
-**What does it do?**
-When this option is set, the Prover will auto-summarize
-view or pure internal functions that return a value type and are
-currently not summarized, and that are found to be heuristically difficult
-for the Prover.
-
-For more information, see {ref}`detect-candidates-for-summarization`.
-
-**When to use it**
-Using this option is recommended when beginning to work on a large code
-base that includes functions that could be difficult for the Prover.
-It can help the user get faster feedback, both in the form of faster
-verification results, as well as highlighting potentially difficult functions.
-
-**Example**
-
-```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
-```
-
-(--nondet_minimal_difficulty)=
-### `--nondet_minimal_difficulty`
-
-**What does it do?**
-This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
-
-**When to use it**
-If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
-one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
-
-The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
-
-**Example**
-
-```bash
-certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
-```
-
-
 Options regarding hashing of unbounded data
 -------------------------------------------
 
@@ -678,10 +677,6 @@ certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
 Options that help reduce the running time
 -----------------------------------------
 
-### `--method`
-
-See {ref}`--method`
-
 (--compilation_steps_only)=
 ### `--compilation_steps_only`
 
@@ -702,6 +697,36 @@ Here are a few example scenarios:
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
+
+(--global_timeout)=
+### `--global_timeout <seconds>`
+Sets the maximal timeout for the Prover.
+Gets an integer input, which represents seconds.
+
+The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
+Users may opt to set this number lower to facilitate faster iteration on specifications.
+Values larger than two hours (7200 seconds) are ignored.
+
+Jobs that exceed the global timeout will simply be terminated, so the result
+reports may not be generated.
+
+The global timeout is different from the {ref}`--smt_timeout` option: the
+`--smt_timeout` flag constrains the amount of time allocated to the processing
+of each individual rule, while the `--global_timeout` flag constrains the
+processing of the entire job, including static analysis and other
+preprocessing.
+
+
+**When to use it?**
+When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
+Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60`
+
+### `--method`
+
+See {ref}`--method`
 
 (--smt_timeout)=
 ### `--smt_timeout <seconds>`
@@ -730,33 +755,6 @@ The second use is when the solvers can prove the property, they just need more t
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`
-
-
-(--global_timeout)=
-### `--global_timeout <seconds>`
-Sets the maximal timeout for the Prover.
-Gets an integer input, which represents seconds.
-
-The Certora Prover is bound to run a maximal time of 2 hours (7200 seconds).
-Users may opt to set this number lower to facilitate faster iteration on specifications.
-Values larger than two hours (7200 seconds) are ignored.
-
-Jobs that exceed the global timeout will simply be terminated, so the result
-reports may not be generated.
-
-The global timeout is different from the {ref}`--smt_timeout` option: the
-`--smt_timeout` flag constrains the amount of time allocated to the processing
-of each individual rule, while the `--global_timeout` flag constrains the
-processing of the entire job, including static analysis and other
-preprocessing.
-
-
-**When to use it?**
-When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
-Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60`
 
 
 Options to set addresses and link contracts
