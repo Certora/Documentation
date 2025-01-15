@@ -211,40 +211,19 @@ certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 Options affecting the type of verification run
 ----------------------------------------------
 
-(--multi_assert_check)=
-### `--multi_assert_check`
+(--coverage_info)=
+### `--coverage_info`
 
 **What does it do?**
-This mode checks each assertion statement that occurs in a rule, separately. The check is done by decomposing each rule into multiple sub-rules, each of which checks one assertion, while it assumes all preceding assertions. In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
+This option enables .sol and .spec coverage analysis and visualization.  The `--coverage_info` option may
+be followed by one of `none`, `basic`, or `advanced`;
+See {doc}`../checking/coverage-info` for more information about the analysis.
 
-As an illustrative example, consider the following rule `R` that has two assertions:
-
-```cvl
-...
-assert a1
-...
-assert a2
-...
-```
-
-The `multi_assert_check` mode would generate and check two sub-rules: `R1` where `a1` is proved while `a2` is removed, and `R2` where `a1` is assumed (i.e., transformed into a requirement statement), and `a2` is proved.
-
-`R` passes if and only if, `R1` and `R2` both pass. In particular, in case `R1` (resp. `R2`) fails, the counter-example shows a violation of `a1` (resp. `a2`).
-
-```{caution}
-We suggest using this mode carefully. In general, as this mode generates and checks more rules, it may lead to worse running-time performance. Please see indications for use below.
-```
-
-**When to use it?**
-When you have a rule with multiple assertions:
-
-1.  As a timeout mitigation strategy: checking each assertion separately may, in some cases, perform better than checking all the assertions together and consequently solve timeouts.
-
-2.  If you wish to get multiple counter-examples in a single run of the tool, where each counter-example violates a different assertion in the rule.
-
+**When to use it?**  
+We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules. 
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
+`certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
 
 (--independent_satisfy)=
 ### `--independent_satisfy`
@@ -305,6 +284,41 @@ When you have a rule with multiple satisfy statements, and you would like to dem
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
 
+(--multi_assert_check)=
+### `--multi_assert_check`
+
+**What does it do?**
+This mode checks each assertion statement that occurs in a rule, separately. The check is done by decomposing each rule into multiple sub-rules, each of which checks one assertion, while it assumes all preceding assertions. In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
+
+As an illustrative example, consider the following rule `R` that has two assertions:
+
+```cvl
+...
+assert a1
+...
+assert a2
+...
+```
+
+The `multi_assert_check` mode would generate and check two sub-rules: `R1` where `a1` is proved while `a2` is removed, and `R2` where `a1` is assumed (i.e., transformed into a requirement statement), and `a2` is proved.
+
+`R` passes if and only if, `R1` and `R2` both pass. In particular, in case `R1` (resp. `R2`) fails, the counter-example shows a violation of `a1` (resp. `a2`).
+
+```{caution}
+We suggest using this mode carefully. In general, as this mode generates and checks more rules, it may lead to worse running-time performance. Please see indications for use below.
+```
+
+**When to use it?**
+When you have a rule with multiple assertions:
+
+1.  As a timeout mitigation strategy: checking each assertion separately may, in some cases, perform better than checking all the assertions together and consequently solve timeouts.
+
+2.  If you wish to get multiple counter-examples in a single run of the tool, where each counter-example violates a different assertion in the rule.
+
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
+
 (--rule_sanity)=
 ### `--rule_sanity`
 
@@ -319,20 +333,6 @@ useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
-
-(--coverage_info)=
-### `--coverage_info`
-
-**What does it do?**
-This option enables .sol and .spec coverage analysis and visualization.  The `--coverage_info` option may
-be followed by one of `none`, `basic`, or `advanced`;
-See {doc}`../checking/coverage-info` for more information about the analysis.
-
-**When to use it?**  
-We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules. 
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
 
 (--short_output)=
 
