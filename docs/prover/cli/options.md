@@ -1151,6 +1151,30 @@ The default value for this option is 10.
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ```
 
+(-dontstopatfirstsplittimeout)=
+### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
+
+**What does it do?**
+
+We can tell the Certora Prover to continue even when the a {term}`split` has had
+a maximum-depth timeout. Note that this is only useful when there exists a
+{term}`counterexample` for the rule under verification, since in order to prove
+the absence of counterexamples (i.e. correctness), all splits need to be
+counterexample-free. (In case of a rule using `satisfy` rather than `assert`,
+the corresponding statements hold for {term}`witness example`s. In that case,
+this option is only useful if the rule is correct.)
+
+**When to use it?**
+
+When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
+The default value for this option is `false`.
+
+**Example**
+
+```sh
+certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
+```
+
 (-mediumtimeout)=
 ### `--prover_args '-mediumTimeout <seconds>'`
 
@@ -1175,30 +1199,6 @@ a given depth.
 
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
-```
-
-(-dontstopatfirstsplittimeout)=
-### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
-
-**What does it do?**
-
-We can tell the Certora Prover to continue even when the a {term}`split` has had
-a maximum-depth timeout. Note that this is only useful when there exists a
-{term}`counterexample` for the rule under verification, since in order to prove
-the absence of counterexamples (i.e. correctness), all splits need to be
-counterexample-free. (In case of a rule using `satisfy` rather than `assert`,
-the corresponding statements hold for {term}`witness example`s. In that case,
-this option is only useful if the rule is correct.)
-
-**When to use it?**
-
-When looking for a SAT result and observing an [SMT-type timeout](timeouts-introduction).
-The default value for this option is `false`.
-
-**Example**
-
-```sh
-certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
 ```
 
 (-smt_initialsplitdepth)=
