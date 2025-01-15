@@ -27,10 +27,8 @@ See {ref}`conf-files` for more information.
 ```{contents} Overview
 ```
 
-Modes of operation
-------------------
-
-The Certora Prover has three modes of operation. The modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
+Most frequently used options
+----------------------------
 
 (--verify)=
 ### `--verify`
@@ -45,8 +43,6 @@ When you wish to prove properties on the source code. This is by far the most co
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
-Most frequently used options
-----------------------------
 (--msg)=
 ### `--msg <description>`
 
