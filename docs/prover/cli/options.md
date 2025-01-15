@@ -349,18 +349,6 @@ When we do not care much for the output. It is recommended when running the tool
 
 Options that control the Solidity compiler
 ------------------------------------------
-(--solc)=
-### `--solc`
-
-**What does it do?**
-Use this option to provide a path to the Solidity compiler executable file. We check in all directories in the `$PATH` environment variable for an executable with this name. If `--solc` is not used, we look for an executable called `solc`, or `solc.exe` on windows platforms.
-
-**When to use it?**
-Whenever you want to use a Solidity compiler executable with a non-default name. This is usually used when you have several Solidity compiler executable versions you switch between.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
-
 (--compiler_map)=
 (--solc_map)=
 ### `--compiler_map`
@@ -373,6 +361,80 @@ When different contracts have to be compiled for different Solidity versions.
 
 **Example**
 `certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10`
+
+(--packages)=
+### `--packages`
+
+**What does it do?**
+For each package, gets the path to a directory including that Solidity package.
+
+**When to use it?**
+By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `--packages`.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src`
+
+(--packages_path)=
+### `--packages_path`
+
+**What does it do?**
+Gets the path to a directory including the Solidity packages.
+
+**When to use it?**
+By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `--packages_path`.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages`
+
+(--solc)=
+### `--solc`
+
+**What does it do?**
+Use this option to provide a path to the Solidity compiler executable file. We check in all directories in the `$PATH` environment variable for an executable with this name. If `--solc` is not used, we look for an executable called `solc`, or `solc.exe` on windows platforms.
+
+**When to use it?**
+Whenever you want to use a Solidity compiler executable with a non-default name. This is usually used when you have several Solidity compiler executable versions you switch between.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
+
+(--solc_allow_path)=
+### `--solc_allow_path`
+
+**What does it do?**
+Passes the value of this option as is to the solidity compiler's option `--allow-paths`.
+See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
+
+**When to use it?**
+When we want to add an additional location the Solidity compiler to load sources from
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
+
+(--solc_evm_version)=
+### `--solc_evm_version`
+
+**What does it do?**
+Passes the value of this option  to the solidity compiler's option `--evm-version`.
+
+**When to use it?**
+When we want to select the Solidity compiler EVM version
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+
+(--solc_evm_version_map)=
+### `--solc_evm_version_map`
+
+**What does it do?**
+Set EVM version values when different files run with different EVM versions
+Passes the value of this option as is to the solidity compiler's option `--evm-version`.
+
+**When to use it?**
+When different contracts have to be compiled with different Solidity EVM versions.
+
+**Example**
+`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
 
 (--solc_optimize)=
 ### `--solc_optimize`
@@ -402,32 +464,6 @@ number of times the optimizer will be activated (if no value is set, the compile
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
 
 
-(--solc_evm_version)=
-### `--solc_evm_version`
-
-**What does it do?**
-Passes the value of this option  to the solidity compiler's option `--evm-version`.
-
-**When to use it?**
-When we want to select the Solidity compiler EVM version
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
-
-(--solc_evm_version_map)=
-### `--solc_evm_version_map`
-
-**What does it do?**
-Set EVM version values when different files run with different EVM versions
-Passes the value of this option as is to the solidity compiler's option `--evm-version`.
-
-**When to use it?**
-When different contracts have to be compiled with different Solidity EVM versions.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
-
-
 (--solc_via_ir)=
 ### `--solc_via_ir`
 
@@ -439,44 +475,6 @@ When we want to enable the IR-based code generator
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
-
-
-(--solc_allow_path)=
-### `--solc_allow_path`
-
-**What does it do?**
-Passes the value of this option as is to the solidity compiler's option `--allow-paths`.
-See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
-
-**When to use it?**
-When we want to add an additional location the Solidity compiler to load sources from
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
-
-(--packages_path)=
-### `--packages_path`
-
-**What does it do?**
-Gets the path to a directory including the Solidity packages.
-
-**When to use it?**
-By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `--packages_path`.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages`
-
-(--packages)=
-### `--packages`
-
-**What does it do?**
-For each package, gets the path to a directory including that Solidity package.
-
-**When to use it?**
-By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `--packages`.
-
-**Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src`
 
 Options regarding source code loops
 -----------------------------------
