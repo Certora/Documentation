@@ -1027,6 +1027,23 @@ When you suspect you have an old installation. To install the newest version, us
 Advanced options
 ----------------
 
+(--allow_solidity_calls_in_quantifiers)=
+### `--allow_solidity_calls_in_quantifiers`
+
+**What does it do?**
+
+Instructs the Prover to permit contract method calls in quantified expression
+bodies.
+
+**When to use it?**
+
+Upon instruction from the Certora team.
+
+**Example**
+
+`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
+error on encountering contract method calls in quantified expression bodies.
+
 (--java_args)=
 ### `--java_args`
 
@@ -1055,25 +1072,24 @@ precisely: the maximum supported integer value is :math:`2^256-1` in this case,
 effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
-(-smt_groundquantifiers)=
-#### `--prover_args '-smt_groundQuantifiers false'`
-
-This option disables quantifier grounding.  See {ref}`grounding` for more
-information.
-
-(-maxnumberofreachchecksbasedondomination)=
-#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
-
-This option sets the number of program points to test with the `deepSanity`
-built-in rule.  See {ref}`built-in-deep-sanity`.
-
 (--prover_args)=
 ### `--prover_args`
 
 The `--prover_args` option allows you to provide fine-grained tuning options to the
 Prover.  `--prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
 `--prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `--t` is
-set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted
+set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted.
+
+(-enablestoragesplitting)=
+#### `--prover_args '-enableStorageSplitting false'`
+
+This option disables the storage splitting optimization.
+
+(-maxnumberofreachchecksbasedondomination)=
+#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
+
+This option sets the number of program points to test with the `deepSanity`
+built-in rule.  See {ref}`built-in-deep-sanity`.
 
 (-optimisticreturnsize)=
 #### `--prover_args '-optimisticReturnsize true'`
@@ -1089,6 +1105,12 @@ expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
+(-smt_groundquantifiers)=
+#### `--prover_args '-smt_groundQuantifiers false'`
+
+This option disables quantifier grounding.  See {ref}`grounding` for more
+information.
+
 (-superoptimisticreturnsize)=
 #### `--prover_args '-superOptimisticReturnsize true'`
 
@@ -1096,29 +1118,6 @@ This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
-
-(-enablestoragesplitting)=
-#### `--prover_args '-enableStorageSplitting false'`
-
-This option disables the storage splitting optimization.
-
-
-(--allow_solidity_calls_in_quantifiers)=
-### --allow_solidity_calls_in_quantifiers`
-
-**What does it do?**
-
-Instructs the Prover to permit contract method calls in quantified expression
-bodies.
-
-**When to use it?**
-
-Upon instruction from the Certora team.
-
-**Example**
-
-`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
-error on encountering contract method calls in quantified expression bodies.
 
 
 (control-flow-splitting-options)=
