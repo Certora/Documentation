@@ -1,16 +1,16 @@
 Troubleshooting
 ===============
 
-Unable to run ``certoraRun``
+Unable to run ``certoraSorobanProver``
 ----------------------------
-If you are unable to run ``certoraRun``, we recommend trying it from within a ``venv``.
+If you are unable to run ``certoraSorobanProver``, we recommend trying it from within a ``venv``.
 
 #. First, create a ``venv`` and make sure you are inside the ``venv`` by running the
    following:
 
    .. code-block:: bash
 
-      cd meridian2024-workshop
+      cd projectDir
       python3 -m venv .venv
       source .venv/bin/activate
 
@@ -24,15 +24,15 @@ If you are unable to run ``certoraRun``, we recommend trying it from within a ``
 
    .. code-block:: bash
 
-      certoraRun confs/setup.conf
+      certoraSorobanProver path/to/prover.conf
 
 ----
 
-Build step of ``certoraRun`` is failing
+Build step of ``certoraSorobanProver`` is failing
 ---------------------------------------
 
-When you execute ``certoraRun``, the project is internally build using ``cargo build``.
-This step requires a successful build. In case ``certoraRun`` fails on the build step,
+When you execute ``certoraSorobanProver``, the project is internally build using ``cargo build``.
+This step requires a successful build. In case ``certoraSorobanProver`` fails on the build step,
 first try to compile the project by running
 ``cargo build --release --target wasm32-unknown-unknown``
 and resolve all compiler errors that you see.
