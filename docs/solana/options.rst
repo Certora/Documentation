@@ -40,7 +40,8 @@ For more details, see `Conf File <https://docs.certora.com/en/latest/docs/prover
 Modes of Operation
 ------------------
 
-The Certora Solana Prover has two modes of operation. These modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
+The Certora Solana Prover has two modes of operation, using a predefined build script, and passing precompiled binary directly.
+These modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
 
 .. _build_script:
 --build_script
@@ -173,7 +174,6 @@ Formally verifies one or more specified properties instead of the whole specific
 
 This option saves a lot of run time. Use it whenever you care about only a
 specific subset of a specification's properties. The most common case is when
-This option saves runtime and is useful for verifying specific subsets of a specification. Common cases include testing new rules or investigating specific failures.
 you add a new rule to an existing specification. The other is when code changes
 cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
