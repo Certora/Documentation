@@ -147,7 +147,7 @@ Use it when there is a need to enable a specific `Cargo feature <https://doc.rus
 
 **What does it do?**
 
-Adds a description message to your run, similar to a commit message. This message appears in the title of the completion email.
+Adds a description message to your run, similar to a commit message. This message appears on the Prover dashboard and in the rule report.
 Note that you need to wrap your message in quotes if it contains spaces.
 
 **When to use it?**
