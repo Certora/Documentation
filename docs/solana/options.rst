@@ -30,7 +30,7 @@ For larger projects, the command line for running the Certora Prover can become 
 
 These files are in [JSON5](https://json5.org/) format and use a `.conf` extension. They hold the parameters and options for the Prover.
 
-For more details, see `Conf File <https://docs.certora.com/en/latest/docs/prover/cli/conf-file-api.html#conf-files>`_
+For more details, see `Conf File <https://docs.certora.com/en/latest/docs/prover/cli/conf-file-api.html#conf-files>`.
 
 
 .. contents:: Overview
