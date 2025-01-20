@@ -31,6 +31,33 @@ Prover Errors
 The Solana Prover is currently under development, and some features are not
 supported yet.
 The most common source of errors from the Prover are stack-allocated arrays.
-Accessing an element in an array that has been allocated on the stack will
+Accessing an element in an array that has been allocated on the stack can
 result in an error.
+For instance, the following rule will trigger a Prover error.
+
+.. code-block:: rust
+
+    #[rule]
+    fn access_stack_element() {
+        let ints = [0, 1, 2];
+        let index: usize = nondet_with(|x| *x < 3);
+        cvlr_assert!(ints[index] < 3);
+    }
+
+The Prover will display the following error message:
+
+.. image:: img/stack_access_error.png
+   :alt: Description of the image
+
 To solve this, modify the source code to move the array to the heap.
+For instance, in the previous example it is sufficient to modify the type of
+``ints`` from ``[i32; 3]`` to ``Vec<i32>``:
+
+.. code-block:: rust
+
+    #[rule]
+    fn access_stack_element() {
+        let ints = vec![0, 1, 2];
+        let index: usize = nondet_with(|x| *x < 3);
+        cvlr_assert!(ints[index] < 3);
+    }
