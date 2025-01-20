@@ -2,7 +2,7 @@ Troubleshooting
 ===============
 
 Unable to run ``certoraSorobanProver``
-----------------------------
+--------------------------------------
 If you are unable to run ``certoraSorobanProver``, we recommend trying it from within a ``venv``.
 
 #. First, create a ``venv`` and make sure you are inside the ``venv`` by running the
@@ -29,7 +29,7 @@ If you are unable to run ``certoraSorobanProver``, we recommend trying it from w
 ----
 
 Build step of ``certoraSorobanProver`` is failing
----------------------------------------
+-------------------------------------------------
 
 When you execute ``certoraSorobanProver``, the project is internally build using ``cargo build``.
 This step requires a successful build. In case ``certoraSorobanProver`` fails on the build step,
