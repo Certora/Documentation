@@ -18,16 +18,12 @@ The `--rule_sanity` option may be followed by one of `none` or `basic` and contr
 
 Each sanity check adds a new child node to every rule in the rule tree of the rule report. Each check transform the underlying
 representation into a deviated subprograms from the original program under verification and attempts to verify this new program.  
-If the sanity check fails on a rule, the sanity node in the rule report will be displyed as a yellow icon, 
-and this status propagates to the parent rule's node:
-
-![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
-
-If a sanity node is `halted`, then the parent rule will also have the status `halted`.
+If the sanity check fails on a rule, the sanity node in the rule report will be displayed as a yellow icon, 
+and this status propagates to the parent rule's node (Example see below).
 
 The remainder of this document describes the vacuity check in detail. 
 
-(sanity-vacuity)=
+(solana-sanity-vacuity)=
 Vacuity checks
 --------------
 
@@ -39,6 +35,7 @@ are called {term}`vacuous` rules.  Since they don't actually check any
 assertions, they are almost certainly incorrect.
 
 For example, the following rule would be flagged by the vacuity check:
+
 ```rs
 #[rule]
 pub fn rule_vacuity_test_expect_sanity_failure() {
