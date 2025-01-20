@@ -128,11 +128,12 @@ TODO: @Jorge please advise.
 
 **What does it do?**
 
-Provides the prover with a whitespace-separated list of extra features passed to the build script.
+Provides the prover with a whitespace-separated list of extra `Cargo features <https://doc.rust-lang.org/cargo/reference/features.html>` passed to the build script.
+These features are then passed to ``cargo`` to build the project.
 
 **When to use it?**
 
-TODO: @Jorge please advise.
+Use it when there is a need to enable a specific `Cargo feature <https://doc.rust-lang.org/cargo/reference/features.html>` to compile the source code.
 
 **Example**
 
