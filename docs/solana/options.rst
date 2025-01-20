@@ -53,7 +53,7 @@ Runs formal verification of specified properties while providing an automatic me
 The build script must output the following:
 
 - `project_directory`: Path to the project root directory.
-- `sources`: List of files or directories used or imported in the program.
+- `sources`: List of source files or directories used or imported in the program. Source files should be relative to the `project_directory` with support of wildcards. All files declared in this list will be uploaded as sources to cloud and displayed in the rule report. Source files are required, for instance, for the jump to source feature to work.
 - `executables`: List of compiled binary files, which are the target of the Rust program.
 - `success`: Boolean flag indicating if the build phase passed successfully.
 
