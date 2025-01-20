@@ -24,7 +24,7 @@ If you are unable to run ``certoraSorobanProver``, we recommend trying it from w
 
    .. code-block:: bash
 
-      certoraSorobanProver path/to/prover.conf
+      certoraSorobanProver path/to/prover_config.conf
 
 ----
 
