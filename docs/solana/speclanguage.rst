@@ -38,9 +38,17 @@ violated.
 Assumptions
 -----------
 
-Used to specify pre-conditions. `cvlr_assume!`. Semantically, same as `cvlr_assert!`, 
-but panics if the condition is false. Do an example with bps
+Assumptions provide a way to restrict input to reflect some pre-condition. CVLR
+provides an assumption macro `cvlr_assume!(cond)`. If an execution reaches
+`cvlr_assume!(cond)`, it continues only if `cond` is true in the current program
+state. Otherwise, the execution aborts.
 
+For example, `cvlr_assume!(true)` is a noop, while `clvr_assume!(false)` blocks
+all executions that reach it.
+
+A typical use of `cvlr_assume!` is to restrict a range of a value beyond the
+restriction afforded by its type. For example, restricting the maximum value of
+a basis point to `10_000`` can be done as follows:
 ```rust
 let fee_bps = get_some_fee();
 cvlr_assume!(fee_bps <= 10_000)
