@@ -78,7 +78,27 @@ similar to a unit test. However, instead of being executed for some specific
 input, the rule is symbolically analyzed for all possible values of
 non-detemrinistc values.
 
-A complete example of a specification.
+In CVLR, rules are regular Rust functions, annoted with `#[rule]`.
+
+A complete example of a specification with several rules is shown below.
+The function being verified is `compute_fee`. We have included it in the spec
+file for simplicity.
+
+The rule `rule_fee_sanity` checks that the function under verification has at
+least one panic-free execution. A rule like that is called a sanity rule. It is
+a good practice to start a specificaton with such a rule.
+
+The rule `rule_fee_assesed` checks that a fee can be computed for an arbitrary amount.
+There are two assertions. The first checks that the fee is never greater than
+the ammount. The second checks that the fee is always assessed when required.
+The first assertion is not violated. However, the second is. Can you spot the bug?
+Note that we have also added calls to the log macro `clog!` that is simialr to
+`dbg!` macro in Rust. The `clog!` macro will instruct the Prover to produce the
+values of the desired variables in any violating execution.
+
+The rule `rule_fee_liveness` checks that the fee is always computed, except when
+the fee rate is 0. This asserton is violated. Can you spot the bug?
+
 
 ```rust
 use cvlr::{nondet, asserts::*, cvlr_rule as rule, clog};
@@ -87,6 +107,12 @@ pub fn compute_fee(amount: u64, fee_bps: u16) -> Option<u64> {
     if amount == 0 { return None; }
     let fee = amount.checked_mul(fee_bps).checked_div(10_000);
     Some(fee)
+}
+
+#[rule]
+pub fn rule_fee_sanity() {
+   compute_fee(nondet(), nondet()).unwrap();
+   cvlr_satisfy!(true); 
 }
 
 #[rule]
@@ -101,12 +127,6 @@ pub fn rule_fee_assesed() {
 }
 
 #[rule]
-pub fn rule_fee_sanity() {
-   compute_fee(nondet(), nondet()).unwrap();
-   cvlr_satisfy!(true); 
-}
-
-#[rule]
 pub fn rule_fee_liveness() {
     let amt: u64 = nondet();
     let fee_bps: u16 = nondet();
@@ -116,10 +136,3 @@ pub fn rule_fee_liveness() {
     if fee.is_none() { cvlr_assert!(amt == 0); }
 }
 ```
-
-First assertion succeeds, the second fails because rounding is toward 0. 
-Code also has overflow which means it will reject fee for large values.
-
-* What is CVLR?
-* How to use CVLR?
-* Overview of all important macros (assert, assume, cex_print...)
