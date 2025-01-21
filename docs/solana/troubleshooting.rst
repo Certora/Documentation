@@ -22,8 +22,12 @@ For the Jump to Source feature to work, the source code must be compiled with
 debug information enabled.
 This can be done by using the following compiler flags:
 ``-C strip=none -C debuginfo=2``.
-Furthermore, the feature will not work if the source files are not correctly
+
+Obseve that the Jump to Source feature will not work if the source files are not
 uploaded to the cloud.
+For more information about how to use the Certora Prover for Solana and
+correctly upload the source files to the cloud, refer to
+:doc:`installation <../user-guide/install>`.
 
 Prover Errors
 -------------
