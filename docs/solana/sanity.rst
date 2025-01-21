@@ -1,3 +1,5 @@
+.. _solana-sanity-section:
+
 Sanity Mode
 =================================
 
