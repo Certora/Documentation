@@ -58,10 +58,17 @@ cvlr_assume!(fee_bps <= 10_000)
 Nondeterministic Values
 -----------------------
 
-Similar to arbitrary values in property-based testing. Evaluated symbolically by
-the prover. The prover checks that for every value of non-deterministic values,
-every execution that satisfies all the assumptions, does not violate any of the
-assertions.
+A specification must tell the Prover what are the (symbolic) inputs that the
+Prover has to explore. Such values are called non-deterministic. The name comes
+from the fact that the Prover choses the values non-deterministically (i.e., not
+following any specific pre-determined exploration scheme or probability
+distribution). Nondet values are similar to *arbitrary* values in property-based
+testing, except that they are not chosen randomly, but are explored
+exhaustively via symbolic reasoning.
+
+CVLR provides a generic function `nondet()` that can generate non-deterministic
+values of all primitive integers. For example, `nondet::<u64>()` returns a
+non-deterministic `u64`, and `nondet::<u16>()` returns a non-determinstic `u16`
 
 CVLR Rules
 ----------
