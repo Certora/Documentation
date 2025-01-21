@@ -706,7 +706,7 @@ This flag disables the local syntax and type checking of your CVL specifications
 
 **When to use it?**
 
-This flag should only be used in rare cases when you believe the local syntax or type checking has produced an incorrect error, and you are confident that the specification is valid. Using this flag is **strongly discouraged** as it bypasses an essential layer of error detection, increasing the likelihood of issues being encountered later during the verification process.
+This flag should only be used in rare cases when you believe the local syntax or type checking has produced an incorrect error, and you are confident that the specification is valid. Before using this flag, it is recommended to first attempt reinstalling the Prover by following the instructions in the {ref}`installation` section. Using this flag is **strongly discouraged** as it bypasses an essential layer of error detection, increasing the likelihood of issues being encountered later during the verification process.
 
 **Example**
 
