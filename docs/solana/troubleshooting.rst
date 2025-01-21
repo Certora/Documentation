@@ -13,7 +13,7 @@ equal to ``7.22.0``.
 It is possible to upgrade the Certora Prover package with the following command:
 ``pip3 install --upgrade certora-cli``.
 For information about how to install the Certora Prover package, refer to
-:doc:`Installation <../user-guide/install>`.
+:doc:`Installation <installation>`.
 
 Jump to Source feature not working
 ----------------------------------
@@ -27,7 +27,7 @@ Observe that the Jump to Source feature will not work if the source files are no
 uploaded to the cloud.
 For more information about how to use the Certora Prover for Solana and
 correctly upload the source files to the cloud, refer to
-:doc:`installation <../user-guide/install>`.
+:doc:`installation <installation>`.
 
 Prover Errors
 -------------
