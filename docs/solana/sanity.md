@@ -29,10 +29,10 @@ Vacuity checks
 
 The **vacuity** sanity check ensures that even when ignoring all the
 user-provided assertions, the end of the rule is reachable. This check ensures
-that that the combination of `require` statements does not rule out all
+that the combination of `require` statements does not rule out all
 possible counterexamples.  Rules that rule out all possible counterexamples
-are called {term}`vacuous` rules.  Since they don't actually check any
-assertions, they are almost certainly incorrect.
+are called {term}`vacuous`.  Since they don't actually check any
+assertion, they are almost certainly incorrect.
 
 For example, the following rule would be flagged by the vacuity check:
 
