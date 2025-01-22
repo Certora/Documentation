@@ -76,7 +76,7 @@ CVLR Rules
 Specifications are written as pre- and post-conditions in rules. A rule is
 similar to a unit test. However, instead of being executed for some specific
 input, the rule is symbolically analyzed for all possible values of
-non-determinist values.
+non-deterministic values.
 
 In CVLR, rules are regular Rust functions, annotated with `#[rule]`.
 

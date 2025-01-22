@@ -76,7 +76,7 @@ certoraSolanaProver <path_to_binary_file>
 
 **What does it do?**
 
-Provides the prover with a list of paths to inlining files for Solana contracts.
+Provides the Prover with a list of paths to inlining files for Solana contracts.
 These files are parsed and used to prove properties.
 See an [example](./scripts/cvlr_inlining.txt).
 
@@ -94,7 +94,7 @@ certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <pat
 
 **What does it do?**
 
-Provides the prover with a list of paths to summary files for Solana contracts.
+Provides the Prover with a list of paths to summary files for Solana contracts.
 These files are parsed and used to prove properties.
 See an [example](./scripts/cvlr_summaries.txt).
 
@@ -112,7 +112,7 @@ certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <pa
 
 **What does it do?**
 
-Provides the prover with a whitespace-separated list of extra [Cargo features](https://doc.rust-lang.org/cargo/reference/features.html) passed to the build script.
+Provides the Prover with a whitespace-separated list of extra [Cargo features](https://doc.rust-lang.org/cargo/reference/features.html) passed to the build script.
 These features are then passed to ``cargo`` to build the project.
 
 **When to use it?**
@@ -151,7 +151,7 @@ Formally verifies one or more specified rules.
 
 **When to use it?**
 
-This option is required to specify which rules the prover should verify.
+This option is required to specify which rules the Prover should verify.
 
 **Example**
 

@@ -89,5 +89,5 @@
 #[type((*i32)(r1+0):num)]
 ^solana_program::program::invoke_signed_unchecked$
 
-;; To silent Solana prover warning about memhavoc_c 
+;; To silent Solana Prover warning about memhavoc_c 
 ^memhavoc_c$
