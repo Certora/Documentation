@@ -60,7 +60,7 @@ Nondeterministic Values
 
 A specification must tell the Prover what are the (symbolic) inputs that the
 Prover has to explore. Such values are called non-deterministic. The name comes
-from the fact that the Prover choses the values non-deterministically (i.e., not
+from the fact that the Prover chooses the values non-deterministically (i.e., not
 following any specific pre-determined exploration scheme or probability
 distribution). Nondet values are similar to *arbitrary* values in property-based
 testing, except that they are not chosen randomly, but are explored
