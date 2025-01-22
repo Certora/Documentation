@@ -36,13 +36,16 @@ These modes are mutually exclusive - you cannot run the tool with more than one 
 
 **What does it do?**
 
-Runs formal verification of specified properties while providing an automatic method to compile a Rust project.
+Specifies the location of the script that has to be called to compile the Rust project.
 The build script must output the following:
 
 - ``project_directory``: Path to the project root directory.
 - ``sources``: List of source files or directories used or imported in the program. Source files should be relative to the ``project_directory`` with support of wildcards. All files declared in this list will be uploaded as sources to cloud and displayed in the rule report. Source files are required, for instance, for the jump to source feature to work.
 - ``executables``: List of compiled binary files, which are the target of the Rust program.
 - ``success``: Boolean flag indicating if the build phase passed successfully.
+
+See an example of a [build script](./scripts/certora_build.py) and refer to the
+[usage](./usage.md) section for more information about it.
 
 **When to use it?**
 
