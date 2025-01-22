@@ -201,3 +201,6 @@ whitespace
 upgradeability
 https
 openzeppelin
+solana
+msg
+cvlr
