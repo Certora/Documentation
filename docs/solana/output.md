@@ -181,10 +181,12 @@ When analyzing counterexamples, consider:
 If any seem impossible in your actual program, the counterexample might be due to over-approximation.
 
 
-### The Dump
+### The TAC Dump
 ![Where to find the dump](./img/dumpl.png)
 
-The dump output shows the underlying verification conditions in the prover's intermediate representation. It provides detailed insight into how the prover interprets and processes your code.
+The dump output shows the underlying verification conditions in the prover's
+intermediate representation (TAC). It provides detailed insight into how the prover
+interprets and processes your code.
 
 #### Example Dump
 
@@ -228,7 +230,7 @@ Understanding the dump can help you:
     * Understand how the prover interprets your assumptions
     * Identify where contradictions occur in your rules
 
-The regular prover view allows to show values in decimals by using the convert to dec option on the upper right corner. 
-The dump uses hexadecimal values (0x prefix) and shows the underlying register operations. Converting these to decimal can help match them with your original code. 
+The Rule Report allows to show values in decimals by using the convert to dec option on the upper right corner. 
+The dump uses hexadecimal values (0x prefix) and shows the underlying register operations. Converting these to decimal can help match them with your original code.
 
 The dump format may vary depending on the prover version and configuration. Focus on understanding the general structure rather than memorizing specific formats.
