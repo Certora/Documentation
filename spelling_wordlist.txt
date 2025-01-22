@@ -210,3 +210,5 @@ nondet
 fn
 mul
 liveness
+CVT
+munge
