@@ -8,17 +8,17 @@ This guide explains how to interpret verification results from the Certora Prove
 
 A verification task consists of one or more rules that verify specific properties of your Solana program. Each rule contains at least one of:
 
-* Assert statements `cvt_assert!`
-* Satisfy statements `cvt_satisfy!`
+* Assert statements `cvlr_assert!`
+* Satisfy statements `cvlr_satisfy!`
 
 ## Understanding Rule Results
 
 ### Assert Statements
 
-When using `cvt_assert`, the prover attempts to prove that the assertion holds true for all possible program states. For example:
+When using `cvlr_assert`, the prover attempts to prove that the assertion holds true for all possible program states. For example:
 
 ```rust
-cvt_assert!(amount > 10);
+cvlr_assert!(amount > 10);
 ```
 
 The prover will return one of two results:
@@ -33,10 +33,10 @@ The prover will return one of two results:
 
 ### Satisfy Statements
 
-`cvt_satisfy` statements verify that a certain condition is reachable. For example:
+`cvlr_satisfy` statements verify that a certain condition is reachable. For example:
 
 ```rust
-cvt_satisfy!(amount > 10)
+cvlr_satisfy!(amount > 10);
 ```
 
 Results can be:
@@ -62,55 +62,40 @@ The call trace provides detailed information about the execution path. Here's ho
 * Represent the starting state which leads to a violation
 * Format: `CVT_nondet_u64: <value>`
 
+#### Value of the Variables
+
+* The values of variables can be printed using the `clog!` macro
+* Example: `let x: u64 = nondet(); clog!(x);`
+
 #### Method Calls
 
 * Automatically logged
 * Show the sequence of function calls
-* To see parameter values, you need to munge the original code with CVT-style print statements
+* To see parameter values, you need to change the original code with Certora's
+  `cgdb!` print macros
 
-#### Variable Values
+#### Let's look at a concrete example
 
-Printed using the special macro `cvt_cex_print_u64!()`. For named printing, you can add the following macro to your `utils.rs`, this will print the name of the variable your passing.
-
-```rust
-macro_rules! nice_print {
-    ($e:expr) => {
-        cvt_cex_print_u64!($e, $e)
-    };
-}
-pub(crate) use nice_print;
-```
-
-[Example](https://prover.certora.com/output/696612/daa2d29059234c459ab0d2c7f6784cde?anonymousKey=cddfa55db76600ea920eea729a454cde61fe278e )
-
-#### Let's look at a concrete example_:
+[Prover output](https://prover.certora.com/output/1324651/741e8ee5a5754c1ab8db0aa36be39e4d?anonymousKey=ca602f5139de3bfbae17eb1fbf9c11145be3a912)
 
 ```rust
-pub fn is_greater_than_100(amount: u64) -> bool {
-    amount > 100
-}
-
 #[rule]
 pub fn rule_fail_call_trace() {
     let amount1: u64 = nondet();
     let amount2: u64 = nondet();
 
-    let is_great = is_greater_than_100(amount1);
-    cvt_assume!(is_great);
-    let is_great2 = is_greater_than_100(amount2);
-    cvt_assume!(amount2 != 10);
+    cvlr_assume!(amount1 > 100);
+    cvlr_assume!(amount2 != 10);
 
-    nice_print!(is_great);
-    nice_print!(amount1);
-    nice_print!(is_great2);
-    nice_print!(amount2);
+    clog!(amount1);
+    clog!(amount2);
 
-    cvt_assert!(amount1 < 100);
-    cvt_assert!(amount2 < 100);
+    cvlr_assert!(amount1 < 100);
+    cvlr_assert!(amount2 < 100);
 }
 ```
 
-When this rule fails, the prover generates a counterexample that looks like
+When this rule fails, the Prover generates a counterexample that looks like
 this:
 
 ![A call trace example](./img/call_trace_detail.png)
@@ -119,21 +104,19 @@ this:
 
    1. **Nondet Values**: 
 
-        * The prover chose `101` for `amount1` and implicitly `2` for `amount2`
+        * The Prover chose `101` for `amount1` and implicitly `0` for `amount2`
         * These values are chosen to demonstrate the violation of our assertions
         * `<?>` means that the value is not important for the counterexample 
 
    2. **Variable States**:
 
-        * `is_great` is assumed, thus `1` (true) as `amount1` (101) is indeed greater than 100
-        * `amount1` is 101, which satisfies our assumption `cvt_assume!(is_great)`
-        * `is_great2` is `0` (false) because `amount2` (2) is not greater than 100
-        * `amount2` is 2, which satisfies our assumption `cvt_assume!(amount2 != 10)`
+        * `amount1` is 101, which satisfies our assumption `cvlr_assume!(amount1 > 100)`
+        * `amount2` is 0, which satisfies our assumption `cvlr_assume!(amount2 != 10)`
 
    3. **Assertion Failure**:
 
-        * The assertion `cvt_assert!(amount1 < 100)` fails because we have a contradiction:
-            * We assumed `is_great` is true, which means `amount1 > 100`
+        * The assertion `cvlr_assert!(amount1 < 100)` fails because we have a contradiction:
+            * We previously assumed `amount1 > 100`
             * But then we assert `amount1 < 100`
         * This is impossible to satisfy, hence the counterexample
 
@@ -148,7 +131,7 @@ To ensure rules aren't passing vacuously (due to contradictory assumptions), add
 }
 ```
 
-This adds an implicit `cvt_assert!(false)` at the end of each rule. If this assertion is unreachable, it confirms that:
+This adds an implicit `cvlr_assert!(false)` at the end of each rule. If this assertion is unreachable, it confirms that:
 
 1. Your assumptions aren't contradictory
 2. The rule's success is meaningful
@@ -164,9 +147,8 @@ See [Rule Sanity Checks](./sanity.md) for more details.
 ## Best Practices
 
 1. Always enable rule sanity checking in your configuration
-2. Use `nice_print!` macro for clearer counterexample analysis
-3. Review full call traces when investigating failures
-4. Validate counterexamples against your program's expected state space
+2. Review full call traces when investigating failures
+3. Validate counterexamples against your program's expected state space
 
 ## Advanced Topics
 
@@ -175,62 +157,7 @@ See [Rule Sanity Checks](./sanity.md) for more details.
 When analyzing counterexamples, consider:
 
 1. Initial state feasibility: Is the starting state a reachable state for the code you're analyzing?
-2. Transaction sequence validity: Does the computation path make sense, did you overlook a certain scenario?
-3. State transition legitimacy: Do the values throughout the computation match? Are the parameters to your rule changing as expected?
+2. Transaction sequence validity: does the computation path make sense, did you overlook a certain scenario?
+3. State transition legitimacy: do the values throughout the computation match? Are the parameters to your rule changing as expected?
 
 If any seem impossible in your actual program, the counterexample might be due to over-approximation.
-
-
-### The TAC Dump
-![Where to find the dump](./img/dumpl.png)
-
-The dump output shows the underlying verification conditions in the prover's
-intermediate representation (TAC). It provides detailed insight into how the prover
-interprets and processes your code.
-
-#### Example Dump
-
-[Example](https://prover.certora.com/output/696612/daa2d29059234c459ab0d2c7f6784cde/Report-rule_fail_call_trace-example1.html?anonymousKey=cddfa55db76600ea920eea729a454cde61fe278e)
-
-For our previous example rule, here's the corresponding dump:
-![An example dump](./img/dump.png)
-
-Let's analyze this dump line by line:
-
-#### Initialization (Lines 0-3)
-
-* `R0 = havoc ()`: Initializes the first register with a nondeterministic value
-* `R1 = havoc (0x200002000)` and `assume R1==0x200002000`: Sets up memory addressing
-
-#### First Variable Setup (Lines 4-6)
-
-* `R2 = havoc (0x65)`: Sets `amount1` to `0x65` (101 in decimal)
-* `assume (R2>=0x65)&&(R2<=2^64 - 1)`: Constrains `amount1` to be ≥ 101 and within u64 bounds
-* Prints `amount1` value via `CexPrintValues`
-
-#### Second Variable Setup (Lines 8-10)
-
-* `R3 = havoc (0x2)`: Sets `amount2` to `0x2` (2 in decimal)
-* `assume (R3<=0x9)||((R3>=0xb)&&(R3<=2^64 - 1))`: Implements `amount2 != 10` constraint
-* Prints `amount2` value
-
-#### Boolean Operations (Lines 11-16)
-
-* `R4 = 0x1`: Sets `is_great` to true (1)
-* `R6 = R3<=0x64 ? 0x0 : 0x1`: Computes `is_great2` based on `amount2 <= 100`
-* Various print commands show the values of variables
-
-#### Assertion Checking (Lines 17-19)
-
-* `B7 = false`: The assertion `amount1 < 100` evaluates to false
-* Final `assert false`: Indicates the failure of the verification condition
-
-Understanding the dump can help you:
-    * Debug complex verification conditions
-    * Understand how the prover interprets your assumptions
-    * Identify where contradictions occur in your rules
-
-The Rule Report allows to show values in decimals by using the convert to dec option on the upper right corner. 
-The dump uses hexadecimal values (0x prefix) and shows the underlying register operations. Converting these to decimal can help match them with your original code.
-
-The dump format may vary depending on the prover version and configuration. Focus on understanding the general structure rather than memorizing specific formats.
