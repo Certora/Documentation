@@ -14,12 +14,12 @@ COMMAND = "just build-sbf"
 
 # JSON FIELDS
 PROJECT_DIR = (SCRIPT_DIR / ".." / "..").resolve()
-SOURCES = ["lib/**/*.rs", 
-           "programs/manifest/**/*.rs", 
-           "programs/manifest/justfile",
-           "programs/manifest/Cargo.toml"
+SOURCES = ["lib/**/*.rs",
+           "programs/program/**/*.rs",
+           "programs/program/justfile",
+           "programs/program/Cargo.toml"
            ]
-EXECUTABLES = "target/sbf-solana-solana/release/manifest.so"
+EXECUTABLES = "target/sbf-solana-solana/release/program.so"
 
 VERBOSE = False
 
@@ -81,7 +81,7 @@ def main():
     VERBOSE = args.verbose
 
     to_stdout = args.log
-    
+
     # pass extra features via env 
     if args.cargo_features is not None:
         env = os.environ.copy()
@@ -91,10 +91,10 @@ def main():
 
     # Compile rust project and dump the logs to tmp files
     stdout_log, stderr_log, return_code = run_command(COMMAND, to_stdout, env)
-    
+
     if stdout_log is not None:
         log(f"Temporary log file located at:\n\t{stdout_log}\nand\n\t{stderr_log}")
-    
+
     # JSON template
     output_data = {
         "project_directory": str(PROJECT_DIR),
@@ -104,14 +104,14 @@ def main():
         "return_code": return_code,
         "log" : {"stdout": stdout_log, "stderr": stderr_log}
     }
-    
+
     # Handle output based on the provided argument
     if args.output:
         write_output(output_data, args.output)
-    
+
     if args.json:
         write_output(output_data)
-        
+
     # Needed for mutations: if you run _this_ script inside another script, you can check this returncode and decide what to do
     sys.exit(0 if return_code == 0 else 1)
 

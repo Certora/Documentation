@@ -13,11 +13,15 @@ A typical Solana project integrated with the Solana Certora Prover includes:
 
 - A Solana smart contract written in Rust.
 
-- Configurations for running the Certora Prover in modes: running from
-  sources and verifying pre-built contracts.
- 
-- An executable build script or command for compiling the project and
-  preparing it for verification.
+- Configurations for running the Certora Prover: the Prover can be executed
+  either by starting from source files or by verifying pre-compiled code.
+
+- An executable build script or command for compiling the project and preparing
+  it for verification. This is required only if the code has not already been
+  pre-compiled.
+
+The [Certora Solana Examples](https://github.com/Certora/SolanaExamples)
+repository contains a collection of example projects.
 
 ## Configuration Formats
 
@@ -30,6 +34,8 @@ This configuration mode explicitly specifies the pre-built files required for ve
     "files": [
         "solana_contract.so"
     ],
+    "solana_inlining": "../../cvt_inlining.txt",
+    "solana_summaries": "../../cvt_summaries.txt",
     "process": "sbf",
     "optimistic_loop": false,
     "rule": "rule_solvency"
