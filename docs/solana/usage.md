@@ -20,6 +20,9 @@ A typical Solana project integrated with the Solana Certora Prover includes:
   it for verification. This is required only if the code has not already been
   pre-compiled.
 
+The [Certora Solana Examples](https://github.com/Certora/SolanaExamples)
+repository contains a collection of example projects.
+
 ## Configuration Formats
 
 ### Verifying Pre-Built Contracts
