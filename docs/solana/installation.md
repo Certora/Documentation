@@ -37,7 +37,7 @@
 
 2. Next, install the Solana CLI:
 
-   `sh -c "$(curl -sSfL https://release.solana.com/v1.18.16/install)`
+   `sh -c "$(curl -sSfL https://release.solana.com/v1.18.16/install)"`
 
 	Currently, the Solana Prover only supports version `1.18.16` so make sure that you install that specific version.
 
