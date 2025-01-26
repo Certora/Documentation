@@ -633,9 +633,16 @@ Options regarding hashing of unbounded data
 
 **What does it do?**
 
- When hashing data of potentially unbounded length (including unbounded arrays, like `bytes`, `uint[]`, etc.), assume that its length is bounded by the value set through the `--hashing_length_bound` option. If this is not set, and the length can be exceeded by the input program, the Prover reports an assertion violation. I.e., when this option is set, the boundedness of the hashed data assumed checked by the Prover, when this option is set that boundedness is assumed instead.
+When hashing data of potentially unbounded length (including unbounded arrays,
+like `bytes`, `uint[]`, etc.):
 
-See {doc}`../approx/hashing` for more details.
+1. If `optimistic_hashing` is set the Proves _assumes_
+   the data's length is bounded by the `--hashing_length_bound` option.
+2. If `optimistic_hashing` is not set, the Prover will check whether
+   the data's length can exceed the `hashing_length_bound`, and report an
+   assertion violation if it can.
+
+See {ref}`hashing_unbounded` for more details.
 
 
 **When to use it?**
