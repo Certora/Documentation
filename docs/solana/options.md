@@ -45,7 +45,7 @@ In this case, the build script should output the following:
 - ``executables``: List of compiled binary files, which are the target of the Rust program.
 - ``success``: Boolean flag indicating if the build phase passed successfully.
 - ``return_code``: The return code of the script.
-- ``log``: Optionally provide paths to files for stdout and stderr of the build.
+- ``log``: Optionally provide paths to files for `stdout` and `stderr` of the build.
 - ``solana_inlining``: List of paths to [inlining](#--solana_inlining) files for Solana contracts.
 - ``solana_summaries``: List of paths to [summaries](#--solana_summaries) files for Solana contracts.
 
