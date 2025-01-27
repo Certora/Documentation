@@ -37,12 +37,17 @@ These modes are mutually exclusive - you cannot run the tool with more than one 
 **What does it do?**
 
 Specifies the location of the script that has to be called to compile the Rust project.
-The build script must output the following:
+The build script should output 0 on success and 1 on failure unless its being executed using the ``--json`` flag.
+In this case, the build script should output the following:
 
 - ``project_directory``: Path to the project root directory.
 - ``sources``: List of source files or directories used or imported in the program. Source files should be relative to the ``project_directory`` with support of wildcards. All files declared in this list will be uploaded as sources to cloud and displayed in the rule report. Source files are required, for instance, for the jump to source feature to work.
 - ``executables``: List of compiled binary files, which are the target of the Rust program.
 - ``success``: Boolean flag indicating if the build phase passed successfully.
+- ``return_code``: The return code of the script.
+- ``log``: Optionally provide paths to files for stdout and stderr of the build.
+- ``solana_inlining``: List of paths to [inlining](#--solana_inlining) files for Solana contracts.
+- ``solana_summaries``: List of paths to [summaries](#--solana_summaries) files for Solana contracts.
 
 See an example of a [build script](./scripts/certora_build.py) and refer to the
 [usage](./usage.md) section for more information about it.
@@ -54,7 +59,7 @@ Use this mode to prove properties on source code while providing an automatic co
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script>
+certoraSolanaProver --build_script <path_to_build_script> --rule rule_some_rule
 ```
 
 ### precompiled binary
@@ -70,11 +75,12 @@ Use this mode to prove properties on source code without recompiling the project
 **Example**
 
 ```bash
-certoraSolanaProver <path_to_binary_file>
+certoraSolanaProver <path_to_binary_file> --rule rule_some_rule
 ```
 
 ## Most Frequently Used Options
 
+(--solana_inlining)=
 ### --solana_inlining
 
 **What does it do?**
@@ -86,13 +92,15 @@ See an [example](./scripts/cvlr_inlining.txt).
 **When to use it?**
 
 This option is currently required for every project.
+It can be provided to the prover by passing this files as flag or by retrieving it from the build_script.
 
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <path_to_inlining_file>
+certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <path_to_inlining_file>  --rule rule_some_rule
 ```
 
+(--solana_summaries)=
 ### --solana_summaries
 
 **What does it do?**
@@ -104,11 +112,12 @@ See an [example](./scripts/cvlr_summaries.txt).
 **When to use it?**
 
 This option is currently required for every project.
+It can be provided to the prover by passing this files as flag or by retrieving it from the build_script.
 
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file>
+certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file> --rule rule_some_rule
 ```
 
 ### --cargo_features
@@ -125,7 +134,7 @@ Use it when there is a need to enable a specific [Cargo feature](https://doc.rus
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2>
+certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2> --rule rule_some_rule
 ```
 
 ### --msg
@@ -143,7 +152,7 @@ It is also helpful to keep track of a single file verification status over time,
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion'
+certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion' --rule rule_some_rule
 ```
 
 ### --rule
