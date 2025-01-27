@@ -59,7 +59,7 @@ Use this mode to prove properties on source code while providing an automatic co
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --rule rule_some_rule
+certoraSolanaProver --build_script <path_to_build_script> --rule rule_name
 ```
 
 ### precompiled binary
@@ -75,7 +75,7 @@ Use this mode to prove properties on source code without recompiling the project
 **Example**
 
 ```bash
-certoraSolanaProver <path_to_binary_file> --rule rule_some_rule
+certoraSolanaProver <path_to_binary_file> --rule rule_name
 ```
 
 ## Most Frequently Used Options
@@ -92,12 +92,12 @@ See an [example](./scripts/cvlr_inlining.txt).
 **When to use it?**
 
 This option is currently required for every project.
-It can be provided to the prover by passing this files as flag or by retrieving it from the build_script.
+It can be provided to the Prover by passing this list as a flag or by retrieving it from the build script.
 
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <path_to_inlining_file>  --rule rule_some_rule
+certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <path_to_inlining_file>  --rule rule_name
 ```
 
 (--solana_summaries)=
@@ -112,12 +112,12 @@ See an [example](./scripts/cvlr_summaries.txt).
 **When to use it?**
 
 This option is currently required for every project.
-It can be provided to the prover by passing this files as flag or by retrieving it from the build_script.
+It can be provided to the Prover by passing this list as a flag or by retrieving it from the build script.
 
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file> --rule rule_some_rule
+certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file> --rule rule_name
 ```
 
 ### --cargo_features
@@ -134,7 +134,7 @@ Use it when there is a need to enable a specific [Cargo feature](https://doc.rus
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2> --rule rule_some_rule
+certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2> --rule rule_name
 ```
 
 ### --msg
@@ -152,7 +152,7 @@ It is also helpful to keep track of a single file verification status over time,
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion' --rule rule_some_rule
+certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion' --rule rule_name
 ```
 
 ### --rule
