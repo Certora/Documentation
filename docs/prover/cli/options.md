@@ -219,8 +219,8 @@ This option enables .sol and .spec coverage analysis and visualization.  The `--
 be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/coverage-info` for more information about the analysis.
 
-**When to use it?**  
-We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules. 
+**When to use it?**
+We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules.
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
@@ -622,6 +622,36 @@ to `true`.
 
 ```
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
+```
+
+(--auto_dispatcher)=
+### `--auto_dispatcher`
+
+**What does it do?**
+In case a call's callee cannot be precomputed but the called method's sighash
+can be (e.g. `MyInterface(addr).foo()` in solidity, where `addr` is some
+`address` typed variable), the default behavior of the Prover in this case is to
+Havoc. In this case the user can specify a {ref}`dispatcher` summary in the
+{ref}`methods-block` so that the prover will inline all methods in the scene
+that have this sighash.
+
+This option will cause all such unknown callee with known sighash cases to behave
+as if an `DISPATCHER(optimistic=true)` was added for that method in the methods
+block.
+
+One important difference from manually placing the `DISPATCHER` summary in the
+methods block is that when it's manually written there with `optimistic=true`
+and no such function is found in the scene the Prover will exit with an error,
+but when using the flag it will fall back to the default havoc.
+
+**When to use it**
+When there are many such unresolved callee methods, or as a first step to solve
+call resolution failures.
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
 
 
