@@ -106,6 +106,27 @@ If `Bank.spec` includes the following properties:
 If we want to skip both rules we could run
 `certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
 
+(--split_rules)=
+### `--split_rules <rule_name_pattern>`
+
+**What does it do?**
+Typically, all rules (after being filtered by `--rule` and `--exclude_rule`) are evaluated in a single activation of
+the prover. With `--split_rules` the user can run specific rules each on a dedicated instance of the prover.
+
+Note that you can specify this flag multiple times to denote several rules or rule patterns.
+
+**Example**
+If `Bank.spec` includes the following properties:
+
+`invariant address_zero_cannot_become_an_account()`
+`rule withdraw_succeeds()`
+`rule withdraw_fails()`
+
+If we want to run the invariant on different prover instances we could run
+`certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account`
+
+The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different prover activation
+
 ```{note}
 When used together with the {ref}`--rule` flag the logic is to collect all rules
 that pass the `--rule` flag(s) and then subtract from them all rules that match
