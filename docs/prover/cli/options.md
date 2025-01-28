@@ -645,7 +645,7 @@ and no such function is found in the scene the Prover will exit with an error,
 but when using the flag it will fall back to the default havoc.
 
 **When to use it**
-When there are many such unresolved callee methods, or as a first step to solve
+When there are many unresolved callee methods, or as a first step to solve
 call resolution failures.
 
 **Example**
