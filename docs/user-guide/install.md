@@ -294,25 +294,3 @@ follow the next steps:
  
            source .profile
 ```
-
-```{index} single: VS code; extension
-```
-
-Step 6 (for VS Code users): Install the Certora Verification Language LSP
--------------------------------------------------------------------------
-
-All users of the Certora Prover can access the tool using the command line 
-interface, or [CLI](https://docs.certora.com/en/latest/docs/prover/cli/index.html). 
-Those who use Microsoft's Visual Studio Code editor (VS Code) also have the 
-option of using the
-[Certora Verification Language LSP](https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp).
-This will provide both syntax checking and syntax highlighting for CVL.
-
-----
-
-Congratulations! You have just completed Certora Prover's installation and setup.
-
-```{caution}
-We strongly recommend trying the tool on basic examples to verify correct installation.
-See {doc}`running` for a detailed walkthrough.
-```

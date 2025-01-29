@@ -1,3 +1,4 @@
+(solana_usage)=
 # Using the Solana Certora Prover 
 
 ## Overview

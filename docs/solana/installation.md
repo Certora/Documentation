@@ -1,32 +1,8 @@
 # Get started with the Solana Certora Prover
 
-
 ## Installing Solana Certora Prover
 
-1. First, we will need to install the Solana Certora Prover.
-   For that, please visit [Certora.com](https://www.certora.com/) and sign up for a
-   free account at [Certora sign-up page](https://www.certora.com/signup).
-
-2. You will receive an email with a temporary password and a *Certora Key*.
-   Use the password to login to Certora following the link in the email.
-
-3. Next, install Python3.8.16 or newer on your machine.
-   If you already have Python3 installed, you can check the version: `python3 --version`.
-   If you need to upgrade, follow these instructions in the
-   [Python Beginners Guide](https://wiki.python.org/moin/BeginnersGuide/Download).
-
-4. Next, install Java. Check your Java version: `java -version`.
-   If the version is < 11, download and install Java version 11 or later from
-   [Oracle](https://www.oracle.com/java/technologies/downloads/).
-
-5. Then, install the Certora Prover: `pip3 install certora-cli-beta`.
-
-   Tip: Always use a Python virtual environment when installing packages.
-
-6. Recall that you received a *Certora Key* in your email (Step 2).
-   Use the key to set a temporary environment variable like so
-   `export CERTORAKEY=<personal_access_key>`.
-
+Begin by following the steps in {ref}`installation`.
 
 ## Rust and Solana Setup
 
@@ -45,5 +21,12 @@
 
 4. Finally, install `rustfilt` like so: `cargo install rustfilt`.
 
+----
 
+Congratulations! You have just completed Certora Prover's installation and setup.
+
+```{caution}
+We strongly recommend trying the tool on basic examples to verify correct installation.
+See {doc}`solana_usage` for a detailed walkthrough.
+```
 

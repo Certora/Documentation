@@ -1,14 +1,14 @@
 (install_evm_compiler)=
-Installing an EVM compiler
+Installing an EVM compiler and VL LSP Extension
 ============
 
-A working local installation of a compiler is required for verification of EVM code.
+After completing the steps in {ref}install, a locally installed Solidity or Vyper compiler is required to verify EVM code. This page provides instructions for installing the necessary compiler and setting up the VS Code extension for syntax checking and highlighting.
 
 ```{contents} Overview
 ```
 
 (selecting-solidity-compiler)=
-Installing the relevant Solidity compiler versions
+Installing Solidity compiler
 ---------------------------------------------------------------------------
 
 There are two ways to install the Solidity compiler (`solc`): via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
@@ -133,10 +133,32 @@ full path to the `solc` executables folder every time.
 ```{index} single: install; vyper
 ```
 
-Install the Vyper compiler (`vyper`)
+Installing the Vyper compiler
 --------------------------------------------------------------------------------
 [Vyper](https://github.com/vyperlang/vyper) is an EVM compatible Pythonic smart contract language.
 Since the Certora Prover operates on the bytecode, it can be applied to any source-level language
 that compiles to EVM bytecode.
 We recommend to install Vyper either from PyPi (i.e., `pip install vyper`) or to get a 
 binary executable for the desired version.
+
+```{index} single: VS code; extension
+```
+
+Installing the Certora Verification Language LSP VS Code extension
+-------------------------------------------------------------------------
+
+All users of the Certora Prover can access the tool using the command line 
+interface, or [CLI](https://docs.certora.com/en/latest/docs/prover/cli/index.html). 
+Those who use Microsoft's Visual Studio Code editor (VS Code) also have the 
+option of using the
+[Certora Verification Language LSP](https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp).
+This will provide both syntax checking and syntax highlighting for CVL.
+
+----
+
+Congratulations! You have just completed Certora Prover's installation and setup.
+
+```{caution}
+We strongly recommend trying the tool on basic examples to verify correct installation.
+See {doc}`running` for a detailed walkthrough.
+```
