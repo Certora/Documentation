@@ -10,7 +10,7 @@ TODO: add here the table of contents.
 Installing the relevant Solidity compiler versions
 ---------------------------------------------------------------------------
 
-There are two ways to install the SOlidity compiler (`solc`): via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
+There are two ways to install the Solidity compiler (`solc`): via [solc-select](https://github.com/crytic/solc-select) or downloading the binary directly and adding its folder to your `PATH`.
 
 ```{index} single: solc; solc-select
 ```
