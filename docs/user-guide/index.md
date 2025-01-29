@@ -29,6 +29,7 @@ think about and write high-level properties.
 
 tutorials.md
 install.md
+install_evm_compiler.md
 ci.rst
 running.rst
 properties/index.md
