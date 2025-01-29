@@ -2,7 +2,7 @@
 Installing an EVM compiler and VS Code Extension
 ============
 
-After completing the steps in {ref}`installation`, a locally installed Solidity or Vyper compiler is required to verify EVM code. This page provides instructions for installing the necessary compiler and setting up the VS Code extension for syntax checking and highlighting.
+After completing the steps in {ref}`installation guide <installation>`, a locally installed Solidity or Vyper compiler is required to verify EVM code. This page provides instructions for installing the necessary compiler and setting up the VS Code extension for syntax checking and highlighting.
 
 ```{contents} Overview
 ```
