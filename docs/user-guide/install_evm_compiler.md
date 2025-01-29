@@ -1,5 +1,5 @@
 (install_evm_compiler)=
-Installing an EVM compiler and VL LSP Extension
+Installing an EVM compiler and VS Code Extension
 ============
 
 After completing the steps in {ref}install, a locally installed Solidity or Vyper compiler is required to verify EVM code. This page provides instructions for installing the necessary compiler and setting up the VS Code extension for syntax checking and highlighting.
