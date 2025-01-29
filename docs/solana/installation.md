@@ -2,7 +2,7 @@
 
 ## Installing Solana Certora Prover
 
-Begin by following the steps in {ref}`installation`.
+Begin by following the steps in the {ref}`Certora Prover installation guide <installation>`.
 
 ## Rust and Solana Setup
 
