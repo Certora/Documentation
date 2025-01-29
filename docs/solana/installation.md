@@ -23,7 +23,7 @@ Begin by following the steps in {ref}`installation`.
 
 ----
 
-Congratulations! You have just completed Certora Prover's installation and setup.
+Congratulations! You have just completed Solana Certora Prover's installation and setup.
 
 ```{caution}
 We strongly recommend trying the tool on basic examples to verify correct installation.
