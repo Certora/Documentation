@@ -1,3 +1,7 @@
+(install_evm_compiler)=
+Installing an EVM compiler
+============
+
 A working local installation of a compiler is required for verification of EVM code.
 
 TODO: add here the table of contents.
