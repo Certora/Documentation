@@ -369,6 +369,26 @@ may be hot spots for summarization etc.
 **Example**
 `certoraRun --project_sanity`
 
+(--foundry)=
+### `--foundry`
+
+**What does it do?**
+Collects all test files in the project (files ending with `.t.sol`), and runs
+the {ref}`foundry_integration` on them (specifically, the
+`verifyFoundryFuzzTestsNoRevert` builtin rule). As with the
+{ref}`--project_sanity` option, the search is over files in the current git
+repository if such exists, otherwise over all files in the tree under the
+current working directory.
+
+Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+
+
+**When to use it?**
+When we want to run all foundry fuzz tests in the project with the prover.
+
+**Example**
+`certoraRun --foundry`
+
 Options that control the Solidity compiler
 ------------------------------------------
 (--compiler_map)=
