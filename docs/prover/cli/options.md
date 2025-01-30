@@ -335,7 +335,6 @@ useful check if you notice rules passing surprisingly quickly or easily.
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
 
 (--short_output)=
-
 ### `--short_output`
 
 **What does it do?**
@@ -346,6 +345,29 @@ When we do not care much for the output. It is recommended when running the tool
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --short_output`
+
+(--project_sanity)=
+### `--project_sanity`
+
+**What does it do?**
+Runs the builtin sanity rule on all methods in the project. If the Prover is run
+from within a git project, all .sol files in the in the git repository are added
+to the scene and the {ref}`builtin sanity rule <built-in-sanity>` is run on
+them. Otherwise, _all_ .sol files in the tree under the current working
+directory are collected.
+
+Alternatively, a list of files could be provided and then the builtin sanity
+rule will run on all methods of the specified files.
+
+Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+
+**When to use it?**
+Mostly used as a first step when starting to work on a new project, in order to
+"get a feeling" of the complexity of the project for the tool, and what methods
+may be hot spots for summarization etc.
+
+**Example**
+`certoraRun --project_sanity`
 
 Options that control the Solidity compiler
 ------------------------------------------
