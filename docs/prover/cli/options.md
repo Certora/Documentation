@@ -351,13 +351,13 @@ When we do not care much for the output. It is recommended when running the tool
 
 **What does it do?**
 Runs the builtin sanity rule on all methods in the project. If the Prover is run
-from within a git project, all .sol files in the in the git repository are added
+from within a git project, all `.sol` files in the in the git repository are added
 to the scene and the {ref}`builtin sanity rule <built-in-sanity>` is run on
-them. Otherwise, _all_ .sol files in the tree under the current working
+them. Otherwise, _all_ `.sol` files in the tree under the current working
 directory are collected.
 
-Alternatively, a list of files could be provided and then the builtin sanity
-rule will run on all methods of the specified files.
+Alternatively, a list of files can be provided in the `.conf` file and then the
+builtin sanity rule will run on all methods of the specified files.
 
 Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
 
