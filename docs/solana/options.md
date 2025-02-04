@@ -49,7 +49,7 @@ In this case, the build script should output the following:
 - ``solana_inlining``: List of paths to [inlining](#--solana_inlining) files for Solana contracts.
 - ``solana_summaries``: List of paths to [summaries](#--solana_summaries) files for Solana contracts.
 
-See an example of a [build script](./scripts/certora_build.py) and refer to the
+See an example of a [build script](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora_build.py) and refer to the
 [usage](./usage.md) section for more information about it.
 
 **When to use it?**
