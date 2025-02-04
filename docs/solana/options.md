@@ -87,7 +87,7 @@ certoraSolanaProver <path_to_binary_file> --rule rule_name
 
 Provides the Prover with a list of paths to inlining files for Solana contracts.
 These files are parsed and used to prove properties.
-See an [example](./scripts/cvlr_inlining.txt).
+See an [example](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora/inlining.txt).
 
 **When to use it?**
 
@@ -107,7 +107,7 @@ certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <pat
 
 Provides the Prover with a list of paths to summary files for Solana contracts.
 These files are parsed and used to prove properties.
-See an [example](./scripts/cvlr_summaries.txt).
+See an [example](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora/summaries.txt).
 
 **When to use it?**
 
