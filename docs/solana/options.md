@@ -41,7 +41,7 @@ The build script should output 0 on success and 1 on failure unless its being ex
 In this case, the build script should output the following:
 
 - ``project_directory``: Path to the project root directory.
-- ``sources``: List of source files or directories used or imported in the program. Source files should be relative to the ``project_directory`` with support of wildcards. All files declared in this list will be uploaded as sources to cloud and displayed in the rule report. Source files are required, for instance, for the jump to source feature to work.
+- ``sources``: List of source files or directories used or imported in the program. Source files should be relative to the ``project_directory`` with support of wildcards. All files declared in this list will be uploaded as sources to the cloud and displayed in the rule report. Source files are required, for instance, for the jump to source feature to work.
 - ``executables``: List of compiled binary files, which are the target of the Rust program.
 - ``success``: Boolean flag indicating if the build phase passed successfully.
 - ``return_code``: The return code of the script.
