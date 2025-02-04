@@ -37,7 +37,7 @@ These modes are mutually exclusive - you cannot run the tool with more than one 
 **What does it do?**
 
 Specifies the location of the script that has to be called to compile the Rust project.
-The build script should output 0 on success and 1 on failure unless its being executed using the ``--json`` flag.
+The build script should output 0 on success and 1 on failure unless it's being executed using the ``--json`` flag.
 In this case, the build script should output the following:
 
 - ``project_directory``: Path to the project root directory.
