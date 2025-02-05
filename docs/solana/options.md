@@ -7,7 +7,7 @@ The ``certoraSolanaProver`` utility invokes the Rust compiler and then sends the
 The most commonly used command is:
 
 ```bash
-certoraSolanaProver <path_to_config\>.config
+certoraSolanaProver <path_to_config\>.conf
 ```
 
 If a precompiled execution is desired, the run command can skip the compilation step by executing:
