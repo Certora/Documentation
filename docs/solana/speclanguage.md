@@ -8,7 +8,7 @@ semantics.
 
 ## Assertions
 
-The simplest feature of CVLR are assertions. An assertion is written as
+The simplest feature of CVLR is assertions. An assertion is written as
 `cvlr_assert!(cond)`, where `cond` is the condition being asserted.
 The semantics is the same as traditional asserts in Rust -- an assertion is
 violated if there is (a panic-free) execution that reaches `cvlr_assert!(cond)`
@@ -71,7 +71,7 @@ non-deterministic `u64`, and `nondet::<u16>()` returns a non-deterministic
 
 Specifications are written as pre- and post-conditions in rules. A rule is
 similar to a unit test. However, instead of being executed for some specific
-input, the rule is symbolically analyzed for all possible values of
+input, the rule is symbolically analyzed for all possible
 non-deterministic values.
 
 In CVLR, rules are regular Rust functions, annotated with `#[rule]`.
@@ -122,11 +122,11 @@ least one panic-free execution. A rule like that is called a sanity rule. It is
 a good practice to start a specification with such a rule.
 
 The rule `rule_fee_assessed` checks that a fee can be computed for an arbitrary amount.
-There are two assertions. The first checks that the fee is never greater than
+It has two assertions. The first checks that the fee is never greater than
 the amount. The second checks that the fee is always assessed when required.
 The first assertion is not violated. However, the second is. Can you spot the bug?
 Note that we have also added calls to the log macro `clog!` that is similar to
-`dbg!` macro in Rust. The `clog!` macro will instruct the Prover to produce the
+the `dbg!` macro in Rust. The `clog!` macro will instruct the Prover to produce the
 values of the desired variables in any violating execution.
 
 The rule `rule_fee_liveness` checks that the fee is always computed, except when
