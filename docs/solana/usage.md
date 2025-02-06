@@ -65,7 +65,7 @@ This configuration mode uses a `build_script` or executable command for dynamic 
 
 - **Running from Sources**: Automates the build process through the
   `certora_build.py` script or another executable
-  command. See [here](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora_build.py) for an example of such a script. 
+  command. See [here](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora_build.py) for an example of such a script. 
 
 ## Execution Examples
 

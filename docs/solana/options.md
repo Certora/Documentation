@@ -46,11 +46,11 @@ In this case, the build script should output the following:
 - ``executables``: List of compiled binary files, which are the target of the Rust program.
 - ``success``: Boolean flag indicating if the build phase passed successfully.
 - ``return_code``: The return code of the script.
-- ``log``: Optionally provide paths to files for `stdout` and `stderr` of the build.
+- ``log``: Optionally provided paths to files for `stdout` and `stderr` of the build logs.
 - ``solana_inlining``: List of paths to [inlining](#--solana_inlining) files for Solana programs.
 - ``solana_summaries``: List of paths to [summaries](#--solana_summaries) files for Solana programs.
 
-See an example of a [build script](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora_build.py) and refer to the
+See an example of a [build script](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora_build.py) and refer to the
 [usage](./usage.md) section for more information about it.
 
 **When to use it?**
@@ -63,17 +63,7 @@ Use this mode to prove properties on source code while providing an automatic co
 certoraSolanaProver --build_script <path_to_build_script> --rule <rule_name>
 ```
 
-### precompiled binary
-
-**What does it do?**
-
-Runs formal verification of specified properties on a precompiled Rust project by providing a path to the binary target file.
-
-**When to use it?**
-
-Use this mode to prove properties on source code without recompiling the project for every execution. Ideal when files are stable and unchanged.
-
-**Example**
+Note: If you want to skip compilation process and run on a precompiled Rust project it's possible to provide a path to the binary target file instead
 
 ```bash
 certoraSolanaProver <path_to_binary_file> --rule <rule_name>
@@ -123,7 +113,7 @@ certoraSolanaProver --build_script <path_to_build_script> --rule rule_withdraw_s
 
 Provides the Prover with a list of paths to inlining files for Solana programs.
 These files are parsed and used to prove properties.
-See an [example](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora/inlining.txt).
+See an [example](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora/inlining.txt).
 
 **When to use it?**
 
@@ -143,7 +133,7 @@ certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <pat
 
 Provides the Prover with a list of paths to summary files for Solana contracts.
 These files are parsed and used to prove properties.
-See an [example](https://github.com/Certora/SolanaExamples/blob/main/first_example/certora/summaries.txt).
+See an [example](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora/summaries.txt).
 
 **When to use it?**
 
@@ -182,7 +172,7 @@ Note that you need to wrap your message in quotes if it contains spaces.
 
 **When to use it?**
 
-Adding a message makes it easier to track several runs. It is very useful if you are running many verifications simultaneously.
+Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously.
 It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
 
 **Example**
