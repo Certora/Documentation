@@ -6,7 +6,7 @@ This guide explains how to interpret verification results from the Certora Prove
 
 ## Verification Tasks
 
-A verification task consists of one or more rules that verify specific properties of your Solana program. Each rule contains at least one of:
+A verification task consists of one or more rules that verify specific properties of your Solana program. Each rule contains at least one of the following:
 
 * Assert statements `cvlr_assert!`
 * Satisfy statements `cvlr_satisfy!`
@@ -15,13 +15,13 @@ A verification task consists of one or more rules that verify specific propertie
 
 ### Assert Statements
 
-When using `cvlr_assert`, the prover attempts to prove that the assertion holds true for all possible program states. For example:
+When using `cvlr_assert`, the Prover attempts to prove that the assertion holds true for all possible program states. For example:
 
 ```rust
 cvlr_assert!(amount > 10);
 ```
 
-The prover will return one of two results:
+The Prover will return one of two results:
 ![A passed rule in the Certora Rule Report](./img/passed.png)
 
 1. **PASSED**: The assertion is proven true for all possible computation paths and initial values
@@ -29,7 +29,7 @@ The prover will return one of two results:
 ![A failed rule in the Certora Rule Report](./img/failed.png)
 
 2. **FAILED**: A counterexample (CEX) was found, i.e a starting state and computation path that violates the assertion.
-    The prover stops at the first counterexample found, even if multiple counterexamples exist.
+    The Prover stops at the first counterexample found, even if multiple counterexamples exist
 
 ### Satisfy Statements
 
@@ -39,14 +39,14 @@ The prover will return one of two results:
 cvlr_satisfy!(amount > 10);
 ```
 
-Results can be:
+The results can be:
 
 1. **PASSED**: At least one execution path exists where the condition is true
 2. **FAILED**: The condition is unreachable under any execution path
 
 ## Analyzing Counterexamples
 
-When a rule fails, the prover generates a counterexample showing the execution path that led to the failure. Counterexamples can be:
+When a rule fails, the Prover generates a counterexample showing the execution path that led to the failure. Counterexamples can be:
 
 1. **Valid**: Indicating a genuine bug in the code
 2. **Spurious**: Resulting from over-approximation of possible program states
@@ -62,7 +62,7 @@ The call trace provides detailed information about the execution path. Here's ho
 * Represent the starting state which leads to a violation
 * Format: `CVT_nondet_u64: <value>`
 
-#### Value of the Variables
+#### Variable Values
 
 * The values of variables can be printed using the `clog!` macro
 * Example: `let x: u64 = nondet(); clog!(x);`
@@ -138,7 +138,7 @@ This adds an implicit `cvlr_assert!(false)` at the end of each rule. If this ass
 
 ### Common Sanity Check Results
 
-1. **Sanity Check PASSED**: Desired outcome - confirms rule isn't vacuously true
+1. **Sanity Check PASSED**: The desired outcome - confirms rule isn't vacuously true
 2. **Sanity Check WARNING**: Warning sign - indicates contradictory assumptions
 
 See [Rule Sanity Checks](./sanity.md) for more details.
@@ -156,8 +156,8 @@ See [Rule Sanity Checks](./sanity.md) for more details.
 
 When analyzing counterexamples, consider:
 
-1. Initial state feasibility: Is the starting state a reachable state for the code you're analyzing?
-2. Transaction sequence validity: does the computation path make sense, did you overlook a certain scenario?
-3. State transition legitimacy: do the values throughout the computation match? Are the parameters to your rule changing as expected?
+1. Initial state feasibility: Is the starting state reachable for the code you're analyzing?
+2. Transaction sequence validity: Does the computation path make sense? Did you overlook a certain scenario?
+3. State transition legitimacy: Do the values throughout the computation match? Are the parameters of your rule changing as expected?
 
 If any seem impossible in your actual program, the counterexample might be due to over-approximation.
