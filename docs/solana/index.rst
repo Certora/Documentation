@@ -12,6 +12,7 @@ The *Certora Solana Prover* allows formal verification of Solana smart contracts
    speclanguage
    options
    output
+   sanity
    troubleshooting
 
 

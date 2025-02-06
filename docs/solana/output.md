@@ -120,10 +120,35 @@ this:
             * But then we assert `amount1 < 100`
         * This is impossible to satisfy, hence the counterexample
 
+
+## Rule Sanity Checking
+
+To ensure rules aren't passing vacuously (due to contradictory assumptions), add sanity checking to your configuration:
+
+```json
+{
+    "rule_sanity": "basic"
+}
+```
+
+This adds an implicit `cvlr_assert!(false)` at the end of each rule. If this assertion is unreachable, it confirms that:
+
+1. Your assumptions aren't contradictory
+2. The rule's success is meaningful
+
+### Common Sanity Check Results
+
+1. **Sanity Check PASSED**: Desired outcome - confirms rule isn't vacuously true
+2. **Sanity Check WARNING**: Warning sign - indicates contradictory assumptions
+
+See [Rule Sanity Checks](./sanity.md) for more details.
+
+
 ## Best Practices
 
-1. Review full call traces when investigating failures
-2. Validate counterexamples against your program's expected state space
+1. Always enable rule sanity checking in your configuration
+2. Review full call traces when investigating failures
+3. Validate counterexamples against your program's expected state space
 
 ## Advanced Topics
 
