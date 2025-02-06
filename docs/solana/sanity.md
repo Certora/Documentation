@@ -1,8 +1,8 @@
 Rule Sanity Checks (Solana)
 ==========================
 
-The {ref}`--rule_sanity` option enables an automatic checks that warns the user
-about potential problems in the specification. Currently only one sanity check is implemented:
+The {ref}`--rule_sanity` option enables automatic checks that warn the user
+about potential problems in the specification. Currently only one sanity check has been implemented: 
 the vacuity check.
 
 ```{note}
@@ -19,7 +19,7 @@ The `--rule_sanity` option can be set to `none` or `basic` and controls whether 
 Each sanity check adds a new child node to every rule in the rule tree of the rule report. Each check transforms the underlying
 representation into a deviated subprogram from the original one under verification and attempts to verify this new program.  
 If the sanity check fails on a rule, the sanity node in the rule report will be displayed as a yellow icon, 
-and it's status propagates to the parent rule's node (Example see below).
+and its status propagates to the parent rule's node (see below for an example).
 
 The remainder of this document describes the vacuity check in detail. 
 
@@ -30,8 +30,8 @@ Vacuity checks
 The **vacuity** sanity check ensures that even when ignoring all the
 user-provided assertions, the end of the rule is reachable. This check ensures
 that the combination of `require` statements does not rule out all
-possible counterexamples.  Rules that rule out all possible counterexamples
-are called {term}`vacuous`.  Since they don't actually check any
+possible counterexamples. Rules that rule out all possible counterexamples
+are called {term}`vacuous`. Since they don't actually check any
 assertion, they are almost certainly incorrect.
 
 For example, the following rule would be flagged by the vacuity check:
@@ -55,9 +55,9 @@ preconditions are contradictory.
 In the rule report, a vacuity check adds a node called `rule_not_vacuous` to each rule.  
 For example, see how the rule `rule_vacuity_test_expect_sanity_failure` from above
 is reported as failing sanity, as `rule_not_vacuous` fails. 
-Below you see an example of a rule without the contradicting assumes that does not fail vacuity. 
+Below you see an example of a rule without the contradicting `assume`s that does not fail vacuity.
 
 ![Screenshot of vacuity subrule](img/vacuity_check.png)
 
-Note, the vacuity check will only be executed, if the original's rule status is verified. 
-In the case the Prover found a violation, the sanity check will be skipped.
+Note that the vacuity check will only be executed if the original's rule status is verified. 
+If the Prover finds a violation, the sanity check will be skipped.
