@@ -53,4 +53,6 @@ impl User {
         }
     }
 }
-// ... existing code ... 
+// ... existing code ...
+
+See the :doc:`soroban-types` section for more on the types commonly used in Sunbeam specs. 
