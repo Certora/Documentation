@@ -6,11 +6,12 @@ In addition to `assert!` and `require!`, Sunbeam provides a `satisfy!` macro for
 `satisfy!(expr)` asserts that the expression `expr` is satisfiable, i.e., there exists some input for which `expr` evaluates to true. If `expr` is unsatisfiable (always false), the rule will fail.
 
 For example:
-#[rule]
-pub fn certora_config_sanity(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {
-    DAOContract::config(env, ContractConfig { admin, token, amount, deposit_params, start_date });
-    satisfy!(true);
-}
+    .. code-block:: bash
+        #[rule]
+        pub fn certora_config_sanity(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {
+            DAOContract::config(env, ContractConfig { admin, token, amount, deposit_params, start_date });
+            satisfy!(true);
+        }
 
 In this case, `satisfy!(true)` is always satisfiable, so the rule will pass as long as the `DAOContract::config` call doesn't revert.
 
