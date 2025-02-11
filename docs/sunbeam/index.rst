@@ -1,21 +1,3 @@
-Sunbeam Documentation
-=====================
-
-Sunbeam is a tool for formally verifying Soroban smart contracts written in Rust. 
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   getting-started
-   spec-syntax
-   soroban-types
-   helper-functions
-   assertions
-   common-patterns
-   running
-   examples
-
 Sunbeam: Verification for Soroban
 =================================
 
@@ -26,6 +8,12 @@ Sunbeam: Verification for Soroban
    :caption: Contents:
 
    installation
+   getting-started
+   spec-syntax
+   soroban-types
+   helper-functions
+   assertions
+   common-patterns
    troubleshooting
 
 
