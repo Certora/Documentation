@@ -30,7 +30,7 @@ Assertions
 Within rules, you make assertions using the `assert!`, `require!` and `satisfy!` macros:
 
 - `require!(expr, "msg")`: Asserts that the expression `expr` must hold at this point in the rule, like a precondition. Fails the rule if `expr` is false.
-- `assert!(expr)`: Asserts that `expr` must hold at this point, like a postcondition. Fails the rule if `expr` is false.  
+- `assert!(expr)`: Asserts that `expr` must hold at this point, like a post condition. Fails the rule if `expr` is false.  
 - `satisfy!(expr)`: Asserts that `expr` is satisfiable. Fails if there is no possible way for `expr` to be true.
 
 Nondet
