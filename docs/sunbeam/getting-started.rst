@@ -11,6 +11,7 @@ Installing Sunbeam
 
 Sunbeam can be installed as a Rust library by adding the following to your `Cargo.toml`:
 
+<<<<<<< HEAD
     .. code-block:: bash
         // ... existing code ...
         [dependencies]
@@ -18,6 +19,14 @@ Sunbeam can be installed as a Rust library by adding the following to your `Carg
         certora = "0.1"
         nondet = "0.1"
         // ... existing code ...
+=======
+// ... existing code ...
+[dependencies]
+certora-soroban-macros = "0.1"
+certora = "0.1"
+nondet = "0.1"
+// ... existing code ...
+>>>>>>> 97d38f9c40df1d224720a47b9100ae071db5e618
 
 You'll also need to install the Sunbeam CLI to run the prover. Instructions for this can be found in the Sunbeam repository.
 
@@ -28,6 +37,7 @@ Specifications in Sunbeam are written as Rust functions annotated with the `#[ru
 
 For example, here is a spec asserting that adding liabilities to a user increases their total liabilities:
 
+<<<<<<< HEAD
     .. code-block:: bash
         // ... existing code ...
         #[rule]
@@ -45,5 +55,23 @@ For example, here is a spec asserting that adding liabilities to a user increase
             assert!(pool_liabilities_after >= pool_liabilities_before + amount);
         }
         // ... existing code ...
+=======
+// ... existing code ...
+#[rule]
+pub fn add_liabilities_increases_liabilities(env: &Env) {
+    let mut user = User::nondet();
+    let mut reserve = Reserve::nondet();
+    let amount = i128::nondet();
+    require!(amount > 0, "liabilities to add > 0");
+
+    let pool_liabilities_before = user.get_liabilities(reserve.config.index);
+
+    user.add_liabilities(env, &mut reserve, amount);
+
+    let pool_liabilities_after = user.get_liabilities(reserve.config.index);
+    assert!(pool_liabilities_after >= pool_liabilities_before + amount);
+}
+// ... existing code ...
+>>>>>>> 97d38f9c40df1d224720a47b9100ae071db5e618
 
 See the Spec Syntax section for more details on the Sunbeam rule language. 

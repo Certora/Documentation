@@ -9,6 +9,7 @@ Rules
 Rules are the basic building block of Sunbeam specs. A rule is a Rust function annotated with `#[rule]` that describes a property that should always hold for your smart contract. 
 
 For example:
+<<<<<<< HEAD
    .. code-block:: bash
         // ... existing code ...
         #[rule]
@@ -17,6 +18,15 @@ For example:
         }
         // ... existing code ...
 
+=======
+
+// ... existing code ...
+#[rule]
+pub fn add_liabilities_increases_liabilities(env: &Env) {
+    // rule body
+}
+// ... existing code ...
+>>>>>>> 97d38f9c40df1d224720a47b9100ae071db5e618
 
 Within a rule you'll typically:
 1. Set up some initial state, often using `nondet` values
@@ -44,6 +54,7 @@ There are `nondet` functions for all the primitive Rust types, as well as some S
 
 You can also define `nondet` functions for your own types:
 
+<<<<<<< HEAD
    .. code-block:: bash
         // ... existing code ...
         impl User {
@@ -56,5 +67,18 @@ You can also define `nondet` functions for your own types:
             }
         }
         // ... existing code ...
+=======
+// ... existing code ...
+impl User {
+    pub fn nondet() -> Self {
+        User {
+            liabilities: i128::nondet(),
+            collateral: i128::nondet(),
+            supply: i128::nondet(),
+        }
+    }
+}
+// ... existing code ...
+>>>>>>> 97d38f9c40df1d224720a47b9100ae071db5e618
 
 See the :doc:`soroban-types` section for more on the types commonly used in Sunbeam specs. 
