@@ -8,7 +8,9 @@ Env
 The `Env` type represents the environment of a Soroban contract, including its storage, address, and other metadata. Many Sunbeam rules take an `Env` as a parameter to access the contract state.
 
 For example:
+
    .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn certora_config_sanity(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {
@@ -27,7 +29,9 @@ Map
 `Map` is Soroban's key-value store type, used for representing associative arrays in contract storage. Maps can be used with various key and value types.
 
 An example of using a `Map` in a rule:
+   
    .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn certora_config_deposit_not_negative(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64, category: BallotCategory) {
@@ -47,7 +51,9 @@ Custom Enums
 Sunbeam specs often make use of custom enums to represent contract-specific types like token categories, proposal statuses, etc. 
 
 For example:
+
    .. code-block:: bash
+
         // ... existing code ...
         pub enum BallotStatus {
             InProgress,
@@ -58,7 +64,9 @@ For example:
         // ... existing code ...
 
 These enums can then be used in rules:
+
    .. code-block:: bash
+    
         // ... existing code ...
         #[rule]
         pub fn certora_retract_ballot_can_only_be_called_once(e: Env, ballot_id: u64) {

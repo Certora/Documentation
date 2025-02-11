@@ -16,6 +16,7 @@ The pattern is:
 
 For example:
     .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn certora_create_ballot_must_be_initiator(e: Env, initiator: Address, category: BallotCategory, title: String, description: String) {    
@@ -41,6 +42,7 @@ The pattern is:
 
 For example:
     .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn certora_config_can_only_be_called_once(
@@ -69,6 +71,7 @@ The pattern is:
 
 For example:
     .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn certora_ballot_id_increasing(e: Env, initiator: Address, category: BallotCategory, title: String, description: String) {    
@@ -96,6 +99,7 @@ The pattern is:
 
 For example:
     .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn certora_retract_ballot_can_only_be_called_once(e: Env, ballot_id: u64) {
@@ -120,6 +124,7 @@ The common pattern is to wrap the invariant check around calls to the contract:
 
 For example:
     .. code-block:: bash
+        
         // ... existing code ...
         pub fn get_balance_wrapped(e: &Env, user: Address) -> i128 {
             let before = e.get_balance(user);

@@ -13,6 +13,7 @@ The key difference is that helper functions are not annotated with `#[rule]`, so
 Here's an example helper function that converts token quantities between the pool and user scales:
 
     .. code-block:: bash
+
         // ... existing code ...
         pub(crate) fn certora_convert_to_tokens(pool_shares: i64, pool_tokens: i64, shares: i64) -> i64 {
             if pool_shares == 0 {
@@ -30,6 +31,7 @@ To use a helper function in a rule, simply call it like you would any other Rust
 For example, here's a rule that uses the `certora_convert_to_tokens` helper:
 
     .. code-block:: bash
+
         // ... existing code ...
         #[rule]
         pub fn simple_token_roundtrip_correct(pool_shares: i64, pool_tokens: i64, tokens: i64) {
@@ -59,6 +61,7 @@ Some common uses for helper functions in Sunbeam specs include:
 For example, here's a helper that wraps a contract call to check that an invariant holds before and after:
 
     .. code-block:: bash
+        
         // ... existing code ...
         pub fn get_balance_wrapped(e: &Env, user: Address) -> i128 {
             let before = e.get_balance(user);

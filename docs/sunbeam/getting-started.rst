@@ -12,6 +12,7 @@ Installing Sunbeam
 Sunbeam can be installed as a Rust library by adding the following to your `Cargo.toml`:
 
     .. code-block:: bash
+
         // ... existing code ...
         [dependencies]
         certora-soroban-macros = "0.1"
@@ -29,6 +30,7 @@ Specifications in Sunbeam are written as Rust functions annotated with the `#[ru
 For example, here is a spec asserting that adding liabilities to a user increases their total liabilities:
 
     .. code-block:: bash
+        
         // ... existing code ...
         #[rule]
         pub fn add_liabilities_increases_liabilities(env: &Env) {

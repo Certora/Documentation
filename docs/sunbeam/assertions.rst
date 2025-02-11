@@ -7,6 +7,7 @@ In addition to `assert!` and `require!`, Sunbeam provides a `satisfy!` macro for
 
 For example:
     .. code-block:: bash
+        
         #[rule]
         pub fn certora_config_sanity(env: Env, admin: Address, token: Address, amount: i128, deposit_params: Map<BallotCategory, i128>, start_date: u64) {
             DAOContract::config(env, ContractConfig { admin, token, amount, deposit_params, start_date });
