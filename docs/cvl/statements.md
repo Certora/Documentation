@@ -33,6 +33,7 @@ statement ::= type id [ "=" expr ] ";"
             | "if" expr statement [ "else" statement ]
             | "{" block "}"
             | "return" [ expr ] ";"
+            | "revert" "(" [string] ")";
 
             | function_call ";"
             | "reset_storage" expr ";"
@@ -317,13 +318,13 @@ satisfy amount >= 0;
 
 Here, the `require` statement ensures that the `amount` must be greater than zero. This means there cannot be a witness of the `satisfy` command with `amount` equal to zero.
 
-### 3. Modeling Reverts in Solidity Calls
+### 3. Revert
 
-The default method of calling Solidity functions within CVL is to assume they do not revert.
+The default method of calling functions within CVL is to assume they do not revert.
 This behavior can be adjusted with the `@withrevert` modifier.
-After every Solidity call, even if it is not marked with `@withrevert`, a builtin variable called `lastReverted` is updated according to whether the Solidity call reverted or not.
+After every call, even if it is not marked with `@withrevert`, a builtin variable called `lastReverted` is updated according to whether the call reverted or not.
 
-Note: For calls without `@withrevert`, `lastReverted` is automatically set to to false.
+Note: For calls without `@withrevert`, `lastReverted` is automatically assumed to be false.
 
 #### Syntax:
 
@@ -344,6 +345,8 @@ assert lastReverted, "Expected revert when value exceeds limit";
 ```
 
 In this example, the `@withrevert` modifier is applied to the `Deposit` function call, which is expected to revert if the `value` exceeds the specified `limit`. The `assert` statement checks whether `lastReverted` is true, ensuring that the contract execution does revert as anticipated when the condition is violated. The error message in the `assert` provides additional context about the expectation.
+
+By default, this applies only for Solidity function calls. With the `--prover_args "-cvlFunctionRevert"` option, cvl functions can revert as well, and the revert statement becomes available in CVL.
 
 ### 4. Return Statement
 
