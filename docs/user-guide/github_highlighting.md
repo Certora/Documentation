@@ -8,7 +8,23 @@ This guide explains how to improve syntax highlighting in your GitHub repository
 Before and After Comparison
 ---------------------------
 
+### .spec files
+
+A `.spec` file without highlighting will appear on GitHub (in dark mode) as:
+
+![conf before highlighting](assets/spec_without_highlighting.png)
+
+After following the instructions on this guide it will look like:
+
+![spec after highlighting](assets/spec_with_highlighting.png)
+
+### .conf files
+
+A `.conf` file without highlighting will appear on GitHub (in dark mode) as:
+
 ![conf before highlighting](assets/conf_before_highlighting.png)
+
+After following the instructions on this guide it will look like:
 
 ![conf after highlighting](assets/highlighted_conf.png)
 
@@ -36,10 +52,6 @@ The `.gitattributes` file instructs GitHub’s Linguist to classify `.spec` and 
 `.conf` files are [JSON5](https://json5.org/) files with a different extension. Assigning them to JSON5 enables proper syntax highlighting.
 
 `.spec` files use [CVL](cvl-language), which is currently unsupported by GitHub. However, since CVL shares significant syntax with Solidity, applying Solidity highlighting significantly improves readability compared to GitHub’s default.
-
-### Example: Improved .spec Syntax Highlighting
-
-**Show examples of .spec highlighting diff**
 
 
 Troubleshooting
