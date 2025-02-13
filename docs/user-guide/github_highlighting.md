@@ -76,6 +76,6 @@ A successful update should return output similar to:
 ```
 
 If the response is an empty JSON (`{}`), ensure that:
-- The .gitattributes changes were pushed.
+- The `.gitattributes` changes were pushed.
 - There are no conflicting `.gitattributes` rules that override the new settings.
 
