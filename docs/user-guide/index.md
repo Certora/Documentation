@@ -42,5 +42,6 @@ multicontract/index.md
 out-of-resources/index.md
 gaps.md
 checking.md
+github_highlighting.md
 glossary.md
 ```
