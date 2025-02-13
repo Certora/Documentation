@@ -4,7 +4,7 @@
 (github_highlighting)=
 Syntax Highlighting on GitHub
 ============
-This page explains how improve GitHub sytax highlighting in your repository for Certora prover [configuration](conf-files) and [specification](cvl-language) files.
+This page explains how improve GitHub syntax highlighting in your repository for Certora prover [configuration](conf-files) and [specification](cvl-language) files.
 
 **show old pic and new pic**
 
@@ -48,7 +48,7 @@ path/to/file.spec: linguist-language: Solidity
 path/to/file.conf: linguist-language: JSON5
 ```
 
-If you get the language as undefined, as seen below, it means that `.gitattributes` is not at the root of the repo or was not updated correctly:
+If you get the language as undefined, as seen below, it means that `.gitattributes` is not at the root of the repository or was not updated correctly:
 ```
 CLIFlags/solc_via_ir.conf: linguist-language: unspecified
 ```
