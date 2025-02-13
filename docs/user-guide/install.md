@@ -454,4 +454,4 @@ See {doc}`running` for a detailed walkthrough.
 
 Step 7 (for GitHub users): Configure Syntax Highlighting
 --------------------------------------------------------
-[Follow our guide](github_highlighting) to configure syntax highlighting on GitHub for CVL and configuration files.
+[Follow our guide](github_highlighting.md) to configure syntax highlighting on GitHub for CVL and configuration files.

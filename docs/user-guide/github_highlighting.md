@@ -1,7 +1,6 @@
 ```{index} single: GitHub
 ```
 
-(github_highlighting)=
 Syntax Highlighting on GitHub
 ============
 This guide explains how to improve syntax highlighting in your GitHub repository for Certora Prover [configuration](conf-files) and [specification](cvl-language) files.
