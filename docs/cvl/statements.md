@@ -346,7 +346,8 @@ assert lastReverted, "Expected revert when value exceeds limit";
 
 In this example, the `@withrevert` modifier is applied to the `Deposit` function call, which is expected to revert if the `value` exceeds the specified `limit`. The `assert` statement checks whether `lastReverted` is true, ensuring that the contract execution does revert as anticipated when the condition is violated. The error message in the `assert` provides additional context about the expectation.
 
-By default, this applies only for Solidity function calls. With the `--prover_args "-cvlFunctionRevert"` option, CVL functions can revert as well, and the `revert` statement becomes available in CVL. In this mode, CVL functions also set the `lastReverted` variable, just like Solidity functions and reverts of calls without `@withrevert` are propagated up to their callers. Only if no call in the chain had a `@withrevert` annotation do we assume no revert happened. A CVL function can revert either from a call inside it (without `@withrevert`) that reverts or from an explicit revert using the `revert` statement.
+By default, this applies only for Solidity function calls. With the `--prover_args "-cvlFunctionRevert"` option, CVL functions can revert as well, and the `revert` statement becomes available in CVL. In this mode, CVL functions also set the `lastReverted` variable, just like Solidity functions and reverts of calls without `@withrevert` are propagated up to their callers. Only if no call in the chain had a `@withrevert` annotation do we assume no revert happened. A call with `@withrevert` stops propagation of reverts and will not make the calling function revert, but instead allows reading the `lastReverted` variable immediately after it to check whether the call reverted.
+A CVL function can revert either from a call inside it (without `@withrevert`) that reverts or from an explicit revert using the `revert` statement.
 
 ##### Example:
 
