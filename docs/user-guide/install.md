@@ -451,3 +451,7 @@ Congratulations! You have just completed Certora Prover's installation and setup
 We strongly recommend trying the tool on basic examples to verify correct installation.
 See {doc}`running` for a detailed walkthrough.
 ```
+
+Step 7 (for GitHub users): Configure Syntax Highlighting
+--------------------------------------------------------
+[Follow our guide](github_highlighting) to configure syntax highlighting on GitHub for CVL and configuration files.
