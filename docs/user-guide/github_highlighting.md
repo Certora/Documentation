@@ -6,7 +6,12 @@ Syntax Highlighting on GitHub
 ============
 This guide explains how to improve syntax highlighting in your GitHub repository for Certora Prover [configuration](conf-files) and [specification](cvl-language) files.
 
-**show old pic and new pic**
+Before and After Comparison
+---------------------------
+
+![conf before highlighting](assets/conf_before_highlighting.png)
+
+![conf after highlighting](assets/highlighted_conf.png)
 
 Steps
 -----
