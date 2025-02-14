@@ -8,6 +8,12 @@ Sunbeam: Verification for Soroban
    :caption: Contents:
 
    installation
+   getting-started
+   spec-syntax
+   soroban-types
+   helper-functions
+   assertions
+   common-patterns
    troubleshooting
 
 
