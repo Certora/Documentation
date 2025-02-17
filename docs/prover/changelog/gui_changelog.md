@@ -1,8 +1,18 @@
-Rules Report Release Notes
+GUI Release Notes
 =============
 
 ```{contents}
 ```
+
+3.1.1 (Jan 12, 2025)
+---------------------------
+
+### Features
+
+- [feat] Support for displaying numeric values in string, decimal, or hexadecimal formats in Call Trace and Variables tabs, with a dropdown to switch formats.
+- [feat] Persist column configuration (display selection and width) across browser sessions on the Prover Dashboard, including between tabs and logins.
+- [feat] Added call traces and TAC dumps for sanity rules in Rule Report.
+
 
 3.0.2 (Nov 18, 2024)
 ---------------------------
@@ -12,8 +22,10 @@ Rules Report Release Notes
 - [feat] Improved formatting of the call trace: The call trace highlights values of the counter examples as gray boxes and provides tooltips indicating the semantics of the value (e.g. if the value is a return value or a parameter of a function call).
 - [feat] The rule tree automatically opens a node if it only contains a single child element. This reduces the number of user interactions required to get to the call trace and find the counter example.
 
+
 2.4.4 (Nov 6, 2024)
 ---------------------------
+
 ### Features
 
 - [feat] Adding support for syntax highlighting of Rust files in the code editor
@@ -22,6 +34,7 @@ Rules Report Release Notes
 ### Fixed Bugs
 
 - [bug] The re-run button was reported to not function for non-Certora users. This has been fixed.
+
 
 2.4.1 (Oct 6, 2024)
 ---------------------------
@@ -47,6 +60,7 @@ Rules Report Release Notes
 
 - [feat] Job execution status in browser tab
 
+
 2.1.6 (Jul 8, 2024)
 ---------------------------
 
@@ -71,6 +85,7 @@ Rules Report Release Notes
 - [fix] Expansion bug on the main UI grid
 - [fix] Fixes for the call trace tracking points
 
+
 1.0.0 (Apr 11, 2024)
 ---------------------------
 
@@ -84,6 +99,7 @@ Rules Report Release Notes
 ### Fixed Bugs
 
 - [fix] When a job has been canceled or halted, only rules that were running are being displayed as killed 
+
   
 0.8.0 (Mar 11, 2024)
 ---------------------------
@@ -127,6 +143,7 @@ Rules Report Release Notes
 ### Features
 
 - [feat] Improvements on naming for global / rule notifications
+
 
 0.5.62 (Feb 11, 2024)
 ---------------------------

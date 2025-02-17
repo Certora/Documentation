@@ -13,16 +13,21 @@
 import os
 import sys
 
+from datetime import datetime # access current time and date
+
 from docsinfra.sphinx_utils import TAGS, CVL2Lexer
 
 sys.path.insert(0, os.path.abspath("./util"))
 
 
 # -- Project information -----------------------------------------------------
+year = datetime.today().strftime("%Y")
+company_name = "Certora"
+legal_name = f"{company_name}, Inc"
 
-project = "Certora Prover Documentation"
-copyright = "2024, Certora, Inc"
-author = "Certora, Inc"
+project = f"{company_name} Prover Documentation"
+copyright = f"{year}, {legal_name}"
+author = legal_name
 
 # The full version, including alpha/beta/rc tags
 release = "0.0"
