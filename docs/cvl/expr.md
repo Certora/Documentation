@@ -247,10 +247,11 @@ approximation is {term}`sound`: it won't cause violations to be hidden.  See
 specified indices. For example, if we have a ghost mapping `ghost
 mapping(address => mapping(bytes32 => mathint)) myGhost`, and want to sum all
 the values of the ghost over all addresses for a given `bytes32` value `b`, one
-could write `sum address a. myGhost[a][b]`. This will return a `mathint`-typed
+can write `sum address a. myGhost[a][b]`. This returns a `mathint`-typed
 number that sums all known values of `myGhost` over the first index.
 The full syntax for this is `sum type1 t1, type2 t2, ... typeN tN.
-ghostName[...]`
+ghostName[...]`. See [here](https://github.com/Certora/Examples/blob/master/CVLByExample/Summarization/GhostSummary/GhostSums/README.md)
+for an example.
 
 ```{note}
 The prover support only summation of ghosts. If one wants to sum e.g. some
@@ -262,9 +263,15 @@ keyword. It follows the same rules as the regular sum, but adds some extra
 logic to ensure the value of the sum is always larger than its parts.
 
 ```{note}
-A `usum` can only be used on ghost mappings with unsigned (or `mathint`) value
+The keyword `usum` indicates that all entries are non-negative (unsigned).
+It can only be used on ghost mappings with unsigned or `mathint` value
 types. In the case of `mathint` an assertion is added on each write to the ghost
-that the written value is indeed unsigned.
+that reports an error if the written value is negative.
+When using this keyword, the solver will introduce the additional assumption
+that the `usum` is larger than any value in the ghost mapping and that it is
+even larger than the sum of any finite subset of values.
+This additional assumption is valid, because the other values in the ghost
+mapping can make the total sum only larger.
 
 Accessing fields and arrays
 ---------------------------
