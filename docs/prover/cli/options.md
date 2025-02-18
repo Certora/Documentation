@@ -261,6 +261,26 @@ We suggest using this option when you have finished (a subset of) your rules and
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
 
+(--foundry)=
+### `--foundry`
+
+**What does it do?**
+Collects all test files in the project (files ending with `.t.sol`), and runs
+the {ref}`foundry_integration` on them (specifically, the
+`verifyFoundryFuzzTestsNoRevert` builtin rule). As with the
+{ref}`--project_sanity` option, the search is over files in the current git
+repository if such exists, otherwise over all files in the tree under the
+current working directory.
+
+Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+
+
+**When to use it?**
+When we want to run all foundry fuzz tests in the project with the prover.
+
+**Example**
+`certoraRun --foundry`
+
 (--independent_satisfy)=
 ### `--independent_satisfy`
 
@@ -355,6 +375,29 @@ When you have a rule with multiple assertions:
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
+(--project_sanity)=
+### `--project_sanity`
+
+**What does it do?**
+Runs the builtin sanity rule on all methods in the project. If the Prover is run
+from within a git project, all `.sol` files in the in the git repository are added
+to the scene and the {ref}`builtin sanity rule <built-in-sanity>` is run on
+them. Otherwise, _all_ `.sol` files in the tree under the current working
+directory are collected.
+
+Alternatively, a list of files can be provided in the `.conf` file and then the
+builtin sanity rule will run on all methods of the specified files.
+
+Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+
+**When to use it?**
+Mostly used as a first step when starting to work on a new project, in order to
+"get a feeling" of the complexity of the project for the tool, and what methods
+may be hot spots for summarization etc.
+
+**Example**
+`certoraRun --project_sanity`
+
 (--rule_sanity)=
 ### `--rule_sanity`
 
@@ -381,49 +424,6 @@ When we do not care much for the output. It is recommended when running the tool
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --short_output`
-
-(--project_sanity)=
-### `--project_sanity`
-
-**What does it do?**
-Runs the builtin sanity rule on all methods in the project. If the Prover is run
-from within a git project, all `.sol` files in the in the git repository are added
-to the scene and the {ref}`builtin sanity rule <built-in-sanity>` is run on
-them. Otherwise, _all_ `.sol` files in the tree under the current working
-directory are collected.
-
-Alternatively, a list of files can be provided in the `.conf` file and then the
-builtin sanity rule will run on all methods of the specified files.
-
-Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
-
-**When to use it?**
-Mostly used as a first step when starting to work on a new project, in order to
-"get a feeling" of the complexity of the project for the tool, and what methods
-may be hot spots for summarization etc.
-
-**Example**
-`certoraRun --project_sanity`
-
-(--foundry)=
-### `--foundry`
-
-**What does it do?**
-Collects all test files in the project (files ending with `.t.sol`), and runs
-the {ref}`foundry_integration` on them (specifically, the
-`verifyFoundryFuzzTestsNoRevert` builtin rule). As with the
-{ref}`--project_sanity` option, the search is over files in the current git
-repository if such exists, otherwise over all files in the tree under the
-current working directory.
-
-Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
-
-
-**When to use it?**
-When we want to run all foundry fuzz tests in the project with the prover.
-
-**Example**
-`certoraRun --foundry`
 
 Options that control the Solidity compiler
 ------------------------------------------
@@ -590,6 +590,36 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 Options regarding summarization
 -------------------------------
 
+(--auto_dispatcher)=
+### `--auto_dispatcher`
+
+**What does it do?**
+In case a call's callee cannot be precomputed but the called method's sighash
+can be (e.g. `MyInterface(addr).foo()` in solidity, where `addr` is some
+`address` typed variable), the default behavior of the Prover in this case is to
+Havoc. In this case the user can specify a {ref}`dispatcher` summary in the
+{ref}`methods-block` so that the prover will inline all methods in the scene
+that have this sighash.
+
+This option will cause all such unknown callee with known sighash cases to behave
+as if an `DISPATCHER(optimistic=true)` was added for that method in the methods
+block.
+
+One important difference from manually placing the `DISPATCHER` summary in the
+methods block is that when it's manually written there with `optimistic=true`
+and no such function is found in the scene the Prover will exit with an error,
+but when using the flag it will fall back to the default havoc.
+
+**When to use it**
+When there are many unresolved callee methods, or as a first step to solve
+call resolution failures.
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
+```
+
 (--nondet_difficult_funcs)=
 ### `--nondet_difficult_funcs`
 
@@ -700,36 +730,6 @@ to `true`.
 
 ```
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
-```
-
-(--auto_dispatcher)=
-### `--auto_dispatcher`
-
-**What does it do?**
-In case a call's callee cannot be precomputed but the called method's sighash
-can be (e.g. `MyInterface(addr).foo()` in solidity, where `addr` is some
-`address` typed variable), the default behavior of the Prover in this case is to
-Havoc. In this case the user can specify a {ref}`dispatcher` summary in the
-{ref}`methods-block` so that the prover will inline all methods in the scene
-that have this sighash.
-
-This option will cause all such unknown callee with known sighash cases to behave
-as if an `DISPATCHER(optimistic=true)` was added for that method in the methods
-block.
-
-One important difference from manually placing the `DISPATCHER` summary in the
-methods block is that when it's manually written there with `optimistic=true`
-and no such function is found in the scene the Prover will exit with an error,
-but when using the flag it will fall back to the default havoc.
-
-**When to use it**
-When there are many unresolved callee methods, or as a first step to solve
-call resolution failures.
-
-**Example**
-
-```
-certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
 
 
