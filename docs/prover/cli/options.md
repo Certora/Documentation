@@ -106,6 +106,35 @@ If `Bank.spec` includes the following properties:
 If we want to skip both rules we could run
 `certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
 
+(--split_rules)=
+### `--split_rules <rule_name_pattern>`
+
+**What does it do?**
+Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
+With `--split_rules` the user can run specific rules on separate dedicated Prover jobs. A new job will be created and 
+executed for each rule that matches the rule patterns in `--split_rules` an additional job will be created for
+the rest of the rules. After launching the generated jobs, the original job will return with a link to the dashboard, 
+listing the status of the generated jobs.
+
+Note that you can specify this flag multiple times to denote several rules or rule patterns.
+
+**When to use it?**
+This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
+their own dedicated Prover jobs will give them more resources that will potentially reduce their chance to 
+timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
+
+**Example**
+If `Bank.spec` includes the following properties:
+
+`invariant address_zero_cannot_become_an_account()`
+`rule withdraw_succeeds()`
+`rule withdraw_fails()`
+
+If we want to run the invariant on different Prover jobs we could run
+`certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account`
+
+The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
+
 ```{note}
 When used together with the {ref}`--rule` flag the logic is to collect all rules
 that pass the `--rule` flag(s) and then subtract from them all rules that match
@@ -117,8 +146,11 @@ any `--exclude_rule` flags.
 
 **What does it do?**
 Only uses functions with the given method signature when instantiating
-{term}`parametric rule`s and {term}`invariant`s.  The method signature consists
-of the name of a method and the types of its arguments.
+{term}`parametric rule`s and {term}`invariant`s. The method signature is the ABI
+representation of the method, optionally prepended by a contract name or
+wildcard (`_`). If no contract is specified the primary contract is assumed, and
+if the wildcard is used then all methods with this signature across all
+contracts in the {term}`scene` will be used.
 
 You may provide multiple method signatures, in which case the Prover will run on
 each of the listed methods.
@@ -144,18 +176,22 @@ rule r {
 }
 ```
 
-If we discover a counterexample in the method `deposit(uint)`, and wish to change
-the contract or the spec to rerun, we can just rerun on the `deposit` method:
+If we discover a counterexample in the method `deposit(uint)` of contract `C`,
+and wish to change the contract or the spec to rerun, we can just rerun on
+the `C.deposit` method:
 
 ```sh
-certoraRun --method 'deposit(uint)'
+certoraRun --method 'C.deposit(uint)'
 ```
 
 If we discover a counterexample in several methods, we could rerun just those:
 
 ```sh
-certoraRun --method 'deposit(uint)' --method 'transfer(address,uint256)'
+certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
+
+Note that in the last example the `transfer` method of all contracts in the
+scene will be used, but only the `deposit` method of the primary contract.
 
 Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
