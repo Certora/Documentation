@@ -17,7 +17,7 @@ any issue.
 
 # Usage (Automatic Setup)
 
-In Prover version 7.25.1, the flag {ref}`--foundry` was introduced. This flag automatically collects all test files (`.t.sol`) in the current directory and executes the Prover in foundry mode. 
+In Prover version 7.25.1, the flag {ref}`--foundry` was introduced. This flag automatically collects all test files (`.t.sol`) in the current directory and executes the Prover in Foundry mode. 
 
 To execute use: 
 `certoraRun --foundry`
