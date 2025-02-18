@@ -28,6 +28,7 @@ think about and write high-level properties.
 :maxdepth: 1
 
 install.md
+install_evm_compiler.md
 tutorials.md
 running.rst
 properties/index.md

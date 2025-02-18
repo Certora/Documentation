@@ -47,6 +47,7 @@ bytecode
 bytecodes
 bytemap
 callee
+cex
 changelog
 checkmark
 cheatcode
@@ -203,3 +204,14 @@ whitespace
 upgradeability
 https
 openzeppelin
+solana
+msg
+cvlr
+hardcoded
+noop
+nondet
+fn
+mul
+liveness
+CVT
+munge

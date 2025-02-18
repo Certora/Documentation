@@ -27,7 +27,7 @@ Each option adds new child nodes to every rule in the specification.  If any of 
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
-Sanity checks have no call trace.  If a sanity node is `halted`, then the parent rule will also have the status `halted`.
+If a sanity node is `halted`, then the parent rule will also have the status `halted`.
 
 The remainder of this document describes these checks in detail.
 
