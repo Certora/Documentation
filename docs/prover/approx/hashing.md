@@ -193,6 +193,7 @@ makes up any arbitrary function that fulfills the previously described axioms an
 also maps that single input to an output accordingly.
 ```
 
+(hashing_unbounded)=
 ## Hashing of unbounded data
 
 In the discussion so far we only considered hashes of data whose length is 
