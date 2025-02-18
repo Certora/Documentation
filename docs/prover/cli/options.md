@@ -55,7 +55,10 @@ To create the message above, we used
 `certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
 
 (--rule)=
-### `--rule <rule_name_pattern> ...`
+### `--rule`
+
+**Usage**
+`--rule <rule_name_pattern>...`
 
 **What does it do?**
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
@@ -88,7 +91,10 @@ Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
 simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
 
 (--exclude_rule)=
-### `--exclude_rule <rule_name_pattern>`
+### `--exclude_rule`
+
+**Usage**
+`--exclude_rule <rule_name_pattern>...`
 
 **What does it do?**
 It is the opposite flag to {ref}`--rule` - use it to specify a list of rules that
@@ -107,7 +113,10 @@ If we want to skip both rules we could run
 `certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
 
 (--split_rules)=
-### `--split_rules <rule_name_pattern>`
+### `--split_rules`
+
+**Usage**
+`--split_rules <rule_name_pattern>...`
 
 **What does it do?**
 Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
@@ -1212,18 +1221,24 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted.
 
 (-enablestoragesplitting)=
-#### `--prover_args '-enableStorageSplitting false'`
+#### `-enableStorageSplitting`
 
 This option disables the storage splitting optimization.
 
+**Usage**
+`--prover_args '-enableStorageSplitting false'`
+
 (-maxnumberofreachchecksbasedondomination)=
-#### `--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
+#### `-maxNumberOfReachChecksBasedOnDomination`
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
+**Usage**
+`--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
+
 (-optimisticreturnsize)=
-#### `--prover_args '-optimisticReturnsize true'`
+#### `-optimisticReturnsize`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -1236,19 +1251,28 @@ expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
+**Usage**
+`--prover_args '-optimisticReturnsize true'`
+
 (-smt_groundquantifiers)=
-#### `--prover_args '-smt_groundQuantifiers false'`
+#### `-smt_groundQuantifiers`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
+**Usage**
+`--prover_args '-smt_groundQuantifiers false'`
+
 (-superoptimisticreturnsize)=
-#### `--prover_args '-superOptimisticReturnsize true'`
+#### `-superOptimisticReturnsize`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
+
+**Usage**
+`--prover_args '-superOptimisticReturnsize true'`
 
 
 (control-flow-splitting-options)=
@@ -1258,7 +1282,10 @@ Control flow splitting options
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
 (-depth)=
-### `--prover_args '-depth <number>'`
+### `-depth <number>`
+
+**Usage**
+`--prover_args '-depth <number>'`
 
 **What does it do?**
 
@@ -1282,7 +1309,10 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ```
 
 (-dontstopatfirstsplittimeout)=
-### `--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
+### `-dontStopAtFirstSplitTimeout`
+
+**Usage**
+`--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
 
 **What does it do?**
 
@@ -1306,11 +1336,14 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplit
 ```
 
 (-mediumtimeout)=
-### `--prover_args '-mediumTimeout <seconds>'`
+### `-mediumTimeout`
 
 The "medium timeout" determines how much time the SMT solver gets for checking a
 {term}`split` that is not a {term}`split leaf`.
 (For split leaves, the full {ref}`--smt_timeout` is used.)
+
+**Usage**
+`--prover_args '-mediumTimeout <seconds>'`
 
 **What does it do?**
 
@@ -1332,10 +1365,13 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
 ```
 
 (-smt_initialsplitdepth)=
-### `--prover_args '-smt_initialSplitDepth <number>'`
+### `-smt_initialSplitDepth`
 
 With this option, the splitting can be configured to skip the SMT solver-based checks
 at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
+
+**Usage**
+`--prover_args '-smt_initialSplitDepth <number>'`
 
 **What does it do?**
 
