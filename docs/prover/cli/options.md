@@ -31,6 +31,11 @@ Most frequently used options
 (--verify)=
 ### `--verify`
 
+**Usage**
+```
+--verify <contract>:<spec_file>
+```
+
 **What does it do?**
 It runs formal verification of properties specified in a .spec file on a given contract. Each contract must have been declared in the input files or have the same name as the source code file it is in.
 
@@ -42,7 +47,12 @@ If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, a
 `certoraRun Bank.sol --verify Bank:Bank.spec`
 
 (--msg)=
-### `--msg <description>`
+### `--msg`
+
+**Usage**
+```
+--msg <description>
+```
 
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. Note that you need to wrap your message in quotes if it contains spaces.
@@ -157,7 +167,12 @@ any `--exclude_rule` flags.
 ```
 
 (--method)=
-### `--method <method_signature>`
+### `--method`
+
+**Usage**
+```
+--method <method_signature>...
+```
 
 **What does it do?**
 Only uses functions with the given method signature when instantiating
@@ -212,11 +227,16 @@ Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
 
 (--parametric_contracts)=
-### `--parametric_contracts <contract_name> ...`
+### `--parametric_contracts`
 
 ```{versionadded} 5.0
 Prior to version 5, method variables and invariants were only instantiated with
 methods of {ref}`currentContract`.
+```
+
+**Usage**
+```
+--parametric_contracts <contract_name>...
 ```
 
 **What does it do?**
@@ -264,6 +284,11 @@ Options affecting the type of verification run
 
 (--coverage_info)=
 ### `--coverage_info`
+
+**Usage**
+```
+--coverage_info <none|basic|advanced>
+```
 
 **What does it do?**
 This option enables .sol and .spec coverage analysis and visualization.  The `--coverage_info` option may
@@ -416,6 +441,11 @@ may be hot spots for summarization etc.
 (--rule_sanity)=
 ### `--rule_sanity`
 
+**Usage**
+```
+--rule_sanity <none|basic|advanced>
+```
+
 **What does it do?**
 This option enables sanity checking for rules.  The `--rule_sanity` option may
 be followed by one of `none`, `basic`, or `advanced`;
@@ -482,6 +512,11 @@ By default, we look for the packages in `$NODE_PATH`. If the packages are in any
 (--solc)=
 ### `--solc`
 
+**Usage**
+```
+--solc <solc_executable>
+```
+
 **What does it do?**
 Use this option to provide a path to the Solidity compiler executable file. We check in all directories in the `$PATH` environment variable for an executable with this name. If `--solc` is not used, we look for an executable called `solc`, or `solc.exe` on windows platforms.
 
@@ -493,6 +528,11 @@ Whenever you want to use a Solidity compiler executable with a non-default name.
 
 (--solc_allow_path)=
 ### `--solc_allow_path`
+
+**Usage**
+```
+--solc_allow_path <path>
+```
 
 **What does it do?**
 Passes the value of this option as is to the solidity compiler's option `--allow-paths`.
@@ -507,6 +547,11 @@ When we want to add an additional location the Solidity compiler to load sources
 (--solc_evm_version)=
 ### `--solc_evm_version`
 
+**Usage**
+```
+--solc_evm_version <version>
+```
+
 **What does it do?**
 Passes the value of this option  to the solidity compiler's option `--evm-version`.
 
@@ -518,6 +563,11 @@ When we want to select the Solidity compiler EVM version
 
 (--solc_evm_version_map)=
 ### `--solc_evm_version_map`
+
+**Usage**
+```
+--solc_evm_version_map <contract>=<version>,...
+```
 
 **What does it do?**
 Set EVM version values when different files run with different EVM versions
@@ -532,6 +582,11 @@ When different contracts have to be compiled with different Solidity EVM version
 (--solc_optimize)=
 ### `--solc_optimize`
 
+**Usage**
+```
+--solc_optimize <n>
+```
+
 **What does it do?**
 Passes the value of this option as is to the solidity compiler's option `--optimize` and `--optimize-runs`.
 
@@ -544,6 +599,11 @@ number of times the optimizer will be activated (if no value is set, the compile
 
 (--solc_optimize_map)=
 ### `--solc_optimize_map`
+
+**Usage**
+```
+--solc_optimize_map <contract>=<n>,...
+```
 
 **What does it do?**
 Set optimize values when different files run with different number of runs
