@@ -1229,10 +1229,15 @@ When you prefer not to add explicit `DISPATCHER` summaries to methods invoked by
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
 Note that you must add a `--dynamic_bound` argument as well.
-`certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch true`
+`certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch`
 
 (--prototype)=
-### `--prototype <hex string>=<contract>`
+### `--prototype`
+
+**Usage**
+```
+--prototype <hex string>=<contract>
+```
 
 **What does it do?**
 Instructs the Prover to use a specific contract type for the return value from a call to `create` or `create2` on the given hexadecimal string as a prefix. The hexadecimal string represents proxy code that forwards calls to another contract. As we are using the prototype flag to skip calls to the proxy, no constructor code is being simulated for these contract creation resolutions.
@@ -1407,7 +1412,7 @@ Control flow splitting options
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
 (-depth)=
-### `-depth <number>`
+### `-depth`
 
 **Usage**
 ```
