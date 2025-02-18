@@ -296,7 +296,7 @@ follow the next steps:
 ```
 
 (selecting-solidity-compiler)=
-Step 4: Install the relevant Solidity compiler versions
+Step 4 (for Solidity users): Install the Solidity compiler (`solc`)
 ---------------------------------------------------------------------------
 
 The Solidity compiler (`solc`) is a verification requirement.
@@ -422,7 +422,7 @@ full path to the `solc` executables folder every time.
 ```{index} single: install; vyper
 ```
 
-Step 5 (optional, for Vyper users): Install the Vyper compiler (`vyper`)
+Step 5 (for Vyper users): Install the Vyper compiler (`vyper`)
 --------------------------------------------------------------------------------
 [Vyper](https://github.com/vyperlang/vyper) is an EVM compatible Pythonic smart contract language.
 Since the Certora Prover operates on the bytecode, it can be applied to any source-level language
@@ -451,3 +451,7 @@ Congratulations! You have just completed Certora Prover's installation and setup
 We strongly recommend trying the tool on basic examples to verify correct installation.
 See {doc}`running` for a detailed walkthrough.
 ```
+
+Step 7 (for GitHub users): Configure Syntax Highlighting
+--------------------------------------------------------
+[Follow our guide](github_highlighting.md) to configure syntax highlighting on GitHub for CVL and configuration files.

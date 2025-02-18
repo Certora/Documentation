@@ -106,6 +106,35 @@ If `Bank.spec` includes the following properties:
 If we want to skip both rules we could run
 `certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
 
+(--split_rules)=
+### `--split_rules <rule_name_pattern>`
+
+**What does it do?**
+Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
+With `--split_rules` the user can run specific rules on separate dedicated Prover jobs. A new job will be created and 
+executed for each rule that matches the rule patterns in `--split_rules` an additional job will be created for
+the rest of the rules. After launching the generated jobs, the original job will return with a link to the dashboard, 
+listing the status of the generated jobs.
+
+Note that you can specify this flag multiple times to denote several rules or rule patterns.
+
+**When to use it?**
+This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
+their own dedicated Prover jobs will give them more resources that will potentially reduce their chance to 
+timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
+
+**Example**
+If `Bank.spec` includes the following properties:
+
+`invariant address_zero_cannot_become_an_account()`
+`rule withdraw_succeeds()`
+`rule withdraw_fails()`
+
+If we want to run the invariant on different Prover jobs we could run
+`certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account`
+
+The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
+
 ```{note}
 When used together with the {ref}`--rule` flag the logic is to collect all rules
 that pass the `--rule` flag(s) and then subtract from them all rules that match
@@ -117,8 +146,11 @@ any `--exclude_rule` flags.
 
 **What does it do?**
 Only uses functions with the given method signature when instantiating
-{term}`parametric rule`s and {term}`invariant`s.  The method signature consists
-of the name of a method and the types of its arguments.
+{term}`parametric rule`s and {term}`invariant`s. The method signature is the ABI
+representation of the method, optionally prepended by a contract name or
+wildcard (`_`). If no contract is specified the primary contract is assumed, and
+if the wildcard is used then all methods with this signature across all
+contracts in the {term}`scene` will be used.
 
 You may provide multiple method signatures, in which case the Prover will run on
 each of the listed methods.
@@ -144,18 +176,22 @@ rule r {
 }
 ```
 
-If we discover a counterexample in the method `deposit(uint)`, and wish to change
-the contract or the spec to rerun, we can just rerun on the `deposit` method:
+If we discover a counterexample in the method `deposit(uint)` of contract `C`,
+and wish to change the contract or the spec to rerun, we can just rerun on
+the `C.deposit` method:
 
 ```sh
-certoraRun --method 'deposit(uint)'
+certoraRun --method 'C.deposit(uint)'
 ```
 
 If we discover a counterexample in several methods, we could rerun just those:
 
 ```sh
-certoraRun --method 'deposit(uint)' --method 'transfer(address,uint256)'
+certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
+
+Note that in the last example the `transfer` method of all contracts in the
+scene will be used, but only the `deposit` method of the primary contract.
 
 Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
@@ -219,8 +255,8 @@ This option enables .sol and .spec coverage analysis and visualization.  The `--
 be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/coverage-info` for more information about the analysis.
 
-**When to use it?**  
-We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules. 
+**When to use it?**
+We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules.
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
@@ -335,7 +371,6 @@ useful check if you notice rules passing surprisingly quickly or easily.
 `certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
 
 (--short_output)=
-
 ### `--short_output`
 
 **What does it do?**
@@ -346,6 +381,49 @@ When we do not care much for the output. It is recommended when running the tool
 
 **Example**
 `certoraRun Bank.sol --verify Bank:Bank.spec --short_output`
+
+(--project_sanity)=
+### `--project_sanity`
+
+**What does it do?**
+Runs the builtin sanity rule on all methods in the project. If the Prover is run
+from within a git project, all `.sol` files in the in the git repository are added
+to the scene and the {ref}`builtin sanity rule <built-in-sanity>` is run on
+them. Otherwise, _all_ `.sol` files in the tree under the current working
+directory are collected.
+
+Alternatively, a list of files can be provided in the `.conf` file and then the
+builtin sanity rule will run on all methods of the specified files.
+
+Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+
+**When to use it?**
+Mostly used as a first step when starting to work on a new project, in order to
+"get a feeling" of the complexity of the project for the tool, and what methods
+may be hot spots for summarization etc.
+
+**Example**
+`certoraRun --project_sanity`
+
+(--foundry)=
+### `--foundry`
+
+**What does it do?**
+Collects all test files in the project (files ending with `.t.sol`), and runs
+the {ref}`foundry_integration` on them (specifically, the
+`verifyFoundryFuzzTestsNoRevert` builtin rule). As with the
+{ref}`--project_sanity` option, the search is over files in the current git
+repository if such exists, otherwise over all files in the tree under the
+current working directory.
+
+Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+
+
+**When to use it?**
+When we want to run all foundry fuzz tests in the project with the prover.
+
+**Example**
+`certoraRun --foundry`
 
 Options that control the Solidity compiler
 ------------------------------------------
@@ -624,6 +702,36 @@ to `true`.
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
+(--auto_dispatcher)=
+### `--auto_dispatcher`
+
+**What does it do?**
+In case a call's callee cannot be precomputed but the called method's sighash
+can be (e.g. `MyInterface(addr).foo()` in solidity, where `addr` is some
+`address` typed variable), the default behavior of the Prover in this case is to
+Havoc. In this case the user can specify a {ref}`dispatcher` summary in the
+{ref}`methods-block` so that the prover will inline all methods in the scene
+that have this sighash.
+
+This option will cause all such unknown callee with known sighash cases to behave
+as if an `DISPATCHER(optimistic=true)` was added for that method in the methods
+block.
+
+One important difference from manually placing the `DISPATCHER` summary in the
+methods block is that when it's manually written there with `optimistic=true`
+and no such function is found in the scene the Prover will exit with an error,
+but when using the flag it will fall back to the default havoc.
+
+**When to use it**
+When there are many unresolved callee methods, or as a first step to solve
+call resolution failures.
+
+**Example**
+
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
+```
+
 
 Options regarding hashing of unbounded data
 -------------------------------------------
@@ -633,9 +741,16 @@ Options regarding hashing of unbounded data
 
 **What does it do?**
 
- When hashing data of potentially unbounded length (including unbounded arrays, like `bytes`, `uint[]`, etc.), assume that its length is bounded by the value set through the `--hashing_length_bound` option. If this is not set, and the length can be exceeded by the input program, the Prover reports an assertion violation. I.e., when this option is set, the boundedness of the hashed data assumed checked by the Prover, when this option is set that boundedness is assumed instead.
+When hashing data of potentially unbounded length (including unbounded arrays,
+like `bytes`, `uint[]`, etc.):
 
-See {doc}`../approx/hashing` for more details.
+1. If `optimistic_hashing` is set the Proves _assumes_
+   the data's length is bounded by the `--hashing_length_bound` option.
+2. If `optimistic_hashing` is not set, the Prover will check whether
+   the data's length can exceed the `hashing_length_bound`, and report an
+   assertion violation if it can.
+
+See {ref}`hashing_unbounded` for more details.
 
 
 **When to use it?**
