@@ -129,6 +129,7 @@ pragmas
 pre
 prebuilt
 precompiled
+prepended
 preprocess
 preprocessing
 prestate
@@ -193,6 +194,7 @@ unsatisfiability
 unsummarized
 untrusted
 upcast
+usum
 verifications
 verifier
 verifiers

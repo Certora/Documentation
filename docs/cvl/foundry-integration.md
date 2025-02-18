@@ -1,3 +1,4 @@
+(foundry_integration)=
 Foundry Integration (Alpha)
 =================
 
