@@ -243,7 +243,10 @@ approximation is {term}`sound`: it won't cause violations to be hidden.  See
 {ref}`grounding` for more detail.
 ```
 
-* The prover is capable of calculating the `sum` of ghost mappings over
+Ghost Mapping Sums
+------------------
+
+The prover is capable of calculating the `sum` of ghost mappings over
 specified indices. For example, if we have a ghost mapping `ghost
 mapping(address => mapping(bytes32 => mathint)) myGhost`, and want to sum all
 the values of the ghost over all addresses for a given `bytes32` value `b`, one
@@ -256,9 +259,9 @@ for an example.
 ```{note}
 The prover support only summation of ghosts. If one wants to sum e.g. some
 storage mapping, one could implement a ghost that mirrors the storage and sum
-over it.
+over it.```
 
-* An extension of the summing logic is the unsigned sum which uses the `usum`
+An extension of the summing logic is the unsigned sum which uses the `usum`
 keyword. It follows the same rules as the regular sum, but adds some extra
 logic to ensure the value of the sum is always larger than its parts.
 
@@ -271,7 +274,7 @@ When using this keyword, the solver will introduce the additional assumption
 that the `usum` is larger than any value in the ghost mapping and that it is
 even larger than the sum of any finite subset of values.
 This additional assumption is valid, because the other values in the ghost
-mapping can make the total sum only larger.
+mapping can make the total sum only larger.```
 
 Accessing fields and arrays
 ---------------------------
