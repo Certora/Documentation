@@ -4,7 +4,7 @@ GUI Release Notes
 ```{contents}
 ```
 
-4.0.0 (Feb 18, 2025)
+4.0.0 (Feb 19, 2025)
 ---------------------------
 
 ### Features
