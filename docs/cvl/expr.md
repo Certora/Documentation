@@ -259,7 +259,8 @@ for an example.
 ```{note}
 The prover support only summation of ghosts. If one wants to sum e.g. some
 storage mapping, one could implement a ghost that mirrors the storage and sum
-over it.```
+over it.
+```
 
 An extension of the summing logic is the unsigned sum which uses the `usum`
 keyword. It follows the same rules as the regular sum, but adds some extra
@@ -274,7 +275,8 @@ When using this keyword, the solver will introduce the additional assumption
 that the `usum` is larger than any value in the ghost mapping and that it is
 even larger than the sum of any finite subset of values.
 This additional assumption is valid, because the other values in the ghost
-mapping can make the total sum only larger.```
+mapping can make the total sum only larger.
+```
 
 Accessing fields and arrays
 ---------------------------
