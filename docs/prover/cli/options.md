@@ -58,7 +58,9 @@ To create the message above, we used
 ### `--rule`
 
 **Usage**
-`--rule <rule_name_pattern>...`
+```
+--rule <rule_name_pattern>...
+```
 
 **What does it do?**
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
@@ -94,7 +96,9 @@ simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
 ### `--exclude_rule`
 
 **Usage**
-`--exclude_rule <rule_name_pattern>...`
+```
+--exclude_rule <rule_name_pattern>...
+```
 
 **What does it do?**
 It is the opposite flag to {ref}`--rule` - use it to specify a list of rules that
@@ -116,7 +120,9 @@ If we want to skip both rules we could run
 ### `--split_rules`
 
 **Usage**
-`--split_rules <rule_name_pattern>...`
+```
+--split_rules <rule_name_pattern>...
+```
 
 **What does it do?**
 Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
@@ -661,7 +667,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ### `--nondet_minimal_difficulty`
 
 **Usage**
-`--nondet_minimal_difficulty <n>`
+```
+--nondet_minimal_difficulty <n>
+```
 
 **What does it do?**
 This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
@@ -725,7 +733,9 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 ### `--summary_recursion_limit`
 
 **Usage**
-`--summary_recursion_limit <n>`
+```
+--summary_recursion_limit <n>
+```
 
 **What does it do?**
 Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
@@ -787,7 +797,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ### `--hashing_length_bound`
 
 **Usage**
-`--hashing_length_bound <n>`
+```
+--hashing_length_bound <n>
+```
 
 **What does it do?**
 
@@ -876,7 +888,9 @@ processing of the entire job, including static analysis and other
 preprocessing.
 
 **Usage**
-`--global_timeout <seconds>`
+```
+--global_timeout <seconds>
+```
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
@@ -893,7 +907,9 @@ See {ref}`--method`
 ### `--smt_timeout`
 
 **Usage**
-`--smt_timeout <seconds>`
+```
+--smt_timeout <seconds>
+```
 
 **What does it do?**
 Sets the maximal timeout for all the
@@ -982,7 +998,9 @@ contract already has such a function and this would cause a conflict).
 ### `--contract_recursion_limit`
 
 **Usage**
-`--contract_recursion_limit <n>`
+```
+--contract_recursion_limit <n>
+```
 
 **What does it do?**
 Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
@@ -1025,7 +1043,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ### `--link`
 
 **Usage**
-`--struct_link <contract>:<slot>=<address>`
+```
+--struct_link <contract>:<slot>=<address>
+```
 
 **What does it do?**
 Links a slot in a contract with another contract.
@@ -1078,7 +1098,9 @@ calls with an empty input buffer will {term}`havoc` all the storage state of ext
 ### `--struct_link`
 
 **Usage**
-`--struct_link <contract>:<slot>=<address>`
+```
+--struct_link <contract>:<slot>=<address>
+```
 
 **What does it do?**
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.
@@ -1108,7 +1130,9 @@ Options for controlling contract creation
 ### `--dynamic_bound`
 
 **Usage**
-`--dynamic_bound <n>`
+```
+--dynamic_bound <n>
+```
 
 **What does it do?**
 If set to zero (the default), contract creation (via the `new` statement or the `create`/`create2` instructions) will result in a havoc, like any other unresolved external call. If non-zero, then dynamic contract creation will be modeled with cloning, where each contract will be cloned at most n times.
@@ -1257,7 +1281,9 @@ set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_ar
 This option disables the storage splitting optimization.
 
 **Usage**
-`--prover_args '-enableStorageSplitting false'`
+```
+--prover_args '-enableStorageSplitting false'
+```
 
 (-maxnumberofreachchecksbasedondomination)=
 #### `-maxNumberOfReachChecksBasedOnDomination`
@@ -1266,7 +1292,9 @@ This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
 **Usage**
-`--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'`
+```
+--prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'
+```
 
 (-optimisticreturnsize)=
 #### `-optimisticReturnsize`
@@ -1283,7 +1311,9 @@ the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 **Usage**
-`--prover_args '-optimisticReturnsize true'`
+```
+--prover_args '-optimisticReturnsize true'
+```
 
 (-smt_groundquantifiers)=
 #### `-smt_groundQuantifiers`
@@ -1292,7 +1322,9 @@ This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
 **Usage**
-`--prover_args '-smt_groundQuantifiers false'`
+```
+--prover_args '-smt_groundQuantifiers false'
+```
 
 (-superoptimisticreturnsize)=
 #### `-superOptimisticReturnsize`
@@ -1303,7 +1335,9 @@ It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
 **Usage**
-`--prover_args '-superOptimisticReturnsize true'`
+```
+--prover_args '-superOptimisticReturnsize true'
+```
 
 
 (control-flow-splitting-options)=
@@ -1316,7 +1350,9 @@ See [here](control-flow-splitting) for an explanation of control flow splitting.
 ### `-depth <number>`
 
 **Usage**
-`--prover_args '-depth <number>'`
+```
+--prover_args '-depth <number>'
+```
 
 **What does it do?**
 
@@ -1343,7 +1379,9 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ### `-dontStopAtFirstSplitTimeout`
 
 **Usage**
-`--prover_args '-dontStopAtFirstSplitTimeout <true/false>'`
+```
+--prover_args '-dontStopAtFirstSplitTimeout <true/false>'
+```
 
 **What does it do?**
 
@@ -1374,7 +1412,9 @@ The "medium timeout" determines how much time the SMT solver gets for checking a
 (For split leaves, the full {ref}`--smt_timeout` is used.)
 
 **Usage**
-`--prover_args '-mediumTimeout <seconds>'`
+```
+--prover_args '-mediumTimeout <seconds>'
+```
 
 **What does it do?**
 
@@ -1402,7 +1442,9 @@ With this option, the splitting can be configured to skip the SMT solver-based c
 at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
 
 **Usage**
-`--prover_args '-smt_initialSplitDepth <number>'`
+```
+--prover_args '-smt_initialSplitDepth <number>'
+```
 
 **What does it do?**
 
