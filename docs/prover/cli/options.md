@@ -569,6 +569,11 @@ Options regarding source code loops
 (--loop_iter)=
 ### `--loop_iter`
 
+**Usage**
+```
+--loop_iter <n>
+```
+
 **What does it do?**
 Sets the maximal number of loop iterations we verify for. The way the Certora Prover handles loops is by unrolling them - if the loop should be executed three times, it will copy the code inside the loop three times. This option sets the number of unrolls. Be aware that the run time grows exponentially by the number of loop iterations.
 
@@ -592,7 +597,7 @@ This option changes the assertions of the loop unwind condition to requirements 
 When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. Note that `--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
 
 **Example**
-```
+```bash
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 ```
 
@@ -625,7 +630,7 @@ call resolution failures.
 
 **Example**
 
-```
+```bash
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
 
@@ -654,6 +659,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 
 (--nondet_minimal_difficulty)=
 ### `--nondet_minimal_difficulty`
+
+**Usage**
+`--nondet_minimal_difficulty <n>`
 
 **What does it do?**
 This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
@@ -705,7 +713,7 @@ flag to `true`.
 **Example**
 
 ```
-certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion true
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion
 ```
 
 ```{caution}
@@ -715,6 +723,9 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 
 (--summary_recursion_limit)=
 ### `--summary_recursion_limit`
+
+**Usage**
+`--summary_recursion_limit <n>`
 
 **What does it do?**
 Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
@@ -774,6 +785,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 
 (--hashing_length_bound)=
 ### `--hashing_length_bound`
+
+**Usage**
+`--hashing_length_bound <n>`
 
 **What does it do?**
 
@@ -844,7 +858,7 @@ Avoid using this flag unless absolutely necessary. It is always better to fix sy
 
 
 (--global_timeout)=
-### `--global_timeout <seconds>`
+### `--global_timeout`
 Sets the maximal timeout for the Prover.
 Gets an integer input, which represents seconds.
 
@@ -861,6 +875,8 @@ of each individual rule, while the `--global_timeout` flag constrains the
 processing of the entire job, including static analysis and other
 preprocessing.
 
+**Usage**
+`--global_timeout <seconds>`
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
@@ -874,7 +890,10 @@ Note that even if in the shorter running time not all rules were processed, a se
 See {ref}`--method`
 
 (--smt_timeout)=
-### `--smt_timeout <seconds>`
+### `--smt_timeout`
+
+**Usage**
+`--smt_timeout <seconds>`
 
 **What does it do?**
 Sets the maximal timeout for all the
@@ -962,6 +981,9 @@ contract already has such a function and this would cause a conflict).
 (--contract_recursion_limit)=
 ### `--contract_recursion_limit`
 
+**Usage**
+`--contract_recursion_limit <n>`
+
 **What does it do?**
 Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
 option sets the contract recursion level, which is the number of recursive calls
@@ -1001,6 +1023,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 
 (--link)=
 ### `--link`
+
+**Usage**
+`--struct_link <contract>:<slot>=<address>`
 
 **What does it do?**
 Links a slot in a contract with another contract.
@@ -1052,6 +1077,9 @@ calls with an empty input buffer will {term}`havoc` all the storage state of ext
 (--struct_link)=
 ### `--struct_link`
 
+**Usage**
+`--struct_link <contract>:<slot>=<address>`
+
 **What does it do?**
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.
 
@@ -1077,7 +1105,10 @@ Options for controlling contract creation
 -----------------------------------------
 
 (--dynamic_bound)=
-### `--dynamic_bound <n>`
+### `--dynamic_bound`
+
+**Usage**
+`--dynamic_bound <n>`
 
 **What does it do?**
 If set to zero (the default), contract creation (via the `new` statement or the `create`/`create2` instructions) will result in a havoc, like any other unresolved external call. If non-zero, then dynamic contract creation will be modeled with cloning, where each contract will be cloned at most n times.
