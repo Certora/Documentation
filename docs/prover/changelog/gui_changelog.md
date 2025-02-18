@@ -9,7 +9,6 @@ GUI Release Notes
 
 ### Features
 
-- [feat] Dashboard - Present expiration date and emails in Users tab 
 - [feat] Rule Report - Improved call trace filtering & navigation, to provide more flexibility and ease of use. You can now toggle between search and filter modes. Additionally, you can navigate results via the up/down arrows, similar to CTRL+F in a browser, to move through matches efficiently. 
 - [feat] Rule Report - Added click-to-copy variables in call trace and variables tab
 
