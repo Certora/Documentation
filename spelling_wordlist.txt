@@ -194,6 +194,7 @@ unsatisfiability
 unsummarized
 untrusted
 upcast
+usum
 verifications
 verifier
 verifiers
