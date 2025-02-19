@@ -1647,9 +1647,10 @@ split immediately.
 When there is a lot of overhead induced by processing and trying to solve splits
 that are very hard, and thus run into a timeout anyway.
 
-```{note} The number of
-splits generated here is equal to `2^n` where `n` is the initial splitting depth
-(assuming the program has enough branching points, which is usually the case);
+```{note} 
+The number of splits generated here is equal to {math}`2^n` where `n` is the initial 
+splitting depth (assuming the program has enough branching points, 
+which is usually the case);
 thus, low numbers are advisable. For instance setting this to 5 means that the
 Prover will immediately produce 32 splits.
 ```
