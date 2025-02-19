@@ -129,10 +129,12 @@ certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ```
 
 **What does it do?**
-It is the opposite flag to {ref}`--rule` - use it to specify a list of rules that
-should _not_ be run.
+This flag is the opposite of {ref}`--rule` - it allows you to specify a list of rules that _should not_ be run.
 
-Note that you can specify this flag multiple times to filter out several rules or rule patterns.
+You can specify this flag multiple times to filter out several rules or rule patterns.
+
+**When to use it?**
+Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
 
 **Example**
 If `Bank.spec` includes the following properties:
@@ -163,7 +165,7 @@ executed for each rule that matches the rule patterns in `--split_rules` an addi
 the rest of the rules. After launching the generated jobs, the original job will return with a link to the dashboard, 
 listing the status of the generated jobs.
 
-Note that you can specify this flag multiple times to denote several rules or rule patterns.
+You can specify this flag multiple times to denote several rules or rule patterns.
 
 **When to use it?**
 This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
