@@ -296,7 +296,7 @@ certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
 Options affecting the type of verification run
-----------------------------------------------
+==============================================
 
 (--coverage_info)=
 ## `--coverage_info`
@@ -493,7 +493,7 @@ When we do not care much for the output. It is recommended when running the tool
 `certoraRun Bank.sol --verify Bank:Bank.spec --short_output`
 
 Options that control the Solidity compiler
-------------------------------------------
+==========================================
 (--compiler_map)=
 (--solc_map)=
 ## `--compiler_map`
@@ -672,7 +672,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
 
 Options regarding source code loops
------------------------------------
+===================================
 
 (--loop_iter)=
 ## `--loop_iter`
@@ -710,7 +710,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 ```
 
 Options regarding summarization
--------------------------------
+===============================
 
 (--auto_dispatcher)=
 ## `--auto_dispatcher`
@@ -866,7 +866,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 
 
 Options regarding hashing of unbounded data
--------------------------------------------
+===========================================
 
 (--optimistic_hashing)=
 ## `--optimistic_hashing`
@@ -927,7 +927,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
 
 
 Options that help reduce the running time
------------------------------------------
+=========================================
 
 (--compilation_steps_only)=
 ## `--compilation_steps_only`
@@ -1044,7 +1044,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300
 
 
 Options to set addresses and link contracts
--------------------------------------------
+===========================================
 
 (--address)=
 ## `--address`
@@ -1242,7 +1242,7 @@ certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct
 ```
 
 Options for controlling contract creation
------------------------------------------
+=========================================
 
 (--dynamic_bound)=
 ## `--dynamic_bound`
@@ -1332,7 +1332,7 @@ Also note that the hex string must be:
 
 
 Version options
------------------
+===============
 
 (--version)=
 ## `--version`
@@ -1351,7 +1351,7 @@ certoraRun --version
 
 
 Advanced options
-----------------
+================
 
 (--allow_solidity_calls_in_quantifiers)=
 ## `--allow_solidity_calls_in_quantifiers`
@@ -1473,7 +1473,7 @@ to the size of the output buffer as specified by the summarized `CALL` instructi
 
 (control-flow-splitting-options)=
 Control flow splitting options
-------------------------------
+==============================
 
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
