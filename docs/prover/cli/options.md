@@ -1007,6 +1007,14 @@ Avoid using this flag unless absolutely necessary. It is always better to fix sy
 
 (--global_timeout)=
 ## `--global_timeout`
+
+**Usage**
+```sh
+--global_timeout <seconds>
+```
+
+**What does it do?**
+
 Sets the maximal timeout for the Prover.
 Gets an integer input, which represents seconds.
 
@@ -1022,11 +1030,6 @@ The global timeout is different from the {ref}`--smt_timeout` option: the
 of each individual rule, while the `--global_timeout` flag constrains the
 processing of the entire job, including static analysis and other
 preprocessing.
-
-**Usage**
-```sh
---global_timeout <seconds>
-```
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
