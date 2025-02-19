@@ -319,7 +319,9 @@ See {doc}`../checking/coverage-info` for more information about the analysis.
 We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced
+```
 
 (--foundry)=
 ## `--foundry`
@@ -332,7 +334,9 @@ the {ref}`foundry_integration` on them (specifically, the
 repository if such exists, otherwise over all files in the tree under the
 current working directory.
 
-Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+```{note}
+This option implicitly enables the {ref}`--auto_dispatcher` option.
+```
 
 
 **When to use it?**
