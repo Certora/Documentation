@@ -533,6 +533,11 @@ certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map
 (--packages)=
 ## `--packages`
 
+**Usage**
+```sh
+--packages <name>=<path>...
+```
+
 **What does it do?**
 For each package, gets the path to a directory including that Solidity package.
 
@@ -546,6 +551,11 @@ certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token
 
 (--packages_path)=
 ## `--packages_path`
+
+**Usage**
+```sh
+--packages_path <path>
+```
 
 **What does it do?**
 Gets the path to a directory including the Solidity packages.
