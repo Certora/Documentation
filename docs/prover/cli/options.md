@@ -733,7 +733,11 @@ The Certora Prover unrolls loops - if the loop should be executed three times, i
 This option changes the assertions of the loop unwind condition to requirements (in the case above `require a >= b`). That means, we ignore all the cases where the loop unwind condition does not hold, instead of considering them as a failure.
 
 **When to use it?**
-When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. Note that `--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
+When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. 
+
+```{caution}
+`--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
+```
 
 **Example**
 ```sh
@@ -858,7 +862,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion
 ```
 
 ```{caution}
-Note that this flag could be another cause for unsoundness - even if such recursion
+This flag could cause unsoundness - even if such recursion
 _could_ actually happen in the deployed contract, this code-path won't be verified.
 ```
 
@@ -1367,12 +1371,17 @@ The Prover will then be able to create a new instance of `Foo` at the point wher
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
 ```
-Note: this argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
 
+```{Note}
+This argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
+```
+
+```{Note}
 Also note that the hex string must be:
-- a strict prefix of the memory region passed to the create command
-- must be unique within each invocation of the tool
-- must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will
+- A strict prefix of the memory region passed to the create command.
+- Must be unique within each invocation of the tool.
+- Must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will.
+```
 
 
 Version options
@@ -1438,7 +1447,7 @@ This option models bitwise operations exactly, instead of using the default {ter
 
 **Limitations**
 - This encoding does not model `mathint` precisely.
-- The maximum supported integer value is $2^{256}-1$, effectively restricting `mathint` to a `uint256`.
+- The maximum supported integer value is {math}`2^{256} - 1`, effectively restricting `mathint` to a `uint256`.
 - There is currently no encoding that precisely models both bitwise operations and `mathint` simultaneously.
 
 **When to use it?**
