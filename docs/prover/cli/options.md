@@ -1481,7 +1481,7 @@ to the size of the output buffer as specified by the summarized `CALL` instructi
 
 (control-flow-splitting-options)=
 Control flow splitting options
-==============================
+------------------------------
 
 See [here](control-flow-splitting) for an explanation of control flow splitting.
 
