@@ -1433,15 +1433,21 @@ Upon instruction from the Certora team.
 (--precise_bitwise_ops)=
 ## `--precise_bitwise_ops`
 
-This option models bitwise operations exactly instead of using the default
-{term}`overapproximation`s. It is useful when the Prover reports a
-counterexample caused by incorrect modeling of bitwise operations, but can
-dramatically increase the time taken for verification.
+**What does it do?**
+This option models bitwise operations exactly, instead of using the default {term}overapproximations. It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
 
-The disadvantage of this encoding is that it does not model `mathint`
-precisely: the maximum supported integer value is :math:`2^256-1` in this case,
-effectively restricting a `mathint` to a `uint256`. We currently do not have a
-setting or encoding that models precisely both bitwise operations and `mathint`.
+**Limitations**
+- This encoding does not model mathint precisely.
+- The maximum supported integer value is $2^{256}-1$, effectively restricting mathint to a uint256.
+- There is currently no encoding that precisely models both bitwise operations and mathint simultaneously.
+
+**When to use it?**
+Use this option if a counterexample suggests that incorrect modeling of bitwise operations is affecting verification results.
+
+**Example**
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --precise_bitwise_ops
+```
 
 (--prover_args)=
 ## `--prover_args`
