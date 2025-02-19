@@ -29,7 +29,7 @@ Most frequently used options
 ----------------------------
 
 (--verify)=
-### `--verify`
+## `--verify`
 
 **Usage**
 ```
@@ -44,7 +44,9 @@ When you wish to prove properties on the source code. This is by far the most co
 
 **Example**
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
-`certoraRun Bank.sol --verify Bank:Bank.spec`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec
+```
 
 (--msg)=
 ### `--msg`
@@ -62,7 +64,9 @@ Adding a message makes it easier to track several runs on [the Prover Dashboard]
 
 **Example**
 To create the message above, we used
-`certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
+```
 
 (--rule)=
 ### `--rule`
@@ -94,13 +98,20 @@ If `Bank.spec` includes the following properties:
 `rule withdraw_fails()`
 
 If we want to verify only `withdraw_succeeds`, we run
-`certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds
+```
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
-`certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails
+```
 
 Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
-simply run `certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*`
+simply run 
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
+```
 
 (--exclude_rule)=
 ### `--exclude_rule`
