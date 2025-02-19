@@ -131,12 +131,16 @@ Note that you can specify this flag multiple times to filter out several rules o
 **Example**
 If `Bank.spec` includes the following properties:
 
-`invariant address_zero_cannot_become_an_account()`
-`rule withdraw_succeeds()`
-`rule withdraw_fails()`
+```cvl
+invariant address_zero_cannot_become_an_account()
+rule withdraw_succeeds()
+rule withdraw_fails()
+```
 
 If we want to skip both rules we could run
-`certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
+```
 
 (--split_rules)=
 ## `--split_rules`
