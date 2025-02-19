@@ -57,7 +57,11 @@ certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
 **What does it do?**
-Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. Note that you need to wrap your message in quotes if it contains spaces.
+Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. 
+
+```{note}
+You need to wrap your message in quotes if it contains spaces.
+```
 
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
@@ -89,14 +93,16 @@ specific rule.
 
 One can either specify a specific rule name, or use pattern matching with a `*`.
 
-Note that you can specify this flag multiple times to filter in several rules or rule patterns.
+You can specify this flag multiple times to filter in several rules or rule patterns.
 
 **Example**
 If `Bank.spec` includes the following properties:
 
-`invariant address_zero_cannot_become_an_account()`
-`rule withdraw_succeeds()`
-`rule withdraw_fails()`
+```cvl
+invariant address_zero_cannot_become_an_account()
+rule withdraw_succeeds()
+rule withdraw_fails()
+```
 
 If we want to verify only `withdraw_succeeds`, we run
 ```sh
