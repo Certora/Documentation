@@ -404,7 +404,9 @@ rule R2_independent {
 When you have a rule with multiple satisfy statements, and you would like to demonstrate each statement separately.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy
+```
 
 (--multi_assert_check)=
 ## `--multi_assert_check`
@@ -439,7 +441,9 @@ When you have a rule with multiple assertions:
 
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
+```
 
 (--project_sanity)=
 ## `--project_sanity`
@@ -454,7 +458,9 @@ directory are collected.
 Alternatively, a list of files can be provided in the `.conf` file and then the
 builtin sanity rule will run on all methods of the specified files.
 
-Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
+```{Note}
+This option implicitly enables the {ref}`--auto_dispatcher` option.
+```
 
 **When to use it?**
 Mostly used as a first step when starting to work on a new project, in order to
@@ -498,13 +504,20 @@ Reduces the verbosity of the tool.
 When we do not care much for the output. It is recommended when running the tool in continuous integration.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --short_output`
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --short_output
+```
 
 Options that control the Solidity compiler
 ==========================================
 (--compiler_map)=
 (--solc_map)=
 ## `--compiler_map`
+
+**Usage**
+```sh
+--compiler_map <contract>=<version>,...
+```
 
 **What does it do?**
 Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
