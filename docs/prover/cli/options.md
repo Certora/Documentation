@@ -167,12 +167,16 @@ timeout and will decrease the time to get the final job result for the less comp
 **Example**
 If `Bank.spec` includes the following properties:
 
-`invariant address_zero_cannot_become_an_account()`
-`rule withdraw_succeeds()`
-`rule withdraw_fails()`
+```cvl
+invariant address_zero_cannot_become_an_account()
+rule withdraw_succeeds()
+rule withdraw_fails()
+```
 
 If we want to run the invariant on different Prover jobs we could run
-`certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account`
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account
+```
 
 The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
 
