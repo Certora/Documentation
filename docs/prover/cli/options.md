@@ -90,6 +90,7 @@ specific rule.
 One can either specify a specific rule name, or use pattern matching with a `*`.
 
 Note that you can specify this flag multiple times to filter in several rules or rule patterns.
+
 **Example**
 If `Bank.spec` includes the following properties:
 
