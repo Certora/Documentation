@@ -1029,14 +1029,16 @@ One is to decrease the timeout. This is useful for simple rules, that are solved
 The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300
+```
 
 
 Options to set addresses and link contracts
 -------------------------------------------
 
 (--address)=
-### `--address`
+## `--address`
 
 **What does it do?**
 Sets the address of a contract to a given address.
@@ -1047,10 +1049,12 @@ When we have an external contract with a constant address. By default, the Pytho
 **Example**
 
 If we wish the `Oracle` contract to be at address 12, we use
-`certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12`
+```
+certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12
+```
 
 (--contract_extensions)=
-### `--contract_extensions`
+## `--contract_extensions`
 
 **What does it do?**
 In order to support extendability and upgradeability of smart contracts, the proxy
@@ -1090,7 +1094,7 @@ contract already has such a function and this would cause a conflict).
 
 
 (--contract_recursion_limit)=
-### `--contract_recursion_limit`
+## `--contract_recursion_limit`
 
 **Usage**
 ```
@@ -1135,7 +1139,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ```
 
 (--link)=
-### `--link`
+## `--link`
 
 **Usage**
 ```
@@ -1153,10 +1157,12 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 `IERC20 public underlyingToken;`
 
 We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:
-`certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken`
+```
+certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken
+```
 
 (--optimistic_contract_recursion)=
-### `--optimistic_contract_recursion`
+## `--optimistic_contract_recursion`
 
 **What does it do?**
 Contract linking can cause recursion (see also {ref}`--contract_recursion_limit`).
@@ -1181,7 +1187,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 (-optimisticFallback)=
 (--optimistic_fallback)=
-### `--optimistic_fallback`
+## `--optimistic_fallback`
 
 This option determines whether to optimistically assume unresolved external
 calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how
@@ -1189,8 +1195,13 @@ calls with an empty input buffer (length 0) *cannot* make arbitrary changes to a
 calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
 `--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
+**Example**
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
+```
+
 (--struct_link)=
-### `--struct_link`
+## `--struct_link`
 
 **Usage**
 ```
@@ -1216,7 +1227,9 @@ struct TokenPair {
 ```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
-`certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken`
+```
+certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
+```
 
 Options for controlling contract creation
 -----------------------------------------
