@@ -990,7 +990,7 @@ When running on just a few rules, or when willing to make faster iterations on s
 Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
 
 **Example**
-```console
+```bash
 certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
 ```
 
@@ -999,7 +999,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
 See {ref}`--method`
 
 (--smt_timeout)=
-### `--smt_timeout`
+## `--smt_timeout`
 
 **Usage**
 ```shell
@@ -1196,7 +1196,7 @@ calls with an empty input buffer will {term}`havoc` all the storage state of ext
 `--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 **Example**
-```
+```bash
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 ```
 
@@ -1227,7 +1227,8 @@ struct TokenPair {
 ```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
-```
+
+```bash
 certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
 ```
 
@@ -1235,7 +1236,7 @@ Options for controlling contract creation
 -----------------------------------------
 
 (--dynamic_bound)=
-### `--dynamic_bound`
+## `--dynamic_bound`
 
 **Usage**
 ```
@@ -1250,10 +1251,12 @@ When you wish to model contract creation, that is, simulating the actual creatio
 
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
-`certoraRun C.sol Foo.sol --dynamic_bound 1`
+```bash
+certoraRun C.sol Foo.sol --dynamic_bound 1
+```
 
 (--dynamic_dispatch)=
-### `--dynamic_dispatch`
+## `--dynamic_dispatch`
 
 **What does it do?**
 If false (the default), then all contract method invocations on newly created instances will be unresolved. The user must explicitly write {ref}`` `DISPATCHER` <dispatcher>`` summaries for all methods called on newly created instances.
@@ -1277,10 +1280,12 @@ When you prefer not to add explicit `DISPATCHER` summaries to methods invoked by
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
 Note that you must add a `--dynamic_bound` argument as well.
-`certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch`
+```bash
+certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch
+```
 
 (--prototype)=
-### `--prototype`
+## `--prototype`
 
 **Usage**
 ```
@@ -1306,7 +1311,9 @@ assembly {
 ```
 Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`.
 The Prover will then be able to create a new instance of `Foo` at the point where the code creates it:
-`certoraRun C.sol Foo.sol --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1`
+```bash
+certoraRun C.sol Foo.sol --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
+```
 Note: this argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
 
 Also note that the hex string must be:
@@ -1319,7 +1326,7 @@ Version options
 -----------------
 
 (--version)=
-### `--version`
+## `--version`
 
 **What does it do?**
 Shows the version of the local installation of the tool you have.
@@ -1328,7 +1335,9 @@ Shows the version of the local installation of the tool you have.
 When you suspect you have an old installation. To install the newest version, use `pip install --upgrade certora-cli`.
 **Example**
 
-`certoraRun --version`
+```bash
+certoraRun --version
+```
 
 
 
