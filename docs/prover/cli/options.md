@@ -69,7 +69,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 ```
 
 (--rule)=
-### `--rule`
+## `--rule`
 
 **Usage**
 ```
@@ -114,7 +114,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ```
 
 (--exclude_rule)=
-### `--exclude_rule`
+## `--exclude_rule`
 
 **Usage**
 ```
@@ -178,7 +178,7 @@ any `--exclude_rule` flags.
 ```
 
 (--method)=
-### `--method`
+## `--method`
 
 **Usage**
 ```
@@ -270,7 +270,7 @@ certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
 ```
 
 (--wait-for-results)=
-### `--wait_for_results`
+## `--wait_for_results`
 
 **What does it do?**
 Wait for verification results after sending the verification request.
@@ -294,7 +294,7 @@ Options affecting the type of verification run
 ----------------------------------------------
 
 (--coverage_info)=
-### `--coverage_info`
+## `--coverage_info`
 
 **Usage**
 ```
@@ -333,7 +333,7 @@ When we want to run all foundry fuzz tests in the project with the prover.
 `certoraRun --foundry`
 
 (--independent_satisfy)=
-### `--independent_satisfy`
+## `--independent_satisfy`
 
 **What does it do?**
 The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule.
@@ -392,7 +392,7 @@ When you have a rule with multiple satisfy statements, and you would like to dem
 `certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy`
 
 (--multi_assert_check)=
-### `--multi_assert_check`
+## `--multi_assert_check`
 
 **What does it do?**
 This mode checks each assertion statement that occurs in a rule, separately. The check is done by decomposing each rule into multiple sub-rules, each of which checks one assertion, while it assumes all preceding assertions. In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
@@ -450,7 +450,7 @@ may be hot spots for summarization etc.
 `certoraRun --project_sanity`
 
 (--rule_sanity)=
-### `--rule_sanity`
+## `--rule_sanity`
 
 **Usage**
 ```
@@ -467,10 +467,12 @@ We suggest using this option routinely while developing rules.  It is also a
 useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
+```
 
 (--short_output)=
-### `--short_output`
+## `--short_output`
 
 **What does it do?**
 Reduces the verbosity of the tool.
@@ -494,10 +496,12 @@ Compiles every smart contract with a different compiler executable (Solidity ver
 When different contracts have to be compiled for different Solidity versions.
 
 **Example**
-`certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10`
+```
+certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
+```
 
 (--packages)=
-### `--packages`
+## `--packages`
 
 **What does it do?**
 For each package, gets the path to a directory including that Solidity package.
@@ -506,10 +510,12 @@ For each package, gets the path to a directory including that Solidity package.
 By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `--packages`.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src
+```
 
 (--packages_path)=
-### `--packages_path`
+## `--packages_path`
 
 **What does it do?**
 Gets the path to a directory including the Solidity packages.
@@ -518,10 +524,12 @@ Gets the path to a directory including the Solidity packages.
 By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `--packages_path`.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages
+```
 
 (--solc)=
-### `--solc`
+## `--solc`
 
 **Usage**
 ```
@@ -535,10 +543,12 @@ Use this option to provide a path to the Solidity compiler executable file. We c
 Whenever you want to use a Solidity compiler executable with a non-default name. This is usually used when you have several Solidity compiler executable versions you switch between.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1
+```
 
 (--solc_allow_path)=
-### `--solc_allow_path`
+## `--solc_allow_path`
 
 **Usage**
 ```
@@ -553,10 +563,12 @@ See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-r
 When we want to add an additional location the Solidity compiler to load sources from
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank
+```
 
 (--solc_evm_version)=
-### `--solc_evm_version`
+## `--solc_evm_version`
 
 **Usage**
 ```
@@ -570,10 +582,12 @@ Passes the value of this option  to the solidity compiler's option `--evm-versio
 When we want to select the Solidity compiler EVM version
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
+```
 
 (--solc_evm_version_map)=
-### `--solc_evm_version_map`
+## `--solc_evm_version_map`
 
 **Usage**
 ```
@@ -588,10 +602,12 @@ Passes the value of this option as is to the solidity compiler's option `--evm-v
 When different contracts have to be compiled with different Solidity EVM versions.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun
+```
 
 (--solc_optimize)=
-### `--solc_optimize`
+## `--solc_optimize`
 
 **Usage**
 ```
@@ -606,10 +622,12 @@ When we want to activate in the solidity compiler the opcode-based optimizer for
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300
+```
 
 (--solc_optimize_map)=
-### `--solc_optimize_map`
+## `--solc_optimize_map`
 
 **Usage**
 ```
@@ -625,11 +643,13 @@ When we want to activate in the solidity compiler the opcode-based optimizer for
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300
+```
 
 
 (--solc_via_ir)=
-### `--solc_via_ir`
+## `--solc_via_ir`
 
 **What does it do?**
 Passes the value of this option  to the solidity compiler's option `--via-ir`.
@@ -638,7 +658,9 @@ Passes the value of this option  to the solidity compiler's option `--via-ir`.
 When we want to enable the IR-based code generator
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir`
+```
+certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
+```
 
 Options regarding source code loops
 -----------------------------------
