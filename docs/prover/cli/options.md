@@ -1345,7 +1345,7 @@ Advanced options
 ----------------
 
 (--allow_solidity_calls_in_quantifiers)=
-### `--allow_solidity_calls_in_quantifiers`
+## `--allow_solidity_calls_in_quantifiers`
 
 **What does it do?**
 
@@ -1362,7 +1362,7 @@ Upon instruction from the Certora team.
 error on encountering contract method calls in quantified expression bodies.
 
 (--java_args)=
-### `--java_args`
+## `--java_args`
 
 **What does it do?**
 
@@ -1377,7 +1377,7 @@ Upon instruction from the Certora team.
 `--java_args '"-Dcvt.default.parallelism=2"'` - will set the number of “tasks” that can run in parallel to 2.
 
 (--precise_bitwise_ops)=
-### `--precise_bitwise_ops`
+## `--precise_bitwise_ops`
 
 This option models bitwise operations exactly instead of using the default
 {term}`overapproximation`s. It is useful when the Prover reports a
@@ -1390,7 +1390,7 @@ effectively restricting a `mathint` to a `uint256`. We currently do not have a
 setting or encoding that models precisely both bitwise operations and `mathint`.
 
 (--prover_args)=
-### `--prover_args`
+## `--prover_args`
 
 The `--prover_args` option allows you to provide fine-grained tuning options to the
 Prover.  `--prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
@@ -1398,28 +1398,28 @@ Prover.  `--prover_args` receives a string containing Prover-specific options, a
 set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted.
 
 (-enablestoragesplitting)=
-#### `-enableStorageSplitting`
+### `-enableStorageSplitting`
 
 This option disables the storage splitting optimization.
 
 **Usage**
-```
+```bash
 --prover_args '-enableStorageSplitting false'
 ```
 
 (-maxnumberofreachchecksbasedondomination)=
-#### `-maxNumberOfReachChecksBasedOnDomination`
+### `-maxNumberOfReachChecksBasedOnDomination`
 
 This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
 **Usage**
-```
+```bash
 --prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'
 ```
 
 (-optimisticreturnsize)=
-#### `-optimisticReturnsize`
+### `-optimisticReturnsize`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -1433,12 +1433,12 @@ the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 **Usage**
-```
+```bash
 --prover_args '-optimisticReturnsize true'
 ```
 
 (-smt_groundquantifiers)=
-#### `-smt_groundQuantifiers`
+### `-smt_groundQuantifiers`
 
 This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
@@ -1449,7 +1449,7 @@ information.
 ```
 
 (-superoptimisticreturnsize)=
-#### `-superOptimisticReturnsize`
+### `-superOptimisticReturnsize`
 
 This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
@@ -1457,7 +1457,7 @@ It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
 **Usage**
-```
+```bash
 --prover_args '-superOptimisticReturnsize true'
 ```
 
@@ -1472,7 +1472,7 @@ See [here](control-flow-splitting) for an explanation of control flow splitting.
 ### `-depth`
 
 **Usage**
-```
+```sh
 --prover_args '-depth <number>'
 ```
 
@@ -1501,7 +1501,7 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ### `-dontStopAtFirstSplitTimeout`
 
 **Usage**
-```
+```sh
 --prover_args '-dontStopAtFirstSplitTimeout <true/false>'
 ```
 
@@ -1534,7 +1534,7 @@ The "medium timeout" determines how much time the SMT solver gets for checking a
 (For split leaves, the full {ref}`--smt_timeout` is used.)
 
 **Usage**
-```
+```sh
 --prover_args '-mediumTimeout <seconds>'
 ```
 
@@ -1564,7 +1564,7 @@ With this option, the splitting can be configured to skip the SMT solver-based c
 at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
 
 **Usage**
-```
+```sh
 --prover_args '-smt_initialSplitDepth <number>'
 ```
 
