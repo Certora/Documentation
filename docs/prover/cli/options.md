@@ -191,7 +191,7 @@ The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run togeth
 ```{note}
 When used together with the {ref}`--rule` flag the logic is to collect all rules
 that pass the `--rule` flag(s) and then subtract from them all rules that match
-any `--exclude_rule` flags.
+any {ref}`--exclude_rule` flag(s).
 ```
 
 (--method)=
@@ -248,11 +248,13 @@ If we discover a counterexample in several methods, we could rerun just those:
 certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
 
-Note that in the last example the `transfer` method of all contracts in the
+In the last example the `transfer` method of all contracts in the
 scene will be used, but only the `deposit` method of the primary contract.
 
-Note that many shells will interpret the `(` and `)` characters specially, so
+```{note}
+Many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
+```
 
 (--parametric_contracts)=
 ## `--parametric_contracts`
@@ -1045,7 +1047,10 @@ preprocessing.
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
-Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+
+```{note}
+Even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+```
 
 **Example**
 ```sh
@@ -1074,12 +1079,14 @@ source code. Then, it passes it on to an array of SMT solvers. The time it can
 take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
-Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`--global_timeout`.
+The SMT timeout applies separately to each individual rule (or each method
+for parametric rules). To set the global timeout, see {ref}`--global_timeout`.
 
-Also note that, while the most prominent one, this is not the only timeout that
+```{note}
+While this is the most prominent timeout, this is not the only timeout that
 applies to SMT solvers, for details see {ref}`-mediumTimeout` and
 {ref}`control-flow-splitting`.
+```
 
 **When to use it?**
 The default time out for the solvers is 300 seconds. There are two use cases for this option.
@@ -1191,8 +1198,10 @@ In this case one can either
 make the limit larger or set `--optimistic_contract_recursion` flag
 to `true`.
 
-Note that making the limit larger is not always sufficient,
+```{note}
+Increasing the limit is not always sufficient,
 as the code may in fact allow theoretically unbounded recursion.
+```
 
 
 **Example**
@@ -1238,7 +1247,7 @@ but only if {ref}`--contract_recursion_limit` is set to a number higher than 0.
 2. When we are interested only in a limited recursion depth due to contract linking.
 
 ```{caution}
-Note that this flag could be another cause for unsoundness - even if such recursion
+This flag could be another cause for unsoundness - even if such recursion
 _could_ actually happen in the deployed contract, this code-path won't be verified
 beyond the specified recursion limit ({ref}`--contract_recursion_limit`).
 ```
@@ -1324,10 +1333,12 @@ certoraRun Bank.sol --verify Bank:Bank.spec --dynamic_bound 1
 ## `--dynamic_dispatch`
 
 **What does it do?**
-If false (the default), then all contract method invocations on newly created instances will be unresolved. The user must explicitly write {ref}`` `DISPATCHER` <dispatcher>`` summaries for all methods called on newly created instances.
-If true, the Prover will, on a best-effort basis, automatically apply the `DISPATCHER` summary for call sites that must be with a newly created contract as a receiver.
+By default, contract method invocations on newly created instances remain unresolved, requiring explicit {ref}`` DISPATCHER <dispatcher>`` summaries for all such method calls.
+With this option, the Prover will automatically apply the `DISPATCHER` summary on a best-effort basis for call sites where the receiver is proven to be a newly created contract.
 
-Importantly, this option is only applicable to cases where the Prover can prove that the callee is a created contract. For example, in the below example, the `bar` function will be unresolved:
+**Limitations**
+- This option only applies when the Prover can prove that the callee is a created contract.
+- If a contract instance is assigned from both a newly created contract and another source (e.g., storage), calls will remain unresolved. For example:
 ```solidity
 MyFoo f;
 if(*) {
@@ -1339,14 +1350,17 @@ f.bar();
 ```
 
 **When to use it?**
-When you prefer not to add explicit `DISPATCHER` summaries to methods invoked by the created contract.
+Use this flag when you prefer not to manually add explicit `DISPATCHER` summaries for methods invoked by the created contract.
 
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
-Note that you must add a `--dynamic_bound` argument as well.
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --dynamic_bound 1 --dynamic_dispatch
+certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1 --dynamic_dispatch
+```
+
+```{note}
+You must also use the {ref}`--dynamic_bound` option.
 ```
 
 (--prototype)=
