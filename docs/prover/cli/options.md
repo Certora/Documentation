@@ -26,7 +26,7 @@ See {ref}`conf-files` for more information.
 ```
 
 Most frequently used options
-----------------------------
+============================
 
 (--verify)=
 ## `--verify`
