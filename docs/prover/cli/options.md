@@ -1434,7 +1434,7 @@ Upon instruction from the Certora team.
 ## `--precise_bitwise_ops`
 
 **What does it do?**
-This option models bitwise operations exactly, instead of using the default {term}`overapproximations`. It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
+This option models bitwise operations exactly, instead of using the default {term}`overapproximation`. It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
 
 **Limitations**
 - This encoding does not model `mathint` precisely.
