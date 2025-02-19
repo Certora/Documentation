@@ -1189,7 +1189,7 @@ contract recursion limit, it will report an assertion failure (unless
 will be ignored).
 The default value is zero (i.e., no recursion is allowed).
 
-**When to use it**
+**When to use it?**
 Use this option when after linking the resulting program may have paths
 with recursive calls to external Solidity
 functions, and this leads to a recursion-specific assertion failure,
@@ -1263,11 +1263,17 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option determines whether to optimistically assume unresolved external
-calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how
-{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
-`--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
+This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will havoc all storage state of external contracts. When `--optimistic_fallback` is enabled, these calls will instead:
+
+- Execute the fallback function in the specified contract (if it exists).
+- Revert if no fallback function is available.
+- Execute a transfer if applicable.
+
+This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing unnecessary state havoc for empty input calls.
+
+**When to use it?**
+
+Enable this option to avoid spurious counter examples for external calls with empty input buffers.
 
 **Example**
 ```sh
@@ -1399,7 +1405,7 @@ This argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zer
 ```
 
 ```{Note}
-Also note that the hex string must be:
+The hex string must be:
 - A strict prefix of the memory region passed to the create command.
 - Must be unique within each invocation of the tool.
 - Must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will.
@@ -1516,12 +1522,15 @@ This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction according to the
 called method.
-Note that certain conditions should hold in order for the option to take effect.
+
+```{note}
+Certain conditions should hold in order for the option to take effect.
 Namely, if there is a single candidate method in the havoc site,
 and all instances of this method in the {term}`scene` have exactly the same
 expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
+```
 
 **Usage**
 ```sh
