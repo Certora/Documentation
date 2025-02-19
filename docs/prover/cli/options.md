@@ -57,7 +57,11 @@ certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
 **What does it do?**
-Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. Note that you need to wrap your message in quotes if it contains spaces.
+Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. 
+
+```{note}
+You need to wrap your message in quotes if it contains spaces.
+```
 
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
@@ -89,14 +93,16 @@ specific rule.
 
 One can either specify a specific rule name, or use pattern matching with a `*`.
 
-Note that you can specify this flag multiple times to filter in several rules or rule patterns.
+You can specify this flag multiple times to filter in several rules or rule patterns.
 
 **Example**
 If `Bank.spec` includes the following properties:
 
-`invariant address_zero_cannot_become_an_account()`
-`rule withdraw_succeeds()`
-`rule withdraw_fails()`
+```cvl
+invariant address_zero_cannot_become_an_account()
+rule withdraw_succeeds()
+rule withdraw_fails()
+```
 
 If we want to verify only `withdraw_succeeds`, we run
 ```sh
@@ -123,10 +129,12 @@ certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ```
 
 **What does it do?**
-It is the opposite flag to {ref}`--rule` - use it to specify a list of rules that
-should _not_ be run.
+This flag is the opposite of {ref}`--rule` - it allows you to specify a list of rules that _should not_ be run.
 
-Note that you can specify this flag multiple times to filter out several rules or rule patterns.
+You can specify this flag multiple times to filter out several rules or rule patterns.
+
+**When to use it?**
+Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
 
 **Example**
 If `Bank.spec` includes the following properties:
@@ -157,7 +165,7 @@ executed for each rule that matches the rule patterns in `--split_rules` an addi
 the rest of the rules. After launching the generated jobs, the original job will return with a link to the dashboard, 
 listing the status of the generated jobs.
 
-Note that you can specify this flag multiple times to denote several rules or rule patterns.
+You can specify this flag multiple times to denote several rules or rule patterns.
 
 **When to use it?**
 This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
@@ -183,7 +191,7 @@ The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run togeth
 ```{note}
 When used together with the {ref}`--rule` flag the logic is to collect all rules
 that pass the `--rule` flag(s) and then subtract from them all rules that match
-any `--exclude_rule` flags.
+any {ref}`--exclude_rule` flag(s).
 ```
 
 (--method)=
@@ -240,11 +248,13 @@ If we discover a counterexample in several methods, we could rerun just those:
 certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
 
-Note that in the last example the `transfer` method of all contracts in the
+In the last example the `transfer` method of all contracts in the
 scene will be used, but only the `deposit` method of the primary contract.
 
-Note that many shells will interpret the `(` and `)` characters specially, so
+```{note}
+Many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
+```
 
 (--parametric_contracts)=
 ## `--parametric_contracts`
@@ -733,7 +743,11 @@ The Certora Prover unrolls loops - if the loop should be executed three times, i
 This option changes the assertions of the loop unwind condition to requirements (in the case above `require a >= b`). That means, we ignore all the cases where the loop unwind condition does not hold, instead of considering them as a failure.
 
 **When to use it?**
-When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. Note that `--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
+When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. 
+
+```{caution}
+`--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
+```
 
 **Example**
 ```sh
@@ -858,7 +872,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion
 ```
 
 ```{caution}
-Note that this flag could be another cause for unsoundness - even if such recursion
+This flag could cause unsoundness - even if such recursion
 _could_ actually happen in the deployed contract, this code-path won't be verified.
 ```
 
@@ -1033,7 +1047,10 @@ preprocessing.
 
 **When to use it?**
 When running on just a few rules, or when willing to make faster iterations on specs without waiting too long for the entire set of rules to complete.
-Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+
+```{note}
+Even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
+```
 
 **Example**
 ```sh
@@ -1062,12 +1079,14 @@ source code. Then, it passes it on to an array of SMT solvers. The time it can
 take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
-Note that the SMT timeout applies separately to each individual rule (or each method
-for parametric rules).  To set the global timeout, see {ref}`--global_timeout`.
+The SMT timeout applies separately to each individual rule (or each method
+for parametric rules). To set the global timeout, see {ref}`--global_timeout`.
 
-Also note that, while the most prominent one, this is not the only timeout that
+```{note}
+While this is the most prominent timeout, this is not the only timeout that
 applies to SMT solvers, for details see {ref}`-mediumTimeout` and
 {ref}`control-flow-splitting`.
+```
 
 **When to use it?**
 The default time out for the solvers is 300 seconds. There are two use cases for this option.
@@ -1170,7 +1189,7 @@ contract recursion limit, it will report an assertion failure (unless
 will be ignored).
 The default value is zero (i.e., no recursion is allowed).
 
-**When to use it**
+**When to use it?**
 Use this option when after linking the resulting program may have paths
 with recursive calls to external Solidity
 functions, and this leads to a recursion-specific assertion failure,
@@ -1179,8 +1198,10 @@ In this case one can either
 make the limit larger or set `--optimistic_contract_recursion` flag
 to `true`.
 
-Note that making the limit larger is not always sufficient,
+```{note}
+Increasing the limit is not always sufficient,
 as the code may in fact allow theoretically unbounded recursion.
+```
 
 
 **Example**
@@ -1226,7 +1247,7 @@ but only if {ref}`--contract_recursion_limit` is set to a number higher than 0.
 2. When we are interested only in a limited recursion depth due to contract linking.
 
 ```{caution}
-Note that this flag could be another cause for unsoundness - even if such recursion
+This flag could be another cause for unsoundness - even if such recursion
 _could_ actually happen in the deployed contract, this code-path won't be verified
 beyond the specified recursion limit ({ref}`--contract_recursion_limit`).
 ```
@@ -1242,11 +1263,17 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option determines whether to optimistically assume unresolved external
-calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how
-{ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
-calls with an empty input buffer will {term}`havoc` all the storage state of external contracts. When
-`--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
+This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will havoc all storage state of external contracts. When `--optimistic_fallback` is enabled, these calls will instead:
+
+- Execute the fallback function in the specified contract (if it exists).
+- Revert if no fallback function is available.
+- Execute a transfer if applicable.
+
+This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing unnecessary state havoc for empty input calls.
+
+**When to use it?**
+
+Enable this option to avoid spurious counter examples for external calls with empty input buffers.
 
 **Example**
 ```sh
@@ -1305,17 +1332,19 @@ When you wish to model contract creation, that is, simulating the actual creatio
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --dynamic_bound 1
+certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
 ```
 
 (--dynamic_dispatch)=
 ## `--dynamic_dispatch`
 
 **What does it do?**
-If false (the default), then all contract method invocations on newly created instances will be unresolved. The user must explicitly write {ref}`` `DISPATCHER` <dispatcher>`` summaries for all methods called on newly created instances.
-If true, the Prover will, on a best-effort basis, automatically apply the `DISPATCHER` summary for call sites that must be with a newly created contract as a receiver.
+By default, contract method invocations on newly created instances remain unresolved, requiring explicit {ref}`` DISPATCHER <dispatcher>`` summaries for all such method calls.
+With this option, the Prover will automatically apply the `DISPATCHER` summary on a best-effort basis for call sites where the receiver is proven to be a newly created contract.
 
-Importantly, this option is only applicable to cases where the Prover can prove that the callee is a created contract. For example, in the below example, the `bar` function will be unresolved:
+**Limitations**
+- This option only applies when the Prover can prove that the callee is a created contract.
+- If a contract instance is assigned from both a newly created contract and another source (e.g., storage), calls will remain unresolved. For example:
 ```solidity
 MyFoo f;
 if(*) {
@@ -1327,14 +1356,17 @@ f.bar();
 ```
 
 **When to use it?**
-When you prefer not to add explicit `DISPATCHER` summaries to methods invoked by the created contract.
+Use this flag when you prefer not to manually add explicit `DISPATCHER` summaries for methods invoked by the created contract.
 
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
-Note that you must add a `--dynamic_bound` argument as well.
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --dynamic_bound 1 --dynamic_dispatch
+certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1 --dynamic_dispatch
+```
+
+```{note}
+You must also use the {ref}`--dynamic_bound` option.
 ```
 
 (--prototype)=
@@ -1365,14 +1397,19 @@ assembly {
 Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`.
 The Prover will then be able to create a new instance of `Foo` at the point where the code creates it:
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
+certoraRun C.sol Foo.sol --verify C:C.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
 ```
-Note: this argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
 
-Also note that the hex string must be:
-- a strict prefix of the memory region passed to the create command
-- must be unique within each invocation of the tool
-- must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will
+```{Note}
+This argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
+```
+
+```{Note}
+The hex string must be:
+- A strict prefix of the memory region passed to the create command.
+- Must be unique within each invocation of the tool.
+- Must not contain gaps, e.g., `3d602d80600a3d3981f3363d3d373d3d3d363d730000` in the above example will not work (those last four bytes will be overwritten) but `3d602d80600a3d3981f3363d3d373d3d3d363d` will.
+```
 
 
 Version options
@@ -1433,15 +1470,21 @@ Upon instruction from the Certora team.
 (--precise_bitwise_ops)=
 ## `--precise_bitwise_ops`
 
-This option models bitwise operations exactly instead of using the default
-{term}`overapproximation`s. It is useful when the Prover reports a
-counterexample caused by incorrect modeling of bitwise operations, but can
-dramatically increase the time taken for verification.
+**What does it do?**
+This option models bitwise operations exactly, instead of using the default {term}`overapproximation`. It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
 
-The disadvantage of this encoding is that it does not model `mathint`
-precisely: the maximum supported integer value is :math:`2^256-1` in this case,
-effectively restricting a `mathint` to a `uint256`. We currently do not have a
-setting or encoding that models precisely both bitwise operations and `mathint`.
+**Limitations**
+- This encoding does not model `mathint` precisely.
+- The maximum supported integer value is {math}`2^{256} - 1`, effectively restricting `mathint` to a `uint256`.
+- There is currently no encoding that precisely models both bitwise operations and `mathint` simultaneously.
+
+**When to use it?**
+Use this option if a counterexample suggests that incorrect modeling of bitwise operations is affecting verification results.
+
+**Example**
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --precise_bitwise_ops
+```
 
 (--prover_args)=
 ## `--prover_args`
@@ -1479,12 +1522,15 @@ This option determines whether {ref}`havoc summaries <havoc-summary>` assume
 that the called method returns the correct number of return values.
 It will set the value returned by the `RETURNSIZE` EVM instruction according to the
 called method.
-Note that certain conditions should hold in order for the option to take effect.
+
+```{note}
+Certain conditions should hold in order for the option to take effect.
 Namely, if there is a single candidate method in the havoc site,
 and all instances of this method in the {term}`scene` have exactly the same
 expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
+```
 
 **Usage**
 ```sh
@@ -1632,9 +1678,10 @@ split immediately.
 When there is a lot of overhead induced by processing and trying to solve splits
 that are very hard, and thus run into a timeout anyway.
 
-```{note} The number of
-splits generated here is equal to `2^n` where `n` is the initial splitting depth
-(assuming the program has enough branching points, which is usually the case);
+```{note} 
+The number of splits generated here is equal to {math}`2^n` where `n` is the initial 
+splitting depth (assuming the program has enough branching points, 
+which is usually the case);
 thus, low numbers are advisable. For instance setting this to 5 means that the
 Prover will immediately produce 32 splits.
 ```
