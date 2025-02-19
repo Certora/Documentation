@@ -957,9 +957,9 @@ This flag should only be used in rare cases when you believe the local syntax or
 certoraRun MyContract.sol --verify MyContract:MySpec --disable_local_typechecking
 ```
 
-**Note**
-
+```{caution}
 Avoid using this flag unless absolutely necessary. It is always better to fix syntax or type issues locally to ensure a smoother verification process.
+```
 
 
 (--global_timeout)=
