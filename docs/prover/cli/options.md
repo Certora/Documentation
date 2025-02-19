@@ -6,12 +6,12 @@ The `certoraRun` utility invokes the Solidity compiler and afterwards sends th
 
 The most commonly used command is:
 
-```bash
+```sh
 certoraRun contractFile:contractName --verify contractName:specFile
 ```
 
 If `contractFile` is named `contractName.sol`, the run command can be simplified to
-```bash
+```sh
 certoraRun contractFile --verify contractName:specFile
 ```
 
@@ -32,7 +32,7 @@ Most frequently used options
 ## `--verify`
 
 **Usage**
-```
+```sh
 --verify <contract>:<spec_file>
 ```
 
@@ -44,7 +44,7 @@ When you wish to prove properties on the source code. This is by far the most co
 
 **Example**
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
@@ -52,7 +52,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec
 ## `--msg`
 
 **Usage**
-```
+```sh
 --msg <description>
 ```
 
@@ -64,7 +64,7 @@ Adding a message makes it easier to track several runs on [the Prover Dashboard]
 
 **Example**
 To create the message above, we used
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 ```
 
@@ -72,7 +72,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 ## `--rule`
 
 **Usage**
-```
+```sh
 --rule <rule_name_pattern>...
 ```
 
@@ -98,18 +98,18 @@ If `Bank.spec` includes the following properties:
 `rule withdraw_fails()`
 
 If we want to verify only `withdraw_succeeds`, we run
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds
 ```
 
 If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails
 ```
 
 Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
 simply run 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ```
 
@@ -117,7 +117,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ## `--exclude_rule`
 
 **Usage**
-```
+```sh
 --exclude_rule <rule_name_pattern>...
 ```
 
@@ -141,7 +141,7 @@ If we want to skip both rules we could run
 ## `--split_rules`
 
 **Usage**
-```
+```sh
 --split_rules <rule_name_pattern>...
 ```
 
@@ -181,7 +181,7 @@ any `--exclude_rule` flags.
 ## `--method`
 
 **Usage**
-```
+```sh
 --method <method_signature>...
 ```
 
@@ -246,7 +246,7 @@ methods of {ref}`currentContract`.
 ```
 
 **Usage**
-```
+```sh
 --parametric_contracts <contract_name>...
 ```
 
@@ -297,7 +297,7 @@ Options affecting the type of verification run
 ## `--coverage_info`
 
 **Usage**
-```
+```sh
 --coverage_info <none|basic|advanced>
 ```
 
@@ -457,7 +457,7 @@ certoraRun --project_sanity
 ## `--rule_sanity`
 
 **Usage**
-```
+```sh
 --rule_sanity <none|basic|advanced>
 ```
 
@@ -471,7 +471,7 @@ We suggest using this option routinely while developing rules.  It is also a
 useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
 ```
 
@@ -514,7 +514,7 @@ For each package, gets the path to a directory including that Solidity package.
 By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `--packages`.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src
 ```
 
@@ -528,7 +528,7 @@ Gets the path to a directory including the Solidity packages.
 By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `--packages_path`.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages
 ```
 
@@ -536,7 +536,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages
 ## `--solc`
 
 **Usage**
-```
+```sh
 --solc <solc_executable>
 ```
 
@@ -547,7 +547,7 @@ Use this option to provide a path to the Solidity compiler executable file. We c
 Whenever you want to use a Solidity compiler executable with a non-default name. This is usually used when you have several Solidity compiler executable versions you switch between.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1
 ```
 
@@ -555,7 +555,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1
 ## `--solc_allow_path`
 
 **Usage**
-```
+```sh
 --solc_allow_path <path>
 ```
 
@@ -567,7 +567,7 @@ See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-r
 When we want to add an additional location the Solidity compiler to load sources from
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank
 ```
 
@@ -575,7 +575,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank
 ## `--solc_evm_version`
 
 **Usage**
-```
+```sh
 --solc_evm_version <version>
 ```
 
@@ -586,7 +586,7 @@ Passes the value of this option  to the solidity compiler's option `--evm-versio
 When we want to select the Solidity compiler EVM version
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
 ```
 
@@ -594,7 +594,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
 ## `--solc_evm_version_map`
 
 **Usage**
-```
+```sh
 --solc_evm_version_map <contract>=<version>,...
 ```
 
@@ -606,7 +606,7 @@ Passes the value of this option as is to the solidity compiler's option `--evm-v
 When different contracts have to be compiled with different Solidity EVM versions.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun
 ```
 
@@ -614,7 +614,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,E
 ## `--solc_optimize`
 
 **Usage**
-```
+```sh
 --solc_optimize <n>
 ```
 
@@ -626,7 +626,7 @@ When we want to activate in the solidity compiler the opcode-based optimizer for
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300
 ```
 
@@ -634,7 +634,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300
 ## `--solc_optimize_map`
 
 **Usage**
-```
+```sh
 --solc_optimize_map <contract>=<n>,...
 ```
 
@@ -647,7 +647,7 @@ When we want to activate in the solidity compiler the opcode-based optimizer for
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs)
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300
 ```
 
@@ -662,7 +662,7 @@ Passes the value of this option  to the solidity compiler's option `--via-ir`.
 When we want to enable the IR-based code generator
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
 
@@ -673,7 +673,7 @@ Options regarding source code loops
 ## `--loop_iter`
 
 **Usage**
-```
+```sh
 --loop_iter <n>
 ```
 
@@ -685,7 +685,7 @@ The default number of loop iterations we unroll is one. However, in many cases, 
 
 **Example**
 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 ```
 
@@ -700,7 +700,7 @@ This option changes the assertions of the loop unwind condition to requirements 
 When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. Note that `--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
 
 **Example**
-```bash
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 ```
 
@@ -733,7 +733,7 @@ call resolution failures.
 
 **Example**
 
-```bash
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
 
@@ -756,7 +756,7 @@ verification results, as well as highlighting potentially difficult functions.
 
 **Example**
 
-```bash
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
@@ -764,7 +764,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ## `--nondet_minimal_difficulty`
 
 **Usage**
-```
+```sh
 --nondet_minimal_difficulty <n>
 ```
 
@@ -817,7 +817,7 @@ flag to `true`.
 
 **Example**
 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion
 ```
 
@@ -830,7 +830,7 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 ## `--summary_recursion_limit`
 
 **Usage**
-```
+```sh
 --summary_recursion_limit <n>
 ```
 
@@ -855,7 +855,7 @@ to `true`.
 
 **Example**
 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
@@ -886,7 +886,7 @@ When the assertion regarding unbounded hashing is thrown, but it is acceptable f
 
 **Example**
 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ```
 
@@ -894,7 +894,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ## `--hashing_length_bound`
 
 **Usage**
-```
+```sh
 --hashing_length_bound <n>
 ```
 
@@ -916,7 +916,7 @@ Reasons to raise this value:
 
 **Example**
 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
 ```
 
@@ -985,7 +985,7 @@ processing of the entire job, including static analysis and other
 preprocessing.
 
 **Usage**
-```
+```sh
 --global_timeout <seconds>
 ```
 
@@ -994,7 +994,7 @@ When running on just a few rules, or when willing to make faster iterations on s
 Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
 
 **Example**
-```bash
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
 ```
 
@@ -1006,7 +1006,7 @@ See {ref}`--method`
 ## `--smt_timeout`
 
 **Usage**
-```shell
+```sh
 --smt_timeout <seconds>
 ```
 
@@ -1033,7 +1033,7 @@ One is to decrease the timeout. This is useful for simple rules, that are solved
 The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300
 ```
 
@@ -1053,7 +1053,7 @@ When we have an external contract with a constant address. By default, the Pytho
 **Example**
 
 If we wish the `Oracle` contract to be at address 12, we use
-```
+```sh
 certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12
 ```
 
@@ -1101,7 +1101,7 @@ contract already has such a function and this would cause a conflict).
 ## `--contract_recursion_limit`
 
 **Usage**
-```
+```sh
 --contract_recursion_limit <n>
 ```
 
@@ -1138,7 +1138,7 @@ as the code may in fact allow theoretically unbounded recursion.
 
 **Example**
 
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ```
 
@@ -1146,7 +1146,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ## `--link`
 
 **Usage**
-```
+```sh
 --struct_link <contract>:<slot>=<address>
 ```
 
@@ -1161,7 +1161,7 @@ Assume we have the contract `Bank.sol` with the following code snippet:
 `IERC20 public underlyingToken;`
 
 We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:
-```
+```sh
 certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken
 ```
 
@@ -1185,7 +1185,7 @@ beyond the specified recursion limit ({ref}`--contract_recursion_limit`).
 ```
 
 **Example**
-```
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true --contract_recursion_limit 1
 ```
 
@@ -1200,7 +1200,7 @@ calls with an empty input buffer will {term}`havoc` all the storage state of ext
 `--optimistic_fallback` is enabled, the call will either execute the fallback function in the specified contract, revert, or execute a transfer. It will not havoc any state.
 
 **Example**
-```bash
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 ```
 
@@ -1208,7 +1208,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 ## `--struct_link`
 
 **Usage**
-```
+```sh
 --struct_link <contract>:<slot>=<address>
 ```
 
@@ -1232,7 +1232,7 @@ struct TokenPair {
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
 
-```bash
+```sh
 certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
 ```
 
@@ -1243,7 +1243,7 @@ Options for controlling contract creation
 ## `--dynamic_bound`
 
 **Usage**
-```
+```sh
 --dynamic_bound <n>
 ```
 
@@ -1255,7 +1255,7 @@ When you wish to model contract creation, that is, simulating the actual creatio
 
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
-```bash
+```sh
 certoraRun C.sol Foo.sol --dynamic_bound 1
 ```
 
@@ -1284,7 +1284,7 @@ When you prefer not to add explicit `DISPATCHER` summaries to methods invoked by
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
 Note that you must add a `--dynamic_bound` argument as well.
-```bash
+```sh
 certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch
 ```
 
@@ -1292,7 +1292,7 @@ certoraRun C.sol Foo.sol --dynamic_bound 1 --dynamic_dispatch
 ## `--prototype`
 
 **Usage**
-```
+```sh
 --prototype <hex string>=<contract>
 ```
 
@@ -1315,7 +1315,7 @@ assembly {
 ```
 Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`.
 The Prover will then be able to create a new instance of `Foo` at the point where the code creates it:
-```bash
+```sh
 certoraRun C.sol Foo.sol --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
 ```
 Note: this argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
@@ -1339,7 +1339,7 @@ Shows the version of the local installation of the tool you have.
 When you suspect you have an old installation. To install the newest version, use `pip install --upgrade certora-cli`.
 **Example**
 
-```bash
+```sh
 certoraRun --version
 ```
 
@@ -1407,7 +1407,7 @@ set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_ar
 This option disables the storage splitting optimization.
 
 **Usage**
-```bash
+```sh
 --prover_args '-enableStorageSplitting false'
 ```
 
@@ -1418,7 +1418,7 @@ This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
 **Usage**
-```bash
+```sh
 --prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'
 ```
 
@@ -1437,7 +1437,7 @@ the expected size matching the methods in the scene.
 Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 **Usage**
-```bash
+```sh
 --prover_args '-optimisticReturnsize true'
 ```
 
@@ -1448,7 +1448,7 @@ This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
 **Usage**
-```
+```sh
 --prover_args '-smt_groundQuantifiers false'
 ```
 
@@ -1461,7 +1461,7 @@ It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
 **Usage**
-```bash
+```sh
 --prover_args '-superOptimisticReturnsize true'
 ```
 
