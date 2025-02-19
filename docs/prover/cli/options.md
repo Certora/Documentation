@@ -49,7 +49,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
 (--msg)=
-### `--msg`
+## `--msg`
 
 **Usage**
 ```
@@ -138,7 +138,7 @@ If we want to skip both rules we could run
 `certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*`
 
 (--split_rules)=
-### `--split_rules`
+## `--split_rules`
 
 **Usage**
 ```
@@ -238,7 +238,7 @@ Note that many shells will interpret the `(` and `)` characters specially, so
 the method signature argument will usually need to be quoted as in the example.
 
 (--parametric_contracts)=
-### `--parametric_contracts`
+## `--parametric_contracts`
 
 ```{versionadded} 5.0
 Prior to version 5, method variables and invariants were only instantiated with
@@ -313,7 +313,7 @@ We suggest using this option when you have finished (a subset of) your rules and
 `certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced`
 
 (--foundry)=
-### `--foundry`
+## `--foundry`
 
 **What does it do?**
 Collects all test files in the project (files ending with `.t.sol`), and runs
@@ -330,7 +330,9 @@ Note - this option implicitly enables the {ref}`--auto_dispatcher` option.
 When we want to run all foundry fuzz tests in the project with the prover.
 
 **Example**
-`certoraRun --foundry`
+```sh
+certoraRun --foundry
+```
 
 (--independent_satisfy)=
 ## `--independent_satisfy`
@@ -427,7 +429,7 @@ When you have a rule with multiple assertions:
 `certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check`
 
 (--project_sanity)=
-### `--project_sanity`
+## `--project_sanity`
 
 **What does it do?**
 Runs the builtin sanity rule on all methods in the project. If the Prover is run
@@ -447,7 +449,9 @@ Mostly used as a first step when starting to work on a new project, in order to
 may be hot spots for summarization etc.
 
 **Example**
-`certoraRun --project_sanity`
+```sh
+certoraRun --project_sanity
+```
 
 (--rule_sanity)=
 ## `--rule_sanity`
@@ -487,7 +491,7 @@ Options that control the Solidity compiler
 ------------------------------------------
 (--compiler_map)=
 (--solc_map)=
-### `--compiler_map`
+## `--compiler_map`
 
 **What does it do?**
 Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
@@ -496,7 +500,7 @@ Compiles every smart contract with a different compiler executable (Solidity ver
 When different contracts have to be compiled for different Solidity versions.
 
 **Example**
-```
+```sh
 certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
 ```
 
@@ -757,7 +761,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
 (--nondet_minimal_difficulty)=
-### `--nondet_minimal_difficulty`
+## `--nondet_minimal_difficulty`
 
 **Usage**
 ```
@@ -775,7 +779,7 @@ The notification in the rule report that contains the applied summaries will pre
 
 **Example**
 
-```bash
+```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
 
