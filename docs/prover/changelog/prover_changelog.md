@@ -4,7 +4,7 @@ Prover Release Notes
 
 ```{contents}
 ```
-7.25.1 (Feb 19, 2025)
+7.25.2 (Feb 19, 2025)
 ----------------------
 ### CVL
 - [feat] CVL now supports native summation over ghost mapping variables with the new `sum` and `usum` keywords.
