@@ -1240,6 +1240,8 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 (--optimistic_fallback)=
 ## `--optimistic_fallback`
 
+**What does it do?**
+
 This option determines whether to optimistically assume unresolved external
 calls with an empty input buffer (length 0) *cannot* make arbitrary changes to all states. It makes changes to how
 {ref}`AUTO summaries <auto-summary>` are executed. By default unresolved external
@@ -1384,6 +1386,7 @@ Shows the version of the local installation of the tool you have.
 
 **When to use it?**
 When you suspect you have an old installation. To install the newest version, use `pip install --upgrade certora-cli`.
+
 **Example**
 
 ```sh
