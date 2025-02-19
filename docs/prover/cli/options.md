@@ -666,7 +666,7 @@ Options regarding source code loops
 -----------------------------------
 
 (--loop_iter)=
-### `--loop_iter`
+## `--loop_iter`
 
 **Usage**
 ```
@@ -686,7 +686,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 ```
 
 (--optimistic_loop)=
-### `--optimistic_loop`
+## `--optimistic_loop`
 
 **What does it do?**
 The Certora Prover unrolls loops - if the loop should be executed three times, it will copy the code inside the loop three times. After we finish the loop's iterations, we add an assertion to verify we have actually finished running the loop. For example, in a `while (a < b)` loop, after the loop's unrolling, we add `assert a >= b`. We call this assertion the _loop unwind condition_.
@@ -704,7 +704,7 @@ Options regarding summarization
 -------------------------------
 
 (--auto_dispatcher)=
-### `--auto_dispatcher`
+## `--auto_dispatcher`
 
 **What does it do?**
 In case a call's callee cannot be precomputed but the called method's sighash
@@ -734,7 +734,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
 
 (--nondet_difficult_funcs)=
-### `--nondet_difficult_funcs`
+## `--nondet_difficult_funcs`
 
 **What does it do?**
 When this option is set, the Prover will auto-summarize
@@ -780,7 +780,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_mi
 ```
 
 (--optimistic_summary_recursion)=
-### `--optimistic_summary_recursion`
+## `--optimistic_summary_recursion`
 
 **What does it do?**
 In case there's a call to some Solidity function within a summary, we may end up
@@ -823,7 +823,7 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 ```
 
 (--summary_recursion_limit)=
-### `--summary_recursion_limit`
+## `--summary_recursion_limit`
 
 **Usage**
 ```
@@ -860,7 +860,7 @@ Options regarding hashing of unbounded data
 -------------------------------------------
 
 (--optimistic_hashing)=
-### `--optimistic_hashing`
+## `--optimistic_hashing`
 
 **What does it do?**
 
@@ -887,7 +887,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ```
 
 (--hashing_length_bound)=
-### `--hashing_length_bound`
+## `--hashing_length_bound`
 
 **Usage**
 ```
@@ -921,7 +921,7 @@ Options that help reduce the running time
 -----------------------------------------
 
 (--compilation_steps_only)=
-### `--compilation_steps_only`
+## `--compilation_steps_only`
 
 **What does it do?**
 Exits the program after source code and spec compilation without sending
@@ -941,7 +941,7 @@ Here are a few example scenarios:
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
 
-### `--disable_local_type_checking`
+## `--disable_local_type_checking`
 
 **What does it do?**
 
