@@ -763,7 +763,7 @@ methods block is that when it's manually written there with `optimistic=true`
 and no such function is found in the scene the Prover will exit with an error,
 but when using the flag it will fall back to the default havoc.
 
-**When to use it**
+**When to use it?**
 When there are many unresolved callee methods, or as a first step to solve
 call resolution failures.
 
@@ -784,7 +784,7 @@ for the Prover.
 
 For more information, see {ref}`detect-candidates-for-summarization`.
 
-**When to use it**
+**When to use it?**
 Using this option is recommended when beginning to work on a large code
 base that includes functions that could be difficult for the Prover.
 It can help the user get faster feedback, both in the form of faster
@@ -807,7 +807,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 **What does it do?**
 This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
 
-**When to use it**
+**When to use it?**
 If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
 one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
 
@@ -845,7 +845,7 @@ reached (the limit is controlled by the {ref}`--summary_recursion_limit` flag).
 With `--optimistic_summary_recursion`, the Prover will instead assume that the
 limit is never reached.
 
-**When to use it**
+**When to use it?**
 Use this flag when there is recursion due to summaries calling Solidity
 functions, and this causes an undesired assertion failure. In this case one can
 either make the limit larger (via {ref}`--summary_recursion_limit`) or set this
@@ -881,7 +881,7 @@ than the contract recursion limit, the Prover will report an assertion failure (
 will be ignored).
 The default value is zero (i.e. no recursion is allowed).
 
-**When to use it**
+**When to use it?**
 1. Use this option when there is recursion due to summaries calling Solidity
 functions, and this leads to an assertion failure. In this case one can either
 make the limit larger or set (via {ref}`--optimistic_summary_recursion`) flag
