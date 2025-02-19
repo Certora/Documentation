@@ -963,7 +963,7 @@ Avoid using this flag unless absolutely necessary. It is always better to fix sy
 
 
 (--global_timeout)=
-### `--global_timeout`
+## `--global_timeout`
 Sets the maximal timeout for the Prover.
 Gets an integer input, which represents seconds.
 
@@ -990,9 +990,11 @@ When running on just a few rules, or when willing to make faster iterations on s
 Note that even if in the shorter running time not all rules were processed, a second run may pull some results from cache, and therefore more results will be available.
 
 **Example**
-`certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60`
+```console
+certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
+```
 
-### `--method`
+## `--method`
 
 See {ref}`--method`
 
@@ -1000,7 +1002,7 @@ See {ref}`--method`
 ### `--smt_timeout`
 
 **Usage**
-```
+```shell
 --smt_timeout <seconds>
 ```
 
