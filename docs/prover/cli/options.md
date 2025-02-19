@@ -1086,6 +1086,11 @@ Options to set addresses and link contracts
 (--address)=
 ## `--address`
 
+**Usage**
+```sh
+--address <contract>:<address>
+```
+
 **What does it do?**
 Sets the address of a contract to a given address.
 
