@@ -1326,7 +1326,7 @@ When you wish to model contract creation, that is, simulating the actual creatio
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --dynamic_bound 1
+certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
 ```
 
 (--dynamic_dispatch)=
@@ -1391,7 +1391,7 @@ assembly {
 Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`.
 The Prover will then be able to create a new instance of `Foo` at the point where the code creates it:
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
+certoraRun C.sol Foo.sol --verify C:C.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
 ```
 
 ```{Note}
