@@ -812,9 +812,12 @@ calling the function.
 Similarly, there is another special variable `executingContract`, which
 gives the address of the contract making the call to the function that is
 summarized. For internal, delegate and library calls, `executingContract` is
-the same as `calledContract`.
+the same as `calledContract`. They differ only in non-delegate external calls, 
+where `calledContract` will be the receiver of the call and `executingContract`
+will be the caller.
 The `calledContract` and `executingContract` keywords may only be used inside
-the `methods` block.
+the `methods` block, and `executingContract` also 
+in {ref}`hook bodies<executingContract>`.
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
