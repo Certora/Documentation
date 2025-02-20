@@ -404,9 +404,7 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 `certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src`
 
 ```{note}
-{https://book.getfoundry.sh/reference/forge/forge-remappings}`forge remappings` can be used to determine what packages are missing and should be added to the conf file. 
-
-`CertoraRun` compilation can provide hints about specific packages that are needed for a certain run. 
+Information about missing packages is usually stored in `remappings.txt` file. 
 ```
 
 (--packages_path)=
