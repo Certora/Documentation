@@ -802,12 +802,22 @@ supported.
 
 The function call may also use the special variable `calledContract`, which
 gives the address of the contract on which the summarized method was called.
+More precisely, it equates to `address(this)` in the context of the original
+call that is being summarized.
 This is useful for identifying the called contract in {ref}`wildcard summaries
 <cvl2-wildcards>`. For internal functions, the `calledContract` is also
 the calling contract, since they are the same.
-For library functions the `calledContract` is the contract calling the library
-function.
-The `calledContract` keyword may only be used inside the `methods` block.
+For library functions and delegate calls the `calledContract` is the contract
+calling the function.
+Similarly, there is another special variable `executingContract`, which
+gives the address of the contract making the call to the function that is
+summarized. For internal, delegate and library calls, `executingContract` is
+the same as `calledContract`. They differ only in non-delegate external calls, 
+where `calledContract` will be the receiver of the call and `executingContract`
+will be the caller.
+The `calledContract` and `executingContract` keywords may only be used inside
+the `methods` block, and `executingContract` also 
+in {ref}`hook bodies<executingContract>`.
 
 For example, a wildcard summary for a `transferFrom` method may apply to
 multiple ERC20 contracts; the summary can update the correct ghost variables as
