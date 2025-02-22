@@ -50,6 +50,7 @@ Rust and Stellar CLI Setup
    Ensure that ``wasm2wat`` is executable as a command from your terminal.
    You will have to add ``wabt/bin`` to your ``PATH`` by running
    ``export PATH=~/path/to/wabt/bin:$PATH``. 
+#. Instal `just` like so: `cargo install just`.
 #. Finally, install ``rustfilt`` like so: ``cargo install rustfilt``.
 
 ----
