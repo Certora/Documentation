@@ -1,5 +1,5 @@
 User Guide For Sunbeam
-============================
+======================
 
 Before reading this, make sure you have followed the installation guide.
 
