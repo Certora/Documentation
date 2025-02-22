@@ -70,3 +70,36 @@ Examples
 --------
 
 We encourage users to check out the `Sunbeam Tutorials <https://certora-sunbeam-tutorials.readthedocs-hosted.com/en/latest/>`_ for learning more about how to use the tool.
+
+Running Sunbeam
+---------------
+As the tutorial shows, the easiest way to run Sunbeam is via ``conf`` files which provide all the arguments and flags required for Sunbeam. We recommend making a directory for your project where you can save these files. Then you can run the tool like so:
+
+.. code-block:: bash
+
+    cd projects/path/to/conf/files
+    certoraSorobanProver filename.conf
+
+
+Typically a conf file looks like this:
+
+.. code-block:: bash
+
+{
+    "build_script": "../certora_build.py",
+    "process": "emv",
+    "rule": [
+        "init_balance",
+        "transfer_is_correct",
+        "transfer_no_effect_on_other",
+        "transfer_fails_if_low_balance"
+    ],
+    "precise_bitwise_ops": true,
+    "prover_version": "master",
+    "server": "production"
+}
+
+The ``rule`` field has the names of all the rust functions corresponding to the ``rules`` you wrote for your contract. The 
+
+Interpreting the results
+------------------------
