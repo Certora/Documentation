@@ -216,3 +216,4 @@ mul
 liveness
 CVT
 munge
+WASM
