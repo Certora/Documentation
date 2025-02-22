@@ -25,9 +25,7 @@ A specification is simply a function annotated with the `#[rule]` attribute. The
     #[rule]
     fn transfer_is_correct(e: Env, to: Address, from: Address, amount: i64) {
         cvlr_assume!(
-            e.storage().persistent().has(&from) && e.storage().persistent().has(&to) && to != from,
-            "addresses exist and different"
-        );
+            e.storage().persistent().has(&from) && e.storage().persistent().has(&to) && to != from);
         let balance_from_before = Token::balance(&e, from.clone());
         let balance_to_before = Token::balance(&e, to.clone());
         Token::transfer(&e, from.clone(), to.clone(), amount);
@@ -53,10 +51,10 @@ You can also implement `nondet` for user defined types like so:
 
 .. code-block:: bash
 
-    // Example from the Blend protocol's codebase
+    // Example from the Blend protocol
     pub struct Q4W {
-        pub amount: i128, // the amount of shares queued for withdrawal
-        pub exp: u64,     // the expiration of the withdrawal
+        pub amount: i128,
+        pub exp: u64,
     }
     
     impl cvlr::nondet::Nondet for Q4W {
