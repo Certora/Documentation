@@ -52,6 +52,7 @@ A common summary that is often used is `nondet`. This essentially allows the pro
 You can also implement `nondet` for user defined types like so:
 
 .. code-block:: bash
+
     // Example from the Blend protocol's codebase
     pub struct Q4W {
         pub amount: i128, // the amount of shares queued for withdrawal
