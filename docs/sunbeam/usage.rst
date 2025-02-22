@@ -85,19 +85,19 @@ Typically a conf file looks like this:
 
 .. code-block:: bash
 
-{
-    "build_script": "../certora_build.py",
-    "process": "emv",
-    "rule": [
-        "init_balance",
-        "transfer_is_correct",
-        "transfer_no_effect_on_other",
-        "transfer_fails_if_low_balance"
-    ],
-    "precise_bitwise_ops": true,
-    "prover_version": "master",
-    "server": "production"
-}
+    {
+        "build_script": "../certora_build.py",
+        "process": "emv",
+        "rule": [
+            "init_balance",
+            "transfer_is_correct",
+            "transfer_no_effect_on_other",
+            "transfer_fails_if_low_balance"
+        ],
+        "precise_bitwise_ops": true,
+        "prover_version": "master",
+        "server": "production"
+    }
 
 The ``rule`` field has the names of all the rust functions corresponding to the ``rules`` you wrote for your contract. The 
 
