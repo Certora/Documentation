@@ -45,7 +45,7 @@ Nondet
 
 When formally verifying real-world programs, it is not uncommon to encounter "solver timeouts". This means that the underlying SMT solver timed out and was not able to verify the property. One way to mitigate this is by summarizing the code.
 
-A common summary that is often used is ``nondet``. This essentially allows the prover to use a nondeterministically chosen value for that variable. Sunbeams's spec language, Cavalier provides `nondet` implementations for various primitive types. Additional ones for Soroban are also provided `in cvlr-soroban <https://github.com/Certora/cvlr-soroban/blob/main/cvlr-soroban/src/nondet.rs>`_. More can be added to this repository as needed.
+A common summary that is often used is ``nondet``. This essentially allows the prover to use a nondeterministically chosen value for that variable. Sunbeams's spec language, Cavalier provides `nondet` implementations for various primitive types. Additional ones for Soroban are also provided in `cvlr-soroban <https://github.com/Certora/cvlr-soroban/blob/main/cvlr-soroban/src/nondet.rs>`_. More can be added to this repository as needed.
 
 You can also implement `nondet` for user defined types like so:
 
