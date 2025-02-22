@@ -110,7 +110,7 @@ The ``rule`` field has the names the rust functions corresponding to the ``rules
     SOURCES = ["src/path/to/rust/files/*.rs", "Cargo.toml"]
     EXECUTABLES = "target/wasm32-unknown-unknown/release/wasm_file_name.wasm"
 
-``SOURCES`` lets the user control all the source files that they would like to see in the report. ``EXECUTABLES`` has the wasm binary file that is to be verified.
+``SOURCES`` lets the user control all the source files that they would like to see in the report. ``EXECUTABLES`` has the WASM binary file that is to be verified.
 
 Alternatively, you can also compile the project on your own and provide a path to the binary directly in the ``conf`` file:
 
