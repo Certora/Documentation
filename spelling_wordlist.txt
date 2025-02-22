@@ -115,6 +115,7 @@ monotonicity
 multicontract
 namespace
 natively
+nondeterministically
 nonlinearity
 nonterminal
 nonterminals
@@ -215,3 +216,4 @@ mul
 liveness
 CVT
 munge
+WASM

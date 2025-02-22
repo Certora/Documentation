@@ -8,6 +8,7 @@ Sunbeam: Verification for Soroban
    :caption: Contents:
 
    installation
+   usage
    troubleshooting
 
 
