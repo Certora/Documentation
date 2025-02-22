@@ -94,12 +94,43 @@ Typically a conf file looks like this:
             "transfer_no_effect_on_other",
             "transfer_fails_if_low_balance"
         ],
-        "precise_bitwise_ops": true,
         "prover_version": "master",
         "server": "production"
     }
 
-The ``rule`` field has the names of all the rust functions corresponding to the ``rules`` you wrote for your contract. The 
+The ``rule`` field has the names the rust functions corresponding to the ``rules`` you wrote for verifying properties of the smart contract. During setup,  we encourage you to make a  ``certora_build.py`` script similar to the one in the `tutorial <https://github.com/Certora/sunbeam-tutorials/blob/main/projects/token/certora_build.py>`_. You will likely need to adapt the global variables at the top of the script according to your project:
+
+.. code-block:: bash
+
+    # Command to run for compiling the rust project.
+    COMMAND = "just build"
+    
+    # JSON FIELDS
+    PROJECT_DIR = (SCRIPT_DIR).resolve()
+    SOURCES = ["src/path/to/rust/files/*.rs", "Cargo.toml"]
+    EXECUTABLES = "target/wasm32-unknown-unknown/release/wasm_file_name.wasm"
+
+``SOURCES`` lets the user control all the source files that they would like to see in the report. ``EXECUTABLES`` has the wasm binary file that is to be verified.
+
+Alternatively, you can also compile the project on your own and provide a path to the binary directly in the ``conf`` file:
+
+.. code-block:: bash
+
+    {
+        "files": ["target/wasm32-unknown-unknown/release/wasm_file_name.wasm"],
+        "process": "emv",
+        "rule": [
+            "init_balance",
+            "transfer_is_correct",
+            "transfer_no_effect_on_other",
+            "transfer_fails_if_low_balance"
+        ],
+        "prover_version": "master",
+        "server": "production"
+    }
+
 
 Interpreting the results
 ------------------------
+
+Once you run Sunbeam as described above, it will send a verification job to Certora's cloud. You will receive a link to a report page for example something like `this <https://prover.certora.com/output/33158/43d2f53488204780bcb004e91be562a9/?anonymousKey=21e6b9c505d1c3eecb004bcdf5778b53b8197a41>`_. The page shows the status of the rules, provides a call trace when there is a counter example, and also shows the rust source code.
