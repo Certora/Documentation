@@ -6,7 +6,7 @@ Before reading this, make sure you have followed the installation guide.
 What is Sunbeam?
 ----------------
 
-Sunbeam is a tool for formally verifying Soroban smart contracts written in Rust. It allows you to write specifications describing the behavior and invariants of your contract, then mathematically proves that your code adheres to those specifications.
+Sunbeam is a tool for formally verifying Soroban smart contracts written in Rust. It allows you to write specifications describing the behavior and invariants of your contract, then mathematically proves that your code adheres to those specifications. A recent `blog <https://certora.vercel.app/blog/formally-verifying-webassembly>`_ explains the core technology behind Sunbeam.
 
 Writing Specs
 -------------
