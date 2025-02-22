@@ -14,3 +14,10 @@ Writing Specs
 Specifications for Sunbeam are written as Rust functions. We use Certora's `Cavalier spec library <https://github.com/Certora/cvlr>`_ which relies on Rust macros. You may also require some of the `Soroban specific macros <https://github.com/Certora/cvlr-soroban/>`_.
 
 A specification is simply a function annotated with the `#[rule]` attribute. These rules make assertions about your smart contract code using the `cvlr_assert!`, `cvlr_assume!` and `cvlr_satisfy!` macros.
+
+Depending on the property you prove, it is possible that you may need to define "ghost variables" that are intended only for verification. A simple example can be found `here <https://github.com/Certora/reflector-subscription-contract/blob/51944577dc4536e9cf9711db6e125fe1e2254054/src/lib.rs#L44>`_.
+
+Examples
+-------------
+
+We encourage users to check out the `Sunbeam Tutorials <https://certora-sunbeam-tutorials.readthedocs-hosted.com/en/latest/>`_ for learning more about how to use the tool.
