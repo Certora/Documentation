@@ -559,6 +559,10 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src
 ```
 
+```{note}
+In Solidity projects, information about packages' location is usually stored in `remappings.txt` file. 
+```
+
 (--packages_path)=
 ## `--packages_path`
 
