@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260">
+  <!-- Background -->
+  <rect width="300" height="260" fill="#f8f9fa" rx="4"/>
+  
+  <!-- Terminal-like border -->
+  <rect x="10" y="10" width="280" height="240" fill="white" stroke="#e1e4e8" stroke-width="1" rx="4"/>
+  
+  <!-- Content -->
+  <text font-family="monospace" font-size="14">
+    <!-- Title -->
+    <tspan x="20" y="30" fill="#6a737d">Global State</tspan>
+    
+    <!-- Values -->
+    <tspan x="20" y="55">CVT_nondet_u64: </tspan>
+    <tspan x="160" y="55" fill="#6f42c1">&lt;?&gt;</tspan>
+    
+    <tspan x="20" y="80">CVT_nondet_u64: </tspan>
+    <tspan x="160" y="80" fill="#6f42c1">101</tspan>
+    
+    <tspan x="20" y="105">is_great: </tspan>
+    <tspan x="160" y="105" fill="#6f42c1">1</tspan>
+    
+    <tspan x="20" y="130">amount1: </tspan>
+    <tspan x="160" y="130" fill="#6f42c1">101</tspan>
+    
+    <tspan x="20" y="155">is_great2: </tspan>
+    <tspan x="160" y="155" fill="#6f42c1">0</tspan>
+    
+    <tspan x="20" y="180">amount2: </tspan>
+    <tspan x="160" y="180" fill="#6f42c1">2</tspan>
+    
+    <!-- Assert fail -->
+    <tspan x="20" y="205" fill="#d73a49">assert FAIL</tspan>
+    
+    <!-- Footer -->
+    <tspan x="20" y="230" fill="#6a737d">Global State</tspan>
+  </text>
+</svg>
