@@ -430,7 +430,7 @@ from the type declared in the `methods` block entry.
 Wildcard entries must not declare return types, because they may apply to
 multiple methods that return different types.  If a wildcard entry is summarized
 with a ghost or function summary, the summary must include an `expect` clause;
-see {ref}`function-summary` for more details.
+see {ref}`expression-summary` for more details.
 
 (cvl2-integer-types)=
 Changes to integer types
@@ -461,57 +461,6 @@ arithmetic operations to contract functions, you will need to be more explicit
 about the overflow behavior by using the {ref}`new casting operators
 <cvl2-casting>`.
 
-(cvl2-comparisons-identical-types)=
-### Comparisons require identical types
-
-When comparing two integers using `==`, `<=`, `<`, `>`, or `>=`, CVL 2 will
-require both sides of the equation to have identical types, and {ref}`implicit
-casts <cvl2-casting>` will not be used.  Comparisons with number literals (e.g.
-`0` or `1`) are allowed for any integer type.
-
-If you do not have identical types (and cannot change one of your variables to
-a `mathint`), the best solution is to use the special
-`to_mathint` operator to convert both sides to `mathint`.  For example:
-
-```cvl
-assert to_mathint(balanceOf(user)) == initial + deposit;
-```
-
-Note that in this example, we do not need to cast the right hand side, since
-the result of `+` is always of type `mathint`.
-
-````{note}
-When should you not simply cast to `mathint`?  We have one example: consider the
-following code:
-
-```cvl
-ghost uint256 sum;
-
-hook ... {
-    havoc sum assuming sum@new == sum@old + newBalance - oldBalance;
-}
-```
-
-Simply casting to `mathint` will turn overflows into vacuity.
-
-In this particular example, the right solution is to declare `sum` to be a
-`mathint` instead of a `uint`.  Note that with the more recent update syntax,
-this problem will correctly be reported as an error.  For example, if you
-mistakenly write the following:
-
-```cvl
-ghost uint256 sum;
-
-hook ... {
-    sum = sum + newBalance - oldBalance;
-}
-```
-
-then the Prover will again report a type error, but the only available solutions
-are to change `sum` to a `mathint` (which would prevent the vacuity) or write
-an explicit `assert` or `require` cast (which would make the vacuity explicit).
-````
-
 (cvl2-casting)=
 ### Implicit and explicit casting
 
@@ -531,16 +480,10 @@ complicated; they depended not only on the types involved, but on the context
 in which the conversion happened.  CVL 2 simplifies these rules and improves the
 clarity and predictability of casts.
 
-In CVL 2, with one exception, you can always use a subtype whenever the
+In CVL 2, you can always use a subtype whenever the
 supertype is accepted.  For example, you can always use a `uint8` where an
 `int16` is expected.  We say that the subtype can be "implicitly cast" to the
 supertype.
-
-The one exception is comparison operators; as mentioned {ref}`above <cvl2-mathops-return-mathint>`, you must add an
-explicit conversion if you want to compare two numbers with different types.
-The `to_mathint` operator exists solely for this purpose; in all other contexts
-you can simply use any number when a `mathint` is expected (since all integer
-types are subtypes of `mathint`).
 
 In order to convert from a supertype to a subtype, you must use an explicit
 cast.  In CVL 1, only a few casting operators (such as `to_uint256`) were
@@ -651,9 +594,10 @@ bytes32 b = bytes32(0xa44f5d3d624DfD660ecc11FF777587AD0a19606d);
 address a = address(uint160(uint256(b)));
 ```
 
-### Modulo operator `%` returns negative values for negative inputs
+### Modulo operator `%` always returns non-negative values
 
-As in Solidity, if `n < 0` then `n % k == -(-n % k)`.
+The modulo operator `%` follows the semantics of Solidity's unsigned modulo and
+always returns non-negative values, regardless of the signs of its operands.
 
 (bytesN-support)=
 ### Support for `bytes1`...`bytes32`

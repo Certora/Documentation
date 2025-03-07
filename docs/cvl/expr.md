@@ -19,6 +19,7 @@ expr ::= literal
        | "(" exprs ")"
        | expr "?" expr ":" expr
        | [ "forall" | "exists" ] type id "." expr
+       | [ "sum" | "usum" ] type id { "," type id } "." expr
 
        | expr "." id
        | id [ "[" expr "]" { "[" expr "]" } ]
@@ -108,7 +109,7 @@ Struct Comparison
 CVL supports equality comparison of structs under the following restrictions:
 
  * The structs must be of the same type.
- * The structs (or any nested structs) don't contain dynamic types (dynamic arrays, string, bytes).
+ * The structs (or any nested structs) don't contain dynamic arrays. (`string` and `bytes` can be part of the struct)
  * There's no support for comparison for structs fetched using direct-storage-access.
 
 Two structs will be evaluated as equal if and only if all the fields are equal.
@@ -242,6 +243,41 @@ approximation is {term}`sound`: it won't cause violations to be hidden.  See
 {ref}`grounding` for more detail.
 ```
 
+Ghost Mapping Sums
+------------------
+
+The prover is capable of calculating the `sum` of ghost mappings over
+specified indices. For example, if we have a ghost mapping `ghost
+mapping(address => mapping(bytes32 => mathint)) myGhost`, and want to sum all
+the values of the ghost over all addresses for a given `bytes32` value `b`, one
+can write `sum address a. myGhost[a][b]`. This returns a `mathint`-typed
+number that sums all known values of `myGhost` over the first index.
+The full syntax for this is `sum type1 t1, type2 t2, ... typeN tN.
+ghostName[...]`. See [here](https://github.com/Certora/Examples/blob/master/CVLByExample/Summarization/GhostSummary/GhostSums/README.md)
+for an example.
+
+```{note}
+The prover support only summation of ghosts. If one wants to sum e.g. some
+storage mapping, one could implement a ghost that mirrors the storage and sum
+over it.
+```
+
+An extension of the summing logic is the unsigned sum which uses the `usum`
+keyword. It follows the same rules as the regular sum, but adds some extra
+logic to ensure the value of the sum is always larger than its parts.
+
+```{note}
+The keyword `usum` indicates that all entries are non-negative (unsigned).
+It can only be used on ghost mappings with unsigned or `mathint` value
+types. In the case of `mathint` an assertion is added on each write to the ghost
+that reports an error if the written value is negative.
+When using this keyword, the solver will introduce the additional assumption
+that the `usum` is larger than any value in the ghost mapping and that it is
+even larger than the sum of any finite subset of values.
+This additional assumption is valid, because the other values in the ghost
+mapping can make the total sum only larger.
+```
+
 Accessing fields and arrays
 ---------------------------
 
@@ -324,7 +360,7 @@ There are also several built-in variables:
   * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
     The balance of an `address a` can be expressed using `nativeBalances[a]`.
 
- * `calledContract` is only available in {ref}`function summaries <function-summary>`.
+ * `calledContract` is only available in {ref}`expression summaries <expression-summary>`.
    It refers to the receiver contract of a summarized method call.
 
  * `executingContract` is only available in {ref}`hooks <hooks>`.  It refers to
@@ -349,9 +385,9 @@ There are many kinds of function-like things that can be called from CVL:
 There are several additional features that can be used when calling contract
 functions (including calling them through {ref}`method variables <method-type>`).
 
-The method name can optionally be prefixed by a contract name.  If a contract is
-not explicitly named, the method will be called with `currentContract` as the
-receiver.
+The method name can optionally be prefixed by a contract name (introduced via a
+{ref}`using statement <using-stmt>`). If a contract is not explicitly named, the
+method will be called with `currentContract` as the receiver.
 
 It is possible for multiple contract methods to match the method call.  This can
 happen in two ways:
@@ -364,6 +400,18 @@ In either case, the Prover will consider every possible resolution of the method
 while verifying the rule, and will provide a separate verification report for
 each checked method.  Rules that use this feature are referred to as
 {term}`parametric rule`s.
+
+Another possible way to have the Prover consider options for a function is by
+using an `address` typed variable and "calling" the function on it, e.g.
+`address a; a.foo(...);`. In this case the Prover will consider every possible
+contract in the {ref}scene that implements a function that matches the signature
+provided by the call (if no such function exists in the {ref}scene the prover will
+fail with an error).
+Note: The values that the address variable can take are the addresses that are
+associated with the relevant contracts in the scene. Notably, other values would
+not be possible: Given an address variable `a`, on which we call a some method
+implemented by contracts `A` and `B`, we will have an implicit
+`require a == A || a == B`.
 
 (with-revert)=
 After the function name, but before the arguments, you can write an optional
@@ -568,7 +616,7 @@ contract WithImmutables {
     return myImmutAddr;
   }
 }
-``` 
+```
 
 We can access both `myImmutAddr` and `myImmutBool` directly from CVL
 like this:
@@ -589,7 +637,7 @@ rule accessPublicImmut {
 }
 ```
 
-The advantages of direct immutable access is that there is no need to 
+The advantages of direct immutable access is that there is no need to
 declare `envfree` methods for the public immutables, and even more importantly, nor is there a need to harness contracts in order to
 expose the private immutables.
 
@@ -667,7 +715,7 @@ It exists in very similar form in CVL and receives exactly the same parameter ty
 `ecrecover` is ***supported*** in quantified expressions.
 ```
 
-The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`uninterpreted function <uninterp-functions>`. Like all uninterpreted functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
+The Prover's model of `ecrecover` does not actually implement the elliptical curve recovery algorithm, and is instead implemented using an {ref}`ghost function <ghost-functions>`. Like all ghost functions, {ref}`axioms <glossary>` can be added to make the behavior of CVL's `ecrecover` more faithfully model the actual key recovery algorithm.
 
 There is a useful set of axioms that can be encoded in CVL to make the modeled behavior of `ecrecover` more precise and less likely to create false counterexamples:
 ```cvl

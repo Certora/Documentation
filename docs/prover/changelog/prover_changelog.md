@@ -4,6 +4,115 @@ Prover Release Notes
 
 ```{contents}
 ```
+7.25.2 (Feb 19, 2025)
+----------------------
+### CVL
+- [feat] CVL now supports native summation over ghost mapping variables with the new `sum` and `usum` keywords.
+
+### Prover
+- [feat] The new `--auto_dispatcher` flag enables the Prover to automatically resolve unresolved calls by looking for matching functions in the scene and invoking them. If no matching function is found, the call will still result in a havoc.
+
+### CLI
+- [feat] The new `--split_rules` flag allows users to specify rules that will run in separate instances, reducing the risk of timeouts. Each rule matching the provided patterns runs in its own job with dedicated resources, while all other rules execute in a separate job. The CLI provides a dashboard link to track the status of all generated jobs.
+
+
+7.22.2 (Jan 12, 2025)
+----------------------
+### Rule Report
+- [feat] Support for displaying numeric values in string, decimal, or hexadecimal formats in Call Trace and Variables tabs, with a dropdown to switch formats.
+- [feat] Added call traces and TAC dumps for sanity rules in Rule Report.
+
+### Dashboard
+- [feat] Persist column configuration (display selection and width) across browser sessions on the Prover Dashboard, including between tabs and logins.
+
+
+7.21.1 (December 12, 2024)
+----------------------
+Various bug fixes and performance improvements.
+
+
+7.20.1 (November 20, 2024)
+----------------------
+### CVL
+- [feat] Certora’s Foundry Integration lets you run Foundry fuzz tests as formal verification tests. If you already use forge test, you can leverage this integration to formally verify your tests or find counterexamples where they fail. Unlike fuzzing, formal verification provides guarantees for all inputs, not just randomized ones. Note that this integration is in alpha version and requires some CVL configuration.
+
+### Rule Report
+- [feat] The Call Trace received a re-design. As part of the re-design, the Call Trace highlights values the Prover found to generate the counter example as gray boxes with tooltips that provides additional information of the semantics of the values. Alongside this change, we also updated the font of the Call Trace. 
+- [feat] It’s now easier to navigate to the Call Trace for a rule as the rule tree automatically opens nodes that contain only a single child.
+- [feat] Within the Call Trace, we added support for assignments to and loads from Solidity variables, structs and arrays. For assignments to primitive types the Call Trace also displays the assigned value.
+- [feat] Prover flags listed in the configuration tab of the rule report now link to their documentation.
+
+7.17.2 (October 8, 2024)
+----------------------
+### CVL
+- [feat] A function can be called on a CVL variable of type address directly. In the following rule, the function `balanceOf` will be called on all contracts that define `balanceOf`:
+```
+    env e;
+    address a;
+    assert a.balanceOf(e) > 0;
+```
+If no contract with such a function exists, a `require(false)` will be inserted, which may cause a vacuity.
+- [feat] The Prover now supports verifying code called via proxy contracts. You can specify `extension_contracts` in the `.conf` file to define which contracts are being delegate-called by the proxy.
+- [bugfix] The `--rule` filtering now applies also to built-in rules.
+
+### CLI
+- [feat] `prover_args` will now be validated locally before submitting the job to the cloud.
+- [deprecation] The `typechecker_args` option has been removed. Use the new Python CLI flag `--allow_solidity_calls_in_quantifiers` to allow Solidity calls in quantifiers.
+- [deprecation] The `--prover_args` flag  `-adaptiveSolverConfig false` was deprecated. The flag was mainly used in combination with `-smt_useNIA` true to run NIA solvers only. Instead, use: `--prover_args "-backendStrategy singleRace -smt_useLIA false -smt_useNIA true"`.
+
+### Rule Report
+- [feat] Additional jump-to-source buttons were added to the Global Notifications, and some existing buttons were corrected. Specifically, buttons for these types of warnings were targeted: PTA failures, optimistic summary fallback fails, `InternalFuncMiss`, storage analysis failures, memory partitioning failures, and `StorageSplitter`.
+- [feat] Rule progress indicator: The progress of individual rules will be displayed in the tree view. Each node in the rule tree shows how many children have been completed already.
+
+
+7.14.2 (September 2, 2024)
+----------------------
+### CVL
+- [feat] Functions can now be called on address-typed variables, allowing methods to dispatch on all contracts that implement the specified function.
+- [feat] Added a new `ASSERT_FALSE` summary type to assert that a function call to the summarized function should never occur.
+- [feat] Introduced new syntax for summarizing unresolved calls with dispatch lists, offering more precise control over which functions are inlined for unresolved calls. The old syntax remains available but now triggers a deprecation warning.
+- [feat] Added `nativeCodesize`, enabling direct access to the result of the `extcodesize` instruction from CVL. It functions similarly to `nativeBalances` in terms of blockchain state comparison and manipulation.
+- [bugfix] Hooks are no longer inlined on the `reset_storage` command. This change may affect "induction base" cases for invariant rules that previously relied on implicit hook inlining.
+- [bugfix] Explicit casting to `mathint` is no longer required when comparing the result of an arithmetic operation with a non-`mathint` value. Non-`mathint` values are now implicitly cast to `mathint`.
+
+### Rule Report
+- [feat] Global Notifications New UI
+
+
+7.10.1 (July 25, 2024)
+----------------------
+### CVL
+- [bugfix] Make builtin sanity rule also check auto-generated assertions such as unwinding loop unroll assertions.
+- [feat] `DISPATCHER(true)` summaries will hard fail on type checking if there is no method in the scene that should be dispatched to.
+- [feat] Adding a warning when a contract alias conflicts with a contract in the scene.
+- [feat] View functions of contracts *other* than the current contract are now also excluded when checking invariants.
+- [feat] It's now possible to compare strings and bytes natively in CVL.
+- [feat] The dispatcher list summary now will also inline the fallback handler when using the `Contract._` syntax.
+- [feat] Transient storage support in invariants.
+- [feat] It's now possible to also write CVL summaries that include structs.
+- [syntax check] The usage of the keyword `lastReverted` led to incorrect specifications in cases when the last call was not using the `@withrevert` syntax. During type checking, the CVL parser will now fail and report an error.
+- [feat] The dispatcher summary `DISPATCHER(false|true)` has been enhanced to also include fallbacks.
+- [feature] There are two new keywords `strong` and `weak` as prefix for `invariant`. A `strong invariant` is a regular `invariant` that will be additionally `asserted` before a havoc’d external unresolved call and `assumed` afterwards. `weak invariant` is an alias for `invariant` explicitly stating that the `invariant` will only hold pre- and post-method execution.
+- [feature] It’s now possible to write rules for Solidity functions whose name matches a CVL keyword.
+
+### Rule Report
+- [feat] Ensuring storage snippets are shown even if there is no storage layout information.
+- [feat] Return statements of CVL functions are now shown in the call trace.
+- [feature] Model values for CVL-declared strings are now shown in the Variables Tab of the report.
+- [feature] Sanity rules are now explicitly shown as independent nodes in the rule view.
+- [feature] The browser tab icon in the rule report now displays the job execution status of a run: blue for running, green when the job has successfully been completed, and red when the job is halted or ends in an error state.
+- [feature] Improved display of ghost variable reads in the call trace.
+
+### Performance
+- The `-prover_args` option `-smt_easy_LIA` is now set to `true` by default.
+
+### CLI
+- [feature] The `—method` flag now also accepts a list of methods.
+
+### Misc
+- Supporting precise bytemap semantics (unaligned reads, overlapping, etc.). Disabled by default, can be enabled via `-prover_args "-smt_preciseBytemaps true"`.
+
+
 
 7.6.3 (May 15, 2024)
 ----------------------
@@ -414,7 +523,7 @@ Minor improvements.
 
 #### CVL
 
-- Better expressivity: Allow binding the called contract in summaries using `calledContract` (see {ref}`function-summary`)
+- Better expressivity: Allow binding the called contract in summaries using `calledContract` (see {ref}`expression-summary`)
 - Ease of use: Support reading and passing complex array and struct types in CVL. For example, you can write now:
 ```cvl
 env e;

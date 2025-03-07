@@ -145,12 +145,13 @@ caption: child.spec
 
 // valid types
 Parent.ParentFileType     valid1;
-Child .ParentFileType     valid2;
+Child.ChildFileType       valid2;
 Parent.ParentContractType valid3;
 
 // invalid types
-Child .ParentContractType invalid1; // user-defined types are not inherited
-Parent.ChildFileType      invalid2; // ChildFileType is not visible in Parent
+Child.ParentContractType  invalid1; // user-defined types are not inherited
+Child.ParentFileType      invalid2; // user-defined types are not inherited
+Parent.ChildFileType      invalid3; // ChildFileType is not visible in Parent
 ```
 
 Additional CVL types
@@ -323,7 +324,8 @@ rules that check the equivalence of different functions.  See
 ### Uninterpreted sorts
 
 ```{todo}
-This section is incomplete.  See [the old documentation](/docs/confluence/anatomy/ghostfunctions).
+This section is incomplete.
+See :file:`/docs/confluence/anatomy/ghostfunctions` from the Old Documentation.
 ```
 
 (type-conversions)=
@@ -334,7 +336,7 @@ When a specification calls a contract function, the Prover must convert the
 arguments from their CVL types to the corresponding Solidity types, and must
 convert the return values from Solidity back to CVL.  The Prover must also apply
 these conversions when inlining {ref}`hooks <hooks>` and {ref}`function
-summaries <function-summary>`.
+summaries <expression-summary>`.
 
 There are restrictions on what types can be converted from CVL to Solidity and
 vice-versa.  In general, if a contract uses a type that is not convertible, you
@@ -358,7 +360,7 @@ types:
    have [value types][solidity-value-types] that are representable in CVL.
 
 There are additional restrictions on the types for arguments and return values
-for internal function summaries; see {ref}`function-summary`.
+for internal function summaries; see {ref}`expression-summary`.
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 

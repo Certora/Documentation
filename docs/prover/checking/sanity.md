@@ -5,11 +5,11 @@ about certain classes of mistakes in specifications.
 
 There are several kinds of sanity checks:
 
- * {ref}`sanity-vacuity` determine whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
- * {ref}`sanity-assert-tautology` determine whether individual `assert` statements are {term}`tautologies <tautology>`.
- * {ref}`sanity-trivial-invariant` detect invariants that hold in all states, rather than just reachable states.
- * {ref}`sanity-assert-structure` detect unnecessarily complex `assert` statements.
- * {ref}`sanity-redundant-require` detect unnecessary `require` statements.
+ * {ref}`sanity-vacuity` determines whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
+ * {ref}`sanity-assert-tautology` determines whether individual `assert` statements are {term}`tautologies <tautology>`.
+ * {ref}`sanity-trivial-invariant` detects invariants that hold in all states, rather than just reachable states.
+ * {ref}`sanity-assert-structure` detects unnecessarily complex `assert` statements.
+ * {ref}`sanity-redundant-require` detects unnecessary `require` statements.
 
 The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 `advanced` options to control which sanity checks should be executed:
@@ -23,17 +23,11 @@ The `--rule_sanity` option may be followed by one of `none`, `basic`, or
 We recommend starting with the `basic` mode, since not all rules flagged by the
 `advanced` mode are incorrect.
 
-When the Prover is run with any of these options, it first checks that the rule
-passes; if it does pass then the sanity checks are performed.  If the sanity
-checks also pass, the rule is marked as verified with a green checkmark; if the
-sanity check fails, the rule is marked with a yellow symbol:
+Each option adds new child nodes to every rule in the specification.  If any of the sanity check nodes fails, that node will be marked with a yellow icon, and so will the parent rule's node:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
 
-If a sanity check fails, you can expand the problems view to see the details
-of the failure:
-
-![Screenshot of rule report showing the expanded details of a sanity failure](sanity-details.png)
+If a sanity node is `halted`, then the parent rule will also have the status `halted`.
 
 The remainder of this document describes these checks in detail.
 
@@ -62,6 +56,10 @@ Since there are no models satisfying both `x > 2` and `x < 1`, this rule
 will always pass, regardless of the behavior of the contract.  This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
+
+A vacuity check adds a node called `rule_not_vacuous` to each rule.  For example, the rule report for the above `vacuous` rule will look like this:
+
+![Screenshot of vacuity subrule](vacuity_node.png)
 
 The vacuity check also flags situations where counterexamples are ruled
 out for reasons other than `require` statements.  A common example comes from
@@ -114,6 +112,10 @@ rule tautology {
 Since every `uint` satisfies the assertion, the assertion is tautological, which
 may indicate an error in the specification.
 
+The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_<LINE>_<COL>`.  For example, the rule report for the above `tautology` rule will look like this:
+
+![Screenshot of assert tautology subrule](tautology_subrule.png)
+
 (sanity-trivial-invariant)=
 Trivial invariant checks
 ------------------------
@@ -126,7 +128,7 @@ For example, the following invariant is trivial:
 
 ```cvl
 invariant squaresNonNeg(int x)
-    x * x >= 0
+    x * x >= 0;
 ```
 
 While it does hold in every reachable state, it also holds in every
@@ -141,6 +143,10 @@ rule squaresNonNeg(int x) {
 The rule version is more efficient because it can do a single check in an
 arbitrary state rather than separately checking states after arbitrary method
 invocations.
+
+The trivial invariant check will add a node to each method under the induction step of invariants named `invariant_not_trivial_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
+
+![Screenshot of trivial invariant subrule](trivial_invariant_node.png)
 
 (sanity-assert-structure)=
 Assertion structure checks
@@ -183,21 +189,27 @@ The assertion structure check tries to prove some complex logical statements by
 breaking them into simpler parts.  The following situations are reported by the
 assertion structure check:
 
-* `assert p => q;` is reported as a sanity violation if `p` is false whenever the
-  assertion is reached (in which case the simpler assertion `assert !p;` more
-  clearly describes the situation), or if `q` is always true (in which case
-  `assert q;` is a clearer alternative).
+1. `assert p => q;` is reported as a sanity violation if whenever the assertion is reached:
 
-* `assert p <=> q;` is reported as a sanity violation if either `p` and `q` are
-  both true whenever the assertion is reached (in which case the simpler
-  assertions `assert p; assert q;` more clearly describe the situation), or if
-  neither `p` nor `q` are ever true (in which case `assert !p; assert !q;` is a
-  clearer alternative).
+  * 1. `p` is always false. In this case, `q` is never checked. A simpler way to write this assertion is `assert !p;`. The node named `assertion_left_operand_check_<LINE>_<COL>` will have a yellow icon.
 
-* `assert p || q;` is reported as a sanity violation if either `p` is true
-  whenever the assertion is reached
-  (in which case `assert p;` more clearly describes the situation) or if `q` is
-  always true (in which case `assert q;` is a clearer alternative).
+  * 2. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<LINE>_<COL>` will have a yellow icon.
+
+  * 3. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<LINE>_<COL>`.
+
+2. `assert p <=> q;`  is reported as a sanity violation if whenever the assertion is reached:
+
+  * 1. `p` and `q` are both always true. A simpler way to write this assertion is `assert p; assert q;`. The node named `assertion_iff_not_both_true_<LINE>_<COL>` will have a yellow icon.
+
+  * 2. `p` and `q` are both always false. A simpler way to write this assertion is `assert !p; assert !q;`. The node named `assertion_iff_not_both_false_<LINE>_<COL>` will have a yellow icon.
+
+3. `assert p || q;` is reported as a sanity violation if whenever the assertion is reached:
+
+  * 1. `p` is always true. A simpler way to write this assertion is `assert q;`. The node named `assertion_left_operand_check_<LINE>_<COL>` will have a yellow icon.
+
+  * 2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<LINE>_<COL>` will have a yellow icon.
+
+![Screenshot of sanity structure for implication](implication_sanity_structure.png)
 
 (sanity-redundant-require)=
 Redundant require checks
@@ -220,3 +232,8 @@ rule require_redundant {
 In this example, the second requirement is redundant, since any `x` greater
 than 3 will also be greater than 2.
 
+The redundant require check will add a node per `require` statement to each rule.  The nodes are named with the prefix `require_not_redundant_<LINE>_<COL>`.
+
+![Screenshot of rule report showing a redundant require check](sanity-icons.png)
+
+Redundant require is an exhaustive check and will only be executed if neither of the checks for {ref}`sanity-trivial-invariant` and {ref}`sanity-assert-tautology` fail.

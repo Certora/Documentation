@@ -85,7 +85,7 @@ are encoded as JSON lists. For example,
     }
     ```
 
-* Options that are maps ({ref}`--solc_map` and {ref}`--solc_optimize_map`) will be stored as JSON objects.
+* Options that are maps ({ref}`--solc_map`, {ref}`--solc_optimize_map` and {ref}`--solc_evm_version_map`) will be stored as JSON objects.
   For example,
     ```sh
     certoraRun --solc_map A=solc5.11,B=solc5.9,C=solc6.8
@@ -129,13 +129,6 @@ The conf file of the latest run can be found in:
 
 Instead of generating a complete conf file from scratch, users can take 
 one of these generated conf files as a basis for their modifications.
-
-## Conf files in the VS Code IDE extension
-The [Certora IDE Extension](https://marketplace.visualstudio.com/items?itemName=Certora.vscode-certora-prover)
-automatically generates conf files for each configured job; these conf files
-are stored in the VS Code project under the folder  `certora/confs`.
-Once the job is completed, a link to the job's conf file can also be found in the files section of the 
-run report.
 
 ### Complete example
 

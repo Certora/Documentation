@@ -35,7 +35,7 @@ ghost f(uint x) returns (mathint) {
 }
 ```
 
-This statement logically says that `f(0) == 0` and `f(1) == 1` and `f(2) == 0`
+This statement logically says that `f(0) == 0` and `f(1) == 0` and `f(2) == 0`
 and so on.  In practice, however, the verification may only make use of a small
 finite number of these facts.  Grounding is the process of automatically
 replacing the `forall` statement with the specific unquantified statements that
@@ -201,7 +201,7 @@ This particular example requires that all even inputs to `f` produce `0` as
 output; it could be rewritten as follows:
 
 ```cvl
-require forall uint y . (y % 2 == 0) => f(y);
+require forall uint y . (y % 2 == 0) => f(y) == 0;
 ```
 
 If you use a quantified variable in an argument to two different functions,

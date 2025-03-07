@@ -6,5 +6,5 @@ Changelog
 :caption: Contents
 
 prover_changelog.md
-report_changelog.md
+gui_changelog.md
 ```
