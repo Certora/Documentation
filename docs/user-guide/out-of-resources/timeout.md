@@ -410,10 +410,17 @@ Nonlinear integer arithmetic is often the hardest part of the formulas that the
 Certora Prover is solving. 
 
 The Certora Prover displays the absolute number of nonlinear operations, as well
-as their number per external call, in the Live Statistics panel. In the per-call
+as their number per call, in the Live Statistics panel. In the per-call
 display, there is a warning-sign next to the call when there is a non-trivial
 number of nonlinear operations in the call or its sub-call. Currently,
 everything above and including two nonlinear operations is marked in this way.
+
+Unless the detection of internal functions fails, both internal and external calls 
+are taken into account in the statistics. If the detection fails (which should be 
+rare), internal calls are treated as inlined into the external calls. In that 
+case, each inlined internal call's statistics contribute to the statistics of the 
+enclosing external call.
+
 
 ```{figure} nonlinear-ops-field.png
 :name: nonlinear ops field
