@@ -19,6 +19,7 @@ expr ::= literal
        | "(" exprs ")"
        | expr "?" expr ":" expr
        | [ "forall" | "exists" ] type id "." expr
+       | [ "sum" | "usum" ] type id { "," type id } "." expr
 
        | expr "." id
        | id [ "[" expr "]" { "[" expr "]" } ]
@@ -240,6 +241,41 @@ that use quantifiers.  For example, a rule that requires a quantified statement
 may produce a counterexample that doesn't satisfy the requirement.  The
 approximation is {term}`sound`: it won't cause violations to be hidden.  See
 {ref}`grounding` for more detail.
+```
+
+Ghost Mapping Sums
+------------------
+
+The prover is capable of calculating the `sum` of ghost mappings over
+specified indices. For example, if we have a ghost mapping `ghost
+mapping(address => mapping(bytes32 => mathint)) myGhost`, and want to sum all
+the values of the ghost over all addresses for a given `bytes32` value `b`, one
+can write `sum address a. myGhost[a][b]`. This returns a `mathint`-typed
+number that sums all known values of `myGhost` over the first index.
+The full syntax for this is `sum type1 t1, type2 t2, ... typeN tN.
+ghostName[...]`. See [here](https://github.com/Certora/Examples/blob/master/CVLByExample/Summarization/GhostSummary/GhostSums/README.md)
+for an example.
+
+```{note}
+The prover support only summation of ghosts. If one wants to sum e.g. some
+storage mapping, one could implement a ghost that mirrors the storage and sum
+over it.
+```
+
+An extension of the summing logic is the unsigned sum which uses the `usum`
+keyword. It follows the same rules as the regular sum, but adds some extra
+logic to ensure the value of the sum is always larger than its parts.
+
+```{note}
+The keyword `usum` indicates that all entries are non-negative (unsigned).
+It can only be used on ghost mappings with unsigned or `mathint` value
+types. In the case of `mathint` an assertion is added on each write to the ghost
+that reports an error if the written value is negative.
+When using this keyword, the solver will introduce the additional assumption
+that the `usum` is larger than any value in the ghost mapping and that it is
+even larger than the sum of any finite subset of values.
+This additional assumption is valid, because the other values in the ghost
+mapping can make the total sum only larger.
 ```
 
 Accessing fields and arrays

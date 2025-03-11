@@ -27,9 +27,9 @@ think about and write high-level properties.
 ```{toctree}
 :maxdepth: 1
 
-tutorials.md
 install.md
-ci.rst
+install_evm_compiler.md
+tutorials.md
 running.rst
 properties/index.md
 satisfy.md
@@ -42,5 +42,7 @@ multicontract/index.md
 out-of-resources/index.md
 gaps.md
 checking.md
+ci.rst
+github_highlighting.md
 glossary.md
 ```

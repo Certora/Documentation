@@ -47,6 +47,7 @@ bytecode
 bytecodes
 bytemap
 callee
+cex
 changelog
 checkmark
 cheatcode
@@ -114,6 +115,7 @@ monotonicity
 multicontract
 namespace
 natively
+nondeterministically
 nonlinearity
 nonterminal
 nonterminals
@@ -129,6 +131,7 @@ pragmas
 pre
 prebuilt
 precompiled
+prepended
 preprocess
 preprocessing
 prestate
@@ -193,6 +196,7 @@ unsatisfiability
 unsummarized
 untrusted
 upcast
+usum
 verifications
 verifier
 verifiers
@@ -201,3 +205,15 @@ whitespace
 upgradeability
 https
 openzeppelin
+solana
+msg
+cvlr
+hardcoded
+noop
+nondet
+fn
+mul
+liveness
+CVT
+munge
+WASM

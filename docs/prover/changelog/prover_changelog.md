@@ -4,6 +4,17 @@ Prover Release Notes
 
 ```{contents}
 ```
+7.25.2 (Feb 19, 2025)
+----------------------
+### CVL
+- [feat] CVL now supports native summation over ghost mapping variables with the new `sum` and `usum` keywords.
+
+### Prover
+- [feat] The new `--auto_dispatcher` flag enables the Prover to automatically resolve unresolved calls by looking for matching functions in the scene and invoking them. If no matching function is found, the call will still result in a havoc.
+
+### CLI
+- [feat] The new `--split_rules` flag allows users to specify rules that will run in separate instances, reducing the risk of timeouts. Each rule matching the provided patterns runs in its own job with dedicated resources, while all other rules execute in a separate job. The CLI provides a dashboard link to track the status of all generated jobs.
+
 
 7.22.2 (Jan 12, 2025)
 ----------------------
