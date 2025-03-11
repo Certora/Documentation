@@ -320,11 +320,11 @@ Here, the `require` statement ensures that the `amount` must be greater than zer
 
 ### 3. Revert
 
-The default method of calling functions within CVL is to assume they do not revert.
+The default behavior for calling functions within CVL is to assume they do not revert.
 This behavior can be adjusted with the `@withrevert` modifier.
 After every call, even if it is not marked with `@withrevert`, a builtin variable called `lastReverted` is updated according to whether the call reverted or not.
 
-Note: For calls without `@withrevert`, `lastReverted` is automatically assumed to be false.
+Note: After calls without `@withrevert`, `lastReverted` will always be false.
 
 #### Syntax:
 
