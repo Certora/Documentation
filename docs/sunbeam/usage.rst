@@ -93,9 +93,7 @@ Typically a conf file looks like this:
             "transfer_is_correct",
             "transfer_no_effect_on_other",
             "transfer_fails_if_low_balance"
-        ],
-        "prover_version": "master",
-        "server": "production"
+        ]
     }
 
 The ``rule`` field has the names the rust functions corresponding to the ``rules`` you wrote for verifying properties of the smart contract. During setup,  we encourage you to make a  ``certora_build.py`` script similar to the one in the `tutorial <https://github.com/Certora/sunbeam-tutorials/blob/main/projects/token/certora_build.py>`_. You will likely need to only adapt the global variables at the top of the script according to your project:
@@ -124,9 +122,7 @@ Alternatively, you can also compile the project on your own and provide a path t
             "transfer_is_correct",
             "transfer_no_effect_on_other",
             "transfer_fails_if_low_balance"
-        ],
-        "prover_version": "master",
-        "server": "production"
+        ]
     }
 
 
