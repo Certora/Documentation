@@ -4,6 +4,15 @@ GUI Release Notes
 ```{contents}
 ```
 
+4.0.2 (Mar 13, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Added icons and highlighter for Solana reports. 
+- [feat] Rule Report - Improved Call Trace and Variables readability by truncating long values
+- [feat] Dashboard - Added tooltip for column headers
+
 4.0.0 (Feb 19, 2025)
 ---------------------------
 
