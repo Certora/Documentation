@@ -367,7 +367,7 @@ rule revertInCVL {
 - [Further examples](https://github.com/Certora/Examples/blob/ae2eca20d8e6caf378ff10cf8066ecfc45d3658d/CVLByExample/RevertKeyWord/example.spec)
 
 ```{note}
-It is possible to enable the old behavior where CVL functions cannot revert and do not set the `lastReverted` variable with the `--prover_args "-cvlFunctionRevert false"` option. This is meant as a compatibility option where specs need to be adjusted to the new behavior and will be retired in a future release.
+It is possible to enable the behavior before version TODO where CVL functions cannot revert and do not set the `lastReverted` variable with the `--prover_args "-cvlFunctionRevert false"` option. This is meant as a compatibility option where specs need to be adjusted to the new behavior and will be retired in a future release.
 ```
 
 ### 4. Return Statement
