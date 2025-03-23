@@ -94,7 +94,7 @@ You can specify this flag multiple times to filter in several rules or rule patt
 
 **Rule Name Pattern**
 Rule name, like all CVL identifiers, has the same format as Solidity identifiers, combinations of letters, digits, 
-dollar signs and underscores, but cannot start with a letter (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
+dollar signs and underscores, but cannot start with a digit (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
 In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters. 
 For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
