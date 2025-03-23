@@ -91,9 +91,11 @@ cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
 
-One can either specify a specific rule name, or use pattern matching with a `*`.
-
-You can specify this flag multiple times to filter in several rules or rule patterns.
+**Rule Name Pattern**
+Rule name, like all CVL identifiers, has the same format as Solidity identifiers, combinations of letters, digits, 
+dollar signs and underscores, but cannot start with a letter (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
+In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters. 
+For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
 **Example**
 If `Bank.spec` includes the following properties:
@@ -136,6 +138,9 @@ You can specify this flag multiple times to filter out several rules or rule pat
 **When to use it?**
 Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
 
+**Rule Name Pattern**
+Rule name or rule name with wildcards see detailed specifications in {ref}`--rule`.
+
 **Example**
 If `Bank.spec` includes the following properties:
 
@@ -171,6 +176,9 @@ You can specify this flag multiple times to denote several rules or rule pattern
 This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
 their own dedicated Prover jobs will give them more resources that will potentially reduce their chance to 
 timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
+
+**Rule Name Pattern**
+Rule name or rule name with wildcards see detailed specifications in {ref}`--rule`.
 
 **Example**
 If `Bank.spec` includes the following properties:
