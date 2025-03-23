@@ -90,6 +90,7 @@ you add a new rule to an existing specification. The other is when code changes
 cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
+You can specify this flag multiple times to filter in several rules or rule patterns.
 
 **Rule Name Pattern**
 Rule name, like all CVL identifiers, has the same format as Solidity identifiers, combinations of letters, digits, 
@@ -139,7 +140,7 @@ You can specify this flag multiple times to filter out several rules or rule pat
 Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
 
 **Rule Name Pattern**
-Rule name or rule name with wildcards see detailed specifications in {ref}`--rule`.
+Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
 
 **Example**
 If `Bank.spec` includes the following properties:
@@ -178,7 +179,7 @@ their own dedicated Prover jobs will give them more resources that will potentia
 timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
 
 **Rule Name Pattern**
-Rule name or rule name with wildcards see detailed specifications in {ref}`--rule`.
+Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
 
 **Example**
 If `Bank.spec` includes the following properties:
