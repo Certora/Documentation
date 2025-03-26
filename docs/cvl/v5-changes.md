@@ -253,11 +253,6 @@ hook Sstore i uint256 v {
 Finally, replace `getI` in the `require` statement in rule `there_exists` with the
 ghost variable `gI`: `require (exists uint i . i == gI)`.
 
-If you must use contract method calls in quantified expressions,
-you can still access the old behavior by specifying the
-{ref}`--allow_solidity_calls_in_quantifiers` argument to `certoraRun` on the 
-command line.
-
 
 Method variable restrictions
 ----------------------------
