@@ -1448,23 +1448,6 @@ certoraRun --version
 Advanced options
 ================
 
-(--allow_solidity_calls_in_quantifiers)=
-## `--allow_solidity_calls_in_quantifiers`
-
-**What does it do?**
-
-Instructs the Prover to permit contract method calls in quantified expression
-bodies.
-
-**When to use it?**
-
-Upon instruction from the Certora team.
-
-**Example**
-
-`--allow_solidity_calls_in_quantifiers` instructs the Prover to not generate an
-error on encountering contract method calls in quantified expression bodies.
-
 (--java_args)=
 ## `--java_args`
 

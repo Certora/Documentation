@@ -12,7 +12,7 @@ Prover Release Notes
 - [feat] Jump-To-Source (JTS) is now available for Rust (CVLR) external calls and `cvlr_satisfy`.
 
 ### CVL
-- [feat] Introduced the `executingContract` keyword, which can be used in the methods block. It refers to `address(this)` at the call site where the CVL summary is applied,
+- [feat] Introduced the `executingContract` keyword, which can be used in the methods block. It refers to `address(this)` at the call site where the CVL summary is applied.
 
 7.25.2 (Feb 19, 2025)
 ----------------------
