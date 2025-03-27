@@ -332,7 +332,7 @@ There are also several built-in variables:
    exception.
 
    ````{caution}
-   The variables `lastReverted` is updated after each
+   The variable `lastReverted` is updated after each
    contract call, even those called without `@withrevert` (see {ref}`call-expr`).
    This is a common source of errors.  For example, the following rule is
    vacuous:
