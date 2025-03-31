@@ -10,8 +10,8 @@ on verification timeouts.
 ## Classification of Timeouts
 
 For a first classification of timeouts in Certora Prover, we consider on where
-in the Prover's pipeline they occur. The pipeline starts by compiling a CVL rule
-and the linked EVM bytecode into an intermediate language (called {term}`TAC`).
+in the Prover's pipeline they occur. The pipeline starts by compiling the source
+code into an intermediate language (called {term}`TAC`).
 This is followed by many static analyses and program transformations.
 Afterwards, the TAC program is iteratively split into parts and translated into
 logical formulas. The logical formulas are then sent to an {term}`SMT` solver.
@@ -134,20 +134,6 @@ The meanings of the LOW/MEDIUM/HIGH classifications are as follows:
 For more details on the individual statistics and how to make use of them, also
 see the section on {ref}`dealing-with-complexity` below.
 
-(timeout-tac-reports)=
-#### Timeout TAC reports
-
-For each verification item, there is a TAC graph linked in the verification
-report. In case of a timeout this graph contains information on which parts of
-the program were part of the actual timeout, and which were already solved
-successfully. It also contains statistics on the above-described timeout causes.
-
-% Find more documentation on TAC reports in general [here](tac-reports).
-
-In the timeout case, the TAC reports contain some additional information that
-should help with diagnosing the timeout.
-
-
 #### Finding timeout causes through modularization
 
 In addition to the other techniques described here, it can be insightful to
@@ -170,6 +156,10 @@ Sanity rules are such trivial specifications. For documentation on them, see
 
 (timeout-causes-library-contracts)=
 ##### Library contracts
+
+```{note}
+This section is EVM-specific and does not apply to Solana or Soroban.
+```
 
 Some systems are based on multiple library contracts which implement the
 business logic. They also forward storage updates to a single external contract
@@ -223,6 +213,10 @@ Some of the information in these references is out of date.
 (timeout-single-rule)=
 ### Running rules individually
 
+```{note}
+This section is EVM-specific and does not apply to Solana or Soroban.
+```
+
 The Certora Prover works on the rules of the specification in parallel.
 Even if no rule is very expensive on its own, working on all of them in parallel
 can add up quickly and thereby exceed the timeout.
@@ -234,6 +228,10 @@ This can further be reduced via the {ref}`--method` option.
 
 (detect-candidates-for-summarization)=
 ### Detect candidates for summarization
+
+```{note}
+This section is EVM-specific and does not apply to Solana or Soroban.
+```
 
 In a large codebase it can be hard to find all the functions that may be difficult for the Prover.
 A traditional approach would be to run a simple parametric rule to explore all functions in the 
@@ -337,7 +335,7 @@ graph will appear 10 times as a subgraph of the rule's control flow graph. If,
 for instance all these calls were made in sequence, and there was no further
 branching in the rule, the path count would be 5<sup>10</sup>. 
 
-A particular potential cause for path explosion are {ref}`dispatcher`. How much a 
+For EVM, a particular potential cause for path explosion are {ref}`dispatcher`. How much a 
 `DISPATCHER` summary contributes to the path count depends on three factors:
  - how many potential call targets there are (how many known implementations)
  - how often the summarized function is called
@@ -416,7 +414,7 @@ display, there is a warning-sign next to the call when there is a non-trivial
 number of nonlinear operations in the call or its sub-call. Currently,
 everything above and including two nonlinear operations is marked in this way.
 
-Unless the detection of internal functions fails, both internal and external calls 
+For EVM, unless the detection of internal functions fails, both internal and external calls 
 are taken into account in the statistics. If the detection fails (which should be 
 rare), internal calls are treated as inlined into the external calls. In that 
 case, each inlined internal call's statistics contribute to the statistics of the 
@@ -446,10 +444,11 @@ statistics in the Live Statistics panel (picture below) can help with
 identifying nonlinearity hot spots. Summarizing these hot spots in particular
 can help reduce the number of nonlinear operations, especially when a method is 
 called multiple times.
+Observe that method summaries is an EVM-specific feature.
 
 ```{figure} nonlinear-ops-call.png
 :name: nonlinear-ops-call
-Entry in Live Statistics indicating how many nonlinear operations are made in a given 
+Entry in Live Statistics indicating how nonlinear operations are made in a given 
 call, including its sub-calls
 ```
 
@@ -470,6 +469,10 @@ but it has prevented timeouts in some cases nonetheless.
 
 (high-memory-complexity)=
 #### Dealing with high memory (or storage) complexity
+
+```{note}
+This section is EVM-specific and does not apply to Solana or Soroban.
+```
 
 The memory complexity of each rule or parametric rule is displayed in the Live
 Statistics panel in the Certora Prover reports. 
@@ -573,6 +576,10 @@ prevention.
 
 (library_timeouts)=
 #### Library-based systems
+
+```{note}
+This section is EVM-specific and does not apply to Solana or Soroban.
+```
 
 As mentioned here [before](timeout-causes-library-contracts), systems with
 libraries are a natural candidate for modularization.
