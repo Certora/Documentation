@@ -201,7 +201,7 @@ certoraSolanaProver --build_script <path_to_build_script> --rule_sanity basic
 ## `--multi_assert_check`
 
 **What does it do?**
-This flags translates each assertion statement in a rule into a separate verification task. All preceding assertions are assumed to be true. 
+This flags translates each assertion statement in a rule into a separate verification task. All preceding assertions are assumed to be true - they are hence translated into assume statements.
 An example can be found [here](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf).
 
 ```{caution}
