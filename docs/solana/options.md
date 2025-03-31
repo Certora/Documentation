@@ -202,7 +202,8 @@ certoraSolanaProver --build_script <path_to_build_script> --rule_sanity basic
 
 **What does it do?**
 This flags translates each assertion statement in a rule into a separate verification task. All preceding assertions are assumed to be true - they are hence translated into assume statements.
-An example can be found [here](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf).
+An example can be found [here](https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf).
+
 
 ```{caution}
 We suggest using this mode carefully. In general, as this mode generates generates one verification task per assert, it may lead to worse running-time performance. Please see indications for use below.
