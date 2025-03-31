@@ -152,6 +152,11 @@ See [Rule Sanity Checks](./sanity.md) for more details.
 
 ## Advanced Topics
 
+### Analyzing Functions Complexity
+
+The Certora Solana Prover offers the Live Statistics panel to analyze the complexity of individual functions.
+Refer to the [Timeouts](../user-guide/out-of-resources/timeout.md) section for further information.
+
 ### Over-approximation Detection
 
 When analyzing counterexamples, consider:
