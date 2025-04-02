@@ -134,6 +134,20 @@ The meanings of the LOW/MEDIUM/HIGH classifications are as follows:
 For more details on the individual statistics and how to make use of them, also
 see the section on {ref}`dealing-with-complexity` below.
 
+(timeout-tac-reports)=
+#### Timeout TAC reports
+
+For each verification item, there is a TAC graph linked in the verification
+report. In case of a timeout this graph contains information on which parts of
+the program were part of the actual timeout, and which were already solved
+successfully. It also contains statistics on the above-described timeout causes.
+
+% Find more documentation on TAC reports in general [here](tac-reports).
+
+In the timeout case, the TAC reports contain some additional information that
+should help with diagnosing the timeout.
+
+
 #### Finding timeout causes through modularization
 
 In addition to the other techniques described here, it can be insightful to
