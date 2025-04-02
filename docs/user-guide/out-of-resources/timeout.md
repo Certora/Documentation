@@ -240,10 +240,6 @@ further be reduced via the {ref}`--method` option.
 (detect-candidates-for-summarization)=
 ### Detect candidates for summarization
 
-```{note}
-This section is EVM-specific and does not apply to Solana or Soroban.
-```
-
 In a large codebase it can be hard to find all the functions that may be difficult for the Prover.
 A traditional approach would be to run a simple parametric rule to explore all functions in the 
 relevant contracts, and studying resulting potential timeouts. 
@@ -263,6 +259,9 @@ The Prover will not auto-summarize methods that were already summarized by the u
 To enable this mode, add {ref}`--nondet_difficult_funcs` to the `certoraRun` command.
 The minimal difficulty threshold used for the auto-summarization
 can be adjusted using {ref}`--nondet_minimal_difficulty`.
+
+For Solana and Soroban, we recommend summarizing hotspots by enabling munging
+with conditional compilation.
 
 #### Example usage
 
