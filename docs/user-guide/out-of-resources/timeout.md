@@ -447,7 +447,7 @@ called multiple times.
 
 ```{figure} nonlinear-ops-call.png
 :name: nonlinear-ops-call
-Entry in Live Statistics indicating how nonlinear operations are made in a given 
+Entry in Live Statistics indicating the number of operations are made in a given
 call, including its sub-calls
 ```
 
