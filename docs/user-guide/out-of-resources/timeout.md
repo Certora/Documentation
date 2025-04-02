@@ -213,17 +213,14 @@ Some of the information in these references is out of date.
 (timeout-single-rule)=
 ### Running rules individually
 
-```{note}
-This section is EVM-specific and does not apply to Solana or Soroban.
-```
-
 The Certora Prover works on the rules of the specification in parallel.
 Even if no rule is very expensive on its own, working on all of them in parallel
 can add up quickly and thereby exceed the timeout.
 Try running individual rules only via the {ref}`--rule` option, or split the
-specification into separate files. Keep in mind that a {term}`parametric rule`,
-as well as an {term}`invariant`, spawns a sub-rule for every contract method.
-This can further be reduced via the {ref}`--method` option.
+specification into separate files.
+For EVM, keep in mind that a {term}`parametric rule`, as well as an
+{term}`invariant`, spawns a sub-rule for every contract method.  This can
+further be reduced via the {ref}`--method` option.
 
 
 (detect-candidates-for-summarization)=
