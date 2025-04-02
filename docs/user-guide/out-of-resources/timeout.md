@@ -444,7 +444,6 @@ statistics in the Live Statistics panel (picture below) can help with
 identifying nonlinearity hot spots. Summarizing these hot spots in particular
 can help reduce the number of nonlinear operations, especially when a method is 
 called multiple times.
-Observe that method summaries is an EVM-specific feature.
 
 ```{figure} nonlinear-ops-call.png
 :name: nonlinear-ops-call
