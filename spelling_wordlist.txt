@@ -218,3 +218,4 @@ CVT
 munge
 WASM
 EVM
+hotspots
