@@ -261,7 +261,7 @@ The minimal difficulty threshold used for the auto-summarization
 can be adjusted using {ref}`--nondet_minimal_difficulty`.
 
 For Solana and Soroban, we recommend summarizing hotspots by enabling munging
-with conditional compilation.
+with [conditional compilation](https://doc.rust-lang.org/reference/conditional-compilation.html).
 
 #### Example usage
 
