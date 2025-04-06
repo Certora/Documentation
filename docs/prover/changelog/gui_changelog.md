@@ -4,6 +4,21 @@ GUI Release Notes
 ```{contents}
 ```
 
+4.2.1 (Apr XX, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Navigating to report with completed state, will now mark this job as “opened” in the Dashboard job list.
+- [feat] Rule Report - State-Diff: introducing the option to compare the state of the storage between different snapshots within the call trace. This option will aid users in understanding counter examples and debugging problems.
+- [feat] Dashboard - Jobs list will now highlight unopened jobs. Jobs will be marked as “opened” by opening a report in a completed state, or by marking this manually in the dashboard.
+- [feat] Dashboard - Job list will now present the run_source of a job and enable filtering by run_source
+
+### Fixed Bugs
+
+- [bug] Rule Report - Log out from Rule Report is now working as expected
+- [bug] Dashboard - Cancelling a job from the Dashboard is now working as expected
+
 4.0.2 (Mar 13, 2025)
 ---------------------------
 
