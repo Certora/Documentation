@@ -17,7 +17,7 @@ GUI Release Notes
 ### Fixed Bugs
 
 - [bug] Rule Report - Log out from Rule Report is now working as expected
-- [bug] Dashboard - Cancelling a job from the Dashboard is now working as expected
+- [bug] Dashboard - Canceling a job from the Dashboard is now working as expected
 
 4.0.2 (Mar 13, 2025)
 ---------------------------
