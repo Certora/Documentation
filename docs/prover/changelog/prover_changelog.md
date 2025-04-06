@@ -5,6 +5,17 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.27.2 (April XX, 2025)
+----------------------
+### Rule Report
+- [feat] Pointer analysis failures now display precise source locations for internal functions in the Global Notification tab. Includes function names and Jump-To-Source links.
+- [feat] The Live Statistics panel now supports per-call difficulty metrics for Solana jobs, aiding the identification of complex functions.
+
+### CVLR
+- [feat] Solana jobs now support `multi_assert_check`. Each assertion in a rule is verified separately, enabling better counterexample coverage and a timeout mitigation strategy.
+- [feat] Solana jobs now support `rule_sanity basic`, which performs vacuity checks to help detect trivially true rules.
+
+
 7.26.0 (Mar 13, 2025)
 ----------------------
 ### Rule Report
