@@ -258,8 +258,8 @@ summary (and a dispatch list summary is only applicable for a catch
 unresolved-calls entries).
 
 As with `DISPATCH`, there are optimistic and pessimistic dispatch lists. This can
-be specified via `DISPATCHER(optimistic=<true|false>)`, when the `optimistic` option 
-is not specified in parentheses, the Prover will use a pessimistic dispatch lists to 
+be specified via `DISPATCHER(optimistic=<true|false>). When the `optimistic` option 
+is not specified in parentheses, the Prover will use a pessimistic dispatch list to 
 ensure sound reasoning.
 
 A dispatch list summary directs the Prover to consider each of the methods
@@ -270,7 +270,7 @@ It is done accurately by matching the selector from the call's arguments
 to that of the methods described in the dispatch list.
 When using a pessimistic dispatch list and no method from the list matches, 
 it will use the `default` summary. When using the optimistic dispatch
-list, an `ASSUME FALSE;` is inlined by the Prover, see the example below.
+list, an `ASSUME FALSE;` is inlined by the Prover; see the example below.
 The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
 The possible patterns are:
 1. Exact function - a pattern specifying both a contract, and the
@@ -310,7 +310,7 @@ function summarized(address a, bytes calldata data) external {
     // Call C.baz(...)
   } else {
     // In the case of the DISPATCHER(optimistic=false), the summary 
-    // specified after the "default" is inlined here, this is typically a HAVOC_ALL,
+    // specified after the "default" is inlined here. This is typically a HAVOC_ALL,
     // HAVOC_ECF or a NONDET.
     // In the case of the DISPATCHER(optimistic=true) option, no default is used 
     // and the Prover inlines an ASSUME FALSE; at this location marking 
