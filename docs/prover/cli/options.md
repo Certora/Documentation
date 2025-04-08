@@ -1339,8 +1339,7 @@ instead of `AUTO havoc`. Furthermore there is an item called
 `fallback` that were found in the scene.
 If no implementations were found, this is stated, and the box is highlighted
 in red, like in the `AUTO havoc` case. This means that if `adr` has `extcodesize` 0, 
-the call will transfer `amount` to `adr`, otherwise the call will have no effect 
-(this will show in the call trace as the amount being transferred, and then later tranferred back).
+the call transfers `amount` to `adr`, otherwise the call has no effect.
 If any `fallback` implementations were found in the scene, they are listed, and 
 the box is no longer highlighted red.
 
