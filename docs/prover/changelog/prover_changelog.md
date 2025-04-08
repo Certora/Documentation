@@ -4,6 +4,16 @@ Prover Release Notes
 
 ```{contents}
 ```
+
+7.26.0 (Mar 13, 2025)
+----------------------
+### Rule Report
+- [feat] The Live Statistics panel now supports difficulty information for internal function calls, expanding on the existing support for external and public functions.
+- [feat] Jump-To-Source (JTS) is now available for Rust (CVLR) external calls and `cvlr_satisfy`.
+
+### CVL
+- [feat] Introduced the `executingContract` keyword, which can be used in the methods block. It refers to `address(this)` at the call site where the CVL summary is applied.
+
 7.25.2 (Feb 19, 2025)
 ----------------------
 ### CVL
