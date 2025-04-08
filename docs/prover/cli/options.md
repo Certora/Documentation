@@ -1280,27 +1280,21 @@ This option controls how the Prover handles unresolved external calls with an
 empty input buffer (length 0). 
 By default, such calls will havoc all storage of external contracts in 
 the {term}`scene`, i.e., of all contracts except for the main verified contract. 
-When `--optimistic_fallback` is enabled, the Prover generates code that 
-dispatches to all implementations of the `fallback` function that are available
-in any contract in the scene. Furthermore, if the callee address is chosen by
-the Prover to be a user address (i.e. it has `extcodesize` 0), the given ETH value
-is transferred to that user address.
+When `--optimistic_fallback` is enabled, the Prover inserts an Optimistic fallback 
+Dispatcher summary. 
+This summary dispatches to all implementations of the `fallback` function that 
+are available in any contract in the scene. 
+Furthermore, an additional dispatch option is inserted for the case when the callee 
+address is chosen by the Prover to be a user address (i.e. it has `extcodesize` 0); 
+then, the given ETH value is transferred to that user address.
 
-
-Note that the calls made within the Optimistic fallback dispatcher summary do not
+Note that the calls made within the Optimistic fallback Dispatcher summary do not
 fall under the restrictions of `norevert` calls. If the chosen `fallback` 
 implementation reverts, or if the code size of the unknown contract is non-zero, 
 the value is transferred back, but the path is not excluded from verification.
 
- If no such explicit implementation is 
-available, the behavior depends on the `extcodesize` of the address that the
-prover choses for the callee. If the `extcodesize` is 0, i.e., if the callee is a 
-user address, any ETH value carried by the call will be transferred to that address.
-Otherwise, the call is assumed to have reverted, and nothing is transferred.
-
-Note that the case in which no explicit fallback implementation exists and 
-`--optimistic_fallback` is set can lead to {term}`unsound`ness due to `norevert` 
-behavior of Solidity calls from CVL (which is the default behavior).
+Furthermore note, that only non-trivial `fallback` implementations are used for the 
+dispatcher, i.e., ones that do not always revert.
 
 In the " Contracts Call Resolutions" tab, the absence of any explicit 
 implementation of `fallback()` is highlighted by a red outline for the 
@@ -1309,10 +1303,12 @@ implementation of `fallback()` is highlighted by a red outline for the
  is applied for some call.)
 
 To give another intuition for these behaviors: When this flag is not set, the 
-Prover internally generates an {term}`pessimistic <pessimistic assertions>` `DISPATCHER` summary, and 
-when it is set it generates an {term}`optimistic` one, with the difference that 
-if there are no dispatch targets available, a revert is triggered, whereas a regular 
-optimistic summary would lead to a Prover error in this case.
+Prover internally generates an {term}`pessimistic <pessimistic assertions>` `DISPATCHER` summary. 
+When the flag is set the Prover generates an {term}`optimistic` one, with the difference that 
+if there are no dispatch targets available, any given ETH value is transferred in case of 
+a user account. 
+In contrast, attempting to generate a regular optimistic summary when there 
+are no dispatch targets in the scene leads to a Prover error.
 
 **When to use it?**
 
@@ -1342,9 +1338,11 @@ instead of `AUTO havoc`. Furthermore there is an item called
 `alternative explicit fallbacks` listing all the implementations of 
 `fallback` that were found in the scene.
 If no implementations were found, this is stated, and the box is highlighted
-in red, like in the `AUTO havoc case. This means that the call will revert.
-I any implementations were found, they are listed, and the box is no
-longer highlighted red.
+in red, like in the `AUTO havoc case. This means that if `adr` has `extcodesize` 0, 
+the call will transfer `amount` to `adr`, otherwise the call will have no effect 
+(this will show in the call trace as the amount being transferred, and then later tranferred back).
+If any `fallback` implementations were found in the scene, they are listed, and 
+the box is no longer highlighted red.
 
 Example invocation:
 
