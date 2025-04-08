@@ -1267,19 +1267,63 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will havoc all storage state of external contracts. When `--optimistic_fallback` is enabled, these calls will instead:
+This option controls how the Prover handles unresolved external calls with an 
+empty input buffer (length 0). 
+By default, such calls will havoc all storage of external contracts in 
+the {term}`scene`. 
+When `--optimistic_fallback` is enabled, the Prover generates code that 
+dispatches to all implementations of the `fallback` function that are available
+in any contract in the scene. If no such explicit implementation is 
+available, the calls are assumed to revert.
 
-- Execute the fallback function in the specified contract (if it exists).
-- Revert if no fallback function is available.
-- Execute a transfer if applicable.
+Note that the case in which no explicit fallback implementation exists and 
+`--optimistic_fallback` is set can lead to {term}`unsound`ness due to `norevert` 
+behavior of Solidity calls from CVL (which is the default behavior).
 
-This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing unnecessary state havoc for empty input calls.
+In the " Contracts Call Resolutions" tab, the absence of any explicit 
+implementation of `fallback()` is highlighted by a red outline for the 
+`[?].fallback` entry. 
+ (The same highlighting is also used for when an {ref}`AUTO summary <auto-summary>` is applied for some call.)
+
+To give another intuition for these behaviors: When this flag is not set, the 
+Prover internally generates an {term}`pessimistic <pessimistic assertions>` `DISPATCHER` summary, and 
+when it is set it generates an {term}`optimistic` one, with the difference that 
+if there are no dispatch targets available, a revert is triggered, whereas a regular 
+optimistic summary would lead to a Prover error in this case.
+
+In practice, this flag can be used to resolve cases of {ref}`AUTO summaries <auto-summary>` doing a full state havoc for empty input calls.
 
 **When to use it?**
 
 Enable this option to avoid spurious counter examples for external calls with empty input buffers.
 
 **Example**
+
+Consider a contract that contains this snippet:
+```sol
+  ...
+  adr.call{value: amount}("");
+  ...
+```
+
+Assume that the callee, `adr`, is unresolved, i.e., the prover's static 
+analysis passes fail to recognize it as the address of a contract that 
+we have source code for. (If the callee is resolved, this option has on 
+effect on that call.) This case will show up as `[?].fallback` in the
+Call Resolutions pane on the left of the report. If 
+`--optimistic_fallback` was not set, this will lead to an `AUTO havoc` 
+summary, and thus a havoc of all storage. The box in the Call Resolutions 
+pane will be highlighted in red in this case.
+
+Now, if we set `--optimistic_fallback`, the call will still be unresolved, 
+but the contents of the `[?].fallback` entry in the Call Resolutions will 
+have changed. The summary is indicated as `Optimistic Fallback DISPATCHER`
+instead of `AUTO havoc`. Furthermore there is an entry 
+`alternative explicit fallbacks` listing all the implementations of 
+`fallback` that were found in the scene.
+
+
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 ```
