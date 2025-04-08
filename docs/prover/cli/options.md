@@ -1333,12 +1333,12 @@ the `AUTO havoc` summary.
 
 Now, if we set `--optimistic_fallback`, the call is still unresolved, 
 but the contents of the `[?].fallback` entry in the Call Resolutions 
-differ. The summary is indicated as `Optimistic Fallback DISPATCHER`
+differ. The summary is designated as "Optimistic fallback DISPATCHER"
 instead of `AUTO havoc`. Furthermore there is an item called
-`alternative explicit fallbacks` listing all the implementations of 
+"alternative explicit fallbacks" listing all the implementations of 
 `fallback` that were found in the scene.
 If no implementations were found, this is stated, and the box is highlighted
-in red, like in the `AUTO havoc case. This means that if `adr` has `extcodesize` 0, 
+in red, like in the `AUTO havoc` case. This means that if `adr` has `extcodesize` 0, 
 the call will transfer `amount` to `adr`, otherwise the call will have no effect 
 (this will show in the call trace as the amount being transferred, and then later tranferred back).
 If any `fallback` implementations were found in the scene, they are listed, and 
