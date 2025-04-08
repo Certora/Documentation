@@ -1304,9 +1304,9 @@ implementation of `fallback()` is highlighted by a red outline for the
 
 To give another intuition for these behaviors: When this flag is not set, the 
 Prover internally generates an {term}`pessimistic <pessimistic assertions>` `DISPATCHER` summary. 
-When the flag is set the Prover generates an {term}`optimistic` one, with the difference that 
-if there are no dispatch targets available, any given ETH value is transferred in case of 
-a user account. 
+When the flag is set the Prover generates an {term}`optimistic <optimistic assumptions>` one, 
+with the difference that if there are no dispatch targets available, any given ETH value 
+is transferred in case of a user account. 
 In contrast, attempting to generate a regular optimistic summary when there 
 are no dispatch targets in the scene leads to a Prover error.
 
@@ -1318,7 +1318,7 @@ doing a full state havoc for external calls with empty input buffers.
 **Example**
 
 Consider a contract that contains this snippet:
-```sol
+```solidity
   ...
   adr.call{value: amount}("");
   ...
