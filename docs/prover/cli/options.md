@@ -1293,7 +1293,7 @@ fall under the restrictions of `norevert` calls. If the chosen `fallback`
 implementation reverts, or if the code size of the unknown contract is non-zero, 
 the value is transferred back, but the path is not excluded from verification.
 
-Furthermore note, that only non-trivial `fallback` implementations are used for the 
+Furthermore, note that only non-trivial `fallback` implementations are used for the 
 dispatcher, i.e., ones that do not always revert.
 
 In the " Contracts Call Resolutions" tab, the absence of any explicit 
