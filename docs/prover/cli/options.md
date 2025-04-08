@@ -1306,23 +1306,25 @@ Consider a contract that contains this snippet:
   ...
 ```
 
-Assume that the callee, `adr`, is unresolved, i.e., the prover's static 
-analysis passes fail to recognize it as the address of a contract that 
-we have source code for. (If the callee is resolved, this option has on 
-effect on that call.) This case will show up as `[?].fallback` in the
-Call Resolutions pane on the left of the report. If 
-`--optimistic_fallback` was not set, this will lead to an `AUTO havoc` 
-summary, and thus a havoc of all storage. The box in the Call Resolutions 
-pane will be highlighted in red in this case.
+Assume that the callee, `adr`, is unresolved. (If the callee was resolved, 
+this option has on effect on that call.) This case will show up as an entry labeled
+`[?].fallback` in the Contract Call Resolutions pane on the left of the report. 
+If `--optimistic_fallback` was not set and thus a havoc of all storage. 
+The entry will be highlighted in red in this case and indicate use of 
+the `AUTO havoc` summary.
 
-Now, if we set `--optimistic_fallback`, the call will still be unresolved, 
-but the contents of the `[?].fallback` entry in the Call Resolutions will 
-have changed. The summary is indicated as `Optimistic Fallback DISPATCHER`
-instead of `AUTO havoc`. Furthermore there is an entry 
+Now, if we set `--optimistic_fallback`, the call is still unresolved, 
+but the contents of the `[?].fallback` entry in the Call Resolutions 
+differ. The summary is indicated as `Optimistic Fallback DISPATCHER`
+instead of `AUTO havoc`. Furthermore there is an item called
 `alternative explicit fallbacks` listing all the implementations of 
 `fallback` that were found in the scene.
+If no implementations were found, this is stated, and the box is highlighted
+in red, like in the `AUTO havoc case. This means that the call will revert.
+I any implementations were found, they are listed, and the box is no
+longer highlighted red.
 
-
+Example invocation:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
