@@ -1289,7 +1289,7 @@ address is chosen by the Prover to be a user address (i.e. it has `extcodesize` 
 then, the given ETH value is transferred to that user address.
 
 Note that the calls made within the Optimistic fallback Dispatcher summary do not
-fall under the restrictions of `norevert` calls. If the chosen `fallback` 
+fall under the restrictions of {ref}`norevert <with-revert>` calls. If the chosen `fallback` 
 implementation reverts, or if the code size of the unknown contract is non-zero, 
 the value is transferred back, but the path is not excluded from verification.
 
@@ -1302,14 +1302,6 @@ implementation of `fallback()` is highlighted by a red outline for the
  (The same highlighting is also used for when an {ref}`AUTO summary <auto-summary>` 
  is applied for some call.)
 
-To give another intuition for these behaviors: When this flag is not set, the 
-Prover internally generates an {term}`pessimistic <pessimistic assertions>` `DISPATCHER` summary. 
-When the flag is set the Prover generates an {term}`optimistic <optimistic assumptions>` one, 
-with the difference that if there are no dispatch targets available, any given ETH value 
-is transferred in case of a user account. 
-In contrast, attempting to generate a regular optimistic summary when there 
-are no dispatch targets in the scene leads to a Prover error.
-
 **When to use it?**
 
 Enable this option to avoid spurious counter examples due to {ref}`AUTO summaries <auto-summary>` 
@@ -1320,16 +1312,24 @@ doing a full state havoc for external calls with empty input buffers.
 Consider a contract that contains this snippet:
 ```solidity
   ...
-  adr.call{value: amount}("");
+  a.call{value: amount}("");
   ...
 ```
 
-Assume that the callee, `adr`, is unresolved. (When the callee is resolved, 
+Assume that the callee, `a`, is unresolved. (When the callee is resolved, 
 this option has no effect on that call.) This case will show up as an entry labeled
 `[?].fallback` in the Contract Call Resolutions pane on the left of the report. 
 If `--optimistic_fallback` was not set and thus a havoc of all storage. 
 The entry will be highlighted in red in this case and indicate use of 
 the "AUTO havoc" summary.
+
+```{figure} opt-fallback-auto-havoc.png
+:name: opt-fallback-auto-havoc
+:align: center
+:height: 400
+
+Call Resolutions entry for an unresolved call to the fallback function summarized as AUTO havoc
+```
 
 Now, if we set `--optimistic_fallback`, the call is still unresolved, 
 but the contents of the `[?].fallback` entry in the Call Resolutions 
@@ -1340,8 +1340,25 @@ instead of "AUTO havoc". Furthermore there is an item called
 If no implementations were found, this is stated, and the box is highlighted
 in red, like in the "AUTO havoc" case. This means that if `adr` has `extcodesize` 0, 
 the call transfers `amount` to `adr`, otherwise the call has no effect.
+
+```{figure} opt-fallback-disp-no-impl.png
+:name: opt-fallback-disp-no-impl
+:align: center
+:height: 400
+
+Call Resolutions entry for Optimistic fallback DISPATCHER when there are no fallback implementations
+```
+
 If any `fallback` implementations were found in the scene, they are listed, and 
-the box is no longer highlighted red.
+the box is not highlighted red.
+
+```{figure} opt-fallback-disp-with-impl.png
+:name: opt-fallback-disp-with-impl
+:align: center
+:height: 400
+
+Call Resolutions entry for Optimistic fallback DISPATCHER when there are no fallback implementations
+```
 
 Example invocation:
 
