@@ -52,12 +52,9 @@ will always pass, regardless of the behavior of the contract. This is an
 example of a {term}`vacuous` rule &mdash; one that passes only because the
 preconditions are contradictory.
 
-In the rule report, a vacuity check adds a node called `rule_not_vacuous` to each rule.  
+In the rule report, a vacuity check adds a node called `rule_not_vacuous_cvlr` to each rule.  
 For example, see how the rule `rule_vacuity_test_expect_sanity_failure` from above
-is reported as failing sanity, as `rule_not_vacuous` fails. 
+is reported as failing sanity, as `rule_not_vacuous_cvlr` fails. 
 Below you see an example of a rule without the contradicting `assume`s that does not fail vacuity.
 
 ![Screenshot of vacuity subrule](img/vacuity_check.png)
-
-Note that the vacuity check will only be executed if the original's rule status is verified. 
-If the Prover finds a violation, the sanity check will be skipped.

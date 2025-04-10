@@ -70,7 +70,8 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "AUTO"
                    | "ASSERT_FALSE"
                    | expr [ "expect" id ]
-                   | "DISPATCH" "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
+                   | "DISPATCH" [ "(optimistic=false)" ]  "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
+                   | "DISPATCH" [ "(optimistic=true)" ]  "[" dispatch_list_pattern [","] | empty "]"
 
 dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
                           | dispatch_pattern
@@ -207,6 +208,12 @@ methods {
         _.bar(address), // Will resolve to all available functions with the signature "bar(address)", specifically Other.bar(address)
         C._ // Will resolve to all functions in C, specifically C.foo(uint) and C.baz(bool)
     ] default NONDET;
+
+    // An optimistic dispatcher can be used to enforce resolving all unresolved calls to a specific method.
+    // Be aware: In case the method C.foo(uint) doesn't exist or the sighash doesn't match, this create vacuity.
+    unresolved external in _._ => DISPATCH(optimistic=true) [
+        C.foo(uint)
+    ];
 }
 ```
 
@@ -250,14 +257,20 @@ Catch unresolved-calls entries can only be summarized with a dispatch list
 summary (and a dispatch list summary is only applicable for a catch
 unresolved-calls entries).
 
+As with `DISPATCH`, there are optimistic and pessimistic dispatch lists. This can
+be specified via `DISPATCHER(optimistic=<true|false>). When the `optimistic` option 
+is not specified in parentheses, the Prover will use a pessimistic dispatch list to 
+ensure sound reasoning.
+
 A dispatch list summary directs the Prover to consider each of the methods
 described in the list as possible candidates for this unresolved call.
 The Prover will choose dynamically, that is, for each potential run of the
 program, which of them to call.
 It is done accurately by matching the selector from the call's arguments
 to that of the methods described in the dispatch list.
-If no method from the list matches, it will use the `default` summary, see
-below.
+When using a pessimistic dispatch list and no method from the list matches, 
+it will use the `default` summary. When using the optimistic dispatch
+list, an `ASSUME FALSE;` is inlined by the Prover; see the example below.
 The dispatch list will contain a list of patterns and the default summary to use in case no function matched the selector.
 The possible patterns are:
 1. Exact function - a pattern specifying both a contract, and the
@@ -271,15 +284,11 @@ The possible patterns are:
    contract's fallback if it's implemented).
    Example: `C._`
 
-For the default summary the user can choose one of: `HAVOC_ALL`, `HAVOC_ECF`,
-`NONDET`.
 The example entry at the head of this section will specify three functions to
 route calls to:
 1. `C.foo(uint)`
 2. `Other.bar(address)`
 3. `C.baz(bool)`
-
-With the default being `NONDET`.
 
 Entry annotations ({ref}`envfree`, {ref}`optional`) and the `returns` clause
 are not allowed on an unresolved-calls entry.
@@ -300,7 +309,12 @@ function summarized(address a, bytes calldata data) external {
     // Function selector was equal to baz's
     // Call C.baz(...)
   } else {
-    // Use the default summary which is, in this case, NONDET.
+    // In the case of the DISPATCHER(optimistic=false), the summary 
+    // specified after the "default" is inlined here. This is typically a HAVOC_ALL,
+    // HAVOC_ECF or a NONDET.
+    // In the case of the DISPATCHER(optimistic=true) option, no default is used 
+    // and the Prover inlines an ASSUME FALSE; at this location marking 
+    // this branch as unreachable.
   }
 }
 ```
