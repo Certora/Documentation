@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.27.2 (April XX, 2025)
+7.28.0 (April 10, 2025)
 ----------------------
 ### Rule Report
 - [feat] Pointer analysis failures now display precise source locations for internal functions in the Global Notification tab. Includes function names and Jump-To-Source links.
