@@ -33,7 +33,7 @@ The Certora Solana Prover has two modes of operation, using a build script, or p
 These modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
 Both modes require the user to specify which rules must be verified by using the ``--rule`` option.
 
-### --build_script
+### `--build_script`
 
 **What does it do?**
 
@@ -71,7 +71,7 @@ certoraSolanaProver <path_to_binary_file> --rule <rule_name>
 
 ## Most Frequently Used Options
 
-### --rule
+### `--rule`
 
 **What does it do?**
 
@@ -107,7 +107,7 @@ certoraSolanaProver --build_script <path_to_build_script> --rule rule_withdraw_s
 ```
 
 (--solana_inlining)=
-### --solana_inlining
+### `--solana_inlining`
 
 **What does it do?**
 
@@ -127,7 +127,7 @@ certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <pat
 ```
 
 (--solana_summaries)=
-### --solana_summaries
+### `--solana_summaries`
 
 **What does it do?**
 
@@ -146,7 +146,7 @@ It can be provided to the Prover by passing this list as a flag or by retrieving
 certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file> --rule <rule_name>
 ```
 
-### --cargo_features
+### `--cargo_features`
 
 **What does it do?**
 
@@ -163,7 +163,7 @@ Use it when there is a need to enable a specific [Cargo feature](https://doc.rus
 certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2> --rule <rule_name>
 ```
 
-### --msg
+### `--msg`
 
 **What does it do?**
 
@@ -181,7 +181,7 @@ It is also helpful to keep track of a single file verification status over time,
 certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion' --rule <rule_name>
 ```
 
-### --rule_sanity
+### `--rule_sanity`
 
 **What does it do?**
 
