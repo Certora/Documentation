@@ -117,7 +117,7 @@ See an [example](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_exa
 
 **When to use it?**
 
-This option is currently required for every project.
+This option is currently **required for every project**.
 It can be provided to the Prover by passing this list as a flag or by retrieving it from the build script.
 
 **Example**
