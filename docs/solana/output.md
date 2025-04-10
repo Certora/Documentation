@@ -152,6 +152,14 @@ See [Rule Sanity Checks](./sanity.md) for more details.
 
 ## Advanced Topics
 
+### Analyzing Functions Complexity
+
+The Certora Solana Prover offers the Live Statistics panel to analyze the complexity of individual functions.
+The Live Statistics provide information, for instance, about the number of paths of a function body which may help when having difficult to solve rules.
+Observe that the Live Statistics panel is affected by the `solanaMinSizeForCalltrace` option.
+Functions with a size smaller than this threshold, measured by the number of TAC commands they correspond to, will not be displayed in the Live Statistics panel.
+Refer to the [Timeouts](../user-guide/out-of-resources/timeout.md) section for further information.
+
 ### Over-approximation Detection
 
 When analyzing counterexamples, consider:

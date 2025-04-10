@@ -33,7 +33,7 @@ The Certora Solana Prover has two modes of operation, using a build script, or p
 These modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
 Both modes require the user to specify which rules must be verified by using the ``--rule`` option.
 
-### --build_script
+### `--build_script`
 
 **What does it do?**
 
@@ -71,7 +71,7 @@ certoraSolanaProver <path_to_binary_file> --rule <rule_name>
 
 ## Most Frequently Used Options
 
-### --rule
+### `--rule`
 
 **What does it do?**
 
@@ -107,7 +107,7 @@ certoraSolanaProver --build_script <path_to_build_script> --rule rule_withdraw_s
 ```
 
 (--solana_inlining)=
-### --solana_inlining
+### `--solana_inlining`
 
 **What does it do?**
 
@@ -127,7 +127,7 @@ certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <pat
 ```
 
 (--solana_summaries)=
-### --solana_summaries
+### `--solana_summaries`
 
 **What does it do?**
 
@@ -146,7 +146,7 @@ It can be provided to the Prover by passing this list as a flag or by retrieving
 certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file> --rule <rule_name>
 ```
 
-### --cargo_features
+### `--cargo_features`
 
 **What does it do?**
 
@@ -163,7 +163,7 @@ Use it when there is a need to enable a specific [Cargo feature](https://doc.rus
 certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2> --rule <rule_name>
 ```
 
-### --msg
+### `--msg`
 
 **What does it do?**
 
@@ -179,4 +179,45 @@ It is also helpful to keep track of a single file verification status over time,
 
 ```bash
 certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion' --rule <rule_name>
+```
+
+### `--rule_sanity`
+
+**What does it do?**
+
+When used with `--rule_sanity: basic`, this flag executes a job in sanity mode which performs a vacuity check for a rule.
+
+**When to use it?**
+
+Sanity mode is helpful to check for the correctness of a rule. For details, see also [Rule Sanity Checks](./sanity.md).
+
+**Example**
+
+```bash
+certoraSolanaProver --build_script <path_to_build_script> --rule_sanity basic
+```
+
+
+## `--multi_assert_check`
+
+**What does it do?**
+This flags translates each assertion statement in a rule into a separate verification task. All preceding assertions are assumed to be true - they are hence translated into assume statements.
+An example can be found [here](https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf).
+
+
+```{caution}
+We suggest using this mode carefully. In general, as this mode generates generates one verification task per assert, it may lead to worse running-time performance. Please see indications for use below.
+```
+
+**When to use it?**
+When you have a rule with multiple assertions:
+
+1.  As a timeout mitigation strategy: checking each assertion separately may, in some cases, perform better than checking all the assertions together and consequently solve timeouts. For instance, you can identify complex to verify asserts in a rule.
+
+2.  If you wish to get multiple counter-examples in a single run of the tool, where each counter-example violates a different assertion in the rule.
+
+**Example**
+
+```bash
+certoraSolanaProver --build_script <path_to_build_script> --multi_assert_check
 ```
