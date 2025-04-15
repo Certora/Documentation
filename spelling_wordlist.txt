@@ -49,6 +49,7 @@ bytemap
 callee
 cex
 changelog
+changelogs
 checkmark
 cheatcode
 cheatcodes
