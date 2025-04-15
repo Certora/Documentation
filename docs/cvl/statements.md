@@ -71,9 +71,11 @@ a rule, while the `assert` statement is used to specify the expected behavior
 of contract functions.
 
 During verification, the Prover will ignore any {term}`model` that causes the
-`require` expressions to evaluate to false.  The require statement can contain 
-an optional descriptive message, and it is advised to specify it to document the 
-assumption made by excluding models that do not satisfy the required expression.
+`require` expressions to evaluate to false.  Therefore it is important to carefully
+consider the reason for the excluding such behaviours from consideration of the prover,
+as violations of a desired property can be missed by using `require` too aggressively.  
+An explanation message can be added to the require statement to aid in documenting
+and reviewing this reason.
 There is a prover option `--enforce_require_reason` that makes this non-optional
 and will give an error for any require without a message.
 
