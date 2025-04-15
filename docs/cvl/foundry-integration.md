@@ -15,7 +15,7 @@ This feature of the Certora Prover is in alpha state, so issues/unimplemented fe
 any issue.
 ```
 
-# Usage (Automatic Setup)
+## Usage (Automatic Setup)
 
 In Prover version 7.25.1, the flag {ref}`--foundry` was introduced. This flag automatically collects all test files (`.t.sol`) in the current directory and executes the Prover in Foundry mode. 
 
@@ -25,7 +25,7 @@ To execute use:
 If you are facing issues with the automatic setup, for instance, when too many contracts that are being analyzed, 
 it is recommended to perform a manual setup instead.
 
-# Usage (Manual Setup)
+## Usage (Manual Setup)
 
 There is a minimum of 2 required files to get the Prover to verify Foundry fuzz tests: A `.spec` file (written in CVL), and a `.conf` file. 
 
@@ -55,7 +55,7 @@ A minimal `.conf` file will look like this:\
 
 For a full running example, please also see our [Foundry Integration Examples](https://github.com/Certora/Examples/tree/master/FoundryIntegration).
 
-# Key differences vs. Foundry fuzz testing
+## Key differences vs. Foundry fuzz testing
 
 In Foundry, fuzz tests start with a blank state as the initial state (i.e. all storage fields are explicitly set to `0`), and one can implement 
 a `setUp()` function in order to bring the state to whatever initial state one wants to run the tests in. In contrast, the Prover starts with 
@@ -75,7 +75,7 @@ Depending on your fuzz test, you may need to use the `reset_storage` command in 
 storage fields of a contract to `0` before running the test. Alternatively, one could try to add a call to the `setUp()` function in the 
 `init_fuzz_tests` function - please note that the `init_fuzz_tests` is an empty method by default.
 
-# Known Limitations 
+## Known Limitations 
 
 - Foundry's [Invariant testing](https://book.getfoundry.sh/forge/invariant-testing) is not supported, i.e. forge tests prefixed with 
 `invariant` are not formally verified. Under the hood, the built-in rule `verifyFoundryFuzzTests` is a parametric rule that picks up all methods 
