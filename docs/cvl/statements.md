@@ -72,7 +72,7 @@ of contract functions.
 
 During verification, the Prover will ignore any {term}`model` that causes the
 `require` expressions to evaluate to false.  Therefore it is important to carefully
-consider the reason for excluding such behaviours from consideration of the prover,
+consider the reason for excluding such behaviors from consideration of the prover,
 as violations of a desired property can be missed by using `require` too aggressively.  
 An explanation message can be added to the require statement to aid in documenting
 and reviewing this reason.
