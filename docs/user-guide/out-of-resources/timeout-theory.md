@@ -10,9 +10,9 @@ parts of our documentation on [managing timeouts](index.md).
 
 ## Complexity of the SMT problem
 
-As described in in the [white paper](whitepaper-technical), Certora Prover is
+As described in the [white paper](white-paper), the Certora Prover is
 roughly similar in architecture to a compiler. However, instead of executables,
-Certora Prover outputs {term}`SMT` formulas. These formulas are then sent to an
+the Certora Prover outputs {term}`SMT` formulas. These formulas are then sent to an
 SMT solver, and the result is translated back to a counterexample call trace, or
 a "Not Violated" result.
 

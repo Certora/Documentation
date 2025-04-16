@@ -22,9 +22,7 @@ block ::= statement { statement }
 statement ::= type id [ "=" expr ] ";"
 
             | "require" expr [ "," string ] ";"
-            | "static_require" expr ";"
             | "assert" expr [ "," string ] ";"
-            | "static_assert" expr [ "," string ] ";"
             | "satisfy" expr [ "," string ] ";"
 
             | "requireInvariant" id "(" exprs ")" ";"

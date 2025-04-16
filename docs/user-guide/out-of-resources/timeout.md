@@ -9,15 +9,15 @@ on verification timeouts.
 (timeouts-classification)=
 ## Classification of Timeouts
 
-For a first classification of timeouts in Certora Prover, we consider on where
-in the Prover's pipeline they occur. The pipeline starts by compiling the source
+For a first classification of timeouts in Certora Prover, we consider where they occur
+in the Prover's pipeline. The pipeline starts by compiling the source
 code into an intermediate language (called {term}`TAC`).
-This is followed by many static analyses and program transformations.
+Many static analyses and program transformations follow this.
 Afterwards, the TAC program is iteratively split into parts and translated into
 logical formulas. The logical formulas are then sent to an {term}`SMT` solver.
-For more details on how programs are split up see {ref}`control-flow-splitting`.
- For a more comprehensive overview of the Certora Prover, see the
-{ref}`whitepaper-technical` section of the Certora Technology White Paper.
+For more details on how programs are split up, see {ref}`control-flow-splitting`.
+For a more comprehensive overview of the Certora Prover, see the
+{ref}`white-paper`.
 
 We classify Certora Prover timeouts as follows:
 1.  timeouts that happen before SMT solvers are running 
