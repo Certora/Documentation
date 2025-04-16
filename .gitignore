@@ -13,3 +13,7 @@ __pycache__
 # vim
 .*.swp
 .*.swo
+
+# JetBrains (Pycharm)
+*.DS_Store
+.idea/
