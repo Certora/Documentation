@@ -21,7 +21,7 @@ block ::= statement { statement }
 
 statement ::= type id [ "=" expr ] ";"
 
-            | "require" expr ";"
+            | "require" expr [ "," string ] ";"
             | "assert" expr [ "," string ] ";"
             | "satisfy" expr [ "," string ] ";"
 
@@ -69,9 +69,13 @@ a rule, while the `assert` statement is used to specify the expected behavior
 of contract functions.
 
 During verification, the Prover will ignore any {term}`model` that causes the
-`require` expressions to evaluate to false.  Unlike Solidity, the `require`
-statement does not contain a descriptive message, because the Prover will never
-consider an example where the `require` statement evaluates to `false`.
+`require` expressions to evaluate to false.  Therefore it is important to carefully
+consider the reason for excluding such behaviors from consideration of the prover,
+as violations of a desired property can be missed by using `require` too aggressively.  
+An explanation message can be added to the require statement to aid in documenting
+and reviewing this reason.
+There is a prover option `--enforce_require_reason` that makes this non-optional
+and will give an error for any require without a message.
 
 The `assert` statements define the expected behavior of contract functions.  If
 it is possible to generate a model that causes the `assert` expression to
