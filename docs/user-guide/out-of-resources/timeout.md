@@ -465,7 +465,7 @@ Statistics panel in the Certora Prover reports.
 % This number gives rough estimate of how much work the SMT solvers have to do to
 % reason about (non-)aliasing of memory references.
 
-The Certora Prover pdecompiles bytecode so that all EVM
+The Certora Prover decompiles bytecode so that all EVM
 primitives can ultimately be modeled as SMT constructs. This process introduces
 key-to-value mappings for EVM memory and EVM storage. Additionally, the CVL
 specification may introduce ghost mappings. The Prover runs static analyses to
