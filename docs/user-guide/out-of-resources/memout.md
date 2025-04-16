@@ -38,13 +38,4 @@ that sometimes help to in reducing memory usage in some way or another.
 ### High memory usage of SMT solvers
 
 As discussed in {ref}`high-nonlinear-op-count`, using different SMT solvers or
-changing their order is sometimes beneficial. It is important to keep in mind
-for out-of-memory issues that simply removing some solvers rarely helps as the
-maximum memory usage needs to be reduced.
-Roughly speaking, this technique only helps if there are less calls to the SMT
-solvers than there are CPU cores available or if a particular solver or solver
-configuration uses much more memory than the other solvers in this case.
-Otherwise, reducing the portfolio only enables the Prover to run more rules in
-parallel while the number of solvers running - and competing for memory - at any
-given point in time remains the same.
-
+changing their order is sometimes beneficial. It is important to keep in mind that for out-of-memory issues, simply removing some solvers rarely helps, as the maximum memory usage needs to be reduced. Roughly speaking, this technique only helps if there are fewer calls to the SMT solvers than there are CPU cores available or if a particular solver or solver configuration uses much more memory than the other solvers in this case. Otherwise, reducing the portfolio enables the Prover to run more rules in parallel only when the number of solvers running - and competing for memory - at any given time remains the same.
