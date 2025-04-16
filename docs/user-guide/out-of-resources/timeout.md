@@ -403,20 +403,11 @@ certoraRun ... --prover_args '-dontStopAtFirstSplitTimeout true -depth 15 -mediu
 (high-nonlinear-op-count)=
 #### Dealing with nonlinear arithmetic
 
-Nonlinear integer arithmetic is often the hardest part of the formulas that the
-Certora Prover is solving. 
+Nonlinear integer arithmetic is often the hardest part of the formulas that the Certora Prover is solving.
 
-The Certora Prover displays the absolute number of nonlinear operations, as well
-as their number per call, in the Live Statistics panel. In the per-call
-display, there is a warning-sign next to the call when there is a non-trivial
-number of nonlinear operations in the call or its sub-call. Currently,
-everything above and including two nonlinear operations is marked in this way.
+The Certora Prover displays the absolute number of nonlinear operations and their number per call in the Live Statistics panel. The per-call display has a warning sign next to the call when there is a non-trivial number of nonlinear operations in the call or its sub-call. Rules with two or more nonlinear operations are marked in this way.
 
-For EVM, unless the detection of internal functions fails, both internal and external calls 
-are taken into account in the statistics. If the detection fails (which should be 
-rare), internal calls are treated as inlined into the external calls. In that 
-case, each inlined internal call's statistics contribute to the statistics of the 
-enclosing external call.
+For EVM, unless the detection of internal functions fails, both internal and external calls are considered in the statistics. If the detection fails (which should be rare), internal calls are treated as inlined into the external calls. In that case, each inlined internal call’s statistics contribute to the statistics of the enclosing external call.
 
 
 ```{figure} nonlinear-ops-field.png
@@ -430,18 +421,14 @@ Counting the number of nonlinear operations is a rather coarse
 statistic. There are formulas with 10 nonlinear operations that are out of reach
 of current SMT solvers, while in other cases formulas with 120 operations are
 solved. Nevertheless, reducing the number of nonlinear operations has often
-proven a successful measure in timeout prevention even if some remained.
+proven a successful measure in timeout prevention, even if some remained.
 ```
 
-The main techniques in reducing these numbers are modularization and
+The main techniques for reducing these numbers are modularization and
 underapproximation. 
 
 Modularization, typically by introducing method summaries, can help reduce the
-size of the rule, thus reducing the nonlinear operations. The per-call
-statistics in the Live Statistics panel (picture below) can help with
-identifying nonlinearity hot spots. Summarizing these hot spots in particular
-can help reduce the number of nonlinear operations, especially when a method is 
-called multiple times.
+size of the rule, thus reducing the nonlinear operations. The per-call statistics in the Live Statistics panel (picture below) can help identify nonlinearity hot spots. Summarizing these hot spots, in particular, can help reduce the number of nonlinear operations, especially when a method is called multiple times.
 
 ```{figure} nonlinear-ops-call.png
 :name: nonlinear-ops-call
@@ -454,15 +441,11 @@ actual behavior by fixing some value that is used very often in nonlinear
 computations to a concrete value. A typical example would be the decimal digits
 in fixed decimal arithmetic -- having this unconstrained can increase
 nonlinearity in the rule massively, although only a small range of values is
-actually feasible. Of course, great care has to be taken in choosing these
-underapproximations, since they lead to missed bugs otherwise.
+actually feasible. Of course, great care must be taken when choosing these
+underapproximations since they may lead to missed bugs.
 
 A weaker form of underapproximation would be to introduce an extra requirement
-on the range of some variable that contributes to nonlinearity. For example for
-the number of decimals in a fixed decimal computation only values between 0 and
-256 make sense, and in practice values from an even smaller range are likely to
-be used. This measure will not change the values in the Live Statistics panel, 
-but it has prevented timeouts in some cases nonetheless.
+on the range of some variable that contributes to nonlinearity. For example, for the number of decimals in a fixed decimal computation, only values between 0 and 256 make sense, and in practice, values from an even smaller range are likely to be used. This measure will not change the values in the Live Statistics panel, but it has prevented timeouts in some cases nonetheless.
 
 (high-memory-complexity)=
 #### Dealing with high memory (or storage) complexity
@@ -482,13 +465,13 @@ Statistics panel in the Certora Prover reports.
 % This number gives rough estimate of how much work the SMT solvers have to do to
 % reason about (non-)aliasing of memory references.
 
-The Certora Prover performs a decompilation of bytecode in a way that all EVM
+The Certora Prover pdecompiles bytecode so that all EVM
 primitives can ultimately be modeled as SMT constructs. This process introduces
-key-to-value mappings for EVM memory and EVM storage. Additionally the CVL
+key-to-value mappings for EVM memory and EVM storage. Additionally, the CVL
 specification may introduce ghost mappings. The Prover runs static analyses to
-reduce the load on these mappings by splitting them into smaller pieces,
-(smaller mappings or scalar variables), but this is not always possible and some
-mappings usually remain in the final SMT formula.
+reduce the load on these mappings by splitting them into smaller pieces
+(smaller mappings or scalar variables).
+However, this is not always possible, and some mappings usually remain in the final SMT formula.
 
 Under this model, "memory updates" is a measure of how many times we store
 into a key-value mapping such as memory, storage, or a ghost function. The
@@ -508,8 +491,7 @@ In the following we consider common culprits for high memory complexity.
 
 ##### Passing complex structs
 
-One common reason for high memory complexity are complex data structures that
-are passed from the specification to the program, or also inside the program.
+One common reason for high memory complexity is complex data structures in the program or specification.
 `struct` types that contain many dynamically-sized arrays are especially
 problematic. 
 
@@ -537,38 +519,26 @@ function foo(MyStruct x) public {
 }
 ```
 
-In this case, it can help to identify fields of the struct that are not relevant
-for the property of the program that is currently being reasoned about and
-comment out those fields. In our experience these fields exist relatively often
-especially in large structs. Naturally, the removal might be complicated by the
-fact that all usages of these fields also need some munging steps applied to
-them.
+In this case, it can help to identify fields of the struct that are not relevant to the property of the program that is currently being reasoned about and comment out those fields. In our experience, these fields exist relatively often, especially in large structs. Naturally, the removal might be complicated because all usages of these fields also need some munging steps applied to them.
 
 ##### Memory and storage in inline assembly
 
 The Certora Prover employs [static analyses and
-simplifications](storage-and-memory-analysis) in order to make the reasoning
-about Storage and Memory easier for the SMT solvers. These static analyses are
-sometimes thrown off by unusual code patterns (most often produced when using
-inline assembly), which can make the SMT formulas too hard to solve. 
+simplifications](storage-and-memory-analysis) to make reasoning about Storage and Memory easier for SMT solvers.
+However, unusual code patterns (most often produced when using inline assembly) can sometimes throw off these static analyses, making the SMT formulas too hard to solve.
 
-CVT reports these failures of Storage or Memory analysis in the Global Problems
+CVT reports of Storage or Memory analysis failures in the Global Problems
 pane of the reports, along with pointers to the offending source code positions
  (typically inline assembly containing `sstore`/`sload`/`mstore`/`mload`
  operations). To resolve such failures, the relevant code parts need to be
-summarized or munged. (Naturally, the Certora developers are working make such
+summarized or munged. (Naturally, the Certora developers are working to make such
 failures less frequent as well.)
 
 
 (modular-verification)=
 ### Modular verification
 
-Often it is useful to break a complex problem into simpler subproblems; this
-process is called modularization. You can modularize a verification problem by
-first proving a property about a complex piece of code (such as a library or a
-method) and then using that property to summarize the complex code.  In the
-following we elaborate on modularization techniques that can help with timeout
-prevention.
+Often, it is useful to break a complex problem into simpler subproblems; this process is called modularization. You can modularize a verification problem by first proving a property about a complex piece of code (such as a library or a method) and then using that property to summarize the complex code. In the following, we elaborate on modularization techniques that can help prevent timeouts.
 
 
 (library_timeouts)=
@@ -581,9 +551,10 @@ This section is EVM-specific and does not apply to Solana or Soroban.
 As mentioned here [before](timeout-causes-library-contracts), systems with
 libraries are a natural candidate for modularization.
 
-Alternatively to using the `-summarizeExtLibraryCallsAsNonDetPreLinking true`
+As an alternative to using the `-summarizeExtLibraryCallsAsNonDetPreLinking true`
 option mentioned before, one can summarize all the methods of a single library
-using a {ref}`catch-all summary <catch-all-entries>`.  For example, to use a
+using a {ref}`catch-all summary <catch-all-entries>`. 
+For example, to use a
 `NONDET` summary for all functions of `MyBigLibrary`, one could add the
 following:
 
@@ -603,12 +574,12 @@ For more information on method summaries, see {ref}`summaries`.
 (timeout-cli-options)=
 ### Command line options
 
-There are a number of command line options that influence specific parts of the
+There are several command line options that influence specific parts of the
 Prover's pipeline. While their default values generally yield the best results,
-changing them is known to improve running time in certain cases.
+changing them can improve running time in certain cases.
 
 
 #### `--prover_args '-destructiveOptimizations enable'`
 
-This option enables some aggressive simplifications that speed up the prover
-in many cases but breaks call trace generation in case a rule is violated.
+This option enables some aggressive simplifications that speed up the Prover in many cases,
+but breaks call trace generation in case a rule is violated.
