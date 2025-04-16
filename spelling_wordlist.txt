@@ -60,6 +60,7 @@ config
 conjoined
 decompilation
 decompiler
+decompiles
 deduplication
 dereference
 dereferences
@@ -97,6 +98,7 @@ initializations
 injective
 injectivity
 inlined
+inlines
 inlining
 inlinings
 instantiation
