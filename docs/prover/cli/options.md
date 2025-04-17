@@ -1411,6 +1411,26 @@ This section includes flags that annotate verification runs with additional meta
 ## `--msg`
 See {ref}`--msg`.
 
+## `--protocol_author`
+
+**Usage**
+```sh
+--protocol_author <name>
+``` 
+
+**What does it do?**
+This option adds an author name to the job metadata, allowing you to easily filter or group verification runs by the protocol author in the [dashboard](https://prover.certora.com/).
+
+If not explicitly provided, the Prover will attempt to extract the author from the author field in your `package.json` file (if it exists).
+
+**When to use it?**
+Use this flag to help track who owns or submitted each verification run, particularly in verification projects with multiple authors.
+
+**Example**
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --protocol_author "OpenDeFi Labs"
+```
+
 ## `--protocol_name`
 
 **Usage**
