@@ -1408,6 +1408,9 @@ Options for job metadata and dashboard filtering
 
 This section includes flags that annotate verification runs with additional metadata. These options don’t affect verification results but make it easier to track jobs, filter them in the [dashboard](https://prover.certora.com/), or manage runs across multiple protocols.
 
+## `--msg`
+See {ref}`--msg`.
+
 ## `--protocol_name`
 
 **Usage**
