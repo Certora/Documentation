@@ -359,7 +359,7 @@ This option implicitly enables the {ref}`--auto_dispatcher` option.
 
 
 **When to use it?**
-When we want to run all foundry fuzz tests in the project with the prover.
+When we want to run all Foundry fuzz tests in the project with the Prover.
 
 **Example**
 ```sh
