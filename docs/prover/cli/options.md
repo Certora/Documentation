@@ -1443,6 +1443,35 @@ When you suspect you have an old installation. To install the newest version, us
 certoraRun --version
 ```
 
+Conf file options
+=================
+
+(--override_base_config)=
+## `--override_base_config`
+
+**What does it do?**
+Allows you to import flags from another conf file. The `--override_base_config` gets as a value a path to the imported conf file. If the path is relative, it is 
+relative to the current working directory, regardless of the original conf file's location. 
+Flags in the imported conf file will be overridden if the same flag appears also in the original conf file
+or in the command line. It is only possible to import from a single conf file and
+the imported conf file cannot import from yet another conf file.
+
+
+**When to use it?**
+When you want to use the same flags for multiple runs, but with some small changes. For example, you can have a base config 
+file with all the flags you need, and then create a new conf file that imports the base one 
+and overrides only the flags you want to change.
+
+Using a base configuration file saves you from repeatedly writing the same flags in the command 
+line or other configuration files.
+
+**Example**
+
+```sh
+certoraRun --override_base_config confs/base_settings.conf
+```
+```
+
 
 
 Advanced options
