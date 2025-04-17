@@ -1403,6 +1403,30 @@ We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of t
 certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
 ```
 
+Options for job metadata and dashboard filtering
+================================================
+
+This section includes flags that annotate verification runs with additional metadata. These options don’t affect verification results but make it easier to track jobs, filter them in the [dashboard](https://prover.certora.com/), or manage runs across multiple protocols.
+
+## `--protocol_name`
+
+**Usage**
+```sh
+--protocol_name <name>
+```
+
+**What does it do?**
+Sets the protocol name associated with the verification job. This name will appear in the [Prover dashboard](https://prover.certora.com/) and can be used to filter or group related runs. If this flag is not explicitly provided, the tool will attempt to use the name field from `package.json` if available.
+
+**When to use it?**
+Use this flag to clearly label your jobs. This is especially useful when verifying multiple projects in parallel.
+
+**Example**
+```sh
+certoraRun Vault.sol --verify Vault:Vault.spec --protocol_name MyDeFiProtocol
+```
+
+
 Options for controlling contract creation
 =========================================
 
