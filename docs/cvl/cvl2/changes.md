@@ -836,10 +836,6 @@ This is the list of the flags that were renamed:
 | `--path`         | `--solc_allow_path`   |
 | `--optimize`     | `--solc_optimize`     |
 | `--optimize_map` | `--solc_optimize_map` |
-| `--get_conf`     | `--conf_output_file`  |
-| `--assert`       | `--assert_contracts`  |
-| `--bytecode`     | `--bytecode_jsons`    |
-| `--toolOutput`   | `--tool_output`       |
 | `--structLink`   | `--struct_link`       |              
 | `--javaArgs`     | `--java_args`         |              
 
