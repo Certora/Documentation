@@ -1142,7 +1142,8 @@ certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12
 **What does it do?**
 In order to support extendability and upgradeability of smart contracts, the proxy
 pattern is used. In this patterns there is a base contract (the proxy) which delegate-calls
-into "extension" contracts (see e.g. https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies
+into "extension" contracts (read this 
+[explanation](https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies) 
 for more details).
 This flag allows specifying that some contract is actually an extension of another one, to help the Prover
 analyze low-level calls and resolve them correctly in this case.
