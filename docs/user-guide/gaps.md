@@ -1,13 +1,9 @@
 Understanding gaps between high and low level code
 ===================================================
 
-The Certora Prover is analyzing low-level code, such as the EVM bytecode.
-However, the CVL specification as well as the Rule Report and Call Trace are 
-usually presenting information in terms of the high-level language (e.g., Solidity).
+The Certora Prover analyzes low-level code, such as the EVM bytecode. However, the CVL specification, Rule Report, and Call Trace usually present information in terms of a high-level language (e.g., Solidity).
 
-In this document we describe how some of the gaps between the high-level source
-and the low-level bytecode can affect our understanding of the Prover's outputs,
-and recommended solutions.
+In this document, we describe how some of the gaps between the high-level source and the low-level bytecode can affect our understanding of the Prover’s outputs and recommended solutions.
 
 ## Loops
 
@@ -85,7 +81,7 @@ in the loop's head, it unrolls one extra time to evaluate a potential exit condi
 in the loop's body.
 In our case, the bytecode representation shows that the loop's head is ending with
 a non-conditional jump.
-The equivalent Solidity-like version of the unrolled code would look as follows, 
+The equivalent Solidity-like version of the unrolled code would look as follows 
 (`c`-style `goto` and `label` commands were added for clarity):
 ```solidity
 uint x; // global state variable

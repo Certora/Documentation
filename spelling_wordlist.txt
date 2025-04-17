@@ -49,6 +49,7 @@ bytemap
 callee
 cex
 changelog
+changelogs
 checkmark
 cheatcode
 cheatcodes
@@ -59,6 +60,7 @@ config
 conjoined
 decompilation
 decompiler
+decompiles
 deduplication
 dereference
 dereferences
@@ -96,6 +98,7 @@ initializations
 injective
 injectivity
 inlined
+inlines
 inlining
 inlinings
 instantiation
