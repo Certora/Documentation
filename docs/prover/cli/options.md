@@ -733,7 +733,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
 
 **What does it do?**
-This flag sets the path to the Vyper compiler executable. By default, the CLI will look for an executable called vyper in your system’s `$PATH`.
+This flag sets the path to the Vyper compiler executable. By default, the CLI will look for an executable called `vyper` in your system’s `$PATH`.
 
 **When to use it?**
 Use this flag when your system has multiple versions of the Vyper compiler, or when the executable is named differently or located outside the default path. This is especially helpful when verifying Vyper-based smart contracts that require a specific version of the compiler.
