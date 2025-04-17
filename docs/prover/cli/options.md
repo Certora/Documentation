@@ -725,6 +725,30 @@ When we want to enable the IR-based code generator
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
 
+## `--solc_via_ir_map`
+
+**Usage**
+```sh
+--solc_via_ir_map <contract>=<true|false>,...
+```
+
+**What does it do?**
+This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the via-ir option. This overrides {ref}`--solc_via_ir` on a per-contract basis.
+
+**When to use it?**
+Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior), but another fails to compile with IR pipeline, this flag lets you mix modes safely.
+
+**Note**
+If {ref}`--solc_via_ir` is not set globally, no contracts will use `via-ir` unless explicitly specified in this map.
+
+**Example**
+```sh
+certoraRun A.sol B.sol --verify A:A.spec \
+  --solc_via_ir_map A=true,B=false
+```
+
+In this example, contract A is compiled with the `--via-ir` flag, while contract B is compiled without it.
+
 ## `--vyper`
 
 **Usage**
@@ -744,6 +768,7 @@ If your desired Vyper compiler binary is located at `/usr/local/bin/vyper0.3.10`
 ```sh
 certoraRun MyContract.vy --verify MyContract:MySpec.spec --vyper /usr/local/bin/vyper0.3.10
 ```
+
 
 Options regarding source code loops
 ===================================
