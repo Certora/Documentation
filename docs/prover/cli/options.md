@@ -1433,7 +1433,7 @@ Version options
 ## `--version`
 
 **What does it do?**
-Shows the version of the local installation of the tool you have.
+Shows the version of the local installation of `certora-cli` you have.
 
 **When to use it?**
 When you suspect you have an old installation. To install the newest version, use `pip install --upgrade certora-cli`.
@@ -1444,7 +1444,26 @@ When you suspect you have an old installation. To install the newest version, us
 certoraRun --version
 ```
 
+## `--prover_version`
+Use a specific Prover revision.
 
+**Usage**
+```sh
+--prover_version <branch_name>
+```
+
+**What does it do?**
+This option lets you select a specific version of the Certora Prover by providing the name of a Git branch from the Prover repository. It does not accept individual commit hashes.
+
+**When to use it?**
+Use this flag to reproduce behavior from an earlier version of the Prover—especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., release/10April2025) to match the behavior of a known version.
+
+**Example**
+To run verification using the Prover version from the April 10, 2025 release:
+
+```sh
+certoraRun MyContract.sol --verify MyContract:MySpec.spec --prover_version release/10April2025
+```
 
 Advanced options
 ================
