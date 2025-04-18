@@ -1471,8 +1471,6 @@ line or other configuration files.
 ```sh
 certoraRun --override_base_config confs/base_settings.conf
 ```
-```
-
 
 
 Advanced options
