@@ -565,16 +565,15 @@ certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map
 ```
 
 ## `--ignore_solidity_warnings`
-Ignore all Solidity compiler warnings.
 
 **What does it do?**
-This flag disables the default behavior of treating certain Solidity compiler warnings as errors. When enabled, the tool will allow verification to proceed even if the Solidity compiler emits warnings.
+This flag turns off the default behavior of treating certain Solidity compiler warnings as errors. When enabled, the tool will allow verification to proceed even if the Solidity compiler emits warnings.
 
 **When to use it?**
-Use this flag if your contracts trigger non-critical compiler warnings that you want to suppress during verification. This is especially useful for warnings that are irrelevant to formal verification or when you’re using older code bases with known stylistic issues.
+Use this flag if your contracts trigger non-critical compiler warnings you want to suppress during verification. This is especially useful for warnings irrelevant to formal verification or when using older code bases with known stylistic issues.
 
 A common example is error 6321: `Unnamed return variable can remain unassigned`.
-This warning is emitted by Solidity versions 0.7.6 and up, and can be safely ignored in many contexts.
+The Solidity compiler versions 0.7.6 and up emit this warning, which can be safely ignored in many contexts.
 
 **Example**
 ```sh
