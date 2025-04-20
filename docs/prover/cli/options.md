@@ -1469,7 +1469,7 @@ line or other configuration files.
 **Example**
 
 ```sh
-certoraRun --override_base_config confs/base_settings.conf
+certoraRun proj.conf --override_base_config confs/base_settings.conf
 ```
 
 
