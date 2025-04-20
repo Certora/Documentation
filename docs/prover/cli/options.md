@@ -1418,12 +1418,12 @@ See {ref}`--msg`.
 ``` 
 
 **What does it do?**
-This option adds an author name to the job metadata, allowing you to easily filter or group verification runs by the protocol author in the [dashboard](https://prover.certora.com/).
+This option adds an author name to the job metadata, allowing you to filter or group verification runs by the protocol author in the [dashboard](https://prover.certora.com/).
 
 If not explicitly provided, the Prover will attempt to extract the author from the author field in your `package.json` file (if it exists).
 
 **When to use it?**
-Use this flag to help track who owns or submitted each verification run, particularly in verification projects with multiple authors.
+Use this flag to help track who owns or has submitted each verification run, particularly in verification projects with multiple authors.
 
 **Example**
 ```sh
@@ -1438,7 +1438,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --protocol_author "OpenDeFi Labs"
 ```
 
 **What does it do?**
-Sets the protocol name associated with the verification job. This name will appear in the [Prover dashboard](https://prover.certora.com/) and can be used to filter or group related runs. If this flag is not explicitly provided, the tool will attempt to use the name field from `package.json` if available.
+Sets the protocol name associated with the verification job. This name will appear in the [Prover dashboard](https://prover.certora.com/) and can be used to filter or group related jobs. If this flag is not explicitly provided, the tool will attempt to use the name field from `package.json` if available.
 
 **When to use it?**
 Use this flag to clearly label your jobs. This is especially useful when verifying multiple projects in parallel.
