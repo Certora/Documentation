@@ -1578,7 +1578,7 @@ certoraRun --version
 This option lets you select a specific version of the Certora Prover by providing the name of a Git branch from the Prover repository. It does not accept individual commit hashes.
 
 **When to use it?**
-Use this flag to reproduce behavior from an earlier version of the Prover—especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., release/10April2025) to match the behavior of a known version.
+Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., release/10April2025) to match the behavior of a known version.
 
 **Example**
 To run verification using the Prover version from the April 10, 2025 release:
