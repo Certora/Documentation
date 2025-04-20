@@ -468,10 +468,10 @@ certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
 Show several counterexamples for failed assert statements and several witnesses for verified satisfy statements.
 
 **What does it do?**
-By default, the Prover returns a single example per rule; either a counterexample (for assert violations) or a witness (for satisfy verification). When this flag is enabled, the Prover will attempt to generate multiple examples that stem from different control-flow paths or logical reasons, offering a broader view of the rule's behavior.
+By default, the Prover returns a single example per rule, either a counterexample (for assert violations) or a witness (for satisfy verification). When this flag is enabled, the Prover will attempt to generate multiple examples from different control-flow paths or logical reasons, offering a broader view of the rule's behavior.
 
 **When to use it?**
-Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and guide refinements in the specification or implementation.
+Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and refine in the specification or implementation.
 
 **Example**
 ```sh
@@ -1836,6 +1836,4 @@ will only proceed up to the splitting depth given via `-depth`.
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-smt_initialSplitDepth 3'
 ```
-
-#### Test for an even tinier title
 
