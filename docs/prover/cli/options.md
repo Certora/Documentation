@@ -767,10 +767,10 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the `via-ir` option. This overrides {ref}`--solc_via_ir` on a per-contract basis.
 
 **When to use it?**
-Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior), but another fails to compile with IR pipeline, this flag lets you mix modes safely.
+Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior) but another fails to compile with the IR pipeline, this flag lets you mix modes safely.
 
 **Note**
-If {ref}`--solc_via_ir` is not set globally, no contracts will use `via-ir` unless explicitly specified in this map.
+If {ref}`--solc_via_ir` is not set globally, no contracts will be compiled `via-ir` unless explicitly specified in this map.
 
 **Example**
 ```sh
