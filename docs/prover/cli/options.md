@@ -464,6 +464,21 @@ When you have a rule with multiple assertions:
 certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
 ```
 
+## `--multi_example`
+Show several counterexamples for failed assert statements and several witnesses for verified satisfy statements.
+
+**What does it do?**
+By default, the Prover returns a single example per rule, either a counterexample (for assert violations) or a witness (for satisfy verification). When this flag is enabled, the Prover will attempt to generate multiple examples from different control-flow paths or logical reasons, offering a broader view of the rule's behavior.
+
+**When to use it?**
+Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and refine in the specification or implementation.
+
+**Example**
+```sh
+certoraRun MyContract.sol --verify MyContract:MyContract.spec --multi_example
+```
+
+
 (--project_sanity)=
 ## `--project_sanity`
 
@@ -547,6 +562,22 @@ When different contracts have to be compiled for different Solidity versions.
 **Example**
 ```sh
 certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
+```
+
+## `--ignore_solidity_warnings`
+
+**What does it do?**
+This flag turns off the default behavior of treating certain Solidity compiler warnings as errors. When enabled, the tool will allow verification to proceed even if the Solidity compiler emits warnings.
+
+**When to use it?**
+Use this flag if your contracts trigger non-critical compiler warnings you want to suppress during verification. This is especially useful for warnings irrelevant to formal verification or when using older code bases with known stylistic issues.
+
+A common example is error 6321: `Unnamed return variable can remain unassigned`.
+The Solidity compiler versions 0.7.6 and up emit this warning, which can be safely ignored in many contexts.
+
+**Example**
+```sh
+certoraRun Token.sol --verify Token:Token.spec --ignore_solidity_warnings
 ```
 
 (--packages)=
@@ -724,6 +755,51 @@ When we want to enable the IR-based code generator
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
+
+## `--solc_via_ir_map`
+
+**Usage**
+```sh
+--solc_via_ir_map <contract>=<true|false>,...
+```
+
+**What does it do?**
+This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the `via-ir` option. This overrides {ref}`--solc_via_ir` on a per-contract basis.
+
+**When to use it?**
+Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior) but another fails to compile with the IR pipeline, this flag lets you mix modes safely.
+
+**Note**
+If {ref}`--solc_via_ir` is not set globally, no contracts will be compiled `via-ir` unless explicitly specified in this map.
+
+**Example**
+```sh
+certoraRun A.sol B.sol --verify A:A.spec \
+  --solc_via_ir_map A=true,B=false
+```
+
+In this example, contract A is compiled with the `--via-ir` flag, while contract B is compiled without it.
+
+## `--vyper`
+
+**Usage**
+```sh
+--vyper <vyper_executable>
+```
+
+**What does it do?**
+This flag sets the path to the Vyper compiler executable. By default, the CLI will look for an executable called `vyper` in your system’s `$PATH`.
+
+**When to use it?**
+Use this flag when your system has multiple versions of the Vyper compiler or when the executable is named differently or located outside the default path. This is especially helpful when verifying Vyper-based smart contracts that require a specific version of the compiler.
+
+**Example**
+If your desired Vyper compiler binary is located at `/usr/local/bin/vyper0.3.10`, you can run:
+
+```sh
+certoraRun MyContract.vy --verify MyContract:MySpec.spec --vyper /usr/local/bin/vyper0.3.10
+```
+
 
 Options regarding source code loops
 ===================================
@@ -1326,6 +1402,53 @@ We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of t
 certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
 ```
 
+Options for job metadata and dashboard filtering
+================================================
+
+This section includes flags that annotate verification runs with additional metadata. These options don’t affect verification results but make it easier to track jobs, filter them in the [dashboard](https://prover.certora.com/), or manage runs across multiple protocols.
+
+## `--msg`
+See {ref}`--msg`.
+
+## `--protocol_author`
+
+**Usage**
+```sh
+--protocol_author <name>
+``` 
+
+**What does it do?**
+This option adds an author name to the job metadata, allowing you to filter or group verification runs by the protocol author in the [dashboard](https://prover.certora.com/).
+
+If not explicitly provided, the Prover will attempt to extract the author from the author field in your `package.json` file (if it exists).
+
+**When to use it?**
+Use this flag to help track who owns or has submitted each verification run, particularly in verification projects with multiple authors.
+
+**Example**
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --protocol_author "OpenDeFi Labs"
+```
+
+## `--protocol_name`
+
+**Usage**
+```sh
+--protocol_name <name>
+```
+
+**What does it do?**
+Sets the protocol name associated with the verification job. This name will appear in the [Prover dashboard](https://prover.certora.com/) and can be used to filter or group related jobs. If this flag is not explicitly provided, the tool will attempt to use the name field from `package.json` if available.
+
+**When to use it?**
+Use this flag to clearly label your jobs. This is especially useful when verifying multiple projects in parallel.
+
+**Example**
+```sh
+certoraRun Vault.sol --verify Vault:Vault.spec --protocol_name MyDeFiProtocol
+```
+
+
 Options for controlling contract creation
 =========================================
 
@@ -1433,7 +1556,7 @@ Version options
 ## `--version`
 
 **What does it do?**
-Shows the version of the local installation of the tool you have.
+Shows the version of the local installation of `certora-cli` you have.
 
 **When to use it?**
 When you suspect you have an old installation. To install the newest version, use `pip install --upgrade certora-cli`.
@@ -1443,6 +1566,20 @@ When you suspect you have an old installation. To install the newest version, us
 ```sh
 certoraRun --version
 ```
+
+## `--prover_version`
+
+**Usage**
+```sh
+--prover_version <branch_name>
+```
+
+**What does it do?**
+This option lets you select a specific version of the Certora Prover by providing the name of a Git branch from the Prover repository. It does not accept individual commit hashes.
+
+**When to use it?**
+Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., release/10April2025) to match the behavior of a known version.
+
 
 Conf file options
 =================
@@ -1472,6 +1609,12 @@ line or other configuration files.
 certoraRun proj.conf --override_base_config confs/base_settings.conf
 ```
 
+**Example**
+To run verification using the Prover version from the April 10, 2025 release:
+
+```sh
+certoraRun MyContract.sol --verify MyContract:MySpec.spec --prover_version release/10April2025
+```
 
 Advanced options
 ================
