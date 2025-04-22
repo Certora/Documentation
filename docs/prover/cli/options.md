@@ -635,7 +635,7 @@ This attribute tells the Prover which Solidity compiler to use. You may pass eit
 - A full path to the compiler executable, e.g., `/usr/local/bin/solc8.19`, or
 - Just the executable's name, e.g., `solc8.19`, in which case the tool will search for it in your system’s `$PATH`.
 
-This behavior mimics the shell’s resolution of commands (similar to how which `solc8.19` works).
+This behavior mimics the shell’s resolution of commands (similar to how `which solc8.19` works).
 
 **When to use it?**
 Use this option if your system has multiple Solidity versions installed and you want to select one explicitly. This is particularly useful when working with legacy contracts or caring about specific compiler version behaviors.
