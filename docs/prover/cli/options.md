@@ -631,14 +631,22 @@ certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages
 ```
 
 **What does it do?**
-Use this option to provide a path to the Solidity compiler executable file. We check in all directories in the `$PATH` environment variable for an executable with this name. If `--solc` is not used, we look for an executable called `solc`, or `solc.exe` on windows platforms.
+This attribute tells the Prover which Solidity compiler to use. You may pass either:
+- A full path to the compiler executable, e.g., `/usr/local/bin/solc8.19`, or
+- Just the executable's name, e.g., `solc8.19`, in which case the tool will search for it in your system’s `$PATH`.
+
+This behavior mimics the shell’s resolution of commands (similar to how `which solc8.19` works).
 
 **When to use it?**
-Whenever you want to use a Solidity compiler executable with a non-default name. This is usually used when you have several Solidity compiler executable versions you switch between.
+Use this option if your system has multiple Solidity versions installed and you want to select one explicitly. This is particularly useful when working with legacy contracts or caring about specific compiler version behaviors.
 
 **Example**
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.1
+# Use a compiler version from $PATH
+certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.19
+
+# Use full path to the compiler
+certoraRun Bank.sol --verify Bank:Bank.spec --solc /usr/local/bin/solc8.19
 ```
 
 (--solc_allow_path)=
@@ -788,16 +796,22 @@ In this example, contract A is compiled with the `--via-ir` flag, while contract
 ```
 
 **What does it do?**
-This flag sets the path to the Vyper compiler executable. By default, the CLI will look for an executable called `vyper` in your system’s `$PATH`.
+This attribute tells the Prover which Vyper compiler to use. You may pass either:
+- A full path to the compiler executable, e.g., `/usr/local/bin/vyper0.3.10`, or
+- Just the executable's name, e.g., `vyper0.3.10`, in which case the tool will search for it in your system’s `$PATH`.
+
+This behavior mimics the shell’s resolution of commands (similar to how `which vyper0.3.10` works).
 
 **When to use it?**
-Use this flag when your system has multiple versions of the Vyper compiler or when the executable is named differently or located outside the default path. This is especially helpful when verifying Vyper-based smart contracts that require a specific version of the compiler.
+Use this option if your system has multiple Vyper versions installed and you want to select one explicitly. This is particularly useful when working with legacy contracts or caring about specific compiler version behaviors.
 
 **Example**
-If your desired Vyper compiler binary is located at `/usr/local/bin/vyper0.3.10`, you can run:
-
 ```sh
-certoraRun MyContract.vy --verify MyContract:MySpec.spec --vyper /usr/local/bin/vyper0.3.10
+# Use a compiler version from $PATH
+certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
+
+# Use full path to the compiler
+certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 
 
