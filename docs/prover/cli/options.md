@@ -808,10 +808,10 @@ Use this option if your system has multiple Vyper versions installed and you wan
 **Example**
 ```sh
 # Use a compiler version from $PATH
-certoraRun Bank.sol --verify Bank:Bank.spec --solc vyper0.3.10
+certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
 
 # Use full path to the compiler
-certoraRun Bank.sol --verify Bank:Bank.spec --solc /usr/local/bin/vyper0.3.10
+certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 
 
