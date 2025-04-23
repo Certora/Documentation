@@ -177,16 +177,12 @@ or add to the conf file
 (--split_rules)=
 ## `split_rules`
 
-**Usage**
-```sh
---split_rules <rule_name_pattern>...
-```
-
 **What does it do?**
 Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
-With `--split_rules` the user can run specific rules on separate dedicated Prover jobs. A new job will be created and 
-executed for each rule that matches the rule patterns in `--split_rules` an additional job will be created for
-the rest of the rules. After launching the generated jobs, the original job will return with a link to the dashboard, 
+With `split_rules` the user can run specific rules on separate dedicated Prover jobs. 
+A new job will be created and executed for each rule that matches the rule patterns in
+`split_rules` an additional job will be created for the rest of the rules. 
+After launching the generated jobs, the original job will return with a link to the dashboard, 
 listing the status of the generated jobs.
 
 You can specify this flag multiple times to denote several rules or rule patterns.
@@ -208,17 +204,22 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to run the invariant on different Prover jobs we could run
+If we want to run the invariant on different Prover jobs we could run the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account
+```
+
+or add to the configuration file
+```json
+"split_rules": ["address_zero_cannot_become_an_account"]
 ```
 
 The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
 
 ```{note}
-When used together with the {ref}`--rule` flag the logic is to collect all rules
-that pass the `--rule` flag(s) and then subtract from them all rules that match
-any {ref}`--exclude_rule` flag(s).
+When used together with the {ref}`--rule` option, the logic is to collect all rules
+that match `rule` patterns and then subtract from them all rules that match
+any {ref}`--exclude_rule` patterns.
 ```
 
 (--method)=
