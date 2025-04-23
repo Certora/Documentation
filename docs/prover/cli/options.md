@@ -37,14 +37,14 @@ It runs formal verification of properties specified in a .spec file on a given c
 **When to use it?**
 When you wish to prove properties on the source code. This is by far the most common mode of the tool.
 
-**Example - CLI**
+**Example - Command line**
 
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
-**Example - Conf file**
+**Example - Configuration file**
 
 For the same scenario as in the above example, 
 we should add the following line to the configuration file:
@@ -70,10 +70,16 @@ You need to wrap your message in quotes if it contains spaces.
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
 
-**Example**
-To create the message above, we used
+**Example - Command line**
+To create the message above from the command line, used
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
+```
+
+**Example - Configuration file**
+To create the message above from the command line, used
+```json
+"msg": "Removed an assertion"
 ```
 
 (--rule)=
