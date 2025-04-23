@@ -325,13 +325,13 @@ Wait for verification results after sending the verification request.
 By default, the program exits after the request.
 The return code will not be zero if the verification finds a violation.
 
-**When to use it?**
-Use it to receive verification results in the terminal or a wrapping script.
-
 In CI, the default behavior is different: the Prover waits for verification results,
 and the return code will not be zero if a violation is found.
-You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
+You can force the Prover not to wait for verification results by giving the parameter `NONE`.
 In that case, the return code will be zero if the jobs were sent successfully.
+
+**When to use it?**
+Use it to receive verification results in the terminal or a wrapping script.
 
 **Example - Command line**
 ```sh
@@ -340,7 +340,7 @@ certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 
 **Example - Configuration file**
 ```json
-"wait_for_results": true
+"wait_for_results": "ALL"
 ```
 
 Options affecting the type of verification run
