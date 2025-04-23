@@ -270,6 +270,11 @@ If we discover a counterexample in several methods, we could rerun just those vi
 certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
 
+```{note}
+Many shells will interpret the `(` and `)` characters specially, so
+the method signature argument will usually need to be quoted in the command line as in the above example.
+```
+
 In the configuration file we can add the following line:
 
 ```json
@@ -278,11 +283,6 @@ In the configuration file we can add the following line:
 
 In the last example the `transfer` method of all contracts in the
 scene will be used, but only the `deposit` method of the primary contract.
-
-```{note}
-Many shells will interpret the `(` and `)` characters specially, so
-the method signature argument will usually need to be quoted in the command line as in the above example.
-```
 
 (--parametric_contracts)=
 ## `parametric_contracts`
@@ -333,7 +333,7 @@ and the return code will not be zero if a violation is found.
 You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
 In that case, the return code will be zero if the jobs were sent successfully.
 
-**Example- Command line**
+**Example - Command line**
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
