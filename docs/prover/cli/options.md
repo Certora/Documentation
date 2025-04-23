@@ -57,11 +57,6 @@ add the following line to the configuration file:
 (--msg)=
 ## `msg`
 
-**Usage**
-```sh
---msg <description>
-```
-
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. 
 
@@ -88,11 +83,6 @@ To create the message above from the configuration file, use:
 
 (--rule)=
 ## `rule`
-
-**Usage**
-```sh
---rule <rule_name_pattern>...
-```
 
 **What does it do?**
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
