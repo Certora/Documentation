@@ -71,8 +71,7 @@ The call trace provides detailed information about the execution path. Here's ho
 
 * Automatically logged
 * Show the sequence of function calls
-* To see parameter values, you need to change the original code with Certora's
-  `cgdb!` print macros
+* To see parameter values, they have to be logged using `clog!` macro
 
 #### Let's look at a concrete example
 
@@ -87,8 +86,7 @@ pub fn rule_fail_call_trace() {
     cvlr_assume!(amount1 > 100);
     cvlr_assume!(amount2 != 10);
 
-    clog!(amount1);
-    clog!(amount2);
+    clog!(amount1,l amount2);
 
     cvlr_assert!(amount1 < 100);
     cvlr_assert!(amount2 < 100);
@@ -131,10 +129,10 @@ To ensure rules aren't passing vacuously (due to contradictory assumptions), add
 }
 ```
 
-This adds an implicit `cvlr_assert!(false)` at the end of each rule. If this assertion is unreachable, it confirms that:
+This adds an implicit `cvlr_satisfy!(true)` at the end of each rule. If this assertion is unreachable, it confirms that:
 
-1. Your assumptions aren't contradictory
-2. The rule's success is meaningful
+1. The assumptions are not contradictory
+2. The success verification of the rule is meaningful
 
 ### Common Sanity Check Results
 
