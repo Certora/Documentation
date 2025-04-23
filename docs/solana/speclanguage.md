@@ -17,7 +17,7 @@ and in the current execution state `cond` is false.
 For example, `cvlr_assert!(true)` is never violated, while `cvlr_assert!(false)`
 is always violated when reached.
 
-What makes `cvlr_assert!()` special is that it is verified symbolically by the
+What makes `cvlr_assert!` special is that it is verified symbolically by the
 Certora Prover. That is, the Prover returns `Violated` if there is an input and
 an execution of the program that reaches that assertion and violates it.
 
@@ -81,12 +81,12 @@ The function being verified is `compute_fee`. We have included it in the spec
 file for simplicity.
 
 ```rust
-use cvlr::{nondet, asserts::*, cvlr_rule as rule, clog};
+use cvlr::prelude::*;
 
 pub fn compute_fee(amount: u64, fee_bps: u16) -> Option<u64> {
     if amount == 0 { return None; }
     let fee = amount.checked_mul(fee_bps).checked_div(10_000);
-    Some(fee)
+    fee
 }
 
 #[rule]
