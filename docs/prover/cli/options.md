@@ -38,12 +38,16 @@ It runs formal verification of properties specified in a .spec file on a given c
 When you wish to prove properties on the source code. This is by far the most common mode of the tool.
 
 **Example - CLI**
+
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
 **Example - Conf file**
+
+For the same scenario as in the above example, 
+we should add the following line to the configuration file:
 ```sh
 "verify": "Bank:Bank.spec"
 ```
