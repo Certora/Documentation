@@ -32,7 +32,7 @@ Most frequently used options
 ## `verify`
 
 **What does it do?**
-It runs formal verification of properties specified in a .spec file on a given contract. Each contract must have been declared in the input files or have the same name as the source code file it is in.
+It runs formal verification of properties specified in a `.spec` file on a given contract. Each contract must have been declared in the input files or have the same name as the source code file it is in.
 
 **When to use it?**
 When you wish to prove properties on the source code. This is by far the most common mode of the tool.
@@ -60,10 +60,6 @@ add the following line to the configuration file:
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. 
 
-```{note}
-You need to wrap your message in quotes if it contains spaces.
-```
-
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
 
@@ -73,6 +69,10 @@ To create the message above from the command line, use:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
+```
+
+```{note}
+You need to wrap your message in quotes in the command line if it contains spaces.
 ```
 
 **Example - Configuration file**
@@ -96,7 +96,6 @@ you add a new rule to an existing specification. The other is when code changes
 cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
-You can specify this flag multiple times to filter in several rules or rule patterns.
 
 **Rule Name Pattern**
 Rule names, like all CVL identifiers, have the same format as Solidity identifiers: they consist of a combination of letters, digits, 
@@ -113,18 +112,18 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to verify only `withdraw_succeeds`, we run
+If we want to verify only `withdraw_succeeds`, we run the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds
 ```
 
-If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
+If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails
 ```
 
 Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
-simply run 
+simply run  the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ```
@@ -146,7 +145,7 @@ or
 **What does it do?**
 This flag is the opposite of {ref}`--rule` - it allows you to specify a list of rules that _should not_ be run.
 
-You can specify this flag multiple times to filter out several rules or rule patterns.
+You can filter out several rules or rule patterns.
 
 **When to use it?**
 Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
@@ -163,12 +162,12 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to skip both rules we could run the command
+If we want to skip checking `withdraw_succeeds` and `withdraw_fails`, we could run the command:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
 ```
 
-or add to the conf file
+or add to the conf file:
 
 ```json
 "exclude_rule": ["withdraw_*"]
@@ -185,7 +184,7 @@ A new job will be created and executed for each rule that matches the rule patte
 After launching the generated jobs, the original job will return with a link to the dashboard, 
 listing the status of the generated jobs.
 
-You can specify this flag multiple times to denote several rules or rule patterns.
+You can split several rules or rule patterns.
 
 **When to use it?**
 This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
@@ -193,7 +192,13 @@ their own dedicated Prover jobs will give them more resources that will potentia
 timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
 
 **Rule Name Pattern**
-Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
+Rule name or rule name patterns. See detailed specifications in {ref}`--rule`.
+
+```{note}
+When used together with the {ref}`--rule` option, the logic is to collect all rules
+that match `rule` patterns and then subtract from them all rules that match
+any {ref}`--exclude_rule` patterns.
+```
 
 **Examples**
 If `Bank.spec` includes the following properties:
@@ -204,23 +209,17 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to run the invariant on different Prover jobs we could run the command
+If we want to run the invariant on different Prover jobs we could run the command:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account
 ```
 
-or add to the configuration file
+or add to the configuration file:
 ```json
 "split_rules": ["address_zero_cannot_become_an_account"]
 ```
 
 The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
-
-```{note}
-When used together with the {ref}`--rule` option, the logic is to collect all rules
-that match `rule` patterns and then subtract from them all rules that match
-any {ref}`--exclude_rule` patterns.
-```
 
 (--method)=
 ## `method`
