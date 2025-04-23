@@ -195,7 +195,7 @@ timeout and will decrease the time to get the final job result for the less comp
 **Rule Name Pattern**
 Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
 
-**Example**
+**Examples**
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -225,11 +225,6 @@ any {ref}`--exclude_rule` patterns.
 (--method)=
 ## `method`
 
-**Usage**
-```sh
---method <method_signature>...
-```
-
 **What does it do?**
 Only uses functions with the given method signature when instantiating
 {term}`parametric rule`s and {term}`invariant`s. The method signature is the ABI
@@ -245,7 +240,7 @@ each of the listed methods.
 This option is useful when focusing on a specific counterexample; running on a
 specific contract method saves time.
 
-**Example**
+**Examples**
 Suppose we are verifying an ERC20 contract, and we have the following
 {term}`parametric rule`:
 
@@ -264,16 +259,22 @@ rule r {
 
 If we discover a counterexample in the method `deposit(uint)` of contract `C`,
 and wish to change the contract or the spec to rerun, we can just rerun on
-the `C.deposit` method:
+the `C.deposit` method via the command:
 
 ```sh
 certoraRun --method 'C.deposit(uint)'
 ```
 
-If we discover a counterexample in several methods, we could rerun just those:
+If we discover a counterexample in several methods, we could rerun just those via the command line:
 
 ```sh
 certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
+```
+
+In the configuration file we can add the following line:
+
+```json
+"method": ["C.deposit(uint)", "_.transfer(address,uint256)"]
 ```
 
 In the last example the `transfer` method of all contracts in the
@@ -281,7 +282,7 @@ scene will be used, but only the `deposit` method of the primary contract.
 
 ```{note}
 Many shells will interpret the `(` and `)` characters specially, so
-the method signature argument will usually need to be quoted as in the example.
+the method signature argument will usually need to be quoted in the command line as in the above example.
 ```
 
 (--parametric_contracts)=
