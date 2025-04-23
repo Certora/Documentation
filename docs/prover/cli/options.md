@@ -31,54 +31,60 @@ Most frequently used options
 (--verify)=
 ## `verify`
 
-**Usage**
-```sh
---verify <contract>:<spec_file>
-```
-
 **What does it do?**
-It runs formal verification of properties specified in a .spec file on a given contract. Each contract must have been declared in the input files or have the same name as the source code file it is in.
+It runs formal verification of properties specified in a `.spec` file on a given contract. Each contract must have been declared in the input files or have the same name as the source code file it is in.
 
 **When to use it?**
 When you wish to prove properties on the source code. This is by far the most common mode of the tool.
 
-**Example**
-If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
+**Example - Command line**
+If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the command would be:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
+```
+
+**Example - Configuration file**
+
+If we have a Solidity file with a contract named `Bank` inside it, 
+and a specification file called `Bank.spec`, 
+add the following line to the configuration file:
+
+```json
+"verify": "Bank:Bank.spec"
 ```
 
 (--msg)=
 ## `msg`
 
-**Usage**
-```sh
---msg <description>
-```
-
 **What does it do?**
 Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. 
-
-```{note}
-You need to wrap your message in quotes if it contains spaces.
-```
 
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
 
-**Example**
-To create the message above, we used
+**Example - Command line**
+
+To create the message above from the command line, use:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 ```
 
+```{note}
+You need to wrap your message in quotes in the command line if it contains spaces.
+```
+
+**Example - Configuration file**
+
+To create the message above from the configuration file, use:
+
+```json
+"msg": "Removed an assertion"
+```
+
 (--rule)=
 ## `rule`
-
-**Usage**
-```sh
---rule <rule_name_pattern>...
-```
 
 **What does it do?**
 Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
@@ -90,7 +96,6 @@ you add a new rule to an existing specification. The other is when code changes
 cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
-You can specify this flag multiple times to filter in several rules or rule patterns.
 
 **Rule Name Pattern**
 Rule names, like all CVL identifiers, have the same format as Solidity identifiers: they consist of a combination of letters, digits, 
@@ -98,7 +103,7 @@ dollar signs and underscores, but cannot start with a digit (see [here](https://
 In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters. 
 For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
-**Example**
+**Examples**
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -107,34 +112,40 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to verify only `withdraw_succeeds`, we run
+If we want to verify only `withdraw_succeeds`, we run the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds
 ```
 
-If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run
+If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails
 ```
 
 Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
-simply run 
+simply run  the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
+```
+
+In the configuration file, it will look like this:
+```json
+"rule": ["withdraw_succeeds", "withdraw_fails"]
+```
+
+or
+
+```json
+"rule": ["withdraw_*"]
 ```
 
 (--exclude_rule)=
 ## `exclude_rule`
 
-**Usage**
-```sh
---exclude_rule <rule_name_pattern>...
-```
-
 **What does it do?**
 This flag is the opposite of {ref}`--rule` - it allows you to specify a list of rules that _should not_ be run.
 
-You can specify this flag multiple times to filter out several rules or rule patterns.
+You can filter out several rules or rule patterns.
 
 **When to use it?**
 Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
@@ -142,7 +153,7 @@ Use this flag when certain rules take too long to run or require a different con
 **Rule Name Pattern**
 Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
 
-**Example**
+**Examples**
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -151,27 +162,29 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to skip both rules we could run
+If we want to skip checking `withdraw_succeeds` and `withdraw_fails`, we could run the command:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
+```
+
+or add to the conf file:
+
+```json
+"exclude_rule": ["withdraw_*"]
 ```
 
 (--split_rules)=
 ## `split_rules`
 
-**Usage**
-```sh
---split_rules <rule_name_pattern>...
-```
-
 **What does it do?**
 Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
-With `--split_rules` the user can run specific rules on separate dedicated Prover jobs. A new job will be created and 
-executed for each rule that matches the rule patterns in `--split_rules` an additional job will be created for
-the rest of the rules. After launching the generated jobs, the original job will return with a link to the dashboard, 
+With `split_rules` the user can run specific rules on separate dedicated Prover jobs. 
+A new job will be created and executed for each rule that matches the rule patterns in
+`split_rules` an additional job will be created for the rest of the rules. 
+After launching the generated jobs, the original job will return with a link to the dashboard, 
 listing the status of the generated jobs.
 
-You can specify this flag multiple times to denote several rules or rule patterns.
+You can split several rules or rule patterns.
 
 **When to use it?**
 This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
@@ -179,9 +192,15 @@ their own dedicated Prover jobs will give them more resources that will potentia
 timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
 
 **Rule Name Pattern**
-Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
+Rule name or rule name patterns. See detailed specifications in {ref}`--rule`.
 
-**Example**
+```{note}
+When used together with the {ref}`--rule` option, the logic is to collect all rules
+that match `rule` patterns and then subtract from them all rules that match
+any {ref}`--exclude_rule` patterns.
+```
+
+**Examples**
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -190,26 +209,20 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to run the invariant on different Prover jobs we could run
+If we want to run the invariant on different Prover jobs we could run the command:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account
 ```
 
-The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
-
-```{note}
-When used together with the {ref}`--rule` flag the logic is to collect all rules
-that pass the `--rule` flag(s) and then subtract from them all rules that match
-any {ref}`--exclude_rule` flag(s).
+or add to the configuration file:
+```json
+"split_rules": ["address_zero_cannot_become_an_account"]
 ```
+
+The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
 
 (--method)=
 ## `method`
-
-**Usage**
-```sh
---method <method_signature>...
-```
 
 **What does it do?**
 Only uses functions with the given method signature when instantiating
@@ -226,7 +239,7 @@ each of the listed methods.
 This option is useful when focusing on a specific counterexample; running on a
 specific contract method saves time.
 
-**Example**
+**Examples**
 Suppose we are verifying an ERC20 contract, and we have the following
 {term}`parametric rule`:
 
@@ -245,25 +258,31 @@ rule r {
 
 If we discover a counterexample in the method `deposit(uint)` of contract `C`,
 and wish to change the contract or the spec to rerun, we can just rerun on
-the `C.deposit` method:
+the `C.deposit` method via the command:
 
 ```sh
 certoraRun --method 'C.deposit(uint)'
 ```
 
-If we discover a counterexample in several methods, we could rerun just those:
+If we discover a counterexample in several methods, we could rerun just those via the command line:
 
 ```sh
 certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
 
-In the last example the `transfer` method of all contracts in the
-scene will be used, but only the `deposit` method of the primary contract.
-
 ```{note}
 Many shells will interpret the `(` and `)` characters specially, so
-the method signature argument will usually need to be quoted as in the example.
+the method signature argument will usually need to be quoted in the command line as in the above example.
 ```
+
+In the configuration file we can add the following line:
+
+```json
+"method": ["C.deposit(uint)", "_.transfer(address,uint256)"]
+```
+
+In the last example the `transfer` method of all contracts in the
+scene will be used, but only the `deposit` method of the primary contract.
 
 (--parametric_contracts)=
 ## `parametric_contracts`
@@ -273,15 +292,10 @@ Prior to version 5, method variables and invariants were only instantiated with
 methods of {ref}`currentContract`.
 ```
 
-**Usage**
-```sh
---parametric_contracts <contract_name>...
-```
-
 **What does it do?**
 Only uses methods on the specified contract when instantiating
-{term}`parametric rule`s or {term}`invariant`s.  The contract name must be one
-of the contracts included in the {term}`scene`.
+{term}`parametric rule`s or {term}`invariant`s. 
+The contract name must be one of the contracts included in the {term}`scene`.
 
 **When to use it?**
 As with the {ref}`--rule` and {ref}`--method` options, this option is used to
@@ -290,32 +304,48 @@ avoid rerunning the entire verification
 **Example**
 Suppose you are working on a multicontract verification and wish to debug a
 counterexample in a method of the `Underlying` contract defined in the file
-`Example.sol`:
+`Example.sol`, you can execute the command:
 
 ```sh
 certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
+or add to the configuration file:
+
+```json
+"parametric_contracts": ["Underlying"]
+```
+
 (--wait-for-results)=
 ## `wait_for_results`
+
+**Parameters**
+```sh
+ALL|NONE
+```
 
 **What does it do?**
 Wait for verification results after sending the verification request.
 By default, the program exits after the request.
 The return code will not be zero if the verification finds a violation.
 
+In CI, the default behavior is different: the Prover waits for verification results,
+and the return code will not be zero if a violation is found.
+You can force the Prover not to wait for verification results by giving the parameter `NONE`.
+In that case, the return code will be zero if the jobs were sent successfully.
+
 **When to use it?**
 Use it to receive verification results in the terminal or a wrapping script.
 
-In CI, the default behavior is different: the Prover waits for verification results,
-and the return code will not be zero if a violation is found.
-You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
-In that case, the return code will be zero if the jobs were sent successfully.
-
-**Example**
+**Example - Command line**
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --wait_for_results
+```
+
+**Example - Configuration file**
+```json
+"wait_for_results": "ALL"
 ```
 
 Options affecting the type of verification run
