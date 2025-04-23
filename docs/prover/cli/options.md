@@ -320,6 +320,11 @@ or add to the configuration file:
 (--wait-for-results)=
 ## `wait_for_results`
 
+**Parameters**
+```sh
+ALL|NONE
+```
+
 **What does it do?**
 Wait for verification results after sending the verification request.
 By default, the program exits after the request.
