@@ -31,21 +31,21 @@ Most frequently used options
 (--verify)=
 ## `verify`
 
-**Usage**
-```sh
---verify <contract>:<spec_file>
-```
-
 **What does it do?**
 It runs formal verification of properties specified in a .spec file on a given contract. Each contract must have been declared in the input files or have the same name as the source code file it is in.
 
 **When to use it?**
 When you wish to prove properties on the source code. This is by far the most common mode of the tool.
 
-**Example**
+**Example - CLI**
 If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the run command would be:
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
+```
+
+**Example - Conf file**
+```sh
+"verify": "Bank:Bank.spec"
 ```
 
 (--msg)=
