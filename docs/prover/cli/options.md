@@ -80,7 +80,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 ```
 
 **Example - Configuration file**
-To create the message above from the congiguration file, use:
+To create the message above from the configuration file, use:
 
 ```json
 "msg": "Removed an assertion"
