@@ -68,6 +68,7 @@ You need to wrap your message in quotes if it contains spaces.
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
 
 **Example - Command line**
+
 To create the message above from the command line, use:
 
 ```sh
@@ -75,6 +76,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 ```
 
 **Example - Configuration file**
+
 To create the message above from the configuration file, use:
 
 ```json
@@ -141,11 +143,6 @@ or
 (--exclude_rule)=
 ## `exclude_rule`
 
-**Usage**
-```sh
---exclude_rule <rule_name_pattern>...
-```
-
 **What does it do?**
 This flag is the opposite of {ref}`--rule` - it allows you to specify a list of rules that _should not_ be run.
 
@@ -157,7 +154,7 @@ Use this flag when certain rules take too long to run or require a different con
 **Rule Name Pattern**
 Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
 
-**Example**
+**Examples**
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -166,9 +163,15 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to skip both rules we could run
+If we want to skip both rules we could run the command
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
+```
+
+or add to the conf file
+
+```json
+"exclude_rule": ["withdraw_*"]
 ```
 
 (--split_rules)=
