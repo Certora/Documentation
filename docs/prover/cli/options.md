@@ -29,7 +29,7 @@ Most frequently used options
 ============================
 
 (--verify)=
-## `--verify`
+## `verify`
 
 **Usage**
 ```sh
@@ -157,7 +157,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
 ```
 
 (--split_rules)=
-## `--split_rules`
+## `split_rules`
 
 **Usage**
 ```sh
@@ -367,7 +367,7 @@ certoraRun --foundry
 ```
 
 (--independent_satisfy)=
-## `--independent_satisfy`
+## `independent_satisfy`
 
 **What does it do?**
 The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule.
@@ -428,7 +428,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy
 ```
 
 (--multi_assert_check)=
-## `--multi_assert_check`
+## `multi_assert_check`
 
 **What does it do?**
 This mode checks each assertion statement that occurs in a rule, separately. The check is done by decomposing each rule into multiple sub-rules, each of which checks one assertion, while it assumes all preceding assertions. In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
