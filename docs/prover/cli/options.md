@@ -293,15 +293,10 @@ Prior to version 5, method variables and invariants were only instantiated with
 methods of {ref}`currentContract`.
 ```
 
-**Usage**
-```sh
---parametric_contracts <contract_name>...
-```
-
 **What does it do?**
 Only uses methods on the specified contract when instantiating
-{term}`parametric rule`s or {term}`invariant`s.  The contract name must be one
-of the contracts included in the {term}`scene`.
+{term}`parametric rule`s or {term}`invariant`s. 
+The contract name must be one of the contracts included in the {term}`scene`.
 
 **When to use it?**
 As with the {ref}`--rule` and {ref}`--method` options, this option is used to
@@ -310,11 +305,17 @@ avoid rerunning the entire verification
 **Example**
 Suppose you are working on a multicontract verification and wish to debug a
 counterexample in a method of the `Underlying` contract defined in the file
-`Example.sol`:
+`Example.sol`, you can execute the command:
 
 ```sh
 certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
+```
+
+or add to the configuration file:
+
+```json
+"parametric_contracts": ["Underlying"]
 ```
 
 (--wait-for-results)=
