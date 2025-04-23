@@ -128,7 +128,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
 ```
 
 In the configuration file, it will look like this:
-```json
+```json5
 "rule": ["withdraw_succeeds", "withdraw_fails"]
 # or
 "rule": ["withdraw*"]
