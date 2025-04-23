@@ -112,7 +112,7 @@ dollar signs and underscores, but cannot start with a digit (see [here](https://
 In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters. 
 For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
-**Example**
+**Examples**
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -135,6 +135,13 @@ Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
 simply run 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
+```
+
+In the configuration file, it will look like this:
+```json
+"rule": ["withdraw_succeeds", "withdraw_fails"]
+# or
+"rule": ["withdraw*"]
 ```
 
 (--exclude_rule)=
