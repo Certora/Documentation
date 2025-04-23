@@ -334,9 +334,14 @@ and the return code will not be zero if a violation is found.
 You can force the Prover not to wait for verification results by using `--wait_for_results NONE`.
 In that case, the return code will be zero if the jobs were sent successfully.
 
-**Example**
+**Example- Command line**
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --wait_for_results
+```
+
+**Example - Configuration file**
+```json
+"wait_for_results": true
 ```
 
 Options affecting the type of verification run
