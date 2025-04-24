@@ -19,25 +19,19 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
    rustup toolchain install 1.81
    ```
 
-2. Next, optionally, install the Solana CLI:
-
-   `sh -c "$(curl -sSfL https://release.solana.com/v1.18.16/install)"`
-
-	Currently, the Solana Prover supports version `1.18.16` so make sure that you install that specific version. Note that this step is optional.
-
-3. Install `certora-sbf` cargo sub-command
+2. Install `certora-sbf` cargo sub-command
 
    `cargo +1.81 install cargo-certora-sbf`
 
    Note that a minimal version of Rust required to install `certora-sbf` is
    v1.81.
 
-4. Test the installation by using `certora-sbf` to download and install Certora
+3. Test the installation by using `certora-sbf` to download and install Certora
    Platform Tools
 
    `cargo certora-sbf --no-build`
 
-5. It is strongly recommended to install VSCode and the rust-analyzer extension.
+4. It is strongly recommended to install VSCode and the rust-analyzer extension.
 
 ----
 
