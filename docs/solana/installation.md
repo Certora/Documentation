@@ -19,11 +19,11 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
    rustup toolchain install 1.81
    ```
 
-2. Next, install the Solana CLI:
+2. Next, optionally, install the Solana CLI:
 
    `sh -c "$(curl -sSfL https://release.solana.com/v1.18.16/install)"`
 
-	Currently, the Solana Prover supports version `1.18.16` so make sure that you install that specific version.
+	Currently, the Solana Prover supports version `1.18.16` so make sure that you install that specific version. Note that this step is optional.
 
 3. Install `certora-sbf` cargo subcommand
 
