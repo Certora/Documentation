@@ -86,7 +86,7 @@ pub fn rule_fail_call_trace() {
     cvlr_assume!(amount1 > 100);
     cvlr_assume!(amount2 != 10);
 
-    clog!(amount1,l amount2);
+    clog!(amount1, amount2);
 
     cvlr_assert!(amount1 < 100);
     cvlr_assert!(amount2 < 100);
