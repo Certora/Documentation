@@ -132,7 +132,7 @@ To ensure rules aren't passing vacuously (due to contradictory assumptions), add
 This adds an implicit `cvlr_satisfy!(true)` at the end of each rule. If this assertion is unreachable, it confirms that:
 
 1. The assumptions are not contradictory
-2. The success verification of the rule is meaningful
+2. The successful verification of the rule is meaningful
 
 ### Common Sanity Check Results
 
