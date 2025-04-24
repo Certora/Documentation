@@ -14,10 +14,11 @@ The `--rule_sanity` option can be set to `none` or `basic` and controls whether 
  * With `--rule_sanity basic` or simply `--rule_sanity` without a mode, the sanity checks are executed.
 
 Each sanity check adds a new child node to every rule in the rule tree of the
-rule report. Each check transforms the underlying representation into a deviated
-subprogram from the original one under verification and attempts to verify this
-new program.  If the sanity check fails on a rule, the sanity node in the rule
-report will be displayed as a yellow icon, and its status propagates to the
+rule report. Each check transforms the the original program into a variant where
+`cvlr_satisfy!(true)` is inserted at the end of the program, and all calls to
+`cvlr_assert` are removed.
+ If the sanity check fails on a rule, the sanity node in the rule
+report is displayed as a yellow icon, and its status propagates to the
 parent rule's node (see below for an example).
 
 The remainder of this document describes the vacuity check in detail. 
