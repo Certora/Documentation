@@ -164,6 +164,12 @@ pessimistic assertions
   excludes the relevant behavior from checking for one occurrence of the problematic
   construct, e.g., for each loop.
 
+  In a more general sense, "pessimistic" behavior rather reports a failure, making
+  sure that no error is missed, but risking to report irrelevant errors, and vice 
+  versa for "optimistic" behavior. 
+  Pessimistic behavior thus corresponds to {term}`overapproximation`s, and optimistic 
+  to {term}`underapproximation`s.
+
   For a list of all "optimistic" settings see {ref}`prover-cli-options`.
   Examples include {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`,
   {ref}`--optimistic_summary_recursion`, and more. Also see
