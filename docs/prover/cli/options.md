@@ -1715,6 +1715,18 @@ This option disables the storage splitting optimization.
 --prover_args '-enableStorageSplitting false'
 ```
 
+(-maxConcurrentRules)=
+### `maxConcurrentRules`
+
+This allows setting the maximum number of concurrent rule evaluations. 
+Default value is the number of processors. This flag can sometimes mitigate out of memory problems.
+
+
+**Usage**
+```sh
+--prover_args '-maxConcurrentRules <n>'
+```
+
 (-maxnumberofreachchecksbasedondomination)=
 ### `maxNumberOfReachChecksBasedOnDomination`
 
