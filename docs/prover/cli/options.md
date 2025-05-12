@@ -46,8 +46,8 @@ certoraRun Bank.sol --verify Bank:Bank.spec
 
 **Example - Configuration file**
 
-If we have a Solidity file with a contract named `Bank` inside it, 
-and a specification file called `Bank.spec`, 
+If we have a Solidity file with a contract named `Bank` inside it,
+and a specification file called `Bank.spec`,
 add the following line to the configuration file:
 
 ```json
@@ -58,7 +58,7 @@ add the following line to the configuration file:
 ## `msg`
 
 **What does it do?**
-Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you. 
+Adds a message description to your run, similar to a commit message. This message will appear in the title of the completion email sent to you.
 
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
@@ -98,9 +98,9 @@ rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
 
 **Rule Name Pattern**
-Rule names, like all CVL identifiers, have the same format as Solidity identifiers: they consist of a combination of letters, digits, 
+Rule names, like all CVL identifiers, have the same format as Solidity identifiers: they consist of a combination of letters, digits,
 dollar signs and underscores, but cannot start with a digit (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
-In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters. 
+In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters.
 For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
 **Examples**
@@ -178,18 +178,18 @@ or add to the conf file:
 
 **What does it do?**
 Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
-With `split_rules` the user can run specific rules on separate dedicated Prover jobs. 
+With `split_rules` the user can run specific rules on separate dedicated Prover jobs.
 A new job will be created and executed for each rule that matches the rule patterns in
-`split_rules` an additional job will be created for the rest of the rules. 
-After launching the generated jobs, the original job will return with a link to the dashboard, 
+`split_rules` an additional job will be created for the rest of the rules.
+After launching the generated jobs, the original job will return with a link to the dashboard,
 listing the status of the generated jobs.
 
 You can split several rules or rule patterns.
 
 **When to use it?**
-This option is useful when some rules take a much longer time than the rest. Split the difficult rules to 
-their own dedicated Prover jobs will give them more resources that will potentially reduce their chance to 
-timeout and will decrease the time to get the final job result for the less computationally intensive rules. 
+This option is useful when some rules take a much longer time than the rest. Split the difficult rules to
+their own dedicated Prover jobs will give them more resources that will potentially reduce their chance to
+timeout and will decrease the time to get the final job result for the less computationally intensive rules.
 
 **Rule Name Pattern**
 Rule name or rule name patterns. See detailed specifications in {ref}`--rule`.
@@ -284,6 +284,31 @@ In the configuration file we can add the following line:
 In the last example the `transfer` method of all contracts in the
 scene will be used, but only the `deposit` method of the primary contract.
 
+(--exclude_method)=
+## `exclude_method`
+
+**What does it do?**
+This option is the opposite of {ref}`--method` and will exclude from parametric
+rules and invariants any method mentioned in this list. The methods and their
+contracts are interpreted in the same way as they are in the {ref}`--method`
+option.
+
+**When to use it?**
+If there are specific methods for which a rule/invariant takes too long to run
+or require a different configuration.
+
+```{note}
+If a method is listed by both {ref}`--method` and {ref}`--exclude_method`,
+exclusion takes precedence.
+```
+
+**Example**
+```sh
+certoraRun --method '_.deposit(uint)' --exclude_method 'C.deposit(uint)'
+```
+This will include all `deposit(uint)` methods in the scene, with the exception of the
+`deposit(uint)` function of the `C` contract.
+
 (--parametric_contracts)=
 ## `parametric_contracts`
 
@@ -294,7 +319,7 @@ methods of {ref}`currentContract`.
 
 **What does it do?**
 Only uses methods on the specified contract when instantiating
-{term}`parametric rule`s or {term}`invariant`s. 
+{term}`parametric rule`s or {term}`invariant`s.
 The contract name must be one of the contracts included in the {term}`scene`.
 
 **When to use it?**
@@ -630,7 +655,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token
 ```
 
 ```{note}
-In Solidity projects, information about packages' location is usually stored in `remappings.txt` file. 
+In Solidity projects, information about packages' location is usually stored in `remappings.txt` file.
 ```
 
 (--packages_path)=
@@ -876,7 +901,7 @@ The Certora Prover unrolls loops - if the loop should be executed three times, i
 This option changes the assertions of the loop unwind condition to requirements (in the case above `require a >= b`). That means, we ignore all the cases where the loop unwind condition does not hold, instead of considering them as a failure.
 
 **When to use it?**
-When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`. 
+When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`.
 
 ```{caution}
 `--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
@@ -1034,7 +1059,7 @@ functions, and this leads to an assertion failure. In this case one can either
 make the limit larger or set (via {ref}`--optimistic_summary_recursion`) flag
 to `true`.
 
-2. Use it if you get the following assertion failure, and disabling {ref}`optimistic fallback <-optimisticFallback>` is not possible: 
+2. Use it if you get the following assertion failure, and disabling {ref}`optimistic fallback <-optimisticFallback>` is not possible:
 ```text
 When inlining a fallback function, found it was already on the stack. Consider disabling optimistic fallback mode.
 ```
@@ -1262,8 +1287,8 @@ certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12
 **What does it do?**
 In order to support extendability and upgradeability of smart contracts, the proxy
 pattern is used. In this patterns there is a base contract (the proxy) which delegate-calls
-into "extension" contracts (read this 
-[explanation](https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies) 
+into "extension" contracts (read this
+[explanation](https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies)
 for more details).
 This flag allows specifying that some contract is actually an extension of another one, to help the Prover
 analyze low-level calls and resolve them correctly in this case.
@@ -1459,7 +1484,7 @@ See {ref}`--msg`.
 **Usage**
 ```sh
 --protocol_author <name>
-``` 
+```
 
 **What does it do?**
 This option adds an author name to the job metadata, allowing you to filter or group verification runs by the protocol author in the [dashboard](https://prover.certora.com/).
@@ -1632,19 +1657,19 @@ Conf file options
 ## `override_base_config`
 
 **What does it do?**
-Allows you to import flags from another conf file. The `--override_base_config` gets as a value a path to the imported conf file. If the path is relative, it is 
-relative to the current working directory, regardless of the original conf file's location. 
+Allows you to import flags from another conf file. The `--override_base_config` gets as a value a path to the imported conf file. If the path is relative, it is
+relative to the current working directory, regardless of the original conf file's location.
 Flags in the imported conf file will be overridden if the same flag appears also in the original conf file
 or in the command line. It is only possible to import from a single conf file and
 the imported conf file cannot import from yet another conf file.
 
 
 **When to use it?**
-When you want to use the same flags for multiple runs, but with some small changes. For example, you can have a base config 
-file with all the flags you need, and then create a new conf file that imports the base one 
+When you want to use the same flags for multiple runs, but with some small changes. For example, you can have a base config
+file with all the flags you need, and then create a new conf file that imports the base one
 and overrides only the flags you want to change.
 
-Using a base configuration file saves you from repeatedly writing the same flags in the command 
+Using a base configuration file saves you from repeatedly writing the same flags in the command
 line or other configuration files.
 
 **Example**
@@ -1889,9 +1914,9 @@ split immediately.
 When there is a lot of overhead induced by processing and trying to solve splits
 that are very hard, and thus run into a timeout anyway.
 
-```{note} 
-The number of splits generated here is equal to {math}`2^n` where `n` is the initial 
-splitting depth (assuming the program has enough branching points, 
+```{note}
+The number of splits generated here is equal to {math}`2^n` where `n` is the initial
+splitting depth (assuming the program has enough branching points,
 which is usually the case);
 thus, low numbers are advisable. For instance setting this to 5 means that the
 Prover will immediately produce 32 splits.
