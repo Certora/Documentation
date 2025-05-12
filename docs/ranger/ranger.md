@@ -1,3 +1,0 @@
-# Ranger
-
-placeholder text
