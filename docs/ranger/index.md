@@ -4,9 +4,9 @@ Ranger: Info goes here
 
 Text
 
-<!-- ```{toctree}
+```{toctree}
 :maxdepth: 2
 
 ranger.md
-``` -->
+```
 
