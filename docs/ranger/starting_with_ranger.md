@@ -38,9 +38,9 @@ Use the certoraRanger command to launch the job:
 certoraRanger ranger.conf
 ```
 
-This will start the Ranger process. A link to the Ranger Job Report in the dashboard will be pasted in your command line when the job is submitted.
+This will start the Ranger process. A link to the Ranger Job Report in the dashboard will be pasted into your command line when the job is submitted.
 
 ## 4. View the Results
 A link to the Ranger Job Report in the dashboard will be pasted in your command line 
 when the job is submitted. 
-You can explore the results in the web-based Ranger Report by clicking on the link. 
+You can explore the results in the web-based Ranger Report by following the link. 
