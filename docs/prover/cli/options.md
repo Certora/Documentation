@@ -1231,6 +1231,34 @@ The second use is when the solvers can prove the property, they just need more t
 certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300
 ```
 
+(--max_concurrent_rules)=
+## `max_concurrent_rules`
+
+**Usage**
+```sh
+--max_concurrent_rules <n>
+```
+
+**What does it do?**
+
+This attribute controls the maximum number of rule evaluations that can be executed concurrently.
+By default, it is set to the number of available CPU cores on the host machine, allowing optimal parallelization under typical conditions.
+Setting this value limits the number of rule evaluation tasks that can run in parallel.
+By capping the concurrency level, this attribute helps regulate system resource usage, particularly memory consumption, 
+and can prevent resource exhaustion.
+
+
+**When to use it?**
+
+Use this attribute when you are encountering out-of-memory errors, particularly when processing unusually large or complex rule sets.
+Lowering the concurrency can reduce peak memory usage by staggering evaluation workloads.
+
+
+**Example**
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --max_concurrent_rules 5
+```
+
 
 Options to set addresses and link contracts
 ===========================================
@@ -1713,18 +1741,6 @@ This option disables the storage splitting optimization.
 **Usage**
 ```sh
 --prover_args '-enableStorageSplitting false'
-```
-
-(-maxConcurrentRules)=
-### `maxConcurrentRules`
-
-This allows setting the maximum number of concurrent rule evaluations. 
-Default value is the number of processors. This flag can sometimes mitigate out of memory problems.
-
-
-**Usage**
-```sh
---prover_args '-maxConcurrentRules <n>'
 ```
 
 (-maxnumberofreachchecksbasedondomination)=
