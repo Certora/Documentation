@@ -1,6 +1,6 @@
 (ranger-intro)=
-Ranger: Info goes here
-=================================
+Ranger
+======
 
 Text
 
