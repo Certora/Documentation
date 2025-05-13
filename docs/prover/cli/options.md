@@ -299,7 +299,7 @@ or require a different configuration.
 
 ```{note}
 If a method is listed by both {ref}`--method` and {ref}`--exclude_method`,
-exclusion takes precedence.
+exclusion takes precedence, this option allows to exclude it from verification.
 ```
 
 **Example**
