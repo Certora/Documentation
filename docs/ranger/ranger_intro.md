@@ -23,4 +23,4 @@ Ranger offers a practical middle ground:
 
 Ranger is in active development and currently supports only supports Solidity contracts.
 
-Currently, Ranger can only check CVL invariants. Rules will be supported in the future.
+Currently, Ranger can only check CVL {ref}`invariants`. {term}`rules` will be supported in the future.
