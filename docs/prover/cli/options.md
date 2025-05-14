@@ -306,7 +306,7 @@ exclusion takes precedence.
 ```sh
 certoraRun --method '_.deposit(uint)' --exclude_method 'C.deposit(uint)'
 ```
-This will include all `deposit(uint)` methods in the scene, with the exception of the
+This will include all `deposit(uint)` methods in the scene except the
 `deposit(uint)` function of the `C` contract.
 
 (--parametric_contracts)=
