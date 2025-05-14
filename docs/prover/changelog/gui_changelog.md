@@ -4,6 +4,17 @@ GUI Release Notes
 ```{contents}
 ```
 
+5.0.1 (May 18, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Nesting In Variables Tab: Enhance the Variables tab by introducing aggregation functionality to env and method variables. This will simplify scrolling, navigation, and comprehension for users by mirroring the aggregation behavior in the Call Trace for complex storage types (such as structs, arrays, and maps).
+
+### Fixed Bugs
+
+- [bug] Rule Report - wrong time fix, collapse/expand tooltips, max-width to rule name tooltips
+
 4.3.0 (Apr 10, 2025)
 ---------------------------
 
