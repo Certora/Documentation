@@ -10,8 +10,101 @@ The certoraRanger client submits jobs to the Certora Cloud, just like the Prover
 
 # Usage: certoraRanger
 
+Ranger uses the same input format and job flow as certoraRun, allowing teams to reuse existing configuration and spec files.
+
+// TODO: Not sure what to add here.
+
 # Ranger-specific flags
+
+(--range)=
+## `range`
+
+**What does it do?**
+Sets the maximal length of function call sequences to check (0 ≤ K).
+This flag controls how deep Ranger explores function call sequences from the initial state.
+Higher values can uncover deeper bugs but may increase analysis time.
+
+When not assigned, the default value is defined as 5
+
+**When to use it?**
+When you wish to assign a different value than the default one.
+Increasing this flag will execute longer sequences, or decreasing when you wish to execute faster runs.
+
+**Example**
+
+```sh
+certoraRanger ranger.conf --range K
+```
+
+(--range_failure_limit)=
+## `range_failure_limit`
+
+**What does it do?**
+Sets the minimal number of violations to be found.
+Once we reach this limit, no new Ranger call sequence checks will be started.
+Checks already in progress will continue, thus we are expected to see at least N violations.
+
+When not assigned, the default value is defined as 1
+
+**When to use it?**
+When you wish to assign a different value than the default one.
+Increasing this flag will execute more sequences, until we will reach the desired amount of violations.
+
+**Example**
+
+```sh
+certoraRanger ranger.conf --range_failure_limit N
+```
+
+## `Default Under-approximations`
+
+By default, certoraRanger enables the following Prover flags to favor usability over full soundness:
+
+[--optimistic_loop](https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-loop)
+
+[--loop_iter](https://docs.certora.com/en/latest/docs/prover/cli/options.html#loop-iter) 3
+
+[--optimistic-fallback](https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-fallback)
+
+[--optimistic-hashing](https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-hashing)
+
+[--auto-dispatcher](https://docs.certora.com/en/latest/docs/prover/cli/options.html#auto-dispatcher)
+
+These options help prune unrealistic paths, reduce false positives, and improve performance.
+
+Unresolved calls will be treated as nondeterministic
+
+You can override any of these defaults in your .conf file or via the CLI. Ranger will never fail due to unsupported overrides—it will simply continue and print a warning if needed.
+
 
 # Unsupported Prover flags
 
+
+The following certoraRun flags are not supported in Ranger:
+
+[--project-sanity](https://docs.certora.com/en/latest/docs/prover/cli/options.html#project-sanity)
+
+[--rule-sanity](https://docs.certora.com/en/latest/docs/prover/cli/options.html#rule-sanity)
+
+[--coverage-info](https://docs.certora.com/en/latest/docs/prover/cli/options.html#coverage-info)
+
+[--multi-example](https://docs.certora.com/en/latest/docs/prover/cli/options.html#multi-example)
+
+[--foundry](https://docs.certora.com/en/latest/docs/prover/cli/options.html#foundry)
+
+[--independent-satisfy](https://docs.certora.com/en/latest/docs/prover/cli/options.html#independent-satisfy)
+
+[--multi-assert-check](https://docs.certora.com/en/latest/docs/prover/cli/options.html#multi-assert-check)
+
+If any of these are used, Ranger will emit a warning, ignore the flag, and continue the job.
+
+
 # Config file compatibility
+
+Ranger supports the same .conf format as the Certora Prover.
+You can reuse your existing .conf files without changes.
+
+- Ranger will ignore Prover-only flags in the config file.
+- Prover will ignore Ranger-only flags, like --range.
+
+This ensures that a single configuration file can work for both tools, enabling easier integration and faster iteration across your workflows.
