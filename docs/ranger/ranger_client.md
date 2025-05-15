@@ -60,15 +60,15 @@ certoraRanger ranger.conf --range_failure_limit N
 
 By default, certoraRanger enables the following Prover flags to favor usability over full soundness:
 
-[--optimistic_loop](https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-loop)
+{ref}`--optimistic_loop`
 
-[--loop_iter](https://docs.certora.com/en/latest/docs/prover/cli/options.html#loop-iter) 3
+{ref}`--loop_iter` 3
 
-[--optimistic-fallback](https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-fallback)
+{ref}`--optimistic-fallback`
 
-[--optimistic-hashing](https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-hashing)
+{ref}`--optimistic-hashing`
 
-[--auto-dispatcher](https://docs.certora.com/en/latest/docs/prover/cli/options.html#auto-dispatcher)
+{ref}`--auto-dispatcher`
 
 These options help prune unrealistic paths, reduce false positives, and improve performance.
 
@@ -82,19 +82,19 @@ You can override any of these defaults in your .conf file or via the CLI. Ranger
 
 The following certoraRun flags are not supported in Ranger:
 
-[--project-sanity](https://docs.certora.com/en/latest/docs/prover/cli/options.html#project-sanity)
+{ref}`--project-sanity`
 
-[--rule-sanity](https://docs.certora.com/en/latest/docs/prover/cli/options.html#rule-sanity)
+{ref}`--rule-sanity`
 
-[--coverage-info](https://docs.certora.com/en/latest/docs/prover/cli/options.html#coverage-info)
+{ref}`--coverage-info`
 
-[--multi-example](https://docs.certora.com/en/latest/docs/prover/cli/options.html#multi-example)
+{ref}`--multi-example`
 
-[--foundry](https://docs.certora.com/en/latest/docs/prover/cli/options.html#foundry)
+{ref}`--foundry`
 
-[--independent-satisfy](https://docs.certora.com/en/latest/docs/prover/cli/options.html#independent-satisfy)
+{ref}`--independent-satisfy`
 
-[--multi-assert-check](https://docs.certora.com/en/latest/docs/prover/cli/options.html#multi-assert-check)
+{ref}`--multi-assert-check`
 
 If any of these are used, Ranger will emit a warning, ignore the flag, and continue the job.
 
