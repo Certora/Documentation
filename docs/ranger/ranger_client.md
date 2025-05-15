@@ -1,16 +1,16 @@
 # The Ranger Client
 
-Ranger introduces a new CLI entry point: certoraRanger.
+Ranger introduces a new CLI entry point: `certoraRanger`.
 
-This command is part of the certora Python package and acts as a lightweight wrapper around certoraRun, 
+This command is part of the certora Python package and acts as a lightweight wrapper around `certoraRun`, 
 tailored specifically for bounded model checking. 
 It comes with new defaults and additional under-approximations to make finding concrete counterexamples easier and faster.
 
-The certoraRanger client submits jobs to the Certora Cloud, just like the Prover. You'll receive a dashboard link with the results once the job is submitted
+The `certoraRanger` client submits jobs to the Certora Cloud, just like the Prover. You'll receive a dashboard link with the results once the job is submitted
 
-# Usage: certoraRanger
+# Usage: `certoraRanger`
 
-Ranger uses the same input format and job flow as certoraRun, allowing teams to reuse existing configuration and spec files.
+Ranger uses the same input format and job flow as `certoraRun`, allowing teams to reuse existing configuration and spec files.
 
 // TODO: Not sure what to add here.
 
@@ -58,7 +58,7 @@ certoraRanger ranger.conf --range_failure_limit N
 
 ## `Default Under-approximations`
 
-By default, certoraRanger enables the following Prover flags to favor usability over full soundness:
+By default, `certoraRanger` enables the following Prover flags to favor usability over full soundness:
 
 {ref}`--optimistic_loop`
 
@@ -80,7 +80,7 @@ You can override any of these defaults in your .conf file or via the CLI. Ranger
 # Unsupported Prover flags
 
 
-The following certoraRun flags are not supported in Ranger:
+The following `certoraRun` flags are not supported in Ranger:
 
 {ref}`--project-sanity`
 
