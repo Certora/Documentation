@@ -1,7 +1,7 @@
 # How Ranger Works
 
-**Ranger** is a bounded model checker. This means that in contrast with "full"
-formal verification, it's initial state isn't arbitrary, but is instead reached
+**Ranger** is a bounded model checker. This means that, in contrast with "full"
+formal verification, its initial state isn't arbitrary, but is instead reached
 by a sequence of legal function calls.
 
 (the-initial-state)=
