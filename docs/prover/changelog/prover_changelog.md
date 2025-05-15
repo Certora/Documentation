@@ -7,9 +7,6 @@ Prover Release Notes
 
 7.29.0 (May 18, 2025)
 ----------------------
-### Infrastructure
-- [breaking] Certora tools now require Java Runtime Environment (JRE) version 19 or higher. Please upgrade your local environment accordingly.
-
 ### CVL
 - [feat] `require` statements now support an optional string reason argument: `require(condition, "reason")`.
 A warning will be shown in the Rule Notification tab for require statements likely to exclude meaningful traces, helping prevent false positives in verification.
