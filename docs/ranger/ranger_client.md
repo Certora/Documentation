@@ -59,7 +59,7 @@ certoraRanger ranger.conf --ranger_failure_limit N
 ```
 ]::
 
-## `Default Under-approximations`
+## Default Under-approximations
 
 By default, `certoraRanger` enables the following Prover flags to favor usability over full soundness:
 
