@@ -32,9 +32,9 @@ Increasing this flag will execute longer sequences, or decreasing when you wish 
 certoraRanger ranger.conf --range K
 ```
 
-[//]: # (&#40;--range_failure_limit&#41;=)
+[//]: # (&#40;--ranger_failure_limit&#41;=)
 
-[//]: # (## `range_failure_limit`)
+[//]: # (## `ranger_failure_limit`)
 
 [//]: # ()
 [//]: # (**What does it do?**)
@@ -61,7 +61,7 @@ certoraRanger ranger.conf --range K
 [//]: # ()
 [//]: # (```sh)
 
-[//]: # (certoraRanger ranger.conf --range_failure_limit N)
+[//]: # (certoraRanger ranger.conf --ranger_failure_limit N)
 
 [//]: # (```)
 
