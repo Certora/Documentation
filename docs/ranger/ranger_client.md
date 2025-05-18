@@ -2,11 +2,11 @@
 
 Ranger introduces a new CLI entry point: `certoraRanger`.
 
-This command is part of the certora Python package and provides a streamlined interface for bounded model checking, 
+This command is part of the `certora-cli` Python package and provides a streamlined interface for bounded model checking, 
 specifically designed for exploring concrete execution paths up to a limited range.
 It comes with new defaults and additional under-approximations to make finding concrete counterexamples easier and faster.
 
-The `certoraRanger` client submits jobs to the Certora Cloud, just like the Prover. You'll receive a dashboard link with the results once the job is submitted
+The `certoraRanger` client submits jobs to the Certora cloud, just like the Prover. You'll receive a dashboard link with the results once the job is submitted
 
 Ranger uses the same input format and job flow as `certoraRun`, allowing teams to reuse existing configuration and spec files.
 
