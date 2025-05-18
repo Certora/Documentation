@@ -494,6 +494,7 @@ When you have a rule with multiple assertions:
 certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
 ```
 
+(--multi_example)=
 ## `multi_example`
 Show several counterexamples for failed assert statements and several witnesses for verified satisfy statements.
 
@@ -1624,6 +1625,13 @@ This option lets you select a specific version of the Certora Prover by providin
 **When to use it?**
 Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., release/10April2025) to match the behavior of a known version.
 
+**Example**
+To run verification using the Prover version from the April 10, 2025 release:
+
+```sh
+certoraRun MyContract.sol --verify MyContract:MySpec.spec --prover_version release/10April2025
+```
+
 
 Conf file options
 =================
@@ -1651,13 +1659,6 @@ line or other configuration files.
 
 ```sh
 certoraRun proj.conf --override_base_config confs/base_settings.conf
-```
-
-**Example**
-To run verification using the Prover version from the April 10, 2025 release:
-
-```sh
-certoraRun MyContract.sol --verify MyContract:MySpec.spec --prover_version release/10April2025
 ```
 
 Advanced options
