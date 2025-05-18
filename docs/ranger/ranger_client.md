@@ -34,35 +34,30 @@ certoraRanger ranger.conf --range K
 
 [//]: <> (&#40;--ranger_failure_limit&#41;=)
 
-[## `ranger_failure_limit`]::
-[
-    **What does it do?**]::
+[## `ranger_failure_limit`
 
-[//]: <> (Sets the minimal number of violations to be found.)
+**What does it do?**
 
-[//]: <> (Once we reach this limit, no new Ranger call sequence checks will be started.)
+Sets the minimal number of violations to be found.
 
-[//]: <> (Checks already in progress will continue, thus we are expected to see at least N violations.)
+Once we reach this limit, no new Ranger call sequence checks will be started.
 
-[//]: # ()
-[//]: # (When not assigned, the default value is defined as 1.)
+Checks already in progress will continue, thus we are expected to see at least N violations.
 
-[//]: # ()
-[//]: # (**When to use it?**)
+When not assigned, the default value is defined as 1.
 
-[//]: # (When you wish to assign a different value than the default one.)
+**When to use it?**
 
-[//]: # (Increasing this flag will execute more sequences, until we will reach the desired amount of violations.)
+When you wish to assign a different value than the default one.
 
-[//]: # ()
-[//]: # (**Example**)
+Increasing this flag will execute more sequences, until we will reach the desired amount of violations.
 
-[//]: # ()
-[//]: # (```sh)
+**Example**
 
-[//]: # (certoraRanger ranger.conf --ranger_failure_limit N)
-
-[//]: # (```)
+```sh
+certoraRanger ranger.conf --ranger_failure_limit N
+```
+]::
 
 ## `Default Under-approximations`
 
