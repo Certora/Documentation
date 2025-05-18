@@ -5,6 +5,18 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.29.1 (May 18, 2025)
+----------------------
+### CVL
+- [feat] `require` statements now support an optional string reason argument: `require(condition, "reason")`.
+A warning will be shown in the Rule Notification tab for require statements likely to exclude meaningful traces, helping prevent false positives in verification.
+
+### CLI
+- [feat] Added a new `--exclude_method` flag to exclude specific methods when verifying invariants or parametric rules. Syntax mirrors `--method`.
+
+### Solana
+- [feat] Jump-To-Source support for Solana function calls in the Call Trace.
+
 7.28.0 (April 10, 2025)
 ----------------------
 ### Rule Report
@@ -24,6 +36,7 @@ Prover Release Notes
 
 ### CVL
 - [feat] Introduced the `executingContract` keyword, which can be used in the methods block. It refers to `address(this)` at the call site where the CVL summary is applied.
+
 
 7.25.2 (Feb 19, 2025)
 ----------------------
