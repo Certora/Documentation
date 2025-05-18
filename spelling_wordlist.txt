@@ -60,6 +60,7 @@ config
 conjoined
 decompilation
 decompiler
+decompiles
 deduplication
 dereference
 dereferences
@@ -84,6 +85,7 @@ foldable
 fuzzer
 getter
 getters
+github
 hashcode
 havoc
 havoced
@@ -97,6 +99,7 @@ initializations
 injective
 injectivity
 inlined
+inlines
 inlining
 inlinings
 instantiation
