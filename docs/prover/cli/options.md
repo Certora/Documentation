@@ -494,6 +494,7 @@ When you have a rule with multiple assertions:
 certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
 ```
 
+(--multi_example)=
 ## `multi_example`
 Show several counterexamples for failed assert statements and several witnesses for verified satisfy statements.
 
