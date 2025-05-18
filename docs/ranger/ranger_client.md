@@ -10,10 +10,10 @@ The `certoraRanger` client submits jobs to the Certora Cloud, just like the Prov
 
 Ranger uses the same input format and job flow as `certoraRun`, allowing teams to reuse existing configuration and spec files.
 
-# Ranger-specific flags
+## Ranger-specific flags
 
 (--range)=
-## `range`
+### `range`
 
 **What does it do?**
 Sets the maximal length of function call sequences to check (0 ≤ K).
@@ -34,7 +34,7 @@ certoraRanger ranger.conf --range K
 
 [//]: <> (&#40;--ranger_failure_limit&#41;=)
 
-[## `ranger_failure_limit`
+[### `ranger_failure_limit`
 
 **What does it do?**
 
@@ -80,7 +80,7 @@ Unresolved calls will be treated as nondeterministic.
 You can override any of these defaults in your .conf file or via the CLI. Ranger will never fail due to unsupported overrides—it will simply continue and print a warning if needed.
 
 
-# Unsupported Prover flags
+## Unsupported Prover flags
 
 
 The following `certoraRun` flags are not supported in Ranger:
@@ -102,7 +102,7 @@ The following `certoraRun` flags are not supported in Ranger:
 If any of these are used, Ranger will emit a warning, ignore the flag, and continue the job.
 
 
-# Config file compatibility
+## Config file compatibility
 
 Ranger supports the same `.conf` format as the Certora Prover.
 You can reuse your existing `.conf` files without changes.
