@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-7.29.0 (May 18, 2025)
+7.29.1 (May 18, 2025)
 ----------------------
 ### CVL
 - [feat] `require` statements now support an optional string reason argument: `require(condition, "reason")`.
