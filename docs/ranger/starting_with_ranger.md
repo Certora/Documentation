@@ -8,7 +8,7 @@ Ranger uses the same installation process, configuration files, and spec files a
 
 ## 1. Install Certora Tools
 
-Ranger is part of the `certora` Python package. You can install or upgrade it using `pip`:
+Ranger is part of the `certora-cli` Python package. You can install or upgrade it using `pip`:
 
 ```bash
 pip install certora-cli
@@ -32,7 +32,7 @@ Example `ranger.conf`:
 ```
 
 ## 3. Run Ranger
-Use the certoraRanger command to launch the job:
+Use the `certoraRanger` command to launch the job:
 
 ```bash
 certoraRanger ranger.conf
