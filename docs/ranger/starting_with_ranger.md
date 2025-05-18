@@ -40,7 +40,7 @@ certoraRanger ranger.conf
 
 This will start the Ranger process. A link to the Ranger Job Report in the dashboard will be pasted into your command line when the job is submitted.
 
-```{warn}
+```{warning}
 Ranger is compute-intensive: It performs symbolic exploration of many function call sequences. For faster feedback, avoiding timeouts, and better resource usage, consider one of the following:
 
 1. Use {ref}`--rule` to focus on a single invariant or rule.
