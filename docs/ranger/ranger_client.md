@@ -2,8 +2,8 @@
 
 Ranger introduces a new CLI entry point: `certoraRanger`.
 
-This command is part of the certora Python package and acts as a lightweight wrapper around `certoraRun`, 
-tailored specifically for bounded model checking. 
+This command is part of the certora Python package and provides a streamlined interface for bounded model checking, 
+specifically designed for exploring concrete execution paths up to a limited depth.
 It comes with new defaults and additional under-approximations to make finding concrete counterexamples easier and faster.
 
 The `certoraRanger` client submits jobs to the Certora Cloud, just like the Prover. You'll receive a dashboard link with the results once the job is submitted
@@ -44,7 +44,7 @@ Sets the minimal number of violations to be found.
 Once we reach this limit, no new Ranger call sequence checks will be started.
 Checks already in progress will continue, thus we are expected to see at least N violations.
 
-When not assigned, the default value is defined as 1
+When not assigned, the default value is defined as 1.
 
 **When to use it?**
 When you wish to assign a different value than the default one.
@@ -64,15 +64,15 @@ By default, `certoraRanger` enables the following Prover flags to favor usabilit
 
 {ref}`--loop_iter` 3
 
-{ref}`--optimistic-fallback`
+{ref}`--optimistic_fallback`
 
-{ref}`--optimistic-hashing`
+{ref}`--optimistic_hashing`
 
-{ref}`--auto-dispatcher`
+{ref}`--auto_dispatcher`
 
 These options help prune unrealistic paths, reduce false positives, and improve performance.
 
-Unresolved calls will be treated as nondeterministic
+Unresolved calls will be treated as nondeterministic.
 
 You can override any of these defaults in your .conf file or via the CLI. Ranger will never fail due to unsupported overrides—it will simply continue and print a warning if needed.
 
@@ -82,29 +82,29 @@ You can override any of these defaults in your .conf file or via the CLI. Ranger
 
 The following `certoraRun` flags are not supported in Ranger:
 
-{ref}`--project-sanity`
+{ref}`--project_sanity`
 
-{ref}`--rule-sanity`
+{ref}`--rule_sanity`
 
-{ref}`--coverage-info`
+{ref}`--coverage_info`
 
-{ref}`--multi-example`
+{ref}`--multi_example`
 
 {ref}`--foundry`
 
-{ref}`--independent-satisfy`
+{ref}`--independent_satisfy`
 
-{ref}`--multi-assert-check`
+{ref}`--multi_assert_check`
 
 If any of these are used, Ranger will emit a warning, ignore the flag, and continue the job.
 
 
 # Config file compatibility
 
-Ranger supports the same .conf format as the Certora Prover.
-You can reuse your existing .conf files without changes.
+Ranger supports the same `.conf` format as the Certora Prover.
+You can reuse your existing `.conf` files without changes.
 
 - Ranger will ignore Prover-only flags in the config file.
-- Prover will ignore Ranger-only flags, like --range.
+- Prover will ignore Ranger-only flags, like {ref}`--range`.
 
 This ensures that a single configuration file can work for both tools, enabling easier integration and faster iteration across your workflows.
