@@ -1,6 +1,6 @@
 # Introduction
 
-**Ranger** is Certora’s bounded model checker for smart contracts. It complements formal verification by offering a lightweight, developer-friendly approach for quickly identifying violations of contract invariants.
+**Ranger** is Certora’s bounded model checker for smart contracts. It complements formal verification by offering a lightweight, developer-friendly approach for quickly identifying violations of contract expected behaviors.
 
 Unlike the [Certora Prover](/docs/user-guide/index), which explores all program states, Ranger starts from a specific initial state and explores all function call sequences up to a bounded depth. This ensures that every violation corresponds to a realistic execution path, removing the need to filter out spurious counterexamples.
 

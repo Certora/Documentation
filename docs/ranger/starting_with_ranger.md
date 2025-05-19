@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide will help you run your first Ranger job using a Solidity contract and a [CVL](/docs/cvl/index) [invariant](/docs/cvl/invariants).
+This guide will help you run your first Ranger job using a Solidity contract and a [CVL](/docs/cvl/index) `.spec` file.
 
 Ranger uses the same installation process, configuration files, and spec files as the [Certora Prover](/docs/user-guide/index). If you're already familiar with the Prover, getting started with Ranger will feel familiar.
 
@@ -19,7 +19,7 @@ For full installation instructions and troubleshooting, see the Certora Prover [
 You'll need three files:
 
 - A compiled Solidity contract (e.g. `MyContract.sol`)
-- A CVL spec file with at least one invariant (e.g. `MyContract.spec`)
+- A CVL `.spec` file
 - A configuration file (e.g. `ranger.conf`)
 
 Example `ranger.conf`:
@@ -45,7 +45,7 @@ Ranger is compute-intensive: It performs symbolic exploration of many function c
 
 1. Use {ref}`--rule` to focus on a single invariant or rule.
 
-2. Use {ref}`--split_rules` to automatically run each rule/invariant in a separate job.
+2. Use {ref}`--split_rules` to automatically run each invariant/rule in a separate job.
 ```
 
 
