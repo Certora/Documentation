@@ -169,7 +169,7 @@ all the pessimistic assertions for the program.
 ## `requireInvariant` statements
 
 
-`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/ variables for which the invariant should hold.
+`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/ variables for which the invariant should hold. If the config option `--prover_args '-requireInvariantsPreRuleSemantics true'` is used, all `requireInvariant` commands are moved globally to before the rule or invariant code and are not required only at the location where `requireInvariant` is used, for details see {ref}`global_requireInvariant`.
 
 - [`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
