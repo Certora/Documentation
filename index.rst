@@ -11,7 +11,7 @@ Contents
 * :doc:`docs/sunbeam/index` -- instructions for installing and using *Certora Sunbeam*
   for formal verification of `Soroban`_ contracts.
 * :doc:`docs/solana/index` -- instructions for installing and using *Certora Solana Prover*
-* :doc:`docs/ranger/index` -- TODO
+* :doc:`docs/ranger/index` -- explains how to use Ranger, Certora's Bounded Model Checker for EVM
 * :doc:`docs/gambit/index` -- use mutation testing to improve you specifications.
 
 .. toctree::

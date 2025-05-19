@@ -15,7 +15,7 @@ Ranger offers a practical middle ground:
 - ✅ **Realistic counterexamples**: All violations are reachable from the initial state.
 - ✅ **Faster time to value**: Minimal setup required to get useful results.
 - ✅ **Fewer false positives**: No need to precondition rules to filter out invalid states.
-- ✅ **High coverage**: Symbolically tests all function call sequences from the initial state up to a certain range.
+- ✅ **High coverage**: Tests all function call sequences on symbolic inputs from the initial state up to a certain range.
 
 ---
 
