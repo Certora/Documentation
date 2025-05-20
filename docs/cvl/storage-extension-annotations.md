@@ -10,8 +10,8 @@ namespace “bookshelves” in storage:
 
 ```solidity
 /** @custom:storage-location erc7201:my.project.book1 */
-struct Book1 { … }
-````
+struct Book1 { /* ... */ }
+```
 
 Manually replicating the *slot math* in Certora rules or harnesses is
 tedious and error-prone.
@@ -27,7 +27,8 @@ Lucky for you, now you can let the tool
 - [Troubleshooting](#troubleshooting)
 
 ---
-    
+
+(feature-flags)=
 ## Feature Flags
 
 To enable automatic storage extension, add one or both of the following flags to your **conf JSON**:
@@ -46,6 +47,7 @@ To enable automatic storage extension, add one or both of the following flags to
 }
 ```
 
+(how-it-works-high-level)=
 ## How it works (high level)
 
 1. **Scan ASTs** – while compiling each `.sol` file the Prover looks for
@@ -62,7 +64,7 @@ To enable automatic storage extension, add one or both of the following flags to
      ```solidity
      // auto-generated
      import "./OriginalFile.sol";
-     contract _Auto_BookHarness_… {
+     contract _Auto_BookHarness_ {
          Book1 ext_my_project_book1;  // slot = keccak256("erc7201:my.project.book1")-1 & ~0xff
      }
      ```
@@ -79,6 +81,7 @@ To enable automatic storage extension, add one or both of the following flags to
    `.<build_dir>/` if
    `extract_storage_extension_annotation` is on.
 
+(quick-example)=
 ## Quick example
 
 ```solidity
@@ -87,7 +90,7 @@ contract VaultBridgeToken {
     struct VaultBridgeTokenStorage {
         IERC20 underlyingToken;
         uint256 reservedAssets;
-        …
+        // ...
     }
 }
 ```
@@ -111,6 +114,7 @@ rule no_reserved_assets_leak(env e) {
 }
 ```
 
+(tips--limitations)=
 ## Tips & limitations
 
 * Only **ERC-7201** strings (`erc7201:<namespace>`) are recognized.
@@ -121,6 +125,7 @@ rule no_reserved_assets_leak(env e) {
   is raised with a helpful message pointing to the duplicate
   declaration.
 
+(troubleshooting)=
 ## Troubleshooting
 
 * **“Slot already declared”**
