@@ -113,7 +113,7 @@ rule no_reserved_assets_leak(env e) {
 
 ## Tips & limitations
 
-* Only **ERC-7201** strings (`erc7201:<namespace>`) are recognised.
+* Only **ERC-7201** strings (`erc7201:<namespace>`) are recognized.
 * The hash function for slots follows the final EIP-7201 spec:
   `slot = keccak256(bytes(namespace)) - 1 & ~0xff`.
 * The harness contains *zero* logic → no re-compilation surprises.
