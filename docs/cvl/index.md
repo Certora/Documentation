@@ -27,6 +27,7 @@ defs.md
 hooks.md
 transient.md
 foundry-integration.md
+storage-extension-annotations.md
 ```
 
 Changes Since CVL 1
