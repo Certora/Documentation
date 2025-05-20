@@ -2,7 +2,7 @@
 Automatic Storage-Extension Harnesses
 =====================================
 
-Solidity ≋ EIP-7201 namespace
+[Solidity and EIP-7201 namespace](https://eips.ethereum.org/EIPS/eip-7201)
 -----------------------------
 
 Upgradeable contracts frequently tuck new state variables into
@@ -13,52 +13,50 @@ namespace “bookshelves” in storage:
 struct Book1 { /* ... */ }
 ```
 
-Manually replicating the *slot math* in Certora rules or harnesses is
-tedious and error-prone.
-Lucky for you, now you can let the tool
-*auto-generate* those storage extensions.
+Manually replicating the slot calculation for storage extensions in CVL rules or harnesses can be tedious and error-prone. Certora Prover now supports automatic generation of these storage extensions, reducing manual effort and minimizing mistakes.
 
 ## Table of Contents
 
-- [Feature Flags](#feature-flags)
-- [How it works (high level)](#how-it-works-high-level)
-- [Quick example](#quick-example)
-- [Tips & limitations](#tips--limitations)
-- [Troubleshooting](#troubleshooting)
+- [Feature Flags](#storage-extension-flags)
+- [How it works (high level)](#storage-extension-how)
+- [Quick example](#storage-extension-example)
+- [Troubleshooting](#storage-extension-troubleshooting)
 
 ---
 
-(feature-flags)=
-## Feature Flags
+(storage-extension-flags)=
+## Storage Extension Flags
 
-To enable automatic storage extension, add one or both of the following flags to your **conf JSON**:
+To enable automatic storage extension, add one or both of the following flags to your `.conf` JSON:
 
-| Flag                                           | Purpose                                                                                                                                | Default |
-| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `"storage_extension_annotation": true         `| Detects `@custom:storage-location erc7201:…` annotations and **automatically extends the storage layout** during compilation.           | `false` |
-| `"extract_storage_extension_annotation": true` | Dumps the generated harness Solidity file(s) to `<build_dir>/…` for inspection.                            | `false` |
+| Flag                             | Appearance in `.conf` file                | Pass directly to CLI option                   | Purpose                                                                                                                                |
+| -------------------------------- | ----------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| storage_extension_annotation     | `"storage_extension_annotation": true`    | `--storage_extension_annotation`              | Detects `@custom:storage-location erc7201:…` annotations and **automatically extends the storage layout** during compilation.           |
+| extract_storage_extension_annotation | `"extract_storage_extension_annotation": true` | `--extract_storage_extension_annotation`      | Dumps the generated harness Solidity file(s) to `<build_dir>/…` for inspection.                                                        |
 
 **Example:**
 
 ```json
 {
+  // ...
     "storage_extension_annotation": true,
     "extract_storage_extension_annotation": true
+  // ...
 }
 ```
 
-(how-it-works-high-level)=
+(storage-extension-how)=
 ## How it works (high level)
 
-1. **Scan ASTs** – while compiling each `.sol` file the Prover looks for
-   `StructDefinition` nodes that contain
+1. **Scan ASTs** – while compiling each `.sol` file, the Prover looks for
+   struct definitions with a preceding comment 
    `@custom:storage-location erc7201:<namespace>`.
 
 2. **Generate a minimal harness** – for every unique namespace the tool
-   emits an *extra* contract containing **only**
+   emits an *extra* contract containing **only**:
 
    * Import statements for the original file,
-   * one **dummy state variable** per namespace with the prefix
+   * one dummy state variable per namespace with the prefix
      `ext_<namespace>_` and the original struct name.
 
      ```solidity
@@ -69,9 +67,7 @@ To enable automatic storage extension, add one or both of the following flags to
      }
      ```
 
-3. **Compile the harness** with *exactly* the same `solc` flags
-   (optimizer, via-IR, remappings, --overwrite, etc.) that the main run
-   is using.
+3. **Compile the harness** with *exactly* the same `solc` flags that the main file is using.
 
 4. **Splice the fields** – the storage layout extracted from the harness
    is merged into the layout of every contract that *inherits* the
@@ -81,7 +77,7 @@ To enable automatic storage extension, add one or both of the following flags to
    `.<build_dir>/` if
    `extract_storage_extension_annotation` is on.
 
-(quick-example)=
+(storage-extension-example)=
 ## Quick example
 
 ```solidity
@@ -99,7 +95,9 @@ With
 
 ```json
 {
+  // ...
   "storage_extension_annotation": true
+  // ...
 }
 ```
 
@@ -114,18 +112,7 @@ rule no_reserved_assets_leak(env e) {
 }
 ```
 
-(tips--limitations)=
-## Tips & limitations
-
-* Only **ERC-7201** strings (`erc7201:<namespace>`) are recognized.
-* The hash function for slots follows the final EIP-7201 spec:
-  `slot = keccak256(bytes(namespace)) - 1 & ~0xff`.
-* The harness contains *zero* logic → no re-compilation surprises.
-* If two structs claim the **same namespace**, a compilation-time error
-  is raised with a helpful message pointing to the duplicate
-  declaration.
-
-(troubleshooting)=
+(storage-extension-troubleshooting)=
 ## Troubleshooting
 
 * **“Slot already declared”**
