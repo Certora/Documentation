@@ -2,11 +2,11 @@
 Automatic Storage-Extension Harnesses
 =====================================
 
-Solidity ≋ EIP-7201 namespaces
-------------------------------
+Solidity ≋ EIP-7201 namespace
+-----------------------------
 
 Upgradeable contracts frequently tuck new state variables into
-namespaced “bookshelves” in storage:
+namespace “bookshelves” in storage:
 
 ```solidity
 /** @custom:storage-location erc7201:my.project.book1 */
