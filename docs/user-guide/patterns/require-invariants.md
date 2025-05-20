@@ -58,17 +58,6 @@ rule sharesRoundingTripFavoursContract(env e) {
 show example run links where we try to remove one of the `requireInvariant` and get a false violation, and explain it.
 ```
 
-(global_requireInvariant)=
-## Global Semantics of Require Invariant
-The CVL keyword `requireInvariant` assumes that the invariant holds at exactly the statement in CVL where `requireInvariant` is used. 
-But the Prover never guarantees that invariants holds at this position.  An invariant only holds at the start and end of a transaction, 
-for strong invariants also at the start and end of a subcall and after a havoc summary. So a `requireInvariant` at any other position is unsound.
-This can lead to incorrect proves. To avoid this issue, it is recommended to use the flag `--prover_args '-requireInvariantsPreRuleSemantics true'`. 
-By using this flag, any `requireInvariant` command that is used in the specifications is assumed initially, i.e., before all statements of a `rule` or 
-an invariant. Note, if the invariant takes any parameters as input, initially, the parameters are havoc'ed and only assigned their value at the 
-location the `requireInvariant` command is placed. 
-
-
 In conclusion, the "Require Invariants" design pattern, as demonstrated through the provided example, offers a 
 systematic methodology to define, validate, and uphold critical conditions within smart contract 
 specifications.
