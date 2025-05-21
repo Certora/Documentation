@@ -17,9 +17,9 @@ When storage is accessed using custom slot calculations—such as:
 // keccak256(abi.encode(uint256(keccak256("example.main")) - 1)) & ~bytes32(uint256(0xff));
 bytes32 private constant MAIN_STORAGE_LOCATION =
   0x183a6125c38840424c4a85fa12bab2ab606c4b6d0e7cc73c0c06ba5300eab500;
-function _getMainStorage() private pure returns (MainStorage storage $) {
+function _getMainStorage() private pure returns (MainStorage storage _slot) {
   assembly {
-    $.slot := MAIN_STORAGE_LOCATION
+    _slot.slot := MAIN_STORAGE_LOCATION
   }
 }
 ```
