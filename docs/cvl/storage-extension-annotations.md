@@ -4,16 +4,27 @@ Automatic Storage-Extension Harnesses
 
 [Solidity and EIP-7201 namespace](https://eips.ethereum.org/EIPS/eip-7201)
 -----------------------------
-
-Upgradeable contracts frequently tuck new state variables into
-namespace “bookshelves” in storage:
+Upgradeable contracts often need to add new state variables without interfering with existing storage layouts. To achieve this, they access storage by manually computing storage locations using hashing. EIP-7201 was proposed to standardize both the formula for deriving these storage locations and the documentation format for annotating them, making the process more reliable and interoperable.
 
 ```solidity
-/** @custom:storage-location erc7201:my.project.book1 */
-struct Book1 { /* ... */ }
+/** @custom:storage-location erc7201:my.project.vault-bridge.VaultBridgeToken.storage */
+struct VaultBridgeTokenStorage { /* ... */ }
 ```
 
-Manually replicating the slot calculation for storage extensions in CVL rules or harnesses can be tedious and error-prone. Certora Prover now supports automatic generation of these storage extensions, reducing manual effort and minimizing mistakes.
+When storage is accessed using custom slot calculations—such as:
+
+```solidity
+// keccak256(abi.encode(uint256(keccak256("example.main")) - 1)) & ~bytes32(uint256(0xff));
+bytes32 private constant MAIN_STORAGE_LOCATION =
+  0x183a6125c38840424c4a85fa12bab2ab606c4b6d0e7cc73c0c06ba5300eab500;
+function _getMainStorage() private pure returns (MainStorage storage $) {
+  assembly {
+    $.slot := MAIN_STORAGE_LOCATION
+  }
+}
+```
+
+—the Certora Prover may not be able to automatically infer the correct storage layout, which can lead to analysis failures. By following the EIP-7201 proposal and using the automatic storage extension generation option, the Prover can accurately generate layout information for these annotated storage extensions. This improves reliability and reduces the risk of incorrect analysis when contracts use custom storage slots.
 
 ## Table of Contents
 
@@ -59,13 +70,13 @@ To enable automatic storage extension, add one or both of the following flags to
    * one dummy state variable per namespace with the prefix
      `ext_<namespace>_` and the original struct name.
 
-     ```solidity
+    ```solidity
      // auto-generated
-     import "./OriginalFile.sol";
-     contract _Auto_BookHarness_ {
-         Book1 ext_my_project_book1;  // slot = keccak256("erc7201:my.project.book1")-1 & ~0xff
-     }
-     ```
+    import "./VaultBridgeToken.sol";
+    contract _Auto_VaultBridgeTokenHarness_ {
+      VaultBridgeTokenStorage ext_agglayer_vault_bridge_VaultBridgeToken_storage;  // slot = keccak256("erc7201:agglayer.vault-bridge.VaultBridgeToken.storage")-1 & ~0xff
+    }
+    ```
 
 3. **Compile the harness** with *exactly* the same `solc` flags that the main file is using.
 
