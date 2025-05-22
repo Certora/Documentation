@@ -28,7 +28,7 @@ function _getMainStorage() private pure returns (MainStorage storage _slot) {
 
 ## Table of Contents
 
-- [Feature Flags](#storage-extension-flags)
+- [Storage Extension Flags](#storage-extension-flags)
 - [How it works (high level)](#storage-extension-how)
 - [Quick example](#storage-extension-example)
 - [Troubleshooting](#storage-extension-troubleshooting)
