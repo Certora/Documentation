@@ -67,7 +67,7 @@ To enable automatic storage extension, add one or both of the following flags to
    emits an *extra* contract containing **only**:
 
    * Import statements for the original file,
-   * one dummy state variable per namespace with the prefix
+   * One dummy state variable per namespace with the prefix
      `ext_<namespace>_` and the original struct name.
 
     ```solidity
