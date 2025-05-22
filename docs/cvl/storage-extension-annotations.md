@@ -1,5 +1,5 @@
 (storage-extension-annotations)=
-Automatic Storage-Extension Harnesses
+Storage Layout Annotations
 =====================================
 
 [Solidity and EIP-7201 namespace](https://eips.ethereum.org/EIPS/eip-7201)
@@ -7,8 +7,11 @@ Automatic Storage-Extension Harnesses
 Upgradeable contracts often need to add new state variables without interfering with existing storage layouts. To achieve this, they access storage by manually computing storage locations using hashing. EIP-7201 was proposed to standardize both the formula for deriving these storage locations and the documentation format for annotating them, making the process more reliable and interoperable.
 
 ```solidity
-/** @custom:storage-location erc7201:my.project.vault-bridge.VaultBridgeToken.storage */
-struct VaultBridgeTokenStorage { /* ... */ }
+ /** @custom:storage-location erc7201:example.main */
+ struct MainStorage {
+     uint256 x;
+     uint256 y;
+ }
 ```
 
 When storage is accessed using custom slot calculations—such as:
@@ -26,10 +29,14 @@ function _getMainStorage() private pure returns (MainStorage storage _slot) {
 
 —the Certora Prover may not be able to automatically infer the correct storage layout, which can lead to analysis failures. By following the EIP-7201 proposal and using the automatic storage extension generation option, the Prover can accurately generate layout information for these annotated storage extensions. This improves reliability and reduces the risk of incorrect analysis when contracts use custom storage slots.
 
+Not all contracts follow the EIP-7201 proposal. In such cases, the Certora Prover allows the user to explicitly specify storage layout
+information by writing an _extension harness_.
+
 ## Table of Contents
 
-- [Storage Extension Flags](#storage-extension-flags)
+- [Storage extension flags](#storage-extension-flags)
 - [How it works (high level)](#storage-extension-how)
+- [User-provided harnesses](#storage-extension-harnesses)
 - [Quick example](#storage-extension-example)
 - [Troubleshooting](#storage-extension-troubleshooting)
 
@@ -44,6 +51,7 @@ To enable automatic storage extension, add one or both of the following flags to
 | -------------------------------- | ----------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | storage_extension_annotation     | `"storage_extension_annotation": true`    | `--storage_extension_annotation`              | Detects `@custom:storage-location erc7201:…` annotations and **automatically extends the storage layout** during compilation.           |
 | extract_storage_extension_annotation | `"extract_storage_extension_annotation": true` | `--extract_storage_extension_annotation`      | Dumps the generated harness Solidity file(s) to `<build_dir>/…` for inspection.                                                        |
+| storage_extension_harnesses | `"storage_extension_harnesses": ["A=H", ...]` | `--storage_extension_harnesses A=H ... | Specifies that each contract `A`'s storage layout is extended by the layout specified in `H` |
 
 **Example:**
 
@@ -51,13 +59,15 @@ To enable automatic storage extension, add one or both of the following flags to
 {
   // ...
     "storage_extension_annotation": true,
-    "extract_storage_extension_annotation": true
+    "extract_storage_extension_annotation": true,
+    "storage_extension_harnesses" : [ "A1=H1", "A2=H2" ]
   // ...
 }
 ```
 
+
 (storage-extension-how)=
-## How it works (high level)
+## How automatic generation works (high level)
 
 1. **Scan ASTs** – while compiling each `.sol` file, the Prover looks for
    struct definitions with a preceding comment 
@@ -87,6 +97,53 @@ To enable automatic storage extension, add one or both of the following flags to
 5. **(optional) Dump the harness** into
    `.<build_dir>/` if
    `extract_storage_extension_annotation` is on.
+
+(storage-extension-harnesses)=
+## User-provided harnesses
+
+Not all contracts follow EIP-7201:
+
+```solidity
+contract A {
+  struct MainStorage {
+       uint256 x;
+       uint256 y;
+   }
+  
+  bytes32 private constant MAIN_NONSTANDARD_LOCATION = 0x12345678;
+  
+  function _getMainStorage() private pure returns (MainStorage storage _slot) {
+    assembly {
+      _slot.slot := MAIN_NONSTANDARD_LOCATION
+    }
+  }
+}
+```
+
+Here there is neither an annotation on the `MainStorage` struct, nor is the storage slot
+calculated according to the formula specified in the EIP. In this case, the user can manually 
+write a storage extension harness:
+
+```solidity
+import {A} from "/path/to/A.sol";
+
+contract H {
+  /** @custom:certoralink 0x12345678 */
+  A.MainStorage m;
+}
+```
+
+and provide the CLI option `--storage_extension_harnesses A=H` (or add `"storage_extension_harnesses": ["A=H"]` to the `.conf` file)
+
+The extension harness may have several such state variables. Each variable must have 
+a `@custom:certoralink` NatSpec annotation followed by a hexadecimal string. Each such
+
+```solidity
+/** @custom:certoralink s_i */
+T_i x_i;
+```
+
+annotation will instruct the Prover that storage slot `s_i` has the layout corresponding to `T_i`.
 
 (storage-extension-example)=
 ## Quick example
