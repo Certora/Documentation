@@ -397,6 +397,10 @@ We suggest using this option when you have finished (a subset of) your rules and
 certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
+
 (--foundry)=
 ## `foundry`
 
@@ -419,6 +423,10 @@ When we want to run all Foundry fuzz tests in the project with the Prover.
 **Example**
 ```sh
 certoraRun --foundry
+```
+
+```{note}
+Ranger does not support this option currently.
 ```
 
 (--independent_satisfy)=
@@ -482,6 +490,10 @@ When you have a rule with multiple satisfy statements, and you would like to dem
 certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
+
 (--multi_assert_check)=
 ## `multi_assert_check`
 
@@ -517,6 +529,10 @@ When you have a rule with multiple assertions:
 **Example**
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
+```
+
+```{note}
+Ranger does not support this option currently.
 ```
 
 (--multi_example)=
@@ -566,6 +582,10 @@ may be hot spots for summarization etc.
 certoraRun --project_sanity
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
+
 (--rule_sanity)=
 ## `rule_sanity`
 
@@ -586,6 +606,10 @@ useful check if you notice rules passing surprisingly quickly or easily.
 **Example**
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
+```
+
+```{note}
+Ranger does not support this option currently.
 ```
 
 (--short_output)=
@@ -872,6 +896,10 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
 
 # Use full path to the compiler
 certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
+```
+
+```{note}
+Ranger does not support this option currently.
 ```
 
 
