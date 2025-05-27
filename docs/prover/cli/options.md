@@ -534,6 +534,10 @@ Use this flag when debugging complex rules where multiple, distinct scenarios mi
 certoraRun MyContract.sol --verify MyContract:MyContract.spec --multi_example
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
+
 
 (--project_sanity)=
 ## `project_sanity`
