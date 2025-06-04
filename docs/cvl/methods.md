@@ -858,9 +858,9 @@ since CVL functions cannot take variables that are `storage`. You can refer to o
 or use a summarization that doesn't take parameters:
 ```cvl
 methods {
-    function MyLibrary.guess(int[] storage numbers) internal returns (int) => goodGuess1(numbers); // doesn't work
-    function MyLibrary.guess(int[] storage numbers, int myGuess) internal returns (int) => goodGuess2(myGuess); // works
-    function MyLibrary.guess(int[] storage numbers) internal returns (int) => ALWAYS(42); // works
+    function MyLibrary.guess(int[] storage numbers) internal returns (int) => goodGuess1(numbers); // not allowed
+    function MyLibrary.guess(int[] storage numbers, int myGuess) internal returns (int) => goodGuess2(myGuess); // allowed
+    function MyLibrary.guess(int[] storage numbers) internal returns (int) => ALWAYS(42); // allowed
 }
 
 function goodGuess1(int[] numbers) returns int { return 4; }
