@@ -853,7 +853,7 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 }
 ```
 
-When summarizing an internal library function, you cannot refer to a variable that is `storage`,
+When summarizing an internal library function to an expression, you cannot refer to a variable that is `storage`,
 since CVL functions cannot take variables that are `storage`. You can refer to other variables,
 or use a summarization that doesn't take parameters:
 ```cvl
