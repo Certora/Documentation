@@ -853,6 +853,20 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 }
 ```
 
+When summarizing an internal library function to an expression, you cannot refer to a variable that is `storage`,
+since CVL functions cannot take variables that are `storage`. You can refer to other variables,
+or use a summarization that doesn't take parameters:
+```cvl
+methods {
+    function MyLibrary.guess(int[] storage numbers) internal returns (int) => goodGuess1(numbers); // not allowed
+    function MyLibrary.guess(int[] storage numbers, int myGuess) internal returns (int) => goodGuess2(myGuess); // allowed
+    function MyLibrary.guess(int[] storage numbers) internal returns (int) => ALWAYS(42); // allowed
+}
+
+function goodGuess1(int[] numbers) returns int { return 4; }
+function goodGuess2(int myGuess) returns int { return myGuess; }
+```
+
 The call can also refer to a variable of type `env` introduced by a
 {ref}`with(env) clause <with-env>`.  Here `e` may be replaced with any valid identifier.
 
