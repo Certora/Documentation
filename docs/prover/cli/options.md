@@ -810,7 +810,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchang
 ## `solc_via_ir`
 
 **What does it do?**
-Passes the value of this option  to the solidity compiler's option `--via-ir`.
+Passes the value of this option to the Solidity compiler's option `--via-ir`.
 
 **When to use it?**
 When we want to enable the IR-based code generator
@@ -828,7 +828,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
 
 **What does it do?**
-This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the `via-ir` option. This overrides {ref}`--solc_via_ir` on a per-contract basis.
+This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the `via-ir` option.
 
 **When to use it?**
 Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior) but another fails to compile with the IR pipeline, this flag lets you mix modes safely.
