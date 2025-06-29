@@ -9,12 +9,10 @@ GUI Release Notes
 
 ### Features
 
-- [feat] Rule Report - Added support for Ranger Report.
-- [feat] Rule Report - Updated `Sanity_Fail` icon to represent better a failure state. 
-- [feat] Rule Report - Added Rule indication for `ruleNotifications`. This new animation will notify the user when they have `ruleNotifications` for a certain rule/child. The indicator color is changing based on the notification severity.
+- [feat] Rule Report - Updated `Sanity_Fail` rule status icon to be red and more distinct than the timeout icon.
+- [feat] Rule Report - Added Rule indication for `ruleNotifications`. This new indication will notify the user when they have `ruleNotifications` for a certain rule/child. The indicator color is changing based on the notification severity.
 - [feat] Rule Report - Added Private/Public sharing options to the rule report.
 - [feat] Dashboard - Added Private/Public copy link buttons to the Jobs List table. Private links will be assigned by default.
-- [feat] Dashboard - Added Product column to the Jobs List table, which indicate which product triggered each job.
 
 ### Fixed Bugs
 
