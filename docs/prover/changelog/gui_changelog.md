@@ -4,6 +4,22 @@ GUI Release Notes
 ```{contents}
 ```
 
+7.0.0 (June 30, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Added support for Ranger Report.
+- [feat] Rule Report - Updated `Sanity_Fail` icon to represent better a failure state. 
+- [feat] Rule Report - Added Rule indication for `ruleNotifications`. This new animation will notify the user when they have `ruleNotifications` for a certain rule/child. The indicator color is changing based on the notification severity.
+- [feat] Rule Report - Added Private/Public sharing options to the rule report.
+- [feat] Dashboard - Added Private/Public copy link buttons to the Jobs List table. Private links will be assigned by default.
+- [feat] Dashboard - Added Product column to the Jobs List table, which indicate which product triggered each job.
+
+### Fixed Bugs
+
+- [bug] Rule Report - Fixed link to logs page and negative runtime on Job Info tab
+
 5.0.1 (May 18, 2025)
 ---------------------------
 
