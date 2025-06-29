@@ -1251,7 +1251,8 @@ and can prevent resource exhaustion.
 **When to use it?**
 
 Use this attribute when you are encountering out-of-memory errors, particularly when processing unusually large or complex rule sets.
-Lowering the concurrency can reduce peak memory usage by staggering evaluation workloads.
+Set the maximum number of parallel rule evaluation- Lower values (e.g., 1, 2, or 4) may reduce memory usage in large runs, 
+while the default usage is the number of available CPU cores. This can sometimes help to mitigate out of memory problems.
 
 
 **Example**
