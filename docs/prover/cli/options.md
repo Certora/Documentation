@@ -1278,7 +1278,6 @@ and can prevent resource exhaustion.
 
 Use this attribute when encountering out-of-memory errors, particularly when processing unusually large or complex rule sets.
 Setting the maximum number of parallel rule evaluations to low values (e.g., 1, 2, or 4) may reduce memory usage in large runs.
-while the default usage is the number of available CPU cores. This can sometimes help to mitigate out of memory problems.
 
 
 **Example**
