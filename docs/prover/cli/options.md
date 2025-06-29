@@ -1282,7 +1282,7 @@ Setting the maximum number of parallel rule evaluations to low values (e.g., 1, 
 
 **Example**
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --max_concurrent_rules 5
+certoraRun Bank.sol --verify Bank:Bank.spec --max_concurrent_rules 4
 ```
 
 
