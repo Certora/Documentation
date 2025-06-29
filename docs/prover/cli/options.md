@@ -1269,7 +1269,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300
 
 This attribute controls the maximum number of rule evaluations that can be executed concurrently.
 By default, it is set to the number of available CPU cores on the host machine, allowing optimal parallelization under typical conditions.
-Setting this value limits the number of rule evaluation tasks that can run in parallel.
+Setting this value to a lower number limits the number of rule evaluation tasks that can run in parallel.
 By capping the concurrency level, this attribute helps regulate system resource usage, particularly memory consumption, 
 and can prevent resource exhaustion.
 
