@@ -52,6 +52,8 @@ contract_name ::= id
 See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
 production, and {doc}`statements` for the `block` production.
 
+
+(invariant-overview)=
 Overview
 --------
 

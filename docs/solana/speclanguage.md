@@ -6,7 +6,7 @@ pre- and post-conditions for client code. Unlike CVL for Solidity, CVLR is
 embedded in Rust. It is compiled by the Rust compiler and has simple operational
 semantics.
 
-CVLR is deployed to [crates.io](https://crates.io/crates/cvlr). The development version can be found at https://github.com/Certora/cvlr.
+CVLR is deployed to [crates.io](https://crates.io/crates/cvlr). The development version can be found at [https://github.com/Certora/cvlr](https://github.com/Certora/cvlr).
 Please note that CVLR is independent from the Solana ecosystem, specific CVLR features for 
 Solana are maintained as part of the [cvlr-solana](https://crates.io/crates/cvlr-solana) package.
 

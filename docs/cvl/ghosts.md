@@ -169,8 +169,10 @@ In any rule that uses bar, no application of bar could ever evaluate to a number
 
 ### Initial state axioms
 
-When writing invariants, initial axioms are a way to express the “constructor state” of a ghost function. They are used 
-only when checking the base step of invariants {ref}`invariant-as-rule`. Before checking the initial state of an invariant, the Certora Prover adds a `require` for each `init_state` axiom. `init_state` axioms are not used in rules or the preservation check for invariants.
+When writing invariants, initial axioms are a way to express the “constructor state” of a ghost function or variable. They are used 
+only when checking the base step of invariants (see {ref}`Invariants Overview <invariant-overview>` for how invariants are checked). 
+Before checking the initial state of an invariant, the Certora Prover adds a `require` for each `init_state` axiom. 
+`init_state` axioms are not used in rules or the preservation check for invariants.
 
 ```cvl
 ghost mathint sumBalances{
