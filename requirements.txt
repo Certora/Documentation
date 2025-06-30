@@ -110,5 +110,5 @@ sphinxcontrib-youtube==1.2.0
     # via docsinfra
 tomli==2.0.1
     # via sphinx
-urllib3==2.2.2
+urllib3==2.5.0
     # via requests
