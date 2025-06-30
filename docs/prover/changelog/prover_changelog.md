@@ -5,6 +5,11 @@ Prover Release Notes
 ```{contents}
 ```
 
+7.31.0 (June 30, 2025)
+----------------------
+### CLI
+- [feat] Added a new `--max_concurrent_rules` flag which allows to control how many rule evaluations are executed at the same time. By default, the number matches the available CPU cores, but lowering the value (e.g., to 1, 2, or 4) can help reduce memory usage and mitigate out-of-memory errors in larger runs.
+
 7.29.1 (May 18, 2025)
 ----------------------
 ### CVL
