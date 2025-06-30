@@ -17,3 +17,7 @@ __pycache__
 # JetBrains (Pycharm)
 *.DS_Store
 .idea/
+
+#direnv
+.envrc
+.direnv
