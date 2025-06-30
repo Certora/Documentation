@@ -4,6 +4,20 @@ GUI Release Notes
 ```{contents}
 ```
 
+7.0.0 (June 30, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Updated `Sanity_Fail` rule status icon to be red and more distinct than the timeout icon.
+- [feat] Rule Report - Added Rule indication for `ruleNotifications`. This new indication will notify the user when they have `ruleNotifications` for a certain rule/child. The indicator color is changing based on the notification severity.
+- [feat] Rule Report - Added Private/Public sharing options to the rule report.
+- [feat] Dashboard - Added Private/Public copy link buttons to the Jobs List table. Private links will be assigned by default.
+
+### Fixed Bugs
+
+- [bug] Rule Report - Fixed link to logs page and negative runtime on Job Info tab
+
 5.0.1 (May 18, 2025)
 ---------------------------
 
