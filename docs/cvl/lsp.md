@@ -25,7 +25,7 @@ a deliberate decision made for the sake of uniformity across different projects.
 The formatter uses spaces for indentation. It discards whitespace and line breaks
 beyond what is considered necessary.
 
-If you have installed the LSP Extension, you can run the formatter directy from
+If you have installed the LSP Extension, you can run the formatter directly from
 VSCode by using the `Format Document` feature from the [VSCode Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). Alternatively, you can manually run the formatter
 from a shell, using the standalone script `certoraCVLFormatter.py`, and passing it
 the name of the file you would like to format. See the documentation of that script
