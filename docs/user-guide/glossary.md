@@ -213,7 +213,6 @@ UNSAT result
   fulfilled respectively.
   See also {ref}`rule-overview`.
 
-(scene)=
 scene
   The *scene* refers to the set of contract instances that the Certora Prover
   knows about.
