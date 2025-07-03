@@ -873,9 +873,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 Map attribute are used when source files are not all compiled with the same `solc` parameters.
 The attributes that can be set by map attributes are:
 
-| Map Attribute                                   | Compiler Attribute                                          |
-|-------------------------------------------------|-------------------------------------------------------------|
-| [`Solc_evm_version_map`](#solc_evm_version_map) | setting the target `evm` version 
+| Map Attribute                                  | Compiler Attribute                                          |
+|------------------------------------------------|-------------------------------------------------------------|
+| `Solc_evm_version_map` | setting the target `evm` version 
 
 
 Options regarding source code loops
