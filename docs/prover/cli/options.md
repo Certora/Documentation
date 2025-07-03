@@ -871,50 +871,6 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 ## `Solidity compiler map attributes`
 
-Map attribute are used when source files are not all compiled with the same `solc` parameters.
-The attributes that can be set by map attributes are:
-
-| Map Attribute                                   | Compiler Attribute                                          |
-|-------------------------------------------------|-------------------------------------------------------------|
-| [`compiler_map`](#compiler_map)                 | set for each `.solc` and `.vy` file to the appropriate compiler |
-| [`solc_optimize_map`](#solc_optimize_map)       |  enable optimization with optionally number of expected runs |
-| [`solc_via_ir_map`](#solc_via_ir_map)           | compile with or without IR                                  |
-| [`Solc_evm_version_map`](#solc_evm_version_map) | setting the target `evm` version                              |
-
-The format of map attributes are in command line:
-```sh
-certoraRun ... --compiler_map A=solc7.11,C_*=solc8.24,B.sol=solc8.9,src/**/*.vy=vyper0.3.0 ...
-```
-The same settings in a conf file:
-
-```sh
-{
-  ...
-  "compiler_map": {
-    "A": "solc7.11",
-    "C_*": "solc8.24",
-    "B.sol": "solc8.9",
-    "src/**/*.vy": "vyper0.3.0"
-  },
-  ...
-}
-```
-The key of each entry is either a pattern for contract name or a path pattern. Path patterns end with: `.sol`, `.vy` or `.yul` suffix.
-
-It is not allowed to have both the map and the non-map attribute set together (e.g., `--solc` and `--compiler_map`).
-
-If a map attribute was set, all files/contracts declared in `file:` must be mapped.
-
-For contract patterns the wildcard character `*`, replaces any character that is allowed in contract names.
-
-For path patterns the `*` stands for any character that is allowed in paths that is not a slash(/)
-`**` stands for any number of directories (including none).
-When a map attribute is defined and the prover calls the solidity compiler, the following will take place:
-- The entries of the map attributes will be checked for a match by their order of appearance.
-- If the key is a path pattern, the path of the file will be matched to the path pattern; if there is a match, the value of the entry will be used.
-- If the entry is a contract pattern, the prover will check if the file contains a contract that matches the contract pattern.
-- Since all contracts and files are matched as part of the validation phase, it is not expected at this stage not to find a match.
-
 Options regarding source code loops
 ===================================
 
