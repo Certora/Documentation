@@ -33,7 +33,7 @@ and only then run the formatter.
 ```
 
 The formatter uses spaces for indentation. It discards whitespace and line breaks
-beyond what is considered necessary, as well as redundant paranthesis. It may
+beyond what is considered necessary, as well as redundant parentheses. It may
 also insert line breaks or whitespace, or make other style changes.
 
 ```{note}
