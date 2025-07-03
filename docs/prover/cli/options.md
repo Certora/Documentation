@@ -871,15 +871,22 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 ## `Solidity compiler map attributes`
 
-Map attribute are used when source files are not all compiled with the same `solc` parameters.
-The attributes that can be set by map attributes are:
+[//]: # (Map attribute are used when source files are not all compiled with the same `solc` parameters.)
 
-| Map Attribute                                   | Compiler Attribute                                          |
-|-------------------------------------------------|-------------------------------------------------------------|
-| [`compiler_map`](#compiler_map)                 | set for each `.solc` and `.vy` file to the appropriate compiler |
-| [`solc_optimize_map`](#solc_optimize_map)       |  enable optimization with optionally number of expected runs |
-| [`solc_via_ir_map`](#solc_via_ir_map)           | compile with or without IR                                  |
-| [`Solc_evm_version_map`](#solc_evm_version_map) | setting the target `evm` version                              |
+[//]: # (The attributes that can be set by map attributes are:)
+
+[//]: # ()
+[//]: # (| Map Attribute                                   | Compiler Attribute                                          |)
+
+[//]: # (|-------------------------------------------------|-------------------------------------------------------------|)
+
+[//]: # (| [`compiler_map`]&#40;#compiler_map&#41;                 | set for each `.solc` and `.vy` file to the appropriate compiler |)
+
+[//]: # (| [`solc_optimize_map`]&#40;#solc_optimize_map&#41;       |  enable optimization with optionally number of expected runs |)
+
+[//]: # (| [`solc_via_ir_map`]&#40;#solc_via_ir_map&#41;           | compile with or without IR                                  |)
+
+[//]: # (| [`Solc_evm_version_map`]&#40;#solc_evm_version_map&#41; | setting the target `evm` version                              |)
 
 The format of map attributes are in command line:
 ```sh
