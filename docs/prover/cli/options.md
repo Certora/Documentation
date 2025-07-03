@@ -873,9 +873,18 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 Map attribute are used when source files are not all compiled with the same `solc` parameters.
 The attributes that can be set by map attributes are:
 
-| Map Attribute                                  | Compiler Attribute                                          |
-|------------------------------------------------|-------------------------------------------------------------|
-| `Solc_evm_version_map` | setting the target `evm` version 
+| Map Attribute                               | Compiler Attribute                                          |
+|---------------------------------------------|-------------------------------------------------------------|
+| `compiler_map`| set for each `.solc` and `.vy` file to the appropriate compiler |
+| `solc_optimize_map`|  enable optimization with optionally number of expected runs |
+| `solc_via_ir_map`| compile with or without IR                                  |
+| `Solc_evm_version_map`| setting the target `evm` version                              |
+
+The format of map attributes are in command line:
+```sh
+certoraRun ... --compiler_map A=solc7.11,C_*=solc8.24,B.sol=solc8.9,src/**/*.vy=vyper0.3.0 ...
+```
+The same settings in a conf file:
 
 
 Options regarding source code loops
