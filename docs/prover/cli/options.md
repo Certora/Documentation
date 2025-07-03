@@ -869,7 +869,8 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
 # Use full path to the compiler
 certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
-## `Solidity compiler map attributes`
+
+[//]: # (## `Solidity compiler map attributes`)
 
 [//]: # (Map attribute are used when source files are not all compiled with the same `solc` parameters.)
 
