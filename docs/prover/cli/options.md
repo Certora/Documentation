@@ -871,7 +871,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 
 
-Options regarding source code loopsg
+Options regarding source code is loops
 ===================================
 
 (--loop_iter)=
