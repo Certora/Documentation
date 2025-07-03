@@ -887,7 +887,7 @@ certoraRun ... --compiler_map A=solc7.11,C_*=solc8.24,B.sol=solc8.9,src/**/*.vy=
 ```
 The same settings in a conf file:
 
-```json
+```sh
 {
   ...
   "compiler_map": {
