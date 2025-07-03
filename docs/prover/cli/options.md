@@ -889,11 +889,15 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 
 [//]: # (| [`Solc_evm_version_map`]&#40;#solc_evm_version_map&#41; | setting the target `evm` version                              |)
 
-The format of map attributes are in command line:
-```sh
-certoraRun ... --compiler_map A=solc7.11,C_*=solc8.24,B.sol=solc8.9,src/**/*.vy=vyper0.3.0 ...
-```
-The same settings in a conf file:
+[//]: # (The format of map attributes are in command line:)
+
+[//]: # (```sh)
+
+[//]: # (certoraRun ... --compiler_map A=solc7.11,C_*=solc8.24,B.sol=solc8.9,src/**/*.vy=vyper0.3.0 ...)
+
+[//]: # (```)
+
+[//]: # (The same settings in a conf file:)
 
 [//]: # (```sh)
 
