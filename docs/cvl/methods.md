@@ -906,6 +906,7 @@ You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
 ```
 
+(storage-arguments-in-summaries)=
 As an example, let's look at `storage` arguments. Although you can use expression
 summaries to summarize a method to a function, and you _can_ summarize methods
 that take `storage` arguments as input, you cannot use expression summaries to
@@ -935,6 +936,53 @@ In case of recursive calls due to the summarization, the recursion limit can be 
 `--summary_recursion_limit N'` where `N` is the number of recursive calls allowed (default 0).
 If `--optimistic_summary_recursion` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit.
 Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
+
+(rerouting)=
+#### Rerouting summaries
+
+When dealing with `internal` EVM methods that return `storage` pointers such as
+`mapping` types and arrays, you may wish to model those values as well.
+[As previously mentioned](storage-arguments-in-summaries), `storage` pointers
+are not convertible to CVL parameters. This limitation essentially means the
+`storage` variables cannot "cross the boundary" to CVL territory.
+
+Instead, you can remain within the bounds of EVM, and _reroute_ such methods
+to an `external` library EVM method. The summary target is now an EVM method and,
+as with any EVM method, you're allowed to access and modify any `storage` pointers
+inside this method.
+
+We show how this works with an example. Let's say you have the following contract:
+
+```solidity
+contract Contract {
+    mapping(address => int[]) addressToData;
+
+    function updateAndReturnData(address addr) internal returns (int[] memory) {
+        int[] memory data = addressToData[addr];
+        /* ...does something with `data`... */
+        return data;
+    }
+}
+```
+
+To model `Contract.updateAndReturnData`, you can define a library in your EVM code...
+
+```solidity
+library Harness {
+    function rerouted(address addr) external returns (uint[] memory) {
+        /* your code goes here */
+    }
+}
+```
+
+...and then make it the target of the summary:
+
+```cvl
+methods {
+    function Contract.updateAndReturnData(address addr) internal returns (int[] memory) 
+        => Harness.rerouted(addr);
+}
+```
 
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 
