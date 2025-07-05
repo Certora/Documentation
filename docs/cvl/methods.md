@@ -853,28 +853,6 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 }
 ```
 
-When summarizing an internal library function to an expression, you cannot refer to a variable that is `storage`,
-since CVL functions cannot take variables that are `storage`. You can refer to other variables,
-or use a summarization that doesn't take parameters:
-```cvl
-methods {
-    // not allowed
-    function MyLibrary.guess(int[] storage numbers) internal returns (int)
-        => goodGuess1(numbers);
-    
-    // allowed
-    function MyLibrary.guess(int[] storage numbers, int myGuess) internal returns (int)
-        => goodGuess2(myGuess);
-
-    // allowed
-    function MyLibrary.guess(int[] storage numbers) internal returns (int)
-        => ALWAYS(42);
-}
-
-function goodGuess1(int[] numbers) returns int { return 4; }
-function goodGuess2(int myGuess) returns int { return myGuess; }
-```
-
 The call can also refer to a variable of type `env` introduced by a
 {ref}`with(env) clause <with-env>`.  Here `e` may be replaced with any valid identifier.
 
@@ -918,7 +896,7 @@ In this example, if the `process` method calls `t.transfer(...)`, then in the
 `cvlTransfer` function, `token` will be `t`, `passedEnv.msg.sender` will be
 `c`, and `passedEnv.tx.origin` will be `sender`.
 
-
+```{note}
 There is a restriction on the functions that can be used as approximations.
 Namely, the types of any arguments passed to or values returned from the summary
 must be {ref}`convertible <type-conversions>` between CVL and Solidity types.
@@ -926,6 +904,32 @@ Arguments that are not accessed in the summary may have any type.
 
 You can still summarize functions that take unconvertible types as arguments,
 but you cannot access those arguments in your summary.
+```
+
+As an example, let's look at `storage` arguments. Although you can use expression
+summaries to summarize a method to a function, and you _can_ summarize methods
+that take `storage` arguments as input, you cannot use expression summaries to
+pass those `storage` arguments to the summary target, since CVL functions cannot
+take `storage` parameters as input:
+
+```cvl
+methods {
+    // not allowed
+    function MyLibrary.guess(int[] storage numbers) internal returns (int)
+        => goodGuess1(numbers);
+    
+    // allowed
+    function MyLibrary.guess(int[] storage numbers, int myGuess) internal returns (int)
+        => goodGuess2(myGuess);
+
+    // allowed
+    function MyLibrary.guess(int[] storage numbers) internal returns (int)
+        => ALWAYS(42);
+}
+
+function goodGuess1(int[] numbers) returns int { return 4; }
+function goodGuess2(int myGuess) returns int { return myGuess; }
+```
 
 In case of recursive calls due to the summarization, the recursion limit can be set with
 `--summary_recursion_limit N'` where `N` is the number of recursive calls allowed (default 0).
