@@ -871,17 +871,16 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 ## `Solidity compiler map attributes`
 
-Map attribute are used when source files are not all compiled with the same `solc` parameters.
-The attributes that can be set by map attributes are:
+When source files are not all compiled with the same `solc` parameters you should use Solidity compiler map attributes.
 
 | Map Attribute                               | Compiler Attribute                                          |
 |---------------------------------------------|-------------------------------------------------------------|
-| `compiler_map`| set for each `.solc` and `.vy` file to the appropriate compiler |
-| `solc_optimize_map`|  enable optimization with optionally number of expected runs |
-| `solc_via_ir_map`| compile with or without IR                                  |
-| `Solc_evm_version_map`| setting the target `evm` version                              |
+| `compiler_map`| Set the appropriate compiler for each `.solc` and `.vy` file |
+| `solc_optimize_map`| Set optimization per file with optionally the number of expected runs |
+| `solc_via_ir_map`| Compile with or without IR                                  |
+| `solc_evm_version_map`| Setting the target `evm` version                              |
 
-The format of map attributes are in command line:
+The format of map attributes in the command line is:
 ```sh
 certoraRun ... --compiler_map A=solc7.11,C_*=solc8.24,B.sol=solc8.9,src/**/*.vy=vyper0.3.0 ...
 ```
@@ -899,15 +898,15 @@ The same settings in a conf file:
   ...
 }
 ```
-The key of each entry is either a pattern for contract name or a path pattern. Path patterns end with: `.sol`, `.vy` or `.yul` suffix.
+The key of each entry is either a contract name pattern or a path pattern. Path patterns end with: `.sol`, `.vy` or `.yul` suffix.
 
-It is not allowed to have both the map and the non-map attribute set together (e.g., `--solc` and `--compiler_map`).
+It is not allowed to have both the map and the non-map attribute set together (e.g., `solc` and `compiler_map`).
 
-If a map attribute was set, all files/contracts declared in `file:` must be mapped.
+If a map attribute was set, all files/contracts declared in `files` must be mapped.
 
-For contract patterns the wildcard character `*`, replaces any character that is allowed in contract names.
+For contract patterns, the wildcard character `*` replaces any character that is allowed in contract names.
 
-For path patterns the `*` stands for any character that is allowed in paths that is not a slash(/)
+For path patterns, the `*` stands for any character that is allowed in paths that is not a slash (`/`).
 `**` stands for any number of directories (including none).
 When a map attribute is defined and the prover calls the solidity compiler, the following will take place:
 - The entries of the map attributes will be checked for a match by their order of appearance.
