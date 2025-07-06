@@ -611,7 +611,7 @@ Options that control the Solidity compiler
 
 **What does it do?**
 Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
-see also XXX
+see also See {ref}`map_attributes`
 
 **When to use it?**
 When different contracts have to be compiled for different Solidity versions.
@@ -756,7 +756,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
 **What does it do?**
 Set EVM version values when different files run with different EVM versions
 Passes the value of this option as is to the Solidity compiler's option `--evm-version`.
-see also XXX
+see also See {ref}`map_attributes`
 
 **When to use it?**
 When different contracts have to be compiled with different Solidity EVM versions.
@@ -832,7 +832,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 
 **What does it do?**
 This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the `via-ir` option.
-see also
+see also See {ref}`map_attributes`
 
 **When to use it?**
 Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior) but another fails to compile with the IR pipeline, this flag lets you mix modes safely.
