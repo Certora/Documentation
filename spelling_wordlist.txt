@@ -226,3 +226,5 @@ hotspots
 typecheck
 typechecking
 formattable
+stdout
+stderr
