@@ -611,7 +611,7 @@ Options that control the Solidity compiler
 
 **What does it do?**
 Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
-see also See {ref}`map_attributes`
+See also See {ref}`map_attributes`
 
 **When to use it?**
 When different contracts have to be compiled for different Solidity versions.
