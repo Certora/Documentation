@@ -756,7 +756,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
 **What does it do?**
 Set EVM version values when different files run with different EVM versions
 Passes the value of this option as is to the Solidity compiler's option `--evm-version`.
-see also See {ref}`map_attributes`
+See also See {ref}`map_attributes`
 
 **When to use it?**
 When different contracts have to be compiled with different Solidity EVM versions.
