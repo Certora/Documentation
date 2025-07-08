@@ -854,7 +854,8 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 ```
 
 When summarizing an internal library function to an expression, you cannot refer to a variable that is `storage`,
-since CVL functions cannot take variables that are `storage`. You can refer to other variables,
+since CVL functions cannot take variables that are `storage`; for summaries involving `storage` references,
+refer to {ref}`rerouting summaries <rerouting-summary>`. You can refer to other variables,
 or use a summarization that doesn't take parameters:
 ```cvl
 methods {
@@ -924,5 +925,137 @@ In case of recursive calls due to the summarization, the recursion limit can be 
 If `--optimistic_summary_recursion` is set, the recursion limit is assumed, i.e. one will never get a counterexample going above the recursion limit.
 Otherwise, if it is possible to go above the recursion limit, an assert will fire, producing a counterexample to the rule.
 
+(rerouting-summaries)=
+#### Rerouting summaries
+As mentioned above, expression summaries cannot access parameters with `storage` location.
+In such cases where summaries require accessing `storage` located variables, rerouting summaries can be used.
+As the name suggests, a rerouting summary "reroutes" a function call which accepts `storage` located
+values to a harness function written in Solidity.
+
+The syntax for a rerouting summary is exactly the same as an expression summary, except the expression used
+as the summmary is an invocation of an `external` library function. For example:
+
+```cvl
+methods {
+   function Bank.computeInterest(
+      Bank.Vault storage v, address depositor, uint principal
+   ) internal returns (uint)
+      => VaultHarness.computeInterestHarness(v, depositor, principal);
+}
+```
+
+Where `VaultHarness` looks like the following:
+
+```solidity
+library VaultHarness {
+    function computeInterestHarness(
+       Bank.Vault storage v, address depositor, uint principal
+    ) external returns (uint) {
+	   // ...
+    }
+}
+```
+
+This summary replaces the invocation of the internal function `computeInterest` with a delegatecall into `VaultHarness.computeInterestHarness`.
+We will call the `VaultHarness.computeInterestHarness` function the "summary harness".
+Via the `delegatecall`, the harness body `computeInterestHarness` may access `Bank`'s storage through the parameter `v`.
+
+```{warning}
+The harness body (in our example, `computeInterestHarness`) can contain arbitrary Solidity code,
+and may thus mutate the storage of the contract under verification in unsafe or unsound ways
+via the `storage` parameters. Summary harnesses should avoid modifying the storage if at all
+possible, or extreme care should be exercised so that any storage updates are sound.
+```
+
+By the same token, any mutations to `memory` parameters will **not** be reflected in the 
+summarized function caller's memory. Other environment parameters (e.g., the value of `this`)
+are bound using the same semantics as a `delegatecall`.
+
+```{note}
+The `calldata` in the summary harness will contain an encoding of the summary harness arguments,
+will not be the same as the calldata observed in the original, summarized function.
+```
+
+The rerouting summaries come with some restrictions on their use.
+
+1. Rerouting summaries can only be applied to `internal` functions [^public-vs-private]
+2. The summary harness must return the same types as the summarized function
+3. The rerouting summary must consist **only** of the call to the summary harness. That is, `... => 1 + VaultHarness.computeInterestHarness(...)`
+  is illegal.
+4. The summary harness **must** be defined as an external function in a library contract.
+5. The library contract must be included in the {term}`scene`.
+6. The arguments passed to the summary harness must be some permutation of a subset of the
+  original function's `storage`, `memory`, and value parameters.[^parameters] Expressions involving the
+  internal function parameters may **not** be used.
+7. The summary harness' signature must exactly match the parameters passed through by the rerouting sumary.
+
+To elaborate on point 6: the arguments in the invocation of the summary harness **must** be one
+of the parameters bound by the method entry, provided that parameter does not have `calldata` location.
+Eligible parameters may be duplicated, reordered or simply dropped. For example, in our `computeInterestHarness`
+example, if the summary harness didn't need the value of `depositor` we could have written:
+
+```cvl
+   function Bank.computeInterest(
+      Bank.Vault storage v, address depositor, uint principal
+   ) internal returns (uint)
+      => VaultHarness.computeInterestHarness(v, principal);
+```
+
+With the appropriate update to the signature of `computeInterestHarness`. In addition, we could have written
+`computeInterestHarness(principal, v)`, again with the appropriate update to the function signature.
+
+Any expression that is not one of the parameters bound by the entry cannot be used. For example,
+the following is an **illegal** rerouting summary due to the addition on `principal`:
+
+```cvl
+   function Bank.computeInterest(
+      Bank.Vault storage v, address depositor, uint principal
+   ) internal returns (uint)
+      => VaultHarness.computeInterestHarness(v, depositor, principal + 3);
+```
+
+Further, the following is also illegal, as the principal argument is now an expression that is not one of the parameters:
+
+```cvl
+   function Bank.computeInterest(
+      Bank.Vault storage v, address depositor, uint principal
+   ) internal returns (uint)
+      => VaultHarness.computeInterestHarness(v, depositor, cvlGetPrincipal());
+```
+
+When resolving rerouting summaries, there is no subtyping of function arguments; as mentioned in point 7, the summary harness
+signature must exactly match the passed arguments. Formally, an entry binds parameters _p{sub}`0`_, _p{sub}`1`_, ..., _p{sub}`k`_,
+each with declared type _t{sub}`0`_, _t{sub}`1`_, ..., _t{sub}`k`_. Some permutation of these parameters are passed
+as arguments to the summary harness _f_: _p{sub}`i`_, _p{sub}`j`_, .... The types of these parameters, _t{sub}`i`_, _t{sub}`j`_, ...
+determines the expected signature of _f_, that is, a function _f_(_t{sub}`i`_, _t{sub}`j`_, ...) must be declared in the library contract.
+
+To give a concrete example, the following would **not** work:
+
+```cvl
+   function Bank.computeInterest(
+      Bank.Vault storage v, address depositor, uint128 principal
+   ) internal returns (uint)
+      => VaultHarness.computeInterestHarness(v, depositor, principal);
+```
+```solidity
+library VaultHarness {
+   function computeInterestHarness(
+      Bank.Vault storage v, address depositor, uint256 principal
+   ) external returns (uint) { ... }
+}
+```
+
+Note that the declared type of `principal` in the signature of `computeInterestHarness` is `uint256`, where as
+the type of `principal` bound in the entry is `uint128`.
+
+```{note}
+To reiterate: the body of the summary harness is treated like any other Solidity code,
+and thus may make external calls, contain loops, or call other internal functions
+(which may themselves be summarized).
+```
+
 [solidity-value-types]: https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
 
+[^public-vs-private]: As with other summaries, a rerouting `internal` summary can be applied to `public` and `private` functions.
+
+[^parameters]: In other words, parameters with `calldata` location may not be passed through to the summary harness. This restriction may be lifted in the future.
