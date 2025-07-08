@@ -699,10 +699,10 @@ Options that control the Solidity compiler
 ```
 
 **What does it do?**
-Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
+Compiles every smart contract with a different compiler executable (Solidity or Vyper). All used contracts must be listed.
 
 **When to use it?**
-When different contracts have to be compiled for different Solidity versions.
+When different contracts have to be compiled with different compiler versions.
 
 **Example**
 ```sh
@@ -759,7 +759,7 @@ Via a configuration file:
 For each package, gets the path to a directory including that Solidity package.
 
 **When to use it?**
-By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `--packages`.
+By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `packages`.
 
 **Example**
 ```sh
@@ -1119,14 +1119,14 @@ Recursion limit (...) for calls to ..., reached during compilation of summary ..
 Such recursion can also happen with {ref}`dispatcher summaries <dispatcher>` &mdash;
 if a contract method `f` makes an unresolved external call to a different method
 `f`, and if `f` is summarized with a `DISPATCHER` summary, then the Prover will
-consider paths where `f` recursively calls itself. Without `--optimistic_summary_recursion`,
+consider paths where `f` recursively calls itself. Without `optimistic_summary_recursion`,
 the Prover may report a rule violation with the following assert message:
 ```text
 When summarizing a call with dispatcher, found we already have it in the stack: ... consider removing its dispatcher summary.
 ```
 The default behavior in this case is to assert that the recursion limit is not
 reached (the limit is controlled by the {ref}`--summary_recursion_limit` flag).
-With `--optimistic_summary_recursion`, the Prover will instead assume that the
+With `optimistic_summary_recursion`, the Prover will instead assume that the
 limit is never reached.
 
 **When to use it?**
@@ -1195,7 +1195,7 @@ When hashing data of potentially unbounded length (including unbounded arrays,
 like `bytes`, `uint[]`, etc.):
 
 1. If `optimistic_hashing` is set the Proves _assumes_
-   the data's length is bounded by the `--hashing_length_bound` option.
+   the data's length is bounded by {ref}`--hashing_length_bound`.
 2. If `optimistic_hashing` is not set, the Prover will check whether
    the data's length can exceed the `hashing_length_bound`, and report an
    assertion violation if it can.
@@ -1223,7 +1223,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 
 **What does it do?**
 
-Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the Prover, depending on whether `--optimistic_hashing` has been set. The bound is specified as a number of bytes.
+Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the Prover, depending on whether {ref}`--optimistic_hashing` has been set. The bound is specified as a number of bytes.
 
 The default value of this option is 224 (224 bytes correspond to 7 EVM machine words as 7 * 32 == 224).
 
@@ -1234,8 +1234,8 @@ Lowering potentially improves SMT performance, especially if there are many occu
 
 Reasons to raise this value:
 
- - when `--optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `--optimistic_hashing` being not set)
- - when `--optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
+ - when `optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `optimistic_hashing` being not set)
+ - when `optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
 
 **Example**
 
@@ -1309,9 +1309,9 @@ Values larger than two hours (7200 seconds) are ignored.
 Jobs that exceed the global timeout will simply be terminated, so the result
 reports may not be generated.
 
-The global timeout is different from the {ref}`--smt_timeout` option: the
-`--smt_timeout` flag constrains the amount of time allocated to the processing
-of each individual rule, while the `--global_timeout` flag constrains the
+The global timeout is different from the {ref}`--smt_timeout` option:
+`smt_timeout` constrains the amount of time allocated to the processing
+of each individual rule, while `global_timeout` constrains the
 processing of the entire job, including static analysis and other
 preprocessing.
 
@@ -1361,7 +1361,7 @@ applies to SMT solvers, for details see {ref}`-mediumTimeout` and
 **When to use it?**
 The default time out for the solvers is 300 seconds. There are two use cases for this option.
 One is to decrease the timeout. This is useful for simple rules, that are solved quickly by the SMT solvers. Here, it is beneficial to reduce the timeout, so that when a new code breaks the specification, the tool will fail quickly. This is the more common use case.
-The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `--smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.
+The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.
 
 **Example**
 ```sh
@@ -1412,7 +1412,8 @@ Options to set addresses and link contracts
 Sets the address of a contract to a given address.
 
 **When to use it?**
-When we have an external contract with a constant address. By default, the Python script assigns addresses as it sees fit to contracts.
+When we have an external contract with a constant address. 
+By default, the Python script assigns addresses as it sees fit to contracts.
 
 **Example**
 
@@ -1473,7 +1474,7 @@ contract already has such a function and this would cause a conflict).
 **What does it do?**
 Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
 option sets the contract recursion level, which is the number of recursive calls
-that the Prover will consider when inlining contracts linked using, e.g., `--link` or `--struct_link`.
+that the Prover will consider when inlining contracts linked using, e.g., {ref}`--link` or {ref}`--struct_link`.
 
 ```{note}
 In this context, recursion refers to the state where the same _external_ function
@@ -1494,8 +1495,7 @@ with recursive calls to external Solidity
 functions, and this leads to a recursion-specific assertion failure,
 showing the message `Contract recursion limit reached`.
 In this case one can either
-make the limit larger or set `--optimistic_contract_recursion` flag
-to `true`.
+make the limit larger or set `optimistic_contract_recursion` to `true`.
 
 ```{note}
 Increasing the limit is not always sufficient,
@@ -1521,7 +1521,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 Links a slot in a contract with another contract.
 
 **When to use it?**
-Many times a contract includes the address of another contract as one of its fields. If we do not use `--link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
+Many times a contract includes the address of another contract as one of its fields. If we do not use `link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
 
 **Example**
 Assume we have the contract `Bank.sol` with the following code snippet:
@@ -1562,7 +1562,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will havoc all storage state of external contracts. When `--optimistic_fallback` is enabled, these calls will instead:
+This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will havoc all storage state of external contracts. When `optimistic_fallback` is enabled, these calls will instead:
 
 - Execute the fallback function in the specified contract (if it exists).
 - Revert if no fallback function is available.
@@ -1591,7 +1591,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.
 
 **When to use it?**
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `--struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
 
 **Example**
 Assume we have the contract `Bank.sol` with the following code snippet:
