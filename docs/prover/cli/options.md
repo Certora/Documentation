@@ -577,8 +577,17 @@ By default, the Prover returns a single example per rule, either a counterexampl
 Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and refine in the specification or implementation.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun MyContract.sol --verify MyContract:MyContract.spec --multi_example
+```
+
+Via a configuration file:
+
+```json
+"multi_example": true
 ```
 
 
@@ -605,9 +614,20 @@ Mostly used as a first step when starting to work on a new project, in order to
 may be hot spots for summarization etc.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun --project_sanity
 ```
+
+Via a configuration file:
+
+```json
+"project_sanity": true
+```
+
+
 
 (--rule_sanity)=
 ## `rule_sanity`
@@ -618,7 +638,8 @@ certoraRun --project_sanity
 ```
 
 **What does it do?**
-This option enables sanity checking for rules.  The `--rule_sanity` option may
+This option enables sanity checking for rules.  
+The `rule_sanity` option may
 be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/sanity` for more information about sanity checks.
 
@@ -627,9 +648,19 @@ We suggest using this option routinely while developing rules.  It is also a
 useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
 ```
+
+Via a configuration file:
+
+```json
+"rule_sanity": "basic"
+```
+
 
 (--short_output)=
 ## `short_output`
@@ -641,9 +672,21 @@ Reduces the verbosity of the tool.
 When we do not care much for the output. It is recommended when running the tool in continuous integration.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --short_output
 ```
+
+Via a configuration file:
+
+```json
+"short_output": true
+```
+
+
+
 
 Options that control the Solidity compiler
 ==========================================
@@ -667,6 +710,18 @@ When different contracts have to be compiled for different Solidity versions.
 certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
 ```
 
+Via the command line:
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
+```
+
+Via a configuration file:
+
+```json
+"rule_sanity": "basic"
+```
+
 ## `ignore_solidity_warnings`
 
 **What does it do?**
@@ -679,9 +734,19 @@ A common example is error 6321: `Unnamed return variable can remain unassigned`.
 The Solidity compiler versions 0.7.6 and up emit this warning, which can be safely ignored in many contexts.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Token.sol --verify Token:Token.spec --ignore_solidity_warnings
 ```
+
+Via a configuration file:
+
+```json
+"ignore_solidity_warnings": true
+```
+
 
 (--packages)=
 ## `packages`
