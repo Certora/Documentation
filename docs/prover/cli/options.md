@@ -447,7 +447,8 @@ The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` inde
 Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode),
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
 
-As an illustrative example of the default mode, consider the following rule `R` that has two satisfy statements:
+As an illustrative example of the default mode, 
+consider the following rule `R` that has two satisfy statements:
 
 ```cvl
 rule R {
@@ -473,9 +474,14 @@ rule R2_default {
 }
 ```
 
-Without turning `independent_satisfy` mode on, `R2` would have failed, as it would try to satisfy `b && !b`, an unsatisfiable contradiction.
+Without turning `independent_satisfy` mode on, `R2` would have failed, 
+as it would try to satisfy `b && !b`, an unsatisfiable contradiction.
 Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
-It would also generate and check two sub-rules, but with a slight difference: `R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, and `R2` where `satisfy b` is removed, and `!b` is satisfied (by `b=false`).
+It would also generate and check two sub-rules, 
+but with a slight difference: 
+`R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, 
+and `R2` where `satisfy b` is removed, 
+and `!b` is satisfied (by `b=false`).
 
 The two `independent_satisfy` generated sub-rules will be equivalent to:
 
@@ -493,18 +499,31 @@ rule R2_independent {
 ```
 
 **When to use it?**
-When you have a rule with multiple satisfy statements, and you would like to demonstrate each statement separately.
+When you have a rule with multiple satisfy statements, 
+and you would like to demonstrate each statement separately.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy
+```
+
+Via a configuration file:
+
+```json
+"independent_satisfy": true
 ```
 
 (--multi_assert_check)=
 ## `multi_assert_check`
 
 **What does it do?**
-This mode checks each assertion statement that occurs in a rule, separately. The check is done by decomposing each rule into multiple sub-rules, each of which checks one assertion, while it assumes all preceding assertions. In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
+This mode checks each assertion statement that occurs in a rule, separately. 
+The check is done by decomposing each rule into multiple sub-rules, 
+each of which checks one assertion, while it assumes all preceding assertions. 
+In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
 
 As an illustrative example, consider the following rule `R` that has two assertions:
 
