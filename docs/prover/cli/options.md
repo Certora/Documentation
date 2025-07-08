@@ -426,8 +426,17 @@ This option implicitly enables the {ref}`--auto_dispatcher` option.
 When we want to run all Foundry fuzz tests in the project with the Prover.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun --foundry
+```
+
+Via a configuration file:
+
+```json
+"foundry": true
 ```
 
 (--independent_satisfy)=
