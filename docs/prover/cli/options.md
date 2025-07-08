@@ -552,9 +552,19 @@ When you have a rule with multiple assertions:
 
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
 ```
+
+Via a configuration file:
+
+```json
+"multi_assert_check": true
+```
+
 
 (--multi_example)=
 ## `multi_example`
