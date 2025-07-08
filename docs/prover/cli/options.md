@@ -410,12 +410,12 @@ Via a configuration file:
 ## `foundry`
 
 **What does it do?**
-Collects all test files in the project (files ending with `.t.sol`), and runs
-the {ref}`foundry_integration` on them (specifically, the
-`verifyFoundryFuzzTestsNoRevert` builtin rule). As with the
-{ref}`--project_sanity` option, the search is over files in the current git
-repository if such exists, otherwise over all files in the tree under the
-current working directory.
+Collects all test files in the project (files ending with `.t.sol`), 
+and runs the {ref}`foundry_integration` on them (specifically, 
+the `verifyFoundryFuzzTestsNoRevert` builtin rule). 
+As with the {ref}`--project_sanity` option, 
+the search is over files in the current git repository if such exists, 
+otherwise over all files in the tree under the current working directory.
 
 ```{note}
 This option implicitly enables the {ref}`--auto_dispatcher` option.
