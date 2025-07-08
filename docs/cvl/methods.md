@@ -855,7 +855,7 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 
 When summarizing an internal library function to an expression, you cannot refer to a variable that is `storage`,
 since CVL functions cannot take variables that are `storage`; for summaries involving `storage` references,
-refer to {ref}`rerouting summaries <rerouting-summary>`. You can refer to other variables,
+refer to {ref}`rerouting summaries <rerouting-summaries>`. You can refer to other variables,
 or use a summarization that doesn't take parameters:
 ```cvl
 methods {
@@ -933,7 +933,7 @@ As the name suggests, a rerouting summary "reroutes" a function call which accep
 values to a harness function written in Solidity.
 
 The syntax for a rerouting summary is exactly the same as an expression summary, except the expression used
-as the summmary is an invocation of an `external` library function. For example:
+as the summary is an invocation of an `external` library function. For example:
 
 ```cvl
 methods {
@@ -987,7 +987,7 @@ The rerouting summaries come with some restrictions on their use.
 6. The arguments passed to the summary harness must be some permutation of a subset of the
   original function's `storage`, `memory`, and value parameters.[^parameters] Expressions involving the
   internal function parameters may **not** be used.
-7. The summary harness' signature must exactly match the parameters passed through by the rerouting sumary.
+7. The summary harness' signature must exactly match the parameters passed through by the rerouting summary.
 
 To elaborate on point 6: the arguments in the invocation of the summary harness **must** be one
 of the parameters bound by the method entry, provided that parameter does not have `calldata` location.
