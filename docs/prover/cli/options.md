@@ -379,13 +379,13 @@ Options affecting the type of verification run
 (--coverage_info)=
 ## `coverage_info`
 
-**Usage**
+**Parameters**
 ```sh
---coverage_info <none|basic|advanced>
+none|basic|advanced
 ```
 
 **What does it do?**
-This option enables .sol and .spec coverage analysis and visualization.
+This option enables `.sol` and `.spec` coverage analysis and visualization.
 The `--coverage_info` option may be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/coverage-info` for more information about the analysis.
 
@@ -458,7 +458,7 @@ rule R {
 }
 ```
 
-The statements for "R1" and "R2" will actually create two sub-rules equivalent to:
+The statements for `R1` and `R2` will actually create two sub-rules equivalent to:
 ```cvl
 rule R1_default {
   bool b;
@@ -632,20 +632,19 @@ Via a configuration file:
 (--rule_sanity)=
 ## `rule_sanity`
 
-**Usage**
+**Parameters**
 ```sh
---rule_sanity <none|basic|advanced>
+none|basic|advanced
 ```
 
 **What does it do?**
 This option enables sanity checking for rules.  
-The `rule_sanity` option may
-be followed by one of `none`, `basic`, or `advanced`;
+The `rule_sanity` option may be followed by one of `none`, `basic`, or `advanced`.
 See {doc}`../checking/sanity` for more information about sanity checks.
 
 **When to use it?**
-We suggest using this option routinely while developing rules.  It is also a
-useful check if you notice rules passing surprisingly quickly or easily.
+We suggest using this option routinely while developing rules.  
+It is also a useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
 
