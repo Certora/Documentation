@@ -956,7 +956,7 @@ library VaultHarness {
 }
 ```
 
-This summary replaces the invocation of the internal function `computeInterest` with a delegatecall into `VaultHarness.computeInterestHarness`.
+This summary replaces the invocation of the internal function `computeInterest` with a `delegatecall` into `VaultHarness.computeInterestHarness`.
 We will call the `VaultHarness.computeInterestHarness` function the "summary harness".
 Via the `delegatecall`, the harness body `computeInterestHarness` may access `Bank`'s storage through the parameter `v`.
 
@@ -973,7 +973,7 @@ are bound using the same semantics as a `delegatecall`.
 
 ```{note}
 The `calldata` in the summary harness will contain an encoding of the summary harness arguments,
-will not be the same as the calldata observed in the original, summarized function.
+will not be the same as the `calldata` observed in the original, summarized function.
 ```
 
 The rerouting summaries come with some restrictions on their use.
