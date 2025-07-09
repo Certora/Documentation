@@ -964,7 +964,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchang
 Via a configuration file:
 
 ```json
-"solc_evm_version_map": {
+"solc_optimize_map": {
     "Bank": 200,
     "Exchange": 300
 }
