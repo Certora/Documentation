@@ -1007,10 +1007,6 @@ Use this when different contracts require different compilation pipelines. For i
 If {ref}`--solc_via_ir` is not set globally, no contracts will be compiled `via-ir` unless explicitly specified in this map.
 
 **Example**
-```sh
-certoraRun A.sol B.sol --verify A:A.spec \
-  --solc_via_ir_map A=true,B=false
-```
 
 In this example, contract A is compiled with the `--via-ir` flag, while contract B is compiled without it.
 
