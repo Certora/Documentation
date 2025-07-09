@@ -801,11 +801,6 @@ Via a configuration file:
 (--solc)=
 ## `solc`
 
-**Usage**
-```sh
---solc <solc_executable>
-```
-
 **What does it do?**
 This attribute tells the Prover which Solidity compiler to use. You may pass either:
 - A full path to the compiler executable, e.g., `/usr/local/bin/solc8.19`, or
