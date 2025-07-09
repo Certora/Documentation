@@ -705,20 +705,21 @@ Compiles every smart contract with a different compiler executable (Solidity or 
 When different contracts have to be compiled with different compiler versions.
 
 **Example**
-```sh
-certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
-```
 
 Via the command line:
 
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
+certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
 ```
 
 Via a configuration file:
 
 ```json
-"rule_sanity": "basic"
+"solc_map": {
+    "Bank": "solc4.25",
+    "Exchange": "solc6.7",
+    "Token": "vyper0.3.10"
+}
 ```
 
 ## `ignore_solidity_warnings`
