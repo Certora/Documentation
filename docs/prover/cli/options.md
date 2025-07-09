@@ -850,6 +850,8 @@ or
 "solc": "/usr/local/bin/solc8.19"
 ```
 
+
+
 (--solc_allow_path)=
 ## `solc_allow_path`
 
@@ -863,12 +865,23 @@ Passes the value of this option as is to the Solidity compiler's option `--allow
 See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
 
 **When to use it?**
-When we want to add an additional location the Solidity compiler to load sources from
+When we want to add an additional location for the Solidity compiler to load sources from.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank
 ```
+
+Via a configuration file:
+
+```json
+"solc_allow_path": "~/Projects/Bank"
+```
+
+
 
 (--solc_evm_version)=
 ## `solc_evm_version`
