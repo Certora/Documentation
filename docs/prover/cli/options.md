@@ -918,7 +918,6 @@ When a map attribute is defined and the prover calls the solidity compiler, the 
 - The entries of the map attributes will be checked for a match by their order of appearance.
 - If the key is a path pattern, the path of the file will be matched to the path pattern; if there is a match, the value of the entry will be used.
 - If the entry is a contract pattern, the prover will check if the file contains a contract that matches the contract pattern.
-- Since all contracts and files are matched as part of the validation phase, it is not expected at this stage not to find a match.
 
 Options regarding source code loops
 ===================================
