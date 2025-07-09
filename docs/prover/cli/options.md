@@ -908,14 +908,8 @@ Via a configuration file:
 
 
 
-
 (--solc_evm_version_map)=
 ## `solc_evm_version_map`
-
-**Usage**
-```sh
---solc_evm_version_map <contract>=<version>,...
-```
 
 **What does it do?**
 Set EVM version values when different files run with different EVM versions
@@ -925,9 +919,22 @@ Passes the value of this option as is to the Solidity compiler's option `--evm-v
 When different contracts have to be compiled with different Solidity EVM versions.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun
 ```
+
+Via a configuration file:
+
+```json
+"solc_evm_version_map": {
+    "Bank": "prague",
+    "Exchange": "cancun"
+}
+```
+
 
 (--solc_optimize)=
 ## `solc_optimize`
