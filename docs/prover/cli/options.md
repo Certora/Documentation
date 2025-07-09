@@ -751,11 +751,6 @@ Via a configuration file:
 (--packages)=
 ## `packages`
 
-**Usage**
-```sh
---packages <name>=<path>...
-```
-
 **What does it do?**
 For each package, gets the path to a directory including that Solidity package.
 
@@ -763,9 +758,22 @@ For each package, gets the path to a directory including that Solidity package.
 By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `packages`.
 
 **Example**
+
+Via the command line:
+
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src
+certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src,contracts=src/contracts
 ```
+
+Via a configuration file:
+
+```json
+"packages": [
+    "ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src",
+    "contracts=src/contracts"
+]
+```
+
 
 ```{note}
 In Solidity projects, information about packages' location is usually stored in `remappings.txt` file.
