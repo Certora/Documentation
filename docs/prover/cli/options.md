@@ -842,7 +842,7 @@ or
 
 **What does it do?**
 Passes the value of this option as is to the Solidity compiler's option `--allow-paths`.
-See [--allow-paths specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
+See Solidity's [allow-paths documentation](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
 
 **When to use it?**
 When we want to add an additional location for the Solidity compiler to load sources from.
