@@ -791,12 +791,22 @@ In Solidity projects, information about packages' location is usually stored in 
 Gets the path to a directory including the Solidity packages.
 
 **When to use it?**
-By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `--packages_path`.
+By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `packages_path`.
 
 **Example**
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages
 ```
+
+Via a configuration file:
+
+```json
+"packages_path": "Solidity/packages"
+```
+
+
 
 (--solc)=
 ## `solc`
