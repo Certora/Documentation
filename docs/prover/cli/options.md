@@ -904,7 +904,7 @@ The same settings in a conf file:
   ...
 }
 ```
-The key of each entry is either a contract name pattern or a path pattern. Path patterns end with: `.sol`, `.vy` or `.yul` suffix.
+The key of each entry is either a contract name pattern or a path pattern. Path patterns must end with one of the following suffixes: `.sol`, `.vy`, or `.yul`.
 
 It is not allowed to have both the map and the non-map attribute set together (e.g., `solc` and `compiler_map`).
 
