@@ -764,7 +764,7 @@ Via a configuration file:
 
 ```json
 "packages": [
-    "ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src",
+    "ds-stop=$PWD/lib/ds-token/lib/ds-stop/src",
     "contracts=src/contracts"
 ]
 ```
