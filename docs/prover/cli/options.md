@@ -908,7 +908,7 @@ The key of each entry is either a contract name pattern or a path pattern. Path 
 
 It is not allowed to have both the map and the non-map attribute set together (e.g., `solc` and `compiler_map`).
 
-If a map attribute was set, all files/contracts declared in `files` must be mapped.
+If a map attribute was set, all files/contracts declared in {ref}`files` must be mapped.
 
 For contract patterns, the wildcard character `*` replaces any character that is allowed in contract names.
 
