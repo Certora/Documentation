@@ -840,11 +840,6 @@ or
 (--solc_allow_path)=
 ## `solc_allow_path`
 
-**Usage**
-```sh
---solc_allow_path <path>
-```
-
 **What does it do?**
 Passes the value of this option as is to the Solidity compiler's option `--allow-paths`.
 See [--allow-path specification](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)
