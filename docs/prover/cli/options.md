@@ -693,11 +693,6 @@ Options that control the Solidity compiler
 (--solc_map)=
 ## `compiler_map`
 
-**Usage**
-```sh
---compiler_map <contract>=<version>,...
-```
-
 **What does it do?**
 Compiles every smart contract with a different compiler executable (Solidity or Vyper). All used contracts must be listed.
 
