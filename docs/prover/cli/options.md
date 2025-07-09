@@ -784,6 +784,7 @@ Gets the path to a directory including the Solidity packages.
 By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `packages_path`.
 
 **Example**
+
 Via the command line:
 
 ```sh
@@ -1069,22 +1070,27 @@ Options regarding source code loops
 (--loop_iter)=
 ## `loop_iter`
 
-**Usage**
-```sh
---loop_iter <n>
-```
-
 **What does it do?**
 Sets the maximal number of loop iterations we verify for. The way the Certora Prover handles loops is by unrolling them - if the loop should be executed three times, it will copy the code inside the loop three times. This option sets the number of unrolls. Be aware that the run time grows exponentially by the number of loop iterations.
 
 **When to use it?**
-The default number of loop iterations we unroll is one. However, in many cases, bugs only occur when there are several iterations. Common scenarios include iteration over list elements. Two, or in some cases three, is usually the most you will ever need to uncover bugs.
+The default number of loop iterations we unroll is one. However, in many cases, bugs only occur when there are several iterations. Common scenarios include iteration over list elements. Two, or in some cases three, is usually the most iterations you will ever need to uncover bugs.
 
 **Example**
+
+Via the command line:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 ```
+
+Via a configuration file:
+
+```json
+"loop_iter": 2
+```
+
+
 
 (--optimistic_loop)=
 ## `optimistic_loop`
@@ -1097,13 +1103,24 @@ This option changes the assertions of the loop unwind condition to requirements 
 When you have loops in your code and are getting a counterexample labeled `loop unwind condition`. In general, you need this flag whenever the number of loop iterations varies. It is usually a necessity if using {ref}`--loop_iter`.
 
 ```{caution}
-`--optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
+`optimistic_loop` could cause {ref}`vacuous rules <--rule_sanity>`.
 ```
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 ```
+
+Via a configuration file:
+
+```json
+"optimistic_loop": true
+```
+
+
 
 Options regarding summarization
 ===============================
