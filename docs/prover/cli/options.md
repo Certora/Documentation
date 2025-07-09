@@ -827,12 +827,27 @@ This behavior mimics the shell’s resolution of commands (similar to how `which
 Use this option if your system has multiple Solidity versions installed and you want to select one explicitly. This is particularly useful when working with legacy contracts or caring about specific compiler version behaviors.
 
 **Example**
+
+Via the command line:
+
 ```sh
 # Use a compiler version from $PATH
 certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.19
 
 # Use full path to the compiler
 certoraRun Bank.sol --verify Bank:Bank.spec --solc /usr/local/bin/solc8.19
+```
+
+Via a configuration file:
+
+```json
+"solc": "solc8.19"
+```
+
+or
+
+```json
+"solc": "/usr/local/bin/solc8.19"
 ```
 
 (--solc_allow_path)=
