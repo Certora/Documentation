@@ -1032,11 +1032,6 @@ Via a configuration file:
 
 ## `vyper`
 
-**Usage**
-```sh
---vyper <vyper_executable>
-```
-
 **What does it do?**
 This attribute tells the Prover which Vyper compiler to use. You may pass either:
 - A full path to the compiler executable, e.g., `/usr/local/bin/vyper0.3.10`, or
