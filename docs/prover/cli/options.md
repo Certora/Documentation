@@ -777,11 +777,6 @@ In Solidity projects, information about packages' location is usually stored in 
 (--packages_path)=
 ## `packages_path`
 
-**Usage**
-```sh
---packages_path <path>
-```
-
 **What does it do?**
 Gets the path to a directory including the Solidity packages.
 
