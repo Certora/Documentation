@@ -877,14 +877,9 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 (map_attributes)=
 ## `Solidity compiler map attributes`
 
-When source files are not all compiled with the same `solc` parameters you should use Solidity compiler map attributes.
-
-| Map Attribute                               | Compiler Attribute                                          |
-|---------------------------------------------|-------------------------------------------------------------|
-| `compiler_map`| Set the appropriate compiler for each `.solc` and `.vy` file |
-| `solc_optimize_map`| Set optimization per file with optionally the number of expected runs |
-| `solc_via_ir_map`| Compile with or without IR                                  |
-| `solc_evm_version_map`| Setting the target `evm` version                              |
+When source files are not all compiled with the same `solc` parameters you should use Solidity compiler map attributes. 
+Supported map attributes are: {ref}`compiler_map`, {ref}`solc_optimize_map`, {ref}`solc_via_ir_map`
+and {ref}`solc_evm_version_map`.
 
 The format of map attributes in the command line is:
 ```sh
