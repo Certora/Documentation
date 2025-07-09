@@ -886,21 +886,28 @@ Via a configuration file:
 (--solc_evm_version)=
 ## `solc_evm_version`
 
-**Usage**
-```sh
---solc_evm_version <version>
-```
-
 **What does it do?**
 Passes the value of this option to the Solidity compiler's option `--evm-version`.
 
 **When to use it?**
-When we want to select the Solidity compiler EVM version
+When we want to select the Solidity compiler's EVM version.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
 ```
+
+Via a configuration file:
+
+```json
+"solc_evm_version": "Istanbul"
+```
+
+
+
 
 (--solc_evm_version_map)=
 ## `solc_evm_version_map`
