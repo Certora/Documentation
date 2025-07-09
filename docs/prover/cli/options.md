@@ -1017,11 +1017,6 @@ Via a configuration file:
 
 ## `solc_via_ir_map`
 
-**Usage**
-```sh
---solc_via_ir_map <contract>=<true|false>,...
-```
-
 **What does it do?**
 This flag configures whether the Solidity compiler should enable the IR-based code generator per contract. It allows different contracts in the same project to be compiled with or without the `via-ir` option.
 
@@ -1073,12 +1068,27 @@ This behavior mimics the shell’s resolution of commands (similar to how `which
 Use this option if your system has multiple Vyper versions installed and you want to select one explicitly. This is particularly useful when working with legacy contracts or caring about specific compiler version behaviors.
 
 **Example**
+
+Via the command line:
+
 ```sh
 # Use a compiler version from $PATH
 certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
 
 # Use full path to the compiler
 certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
+```
+
+Via a configuration file:
+
+```json
+"vyper": "vyper0.3.10"
+```
+
+or
+
+```json
+"vyper": "/usr/local/bin/vyper0.3.10"
 ```
 
 
