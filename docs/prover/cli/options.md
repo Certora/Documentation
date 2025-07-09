@@ -975,7 +975,6 @@ number of times the optimizer will be activated (if no value is set, the compile
 
 **Example**
 
-
 Via the command line:
 
 ```sh
@@ -1000,11 +999,20 @@ Via a configuration file:
 Passes the value of this option to the Solidity compiler's option `--via-ir`.
 
 **When to use it?**
-When we want to enable the IR-based code generator
+When we want to enable the IR-based code generator.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
+```
+
+Via a configuration file:
+
+```json
+"solc_via_ir": true
 ```
 
 ## `solc_via_ir_map`
@@ -1030,6 +1038,22 @@ certoraRun A.sol B.sol --verify A:A.spec \
 ```
 
 In this example, contract A is compiled with the `--via-ir` flag, while contract B is compiled without it.
+
+Via the command line:
+
+```sh
+certoraRun A.sol B.sol --verify A:A.spec \
+  --solc_via_ir_map Bank=true,Exchange=false
+```
+
+Via a configuration file:
+
+```json
+"solc_via_ir_map": {
+    "Bank": true,
+    "Exchange": false
+}
+```
 
 ## `vyper`
 
