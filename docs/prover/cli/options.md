@@ -757,7 +757,7 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 Via the command line:
 
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-stop=$PWD/lib/ds-token/lib/ds-stop/src ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src,contracts=src/contracts
+certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src,contracts=src/contracts
 ```
 
 Via a configuration file:
