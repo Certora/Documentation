@@ -1185,17 +1185,24 @@ verification results, as well as highlighting potentially difficult functions.
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
+Via a configuration file:
+
+```json
+"nondet_difficult_funcs": true
+```
+
+
+
+
+
 (--nondet_minimal_difficulty)=
 ## `nondet_minimal_difficulty`
-
-**Usage**
-```sh
---nondet_minimal_difficulty <n>
-```
 
 **What does it do?**
 This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
@@ -1208,9 +1215,20 @@ The notification in the rule report that contains the applied summaries will pre
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
+
+Via a configuration file:
+
+```json
+"nondet_minimal_difficulty": 20
+```
+
+
+
 
 (--optimistic_summary_recursion)=
 ## `optimistic_summary_recursion`
