@@ -932,7 +932,8 @@ In such cases where summaries require accessing `storage` located variables, rer
 As the name suggests, a rerouting summary "reroutes" a function call which accepts `storage` located
 values to a harness function written in Solidity.
 
-The syntax for a rerouting summary is exactly the same as an expression summary, except the expression used
+The syntax for a rerouting summary is exactly the same as an {ref}`expression summary <expression-summary>`, 
+except the expression used
 as the summary is an invocation of an `external` library function. For example:
 
 ```cvl
@@ -973,7 +974,7 @@ are bound using the same semantics as a `delegatecall`.
 
 ```{note}
 The `calldata` in the summary harness will contain an encoding of the summary harness arguments,
-will not be the same as the `calldata` observed in the original, summarized function.
+which will not be the same as the `calldata` observed in the original, summarized function.
 ```
 
 The rerouting summaries come with some restrictions on their use.
@@ -1025,9 +1026,9 @@ Further, the following is also illegal, as the principal argument is now an expr
 
 When resolving rerouting summaries, there is no subtyping of function arguments; as mentioned in point 7, the summary harness
 signature must exactly match the passed arguments. Formally, an entry binds parameters _p{sub}`0`_, _p{sub}`1`_, ..., _p{sub}`k`_,
-each with declared type _t{sub}`0`_, _t{sub}`1`_, ..., _t{sub}`k`_. Some permutation of these parameters are passed
+each with declared type _t{sub}`0`_, _t{sub}`1`_, ..., _t{sub}`k`_. Some permutation of these parameters is passed
 as arguments to the summary harness _f_: _p{sub}`i`_, _p{sub}`j`_, .... The types of these parameters, _t{sub}`i`_, _t{sub}`j`_, ...
-determines the expected signature of _f_, that is, a function _f_(_t{sub}`i`_, _t{sub}`j`_, ...) must be declared in the library contract.
+determine the expected signature of _f_, that is, a function _f_(_t{sub}`i`_, _t{sub}`j`_, ...) must be declared in the library contract.
 
 To give a concrete example, the following would **not** work:
 
