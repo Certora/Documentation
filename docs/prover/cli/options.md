@@ -1264,8 +1264,16 @@ flag to `true`.
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion
+```
+
+Via a configuration file:
+
+```json
+"optimistic_summary_recursion": true
 ```
 
 ```{caution}
@@ -1275,11 +1283,6 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 
 (--summary_recursion_limit)=
 ## `summary_recursion_limit`
-
-**Usage**
-```sh
---summary_recursion_limit <n>
-```
 
 **What does it do?**
 Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
@@ -1305,9 +1308,18 @@ When inlining a fallback function, found it was already on the stack. Consider d
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
+
+Via a configuration file:
+
+```json
+"summary_recursion_limit": 3
+```
+
 
 
 Options regarding hashing of unbounded data
