@@ -1132,7 +1132,7 @@ Options regarding summarization
 In case a call's callee cannot be precomputed but the called method's sighash
 can be (e.g. `MyInterface(addr).foo()` in Solidity, where `addr` is some
 `address` typed variable), the default behavior of the Prover in this case is to
-Havoc. In this case the user can specify a {ref}`dispatcher` summary in the
+{term}`havoc`. In this case the user can specify a {ref}`dispatcher` summary in the
 {ref}`methods-block` so that the prover will inline all methods in the scene
 that have this sighash.
 
@@ -1141,8 +1141,8 @@ as if an `DISPATCHER(optimistic=true)` was added for that method in the methods
 block.
 
 One important difference from manually placing the `DISPATCHER` summary in the
-methods block is that when it's manually written there with `optimistic=true`
-and no such function is found in the scene the Prover will exit with an error,
+{ref}`methods-block` is that when it's manually written there with `optimistic=true`,
+and no such function is found in the scene, the Prover will exit with an error,
 but when using the flag it will fall back to the default havoc.
 
 **When to use it?**
@@ -1151,9 +1151,20 @@ call resolution failures.
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
+
+Via a configuration file:
+
+```json
+"auto_dispatcher": true
+```
+
+
+
 
 (--nondet_difficult_funcs)=
 ## `nondet_difficult_funcs`
