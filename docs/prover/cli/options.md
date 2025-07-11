@@ -913,7 +913,7 @@ For path patterns, the `*` stands for any character that is allowed in paths tha
 When a map attribute is defined and the prover calls the solidity compiler, the following will take place:
 - The entries of the map attributes will be checked for a match by their order of appearance.
 - If the key is a path pattern, the path of the file will be matched to the path pattern; if there is a match, the value of the entry will be used.
-- If the entry is a contract pattern, the prover will check if the file contains a contract that matches the contract pattern.
+- If the entry is a contract pattern, the Prover will check if the file contains a contract that matches the contract pattern.
 
 Options regarding source code loops
 ===================================
