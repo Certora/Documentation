@@ -1609,11 +1609,6 @@ Via a configuration file:
 (--max_concurrent_rules)=
 ## `max_concurrent_rules`
 
-**Usage**
-```sh
---max_concurrent_rules <n>
-```
-
 **What does it do?**
 
 This attribute controls the maximum number of rule evaluations that can be executed concurrently.
@@ -1630,9 +1625,19 @@ Setting the maximum number of parallel rule evaluations to low values (e.g., 1, 
 
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --max_concurrent_rules 4
 ```
+
+Via a configuration file:
+
+```json
+"max_concurrent_rules": 4
+```
+
 
 
 Options to set addresses and link contracts
