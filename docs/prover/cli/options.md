@@ -1458,22 +1458,33 @@ Options that help reduce the running time
 ## `compilation_steps_only`
 
 **What does it do?**
-Exits the program after source code and spec compilation without sending
-a verification request to the cloud.
+Stops execution after compiling the source code and specification, 
+without sending a verification request to the Certora cloud.
 
 **When to use it?**
-Use it to check if the spec has correct syntax but do not wish
-to send a verification request and wait for its results.
+Use this option to check for syntax and compilation errors in your spec without running a full verification. 
+This is useful when you want quick feedback on spec validity without waiting for analysis results.
 
-Here are a few example scenarios:
-1. When writing hooks, ghosts, summaries, or CVL functions, you can verify the spec before continuing to write rules.
-2. In CI, you can check CVL correctness after every PR but run the expensive and long verification only on nightly runs.
-3. When you have no internet connection but still want to develop spec offline.
+Example use cases:
+
+1. You can validate the spec early before writing the rules, while developing hooks, ghost variables, summaries, or CVL functions.
+2. In CI pipelines, you can validate the CVL spec on every pull request, but defer full verification to longer nightly runs.
+3. When working offline, you can continue developing and validating the spec without requiring an internet connection.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
+
+Via a configuration file:
+
+```json
+"compilation_steps_only": true
+```
+
 
 ## `disable_local_type_checking`
 
