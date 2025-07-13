@@ -1498,9 +1498,18 @@ This flag should only be used in rare cases when you believe the local syntax or
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun MyContract.sol --verify MyContract:MySpec --disable_local_typechecking
 ```
+
+Via a configuration file:
+
+```json
+"disable_local_typechecking": true
+```
+
 
 ```{caution}
 Avoid using this flag unless absolutely necessary. It is always better to fix syntax or type issues locally to ensure a smoother verification process.
