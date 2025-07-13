@@ -1867,7 +1867,10 @@ Many times a contract includes the address of another contract inside a field of
 
 **Example**
 Assume we have the contract `Bank.sol` with the following code snippet:
-`TokenPair public tokenPair;`
+
+```solidity
+TokenPair public tokenPair;
+```
 
 Where `TokenPair` is
 ```solidity
