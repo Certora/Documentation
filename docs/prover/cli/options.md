@@ -1765,9 +1765,9 @@ Via a configuration file:
 (--link)=
 ## `link`
 
-**Usage**
+**Parameters**
 ```sh
---struct_link <contract>:<slot>=<address>
+<contract>:<slot>=<address>
 ```
 
 **What does it do?**
@@ -1780,9 +1780,18 @@ Many times a contract includes the address of another contract as one of its fie
 Assume we have the contract `Bank.sol` with the following code snippet:
 `IERC20 public underlyingToken;`
 
-We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we use:
+We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we can set the link via the command line:
+
 ```sh
 certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken
+```
+
+Or via a configuration file:
+
+```json
+"link": [
+    "Bank:underlyingToken=BankToken"
+],
 ```
 
 (--optimistic_contract_recursion)=
