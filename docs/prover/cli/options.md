@@ -1348,9 +1348,19 @@ When the assertion regarding unbounded hashing is thrown, but it is acceptable f
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ```
+
+Via a configuration file:
+
+```json
+"optimistic_hashing": true
+```
+
+
 
 (--hashing_length_bound)=
 ## `hashing_length_bound`
@@ -1541,11 +1551,6 @@ Options to set addresses and link contracts
 
 (--address)=
 ## `address`
-
-**Usage**
-```sh
---address <contract>:<address>
-```
 
 **What does it do?**
 Sets the address of a contract to a given address.
