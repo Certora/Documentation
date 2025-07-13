@@ -1333,7 +1333,7 @@ Options regarding hashing of unbounded data
 When hashing data of potentially unbounded length (including unbounded arrays,
 like `bytes`, `uint[]`, etc.):
 
-1. If `optimistic_hashing` is set the Proves _assumes_
+1. If `optimistic_hashing` is set the Prover _assumes_
    the data's length is bounded by {ref}`--hashing_length_bound`.
 2. If `optimistic_hashing` is not set, the Prover will check whether
    the data's length can exceed the `hashing_length_bound`, and report an
@@ -1367,19 +1367,24 @@ Via a configuration file:
 
 **What does it do?**
 
-Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the Prover, depending on whether {ref}`--optimistic_hashing` has been set. The bound is specified as a number of bytes.
+Limits the maximum length of unbounded data chunks that are being hashed. The bound is defined in bytes and applies differently based on the {ref}`--optimistic_hashing` setting:
 
-The default value of this option is 224 (224 bytes correspond to 7 EVM machine words as 7 * 32 == 224).
+- If {ref}`--optimistic_hashing` is enabled, this length is assumed by the Prover.
+
+- If disabled, the Prover checks that all relevant data chunks respect this bound.
 
 **When to use it?**
-Reason to lower this value:
 
-Lowering potentially improves SMT performance, especially if there are many occurrences of unbounded hashing in the program.
+The default maximum length of unbounded data chunks that are being hashed is 224 (224 bytes correspond to 7 EVM machine words as 7 * 32 == 224).
 
-Reasons to raise this value:
+Reasons to lower the bound:
 
- - When {ref}`--optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `optimistic_hashing` being not set)
- - When {ref}`--optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
+- Can improve SMT solver performance, especially in programs with many instances of unbounded hashing.
+
+Reasons to raise the bound:
+
+ - When {ref}`--optimistic_hashing` is not set: Increase the bound to avoid unnecessary assertion failures when hashed values are bounded, but exceed the default limit.
+ - When {ref}`--optimistic_hashing` is set: Raising the value helps detect bugs that depend on a hashed array reaching a certain length. Optimistic hashing excludes all cases where the hashed data exceeds this bound from verification.
 
 **Example**
 
