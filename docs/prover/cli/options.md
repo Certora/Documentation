@@ -1651,14 +1651,25 @@ Sets the address of a contract to a given address.
 
 **When to use it?**
 When we have an external contract with a constant address. 
-By default, the Python script assigns addresses as it sees fit to contracts.
+By default, Certora's client assigns addresses as it sees fit to contracts.
 
 **Example**
 
-If we wish the `Oracle` contract to be at address 12, we use
+If we wish the `Oracle` contract to be at address 12, 
+we can do it via the command line:
+
 ```sh
 certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12
 ```
+
+Or via a configuration file:
+
+```json
+"address": [
+    "Oracle:12"
+],
+```
+
 
 (--contract_extensions)=
 ## `contract_extensions`
