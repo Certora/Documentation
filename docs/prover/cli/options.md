@@ -1365,11 +1365,6 @@ Via a configuration file:
 (--hashing_length_bound)=
 ## `hashing_length_bound`
 
-**Usage**
-```sh
---hashing_length_bound <n>
-```
-
 **What does it do?**
 
 Constraint on the maximal length of otherwise unbounded data chunks that are being hashed. This constraint is either assumed or checked by the Prover, depending on whether {ref}`--optimistic_hashing` has been set. The bound is specified as a number of bytes.
@@ -1383,14 +1378,23 @@ Lowering potentially improves SMT performance, especially if there are many occu
 
 Reasons to raise this value:
 
- - when `optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `optimistic_hashing` being not set)
- - when `optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
+ - When {ref}`--optimistic_hashing` is not set: avoid the assertion being violated when the hashed values are actually bounded, but by a bound that is higher than the default value (in case of `optimistic_hashing` being not set)
+ - When {ref}`--optimistic_hashing` is set: find bugs that rely on a hashed array being at least of that length. (Optimistic hashing excludes all cases from the scope of verification where something being hashed is longer than this bound.)
 
 **Example**
+
+Via the command line:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
 ```
+
+Via a configuration file:
+
+```json
+"hashing_length_bound": 128
+```
+
 
 
 Options that help reduce the running time
