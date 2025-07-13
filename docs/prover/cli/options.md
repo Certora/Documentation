@@ -1715,11 +1715,6 @@ contract already has such a function and this would cause a conflict).
 (--contract_recursion_limit)=
 ## `contract_recursion_limit`
 
-**Usage**
-```sh
---contract_recursion_limit <n>
-```
-
 **What does it do?**
 Contract inlining can cause recursion (see {ref}`--optimistic_contract_recursion`). This
 option sets the contract recursion level, which is the number of recursive calls
@@ -1744,19 +1739,28 @@ with recursive calls to external Solidity
 functions, and this leads to a recursion-specific assertion failure,
 showing the message `Contract recursion limit reached`.
 In this case one can either
-make the limit larger or set `optimistic_contract_recursion` to `true`.
+make the limit larger or set {ref}`--optimistic_contract_recursion`.
 
 ```{note}
 Increasing the limit is not always sufficient,
 as the code may in fact allow theoretically unbounded recursion.
 ```
 
-
 **Example**
+
+Via the command line:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ```
+
+Via a configuration file:
+
+```json
+"contract_recursion_limit": 3
+```
+
+
 
 (--link)=
 ## `link`
