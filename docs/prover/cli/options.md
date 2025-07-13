@@ -1566,11 +1566,6 @@ See {ref}`--method`
 (--smt_timeout)=
 ## `smt_timeout`
 
-**Usage**
-```sh
---smt_timeout <seconds>
-```
-
 **What does it do?**
 Sets the maximal timeout for all the
 [SMT solvers](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories).
@@ -1596,9 +1591,20 @@ One is to decrease the timeout. This is useful for simple rules, that are solved
 The second use is when the solvers can prove the property, they just need more time. Usually, if the rule isn't solved in 600 seconds, it will not be solved in 2,000 either. It is better to concentrate your efforts on simplifying the rule, the source code, add more summaries, or use other time-saving options. The prime causes for an increase of `smt_timeout` are rules that are solved quickly, but time out when you add a small change, such as a requirement, or changing a strict inequality to a weak inequality.
 
 **Example**
+
+Via the command line:
+
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 300
+certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 500
 ```
+
+Via a configuration file:
+
+```json
+"smt_timeout": 500
+```
+
+
 
 (--max_concurrent_rules)=
 ## `max_concurrent_rules`
