@@ -1791,7 +1791,7 @@ Or via a configuration file:
 ```json
 "link": [
     "Bank:underlyingToken=BankToken"
-],
+]
 ```
 
 (--optimistic_contract_recursion)=
@@ -1889,7 +1889,7 @@ Or via a configuration file:
 "struct_link": [
     "Bank:0=BankToken",
     "Bank:1=LoanToken"
-],
+]
 ```
 
 
