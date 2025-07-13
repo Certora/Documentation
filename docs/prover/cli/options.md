@@ -1851,13 +1851,12 @@ Via a configuration file:
 ```
 
 
-
 (--struct_link)=
 ## `struct_link`
 
-**Usage**
+**Parameters**
 ```sh
---struct_link <contract>:<slot>=<address>
+<contract>:<slot>=<address>
 ```
 
 **What does it do?**
@@ -1878,11 +1877,22 @@ struct TokenPair {
 }
 ```
 
-We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we use:
+We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we can set via the command line:
 
 ```sh
 certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
 ```
+
+Or via a configuration file:
+
+```json
+"struct_link": [
+    "Bank:0=BankToken",
+    "Bank:1=LoanToken"
+],
+```
+
+
 
 Options for job metadata and dashboard filtering
 ================================================
