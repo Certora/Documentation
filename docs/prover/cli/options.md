@@ -1693,7 +1693,7 @@ If you use the proxy pattern in your smart contracts.
 Say we have a base contract `A` that uses an extension contract `B`.
 Since in this pattern the storage of the two contracts may "overlap", let's also
 assume they both have some `uint public n`.
-In the .conf file one should add
+In the `.conf` file one should add
 ```json
 "contract_extensions": {
     "A": [
@@ -1706,7 +1706,7 @@ In the .conf file one should add
 ```
 
 This tells the prover that `B` is an extension contract of `A`, but that it shouldn't
-"transfer" the getter for n from the extension into the base contract (since the base
+"transfer" the getter for `n` from the extension into the base contract (since the base
 contract already has such a function and this would cause a conflict).
 
 [For a more detailed example click here.](https://github.com/Certora/Examples/tree/master/CVLByExample/ExtensionContracts)
