@@ -1519,11 +1519,6 @@ Avoid using this flag unless absolutely necessary. It is always better to fix sy
 (--global_timeout)=
 ## `global_timeout`
 
-**Usage**
-```sh
---global_timeout <seconds>
-```
-
 **What does it do?**
 
 Sets the maximal timeout for the Prover.
@@ -1550,9 +1545,19 @@ Even if in the shorter running time not all rules were processed, a second run m
 ```
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
 ```
+
+Via a configuration file:
+
+```json
+"global_timeout": 60
+```
+
 
 ## `method`
 
