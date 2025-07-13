@@ -1830,16 +1830,27 @@ This option controls how the Prover handles unresolved external calls with an em
 - Revert if no fallback function is available.
 - Execute a transfer if applicable.
 
-This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing unnecessary state havoc for empty input calls.
+This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing unnecessary state {term}`havoc` for empty input calls.
 
 **When to use it?**
 
 Enable this option to avoid spurious counter examples for external calls with empty input buffers.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 ```
+
+Via a configuration file:
+
+```json
+"optimistic_fallback": true
+```
+
+
 
 (--struct_link)=
 ## `struct_link`
