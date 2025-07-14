@@ -1921,16 +1921,21 @@ If not explicitly provided, the Prover will attempt to extract the author from t
 Use this flag to help track who owns or has submitted each verification run, particularly in verification projects with multiple authors.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --protocol_author "OpenDeFi Labs"
 ```
 
-## `protocol_name`
+Via a configuration file:
 
-**Usage**
-```sh
---protocol_name <name>
+```json
+"protocol_author": "OpenDeFi Labs"
 ```
+
+
+## `protocol_name`
 
 **What does it do?**
 Sets the protocol name associated with the verification job. This name will appear in the [Prover dashboard](https://prover.certora.com/) and can be used to filter or group related jobs. If this flag is not explicitly provided, the tool will attempt to use the name field from `package.json` if available.
@@ -1939,9 +1944,19 @@ Sets the protocol name associated with the verification job. This name will appe
 Use this flag to clearly label your jobs. This is especially useful when verifying multiple projects in parallel.
 
 **Example**
+
+Via the command line:
+
 ```sh
-certoraRun Vault.sol --verify Vault:Vault.spec --protocol_name MyDeFiProtocol
+certoraRun Vault.sol --verify Vault:Vault.spec --protocol_name "My DeFi Protocol"
 ```
+
+Via a configuration file:
+
+```json
+"protocol_name": "My DeFi Protocol"
+```
+
 
 
 Options for controlling contract creation
