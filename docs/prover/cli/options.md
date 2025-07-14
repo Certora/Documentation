@@ -1907,11 +1907,6 @@ See {ref}`--msg`.
 
 ## `protocol_author`
 
-**Usage**
-```sh
---protocol_author <name>
-```
-
 **What does it do?**
 This option adds an author name to the job metadata, allowing you to filter or group verification runs by the protocol author in the [dashboard](https://prover.certora.com/).
 
@@ -2099,7 +2094,10 @@ Version options
 Shows the version of the local installation of `certora-cli` you have.
 
 **When to use it?**
-When you suspect you have an old installation. To install the newest version, use `pip install --upgrade certora-cli`.
+When you suspect you have an old installation. To install the newest version, use 
+```sh
+pip install --upgrade certora-cli
+```
 
 **Example**
 
