@@ -2239,10 +2239,11 @@ Via a configuration file:
 (--prover_args)=
 ## `prover_args`
 
-The `--prover_args` option allows you to provide fine-grained tuning options to the
-Prover.  `--prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
-`--prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `--t` is
-set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_args` value must be quoted.
+The `prover_args` option allows you to provide fine-grained tuning options to the
+Prover. 
+`prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
+`prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `-t` is
+set by {ref}`--smt_timeout` therefore cannot appear in `prover_args`). `prover_args` value must be quoted.
 
 (-enablestoragesplitting)=
 ### `enableStorageSplitting`
@@ -2250,9 +2251,22 @@ set by `--smt_timeout` therefore cannot appear in `--prover_args`). `--prover_ar
 This option disables the storage splitting optimization.
 
 **Usage**
+
+Via the command line:
+
 ```sh
 --prover_args '-enableStorageSplitting false'
 ```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-enableStorageSplitting false"
+]
+```
+
+
 
 (-maxnumberofreachchecksbasedondomination)=
 ### `maxNumberOfReachChecksBasedOnDomination`
@@ -2261,8 +2275,19 @@ This option sets the number of program points to test with the `deepSanity`
 built-in rule.  See {ref}`built-in-deep-sanity`.
 
 **Usage**
+
+Via the command line:
+
 ```sh
 --prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-maxNumberOfReachChecksBasedOnDomination <n>"
+]
 ```
 
 (-optimisticreturnsize)=
@@ -2283,8 +2308,19 @@ Otherwise, `RETURNSIZE` will remain non-deterministic.
 ```
 
 **Usage**
+
+Via the command line:
+
 ```sh
 --prover_args '-optimisticReturnsize true'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-optimisticReturnsize true"
+]
 ```
 
 (-smt_groundquantifiers)=
@@ -2294,8 +2330,18 @@ This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
 **Usage**
+Via the command line:
+
 ```sh
 --prover_args '-smt_groundQuantifiers false'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-smt_groundQuantifiers false"
+]
 ```
 
 (-superoptimisticreturnsize)=
@@ -2307,8 +2353,19 @@ It will set the value returned by the `RETURNSIZE` EVM instruction
 to the size of the output buffer as specified by the summarized `CALL` instruction.
 
 **Usage**
+
+Via the command line:
+
 ```sh
 --prover_args '-superOptimisticReturnsize true'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-superOptimisticReturnsize true"
+]
 ```
 
 
@@ -2343,17 +2400,23 @@ The default value for this option is 10.
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ```
 
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-depth 5"
+]
+```
+
+
 (-dontstopatfirstsplittimeout)=
 ### `dontStopAtFirstSplitTimeout`
-
-**Usage**
-```sh
---prover_args '-dontStopAtFirstSplitTimeout <true/false>'
-```
 
 **What does it do?**
 
@@ -2372,21 +2435,26 @@ The default value for this option is `false`.
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-dontStopAtFirstSplitTimeout true"
+]
 ```
 
 (-mediumtimeout)=
 ### `mediumTimeout`
 
-The "medium timeout" determines how much time the SMT solver gets for checking a
+The "medium timeout" determines how much time the SMT solver gets in seconds for checking a
 {term}`split` that is not a {term}`split leaf`.
 (For split leaves, the full {ref}`--smt_timeout` is used.)
-
-**Usage**
-```sh
---prover_args '-mediumTimeout <seconds>'
-```
 
 **What does it do?**
 
@@ -2403,8 +2471,18 @@ a given depth.
 
 **Example**
 
+Via the command line:
+
 ```sh
-certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
+--prover_args '-mediumTimeout 20'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-mediumTimeout 20"
+]
 ```
 
 (-smt_initialsplitdepth)=
@@ -2412,11 +2490,6 @@ certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-mediumTimeout 20'
 
 With this option, the splitting can be configured to skip the SMT solver-based checks
 at low splitting levels, thus generating sub-{term}`split`s up to a given depth immediately.
-
-**Usage**
-```sh
---prover_args '-smt_initialSplitDepth <number>'
-```
 
 **What does it do?**
 
@@ -2444,7 +2517,17 @@ will only proceed up to the splitting depth given via `-depth`.
 
 **Example**
 
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-smt_initialSplitDepth 3'
+```
+
+Via a configuration file:
+
+```json
+"prover_args": [
+  "-smt_initialSplitDepth 3"
+]
 ```
 
