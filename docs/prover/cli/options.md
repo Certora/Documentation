@@ -2019,8 +2019,17 @@ Use this flag when you prefer not to manually add explicit `DISPATCHER` summarie
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
+
+Via the command line:
+
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1 --dynamic_dispatch
+```
+
+Via a configuration file:
+
+```json
+"dynamic_dispatch": true
 ```
 
 ```{note}
@@ -2030,9 +2039,9 @@ You must also use the {ref}`--dynamic_bound` option.
 (--prototype)=
 ## `prototype`
 
-**Usage**
+**Parameters**
 ```sh
---prototype <hex string>=<contract>
+<hex string>=<contract>
 ```
 
 **What does it do?**
@@ -2053,10 +2062,20 @@ assembly {
 }
 ```
 Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`.
-The Prover will then be able to create a new instance of `Foo` at the point where the code creates it:
+The Prover will then be able to create a new instance of `Foo` at the point where the code creates it.
+
+Via the command line:
+
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
 ```
+
+Via a configuration file:
+
+```json
+"prototype": "3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo"
+```
+
 
 ```{Note}
 This argument has no effect if the {ref}`dynamic bound <--dynamic_bound>` is zero.
@@ -2090,22 +2109,30 @@ certoraRun --version
 
 ## `prover_version`
 
-**Usage**
+**Parameters**
 ```sh
---prover_version <branch_name>
+<branch_name>
 ```
 
 **What does it do?**
 This option lets you select a specific version of the Certora Prover by providing the name of a Git branch from the Prover repository. It does not accept individual commit hashes.
 
 **When to use it?**
-Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., release/10April2025) to match the behavior of a known version.
+Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., `release/10April2025`) to match the behavior of a known version.
 
 **Example**
-To run verification using the Prover version from the April 10, 2025 release:
+Suppose you wish to run verification using the Prover version from the April 10, 2025 release.
+
+Via the command line:
 
 ```sh
 certoraRun MyContract.sol --verify MyContract:MySpec.spec --prover_version release/10April2025
+```
+
+Via a configuration file:
+
+```json
+"prover_version": "release/10April2025=Foo"
 ```
 
 
