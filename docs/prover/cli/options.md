@@ -1192,7 +1192,7 @@ block.
 One important difference from manually placing the `DISPATCHER` summary in the
 {ref}`methods-block` is that when it's manually written there with `optimistic=true`,
 and no such function is found in the scene, the Prover will exit with an error,
-but when using the flag it will fall back to the default havoc.
+but when using the flag it will fall back to the default {term}`havoc`.
 
 **When to use it?**
 When there are many unresolved callee methods, or as a first step to solve
@@ -1824,7 +1824,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will havoc all storage state of external contracts. When `optimistic_fallback` is enabled, these calls will instead:
+This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will {term}`havoc` all storage state of external contracts. When `optimistic_fallback` is enabled, these calls will instead:
 
 - Execute the fallback function in the specified contract (if it exists).
 - Revert if no fallback function is available.
@@ -2298,7 +2298,7 @@ called method.
 
 ```{note}
 Certain conditions should hold in order for the option to take effect.
-Namely, if there is a single candidate method in the havoc site,
+Namely, if there is a single candidate method in the {ref}`havoc` site,
 and all instances of this method in the {term}`scene` have exactly the same
 expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
