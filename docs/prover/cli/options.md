@@ -2189,7 +2189,22 @@ Upon instruction from the Certora team.
 
 **Example**
 
-`--java_args '"-Dcvt.default.parallelism=2"'` - will set the number of “tasks” that can run in parallel to 2.
+Suppose you wish to set the number of “tasks” that can run in parallel to 2.
+
+Via the command line:
+
+```sh
+certoraRun proj.conf --java_args '"-Dcvt.default.parallelism=2"'
+```
+
+Via a configuration file:
+
+```json
+"java_args": [
+    "-Dcvt.default.parallelism=2"
+]
+```
+
 
 (--precise_bitwise_ops)=
 ## `precise_bitwise_ops`
