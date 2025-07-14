@@ -167,7 +167,7 @@ If we want to skip checking `withdraw_succeeds` and `withdraw_fails`, we could r
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
 ```
 
-Or via configuration file:
+Or via a configuration file:
 
 ```json
 "exclude_rule": ["withdraw_*"]
@@ -386,7 +386,7 @@ none|basic|advanced
 
 **What does it do?**
 This option enables `.sol` and `.spec` coverage analysis and visualization.
-The `--coverage_info` option may be followed by one of `none`, `basic`, or `advanced`;
+The `coverage_info` option may be followed by one of `none`, `basic`, or `advanced`;
 See {doc}`../checking/coverage-info` for more information about the analysis.
 
 **When to use it?**
@@ -802,7 +802,7 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 Via the command line:
 
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src,contracts=src/contracts
+certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src contracts=src/contracts
 ```
 
 Via a configuration file:
