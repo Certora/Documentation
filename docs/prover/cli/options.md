@@ -167,7 +167,7 @@ If we want to skip checking `withdraw_succeeds` and `withdraw_fails`, we could r
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
 ```
 
-or add to the conf file:
+Or via configuration file:
 
 ```json
 "exclude_rule": ["withdraw_*"]
@@ -2375,11 +2375,6 @@ See [here](control-flow-splitting) for an explanation of control flow splitting.
 
 (-depth)=
 ### `depth`
-
-**Usage**
-```sh
---prover_args '-depth <number>'
-```
 
 **What does it do?**
 
