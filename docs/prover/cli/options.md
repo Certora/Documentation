@@ -2221,9 +2221,20 @@ This option models bitwise operations exactly, instead of using the default {ter
 Use this option if a counterexample suggests that incorrect modeling of bitwise operations is affecting verification results.
 
 **Example**
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --precise_bitwise_ops
 ```
+
+Via a configuration file:
+
+```json
+"precise_bitwise_ops": true
+```
+
+
 
 (--prover_args)=
 ## `prover_args`
