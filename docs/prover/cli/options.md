@@ -2298,7 +2298,7 @@ called method.
 
 ```{note}
 Certain conditions should hold in order for the option to take effect.
-Namely, if there is a single candidate method in the {ref}`havoc` site,
+Namely, if there is a single candidate method in the {term}`havoc` site,
 and all instances of this method in the {term}`scene` have exactly the same
 expected number of return values, then the `RETURNSIZE` value will be set to
 the expected size matching the methods in the scene.
