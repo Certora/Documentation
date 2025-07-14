@@ -1965,22 +1965,33 @@ Options for controlling contract creation
 (--dynamic_bound)=
 ## `dynamic_bound`
 
-**Usage**
-```sh
---dynamic_bound <n>
-```
-
 **What does it do?**
-If set to zero (the default), contract creation (via the `new` statement or the `create`/`create2` instructions) will result in a havoc, like any other unresolved external call. If non-zero, then dynamic contract creation will be modeled with cloning, where each contract will be cloned at most n times.
+This option takes a non-negative integer as input.
+
+- If set to 0 (the default), contract creation operations, such as using `new`, `create`, or `create2`, are treated as unresolved external calls, resulting in {term}`havoc`.
+- If set to a positive value `n`, the Prover will model contract creation using cloning, allowing each contract to be instantiated up to `n` times.
 
 **When to use it?**
-When you wish to model contract creation, that is, simulating the actual creation of the contract. Without it, `create` and `create2` commands simply return a fresh address; the Prover does not model their storage, code, constructors, immutables, etc. Any interaction with these generated addresses is modeled imprecisely with conservative havoc.
+Enable this option when you want to simulate actual contract creation, including the contract’s constructor, storage, code, and immutables.
+Without it, the Prover treats `create` and `create2` as returning arbitrary fresh addresses, with no modeling of the created contract’s internal state.
+As a result, any interaction with those addresses will be imprecise and treated conservatively as {term}`havoc`.
 
 **Example**
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
+
+Via the command line:
+
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
 ```
+
+Via a configuration file:
+
+```json
+"dynamic_bound": 1
+```
+
+
 
 (--dynamic_dispatch)=
 ## `dynamic_dispatch`
