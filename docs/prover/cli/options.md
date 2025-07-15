@@ -37,18 +37,17 @@ It runs formal verification of properties specified in a `.spec` file on a given
 **When to use it?**
 When you wish to prove properties on the source code. This is by far the most common mode of the tool.
 
-**Example - Command line**
-If we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`, the command would be:
+**Example**
+
+Suppose we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`.
+
+Via the command line:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
-**Example - Configuration file**
-
-If we have a Solidity file with a contract named `Bank` inside it,
-and a specification file called `Bank.spec`,
-add the following line to the configuration file:
+Via a configuration file:
 
 ```json
 "verify": "Bank:Bank.spec"
@@ -63,9 +62,9 @@ Adds a message description to your run, similar to a commit message. This messag
 **When to use it?**
 Adding a message makes it easier to track several runs on [the Prover Dashboard](https://prover.certora.com/). It is very useful if you are running many verifications simultaneously. It is also helpful to keep track of a single file verification status over time, so we recommend always providing an informative message.
 
-**Example - Command line**
+**Example**
 
-To create the message above from the command line, use:
+Via the command line:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
@@ -75,9 +74,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 You need to wrap your message in quotes in the command line if it contains spaces.
 ```
 
-**Example - Configuration file**
-
-To create the message above from the configuration file, use:
+Via a configuration file:
 
 ```json
 "msg": "Removed an assertion"
@@ -153,7 +150,8 @@ Use this flag when certain rules take too long to run or require a different con
 **Rule Name Pattern**
 Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
 
-**Examples**
+**Example**
+
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -162,12 +160,15 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to skip checking `withdraw_succeeds` and `withdraw_fails`, we could run the command:
+Suppose we want to skip checking `withdraw_succeeds` and `withdraw_fails`.
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule "withdraw*"
 ```
 
-Or via a configuration file:
+Via a configuration file:
 
 ```json
 "exclude_rule": ["withdraw_*"]
@@ -200,7 +201,8 @@ that match `rule` patterns and then subtract from them all rules that match
 any {ref}`--exclude_rule` patterns.
 ```
 
-**Examples**
+**Example**
+
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -209,17 +211,19 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to run the invariant on different Prover jobs we could run the command:
+Suppose we want to run the invariant `address_zero_cannot_become_an_account` on a separate Prover job, and the rest of the rules (`withdraw_succeeds` and `withdraw_fails`) to run together.
+
+Via the command line:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account
 ```
 
-or add to the configuration file:
+Via a configuration file:
+
 ```json
 "split_rules": ["address_zero_cannot_become_an_account"]
 ```
-
-The rest of the rules (`withdraw_succeeds` and `withdraw_fails`) will run together in a different Prover job.
 
 (--method)=
 ## `method`
@@ -239,7 +243,8 @@ each of the listed methods.
 This option is useful when focusing on a specific counterexample; running on a
 specific contract method saves time.
 
-**Examples**
+**Example**
+
 Suppose we are verifying an ERC20 contract, and we have the following
 {term}`parametric rule`:
 
@@ -303,11 +308,22 @@ exclusion takes precedence.
 ```
 
 **Example**
+
+Suppose we wish to include all `deposit(uint)` methods in the scene except the
+`deposit(uint)` function of the `C` contract.
+
+Via the command line:
+
 ```sh
 certoraRun --method '_.deposit(uint)' --exclude_method 'C.deposit(uint)'
 ```
-This will include all `deposit(uint)` methods in the scene except the
-`deposit(uint)` function of the `C` contract.
+
+Via a configuration file:
+
+```json
+"exclude_method": ["C.deposit(uint)", "_.transfer(address,uint256)"]
+```
+
 
 (--parametric_contracts)=
 ## `parametric_contracts`
@@ -327,16 +343,19 @@ As with the {ref}`--rule` and {ref}`--method` options, this option is used to
 avoid rerunning the entire verification
 
 **Example**
+
 Suppose you are working on a multicontract verification and wish to debug a
 counterexample in a method of the `Underlying` contract defined in the file
-`Example.sol`, you can execute the command:
+`Example.sol`.
+
+Via the command line:
 
 ```sh
 certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
-or add to the configuration file:
+Via a configuration file:
 
 ```json
 "parametric_contracts": ["Underlying"]
@@ -363,12 +382,16 @@ In that case, the return code will be zero if the jobs were sent successfully.
 **When to use it?**
 Use it to receive verification results in the terminal or a wrapping script.
 
-**Example - Command line**
+**Example**
+
+Via the command line:
+
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
-**Example - Configuration file**
+Via a configuration file:
+
 ```json
 "wait_for_results": "ALL"
 ```
@@ -1691,6 +1714,7 @@ one should use the _base_ contract as the receiver, and not the extension contra
 If you use the proxy pattern in your smart contracts.
 
 **Example**
+
 Say we have a base contract `A` that uses an extension contract `B`.
 Since in this pattern the storage of the two contracts may "overlap", let's also
 assume they both have some `uint public n`.
