@@ -164,7 +164,7 @@ rule withdraw_fails()
 
 If we want to skip checking `withdraw_succeeds` and `withdraw_fails`, we could run the command:
 ```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule withdraw*
+certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule "withdraw*"
 ```
 
 Or via a configuration file:
@@ -345,7 +345,7 @@ or add to the configuration file:
 (--wait-for-results)=
 ## `wait_for_results`
 
-**Parameters**
+**Option values**
 ```sh
 ALL|NONE
 ```
@@ -379,7 +379,7 @@ Options affecting the type of verification run
 (--coverage_info)=
 ## `coverage_info`
 
-**Parameters**
+**Option values**
 ```sh
 none|basic|advanced
 ```
@@ -632,7 +632,7 @@ Via a configuration file:
 (--rule_sanity)=
 ## `rule_sanity`
 
-**Parameters**
+**Option values**
 ```sh
 none|basic|advanced
 ```
@@ -1765,7 +1765,7 @@ Via a configuration file:
 (--link)=
 ## `link`
 
-**Parameters**
+**Option values**
 ```sh
 <contract>:<slot>=<address>
 ```
@@ -1854,7 +1854,7 @@ Via a configuration file:
 (--struct_link)=
 ## `struct_link`
 
-**Parameters**
+**Option values**
 ```sh
 <contract>:<slot>=<address>
 ```
@@ -2034,7 +2034,7 @@ You must also use the {ref}`--dynamic_bound` option.
 (--prototype)=
 ## `prototype`
 
-**Parameters**
+**Option values**
 ```sh
 <hex string>=<contract>
 ```
@@ -2107,7 +2107,7 @@ certoraRun --version
 
 ## `prover_version`
 
-**Parameters**
+**Option values**
 ```sh
 <branch_name>
 ```
