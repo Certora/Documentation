@@ -985,7 +985,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300
 Via a configuration file:
 
 ```json
-"solc_optimize": 300
+"solc_optimize": "300"
 ```
 
 
@@ -1014,8 +1014,8 @@ Via a configuration file:
 
 ```json
 "solc_optimize_map": {
-    "Bank": 200,
-    "Exchange": 300
+    "Bank": "200",
+    "Exchange": "300"
 }
 ```
 
@@ -1137,7 +1137,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 Via a configuration file:
 
 ```json
-"loop_iter": 2
+"loop_iter": "2"
 ```
 
 
@@ -1274,7 +1274,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_mi
 Via a configuration file:
 
 ```json
-"nondet_minimal_difficulty": 20
+"nondet_minimal_difficulty": "20"
 ```
 
 
@@ -1367,7 +1367,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 Via a configuration file:
 
 ```json
-"summary_recursion_limit": 3
+"summary_recursion_limit": "3"
 ```
 
 
@@ -1447,7 +1447,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
 Via a configuration file:
 
 ```json
-"hashing_length_bound": 128
+"hashing_length_bound": "128"
 ```
 
 
@@ -1556,7 +1556,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
 Via a configuration file:
 
 ```json
-"global_timeout": 60
+"global_timeout": "60"
 ```
 
 
@@ -1602,7 +1602,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 500
 Via a configuration file:
 
 ```json
-"smt_timeout": 500
+"smt_timeout": "500"
 ```
 
 
@@ -1636,7 +1636,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --max_concurrent_rules 4
 Via a configuration file:
 
 ```json
-"max_concurrent_rules": 4
+"max_concurrent_rules": "4"
 ```
 
 
@@ -1758,7 +1758,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 Via a configuration file:
 
 ```json
-"contract_recursion_limit": 3
+"contract_recursion_limit": "3"
 ```
 
 
@@ -1984,7 +1984,7 @@ certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
 Via a configuration file:
 
 ```json
-"dynamic_bound": 1
+"dynamic_bound": "1"
 ```
 
 
