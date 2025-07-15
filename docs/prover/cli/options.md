@@ -757,9 +757,9 @@ Via a configuration file:
 
 ```json
 "solc_map": {
-    "Bank": "solc4.25",
-    "Exchange": "solc6.7",
-    "Token": "vyper0.3.10"
+    "Bank.sol": "solc4.25",
+    "Exchange.sol": "solc6.7",
+    "Token.vy": "vyper0.3.10"
 }
 ```
 
