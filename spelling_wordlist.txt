@@ -223,6 +223,9 @@ munge
 WASM
 EVM
 hotspots
+Prover
+prover
+subtyping
 typecheck
 typechecking
 formattable
