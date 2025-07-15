@@ -43,8 +43,8 @@ since it's understandable that no single style can satisfy everyone.
 
 If you have installed the LSP Extension, you can run the formatter directly from
 VSCode by using the `Format Document` feature from the [VSCode Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
-Alternatively, you can manually run the formatter from a shell, using the standalone script `certoraCVLFormatter.py`:
+Alternatively, you can manually run the formatter from a shell, using the standalone command `certoraCVLFormatter`:
 ```bash
-python3 scripts/certoraCVLFormatter.py FILE
+certoraCVLFormatter FILE
 ```
 This will output the formatted file to stdout. Adding `-w`/`--overwrite` will instead overwrite the original file.
