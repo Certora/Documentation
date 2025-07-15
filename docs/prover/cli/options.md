@@ -1861,7 +1861,7 @@ Via a configuration file:
 ```
 
 **What does it do?**
-Links a slot in a struct with another contract. To do that you must calculate the slot number of the field you wish to replace.
+Links a slot in a struct with another contract.
 
 **When to use it?**
 Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
@@ -1881,18 +1881,18 @@ struct TokenPair {
 }
 ```
 
-We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. Addresses take up only one slot. We assume `tokenPair` is the first field of Bank (so it starts at slot zero). To do that, we can set via the command line:
+We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. To do that, we can set via the command line:
 
 ```sh
-certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:0=BankToken Bank:1=LoanToken
+certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:tokenA=BankToken Bank:tokenB=LoanToken
 ```
 
 Or via a configuration file:
 
 ```json
 "struct_link": [
-    "Bank:0=BankToken",
-    "Bank:1=LoanToken"
+    "Bank:tokenA=BankToken",
+    "Bank:tokenB=LoanToken"
 ]
 ```
 
