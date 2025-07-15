@@ -386,7 +386,8 @@ none|basic|advanced
 
 **What does it do?**
 This option enables `.sol` and `.spec` coverage analysis and visualization.
-The `coverage_info` option may be followed by one of `none`, `basic`, or `advanced`;
+The `coverage_info` option may be followed by one of `none`, `basic`, or `advanced`.
+If no value was given, then `basic` will be used by default.
 See {doc}`../checking/coverage-info` for more information about the analysis.
 
 **When to use it?**
