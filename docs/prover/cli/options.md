@@ -101,6 +101,7 @@ In addition, rule name patterns can include the wildcard `*` that can replace an
 For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
 **Examples**
+
 If `Bank.spec` includes the following properties:
 
 ```cvl
@@ -1802,6 +1803,7 @@ Links a slot in a contract with another contract.
 Many times a contract includes the address of another contract as one of its fields. If we do not use `link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
 
 **Example**
+
 Assume we have the contract `Bank.sol` with the following code snippet:
 `IERC20 public underlyingToken;`
 
@@ -1891,6 +1893,7 @@ Links a slot in a struct with another contract.
 Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
 
 **Example**
+
 Assume we have the contract `Bank.sol` with the following code snippet:
 
 ```solidity
@@ -1997,6 +2000,7 @@ Without it, the Prover treats `create` and `create2` as returning arbitrary fres
 As a result, any interaction with those addresses will be imprecise and treated conservatively as {term}`havoc`.
 
 **Example**
+
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
 
 Via the command line:
@@ -2037,6 +2041,7 @@ f.bar();
 Use this flag when you prefer not to manually add explicit `DISPATCHER` summaries for methods invoked by the created contract.
 
 **Example**
+
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
 
@@ -2071,6 +2076,7 @@ Instructs the Prover to use a specific contract type for the return value from a
 If you are verifying a contract creation that uses low level calls to `create` or `create2` for contract creation.
 
 **Example**
+
 Suppose you have a contract `C` that creates another contract `Foo` like this:
 ```solidity
 assembly {
@@ -2144,6 +2150,7 @@ This option lets you select a specific version of the Certora Prover by providin
 Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., `release/10April2025`) to match the behavior of a known version.
 
 **Example**
+
 Suppose you wish to run verification using the Prover version from the April 10, 2025 release.
 
 Via the command line:
