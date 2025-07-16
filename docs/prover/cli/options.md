@@ -175,8 +175,8 @@ _Configuration file_
 **What does it do?**
 Typically, all rules and {term}`invariant`s (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
 With `split_rules` the user can run specific rules or invariants on separate dedicated Prover jobs.
-A new job will be created and executed for each rule or invariant that matches a {term}`rule pattern` in
-`split_rules` an additional job will be created for the rest of the rules and invariants.
+A new job will be created and executed for each rule or invariant that matches a 
+{term}`rule name pattern` in `split_rules` an additional job will be created for the rest of the rules and invariants.
 After launching the generated jobs, the original job will return with a link to the dashboard,
 listing the status of the generated jobs.
 
@@ -188,7 +188,7 @@ and will decrease the time to get the final job result for the less computationa
 
 ```{note}
 When used together with the {ref}`--rule` option, the logic is to collect all rules
-and invariants that match {term}`rule pattern`s of {ref}`--rule` and then 
+and invariants that match {term}`rule name pattern`s of {ref}`--rule` and then 
 subtract from them all rules that match any {ref}`--exclude_rule` patterns.
 ```
 
