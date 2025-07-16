@@ -258,6 +258,7 @@ split leaves
 
 summary
 summarize
+summarization
   A method summary is a user-provided approximation of the behavior of a
   contract method.  Summaries are useful if the implementation of a method is
   not available or if the implementation is too complex for the Certora

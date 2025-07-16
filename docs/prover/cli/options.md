@@ -660,7 +660,7 @@ This option implicitly enables the {ref}`--auto_dispatcher` option.
 **When to use it?**
 Mostly used as a first step when starting to work on a new project, in order to
 "get a feeling" of the complexity of the project for the tool, and what methods
-may be hot spots for [summarization](term-summarize) etc.
+may be hot spots for {term}`summarization` etc.
 
 **Example**
 
