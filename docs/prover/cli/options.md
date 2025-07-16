@@ -1224,7 +1224,7 @@ In case a call's callee cannot be precomputed but the called method's sighash
 can be (e.g. `MyInterface(addr).foo()` in Solidity, where `addr` is some
 `address` typed variable), the default behavior of the Prover in this case is to
 {term}`havoc`. In this case the user can specify a {ref}`dispatcher` summary in the
-{ref}`methods-block` so that the prover will inline all methods in the scene
+{ref}`methods-block` so that the Prover will inline all methods in the scene
 that have this sighash.
 
 This option will cause all such unknown callee with known sighash cases to behave
@@ -1748,7 +1748,7 @@ In the `.conf` file one should add
 }
 ```
 
-This tells the prover that `B` is an extension contract of `A`, but that it shouldn't
+This tells the Prover that `B` is an extension contract of `A`, but that it shouldn't
 "transfer" the getter for `n` from the extension into the base contract (since the base
 contract already has such a function and this would cause a conflict).
 
