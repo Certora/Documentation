@@ -140,15 +140,10 @@ or
 ## `exclude_rule`
 
 **What does it do?**
-This flag is the opposite of {ref}`--rule` - it allows you to specify a list of rules that _should not_ be run.
-
-You can filter out several rules or rule patterns.
+This flag is the opposite of {ref}`--rule` - it allows you to specify a list of {term}`rule name pattern`s that _should not_ be run.
 
 **When to use it?**
-Use this flag when certain rules take too long to run or require a different configuration than the current verification run.
-
-**Rule Name Pattern**
-Rule name or rule name with wildcards. See detailed specifications in {ref}`--rule`.
+Use this flag when certain rules or {term}`invariant`s take too long to run or require a different configuration than the current verification run.
 
 **Example**
 
@@ -178,27 +173,23 @@ _Configuration file_
 ## `split_rules`
 
 **What does it do?**
-Typically, all rules (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
-With `split_rules` the user can run specific rules on separate dedicated Prover jobs.
-A new job will be created and executed for each rule that matches the rule patterns in
-`split_rules` an additional job will be created for the rest of the rules.
+Typically, all rules and {term}`invariant`s (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
+With `split_rules` the user can run specific rules or invariants on separate dedicated Prover jobs.
+A new job will be created and executed for each rule or invariant that matches a {term}`rule pattern` in
+`split_rules` an additional job will be created for the rest of the rules and invariants.
 After launching the generated jobs, the original job will return with a link to the dashboard,
 listing the status of the generated jobs.
 
-You can split several rules or rule patterns.
-
 **When to use it?**
-This option is useful when some rules take a much longer time than the rest. Split the difficult rules to
-their own dedicated Prover jobs will give them more resources that will potentially reduce their chance to
-timeout and will decrease the time to get the final job result for the less computationally intensive rules.
-
-**Rule Name Pattern**
-Rule name or rule name patterns. See detailed specifications in {ref}`--rule`.
+This option is useful when some rules or invariants take a much longer time than the rest. 
+Splitting the difficult rules or invariants to their own dedicated Prover jobs 
+will give them more resources that will potentially reduce their chance to timeout 
+and will decrease the time to get the final job result for the less computationally intensive rules.
 
 ```{note}
 When used together with the {ref}`--rule` option, the logic is to collect all rules
-that match `rule` patterns and then subtract from them all rules that match
-any {ref}`--exclude_rule` patterns.
+and invariants that match {term}`rule pattern`s of {ref}`--rule` and then 
+subtract from them all rules that match any {ref}`--exclude_rule` patterns.
 ```
 
 **Example**
@@ -742,7 +733,8 @@ The same settings in a conf file:
   ...
 }
 ```
-The key of each entry is either a contract name pattern or a path pattern. Path patterns must end with one of the following suffixes: `.sol`, `.vy`, or `.yul`.
+The key of each entry is either a contract name pattern or a path pattern. 
+Path patterns must end with one of the following suffixes: `.sol`, `.vy`, or `.yul`.
 
 It is not allowed to set both the map and the non-map attributes together (e.g., [solc](#--solc) and [compiler_map](#--compiler_map)).
 
