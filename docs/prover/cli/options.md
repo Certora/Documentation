@@ -793,14 +793,15 @@ When a map attribute is defined and the Prover calls the Solidity compiler, the 
 ## `compiler_map`
 
 **What does it do?**
-Compiles every smart contract with a different compiler executable (Solidity or Vyper). All used contracts must be listed.
-Compiles every smart contract with a different compiler executable (Solidity version or Vyper). All used contracts must be listed.
+Compiles every file with a different compiler executable (Solidity or Vyper). All used files must be listed.
 See also {ref}`map_attributes`.
 
 **When to use it?**
-When different contracts have to be compiled with different compiler versions.
+When different files have to be compiled with different compiler versions.
 
 **Example**
+
+To set different compiler versions to different files:
 
 _Command line_
 
