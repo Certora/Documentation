@@ -1617,7 +1617,7 @@ take for the SMT solvers to solve the equation is highly variable, and could
 potentially be infinite. This is why they must be limited in run time.
 
 The SMT timeout applies separately to each individual rule (or each method
-for parametric rules). To set the global timeout, see {ref}`--global_timeout`.
+for {term}`parametric rule`s or {term}`invariant`s). To set the global timeout, see {ref}`--global_timeout`.
 
 ```{note}
 While this is the most prominent timeout, this is not the only timeout that
