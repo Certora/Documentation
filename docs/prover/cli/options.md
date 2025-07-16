@@ -269,31 +269,39 @@ rule r {
 
 If we discover a counterexample in the method `deposit(uint)` of contract `C`,
 and wish to change the contract or the spec to rerun, we can just rerun on
-the `C.deposit` method via the command:
+the `C.deposit` method:
+
+_Command line_
 
 ```sh
 certoraRun --method 'C.deposit(uint)'
 ```
 
-If we discover a counterexample in several methods, we could rerun just those via the command line:
+_Configuration file_
+
+```json
+"method": ["C.deposit(uint)"]
+```
+
+To check the `transfer` method of all contracts in the {term}`scene`,
+but only the `deposit` method of the primary contract:
+
+_Command line_
 
 ```sh
 certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
 
-```{note}
-Many shells will interpret the `(` and `)` characters specially, so
-the method signature argument will usually need to be quoted in the command line as in the above example.
-```
-
-In the configuration file we can add the following line:
+_Configuration file_
 
 ```json
-"method": ["C.deposit(uint)", "_.transfer(address,uint256)"]
+"method": ["deposit(uint)", "_.transfer(address,uint256)"]
 ```
 
-In the last example the `transfer` method of all contracts in the
-scene will be used, but only the `deposit` method of the primary contract.
+```{note}
+Many shells will interpret the `(` and `)` characters specially, so
+the method signature argument will usually need to be quoted in the command line as in the above examples.
+```
 
 (--exclude_method)=
 ## `exclude_method`
