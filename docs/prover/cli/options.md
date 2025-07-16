@@ -2151,7 +2151,7 @@ Use this flag to reproduce behavior from an earlier version of the Prover, which
 
 **Example**
 
-Suppose you wish to run verification using the Prover version from the April 10, 2025 release.
+To run verification using the Prover version from the April 10, 2025 release:
 
 Via the command line:
 
@@ -2219,15 +2219,15 @@ Upon instruction from the Certora team.
 
 **Example**
 
-Suppose you wish to set the number of “tasks” that can run in parallel to 2.
+To set the number of “tasks” that can run in parallel to 2:
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun proj.conf --java_args '"-Dcvt.default.parallelism=2"'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "java_args": [
