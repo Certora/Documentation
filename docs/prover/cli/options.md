@@ -801,12 +801,12 @@ When different files have to be compiled with different compiler versions.
 
 **Example**
 
-To set different compiler versions to different files:
+To set the compiler of `Bank.sol` to be `solc4.25`, for `Exchange.sol` to be `solc6.7`, and for `Token.vy` to be `vyper0.3.10`:
 
 _Command line_
 
 ```sh
-certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
+certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank.sol=solc4.25,Exchange.sol=solc6.7,Token.vy=vyper0.3.10
 ```
 
 _Configuration file_
@@ -832,6 +832,8 @@ The Solidity compiler versions 0.7.6 and up emit this warning, which can be safe
 
 **Example**
 
+To ignore Solidity compiler warnings:
+
 _Command line_
 
 ```sh
@@ -855,6 +857,8 @@ For each package, gets the path to a directory including that Solidity package.
 By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `packages`.
 
 **Example**
+
+To set up package paths:
 
 _Command line_
 
@@ -886,6 +890,8 @@ Gets the path to a directory including the Solidity packages.
 By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `packages_path`.
 
 **Example**
+
+To look for Solidity packages in `Solidity/packages`:
 
 _Command line_
 
