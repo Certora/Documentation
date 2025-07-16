@@ -358,9 +358,8 @@ avoid rerunning the entire verification
 
 **Example**
 
-Suppose you are working on a multicontract verification and wish to debug a
-counterexample in a method of the `Underlying` contract defined in the file
-`Example.sol`.
+To debug a counterexample in a method of the `Underlying` contract defined in the file
+`Example.sol` when working on a multicontract verification:
 
 _Command line_
 
