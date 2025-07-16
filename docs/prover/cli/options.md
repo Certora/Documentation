@@ -39,7 +39,7 @@ When you wish to prove properties on the source code. This is by far the most co
 
 **Example**
 
-To fomrally verify a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`:
+To formally verify a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`:
 
 _Command line_
 
