@@ -41,13 +41,13 @@ When you wish to prove properties on the source code. This is by far the most co
 
 Suppose we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "verify": "Bank:Bank.spec"
@@ -64,7 +64,7 @@ Adding a message makes it easier to track several runs on [the Prover Dashboard]
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
@@ -74,7 +74,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --msg 'Removed an assertion'
 You need to wrap your message in quotes in the command line if it contains spaces.
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "msg": "Removed an assertion"
@@ -163,13 +163,13 @@ rule withdraw_fails()
 
 Suppose we want to skip checking `withdraw_succeeds` and `withdraw_fails`.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --exclude_rule "withdraw*"
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "exclude_rule": ["withdraw_*"]
@@ -214,13 +214,13 @@ rule withdraw_fails()
 
 Suppose we want to run the invariant `address_zero_cannot_become_an_account` on a separate Prover job, and the rest of the rules (`withdraw_succeeds` and `withdraw_fails`) to run together.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --split_rules address_zero_cannot_become_an_account
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "split_rules": ["address_zero_cannot_become_an_account"]
@@ -313,13 +313,13 @@ exclusion takes precedence.
 Suppose we wish to include all `deposit(uint)` methods in the scene except the
 `deposit(uint)` function of the `C` contract.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun --method '_.deposit(uint)' --exclude_method 'C.deposit(uint)'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "exclude_method": ["C.deposit(uint)", "_.transfer(address,uint256)"]
@@ -349,14 +349,14 @@ Suppose you are working on a multicontract verification and wish to debug a
 counterexample in a method of the `Underlying` contract defined in the file
 `Example.sol`.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Main:Example.sol Underlying:Example.sol --verify Main:Example.spec \
     --parametric_contracts Underlying
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "parametric_contracts": ["Underlying"]
@@ -385,13 +385,13 @@ Use it to receive verification results in the terminal or a wrapping script.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --wait_for_results
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "wait_for_results": "ALL"
@@ -419,13 +419,13 @@ We suggest using this option when you have finished (a subset of) your rules and
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --coverage_info advanced
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "coverage_info": "advanced"
@@ -452,13 +452,13 @@ When we want to run all Foundry fuzz tests in the project with the Prover.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun --foundry
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "foundry": true
@@ -529,13 +529,13 @@ and you would like to demonstrate each statement separately.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --independent_satisfy
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "independent_satisfy": true
@@ -578,13 +578,13 @@ When you have a rule with multiple assertions:
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --multi_assert_check
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "multi_assert_check": true
@@ -603,13 +603,13 @@ Use this flag when debugging complex rules where multiple, distinct scenarios mi
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun MyContract.sol --verify MyContract:MyContract.spec --multi_example
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "multi_example": true
@@ -640,13 +640,13 @@ may be hot spots for summarization etc.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun --project_sanity
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "project_sanity": true
@@ -673,13 +673,13 @@ It is also a useful check if you notice rules passing surprisingly quickly or ea
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule_sanity basic
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "rule_sanity": "basic"
@@ -697,13 +697,13 @@ When we do not care much for the output. It is recommended when running the tool
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --short_output
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "short_output": true
@@ -771,13 +771,13 @@ When different contracts have to be compiled with different compiler versions.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol Exchange.sol Token.vy --verify Bank:Bank.spec --compiler_map Bank=solc4.25,Exchange=solc6.7,Token=vyper0.3.10
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_map": {
@@ -800,13 +800,13 @@ The Solidity compiler versions 0.7.6 and up emit this warning, which can be safe
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Token.sol --verify Token:Token.spec --ignore_solidity_warnings
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "ignore_solidity_warnings": true
@@ -824,13 +824,13 @@ By default we look for the packages in `$NODE_PATH`. If there are packages are i
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --packages ds-note=$PWD/lib/ds-token/lib/ds-stop/lib/ds-note/src contracts=src/contracts
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "packages": [
@@ -855,13 +855,13 @@ By default, we look for the packages in `$NODE_PATH`. If the packages are in any
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --packages_path Solidity/packages
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "packages_path": "Solidity/packages"
@@ -884,7 +884,7 @@ Use this option if your system has multiple Solidity versions installed and you 
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 # Use a compiler version from $PATH
@@ -894,7 +894,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.19
 certoraRun Bank.sol --verify Bank:Bank.spec --solc /usr/local/bin/solc8.19
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc": "solc8.19"
@@ -920,13 +920,13 @@ When we want to add an additional location for the Solidity compiler to load sou
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_allow_path ~/Projects/Bank
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_allow_path": "~/Projects/Bank"
@@ -945,13 +945,13 @@ When we want to select the Solidity compiler's EVM version.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version Istanbul
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_evm_version": "Istanbul"
@@ -972,13 +972,13 @@ When different contracts have to be compiled with different Solidity EVM version
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_evm_version_map Bank=prague,Exchange=cancun
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_evm_version_map": {
@@ -1000,13 +1000,13 @@ number of times the optimizer will be activated (if no value is set, the compile
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize 300
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_optimize": "300"
@@ -1028,13 +1028,13 @@ number of times the optimizer will be activated (if no value is set, the compile
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_optimize_map Bank=200,Exchange=300
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_optimize_map": {
@@ -1056,13 +1056,13 @@ When we want to enable the IR-based code generator.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --solc_via_ir
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_via_ir": true
@@ -1085,14 +1085,14 @@ If {ref}`--solc_via_ir` is not set globally, no contracts will be compiled `via-
 
 In this example, contract A is compiled with the `--via-ir` flag, while contract B is compiled without it.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun A.sol B.sol --verify A:A.spec \
   --solc_via_ir_map Bank=true,Exchange=false
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "solc_via_ir_map": {
@@ -1115,7 +1115,7 @@ Use this option if your system has multiple Vyper versions installed and you wan
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 # Use a compiler version from $PATH
@@ -1125,7 +1125,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
 certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "vyper": "vyper0.3.10"
@@ -1152,13 +1152,13 @@ The default number of loop iterations we unroll is one. However, in many cases, 
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --loop_iter 2
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "loop_iter": "2"
@@ -1182,13 +1182,13 @@ When you have loops in your code and are getting a counterexample labeled `loop 
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_loop
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "optimistic_loop": true
@@ -1225,13 +1225,13 @@ call resolution failures.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --auto_dispatcher
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "auto_dispatcher": true
@@ -1259,13 +1259,13 @@ verification results, as well as highlighting potentially difficult functions.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "nondet_difficult_funcs": true
@@ -1289,13 +1289,13 @@ The notification in the rule report that contains the applied summaries will pre
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --nondet_difficult_funcs --nondet_minimal_difficulty 20
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "nondet_minimal_difficulty": "20"
@@ -1338,13 +1338,13 @@ flag to `true`.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_summary_recursion
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "optimistic_summary_recursion": true
@@ -1382,13 +1382,13 @@ When inlining a fallback function, found it was already on the stack. Consider d
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --summary_recursion_limit 3
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "summary_recursion_limit": "3"
@@ -1422,13 +1422,13 @@ When the assertion regarding unbounded hashing is thrown, but it is acceptable f
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_hashing
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "optimistic_hashing": true
@@ -1462,13 +1462,13 @@ Reasons to raise the bound:
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --hashing_length_bound 128
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "hashing_length_bound": "128"
@@ -1498,13 +1498,13 @@ Example use cases:
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Example.sol --verify Example:Example.spec --compilation_steps_only
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "compilation_steps_only": true
@@ -1523,13 +1523,13 @@ This flag should only be used in rare cases when you believe the local syntax or
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun MyContract.sol --verify MyContract:MySpec --disable_local_typechecking
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "disable_local_typechecking": true
@@ -1571,13 +1571,13 @@ Even if in the shorter running time not all rules were processed, a second run m
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --global_timeout 60
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "global_timeout": "60"
@@ -1617,13 +1617,13 @@ The second use is when the solvers can prove the property, they just need more t
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --smt_timeout 500
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "smt_timeout": "500"
@@ -1651,13 +1651,13 @@ Setting the maximum number of parallel rule evaluations to low values (e.g., 1, 
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --max_concurrent_rules 4
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "max_concurrent_rules": "4"
@@ -1774,13 +1774,13 @@ as the code may in fact allow theoretically unbounded recursion.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --contract_recursion_limit 3
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "contract_recursion_limit": "3"
@@ -1865,13 +1865,13 @@ Enable this option to avoid spurious counter examples for external calls with em
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "optimistic_fallback": true
@@ -1945,13 +1945,13 @@ Use this flag to help track who owns or has submitted each verification run, par
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --protocol_author "OpenDeFi Labs"
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "protocol_author": "OpenDeFi Labs"
@@ -1968,13 +1968,13 @@ Use this flag to clearly label your jobs. This is especially useful when verifyi
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Vault.sol --verify Vault:Vault.spec --protocol_name "My DeFi Protocol"
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "protocol_name": "My DeFi Protocol"
@@ -2003,13 +2003,13 @@ As a result, any interaction with those addresses will be imprecise and treated 
 
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "dynamic_bound": "1"
@@ -2045,13 +2045,13 @@ Use this flag when you prefer not to manually add explicit `DISPATCHER` summarie
 Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
 and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1 --dynamic_dispatch
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "dynamic_dispatch": true
@@ -2090,13 +2090,13 @@ assembly {
 Then you can set the string `3d602d80600a3d3981f3363d3d373d3d3d363d73` appearing in the first `mstore` after the `0x` prefix as a "prototype" for `Foo`.
 The Prover will then be able to create a new instance of `Foo` at the point where the code creates it.
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --prototype 3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo --dynamic_bound 1
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prototype": "3d602d80600a3d3981f3363d3d373d3d3d363d73=Foo"
@@ -2153,13 +2153,13 @@ Use this flag to reproduce behavior from an earlier version of the Prover, which
 
 To run verification using the Prover version from the April 10, 2025 release:
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun MyContract.sol --verify MyContract:MySpec.spec --prover_version release/10April2025
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_version": "release/10April2025=Foo"
@@ -2190,13 +2190,13 @@ line or other configuration files.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun proj.conf --override_base_config confs/base_settings.conf
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "override_base_config": "confs/base_settings.conf"
@@ -2252,13 +2252,13 @@ Use this option if a counterexample suggests that incorrect modeling of bitwise 
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --precise_bitwise_ops
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "precise_bitwise_ops": true
@@ -2282,13 +2282,13 @@ This option disables the storage splitting optimization.
 
 **Usage**
 
-Via the command line:
+_Command line_
 
 ```sh
 --prover_args '-enableStorageSplitting false'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2306,13 +2306,13 @@ built-in rule.  See {ref}`built-in-deep-sanity`.
 
 **Usage**
 
-Via the command line:
+_Command line_
 
 ```sh
 --prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2339,13 +2339,13 @@ Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 **Usage**
 
-Via the command line:
+_Command line_
 
 ```sh
 --prover_args '-optimisticReturnsize true'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2360,13 +2360,13 @@ This option disables quantifier grounding.  See {ref}`grounding` for more
 information.
 
 **Usage**
-Via the command line:
+_Command line_
 
 ```sh
 --prover_args '-smt_groundQuantifiers false'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2384,13 +2384,13 @@ to the size of the output buffer as specified by the summarized `CALL` instructi
 
 **Usage**
 
-Via the command line:
+_Command line_
 
 ```sh
 --prover_args '-superOptimisticReturnsize true'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2425,13 +2425,13 @@ The default value for this option is 10.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-depth 5'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2460,13 +2460,13 @@ The default value for this option is `false`.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-dontStopAtFirstSplitTimeout true'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2496,13 +2496,13 @@ a given depth.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 --prover_args '-mediumTimeout 20'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
@@ -2542,13 +2542,13 @@ will only proceed up to the splitting depth given via `-depth`.
 
 **Example**
 
-Via the command line:
+_Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:bank.spec --prover_args '-smt_initialSplitDepth 3'
 ```
 
-Via a configuration file:
+_Configuration file_
 
 ```json
 "prover_args": [
