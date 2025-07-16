@@ -39,7 +39,7 @@ When you wish to prove properties on the source code. This is by far the most co
 
 **Example**
 
-Suppose we have a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`.
+To fomrally verify a Solidity file `Bank.sol`, with a contract named `Bank` inside it, and a specification file called `Bank.spec`:
 
 _Command line_
 
@@ -64,6 +64,8 @@ Adding a message makes it easier to track several runs on [the Prover Dashboard]
 
 **Example**
 
+To add the message `Removed an assertion` to describe the verification job:
+
 _Command line_
 
 ```sh
@@ -84,7 +86,7 @@ _Configuration file_
 ## `rule`
 
 **What does it do?**
-Formally verifies one or more given properties instead of the whole specification file. An invariant can also be selected.
+Formally verifies one or more given properties instead of the whole specification file. An {term}`invariant` can also be selected.
 
 **When to use it?**
 This option saves a lot of run time. Use it whenever you care about only a
@@ -161,7 +163,7 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-Suppose we want to skip checking `withdraw_succeeds` and `withdraw_fails`.
+To skip checking `withdraw_succeeds` and `withdraw_fails`:
 
 _Command line_
 
@@ -212,7 +214,7 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-Suppose we want to run the invariant `address_zero_cannot_become_an_account` on a separate Prover job, and the rest of the rules (`withdraw_succeeds` and `withdraw_fails`) to run together.
+To run the invariant `address_zero_cannot_become_an_account` on a separate Prover job to the rest of the rules (`withdraw_succeeds` and `withdraw_fails`):
 
 _Command line_
 
@@ -310,8 +312,8 @@ exclusion takes precedence.
 
 **Example**
 
-Suppose we wish to include all `deposit(uint)` methods in the scene except the
-`deposit(uint)` function of the `C` contract.
+To include all `deposit(uint)` methods in the scene except the
+`deposit(uint)` function of contract `C`:
 
 _Command line_
 
@@ -384,6 +386,8 @@ In that case, the return code will be zero if the jobs were sent successfully.
 Use it to receive verification results in the terminal or a wrapping script.
 
 **Example**
+
+To wait for full verification results:
 
 _Command line_
 
