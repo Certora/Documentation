@@ -774,7 +774,7 @@ The same settings in a conf file:
 The key of each entry is either a contract name pattern or a path pattern. 
 Path patterns must end with one of the following suffixes: `.sol`, `.vy`, or `.yul`.
 
-It is not allowed to set both the map and the non-map attributes together (e.g., [solc](#--solc) and [compiler_map](#--compiler_map)).
+It is not allowed to set both the map and the non-map attributes together (e.g., {term}`--solc` and {term}`--compiler_map`).
 
 If a map attribute was set, all files/contracts declared in as sources must be mapped.
 
