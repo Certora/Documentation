@@ -699,6 +699,8 @@ It is also a useful check if you notice rules passing surprisingly quickly or ea
 
 **Example**
 
+TO run a rule sanity check:
+
 _Command line_
 
 ```sh
@@ -722,6 +724,8 @@ Reduces the verbosity of the tool.
 When we do not care much for the output. It is recommended when running the tool in continuous integration.
 
 **Example**
+
+To reduce output verbosity:
 
 _Command line_
 
