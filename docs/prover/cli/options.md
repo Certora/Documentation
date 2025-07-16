@@ -429,9 +429,11 @@ If no value was given, then `basic` will be used by default.
 See {doc}`../checking/coverage-info` for more information about the analysis.
 
 **When to use it?**
-We suggest using this option when you have finished (a subset of) your rules and the prover verified them. The analysis tells you which parts of the Solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules.
+We suggest using this option when you have finished (a subset of) your rules and the Prover verified them. The analysis tells you which parts of the Solidity input are covered by the rules, and also which parts of the rules are actually needed to prove the rules.
 
 **Example**
+
+To run a deep analysis of the coverage of your verification:
 
 _Command line_
 
