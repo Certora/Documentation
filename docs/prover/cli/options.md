@@ -468,6 +468,8 @@ When we want to run all Foundry fuzz tests in the project with the Prover.
 
 **Example**
 
+TO run Foundry with fuzz tests with the Prover:
+
 _Command line_
 
 ```sh
@@ -540,10 +542,12 @@ rule R2_independent {
 ```
 
 **When to use it?**
-When you have a rule with multiple satisfy statements, 
+When you have a rule with multiple {ref}`satisfy statement <satisfy>`s, 
 and you would like to demonstrate each statement separately.
 
 **Example**
+
+To check each {ref}`satisfy statement <satisfy>` independently:
 
 _Command line_
 
@@ -594,6 +598,8 @@ When you have a rule with multiple assertions:
 
 **Example**
 
+To check each assertion separately:
+
 _Command line_
 
 ```sh
@@ -609,15 +615,17 @@ _Configuration file_
 
 (--multi_example)=
 ## `multi_example`
-Show several counterexamples for failed assert statements and several witnesses for verified satisfy statements.
+Show several counterexamples for failed assert statements and several witnesses for verified {ref}`satisfy statement <satisfy>`s.
 
 **What does it do?**
-By default, the Prover returns a single example per rule, either a counterexample (for assert violations) or a witness (for satisfy verification). When this flag is enabled, the Prover will attempt to generate multiple examples from different control-flow paths or logical reasons, offering a broader view of the rule's behavior.
+By default, the Prover returns a single example per rule, either a counterexample (for `assert` violations) or a witness (for `satisfy` verification). When this flag is enabled, the Prover will attempt to generate multiple examples from different control-flow paths or logical reasons, offering a broader view of the rule's behavior.
 
 **When to use it?**
 Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and refine in the specification or implementation.
 
 **Example**
+
+To show several counter examples:
 
 _Command line_
 
@@ -652,9 +660,11 @@ This option implicitly enables the {ref}`--auto_dispatcher` option.
 **When to use it?**
 Mostly used as a first step when starting to work on a new project, in order to
 "get a feeling" of the complexity of the project for the tool, and what methods
-may be hot spots for summarization etc.
+may be hot spots for [summarization](term-summarize) etc.
 
 **Example**
+
+To run sanity checks on all methods in the project:
 
 _Command line_
 
