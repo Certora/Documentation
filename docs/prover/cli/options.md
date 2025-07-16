@@ -109,28 +109,43 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-If we want to verify only `withdraw_succeeds`, we run the command
+To verify only `withdraw_succeeds`:
+
+_Command line_
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds
 ```
 
-If we want to verify both `withdraw_succeeds` and `withdraw_fails`, we run the command
-```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails
-```
+_Configuration file_
 
-Alternatively, to verify both `withdraw_succeeds` and `withdraw_fails`, we could
-simply run  the command
-```sh
-certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
-```
-
-In the configuration file, it will look like this:
 ```json
 "rule": ["withdraw_succeeds", "withdraw_fails"]
 ```
 
-or
+To verify both `withdraw_succeeds` and `withdraw_fails`:
+
+_Command line_
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw_succeeds withdraw_fails
+```
+
+_Configuration file_
+
+```json
+"rule": ["withdraw_succeeds", "withdraw_fails"]
+```
+
+To verify both `withdraw_succeeds` and `withdraw_fails`:
+
+_Command line_
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --rule withdraw*
+```
+
+_Configuration file_
 
 ```json
 "rule": ["withdraw_*"]
