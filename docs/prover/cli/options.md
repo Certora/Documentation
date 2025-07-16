@@ -214,7 +214,7 @@ rule withdraw_succeeds()
 rule withdraw_fails()
 ```
 
-To run the invariant `address_zero_cannot_become_an_account` on a separate Prover job to the rest of the rules (`withdraw_succeeds` and `withdraw_fails`):
+To run the {term}`invariant` `address_zero_cannot_become_an_account` on a separate Prover job to the rest of the rules (`withdraw_succeeds` and `withdraw_fails`):
 
 _Command line_
 
@@ -296,10 +296,10 @@ scene will be used, but only the `deposit` method of the primary contract.
 ## `exclude_method`
 
 **What does it do?**
-This option is the opposite of {ref}`--method` and will exclude from parametric
-rules and invariants any method mentioned in this list. The methods and their
-contracts are interpreted in the same way as they are in the {ref}`--method`
-option.
+This option is the opposite of {ref}`--method` and will exclude from 
+{term}`parametric rule`s and {term}`invariant`s any method mentioned in this list. 
+The methods and their contracts are interpreted in the same way as they are in the 
+{ref}`--method` option.
 
 **When to use it?**
 If there are specific methods for which a rule/invariant takes too long to run
