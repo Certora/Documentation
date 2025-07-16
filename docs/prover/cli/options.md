@@ -85,8 +85,11 @@ _Configuration file_
 (--rule)=
 ## `rule`
 
+**Option values**
+A list of {term}`rule name pattern`s.
+
 **What does it do?**
-Formally verifies one or more given properties instead of the whole specification file. An {term}`invariant` can also be selected.
+Formally verifies one or more rules or {term}`invariant`s instead of the whole specification file.
 
 **When to use it?**
 This option saves a lot of run time. Use it whenever you care about only a
@@ -95,12 +98,6 @@ you add a new rule to an existing specification. The other is when code changes
 cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
-
-**Rule Name Pattern**
-Rule names, like all CVL identifiers, have the same format as Solidity identifiers: they consist of a combination of letters, digits,
-dollar signs and underscores, but cannot start with a digit (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
-In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters.
-For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
 
 **Examples**
 
