@@ -1540,7 +1540,7 @@ Reasons to raise the bound:
 
 **Example**
 
-To limit the length of data being hashed to 128 bytes:
+To limit the length of hashed data to 128 bytes:
 
 _Command line_
 
