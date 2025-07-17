@@ -1574,6 +1574,8 @@ Example use cases:
 
 **Example**
 
+To compile source code and specification without starting verification:
+
 _Command line_
 
 ```sh
@@ -1599,6 +1601,8 @@ This flag should only be used in rare cases when you believe the local syntax or
 
 **Example**
 
+To skip local syntax and type checking:
+
 _Command line_
 
 ```sh
@@ -1610,7 +1614,6 @@ _Configuration file_
 ```json
 "disable_local_typechecking": true
 ```
-
 
 ```{caution}
 Avoid using this flag unless absolutely necessary. It is always better to fix syntax or type issues locally to ensure a smoother verification process.
@@ -1646,6 +1649,8 @@ Even if in the shorter running time not all rules were processed, a second run m
 ```
 
 **Example**
+
+To set the global time limit of the Prover to 60 seconds:
 
 _Command line_
 
@@ -1693,6 +1698,8 @@ The second use is when the solvers can prove the property, they just need more t
 
 **Example**
 
+To set the SMT time limit to 500 seconds:
+
 _Command line_
 
 ```sh
@@ -1726,6 +1733,8 @@ Setting the maximum number of parallel rule evaluations to low values (e.g., 1, 
 
 
 **Example**
+
+To set the limit of concurrent rule evaluations to 4:
 
 _Command line_
 
