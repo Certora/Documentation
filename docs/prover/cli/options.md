@@ -2331,7 +2331,7 @@ Advanced options
 
 **What does it do?**
 
-Allows setting configuring the underlying JVM.
+Allows configuring the underlying JVM.
 
 **When to use it?**
 
@@ -2360,7 +2360,8 @@ _Configuration file_
 ## `precise_bitwise_ops`
 
 **What does it do?**
-This option models bitwise operations exactly, instead of using the default {term}`overapproximation`. It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
+This option models bitwise operations exactly, instead of using the default {term}`overapproximation`. 
+It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
 
 **Limitations**
 - This encoding does not model `mathint` precisely.
@@ -2371,6 +2372,8 @@ This option models bitwise operations exactly, instead of using the default {ter
 Use this option if a counterexample suggests that incorrect modeling of bitwise operations is affecting verification results.
 
 **Example**
+
+To model bitwise operations exactly:
 
 _Command line_
 
@@ -2402,6 +2405,8 @@ This option disables the storage splitting optimization.
 
 **Usage**
 
+To disable storage splitting optimization:
+
 _Command line_
 
 ```sh
@@ -2422,21 +2427,23 @@ _Configuration file_
 ### `maxNumberOfReachChecksBasedOnDomination`
 
 This option sets the number of program points to test with the `deepSanity`
-built-in rule.  See {ref}`built-in-deep-sanity`.
+built-in rule. See {ref}`built-in-deep-sanity`.
 
 **Usage**
+
+To set the number of program points to test with `deepSanity` to 2:
 
 _Command line_
 
 ```sh
---prover_args '-maxNumberOfReachChecksBasedOnDomination <n>'
+--prover_args '-maxNumberOfReachChecksBasedOnDomination 2'
 ```
 
 _Configuration file_
 
 ```json
 "prover_args": [
-  "-maxNumberOfReachChecksBasedOnDomination <n>"
+  "-maxNumberOfReachChecksBasedOnDomination 2"
 ]
 ```
 
@@ -2459,6 +2466,8 @@ Otherwise, `RETURNSIZE` will remain non-deterministic.
 
 **Usage**
 
+To ignore scenarios where an incorrect number of values is returned by summarized methods:
+
 _Command line_
 
 ```sh
@@ -2476,10 +2485,13 @@ _Configuration file_
 (-smt_groundquantifiers)=
 ### `smt_groundQuantifiers`
 
-This option disables quantifier grounding.  See {ref}`grounding` for more
-information.
+This option disables quantifier grounding. 
+See {ref}`grounding` for more information.
 
 **Usage**
+
+To disable quantifier grounding:
+
 _Command line_
 
 ```sh
@@ -2504,6 +2516,8 @@ to the size of the output buffer as specified by the summarized `CALL` instructi
 
 **Usage**
 
+To ignore all scenarios where an incorrect number of values is returned by summarized methods:
+
 _Command line_
 
 ```sh
@@ -2523,7 +2537,7 @@ _Configuration file_
 Control flow splitting options
 ------------------------------
 
-See [here](control-flow-splitting) for an explanation of control flow splitting.
+See [here](control-flow-splitting) for an explanation of what is control flow splitting.
 
 (-depth)=
 ### `depth`
@@ -2534,16 +2548,18 @@ Sets the maximum splitting depth.
 
 **When to use it?**
 
-When the deepest {term}`split`s are too heavy to solve, but not too high in
-number, increasing this will lead to smaller, but more numerous
-{term}`split leaves`, which run at the full SMT timeout (as set by
-{ref}`--smt_timeout`).
+When the deepest {term}`split`s are too heavy to solve, 
+but not too high in number, increasing this will lead to smaller, 
+but more numerous {term}`split leaves`, 
+which run at the full SMT timeout (as set by {ref}`--smt_timeout`).
 Conversely, if run time is too high because there are too many splits,
-decreasing this number means that more time is spent on fewer, but bigger split
-leaves.
+decreasing this number means that more time is spent on fewer, 
+but bigger split leaves.
 The default value for this option is 10.
 
 **Example**
+
+To set the splitting depth limit to 5:
 
 _Command line_
 
@@ -2580,6 +2596,8 @@ The default value for this option is `false`.
 
 **Example**
 
+To continue verification after reaching a maximum-depth timeout:
+
 _Command line_
 
 ```sh
@@ -2615,6 +2633,8 @@ run time spent on intermediate "TIMEOUT" results. Use
 a given depth.
 
 **Example**
+
+To set the medium timeout to 20 seconds:
 
 _Command line_
 
@@ -2661,6 +2681,8 @@ will only proceed up to the splitting depth given via `-depth`.
 ```
 
 **Example**
+
+To start checking only splits with a depth of 4 or greater:
 
 _Command line_
 
