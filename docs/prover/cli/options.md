@@ -329,7 +329,7 @@ To include all `deposit(uint)` methods in the scene except the
 _Command line_
 
 ```sh
-certoraRun --method '_.deposit(uint)' --exclude_method 'C.deposit(uint)'
+certoraRun Bank.sol --verify Bank:Bank.spec --method '_.deposit(uint)' --exclude_method 'C.deposit(uint)'
 ```
 
 _Configuration file_
