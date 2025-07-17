@@ -2410,7 +2410,7 @@ To disable storage splitting optimization:
 _Command line_
 
 ```sh
---prover_args '-enableStorageSplitting false'
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-enableStorageSplitting false'
 ```
 
 _Configuration file_
@@ -2436,7 +2436,7 @@ To set the number of program points to test with `deepSanity` to 2:
 _Command line_
 
 ```sh
---prover_args '-maxNumberOfReachChecksBasedOnDomination 2'
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-maxNumberOfReachChecksBasedOnDomination 2'
 ```
 
 _Configuration file_
@@ -2471,7 +2471,7 @@ To ignore scenarios where an incorrect number of values is returned by summarize
 _Command line_
 
 ```sh
---prover_args '-optimisticReturnsize true'
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-optimisticReturnsize true'
 ```
 
 _Configuration file_
@@ -2495,7 +2495,7 @@ To disable quantifier grounding:
 _Command line_
 
 ```sh
---prover_args '-smt_groundQuantifiers false'
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-smt_groundQuantifiers false'
 ```
 
 _Configuration file_
@@ -2521,7 +2521,7 @@ To ignore all scenarios where an incorrect number of values is returned by summa
 _Command line_
 
 ```sh
---prover_args '-superOptimisticReturnsize true'
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-superOptimisticReturnsize true'
 ```
 
 _Configuration file_
@@ -2639,7 +2639,7 @@ To set the medium timeout to 20 seconds:
 _Command line_
 
 ```sh
---prover_args '-mediumTimeout 20'
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-mediumTimeout 20'
 ```
 
 _Configuration file_
