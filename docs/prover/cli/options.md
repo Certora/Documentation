@@ -2245,6 +2245,8 @@ pip install --upgrade certora-cli
 
 **Example**
 
+To show the Prover's version:
+
 ```sh
 certoraRun --version
 ```
@@ -2253,14 +2255,14 @@ certoraRun --version
 
 **Option values**
 ```sh
-<branch_name>
+<Prover version name>
 ```
 
 **What does it do?**
-This option lets you select a specific version of the Certora Prover by providing the name of a Git branch from the Prover repository. It does not accept individual commit hashes.
+This option lets you select a specific version of the Certora Prover. 
 
 **When to use it?**
-Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases. The most common use case is specifying one of the release branches (e.g., `release/10April2025`) to match the behavior of a known version.
+Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases.
 
 **Example**
 
