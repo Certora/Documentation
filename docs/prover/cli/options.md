@@ -2115,6 +2115,8 @@ Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish 
 
 _Command line_
 
+To allow each contract to be created dynamically up to once per transaction:
+
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
 ```
@@ -2152,8 +2154,9 @@ Use this flag when you prefer not to manually add explicit `DISPATCHER` summarie
 
 **Example**
 
-Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site,
-and `Foo` calls some method `m()` which you wish to automatically link to the newly created contract.
+Suppose a contract `C` creates a new instance of a contract `Foo`. 
+`Foo` calls some method `m()`. 
+To inline the constructor of `Foo` at the creation site, and automatically {ref}`--link` the method `m` to `Foo`:
 
 _Command line_
 
@@ -2164,6 +2167,7 @@ certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1 --dynamic_dispatch
 _Configuration file_
 
 ```json
+"dynamic_bound": "1",
 "dynamic_dispatch": true
 ```
 
