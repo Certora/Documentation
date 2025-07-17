@@ -274,7 +274,7 @@ the `C.deposit` method:
 _Command line_
 
 ```sh
-certoraRun --method 'C.deposit(uint)'
+certoraRun Bank.sol --verify Bank:Bank.spec --method 'C.deposit(uint)'
 ```
 
 _Configuration file_
