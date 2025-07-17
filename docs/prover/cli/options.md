@@ -2051,6 +2051,8 @@ Use this flag to help track who owns or has submitted each verification run, par
 
 **Example**
 
+To set the protocol author in the [dashboard](https://prover.certora.com/) to be `OpenDeFi Labs`:
+
 _Command line_
 
 ```sh
@@ -2073,6 +2075,8 @@ Sets the protocol name associated with the verification job. This name will appe
 Use this flag to clearly label your jobs. This is especially useful when verifying multiple projects in parallel.
 
 **Example**
+
+To set the protocol name in the [dashboard](https://prover.certora.com/) to be `My DeFi Protocol`:
 
 _Command line_
 
