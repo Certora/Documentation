@@ -690,7 +690,7 @@ none|basic|advanced
 
 **What does it do?**
 This option enables sanity checking for rules.  
-The `rule_sanity` option may be followed by one of `none`, `basic`, or `advanced`.
+The `rule_sanity` option must be followed by one of `none`, `basic`, or `advanced`.
 See {doc}`../checking/sanity` for more information about sanity checks.
 
 **When to use it?**
