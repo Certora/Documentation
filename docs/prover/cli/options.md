@@ -1702,7 +1702,7 @@ The second use is when the solvers can prove the property, they just need more t
 
 **Example**
 
-To set the SMT time limit to 500 seconds:
+To set the time limit for SMT solvers to 500 seconds:
 
 _Command line_
 
