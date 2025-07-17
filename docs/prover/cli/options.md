@@ -2111,11 +2111,9 @@ As a result, any interaction with those addresses will be imprecise and treated 
 
 **Example**
 
-Suppose a contract `C` creates a new instance of a contract `Foo`, and you wish to inline the constructor of `Foo` at the creation site.
+To allow each contract to be created dynamically up to once per transaction:
 
 _Command line_
-
-To allow each contract to be created dynamically up to once per transaction:
 
 ```sh
 certoraRun C.sol Foo.sol --verify C:C.spec --dynamic_bound 1
@@ -2156,7 +2154,7 @@ Use this flag when you prefer not to manually add explicit `DISPATCHER` summarie
 
 Suppose a contract `C` creates a new instance of a contract `Foo`. 
 `Foo` calls some method `m()`. 
-To inline the constructor of `Foo` at the creation site, and automatically {ref}`--link` the method `m` to `Foo`:
+To inline the constructor of `Foo` at the creation site, and automatically {ref}`--link` the method `m()` to `Foo`:
 
 _Command line_
 
