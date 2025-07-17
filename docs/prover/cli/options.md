@@ -1494,9 +1494,11 @@ See {ref}`hashing_unbounded` for more details.
 
 **When to use it?**
 
-When the assertion regarding unbounded hashing is thrown, but it is acceptable for the Prover to ignore cases where the length hashed values exceeds the current bound.
+When the assertion regarding unbounded hashing is thrown, but it is acceptable for the Prover to ignore cases where a hashed value's length exceeds the current bound.
 
 **Example**
+
+To ignore scenarios where a hashed value's length exceeds the current bound:
 
 _Command line_
 
@@ -1537,6 +1539,8 @@ Reasons to raise the bound:
  - When {ref}`--optimistic_hashing` is set: Raising the value helps detect bugs that depend on a hashed array reaching a certain length. Optimistic hashing excludes all cases where the hashed data exceeds this bound from verification.
 
 **Example**
+
+To limit the length of data being hashed to 128 bytes:
 
 _Command line_
 
