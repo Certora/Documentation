@@ -1827,6 +1827,10 @@ contract already has such a function and this would cause a conflict).
 
 [For a more detailed example click here.](https://github.com/Certora/Examples/tree/master/CVLByExample/ExtensionContracts)
 
+```{note}
+This option is not supported from the command line and must be used via a configuration file.
+```
+
 
 (--contract_recursion_limit)=
 ## `contract_recursion_limit`
