@@ -99,7 +99,7 @@ cause a specific rule to fail; in the process of fixing the code, updating the
 rule, and understanding counterexamples, you likely want to verify only that
 specific rule.
 
-**Examples**
+**Example**
 
 If `Bank.spec` includes the following properties:
 
