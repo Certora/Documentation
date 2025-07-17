@@ -468,7 +468,7 @@ When we want to run all Foundry fuzz tests in the project with the Prover.
 
 **Example**
 
-TO run Foundry with fuzz tests with the Prover:
+To run Foundry with fuzz tests with the Prover:
 
 _Command line_
 
@@ -699,7 +699,7 @@ It is also a useful check if you notice rules passing surprisingly quickly or ea
 
 **Example**
 
-TO run a rule sanity check:
+To run a rule sanity check:
 
 _Command line_
 
