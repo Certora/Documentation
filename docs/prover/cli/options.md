@@ -1769,14 +1769,15 @@ By default, Certora's client assigns addresses as it sees fit to contracts.
 
 **Example**
 
-If we wish the `Oracle` contract to be at address 12, 
-we can do it via the command line:
+To set the address of the `Oracle` contract to 12:
+
+_Command line_
 
 ```sh
 certoraRun Bank.sol Oracle.sol --verify Bank:Bank.spec --address Oracle:12
 ```
 
-Or via a configuration file:
+_Configuration file_
 
 ```json
 "address": [
