@@ -1292,6 +1292,8 @@ call resolution failures.
 
 **Example**
 
+To automatically use functions with matching signatures when the callee is not resolved:
+
 _Command line_
 
 ```sh
@@ -1311,8 +1313,8 @@ _Configuration file_
 ## `nondet_difficult_funcs`
 
 **What does it do?**
-When this option is set, the Prover will auto-summarize
-view or pure internal functions that return a value type and are
+When this option is set, the Prover will auto-{term}`summarize`
+`view` or `pure` internal functions that return a value type and are
 currently not summarized, and that are found to be heuristically difficult
 for the Prover.
 
@@ -1325,6 +1327,8 @@ It can help the user get faster feedback, both in the form of faster
 verification results, as well as highlighting potentially difficult functions.
 
 **Example**
+
+To auto-{term}`summarize` difficult suitable internal functions:
 
 _Command line_
 
@@ -1340,21 +1344,22 @@ _Configuration file_
 
 
 
-
-
 (--nondet_minimal_difficulty)=
 ## `nondet_minimal_difficulty`
 
 **What does it do?**
-This option sets the minimal difficulty threshold for the auto-summarization mode enabled by {ref}`--nondet_difficult_funcs`.
+This option sets the minimal difficulty threshold for the auto-{term}`summarization` mode enabled by {ref}`--nondet_difficult_funcs`.
 
 **When to use it?**
 If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
-one can adjust the default threshold to apply the auto-summarization to potentially more or fewer internal functions.
+one can adjust the default threshold to apply the auto-{term}`summarization` to potentially 
+more or fewer internal functions.
 
 The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
 
 **Example**
+
+To set the minimal difficulty threshold for the auto-{term}`summarization` to 20:
 
 _Command line_
 
@@ -1375,7 +1380,7 @@ _Configuration file_
 ## `optimistic_summary_recursion`
 
 **What does it do?**
-In case there's a call to some Solidity function within a summary, we may end up
+In case there's a call to some Solidity function within a {term}`summary`, we may end up
 with recursive calls to this summary. For example, if in the summary of `foo` we
 call the Solidity function `bar`, and `bar`'s Solidity code contains a call to
 `foo`, we'll summarize `foo` again, which will lead to another call to `bar`
@@ -1405,6 +1410,8 @@ flag to `true`.
 
 **Example**
 
+To ignore scenarios where the {term}`summary` recursion is over the limit:
+
 _Command line_
 
 ```sh
@@ -1426,7 +1433,7 @@ _could_ actually happen in the deployed contract, this code-path won't be verifi
 ## `summary_recursion_limit`
 
 **What does it do?**
-Summaries can cause recursion (see {ref}`--optimistic_summary_recursion`). This
+{term}`Summaries` can cause recursion (see {ref}`--optimistic_summary_recursion`). This
 option sets the summary recursion level, which is the number of recursive calls
 that the Prover will consider.
 
@@ -1448,6 +1455,8 @@ When inlining a fallback function, found it was already on the stack. Consider d
 ```
 
 **Example**
+
+To set the {term}`summary` recursion limit to 3:
 
 _Command line_
 
