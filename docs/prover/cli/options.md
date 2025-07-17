@@ -922,14 +922,12 @@ Use this option if your system has multiple Solidity versions installed and you 
 
 **Example**
 
+To use a compiler version from `$PATH`:
+
 _Command line_
 
 ```sh
-# Use a compiler version from $PATH
 certoraRun Bank.sol --verify Bank:Bank.spec --solc solc8.19
-
-# Use full path to the compiler
-certoraRun Bank.sol --verify Bank:Bank.spec --solc /usr/local/bin/solc8.19
 ```
 
 _Configuration file_
@@ -938,7 +936,15 @@ _Configuration file_
 "solc": "solc8.19"
 ```
 
-or
+To use a compiler version via full path:
+
+_Command line_
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --solc /usr/local/bin/solc8.19
+```
+
+_Configuration file_
 
 ```json
 "solc": "/usr/local/bin/solc8.19"
