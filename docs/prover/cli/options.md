@@ -1215,6 +1215,8 @@ The default number of loop iterations we unroll is one. However, in many cases, 
 
 **Example**
 
+To set the maximal number of unrolled loop iterations to 2:
+
 _Command line_
 
 ```sh
@@ -1244,6 +1246,8 @@ When you have loops in your code and are getting a counterexample labeled `loop 
 ```
 
 **Example**
+
+To ignore scenarios where the _loop unwind condition_ does not hold:
 
 _Command line_
 
