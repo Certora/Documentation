@@ -289,7 +289,7 @@ but only the `deposit` method of the primary contract:
 _Command line_
 
 ```sh
-certoraRun --method 'deposit(uint)' --method '_.transfer(address,uint256)'
+certoraRun Bank.sol --verify Bank:Bank.spec --method 'deposit(uint)' --method '_.transfer(address,uint256)'
 ```
 
 _Configuration file_
