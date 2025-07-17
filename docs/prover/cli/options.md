@@ -1134,8 +1134,9 @@ See also {ref}`map_attributes`.
 **When to use it?**
 Use this when different contracts require different compilation pipelines. For instance, if one contract benefits from the IR pipeline (e.g., improved output or different optimization behavior) but another fails to compile with the IR pipeline, this flag lets you mix modes safely.
 
-**Note**
+```{note}
 If {ref}`--solc_via_ir` is not set globally, no contracts will be compiled `via-ir` unless explicitly specified in this map.
+```
 
 **Example**
 
