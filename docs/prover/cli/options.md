@@ -922,7 +922,7 @@ Use this option if your system has multiple Solidity versions installed and you 
 
 **Example**
 
-To use a compiler version from `$PATH`:
+To use a Solidity compiler version from `$PATH`:
 
 _Command line_
 
@@ -936,7 +936,7 @@ _Configuration file_
 "solc": "solc8.19"
 ```
 
-To use a compiler version via full path:
+To use a Solidity compiler version via full path:
 
 _Command line_
 
@@ -964,6 +964,8 @@ When we want to add an additional location for the Solidity compiler to load sou
 
 **Example**
 
+To add `~/Projects/Bank` as an additional source file location:
+
 _Command line_
 
 ```sh
@@ -988,6 +990,8 @@ Passes the value of this option to the Solidity compiler's option `--evm-version
 When we want to select the Solidity compiler's EVM version.
 
 **Example**
+
+To compile for the `Istanbul` EVM version:
 
 _Command line_
 
@@ -1015,6 +1019,8 @@ See also {ref}`map_attributes`.
 When different contracts have to be compiled with different Solidity EVM versions.
 
 **Example**
+
+To compile `Bank` for the `prague` EVM version, and `Exchange` for the `cancun` EVM version:
 
 _Command line_
 
@@ -1044,6 +1050,8 @@ number of times the optimizer will be activated (if no value is set, the compile
 
 **Example**
 
+To set `solc` optimization for 300 runs:
+
 _Command line_
 
 ```sh
@@ -1071,6 +1079,8 @@ When we want to activate in the Solidity compiler the opcode-based optimizer for
 number of times the optimizer will be activated (if no value is set, the compiler's default is 200 runs).
 
 **Example**
+
+To optimize `Bank` for 200 runs, and `Exchange` for 300:
 
 _Command line_
 
@@ -1100,6 +1110,8 @@ When we want to enable the IR-based code generator.
 
 **Example**
 
+To enable the IR-based code generator:
+
 _Command line_
 
 ```sh
@@ -1127,7 +1139,7 @@ If {ref}`--solc_via_ir` is not set globally, no contracts will be compiled `via-
 
 **Example**
 
-In this example, contract A is compiled with the `--via-ir` flag, while contract B is compiled without it.
+To compile contract `A` with the `--via-ir` flag, and contract `B` without it:
 
 _Command line_
 
@@ -1159,14 +1171,12 @@ Use this option if your system has multiple Vyper versions installed and you wan
 
 **Example**
 
+To use a Vyper compiler version from `$PATH`:
+
 _Command line_
 
 ```sh
-# Use a compiler version from $PATH
 certoraRun Bank.sol --verify Bank:Bank.spec --vyper vyper0.3.10
-
-# Use full path to the compiler
-certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
 ```
 
 _Configuration file_
@@ -1175,7 +1185,15 @@ _Configuration file_
 "vyper": "vyper0.3.10"
 ```
 
-or
+To use a Vyper compiler version from full path:
+
+_Command line_
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --vyper /usr/local/bin/vyper0.3.10
+```
+
+_Configuration file_
 
 ```json
 "vyper": "/usr/local/bin/vyper0.3.10"
