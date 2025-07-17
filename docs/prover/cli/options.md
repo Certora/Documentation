@@ -1868,6 +1868,8 @@ as the code may in fact allow theoretically unbounded recursion.
 
 **Example**
 
+To set the contract recursion limit to 3:
+
 _Command line_
 
 ```sh
@@ -1901,13 +1903,15 @@ Many times a contract includes the address of another contract as one of its fie
 Assume we have the contract `Bank.sol` with the following code snippet:
 `IERC20 public underlyingToken;`
 
-We have a contract `BankToken.sol`, and `underlyingToken` should be its address. To do that, we can set the link via the command line:
+To set the address of a contract `BankToken.sol` to be the address `underlyingToken`:
+
+_Command line_
 
 ```sh
 certoraRun Bank.sol BankToken.sol --verify Bank:Bank.spec --link Bank:underlyingToken=BankToken
 ```
 
-Or via a configuration file:
+_Configuration file_
 
 ```json
 "link": [
