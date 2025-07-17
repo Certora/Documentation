@@ -1939,6 +1939,9 @@ beyond the specified recursion limit ({ref}`--contract_recursion_limit`).
 ```
 
 **Example**
+
+To ignore scenarios where contract recursion goes over the limit:
+
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true --contract_recursion_limit 1
 ```
@@ -1962,6 +1965,8 @@ This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing
 Enable this option to avoid spurious counter examples for external calls with empty input buffers.
 
 **Example**
+
+To avoid spurious counter examples for external calls with empty input buffers:
 
 _Command line_
 
@@ -2006,13 +2011,16 @@ struct TokenPair {
 }
 ```
 
-We have two contracts `BankToken.sol` and `LoanToken.sol`. We want `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`. To do that, we can set via the command line:
+We have two contracts `BankToken.sol` and `LoanToken.sol`. 
+To set `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`:
+
+_Command line_
 
 ```sh
 certoraRun Bank.sol BankToken.sol LoanToken.sol --verify Bank:Bank.spec --struct_link Bank:tokenA=BankToken Bank:tokenB=LoanToken
 ```
 
-Or via a configuration file:
+_Configuration file_
 
 ```json
 "struct_link": [
