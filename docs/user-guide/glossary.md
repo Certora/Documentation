@@ -108,7 +108,7 @@ witness example
 
   See {ref}`rule-overview` for more on how these are used.
 
-  In the context of SMT solvers, a model refers to a valuation of the logical constants and uninterpreted functions in the input formula that makes the formula evaluate to `true`. 
+  In the context of SMT solvers, a _model_ refers to a valuation of the logical constants and uninterpreted functions in the input formula that makes the formula evaluate to `true`. 
   See {term}`SAT result` for more details.
 
 linear arithmetic
