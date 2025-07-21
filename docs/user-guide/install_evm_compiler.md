@@ -144,15 +144,13 @@ binary executable for the desired version.
 ```{index} single: VS code; extension
 ```
 
-Installing the Certora Verification Language LSP VS Code extension
+Installing the LSP VS Code extension
 -------------------------------------------------------------------------
 
 All users of the Certora Prover can access the tool using the command line 
 interface, or [CLI](https://docs.certora.com/en/latest/docs/prover/cli/index.html). 
 Those who use Microsoft's Visual Studio Code editor (VS Code) also have the 
-option of using the
-[Certora Verification Language LSP](https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp).
-This will provide both syntax checking and syntax highlighting for CVL.
+option of using the [LSP Extension for VSCode](lsp).
 
 ----
 
