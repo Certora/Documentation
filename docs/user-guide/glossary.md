@@ -226,19 +226,19 @@ scene
 
 SMT
 SMT solver
-  "SMT" is short for "Satisfiability Modulo Theories". An SMT solver takes as
-  input a formula in predicate logic and returns whether the formula is
-  satisfiable (short "SAT") or unsatisfiable (short: "UNSAT"). The "Modulo
-  Theory" part means that the solver assumes a meaning for certain symbols in
-  the formula. For instance the theory of integer arithmetic stipulates that the
-  symbols `+`, `-`, `*`, etc. have their regular everyday mathematical
-  meaning.
-  When the formula is satisfiable, the SMT solver can also return a model for
-  the formula. I.e. an assignment of the formula's variables that makes the
-  formula evaluate to "true". For instance, on the formula "x > 5 /\ x = y * y",
-  a solver will return SAT, and produce any valuation where x is the square of
-  an integer and larger than 5, and y is the root of x.
-  Further reading: [Wikipedia](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories)
+  SMT stands for Satisfiability Modulo Theories. 
+  An SMT solver takes as input a formula written in predicate logic and determines 
+  whether it is satisfiable ({term}`SAT`) or unsatisfiable ({term}`UNSAT`).
+
+  The “Modulo Theories” part refers to the solver’s ability to reason about specific background theories,
+  such as integer arithmetic, arrays, or bitvectors. 
+  For example, under the theory of integer arithmetic, 
+  symbols like `+`, `-`, and `*` are interpreted according to their standard mathematical meaning.
+
+  When a formula is satisfiable, the solver may also return a {term}`model`: an assignment of values to variables that makes the formula evaluate to `true`.
+  For instance, given the formula `x > 5 ∧ x = y * y`, the solver might return `x = 9, y = 3` as a valid model.
+
+  For more background, see Wikipedia](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories).
 
 sound
 unsound
