@@ -272,10 +272,12 @@ TAC
   TAC (originally short for "three address code") is an intermediate
   representation
   ([Wikipedia](https://en.wikipedia.org/wiki/Intermediate_representation))
-  used by the Certora Prover. TAC code is kept invisible to the
-  user most of the time, so its details are not in the scope of this
-  documentation. We provide a working understanding, which is helpful for some
-  advanced proving tasks, in the {ref}`tac-reports` section.
+  used by the Certora Prover. 
+  TAC code is kept invisible to the user most of the time, 
+  so its details are not included in the scope of this
+  documentation. 
+  In the {ref}`tac-reports` section We provide a working understanding, 
+  which is helpful for some advanced proving tasks.
 
 tautology
   A tautology is a logical statement that is always true.
