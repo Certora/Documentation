@@ -206,18 +206,19 @@ SAT
 UNSAT
 SAT result
 UNSAT result
-  *SAT* and *UNSAT* are the results that an {term}`SMT solver` returns on a
-  successful run (i.e. not a timeout). SAT means that the input formula is
-  satisfiable and a {term}`model` has been found. UNSAT means that the input
-  formula is unsatisfiable (and thus there is no model for it).
-  Within the Certora Prover, what SAT means depends on the type of rule
-  being checked: For an `assert` rule, SAT means the rule is violated and the
-  SMT model corresponds to a counterexample.
-  For a `satisfy` rule, SAT means the rule is not violated and the SMT model
-  corresponds to a witness example.
-  Conversely, UNSAT means that an `assert` is never violated or a `satisfy` never
-  fulfilled respectively.
-  See also {ref}`rule-overview`.
+  `SAT` and `UNSAT` are the two possible results returned by an {term}`SMT solver` if it does not time out.
+  - `SAT` (satisfiable) means that the input formula can be satisfied, and a corresponding {term}`model` has been found.
+  - `UNSAT` (unsatisfiable) means that no such {term}`model` exists, as the formula cannot be satisfied.
+
+  In the context of the Certora Prover, the interpretation of `SAT` depends on the type of rule being checked:
+  - For an `assert` rule, `SAT` means the rule is violated; the {term}`model` returned serves as a counterexample.
+  - For a `satisfy` rule, `SAT` means the rule is fulfilled; the {term}`model` is a witness example.
+
+  Conversely, `UNSAT` indicates:
+  - An `assert` rule is never violated.
+  - A `satisfy` rule is never fulfilled.
+
+  See also the {ref}`rule-overview` for more background.
 
 scene
   The set of contract instances that the Certora Prover
