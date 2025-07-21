@@ -242,11 +242,10 @@ SMT solver
 
 sound
 unsound
-  Soundness means that any rule violations in the code being verified are
-  guaranteed to be reported by the Certora Prover.  Unsound approximations
-  such as loop unrolling or certain kinds of harnessing may cause real bugs
-  to be missed by the Prover, and should therefore be used with caution. See
-  {doc}`/docs/prover/approx/index` for more details.
+  Soundness means that the Certora Prover is guaranteed to report any rule violations in the code being verified. 
+  Unsound approximations, such as loop unrolling or certain kinds of harnessing, 
+  may cause the Prover to miss real bugs, and should, therefore, be used with caution. 
+  See {doc}`/docs/prover/approx/index` for more details.
 
 split
 split leaf
