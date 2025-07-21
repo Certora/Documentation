@@ -101,16 +101,15 @@ model
 example
 counterexample
 witness example
-  We use the terms "model" and "example" interchangeably.
-  In the context of a CVL rule, they refer to an assignment of values to all of
-  the CVL variables and contract storage that either violates an `assert`
-  statement or fulfills a `satisfy` statement.
-  In the `assert` case, we also call the model a "counterexample". In the
-  `satisfy` case, we also call the model "witness example".
-  See {ref}`rule-overview`.
-  In the context of {term}`SMT solver`s, a model is a valuation of the logical
-  constants and uninterpreted functions in the input formula that makes the formula
-  evaluate to `true`, also see {term}`SAT result`.
+  We use the terms “model” and “example” interchangeably. 
+  In the context of a CVL rule, they refer to an assignment of values to all CVL variables and contract storage that either:
+  - violates an `assert` statement, in which case the model is also called a **counterexample**, or
+  - satisfies a `satisfy` statement, in which case it is also called a **witness example**.
+
+  See {ref}`rule-overview` for more on how these are used.
+
+  In the context of SMT solvers, a model refers to a valuation of the logical constants and uninterpreted functions in the input formula that makes the formula evaluate to `true`. 
+  See {term}`SAT result` for more details.
 
 linear arithmetic
 nonlinear arithmetic
