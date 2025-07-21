@@ -178,11 +178,14 @@ quantified expression
   details about quantifiers in CVL.
 
 receiveOrFallback
-  A special function we introduce in every contract to model the behavior of Solidity
-  for calls with no data or that do not resolve to any contract function.
-  It will call the receive function if present for calls with no data, and otherwise the fallback function.
-  Shows up in the parametric rules or invariants, as well as in the call trace for such calls, written `<receiveOrFallback>()`.
-  See also [Solidity Documentation](https://docs.soliditylang.org/en/latest/contracts.html#fallback-function).
+  A special function automatically added to every contract to model how Solidity handles calls that either have no calldata or do not match any existing function signature.
+  1. If the call has no data and a `receive` function is present, `receive` is invoked.
+  2. Otherwise, the `fallback` function is called.
+
+  This behavior is modeled in CVL using the synthetic function `receiveOrFallback`, 
+  which may appear in parametric rules, invariants, or call traces as `<receiveOrFallback>()`.
+
+  For more details, see the [Solidity Documentation](https://docs.soliditylang.org/en/latest/contracts.html#fallback-function) on fallback functions.
 
 rule name pattern
   Rule names, like all CVL identifiers, have the same format as Solidity identifiers: 
