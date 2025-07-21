@@ -178,7 +178,7 @@ quantified expression
   details about quantifiers in CVL.
 
 receiveOrFallback
-  A special function automatically added to every contract to model how Solidity handles calls that either have no calldata or do not match any existing function signature.
+  A special function automatically added to every contract to model how Solidity handles calls that either have no `calldata` or do not match any existing function signature.
   1. If the call has no data and a `receive` function is present, `receive` is invoked.
   2. Otherwise, the `fallback` function is called.
 
