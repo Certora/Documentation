@@ -144,11 +144,11 @@ underapproximation
 optimistic assumptions
 pessimistic assertions
   Some input programs include constructs that the Prover cannot handle precisely and must instead approximate. 
-  This means the Prover may ignore certain behaviors of the program; 
-  for example, what happens when a loop executes more times than a fixed unrolling limit.
+  This means the Prover may ignore certain program behaviors, 
+  such as what happens when a loop executes more times than a fixed unrolling limit.
 
   The Prover provides options that let you choose between 
-  pessimistic and optimistic handling for each such approximation. (See the end of this section for examples.)
+  pessimistic and optimistic handling for each approximation. (See the end of this section for examples.)
 
   In pessimistic mode (the default), the Prover inserts pessimistic assertions 
   that check whether the program includes behavior that requires approximation, 
