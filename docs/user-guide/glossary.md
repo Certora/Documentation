@@ -6,7 +6,6 @@ Glossary
 
 axiom
   A statement accepted as true without proof.
-  [Wikipedia](https://en.wikipedia.org/wiki/Axiom)
 
 call trace
   A call trace is the Prover's visualization of either a
@@ -42,7 +41,7 @@ control flow path
   The Certora Prover's [TAC reports](tac-reports) contain a control flow graph
   of the {term}`TAC` intermediate representation of each given CVL rule.
   The control flow paths are the paths from source to sink in a given CFG.
-  In general (and in practice) the number of control flow paths grows
+  In general (and in practice), the number of control flow paths grows
   exponentially with the size of the CFG. This is known as the path explosion
   problem.
   Further reading:
@@ -62,11 +61,10 @@ EVM
 Ethereum Virtual Machine
 EVM bytecode
   EVM is short for Ethereum Virtual Machine.
-  EVM bytecode is one of the source languages that the Certora Prover internally
-  can take as input for verification. It is produced by the Solidity and Vyper
-  compilers, among others.
-  For details on what the EVM is and how it works, the following links provide
-  good entry points.
+  EVM bytecode is one of the source languages the Certora Prover
+  can take as input for verification. 
+  It is produced by the Solidity and Vyper compilers, among others.
+  The following links provide good entry points for details on what the EVM is and how it works:
   [Official documentation](https://ethereum.org/en/developers/docs/evm/),
   [Wikipedia](https://en.wikipedia.org/wiki/Ethereum#Virtual_machine)
 
