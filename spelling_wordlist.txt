@@ -32,6 +32,8 @@ approximative
 autofinders
 axiomatization
 axiomatized
+bitvector
+bitvectors
 bitwidth
 bitwise
 blockchain

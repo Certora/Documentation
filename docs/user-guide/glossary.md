@@ -238,7 +238,7 @@ SMT solver
   When a formula is satisfiable, the solver may also return a {term}`model`: an assignment of values to variables that makes the formula evaluate to `true`.
   For instance, given the formula `x > 5 ∧ x = y * y`, the solver might return `x = 9, y = 3` as a valid model.
 
-  For more background, see Wikipedia](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories).
+  For more background, see [Wikipedia](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories).
 
 sound
 unsound
