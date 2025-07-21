@@ -77,14 +77,14 @@ EVM storage
   [Official documentation](https://ethereum.org/en/developers/docs/smart-contracts/anatomy)
 
 havoc
-  Havoc means that variables are assigned values chosen non-deterministically.
-  A havoc happens in two cases: the first, at the beginning of the rule all variables
-  "havoced". The second, during certain events when the Certora Prover
-  should assume that some variables can change in an unknown way.
-  For example, an external function on an unknown contract
-  may have an arbitrary effect on the state of a third contract.  In this case,
-  we also say that the variable was "havoced".  See {ref}`havoc-summary` and
-  {ref}`havoc-stmt` for more details.
+  Havoc refers to assigning variables arbitrary, non-deterministic values. 
+  This occurs in two main cases:
+  1. At the beginning of a rule, all variables are havoced to model an unknown initial state.
+  2. During rule execution, certain events may cause specific variables to be havoced.
+    For example, when calling an external function on an unknown contract, 
+    the Prover assumes it could arbitrarily affect the state of a third contract.
+  In both cases, we say that the variable was havoced.
+  For more information, see {ref}`havoc-summary` and {ref}`havoc-stmt`.
 
 hyperproperty
   A hyperproperty describes a relationship between two hypothetical sequences
