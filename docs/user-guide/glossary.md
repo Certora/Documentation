@@ -261,10 +261,11 @@ summarize
 summarization
 Summaries
   A method summary is a user-provided approximation of the behavior of a
-  contract method.  Summaries are useful if the implementation of a method is
+  contract method.  
+  Summaries are useful if the implementation of a method is
   not available or if the implementation is too complex for the Certora
-  Prover to analyze without timing out.  See {doc}`/docs/cvl/methods` for
-  complete information on different types of method summaries.
+  Prover to analyze without timing out.  
+  See {ref}`summaries` for complete information on different types of method summaries.
 
 
 TAC
