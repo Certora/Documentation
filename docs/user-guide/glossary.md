@@ -114,7 +114,7 @@ witness example
 linear arithmetic
 nonlinear arithmetic
   An arithmetic expression is called linear if it consists only of additions,
-  subtractions, and multiplications by constant. Division and modulo where the
+  subtractions, and multiplications by constants. Division and modulo where the
   second parameter is a constant are also linear arithmetic.
   Examples for linear expressions are `x * 3`, `x / 3`, `5 * (x + 3 * y)`.
   Every arithmetic expression that is not linear is nonlinear.
@@ -123,21 +123,21 @@ nonlinear arithmetic
 
 overapproximation
 underapproximation
-  Sometimes it is useful to replace a complex piece of code with something
-  simpler that is easier to reason about.  If the approximation includes all of
-  the possible behaviors of the original code (and possibly others), it is
-  called an "overapproximation"; if it does not then it is called an
-  "underapproximation".
+  Sometimes, it is useful to replace a complex piece of code with something
+  simpler that is easier to reason about.
+  If the approximation includes all of the possible behaviors of the original code (and possibly others), it is called an "overapproximation"; 
+  if it does not, it is called an "underapproximation".
 
   Example: A {ref}`NONDET <view-summary>` summary is
-  an overapproximation because every possible value that the original
-  implementation could return is considered by the Certora Prover, while an
-  {ref}`ALWAYS <view-summary>` summary is an underapproximation if the
+  an overapproximation because the Certora Prover considers every possible value 
+  that the original implementation could return, 
+  while an {ref}`ALWAYS <view-summary>` summary is an underapproximation if the
   summarized method could return more than one value.
 
-  Proofs on overapproximated programs are {term}`sound`, but there may be
-  spurious {term}`counterexample`s caused by behavior that the original code
-  did not exhibit.  Underapproximations are more dangerous because a property
+  Proofs on overapproximated programs are {term}`sound`, but
+  spurious {term}`counterexample`s may be caused by behavior that the original code
+  did not exhibit. 
+  Underapproximations are more dangerous because a property
   that is successfully verified on the underapproximation may not hold on the
   approximated code.
 
