@@ -5,7 +5,7 @@ Glossary
 ````{glossary}
 
 axiom
-  a statement accepted as true without proof.
+  A statement accepted as true without proof.
 
 call trace
   A call trace is the Prover's visualization of either a
@@ -51,7 +51,7 @@ control flow path
   % TODO: ok to mention TAC here?
 
 environment
-  The environment of a method call refers to the global variables that solidity
+  The environment of a method call refers to the global variables that Solidity
   provides, including `msg`, `block`, and `tx`.  CVL represents these variables
   in a structure of type {ref}`env <env>`.  The environment does *not* include
   the contract state or the state of other contracts --- these are referred to
