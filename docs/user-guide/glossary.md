@@ -192,10 +192,14 @@ receiveOrFallback
   See also [Solidity Documentation](https://docs.soliditylang.org/en/latest/contracts.html#fallback-function).
 
 rule name pattern
-  Rule names, like all CVL identifiers, have the same format as Solidity identifiers: they consist of a combination of letters, digits,
-  dollar signs and underscores, but cannot start with a digit (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
-  In addition, rule name patterns can include the wildcard `*` that can replace any sequence of valid identifier characters.
+  Rule names, like all CVL identifiers, have the same format as Solidity identifiers: 
+  they consist of a combination of letters, digits, dollar signs, and underscores, 
+  but cannot start with a digit 
+  (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
+  When used in client options (like {ref}`--rule`), 
+  rule name patterns can also include the wildcard `*` that can replace any sequence of valid identifier characters.
   For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
+  This wildcard functionality is part of the client interface and does not apply within CVL spec files.
 
 sanity
   ```{todo}
