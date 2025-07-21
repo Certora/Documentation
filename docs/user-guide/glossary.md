@@ -301,13 +301,13 @@ verification condition
   Usually, a run of the Certora Prover generates many verification conditions.
   For instance, the Prover generates a verification condition for every
   {term}`parametric rule` and sanity checks triggered by {ref}`--rule_sanity`.
-  See also the {ref}`white-paper`, and the {ref}`user-guide`.
+  See also the {ref}`white-paper` and the {ref}`user-guide`.
 
 wildcard
 exact
   A methods block entry that explicitly uses `_` as a receiver is a *wildcard
-  entry*; all other entries are called *exact entries*.  See
-  {doc}`/docs/cvl/methods`.
+  entry*; all other entries are called *exact entries*.
+  See {doc}`/docs/cvl/methods`.
 
 ````
 
