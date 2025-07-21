@@ -83,7 +83,7 @@ havoc
   2. During rule execution, certain events may cause specific variables to be havoced.
     For example, when calling an external function on an unknown contract, 
     the Prover assumes it could arbitrarily affect the state of a third contract.
-  In both cases, we say that the variable was havoced.
+  
   For more information, see {ref}`havoc-summary` and {ref}`havoc-stmt`.
 
 hyperproperty
