@@ -185,11 +185,21 @@ quantified expression
   details about quantifiers in CVL.
 
 receiveOrFallback
-  A special function we introduce in every contract to model the behavior of solidity
+  A special function we introduce in every contract to model the behavior of Solidity
   for calls with no data or that do not resolve to any contract function.
   It will call the receive function if present for calls with no data, and otherwise the fallback function.
   Shows up in the parametric rules or invariants, as well as in the call trace for such calls, written `<receiveOrFallback>()`.
   See also [Solidity Documentation](https://docs.soliditylang.org/en/latest/contracts.html#fallback-function).
+
+rule name pattern
+  Rule names, like all CVL identifiers, have the same format as Solidity identifiers: 
+  they consist of a combination of letters, digits, dollar signs, and underscores, 
+  but cannot start with a digit 
+  (see [here](https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths)).
+  When used in client options (like {ref}`--rule`), 
+  rule name patterns can also include the wildcard `*` that can replace any sequence of valid identifier characters.
+  For example, the rule pattern `withdraw_*` can be used instead of listing all rules that start with the string `withdraw_`.
+  This wildcard functionality is part of the client interface and does not apply within CVL spec files.
 
 sanity
   ```{todo}
@@ -213,7 +223,6 @@ UNSAT result
   fulfilled respectively.
   See also {ref}`rule-overview`.
 
-(scene)=
 scene
   The *scene* refers to the set of contract instances that the Certora Prover
   knows about.
@@ -253,6 +262,8 @@ split leaves
 
 summary
 summarize
+summarization
+Summaries
   A method summary is a user-provided approximation of the behavior of a
   contract method.  Summaries are useful if the implementation of a method is
   not available or if the implementation is too complex for the Certora
