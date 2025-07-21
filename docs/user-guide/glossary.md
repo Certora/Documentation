@@ -295,15 +295,13 @@ vacuity
   The {doc}`../prover/checking/sanity` help detect vacuous rules.
 
 verification condition
-  The Certora Prover works by translating a program an a specification into
-  a single logical formula that is satisfiable if and only if the program
-  violates the specification. This formula is called a
-  *verification condition*.
+  The Certora Prover translates a program and a specification into a single logical formula 
+  that is satisfiable if and only if the program violates the specification. 
+  This formula is called a *verification condition*.
   Usually, a run of the Certora Prover generates many verification conditions.
-  For instance a verification condition is generated for every
-  {term}`parametric rule`, and also for each of the sanity checks triggered by
-  {ref}`--rule_sanity`.
-  See also {ref}`white-paper`, {ref}`user-guide`.
+  For instance, the Prover generates a verification condition for every
+  {term}`parametric rule` and sanity checks triggered by {ref}`--rule_sanity`.
+  See also the {ref}`white-paper`, and the {ref}`user-guide`.
 
 wildcard
 exact
