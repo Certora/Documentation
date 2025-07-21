@@ -220,7 +220,7 @@ UNSAT result
   See also {ref}`rule-overview`.
 
 scene
-  The *scene* refers to the set of contract instances that the Certora Prover
+  The set of contract instances that the Certora Prover
   knows about.
 
 SMT
