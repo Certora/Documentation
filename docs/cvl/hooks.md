@@ -285,6 +285,8 @@ work on regular storage fields.
 For more information on how the Prover models transient storage, 
 please refer to the relevant section on {ref}`transient storage <transient-storage>`.
 
+- [raw transient storage example](https://github.com/Certora/Examples/blob/b97218832625a88c6dffee8dcec8509f4114aa46/CVLByExample/TransientStorage/Hooks/README.md)
+- [transient fields example](https://github.com/Certora/Examples/blob/b97218832625a88c6dffee8dcec8509f4114aa46/CVLByExample/TransientStorage/TransientFields/README.md)
 
 (opcode-hooks)=
 EVM opcode hooks
