@@ -9,7 +9,7 @@ Step 1: Prerequisites
 ---------------------
 
 <details>
-  <summary>Python3.8.16 or newer</summary>
+  <summary>Python3.9 or newer</summary>
 
   Check your Python3 version by executing the following command on the
   terminal:
@@ -18,7 +18,7 @@ Step 1: Prerequisites
   python3 --version
   ```
 
-  If the version is < 3.8.16, follow the [Python installation guide][pythonInstall] to upgrade.
+  If the version is < 3.9, follow the [Python installation guide][pythonInstall] to upgrade.
 
   [pythonInstall]: https://wiki.python.org/moin/BeginnersGuide/Download
 </details>
@@ -88,7 +88,7 @@ can arise during installation and how to deal with them:
          .. code-block:: text
             :caption: The warning
          
-            The script certoraRun is installed in /Users/<user name>/Library/Python/3.8/bin
+            The script certoraRun is installed in /Users/<user name>/Library/Python/3.9/bin
             which is not on PATH. Consider adding this directory to PATH.
        
          * Open a terminal and move to the :file:`etc/paths.d` directory from root:
