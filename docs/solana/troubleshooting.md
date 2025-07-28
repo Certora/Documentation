@@ -6,7 +6,7 @@ This section describes resolution of common issues when using the Solana Prover.
 
 The `certoraSolanaProver` command has been introduced in version `7.22.0` of
 the Certora Prover package.
-Run `certoraRun --version` to verify that you are using a version greater or
+Run `certoraSolanaProver --version` to verify that you are using a version greater or
 equal to `7.22.0`.
 It is possible to upgrade the Certora Prover package with the following command:
 `pip3 install --upgrade certora-cli`.
