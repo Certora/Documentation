@@ -274,7 +274,7 @@ contracts are accessing the same slot the same hook code will be called with
 the same slot number.
 ```
 
-### Notes on transient storage.
+### Notes on transient storage
 In a similar vein to `ALL_SLOAD` and `ALL_SSTORE` hooks, CVL also allows
 to hook on `TLOAD` and `TSTORE` instructions for updating the transient 
 storage, using the `ALL_TLOAD` and `ALL_TSTORE` hooks. 
