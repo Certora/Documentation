@@ -26,6 +26,8 @@ hook ::= "hook" pattern block
 
 pattern ::= "Sstore" access_path param [ "(" param ")" ]
           | "Sload"  param access_path
+          | "Tstore" access_path param [ "(" param ")" ]
+          | "Tload"  param access_path
           | opcode   [ "(" params ")" ] [ param ]
 
 access_path ::= id
@@ -277,11 +279,8 @@ In a similar vein to `ALL_SLOAD` and `ALL_SSTORE` hooks, CVL also allows
 to hook on `TLOAD` and `TSTORE` instructions for updating the transient 
 storage, using the `ALL_TLOAD` and `ALL_TSTORE` hooks. 
 The hooks for transient storage access share the syntax of their regular storage counterparts.
-
-Given that Solidity only allows (as of v0.8.25) access to transient 
-storage via inline-assembly, and has no notion of structure to 
-transient storage, Prover currently does not expose access-path based
-access like for the regular storage hooks.
+Similarly, `Tload` and `Tstore` hooks work on transient fields, just like `Sload` and `Sstore`
+work on regular storage fields.
 
 For more information on how the Prover models transient storage, 
 please refer to the relevant section on {ref}`transient storage <transient-storage>`.
