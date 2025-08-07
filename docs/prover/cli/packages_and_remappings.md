@@ -53,8 +53,8 @@ the `node_modules` directory.
 The Certora Prover Client will check if  the file `package.json` in the current directory. 
 If it is, packages will be retrieved from the JSON file and for each package, the client will generate a remapping
 for the Solidity compiler. The remapping will map the package name to its default location in the `node_modules` directory.
-The  attributes [packages_path](options.md#packages_path) can be used to specify the root directory for packages in
-case were installed in a different location than the default `node_modules` directory. 
+The attributes [packages_path](options.md#packages_path) can be used to specify the root directory for packages in
+case where they were installed in a different location than the default `node_modules` directory. 
 Another way to specify the location of packages is by setting the `NODE_PATH` environment variable.
 
 
@@ -73,11 +73,11 @@ The syntax is identical to the Solidity compiler's remappings and to the `packag
 
 To find the location of packages and remappings, the Prover client follows these steps:
 1. It the attribute {ref}`--packages` was set in the configuration file or as a flag `--packages` in the command line,
-   the remappings are used when calling the solidity compiler. In this case remapping in `package.json` or `remappings.txt` are ignored.
+   the remappings are used when calling the solidity compiler. In this case remappings in `package.json` or `remappings.txt` are ignored.
 2. If {ref}`--packages` was set, but `package.json` is found in the current directory, then for each package
    specified in the objects `dependencies` and `devDependencies` a mapping is generated (as described above).
 3. If the current directory is inside a foundry project, i.e. `foundry.toml` is found in the current directory or in a parent directory, 
-   then getting all the project remapping is done by simply calling the shell command:
+   then getting all the project remappings is done by simply calling the shell command:
    ```shell
    forge remappings
    ```
