@@ -76,11 +76,11 @@ To find the location of packages and remappings, the Prover follows these steps:
    these remappings are passed to the Solidity compiler. In this case, any packages and/or remappings found in `package.json` or `remappings.txt` are ignored.
 2. If {ref}`--packages` is not set, but `package.json` is found in current working directory, then for each package
    specified in the objects `dependencies` and `devDependencies` a mapping is generated (as described above).
-3. If the current directory is inside a foundry project, i.e. `foundry.toml` is found in current working directory or in a parent directory, 
-   then getting all the project remappings is done by simply calling the foundry command:
+3. If the current directory is inside a foundry project, getting project remappings is done by simply calling the foundry command:
    ```shell
    forge remappings
    ```
+   A directory is considered to be inside a foundry project if it, or one of its parents, contains a `foundry.toml` file.
 4. If the current directory is not inside a foundry project, but the Prover finds a `remappings.txt` file in current working directory,
    it reads the remappings from this file and uses them to resolve import paths.
 
