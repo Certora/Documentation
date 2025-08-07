@@ -47,7 +47,7 @@ In the conf file it will look like this:
 
 ## Using hardhat's package support
 Hardhat is a popular development environment for Ethereum smart contracts, written in JavaScript and TypeScript.
-For package. Hardhat uses the Node.js package manager (npm) to manage dependencies, which are typically stored in 
+For package, Hardhat uses the Node.js package manager (npm) to manage dependencies, which are typically stored in 
 the `node_modules` directory.
 
 The Certora Prover Client will check if  the file `package.json` in the current directory. 
@@ -62,9 +62,7 @@ Another way to specify the location of packages is by setting the `NODE_PATH` en
 Foundry is another Rust-based Ethereum development framework for deploying smart 
 contracts written in Solidity. 
 Foundry handles dependencies in the `foundry.toml` configuration file. The dependencies in `foundry.toml` can be 
-overridden
-
-and a `remappings.txt` file that contains import remappings, each line in the file has the format:  
+overridden by a `remappings.txt` file that contains import remappings, each line in the file has the format:  
 ```text
 import_prefix=path/to/dependency/
 ```
@@ -78,7 +76,7 @@ To find the location of packages and remappings, the Prover client follows these
    the remappings are used when calling the solidity compiler. In this case remapping in `package.json` or `remappings.txt` are ignored.
 2. If {ref}`--packages` was set, but `package.json` is found in the current directory, then for each package
    specified in the objects `dependencies` and `devDependencies` a mapping is generated (as described above).
-3. If current directory is inside a foundry project, i.e. `foundry.toml` is found in the current directory or in a parent directory, 
+3. If the current directory is inside a foundry project, i.e. `foundry.toml` is found in the current directory or in a parent directory, 
    then getting all the project remapping is done by simply calling the shell command:
    ```shell
    forge remappings
