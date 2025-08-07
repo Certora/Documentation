@@ -7,5 +7,6 @@ Certora Prover CLI
 
 options.md
 conf-file-api.md
+packages_and_remappings.md
 ```
 
