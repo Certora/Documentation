@@ -29,7 +29,7 @@ to the solc compiler:
 
 ## Using client flags/attributes
 
-The attributes [packages](options.md#packages) holds a list of path remappings of the form 
+The attributes {ref}`--packages` holds a list of path remappings of the form 
 ```text
 prefix=path
 ```
@@ -74,9 +74,9 @@ The syntax is identical to the Solidity compiler's remappings and to the `packag
 ## How does it work?
 
 To find the location of packages and remappings, the Prover client follows these steps:
-1. It the attribute [packages](options.md#packages) was set in the configuration file or as a flag `--packages` in the command line,
+1. It the attribute {ref}`--packages` was set in the configuration file or as a flag `--packages` in the command line,
    the remappings are used when calling the solidity compiler. In this case remapping in `package.json` or `remappings.txt` are ignored.
-2. If [packages](options.md#packages) was set, but `package.json` is found in the current directory, then for each package
+2. If {ref}`--packages` was set, but `package.json` is found in the current directory, then for each package
    specified in the objects `dependencies` and `devDependencies` a mapping is generated (as described above).
 3. If current directory is inside a foundry project, i.e. `foundry.toml` is found in the current directory or in a parent directory, 
    then getting all the project remapping is done by simply calling the shell command:
