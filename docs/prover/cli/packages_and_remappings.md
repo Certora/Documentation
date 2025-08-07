@@ -1,9 +1,9 @@
 # Packages and Remappings
 
-The Solidity compiler \(solc\) uses a virtual file system \(VFS\) to abstract how
-files are accessed. Instead of reading directly from disk, solc interacts with a
+The Solidity compiler \('solc'\) uses a virtual file system \(VFS\) to abstract how
+files are accessed. Instead of reading directly from disk, 'solc' interacts with a
 file system interface that maps import paths to file contents. 
-Solc supports flags to indicate where to find imported files, and supports remappings to change 
+'solc' supports flags to indicate where to find imported files, and supports remappings to change 
 how import paths are resolved.  
 
 Example,
@@ -21,7 +21,7 @@ the `node_modules` directory. Paths to imports of the form `@openzeppelin/XXX` w
 More information on path resolution in Solidity compiler can be found  [here](https://docs.soliditylang.org/en/latest/path-resolution.html).  
 
 There are three methods for the prover client to pass remappings and import file location instructions 
-to the solc compiler:   
+to the 'solc' compiler:   
 
 \(1\) Using client flags/attributes  
 \(2\) Following Hardhat's package support  
@@ -47,7 +47,7 @@ In the conf file it will look like this:
 
 ## Using hardhat's package support
 Hardhat is a popular development environment for Ethereum smart contracts, written in JavaScript and TypeScript.
-For package, Hardhat uses the Node.js package manager (npm) to manage dependencies, which are typically stored in 
+For package, Hardhat uses the 'Node.js package manager' (npm) to manage dependencies, which are typically stored in 
 the `node_modules` directory.
 
 The Certora Prover Client will check if  the file `package.json` in the current directory. 
