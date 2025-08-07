@@ -47,13 +47,13 @@ In the conf file it will look like this:
 
 ## Using hardhat's package support
 Hardhat is a popular development environment for Ethereum smart contracts, written in JavaScript and TypeScript.
-For package, Hardhat uses the 'Node.js package manager' (npm) to manage dependencies, which are typically stored in 
+For package, Hardhat uses the `Node.js` package manager (`npm`) to manage dependencies, which are typically stored in 
 the `node_modules` directory.
 
 The Certora Prover Client will check if  the file `package.json` in the current directory. 
 If it is, packages will be retrieved from the JSON file and for each package, the client will generate a remapping
 for the Solidity compiler. The remapping will map the package name to its default location in the `node_modules` directory.
-The attributes [packages_path](options.md#packages_path) can be used to specify the root directory for packages in
+The attributes {ref}`--packages_path can be used to specify the root directory for packages in
 case where they were installed in a different location than the default `node_modules` directory. 
 Another way to specify the location of packages is by setting the `NODE_PATH` environment variable.
 
