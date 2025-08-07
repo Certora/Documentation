@@ -2337,7 +2337,7 @@ Enum values:
     - private (default): Returns a report link without an anonymous access key.
     - public: Returns a report link that includes an anonymous access key for public access.
 
-Note: In CI, the default behavior differs. The CLI will always output the public link to facilitate easy sharing among users.
+```{Note} In CI, the default behavior differs. The CLI will always output the public link to facilitate easy sharing among users.
 
 **When to use it?**
 Use public when you are running the CLI locally and need to share the report externally.
