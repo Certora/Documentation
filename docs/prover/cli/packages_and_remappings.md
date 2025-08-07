@@ -47,7 +47,7 @@ In the conf file it will look like this:
 
 ## Using hardhat's package support
 Hardhat is a popular development environment for Ethereum smart contracts, written in JavaScript and TypeScript.
-For package. Hardhat uses the Node.js package manager (npm) to manage dependencies, which are typically stored in 
+Hardhat uses the Node.js package manager (npm) to manage dependencies, which are typically stored in 
 the `node_modules` directory.
 
 The Certora Prover Client will check if  the file `package.json` in the current directory. 
