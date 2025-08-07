@@ -2341,7 +2341,7 @@ Enum values:
 
 **When to use it?**
 Use `public` when you are running the CLI locally and need to share the report externally.
-Use private when running jobs in CI environments to restrict access to the report.
+Use `private` when running jobs in CI environments to restrict access to the report.
 
 **Example**
 
