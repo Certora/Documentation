@@ -79,7 +79,7 @@ To find the location of packages and remappings, the Prover client follows these
 2. If {ref}`--packages` was set, but `package.json` is found in the current directory, then for each package
    specified in the objects `dependencies` and `devDependencies` a mapping is generated (as described above).
 3. If current directory is inside a foundry project, i.e. `foundry.toml` is found in the current directory or in a parent directory, 
-   then getting all the project remapping is done by simply calling the shell command:
+   then getting all the project remappings is done by simply calling the shell command:
    ```shell
    forge remappings
    ```
