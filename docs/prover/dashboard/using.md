@@ -1,4 +1,4 @@
-Using the Certora Portal
+Using the Certora Dashboard
 ========================
 
 ```{toctree}

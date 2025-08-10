@@ -18,6 +18,6 @@ techniques/index.md
 diagnosis/index.md
 checking/index.md
 cli/index.md
-portal/using.md
+dashboard/using.md
 changelog/index.md
 ```
