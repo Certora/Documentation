@@ -14,7 +14,7 @@ There are several kinds of sanity checks:
 The `rule_sanity` option may get one of the `none`, `basic`, or
 `advanced` values to control which sanity checks should be executed:
  * When not using the `rule_sanity` option at all, or when using it with the value `basic`, 
-  the {ref}[vacuity check](sanity-vacuity) and the {ref}[trivial invariant](sanity-trivial-invariant) check are performed.
+  the [vacuity](sanity-vacuity) and [trivial invariant](sanity-trivial-invariant) checks are performed.
  * When using the value `none`, no sanity checks are performed.
  * When using the value `advanced`, all sanity checks will be performed for
    all invariants and rules.
