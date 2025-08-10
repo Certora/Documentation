@@ -14,7 +14,7 @@ solc contracts/MyToken.sol \
   @openzeppelin=node_modules/@openzeppelin
 
 ```
-In this example paths to modules starts from current working directory, and some libraries will be stored under 
+In this example paths to modules start from the current working directory, and some libraries will be stored under 
 the `node_modules` directory. Paths to imports of the form `@openzeppelin/XXX` will be resolved to the path
  `node_modules/@openzeppelin/XXX`.
 
@@ -76,7 +76,7 @@ To find the location of packages and remappings, the Prover follows these steps:
    these remappings are passed to the Solidity compiler. In this case, any packages and/or remappings found in `package.json` or `remappings.txt` are ignored.
 2. If {ref}`--packages` is not set, but `package.json` is found in the current working directory, then for each package
    specified in the objects `dependencies` and `devDependencies` a mapping is generated (as described above).
-3. If the current directory is inside a foundry project, getting project remappings is done by simply calling the Foundry command:
+3. If the current directory is inside a Foundry project, getting project remappings is done by simply calling the Foundry command:
    ```shell
    forge remappings
    ```
