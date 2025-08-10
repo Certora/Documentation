@@ -11,19 +11,15 @@ There are several kinds of sanity checks:
  * {ref}`sanity-assert-structure` detects unnecessarily complex `assert` statements.
  * {ref}`sanity-redundant-require` detects unnecessary `require` statements.
 
-The `--rule_sanity` option may be followed by one of `none`, `basic`, or
-`advanced` options to control which sanity checks should be executed:
- * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity
-   checks are performed.
- * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the
-   vacuity check and the trivial invariant check are performed.
- * With `--rule_sanity advanced`, all the sanity checks will be performed for
+The `rule_sanity` option may get one of the `none`, `basic`, or
+`advanced` values to control which sanity checks should be executed:
+ * When not using the `rule_sanity` option at all, or when using it with the value `basic`, 
+  the {ref}[vacuity check](sanity-vacuity) and the {ref}[trivial invariant](sanity-trivial-invariant) check are performed.
+ * When using the value `none`, no sanity checks are performed.
+ * When using the value `advanced`, all sanity checks will be performed for
    all invariants and rules.
 
-We recommend starting with the `basic` mode, since not all rules flagged by the
-`advanced` mode are incorrect.
-
-Each option adds new child nodes to every rule in the specification.  If any of the sanity check nodes fails, that node will be marked with a yellow icon, and so will the parent rule's node:
+Each option adds new child nodes to every rule in the specification. If any of the sanity check nodes fails, that node will be marked with a red icon, and so will the parent rule's node:
 
 ![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](tautology_subrule.png)
 
