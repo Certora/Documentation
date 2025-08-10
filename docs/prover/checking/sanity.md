@@ -6,8 +6,8 @@ about certain classes of mistakes in specifications.
 There are several kinds of sanity checks:
 
  * {ref}`sanity-vacuity` determines whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
- * {ref}`sanity-assert-tautology` determines whether individual `assert` statements are {term}`tautologies <tautology>`.
  * {ref}`sanity-trivial-invariant` detects invariants that hold in all states, rather than just reachable states.
+  * {ref}`sanity-assert-tautology` determines whether individual `assert` statements are {term}`tautologies <tautology>`.
  * {ref}`sanity-assert-structure` detects unnecessarily complex `assert` statements.
  * {ref}`sanity-redundant-require` detects unnecessary `require` statements.
 
