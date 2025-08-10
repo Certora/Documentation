@@ -441,7 +441,7 @@ and invariants.  The
 assumption to another rule, and is a quick way to rule out counterexamples that
 start in impossible states. Using the command will assume the expression of the invariant to hold
 before the rule starts in the pre-state and for strong invariants after each unresolved function call that modifies the state. 
-Note, if the invariant takes any parameters as input, initially, the parameters are havoc'ed and only assigned their value at the 
+Note, if the invariant takes any parameters as input, initially, the parameters are {term}`havoc`ed and only assigned their value at the 
 location the `requireInvariant` command is placed. 
 
 ```{note}

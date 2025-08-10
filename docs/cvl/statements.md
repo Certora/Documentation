@@ -170,7 +170,7 @@ all the pessimistic assertions for the program.
 ## `requireInvariant` statements
 
 
-`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/variables for which the invariant should hold. Note, the `requireInvariant` command is not evaluated where the `requireInvariant` occurs in the rule, but instead it is required before the rule starts in the pre-state and for strong invariants after each unresolved function call that modifies the state. Only the invariant parameters are evaluated at the place where the `requireInvariant` occurs, for details see {ref}requireInvariant_exp.
+`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/variables for which the invariant should hold. Note, the `requireInvariant` command is not evaluated where the `requireInvariant` occurs in the rule, but instead it is required before the rule starts in the pre-state and for strong invariants after each unresolved function call that modifies the state. Only the invariant parameters are evaluated at the place where the `requireInvariant` occurs, for details see {ref}`requireInvariant_exp`.
 
 - [`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
