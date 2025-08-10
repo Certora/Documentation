@@ -4,6 +4,45 @@ Prover Release Notes
 
 ```{contents}
 ```
+
+7.31.0 (June 30, 2025)
+----------------------
+### CLI
+- [feat] Added a new `--max_concurrent_rules` flag which allows to control how many rule evaluations are executed at the same time. By default, the number matches the available CPU cores, but lowering the value (e.g., to 1, 2, or 4) can help reduce memory usage and mitigate out-of-memory errors in larger runs.
+
+7.29.1 (May 18, 2025)
+----------------------
+### CVL
+- [feat] `require` statements now support an optional string reason argument: `require(condition, "reason")`.
+A warning will be shown in the Rule Notification tab for require statements likely to exclude meaningful traces, helping prevent false positives in verification.
+
+### CLI
+- [feat] Added a new `--exclude_method` flag to exclude specific methods when verifying invariants or parametric rules. Syntax mirrors `--method`.
+
+### Solana
+- [feat] Jump-To-Source support for Solana function calls in the Call Trace.
+
+7.28.0 (April 10, 2025)
+----------------------
+### Rule Report
+- [feat] Pointer analysis failures now display precise source locations for internal functions in the Global Notification tab. Includes function names and Jump-To-Source links.
+- [feat] The Live Statistics panel now supports per-call difficulty metrics for Solana jobs, aiding the identification of complex functions.
+
+### CVLR
+- [feat] Solana jobs now support `multi_assert_check`. Each assertion in a rule is verified separately, enabling better counterexample coverage and a timeout mitigation strategy.
+- [feat] Solana jobs now support `rule_sanity basic`, which performs vacuity checks to help detect trivially true rules.
+
+
+7.26.0 (Mar 13, 2025)
+----------------------
+### Rule Report
+- [feat] The Live Statistics panel now supports difficulty information for internal function calls, expanding on the existing support for external and public functions.
+- [feat] Jump-To-Source (JTS) is now available for Rust (CVLR) external calls and `cvlr_satisfy`.
+
+### CVL
+- [feat] Introduced the `executingContract` keyword, which can be used in the methods block. It refers to `address(this)` at the call site where the CVL summary is applied.
+
+
 7.25.2 (Feb 19, 2025)
 ----------------------
 ### CVL

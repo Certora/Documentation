@@ -1,13 +1,11 @@
 # Solana-Specific Options / CLI Flags
 
 This page documents Solana-specific Certora Prover options, which include CLI flags or ``prover_args`` flags.
-
 The ``certoraSolanaProver`` utility invokes the Rust compiler and then sends the job to Certora's servers.
-
 The most commonly used command is:
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --rule <rule_name>
+certoraSolanaProver --rule <rule_name>
 ```
 
 If a precompiled execution is desired, the run command can skip the compilation step by executing:
@@ -29,49 +27,14 @@ For more details, see [Conf File](https://docs.certora.com/en/latest/docs/prover
 
 ## Modes of Operation
 
-The Certora Solana Prover has two modes of operation, using a build script, or passing a precompiled binary directly.
+The Certora Solana Prover has two modes of operation, using `cargo certora-sbf`, or passing a precompiled binary directly.
 These modes are mutually exclusive - you cannot run the tool with more than one mode at a time.
+By not specifying the path to a binary executable, the default mode is calling `cargo certora-sbf`.
 Both modes require the user to specify which rules must be verified by using the ``--rule`` option.
-
-### --build_script
-
-**What does it do?**
-
-Specifies the location of the script that has to be called to compile the Rust project.
-The build script should output 0 on success and 1 on failure unless it's being executed using the ``--json`` flag.
-In this case, the build script should output the following:
-
-- ``project_directory``: Path to the project root directory.
-- ``sources``: List of source files or directories used or imported in the program. Source files should be relative to the ``project_directory`` with support of wildcards. All files declared in this list will be uploaded as sources to the cloud and displayed in the rule report. Source files are required, for instance, for the jump to source feature to work.
-- ``executables``: List of compiled binary files, which are the target of the Rust program.
-- ``success``: Boolean flag indicating if the build phase passed successfully.
-- ``return_code``: The return code of the script.
-- ``log``: Optionally provided paths to files for `stdout` and `stderr` of the build logs.
-- ``solana_inlining``: List of paths to [inlining](#--solana_inlining) files for Solana programs.
-- ``solana_summaries``: List of paths to [summaries](#--solana_summaries) files for Solana programs.
-
-See an example of a [build script](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora_build.py) and refer to the
-[usage](./usage.md) section for more information about it.
-
-**When to use it?**
-
-Use this mode to prove properties on source code while providing an automatic compilation method. This is especially useful during development when files are modified frequently.
-
-**Example**
-
-```bash
-certoraSolanaProver --build_script <path_to_build_script> --rule <rule_name>
-```
-
-Note: If you want to skip compilation process and run on a precompiled Rust project it's possible to provide a path to the binary target file instead
-
-```bash
-certoraSolanaProver <path_to_binary_file> --rule <rule_name>
-```
 
 ## Most Frequently Used Options
 
-### --rule
+### `--rule`
 
 **What does it do?**
 
@@ -98,55 +61,57 @@ fn rule_withdraw_fails() {
 
 To verify only `rule_withdraw_succeeds`, run:
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --rule rule_withdraw_succeeds
+certoraSolanaProver --rule rule_withdraw_succeeds
 ```
 
 To verify both `rule_withdraw_succeeds` and `rule_withdraw_fails`, run:
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --rule rule_withdraw_succeeds rule_withdraw_fails
+certoraSolanaProver --rule rule_withdraw_succeeds rule_withdraw_fails
 ```
 
 (--solana_inlining)=
-### --solana_inlining
+### `--solana_inlining`
 
 **What does it do?**
 
 Provides the Prover with a list of paths to inlining files for Solana programs.
 These files are parsed and used to prove properties.
-See an [example](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora/inlining.txt).
+See an [example](https://github.com/Certora/SolanaExamples/blob/main/certora/summaries/cvlr_inlining_core.txt).
 
 **When to use it?**
 
 This option is currently required for every project.
-It can be provided to the Prover by passing this list as a flag or by retrieving it from the build script.
+It can be provided to the Prover by passing this list as a flag or by retrieving
+it from the `Cargo.toml` file in the `[package.metadata.certora]` section.
 
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --solana_inlining <path_to_inlining_file>  --rule <rule_name>
+certoraSolanaProver --solana_inlining <path_to_inlining_file>  --rule <rule_name>
 ```
 
 (--solana_summaries)=
-### --solana_summaries
+### `--solana_summaries`
 
 **What does it do?**
 
 Provides the Prover with a list of paths to summary files for Solana contracts.
 These files are parsed and used to prove properties.
-See an [example](https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/certora/summaries.txt).
+See an [example](https://github.com/Certora/SolanaExamples/blob/main/certora/summaries/cvlr_summaries_core.txt).
 
 **When to use it?**
 
 This option is currently required for every project.
-It can be provided to the Prover by passing this list as a flag or by retrieving it from the build script.
+It can be provided to the Prover by passing this list as a flag or by retrieving
+it from the `Cargo.toml` file in the `[package.metadata.certora]` section.
 
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --solana_summaries <path_to_summaries_file> --rule <rule_name>
+certoraSolanaProver --solana_summaries <path_to_summaries_file> --rule <rule_name>
 ```
 
-### --cargo_features
+### `--cargo_features`
 
 **What does it do?**
 
@@ -160,10 +125,10 @@ Use it when there is a need to enable a specific [Cargo feature](https://doc.rus
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --cargo_features <feature_1> <feature_2> --rule <rule_name>
+certoraSolanaProver --cargo_features <feature_1> <feature_2> --rule <rule_name>
 ```
 
-### --msg
+### `--msg`
 
 **What does it do?**
 
@@ -178,5 +143,46 @@ It is also helpful to keep track of a single file verification status over time,
 **Example**
 
 ```bash
-certoraSolanaProver --build_script <path_to_build_script> --msg 'Removed an assertion' --rule <rule_name>
+certoraSolanaProver --msg 'Removed an assertion' --rule <rule_name>
+```
+
+### `--rule_sanity`
+
+**What does it do?**
+
+When used with `--rule_sanity: basic`, this flag executes a job in sanity mode which performs a vacuity check for a rule.
+
+**When to use it?**
+
+Sanity mode is helpful to check for the correctness of a rule. For details, see also [Rule Sanity Checks](./sanity.md).
+
+**Example**
+
+```bash
+certoraSolanaProver --rule_sanity basic
+```
+
+
+## `--multi_assert_check`
+
+**What does it do?**
+This flags translates each assertion statement in a rule into a separate verification task. All preceding assertions are assumed to be true - they are hence translated into assume statements.
+An example can be found [here](https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf).
+
+
+```{caution}
+We suggest using this mode carefully. In general, as this mode generates generates one verification task per assert, it may lead to worse running-time performance. Please see indications for use below.
+```
+
+**When to use it?**
+When you have a rule with multiple assertions:
+
+1.  As a timeout mitigation strategy: checking each assertion separately may, in some cases, perform better than checking all the assertions together and consequently solve timeouts. For instance, you can identify complex to verify asserts in a rule.
+
+2.  If you wish to get multiple counter-examples in a single run of the tool, where each counter-example violates a different assertion in the rule.
+
+**Example**
+
+```bash
+certoraSolanaProver --multi_assert_check
 ```

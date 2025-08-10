@@ -4,6 +4,57 @@ GUI Release Notes
 ```{contents}
 ```
 
+7.0.0 (June 30, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Updated `Sanity_Fail` rule status icon to be red and more distinct than the timeout icon.
+- [feat] Rule Report - Added Rule indication for `ruleNotifications`. This new indication will notify the user when they have `ruleNotifications` for a certain rule/child. The indicator color is changing based on the notification severity.
+- [feat] Rule Report - Added Private/Public sharing options to the rule report.
+- [feat] Dashboard - Added Private/Public copy link buttons to the Jobs List table. Private links will be assigned by default.
+
+### Fixed Bugs
+
+- [bug] Rule Report - Fixed link to logs page and negative runtime on Job Info tab
+
+5.0.1 (May 18, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Nesting In Variables Tab: Enhance the Variables tab by introducing aggregation functionality to `env` and method variables. This will simplify scrolling, navigation, and comprehension for users by mirroring the aggregation behavior in the Call Trace for complex storage types (`env` variables and method parameters).
+
+### Fixed Bugs
+
+- [bug] Rule Report - Fixed wrong time presented in the Rule Report based on local time
+- [bug] Rule Report - Add missing tooltips for collapse/expand buttons, and improved max-width to rule name tooltips
+
+4.3.0 (Apr 10, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Navigating to report with completed state, will now mark this job as “opened” in the Dashboard job list.
+- [feat] Rule Report - State-Diff: introducing the option to compare the state of the storage between different snapshots within the call trace. This option will aid users in understanding counter examples and debugging problems.
+- [feat] Rule Report - Full-screen Notifications Tab: Added a new full-screen (expanded) tab state to the notification panel for improved readability and navigation. Users can now easily switch between collapsed, small, and full-screen views to better manage long notifications.
+- [feat] Dashboard - Jobs list will now highlight unopened jobs. Jobs will be marked as “opened” by opening a report in a completed state, or by marking this manually in the dashboard.
+- [feat] Dashboard - Job list will now present the run_source of a job and enable filtering by run_source
+
+### Fixed Bugs
+
+- [bug] Rule Report - Log out from Rule Report is now working as expected
+- [bug] Dashboard - Canceling a job from the Dashboard is now working as expected
+
+4.0.2 (Mar 13, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Added icons and highlighter for Solana reports. 
+- [feat] Rule Report - Improved Call Trace and Variables readability by truncating long values
+- [feat] Dashboard - Added tooltips for column headers
+
 4.0.0 (Feb 19, 2025)
 ---------------------------
 

@@ -504,7 +504,7 @@ CVL 2 supports assert and require casts on all numeric types.
 
 Casts from `address` or `bytes1`...`bytes32` to integer types are not
 supported (see {ref}`bytesN-support` regarding casting in the other direction, and {ref}`enum-casting` for information on casting
-enums).
+enums), except for going from `bytes32` to the equivalent `uint256`.
 
 `require` and `assert` casts are not allowed anywhere inside of a
 {term}`quantified statement <quantifier>`.  You can work around this limitation
@@ -614,13 +614,16 @@ Unlike Solidity, `bytes1`...`bytes32` literals do not need to be written in hex
 or padded to the correct length.
 
 The only conversion between integer types and these types is from `uint<i*8>` to
-`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target `bytes<i>` type);
+`bytes<i>` (i.e. unsigned integers with the same bitwidth as the target `bytes<i>` type) 
+and from `bytes32` to `uint256`;
 For example:
 
 ```cvl
 uint24 u;
 bytes3 x = to_bytes3(u); // This is OK
 bytes4 y = to_bytes4(u); // This will fail
+bytes32 b;
+uint256 u = assert_uint256(b); // This is OK
 ```
 
 (cvl2-bitwise)=
@@ -836,10 +839,6 @@ This is the list of the flags that were renamed:
 | `--path`         | `--solc_allow_path`   |
 | `--optimize`     | `--solc_optimize`     |
 | `--optimize_map` | `--solc_optimize_map` |
-| `--get_conf`     | `--conf_output_file`  |
-| `--assert`       | `--assert_contracts`  |
-| `--bytecode`     | `--bytecode_jsons`    |
-| `--toolOutput`   | `--tool_output`       |
 | `--structLink`   | `--struct_link`       |              
 | `--javaArgs`     | `--java_args`         |              
 

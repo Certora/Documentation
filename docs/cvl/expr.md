@@ -53,7 +53,7 @@ specials_fields ::=
            | "selector" | "isPure" | "isView" | "numberOfArguments" | "isFallback"
 
 special_vars ::=
-           | "lastReverted" | "lastHasThrown"
+           | "lastReverted"
            | "lastStorage"
            | "allContracts"
            | "lastMsgSig"
@@ -328,12 +328,11 @@ There are also several built-in variables:
  * `address currentContract` always refers to the main contract being verified
    (that is, the contract named in the {ref}`--verify` option).
 
- * `bool lastReverted` and `bool lastHasThrown` are boolean values that
-   indicate whether the most recent contract function reverted or threw an
+ * `bool lastReverted` indicates whether the most recent contract function reverted or threw an
    exception.
 
    ````{caution}
-   The variables `lastReverted` and `lastHasThrown` are updated after each
+   The variable `lastReverted` is updated after each
    contract call, even those called without `@withrevert` (see {ref}`call-expr`).
    This is a common source of errors.  For example, the following rule is
    vacuous:
@@ -419,9 +418,8 @@ method tag, one of `@norevert` or `@withrevert`.
  * `@norevert` indicates that examples where the method revert should not be
    considered.  This is the default behavior if no tag is provided
  * `@withrevert` indicates that examples that would revert should still be
-   considered.  In this case, the method will set the `lastReverted` and
-   `lastHasThrown` variables to `true` in case the called method reverts or
-   throws an exception.
+   considered.  In this case, the method will set the `lastReverted` variable 
+   to `true` in case the called method reverts or throws an exception.
 
    [`withrevert` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19)
 

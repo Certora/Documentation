@@ -25,7 +25,7 @@ Installing Sunbeam
 #. Next, install Java. Check your Java version: ``java -version``.
    If the version is < 11, download and install Java version 11 or later from
    `Oracle <https://www.oracle.com/java/technologies/downloads/>`_.
-#. Then, install the Certora Prover: ``pip3 install certora-cli-beta``.
+#. Then, install the Certora Prover: ``pip3 install certora-cli``.
 
    .. tip:: Always use a Python virtual environment when installing packages.
 

@@ -71,8 +71,7 @@ The call trace provides detailed information about the execution path. Here's ho
 
 * Automatically logged
 * Show the sequence of function calls
-* To see parameter values, you need to change the original code with Certora's
-  `cgdb!` print macros
+* To see parameter values, they have to be logged using `clog!` macro
 
 #### Let's look at a concrete example
 
@@ -87,8 +86,7 @@ pub fn rule_fail_call_trace() {
     cvlr_assume!(amount1 > 100);
     cvlr_assume!(amount2 != 10);
 
-    clog!(amount1);
-    clog!(amount2);
+    clog!(amount1, amount2);
 
     cvlr_assert!(amount1 < 100);
     cvlr_assert!(amount2 < 100);
@@ -131,10 +129,10 @@ To ensure rules aren't passing vacuously (due to contradictory assumptions), add
 }
 ```
 
-This adds an implicit `cvlr_assert!(false)` at the end of each rule. If this assertion is unreachable, it confirms that:
+This adds an implicit `cvlr_satisfy!(true)` at the end of each rule. If this assertion is unreachable, it confirms that:
 
-1. Your assumptions aren't contradictory
-2. The rule's success is meaningful
+1. The assumptions are not contradictory
+2. The successful verification of the rule is meaningful
 
 ### Common Sanity Check Results
 
@@ -151,6 +149,14 @@ See [Rule Sanity Checks](./sanity.md) for more details.
 3. Validate counterexamples against your program's expected state space
 
 ## Advanced Topics
+
+### Analyzing Functions Complexity
+
+The Certora Solana Prover offers the Live Statistics panel to analyze the complexity of individual functions.
+The Live Statistics provide information, for instance, about the number of paths of a function body which may help when having difficult to solve rules.
+Observe that the Live Statistics panel is affected by the `solanaMinSizeForCalltrace` option.
+Functions with a size smaller than this threshold, measured by the number of TAC commands they correspond to, will not be displayed in the Live Statistics panel.
+Refer to the [Timeouts](../user-guide/out-of-resources/timeout.md) section for further information.
 
 ### Over-approximation Detection
 
