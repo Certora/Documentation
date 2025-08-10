@@ -14,7 +14,7 @@ solc contracts/MyToken.sol \
   @openzeppelin=node_modules/@openzeppelin
 
 ```
-In this example paths to modules starts from current working directory, and some libraries will be stored under 
+In this example paths to modules start from the current working directory, and some libraries will be stored under 
 the `node_modules` directory. Paths to imports of the form `@openzeppelin/XXX` will be resolved to the path
  `node_modules/@openzeppelin/XXX`.
 
