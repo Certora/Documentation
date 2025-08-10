@@ -852,6 +852,8 @@ _Configuration file_
 
 **What does it do?**
 For each package, gets the path to a directory including that Solidity package.
+For more details on packages and remapping see the [Packages and Remappings](packages_and_remappings.md) section.
+
 
 **When to use it?**
 By default we look for the packages in `$NODE_PATH`. If there are packages are in several different directories, use `packages`.
@@ -884,7 +886,8 @@ In Solidity projects, information about packages' location is usually stored in 
 ## `packages_path`
 
 **What does it do?**
-Gets the path to a directory including the Solidity packages.
+Gets the path to a directory including the Solidity packages. 
+For more details on packages and remapping see the [Packages and Remappings](packages_and_remappings.md) section.
 
 **When to use it?**
 By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `packages_path`.
