@@ -887,7 +887,7 @@ In Solidity projects, information about packages' location is usually stored in 
 
 **What does it do?**
 Gets the path to a directory including the Solidity packages. 
-For more details on packages and remapping see the  [Packages and Remappings](packages_and_remappings.md) section.
+For more details on packages and remapping see the [Packages and Remappings](packages_and_remappings.md) section.
 
 **When to use it?**
 By default, we look for the packages in `$NODE_PATH`. If the packages are in any other directory, you must use `packages_path`.
