@@ -852,7 +852,7 @@ _Configuration file_
 
 **What does it do?**
 For each package, gets the path to a directory including that Solidity package.
-For more details on packages and remapping see the  [Packages and Remappings](packages_and_remappings.md) section.
+For more details on packages and remapping see the [Packages and Remappings](packages_and_remappings.md) section.
 
 
 **When to use it?**
