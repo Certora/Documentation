@@ -142,8 +142,17 @@ To add manual mutations, under `mutations` create a key `manual_mutants` contain
   of manual mutation objects.
 Each manual mutation object must contain two keys:
 - `file_to_mutate`: A file path relative to the current working directory of the file we wish to replace with the mutations
-- `mutants_location`: A relative path to a directory from the current working directory. This directory contains files that will be tested in place of the mutated file. All .sol files in the directory will undergo testing.
+- `mutants_location`: A relative path to a directory from the current working directory. This directory contains files 
+   and patches that will be tested in place of the mutated file. All files in the directory will undergo testing. 
+   Patches must end with `.patch` and must comply with the `diff` shell command. Patches can be created by calling
+   ```sh
+   `diff -u original_file mutated_file > mutant1.patch` 
+    ```
+   where `original_file` is the file to mutate and `mutated_file` is the file with the mutation.
 
+The patch will be applied to the original file before running the Prover on the mutant.
+
+ 
 For example, see the `manual_mutants` value from the file `advanced_mutation.conf` 
   of the [CertoraInit](https://github.com/Certora/CertoraInit) repository:
 

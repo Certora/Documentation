@@ -25,7 +25,7 @@ We recommend starting with the `basic` mode, since not all rules flagged by the
 
 Each option adds new child nodes to every rule in the specification.  If any of the sanity check nodes fails, that node will be marked with a yellow icon, and so will the parent rule's node:
 
-![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
+![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](tautology_subrule.png)
 
 If a sanity node is `halted`, then the parent rule will also have the status `halted`.
 
