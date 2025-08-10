@@ -67,7 +67,11 @@ Since the default value of boolean options is `false` there is no need to set a 
     ```json
     { "solc": "solc4.25", "loop_iter": "2" }
     ```
-    Note that in conf files numbers are also encoded as strings.
+    However for attributes that expect integer values, it is allowed to omit the double quotes. 
+    So the above example could also be written as:
+    ```json
+    { "solc": "solc4.25", "loop_iter": 2 }
+    ```
 
 
 * Options that expect multiple arguments (for example {ref}`--packages`)
