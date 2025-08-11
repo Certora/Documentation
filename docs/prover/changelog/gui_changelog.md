@@ -9,7 +9,7 @@ GUI Release Notes
 
 ### Features
 
-- [feat] Rule Report - The Share Link button in the Verification Report dropdown menu now includes options to copy either a private or public link, with or without the current report view state.
+- [feat] Rule Report - The Share Link button's dropdown menu in the Verification Report dropdown now includes options to copy either a private or public link, with or without the current report view state.
 
 7.0.0 (June 30, 2025)
 ---------------------------
