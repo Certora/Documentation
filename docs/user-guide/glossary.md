@@ -76,6 +76,12 @@ EVM storage
   the Ethereum blockchain.
   [Official documentation](https://ethereum.org/en/developers/docs/smart-contracts/anatomy)
 
+fuzzing
+  An automated testing technique that sends large volumes of randomized or semi-randomized 
+  inputs to smart contract functions to uncover unexpected behaviors, reverts, or security
+  vulnerabilities. In DeFi, fuzzing is especially useful for discovering edge cases in financial
+  logic, such as precision loss, invalid state transitions, or violations of protocol invariants.
+
 havoc
   Havoc refers to assigning variables arbitrary, non-deterministic values. 
   This occurs in two main cases:
