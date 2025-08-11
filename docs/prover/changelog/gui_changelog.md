@@ -4,6 +4,13 @@ GUI Release Notes
 ```{contents}
 ```
 
+7.1.0 (August 11, 2025)
+---------------------------
+
+### Features
+
+- [feat] Rule Report - Expanded copying link to allow copying default and current view of both private and public links
+
 7.0.0 (June 30, 2025)
 ---------------------------
 
