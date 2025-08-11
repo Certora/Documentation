@@ -6,30 +6,27 @@ about certain classes of mistakes in specifications.
 There are several kinds of sanity checks:
 
  * {ref}`sanity-vacuity` determines whether rules pass {term}`vacuously <vacuous>` because they rule out all {term}`models <model>`.
- * {ref}`sanity-assert-tautology` determines whether individual `assert` statements are {term}`tautologies <tautology>`.
  * {ref}`sanity-trivial-invariant` detects invariants that hold in all states, rather than just reachable states.
+  * {ref}`sanity-assert-tautology` determines whether individual `assert` statements are {term}`tautologies <tautology>`.
  * {ref}`sanity-assert-structure` detects unnecessarily complex `assert` statements.
  * {ref}`sanity-redundant-require` detects unnecessary `require` statements.
 
-The `--rule_sanity` option may be followed by one of `none`, `basic`, or
-`advanced` options to control which sanity checks should be executed:
- * With `--rule_sanity none` or without passing `--rule_sanity`, no sanity
-   checks are performed.
- * With `--rule_sanity basic` or just `--rule_sanity` without a mode, the
-   vacuity check and the trivial invariant check are performed.
- * With `--rule_sanity advanced`, all the sanity checks will be performed for
+The `rule_sanity` option may get one of the `none`, `basic`, or
+`advanced` values to control which sanity checks should be executed:
+ * When not using the `rule_sanity` option at all, or when using it with the value `basic`, 
+  the [vacuity](sanity-vacuity) and [trivial invariant](sanity-trivial-invariant) checks are performed.
+ * When using the value `none`, no sanity checks are performed.
+ * When using the value `advanced`, all sanity checks will be performed for
    all invariants and rules.
 
-We recommend starting with the `basic` mode, since not all rules flagged by the
-`advanced` mode are incorrect.
+Each option adds new child nodes to every rule in the specification. If any of the sanity check nodes fails, that node will be marked with a red icon, and so will the parent rule's node:
 
-Each option adds new child nodes to every rule in the specification.  If any of the sanity check nodes fails, that node will be marked with a yellow icon, and so will the parent rule's node:
-
-![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](sanity-icons.png)
+![Screenshot of rule report showing a passing rule, a failing rule, and a sanity failure](tautology_subrule.png)
 
 If a sanity node is `halted`, then the parent rule will also have the status `halted`.
 
 The remainder of this document describes these checks in detail.
+
 
 (sanity-vacuity)=
 Vacuity checks
@@ -86,35 +83,6 @@ other hand, `deposit` always reverts when `e.msg.value == 0`.  Therefore every
 example will either cause `deposit` or `transfer` to revert, so there are no
 models that reach the `assert` statement.
 
-(sanity-assert-tautology)=
-Assert tautology checks
----------------------
-
-The **assert tautology** sanity check ensures that individual `assert` statements
-are not {term}`tautologies <tautology>`.  A tautology is a statement that is
-true on all examples, even if all the `require` and `if` conditions are
-removed. Tautology checks also consider the bodies of the contract functions. For
-example, `assert square(x) >= 0;` is a tautology if `square` is a contract
-function that squares its input.
-
-For example, the following rule would be flagged by the assert tautology check:
-
-```cvl
-rule tautology {
-  uint x; uint y;
-  require x != y;
-  ...
-  assert x < 2 || x >= 2,
-   "x must be smaller than 2 or greater than or equal to 2";
-}
-```
-
-Since every `uint` satisfies the assertion, the assertion is tautological, which
-may indicate an error in the specification.
-
-The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_<LINE>_<COL>`.  For example, the rule report for the above `tautology` rule will look like this:
-
-![Screenshot of assert tautology subrule](tautology_subrule.png)
 
 (sanity-trivial-invariant)=
 Trivial invariant checks
@@ -147,6 +115,38 @@ invocations.
 The trivial invariant check will add a node to each method under the induction step of invariants named `invariant_not_trivial_postcondition`.  For example, the rule report for the above `squaresNonNeg` invariant will look like this:
 
 ![Screenshot of trivial invariant subrule](trivial_invariant_node.png)
+
+
+(sanity-assert-tautology)=
+Assert tautology checks
+---------------------
+
+The **assert tautology** sanity check ensures that individual `assert` statements
+are not {term}`tautologies <tautology>`.  A tautology is a statement that is
+true on all examples, even if all the `require` and `if` conditions are
+removed. Tautology checks also consider the bodies of the contract functions. For
+example, `assert square(x) >= 0;` is a tautology if `square` is a contract
+function that squares its input.
+
+For example, the following rule would be flagged by the assert tautology check:
+
+```cvl
+rule tautology {
+  uint x; uint y;
+  require x != y;
+  ...
+  assert x < 2 || x >= 2,
+   "x must be smaller than 2 or greater than or equal to 2";
+}
+```
+
+Since every `uint` satisfies the assertion, the assertion is tautological, which
+may indicate an error in the specification.
+
+The tautology check will add a node per `assert` or `satisfy` statement to each rule.  The nodes are named with the prefix `assert_not_tautological_<LINE>_<COL>`.  For example, the rule report for the above `tautology` rule will look like this:
+
+![Screenshot of assert tautology subrule](tautology_subrule.png)
+
 
 (sanity-assert-structure)=
 Assertion structure checks
@@ -210,6 +210,7 @@ assertion structure check:
   * 2. `q` is always true. A simpler way to write this assertion is `assert p;`. The node named `assertion_right_operand_check_<LINE>_<COL>` will have a yellow icon.
 
 ![Screenshot of sanity structure for implication](implication_sanity_structure.png)
+
 
 (sanity-redundant-require)=
 Redundant require checks

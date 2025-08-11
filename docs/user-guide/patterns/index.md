@@ -9,5 +9,6 @@ sums.md
 partial-apply.md
 safe-assum.md
 require-invariants.md
+events.md
 ```
 

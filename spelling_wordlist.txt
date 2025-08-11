@@ -32,6 +32,8 @@ approximative
 autofinders
 axiomatization
 axiomatized
+bitvector
+bitvectors
 bitwidth
 bitwise
 blockchain
@@ -223,3 +225,11 @@ munge
 WASM
 EVM
 hotspots
+Prover
+prover
+subtyping
+typecheck
+typechecking
+formattable
+stdout
+stderr

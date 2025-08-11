@@ -20,7 +20,7 @@ If you are unable to run ``certoraSorobanProver``, we recommend trying it from w
 
       pip3 install -r requirements.txt
 
-#. Finally, try running ``certoraRun`` again:
+#. Finally, try running ``certoraSorobanProver`` again:
 
    .. code-block:: bash
 
@@ -42,7 +42,7 @@ and resolve all compiler errors that you see.
 Compiler Error: "error: linking with \`cc\` failed: exit status: 1" on Mac
 --------------------------------------------------------------------------
 
-If you are running on Mac and the build step of your project or ``certoraRun`` fails
+If you are running on Mac and the build step of your project or ``certoraSorobanProver`` fails
 with the warning:
 
 .. code-block:: bash

@@ -1,11 +1,11 @@
-Special Portal URLs
+Special Report URLs
 ===================
 
-When you run the Certora CLI, the tool outputs a link to the generated
-verification report.  By modifying this link, you can access additional files
-that the tool generates.  These are primarily intended for the tool developers,
-but they can also be helpful for users in some cases.  This page lists these
-outputs and explains how to read them.
+When you run the Certora CLI, the tool outputs a link to the generated verification report.  
+By modifying this link, you can access additional files that the tool generates.  
+These are primarily intended for the tool developers,
+but they can also be helpful for users in some cases.  
+This page lists these outputs and explains how to read them.
 
 
 Job status
@@ -136,12 +136,13 @@ https://vaas-stg.certora.com/zipOutput/65540/270dce9623d492937d82/?anonymousKey=
                             ───────────
 ```
 
-This link will allow you to download a tar file.  The submitted specs are
-contained in the `TarName` directory, and the original contracts can be found
-in the `TarName/input/.certora_config` directory (the file names will be
-changed).
+This link will allow you to download a tar file. 
+The submitted specs are contained in the `TarName` directory, 
+and the original contracts can be found in the `TarName/input/.certora_config` 
+directory (the file names will be changed).
 
-The zip output cannot be downloaded unless you have logged in to the portal with
-an appropriately authorized key.  If you receive a "Forbidden" error message,
-[log in](using) to the main Certora Portal page with your Certora key.
+The zip output cannot be downloaded unless you have logged in to the dashboard with
+an appropriately authorized key.  
+If you receive a "Forbidden" error message,
+[log in](using) to the main Certora Dashboard page with your Certora key.
 
