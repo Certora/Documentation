@@ -18,7 +18,7 @@ Installing Sunbeam
    free account at `Certora sign-up page <https://www.certora.com/signup>`_.
 #. You will receive an email with a temporary password and a *Certora Key*.
    Use the password to login to Certora following the link in the email.
-#. Next, install Python3.8.16 or newer on your machine.
+#. Next, install Python3.9 or newer on your machine.
    If you already have Python3 installed, you can check the version: ``python3 --version``.
    If you need to upgrade, follow these instructions in the
    `Python Beginners Guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_.
