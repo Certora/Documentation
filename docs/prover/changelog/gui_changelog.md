@@ -9,7 +9,7 @@ GUI Release Notes
 
 ### Features
 
-- [feat] Rule Report - Expanded copying link to allow copying default and current view of both private and public links
+- [feat] Rule Report - The Share Link button in the Verification Report dropdown menu now includes options to copy either a private or public link, with or without the current report view state.
 
 7.0.0 (June 30, 2025)
 ---------------------------
