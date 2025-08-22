@@ -736,7 +736,7 @@ to a user-specified list of possible implementations.
 This is most commonly useful on calls where the method sighash is unresolved, see 
 {ref}`catch-unresolved-calls-entry` for a detailed example in such a case.
 We can also use the `DISPATCH` list on {ref}`wildcard-methods-entries`, to
-restrict which contract's implemententations of the method to consider:
+restrict which contract's implementations of the method to consider:
 ```cvl
 methods {
     function _.foo() external => DISPATCH(true)[ C._, D._ ];
