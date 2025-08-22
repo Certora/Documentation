@@ -741,13 +741,18 @@ We can also use the `DISPATCH` list on {ref}`wildcard-methods-entries`, to
 restrict which contract's implementations of the method to consider:
 ```cvl
 methods {
-    function _.foo() external => DISPATCH(true)[ C._, D._ ];
+    function _.foo() external => DISPATCH(true)[ C.foo(), D._ ];
 }
 ```
 This will dispatch unresolved calls of a method `foo` to implementations in contracts
-`C` and `D`.  Note, if `C` and `D` are the only contract implementing `foo` in the scene, then this is equivalent to using `DISPATCHER(true)`. 
+`C` and `D`.  Note, if `C` and `D` are the only contracts implementing `foo` in the scene, 
+then this is equivalent to using `DISPATCHER(true)`. 
+It is not necessary to specify the exact method (as in `C.foo()`) when using a dispatch
+list on a wildcard, it suffices to give the receiver (as in `D._`).
+It only makes a difference when giving `fallback=true` in which case we would consider also
+a fallback function in `D` in the example, but not in `C`.
 
-A `DISPATCH` summary is only useful on unresolved calls, so no policy should be specified.
+A `DISPATCH` summary is only useful on unresolved calls, so no application policy should be specified.
 
 (auto-summary)=
 #### `AUTO` summaries
