@@ -745,7 +745,7 @@ methods {
 }
 ```
 This will dispatch unresolved calls of a method `foo` to implementations in contracts
-`C` and `D`. 
+`C` and `D`.  Note, if `C` and `D` are the only contract implementing `foo` in the scene, then this is equivalent to using `DISPATCHER(true)`. 
 
 A `DISPATCH` summary is only useful on unresolved calls, so no policy should be specified.
 
