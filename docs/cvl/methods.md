@@ -50,7 +50,7 @@ method_spec      ::= "function"
                      [ "optional" ]
                      [ "=>" method_summary [ "" | "UNRESOLVED" | "ALL" | "DELETE" ] ]
                      ";"
-					 | catch_unresolved_calls_entry
+                     | catch_unresolved_calls_entry
 
 catch_unresolved_calls_entry ::= "unresolved external in" pattern "=>" dispatch_list ";"
 
@@ -74,7 +74,7 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "AUTO"
                    | "ASSERT_FALSE"
                    | expr [ "expect" id ]
-				   | dispatch_list
+                   | dispatch_list
 
 dispatch_list     ::=
                    | "DISPATCH" [ "(optimistic=false)" ]  "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
@@ -733,8 +733,10 @@ Before this version, this may cause vacuous results.
 Similar to `DISPATCHER` which dispatches an unresolved method call to all contracts
 implementing the relevant function, we can also dynamically dispatch unresolved calls
 to a user-specified list of possible implementations.
+
 This is most commonly useful on calls where the method sighash is unresolved, see 
 {ref}`catch-unresolved-calls-entry` for a detailed example in such a case.
+
 We can also use the `DISPATCH` list on {ref}`wildcard-methods-entries`, to
 restrict which contract's implementations of the method to consider:
 ```cvl
@@ -744,6 +746,7 @@ methods {
 ```
 This will dispatch unresolved calls of a method `foo` to implementations in contracts
 `C` and `D`. 
+
 A `DISPATCH` summary is only useful on unresolved calls, so no policy should be specified.
 
 (auto-summary)=
