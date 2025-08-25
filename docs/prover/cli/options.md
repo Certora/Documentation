@@ -2033,7 +2033,7 @@ _Configuration file_
 ```
 
 ```{caution}
-The `struct_link` syntax does not specify the struct's type name (`TokenPair`) because it is applied to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defines 
+The `struct_link` syntax does not specify the struct's type name (`TokenPair`, in the example above) because it is applied to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defines 
 
 `struct ReserveTokens {
  IERC20 tokenA;
@@ -2041,7 +2041,7 @@ The `struct_link` syntax does not specify the struct's type name (`TokenPair`) b
  IERC20 tokenC;
 }`
 
-... then the `struct_link` setting above would result in the same fixed address values for `tokenA` and `tokenB` in instances of this struct. Similarly, structs that are values in a mapping or array will all get the same address linkage.
+... then the `struct_link` setting above would result in the same fixed address values for `tokenA` and `tokenB` in instances of this struct, which is likely an unintended constraint. Similarly, structs that are values in a mapping or array will _all_ get the same address linkage.
 ```
 
 
