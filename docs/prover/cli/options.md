@@ -2033,15 +2033,17 @@ _Configuration file_
 ```
 
 ```{caution}
-This option's syntax does not specify the struct's type name (TokenPair) because it is applied heuristically to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if Bank.sol also defined 
+This option's syntax does not specify the struct's type name (`TokenPair`) because it is applied heuristically to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defined 
 
+```json
 struct ReserveTokens {
     IERC20 tokenA;
     IERC20 tokenB;
     IERC20 tokenC;
 }
+```
 
-... then the --struct_link setting above would result in the same fixed values for instances of tokenA and tokenB in this struct. Similarly, structs that are values in a mapping or array will all get the same address linkage.
+... then the `--struct_link` setting above would result in the same fixed values for instances of `tokenA` and `tokenB` in this struct. Similarly, structs that are values in a mapping or array will all get the same address linkage.
 ```
 
 
