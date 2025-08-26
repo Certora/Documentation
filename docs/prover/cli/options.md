@@ -1989,14 +1989,14 @@ _Configuration file_
 
 **Option values**
 ```sh
-<contract>:<slot>=<address>
+<contract>:<field>=<address>
 ```
 
 **What does it do?**
-Links a slot in a struct with another contract.
+Links an address field in all structs to a fixed contract address.
 
 **When to use it?**
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, such an address will be interpreted as any possible address, resulting in many nonsensical counterexamples. This is applied to all structs, even when they are values within a mapping or array.
 
 **Example**
 
@@ -2015,7 +2015,7 @@ struct TokenPair {
 ```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. 
-To set `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`:
+To set the `tokenA` field of the `tokenPair` struct to be `BankToken`, and `tokenB` to be `LoanToken`:
 
 _Command line_
 
@@ -2032,6 +2032,17 @@ _Configuration file_
 ]
 ```
 
+```{caution}
+The `struct_link` syntax does not specify the struct's type name (`TokenPair`, in the example above) because it is applied to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defines 
+
+`struct ReserveTokens {
+ IERC20 tokenA;
+ IERC20 tokenB;
+ IERC20 tokenC;
+}`
+
+... then the `struct_link` setting above would result in the same fixed address values for `tokenA` and `tokenB` in instances of this struct, which is likely an unintended constraint. Similarly, structs that are values in a mapping or array will _all_ get the same address linkage.
+```
 
 
 Options for job metadata and dashboard filtering
