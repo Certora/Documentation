@@ -82,7 +82,6 @@ enums
 envfree
 executable
 executables
-expr
 expressivity
 foldable
 fuzzer
@@ -114,7 +113,6 @@ iteratively
 lifecycle
 logics
 macOS
-md
 modularity
 modularization
 modularize
