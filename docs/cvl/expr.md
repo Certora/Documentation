@@ -243,7 +243,6 @@ approximation is {term}`sound`: it won't cause violations to be hidden.  See
 {ref}`grounding` for more detail.
 ```
 
-(ghost-mapping-sums)=
 Ghost Mapping Sums
 ------------------
 
