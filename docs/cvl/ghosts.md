@@ -115,7 +115,7 @@ function example(address user) {
 ```
 
 You can also use ghost variables in a [`sum` or `usum` expression]
-(./expr.md#ghost-mapping-sums) to calculate the total of numeric values in a ghost 
+(project:#ghost-mapping-sums) to calculate the total of numeric values in a ghost 
 mapping.
 
 The most common reason to use a ghost is to communicate information from a hook
