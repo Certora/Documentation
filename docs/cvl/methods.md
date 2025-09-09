@@ -792,7 +792,7 @@ This can be useful for instance, in the presence of unresolved calls in combinat
 - Isolate environment explicitly with `with (env e)` when you need to pin `msg.sender`, `block.timestamp`, or similar for a particular call, and use plain `envfree` elsewhere. A consistent pattern across a spec keeps models smaller and avoids accidental dependencies between calls.
 
 ```{tip}
-Heavyweight dependencies (Lending pools, incentive controllers) typically benefit from coarse summaries in the spec and fine‑grained assertions on observable effects (balances, indices) in rules and invariants.
+Heavyweight dependencies (Lending pools, incentive controllers) typically benefit from coarse summaries in the spec and fine-grained assertions on observable effects (balances, indices) in rules and invariants.
 ```
 
 (expression-summary)=

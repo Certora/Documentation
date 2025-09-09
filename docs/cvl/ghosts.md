@@ -319,7 +319,7 @@ the rule cannot distinguishing between methods that may revert with user-defined
 Patterns from practice
 ----------------------
 
-- Aggregate with a single ghost. Track the sum of scaled balances (or other per‑account data) by updating a ghost in an `Sstore` hook. This enables global checks without iterating storage:
+- Aggregate with a single ghost. Track the sum of scaled balances (or other per-account data) by updating a ghost in an `Sstore` hook. This enables global checks without iterating storage:
 
   ```cvl
   ghost mathint sumAllATokenScaledBalance {
@@ -331,4 +331,4 @@ Patterns from practice
   }
   ```
 
-- Ghost math with conservative axioms. When introducing ghosts such as `_ghostPow(x,y)` for fixed‑point exponentiation, prefer monotonicity and bound relations to exact equalities which may be broken by rounding. Keep axioms minimal and purposeful to avoid over‑constraining the solver.
+- Ghost math with conservative axioms. When introducing ghosts such as `_ghostPow(x,y)` for fixed-point exponentiation, prefer monotonicity and bound relations to exact equalities which may be broken by rounding. Keep axioms minimal and purposeful to avoid over-constraining the solver.

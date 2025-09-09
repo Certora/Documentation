@@ -48,7 +48,7 @@ Math and rounding summaries
 
 In real protocols, arithmetic often requires precise rounding envelopes. CVL functions are a clean way to centralize these rules as small, composable summaries.
 
-- Round‑aware mulDiv abstraction with explicit direction:
+- Round-aware mulDiv abstraction with explicit direction:
 
   ```cvl
   // Rounds up or down depending on a Math.Rounding enum
@@ -115,5 +115,5 @@ In real protocols, arithmetic often requires precise rounding envelopes. CVL fun
   ```
 
 ```{warning}
-Ghost‑based math models can be powerful but require care. For example, a ghost power function `_ghostPow` with axioms like `x^0==1`, monotonicity, and bounds is useful for reasoning, but equality‑like axioms may be invalid under fixed‑point rounding. Keep axioms conservative and prefer inequality bounds.
+Ghost-based math models can be powerful but require care. For example, a ghost power function `_ghostPow` with axioms like `x^0==1`, monotonicity, and bounds is useful for reasoning, but equality-like axioms may be invalid under fixed-point rounding. Keep axioms conservative and prefer inequality bounds.
 ```

@@ -654,5 +654,5 @@ invariant solvency_total_asset_geq_total_supply()
 
 This showcases a few practical points:
 - Use `filtered` to exclude methods irrelevant to the solvency relation (e.g., reward claims, emergency Ether transfers).
-- Express simple local side‑conditions inside `preserved` blocks rather than as global invariants.
+- Express simple local side-conditions inside `preserved` blocks rather than as global invariants.
 - Guard sender assumptions explicitly to avoid degenerate self‑calls.

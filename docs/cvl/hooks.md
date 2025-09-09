@@ -227,10 +227,10 @@ Two patterns often help scale larger specs:
   ```
 
   ```{note}
-  Slot/offset hooks are low‑level and must match the target layout exactly. Prefer named access paths when possible; fall back to slots when the layout is stable and names are unavailable.
+  Slot/offset hooks are low-level and must match the target layout exactly. Prefer named access paths when possible; fall back to slots when the layout is stable and names are unavailable.
   ```
 
-- Mirror on‑chain deltas into ghosts with `Sstore` hooks to enable global checks without scanning storage. For example, track the sum of scaled balances using a single ghost:
+- Mirror on-chain deltas into ghosts with `Sstore` hooks to enable global checks without scanning storage. For example, track the sum of scaled balances using a single ghost:
 
   ```cvl
   ghost mathint sumAllATokenScaledBalance {

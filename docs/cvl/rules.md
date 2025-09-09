@@ -222,7 +222,7 @@ representing the unspecified variables from the rule.
 Examples and edge cases
 -----------------------
 
-This section distills patterns from larger production specs. Each example is self‑contained and designed to be adapted to your scene.
+This section distills patterns from larger production specs. Each example is self-contained and designed to be adapted to your scene.
 
 - Preview equals actual (ERC-4626). EIP-4626 requires preview functions to not exceed the actual action in the same transaction. In some implementations they are equal; this stronger property is easy to assert:
 
