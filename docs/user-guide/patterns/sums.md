@@ -29,4 +29,5 @@ Track the sum of all balances and ensure that it remains equal to the total supp
 `sumBalances` ghost variable is updated with changes in individual balances using a storage 
 hook, ensuring accuracy and consistency in the overall sum.
 
-for more information about the example checkout [this tutorial](https://docs.certora.com/projects/tutorials/en/latest/lesson4_invariants/ghosts/sum_two.html#lesson4-ghost-sum-balances).
+For a broader walkthrough on ghost-based sums and invariants, see the Tutorials index:
+https://docs.certora.com/projects/tutorials/en/latest/
