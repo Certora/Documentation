@@ -756,8 +756,7 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
 This summary is a short syntax for a summary that contains an `assert false;` and checks that the summarized method is not reached.
 This can be useful for instance, in the presence of unresolved calls in combination with the `unresolved external` syntax to ensure that every unresolved call is actually dispatched correctly (i.e. use `unresolved external in _._ => DISPATCH [...] default ASSERT_FALSE`). It also enables more optimizations in the Prover and may lead to shorter running times.
 
-Practical patterns and tips
----------------------------
+#### Practical patterns and tips
 
 - Contract aliases with `using` help target specific receivers and keep specs readable. For example, a multi‑contract scene can alias tokens, pools, and controllers once and reuse them throughout the spec:
 
