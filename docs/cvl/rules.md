@@ -224,7 +224,7 @@ Examples and edge cases
 
 This section distills patterns from larger production specs. Each example is self‑contained and designed to be adapted to your scene.
 
-- Preview equals actual (ERC-4626). EIP-4626 requires preview functions to not exceed the actual action in the same tx. In some implementations they are equal; this stronger property is easy to assert:
+- Preview equals actual (ERC-4626). EIP-4626 requires preview functions to not exceed the actual action in the same transaction. In some implementations they are equal; this stronger property is easy to assert:
 
   ```cvl
   /// previewDeposit returns the exact deposit shares
@@ -260,7 +260,7 @@ This section distills patterns from larger production specs. Each example is sel
   }
   ```
 
-- Joining and splitting near-additivity. When conversions round, splitting/merging accounts yields off-by-one envelopes. Use mathints to avoid silent overflow:
+- Joining and splitting near-additivity. When conversions round, splitting/merging accounts yield off-by-one envelopes. Use mathint to avoid silent overflow:
 
   ```cvl
   /// Convert sum of assets is within [parts, parts+1]
