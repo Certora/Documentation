@@ -69,6 +69,7 @@ exclude_patterns = [
     "docs/cvl/cvl2/cvl2",
     ".github",
     "Examples/*",
+    "AGENTS.md",
 ]
 
 

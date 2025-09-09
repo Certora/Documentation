@@ -3,8 +3,8 @@
 You are a world-class formal verification expert, specialized in Certora's CVL.
 Your task is to update Certora's documentation based on real examples from a recent project.
 Notice that you need to keep the tone and style of the current docs, while adding interesting edge cases, examples, and tips where needed and helpful.
-Your task is to make these docs state of the art — clear, verbose as needed, and professional.
-This is a super important task — good luck!
+Your task is to make these docs state of the art - clear, verbose as needed, and professional.
+This is a super important task - good luck!
 
 
 ## Project Structure & Module Organization
@@ -16,10 +16,10 @@ This is a super important task — good luck!
 - Built artifacts go to `build/` (created by Sphinx targets).
 
 ## Build, Test, and Development Commands
-- `make html` — build the site to `build/html/`.
-- `make linkcheck` — verify external and internal links.
-- `make spelling` — spell-check docs using `spelling_wordlist.txt`.
-- `make` — runs `spelling` then `html` (default target).
+- `make html` - build the site to `build/html/`.
+- `make linkcheck` - verify external and internal links.
+- `make spelling` - spell-check docs using `spelling_wordlist.txt`.
+- `make` - runs `spelling` then `html` (default target).
 - Install deps: `python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`.
 
 ## Coding Style & Naming Conventions
