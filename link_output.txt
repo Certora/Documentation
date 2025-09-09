@@ -1,0 +1,382 @@
+[.venv] omer-lerinman ~/work/Documentation (master) $ make linkcheck
+Running Sphinx v7.4.5
+loading translations [en]... done
+loading pickled environment... done
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/sphinx/builders/linkcheck.py:86: RemovedInSphinx80Warning: The default value for 'linkcheck_report_timeouts_as_broken' will change to False in Sphinx 8, meaning that request timeouts will be reported with a new 'timeout' status, instead of as 'broken'. This is intended to provide more detail as to the failure mode. See https://github.com/sphinx-doc/sphinx/issues/11868 for details.
+  warnings.warn(deprecation_msg, RemovedInSphinx80Warning, stacklevel=1)
+myst v3.0.1: MdParserConfig(commonmark_only=False, gfm_only=False, enable_extensions=set(), disable_syntax=[], all_links_external=False, links_external_new_tab=False, url_schemes=('http', 'https', 'mailto', 'ftp'), ref_domains=None, fence_as_directive=set(), number_code_blocks=[], title_to_header=False, heading_anchors=0, heading_slug_func=None, html_meta={}, footnote_transition=True, words_per_minute=200, substitutions={}, linkify_fuzzy_links=True, dmath_allow_labels=True, dmath_allow_space=True, dmath_allow_digits=True, dmath_double_inline=False, update_mathjax=True, mathjax_classes='tex2jax_process|mathjax_process|math|output_area', enable_checkboxes=False, suppress_warnings=[], highlight_code_blocks=True)
+building [mo]: targets for 0 po files that are out of date
+writing output... 
+building [linkcheck]: targets for 121 source files that are out of date
+updating environment: 0 added, 7 changed, 0 removed
+reading sources... [100%] docs/user-guide/satisfy
+/home/omer-lerinman/work/Documentation/docs/cvl/methods.md:233: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/UnresolvedCallSummarization/TrusterLenderPool.sol' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/cvl/methods.md:803: WARNING: Non-consecutive header level increase; H2 to H4 [myst.header]
+/home/omer-lerinman/work/Documentation/docs/cvl/methods.md:969: WARNING: Non-consecutive header level increase; H2 to H4 [myst.header]
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/ITeams.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:24: WARNING: could not create GitHub link for /CVLByExample/Teams/ITeams.sol, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/ITeams.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:27: WARNING: could not create GitHub link for /CVLByExample/Teams/ITeams.sol, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:22: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/ITeams.sol' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:43: WARNING: could not create GitHub link for /CVLByExample/Teams/Teams.spec, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/correct.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:46: WARNING: could not create GitHub link for /CVLByExample/Teams/correct.conf, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:46: WARNING: could not create GitHub link for /CVLByExample/Teams/Teams.sol, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/buggy.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:49: WARNING: could not create GitHub link for /CVLByExample/Teams/buggy.conf, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/TeamsBugs.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:49: WARNING: could not create GitHub link for /CVLByExample/Teams/TeamsBugs.sol, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:58: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:71: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:92: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/NoPreserved.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:132: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:166: WARNING: could not create GitHub link for /CVLByExample/Teams/Teams.spec, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:161: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:171: WARNING: could not create GitHub link for /CVLByExample/Teams/Teams.spec, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:166: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/invariants.rst:173: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Teams/Teams.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:23: WARNING: could not create GitHub link for /DEFI/LiquidityPool/, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/contracts/Pool.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:31: WARNING: could not create GitHub link for /DEFI/LiquidityPool/contracts/Pool.sol, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/specs/Full.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:31: WARNING: could not create GitHub link for /DEFI/LiquidityPool/certora/specs/Full.spec, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/runFullPool.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:31: WARNING: could not create GitHub link for /DEFI/LiquidityPool/runFullPool.conf, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:48: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/contracts/IPool.sol' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/contracts/Pool.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:54: WARNING: could not create GitHub link for /DEFI/LiquidityPool/contracts/Pool.sol, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:56: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/contracts/Pool.sol' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:65: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/contracts/Pool.sol' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:80: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/contracts/Pool.sol' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:105: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/specs/pool_havoc.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/JustPool.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:131: WARNING: could not create GitHub link for /DEFI/LiquidityPool/JustPool.conf, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:203: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/WithLinking.conf' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:268: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/specs/pool_link.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:284: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/specs/pool_link.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/WithLinking.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:289: WARNING: could not create GitHub link for /DEFI/LiquidityPool/WithLinking.conf, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:329: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/specs/flashLoan_dispatcher.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:345: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/specs/flashLoan_dispatcher.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/harness/TrivialReceiver.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:367: WARNING: could not create GitHub link for /DEFI/LiquidityPool/certora/harness/TrivialReceiver.sol, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:372: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/harness/TrivialReceiver.sol' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/FlashLoanTrivial.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:378: WARNING: could not create GitHub link for /DEFI/LiquidityPool/FlashLoanTrivial.conf, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:416: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/harness/TransferReceiver.sol' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:438: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/FlashLoanTransfer.conf' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/helpers/ArbitraryValues.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:594: WARNING: could not create GitHub link for /DEFI/LiquidityPool/certora/helpers/ArbitraryValues.sol, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/WithFlexibleLinked.conf - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:594: WARNING: could not create GitHub link for /DEFI/LiquidityPool/WithFlexibleLinked.conf, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:603: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/harness/FlexibleReceiver.sol' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/helpers - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:645: WARNING: could not create GitHub link for /DEFI/LiquidityPool/certora/helpers/, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/helpers/erc20.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:645: WARNING: could not create GitHub link for /DEFI/LiquidityPool/certora/helpers/erc20.spec, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/LiquidityPool/certora/helpers/tokens - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/multicontract/index.md:645: WARNING: could not create GitHub link for /DEFI/LiquidityPool/certora/helpers/tokens, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20/certora/specs/ERC20Full.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/parametric.rst:56: WARNING: could not create GitHub link for /DEFI/ERC20/certora/specs/ERC20Full.spec, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/parametric.rst:64: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20/certora/specs/ERC20Full.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/parametric.rst:78: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20/certora/specs/ERC20Full.spec' not found or reading it failed
+/home/omer-lerinman/work/Documentation/docs/user-guide/patterns/safe-assum.md:9: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/CVLByExample/Ecrecover/ecrecover.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20/contracts/correct/ERC20Fixed.sol - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/running.rst:42: WARNING: could not create GitHub link for /DEFI/ERC20/contracts/correct/ERC20Fixed.sol, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20/certora/specs/ERC20Fixed.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/running.rst:42: WARNING: could not create GitHub link for /DEFI/ERC20/certora/specs/ERC20Fixed.spec, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/running.rst:42: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20/certora/specs/ERC20Fixed.spec' not found or reading it failed
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/ERC20 - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/running.rst:53: WARNING: could not create GitHub link for /DEFI/ERC20/, falling back to local link
+WARNING: missing /home/omer-lerinman/work/Documentation/Examples/DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec - cannot create Github url
+/home/omer-lerinman/work/Documentation/docs/user-guide/satisfy.md:25: WARNING: could not create GitHub link for /DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec, falling back to local link
+/home/omer-lerinman/work/Documentation/docs/user-guide/satisfy.md:30: WARNING: Include file '/home/omer-lerinman/work/Documentation/Examples/DEFI/ConstantProductPool/certora/spec/ConstantProductPool.spec' not found or reading it failed
+looking for now-outdated files... none found
+pickling environment... done
+checking consistency... /home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/MarkupSafe-2.1.5.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/alabaster-0.7.16.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/idna-3.7.dist-info/LICENSE.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/imagesize-1.4.1.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/sphinx-7.4.5.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/sphinx/ext/autosummary/templates/autosummary/base.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/sphinx/ext/autosummary/templates/autosummary/class.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/sphinx/ext/autosummary/templates/autosummary/module.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/MarkupSafe-2.1.5.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/alabaster-0.7.16.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/idna-3.7.dist-info/LICENSE.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/imagesize-1.4.1.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/mdit_py_plugins/container/README.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/mdit_py_plugins/deflist/README.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/mdit_py_plugins/texmath/README.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/sphinx-7.4.5.dist-info/LICENSE.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/sphinx/ext/autosummary/templates/autosummary/base.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/sphinx/ext/autosummary/templates/autosummary/class.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/sphinx/ext/autosummary/templates/autosummary/module.rst: WARNING: document isn't included in any toctree
+/home/omer-lerinman/work/Documentation/AGENTS.md: WARNING: document isn't included in any toctree
+done
+preparing documents... done
+copying assets... 
+copying assets: done
+writing output... [100%] index
+/home/omer-lerinman/work/Documentation/.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README.md:135: WARNING: 'myst' cross-reference target not found: './license.txt' [myst.xref_missing]
+/home/omer-lerinman/work/Documentation/.venv/lib64/python3.10/site-packages/mdit_py_plugins/texmath/README.md:135: WARNING: 'myst' cross-reference target not found: './license.txt' [myst.xref_missing]
+
+(docs/cvl/cvl2/changes: line  265) broken    https://TODO/ - HTTPSConnectionPool(host='todo', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7a34ebd44160>: Failed to resolve 'todo' ([Errno -3] Temporary failure in name resolution)"))
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line   28) redirect  http://spec.commonmark.org/0.18/#fenced-code-blocks - permanently to https://spec.commonmark.org/0.18/
+(docs/cvl/foundry-integration: line    5) redirect  https://book.getfoundry.sh/forge/fuzz-testing - permanently to https://getfoundry.sh/forge/advanced-testing/fuzz-testing/
+(docs/sunbeam/index: line    4) ok        https://certora-sunbeam-tutorials.readthedocs-hosted.com/en/latest/
+(docs/cvl/builtin: line   55) ok        https://blog.solidityscan.com/security-issues-with-delegate-calls-4ae64d775b76
+(docs/cvl/foundry-integration: line   80) redirect  https://book.getfoundry.sh/forge/invariant-testing - permanently to https://getfoundry.sh/forge/advanced-testing/invariant-testing/
+(docs/cvl/builtin: line  188) ok        https://blog.pessimistic.io/read-only-reentrancy-in-depth-6ea7e9d78e85
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line   11) broken    http://johnmacfarlane.net/pandoc/README.html#definition-lists - 404 Client Error: Not Found for url: https://johnmacfarlane.net/pandoc/README.html
+(    docs/cvl/lsp: line   44) ok        https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette
+(docs/sunbeam/usage: line    9) ok        https://certora.vercel.app/blog/formally-verifying-webassembly
+(docs/solana/speclanguage: line    9) broken    https://crates.io/crates/cvlr - 404 Client Error: Not Found for url: https://crates.io/crates/cvlr
+(docs/solana/speclanguage: line    9) broken    https://crates.io/crates/cvlr-solana - 404 Client Error: Not Found for url: https://crates.io/crates/cvlr-solana
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  101) ok        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/sticky
+(docs/prover/dashboard/secrets: line   88) ok        https://discord.com/channels/795999272293236746/1104825071450718338
+(   docs/cvl/expr: line   88) redirect  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#table - permanently to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    3) redirect  https://coveralls.io/r/markdown-it/markdown-it-container?branch=master - permanently to https://coveralls.io/github/markdown-it/markdown-it-container
+(docs/solana/options: line  118) ok        https://doc.rust-lang.org/cargo/reference/features.html
+(docs/user-guide/out-of-resources/timeout: line  252) ok        https://doc.rust-lang.org/reference/conditional-compilation.html
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line    3) redirect  https://coveralls.io/r/markdown-it/markdown-it-deflist?branch=master - permanently to https://coveralls.io/github/markdown-it/markdown-it-deflist
+(docs/cvl/v5-changes: line  331) ok        https://docs.certora.com/en/latest/docs/cvl/cvl2/changes.html?highlight=cvl2#changes-to-the-command-line-interface-cli
+(docs/gambit/gambit: line  478) broken    https://docs.certora.com/en/latest/docs/gambit/gambit.html#mutation-types - Anchor 'mutation-types' not found
+(docs/sunbeam/installation: line   46) ok        https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup#install-the-stellar-cli
+(docs/user-guide/checking: line   53) ok        https://docs.certora.com/en/latest/docs/prover/checking/sanity.html?highlight=rule%20sanity#assert-tautology-checks
+(docs/solana/sanity: line    8) ok        https://docs.certora.com/en/latest/docs/prover/checking/sanity.html
+(docs/user-guide/checking: line   57) ok        https://docs.certora.com/en/latest/docs/prover/checking/index.html
+(docs/user-guide/install_evm_compiler: line  150) ok        https://docs.certora.com/en/latest/docs/prover/cli/index.html
+(docs/user-guide/checking: line   29) ok        https://docs.certora.com/en/latest/docs/prover/checking/sanity.html?highlight=rule%20sanity#sanity-vacuity
+(docs/solana/options: line   24) ok        https://docs.certora.com/en/latest/docs/prover/cli/conf-file-api.html#conf-files
+(docs/cvl/foundry-integration: line  114) ok        https://docs.certora.com/en/latest/docs/user-guide/glossary.html#term-havoc
+(docs/user-guide/tutorials: line   11) redirect  https://docs.certora.com/projects/tutorials - with Found to https://docs.certora.com/projects/tutorials/en/latest/
+(docs/user-guide/checking: line   29) ok        https://docs.certora.com/en/latest/docs/prover/checking/mutation.html?highlight=rule%20mutation#mutation-testing
+(docs/user-guide/ci: line   10) redirect  https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository - permanently to https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets
+(docs/user-guide/install: line   58) ok        https://docs.python.org/3.10/library/venv.html
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  106) ok        https://docs.julialang.org/en/v1/stdlib/Markdown/
+(docs/prover/cli/options: line 1795) redirect  https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies - permanently to https://docs.openzeppelin.com/upgrades-plugins/proxies
+(docs/user-guide/glossary: line  187) ok        https://docs.soliditylang.org/en/latest/contracts.html#fallback-function
+(docs/prover/cli/packages_and_remappings: line   21) ok        https://docs.soliditylang.org/en/latest/path-resolution.html
+(docs/prover/changelog/gui_changelog: line  163) ok        https://docs.soliditylang.org/en/latest/yul.html
+(  docs/cvl/types: line   46) ok        https://docs.soliditylang.org/en/v0.8.11/types.html
+(  docs/cvl/types: line  174) ok        https://docs.soliditylang.org/en/v0.8.11/units-and-global-variables.html#special-variables-and-functions
+(docs/cvl/methods: line  745) ok        https://docs.soliditylang.org/en/v0.8.12/contracts.html#state-mutability
+(docs/prover/cli/options: line  961) ok        https://docs.soliditylang.org/en/v0.8.16/path-resolution.html#allowed-paths
+(  docs/cvl/types: line  359) ok        https://docs.soliditylang.org/en/v0.8.11/types.html#value-types
+(docs/user-guide/patterns/sums: line   32) broken    https://docs.certora.com/projects/tutorials/en/latest/lesson4_invariants/ghosts/sum_two.html#lesson4-ghost-sum-balances - 404 Client Error: Not Found for url: https://docs.certora.com/projects/tutorials/en/latest/lesson4_invariants/ghosts/sum_two.html
+(  docs/cvl/hooks: line  129) ok        https://docs.soliditylang.org/en/v0.8.17/internals/layout_in_storage.html
+(docs/gambit/gambit: line  197) ok        https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#allowed-paths
+(docs/gambit/gambit: line  178) ok        https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#base-path-and-include-paths
+(docs/gambit/gambit: line  185) ok        https://docs.soliditylang.org/en/v0.8.17/path-resolution.html#import-remapping
+(docs/cvl/methods: line  924) redirect  https://docs.soliditylang.org/en/v0.8.6/introduction-to-smart-contracts.html?#delegatecall-callcode-and-libraries - with unknown code to https://docs.soliditylang.org/en/v0.8.6/introduction-to-smart-contracts.html
+(docs/cvl/cvl2/changes: line  259) ok        https://docs.soliditylang.org/en/v0.8.17/types.html#function-types
+(docs/prover/techniques/index: line  166) ok        https://en.wikipedia.org/wiki/Aliasing_(computing)
+(docs/user-guide/out-of-resources/timeout-theory: line   70) ok        https://en.wikipedia.org/wiki/Boolean_satisfiability_problem
+(docs/user-guide/glossary: line   29) ok        https://en.wikipedia.org/wiki/Control-flow_graph
+(docs/cvl/overview: line   47) ok        https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form
+(docs/cvl/storage-extension-annotations: line    5) ok        https://eips.ethereum.org/EIPS/eip-7201
+(docs/user-guide/glossary: line  271) ok        https://en.wikipedia.org/wiki/Intermediate_representation
+(docs/user-guide/glossary: line   29) ok        https://en.wikipedia.org/wiki/Path_explosion
+(docs/user-guide/glossary: line   62) ok        https://en.wikipedia.org/wiki/Ethereum#Virtual_machine
+(docs/cvl/invariants: line  354) ok        https://eips.ethereum.org/EIPS/eip-1153
+(docs/prover/cli/options: line 1682) ok        https://en.wikipedia.org/wiki/Satisfiability_modulo_theories
+(docs/user-guide/glossary: line   72) redirect  https://ethereum.org/en/developers/docs/smart-contracts/anatomy - temporarily to https://ethereum.org/developers/docs/smart-contracts/anatomy/
+(  docs/cvl/hooks: line  340) redirect  https://ethereum.org/en/developers/docs/evm/opcodes/ - temporarily to https://ethereum.org/developers/docs/evm/opcodes/
+(docs/user-guide/glossary: line   62) redirect  https://ethereum.org/en/developers/docs/evm/ - temporarily to https://ethereum.org/developers/docs/evm/
+(docs/cvl/cvl2/changes: line  137) ok        https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/ContractNames.spec
+(docs/cvl/cvl2/migration: line   40) ok        https://gist.github.com/shellygr/c054a0ad569397ef4e19ec1d1d5afcdb
+(docs/cvl/cvl2/changes: line   35) ok        https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/MethodsEntries.spec
+-rate limited-   https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/ContractNames.spec | sleeping...
+(docs/cvl/cvl2/changes: line   12) ok        https://github.com/Certora/CVL2Migration
+(docs/cvl/cvl2/changes: line  107) ok        https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/MethodLiterals.spec
+(docs/cvl/cvl2/changes: line   70) ok        https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/Semicolons.spec
+(docs/cvl/cvl2/changes: line   35) ok        https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/MethodsEntries.spec
+(docs/cvl/cvl2/changes: line  205) ok        https://github.com/Certora/CVL2Migration/blob/cvl1/certora/spec/RuleKeyword.spec
+(docs/cvl/cvl2/changes: line  205) ok        https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/RuleKeyword.spec
+(docs/cvl/cvl2/changes: line   70) ok        https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/Semicolons.spec
+(docs/cvl/cvl2/changes: line   12) ok        https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split
+(docs/cvl/cvl2/changes: line   70) broken    https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7 - Anchor 'diff-15fb1ef5e6524f8a661d83ae5160b6b072840c5c54bf8d07733aab32b9da73f7' not found
+(docs/cvl/cvl2/changes: line  289) broken    https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8 - Anchor 'diff-5b1b684b999817bab176753b548b9ca548c8e9a1b7ce72d355030a8e03f498d8' not found
+(docs/cvl/cvl2/changes: line  107) broken    https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-41df8240fa5faa12531baa82863891b94abf3fb3b859bdd10bafde73b60eda5d - Anchor 'diff-41df8240fa5faa12531baa82863891b94abf3fb3b859bdd10bafde73b60eda5d' not found
+(docs/cvl/cvl2/changes: line   35) broken    https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24 - Anchor 'diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24' not found
+(docs/cvl/cvl2/changes: line  205) broken    https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-b39a57bffd39f86bc1f9555a487af389f501eab9e66a1c3059a89691319da248 - Anchor 'diff-b39a57bffd39f86bc1f9555a487af389f501eab9e66a1c3059a89691319da248' not found
+(docs/cvl/cvl2/changes: line  137) broken    https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-a6a2974b81074e87d755753c2e84ef1b0cb553bfdeb729827959e0c63f0d02d7 - Anchor 'diff-a6a2974b81074e87d755753c2e84ef1b0cb553bfdeb729827959e0c63f0d02d7' not found
+(docs/user-guide/running: line   35) broken    https://github.com/Certora/Documentation/tree/25f992bd8b97aea280b132befa3e0c49190f119a/Examples - 404 Client Error: Not Found for url: https://github.com/Certora/Documentation/tree/25f992bd8b97aea280b132befa3e0c49190f119a/Examples
+(  docs/cvl/rules: line   13) ok        https://github.com/Certora/Examples/
+(docs/user-guide/tutorials: line   23) ok        https://github.com/Certora/Examples
+(docs/gambit/mutation-verifier: line  258) broken    https://github.com/Certora/CertoraInit/blob/master/mutation/advanced_mutation.conf - 404 Client Error: Not Found for url: https://github.com/Certora/CertoraInit/blob/master/mutation/advanced_mutation.conf
+(docs/gambit/mutation-verifier: line   74) ok        https://github.com/Certora/CertoraInit
+(docs/cvl/statements: line  167) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L243 - Anchor 'L243' not found
+( docs/cvl/ghosts: line  191) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L207 - Anchor 'L207' not found
+(docs/cvl/statements: line  116) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L75 - Anchor 'L75' not found
+(docs/cvl/statements: line  175) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178 - Anchor 'L178' not found
+(docs/cvl/statements: line  118) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L44 - Anchor 'L44' not found
+-rate limited-   https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24 | sleeping...
+-rate limited-   https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L24 | sleeping...
+(  docs/cvl/rules: line   67) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L54 - Anchor 'L54' not found
+(  docs/cvl/using: line   15) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool_link.spec#L14 - Anchor 'L14' not found
+(  docs/cvl/hooks: line   66) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L117 - Anchor 'L117' not found
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line   40) ok        https://goessner.github.io/markdown-it-texmath/index.html
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line   42) ok        https://goessner.github.io/markdown-it-texmath/markdown-it-texmath-demo.html
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line    1) ok        https://img.shields.io/github/license/goessner/markdown-it-texmath.svg
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line    1) redirect  https://img.shields.io/npm/dt/markdown-it-texmath.svg - permanently to https://img.shields.io/npm/d18m/markdown-it-texmath.svg
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    3) redirect  https://img.shields.io/coveralls/markdown-it/markdown-it-container/master.svg?style=flat - permanently to https://img.shields.io/coverallsCoverage/github/markdown-it/markdown-it-container.svg?branch=master&style=flat
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line    3) redirect  https://img.shields.io/coveralls/markdown-it/markdown-it-deflist/master.svg?style=flat - permanently to https://img.shields.io/coverallsCoverage/github/markdown-it/markdown-it-deflist.svg?branch=master&style=flat
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    3) broken    https://img.shields.io/travis/markdown-it/markdown-it-container/master.svg?style=flat - 404 Client Error: Not Found for url: https://img.shields.io/travis/markdown-it/markdown-it-container/master.svg?style=flat
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    3) ok        https://img.shields.io/npm/v/markdown-it-container.svg?style=flat
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line    3) ok        https://img.shields.io/npm/v/markdown-it-deflist.svg?style=flat
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line    3) broken    https://img.shields.io/travis/markdown-it/markdown-it-deflist/master.svg?style=flat - 404 Client Error: Not Found for url: https://img.shields.io/travis/markdown-it/markdown-it-deflist/master.svg?style=flat
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line    1) ok        https://img.shields.io/npm/v/markdown-it-texmath.svg
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  119) ok        https://kramdown.gettalong.org/
+(docs/gambit/mutation-verifier: line  258) ok        https://mutation-testing-beta.certora.com/?id=01623b02-0cda-435b-8c31-af9306d6d302&amp;anonymousKey=857c3aeb-169c-4c93-8021-e82058603ca1
+(docs/gambit/mutation-verifier: line  205) ok        https://prover.certora.com
+(docs/prover/cli/options: line   62) ok        https://prover.certora.com/
+(docs/prover/cli/conf-file-api: line    5) ok        https://json5.org/
+(    docs/cvl/lsp: line    5) ok        https://marketplace.visualstudio.com/items?itemName=Certora.evmspec-lsp
+(docs/sunbeam/installation: line    6) broken    https://learn.microsoft.com//install - 404 Client Error: Not Found for url: https://learn.microsoft.com/en-us/install
+(docs/gambit/mutation-verifier: line  213) broken    https://prover.certora.com/mutations - 403 Client Error: Forbidden for url: https://prover.certora.com/mutations
+( docs/cvl/ghosts: line  263) ok        https://soliditylang.org/blog/2020/10/28/solidity-0.8.x-preview/
+(docs/sunbeam/troubleshooting: line   52) ok        https://stackoverflow.com/questions/28124221/error-linking-with-cc-failed-exit-code-1
+(docs/sunbeam/index: line    4) ok        https://stellar.org/soroban
+(docs/solana/output: line   78) ok        https://prover.certora.com/output/1324651/741e8ee5a5754c1ab8db0aa36be39e4d?anonymousKey=ca602f5139de3bfbae17eb1fbf9c11145be3a912
+(docs/sunbeam/usage: line  132) ok        https://prover.certora.com/output/33158/43d2f53488204780bcb004e91be562a9/?anonymousKey=21e6b9c505d1c3eecb004bcdf5778b53b8197a41
+(docs/prover/approx/hashing: line  185) ok        https://prover.certora.com/output/91772/e02fc5c0f57c4404b6fe28f237ecab07?anonymousKey=9e9e40a985a82d55446b0cdc2c75a7540ca696bc
+(docs/user-guide/out-of-resources/timeout-theory: line   77) ok        https://theory.stanford.edu/~nikolaj/programmingz3.html
+(docs/user-guide/invariants: line   96) ok        https://prover.certora.com/output/98279/65d0cd795ba640d6bdd7877074fca175?anonymousKey=55ad7f5a7130e367993082addf32fc7898494db3
+(docs/cvl/builtin: line   35) ok        https://trustchain.medium.com/ethereum-msg-value-reuse-vulnerability-5afd0aa2bcef
+(docs/user-guide/install: line   58) ok        https://virtualenv.pypa.io/en/latest/
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    3) redirect  https://travis-ci.org/markdown-it/markdown-it-container - permanently to https://app.travis-ci.com/markdown-it/markdown-it-container
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line    3) redirect  https://travis-ci.org/markdown-it/markdown-it-deflist - permanently to https://app.travis-ci.com/markdown-it/markdown-it-deflist
+(           index: line   71) broken    https://www.certora.com/#Request_Early_Access - Anchor 'Request_Early_Access' not found
+(docs/sunbeam/installation: line   16) ok        https://www.certora.com/signup
+(docs/sunbeam/installation: line   21) ok        https://wiki.python.org/moin/BeginnersGuide/Download
+(docs/user-guide/install: line  204) ok        https://www.certora.com/signup?plan=prover
+(docs/sunbeam/installation: line   16) ok        https://www.certora.com/
+(docs/whitepaper/index: line    4) ok        https://www.certora.com/blog/white-paper
+(  docs/cvl/hooks: line  454) broken    https://www.evm.codes/#f1 - Anchor 'f1' not found
+(  docs/cvl/hooks: line  454) broken    https://www.evm.codes/#f2 - Anchor 'f2' not found
+(  docs/cvl/hooks: line  454) broken    https://www.evm.codes/#f4 - Anchor 'f4' not found
+(  docs/cvl/hooks: line  454) broken    https://www.evm.codes/#fa - Anchor 'fa' not found
+(docs/sunbeam/installation: line   25) ok        https://www.oracle.com/java/technologies/downloads/
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line    1) ok        https://www.npmjs.com/package/markdown-it-texmath
+(docs/user-guide/tutorials: line   89) ok        https://www.youtube.com/playlist?list=PLKtu7wuOMP9WOLJNPafbrd0lehfc7yxso
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line    3) redirect  https://www.npmjs.org/package/markdown-it-deflist - permanently to https://www.npmjs.com/package/markdown-it-deflist
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    3) redirect  https://www.npmjs.org/package/markdown-it-container - permanently to https://www.npmjs.com/package/markdown-it-container
+(docs/user-guide/tutorials: line   31) ok        https://www.youtube.com/playlist?list=PLKtu7wuOMP9Wp_O8kylKbtFYgM8HVTGIA
+(docs/user-guide/tutorials: line   57) ok        https://www.youtube.com/playlist?list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj
+(docs/gambit/gambit: line   22) ok        https://www.rust-lang.org/tools/install
+(docs/user-guide/tutorials: line   79) ok        https://www.youtube.com/watch?v=BGdHsvQMmy8&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=12&amp;t=1618s
+(docs/user-guide/tutorials: line   64) ok        https://www.youtube.com/watch?v=66Gjzgl87L8&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=3&amp;t=21s
+(docs/user-guide/tutorials: line   81) ok        https://www.youtube.com/watch?v=Epe90JSmNqc&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=14
+(docs/user-guide/tutorials: line   63) ok        https://www.youtube.com/watch?v=CwCX0TuDfTE&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=2&amp;t=2s
+(docs/user-guide/tutorials: line   72) ok        https://www.youtube.com/watch?v=NQ1ZQnlYFOQ&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=11
+(docs/user-guide/tutorials: line   67) ok        https://www.youtube.com/watch?v=WR8eAQZzd8Y&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=6
+(docs/user-guide/tutorials: line   82) ok        https://www.youtube.com/watch?v=IPasjUOFUdA&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=15
+(docs/user-guide/tutorials: line   66) ok        https://www.youtube.com/watch?v=VqboepMVbg4&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=5&amp;t=2s
+(docs/user-guide/tutorials: line   69) ok        https://www.youtube.com/watch?v=f3K-68k7vig&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=8
+(docs/user-guide/tutorials: line   65) ok        https://www.youtube.com/watch?v=gMjELxgMY30&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=4&amp;t=534s
+(docs/user-guide/tutorials: line   71) ok        https://www.youtube.com/watch?v=csTe6ub3Jwg&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=10
+(docs/user-guide/tutorials: line   80) ok        https://www.youtube.com/watch?v=_YW-uReng44&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=13&amp;t=25s
+(docs/user-guide/tutorials: line   68) ok        https://www.youtube.com/watch?v=jAiBUebBs88&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=7
+(docs/user-guide/tutorials: line   62) ok        https://www.youtube.com/watch?v=sdEfc-58CUE&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=1&amp;t=1s
+(docs/prover/diagnosis/index: line   17) ok        https://www.youtube.com/watch?v=mntP0_EN-ZQ
+(docs/user-guide/tutorials: line   37) redirect  https://youtu.be/1bbI-i2Y0BA - with See Other to https://www.youtube.com/watch?v=1bbI-i2Y0BA&feature=youtu.be
+(docs/user-guide/tutorials: line   46) redirect  https://youtu.be/9QuS_8cL91w - with See Other to https://www.youtube.com/watch?v=9QuS_8cL91w&feature=youtu.be
+(docs/user-guide/tutorials: line   44) redirect  https://youtu.be/DcbBSab3s3E?t=374 - with See Other to https://www.youtube.com/watch?t=374&v=DcbBSab3s3E&feature=youtu.be
+(docs/user-guide/tutorials: line   42) redirect  https://youtu.be/fHHVoRNocdE - with See Other to https://www.youtube.com/watch?v=fHHVoRNocdE&feature=youtu.be
+(docs/user-guide/tutorials: line   43) redirect  https://youtu.be/DcbBSab3s3E?t=80 - with See Other to https://www.youtube.com/watch?t=80&v=DcbBSab3s3E&feature=youtu.be
+(docs/user-guide/tutorials: line   41) redirect  https://youtu.be/gkK3KeD7AQw - with See Other to https://www.youtube.com/watch?v=gkK3KeD7AQw&feature=youtu.be
+(docs/user-guide/tutorials: line   39) redirect  https://youtu.be/siEDkMNbl5o?t=1076 - with See Other to https://www.youtube.com/watch?t=1076&v=siEDkMNbl5o&feature=youtu.be
+(docs/user-guide/tutorials: line   38) redirect  https://youtu.be/siEDkMNbl5o - with See Other to https://www.youtube.com/watch?v=siEDkMNbl5o&feature=youtu.be
+(docs/user-guide/tutorials: line   40) redirect  https://youtu.be/siEDkMNbl5o?t=2840 - with See Other to https://www.youtube.com/watch?t=2840&v=siEDkMNbl5o&feature=youtu.be
+(docs/user-guide/tutorials: line   42) redirect  https://youtu.be/gkK3KeD7AQw?t=2993 - with See Other to https://www.youtube.com/watch?t=2993&v=gkK3KeD7AQw&feature=youtu.be
+(docs/user-guide/tutorials: line   45) redirect  https://youtu.be/vg6da3A7lSs - with See Other to https://www.youtube.com/watch?v=vg6da3A7lSs&feature=youtu.be
+(docs/user-guide/tutorials: line   70) ok        https://www.youtube.com/watch?v=GLGXQSaE5b4&amp;list=PLKtu7wuOMP9XHbjAevkw2nL29YMubqEFj&amp;index=9
+-rate limited-   https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L24 | sleeping...
+(  docs/cvl/rules: line  178) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/Reentrancy/certora/spec/Reentrancy.spec#L29C9-L29C9 - Anchor 'L29C9-L29C9' not found
+-rate limited-   https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24 | sleeping...
+(docs/cvl/cvl2/changes: line  137) broken    https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/ContractNames.spec - 429 Client Error: Too Many Requests for url: https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/ContractNames.spec
+(   docs/cvl/expr: line  425) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/storage/certora/specs/storage.spec#L45C19-L45C19 - Anchor 'L45C19-L45C19' not found
+( docs/cvl/ghosts: line   93) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/QuantifierExamples/DoublyLinkedList/certora/spec/dll-linkedcorrectly.spec#L24 - Anchor 'L24' not found
+( docs/cvl/ghosts: line  175) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L119 - Anchor 'L119' not found
+(  docs/cvl/hooks: line   67) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L141 - Anchor 'L141' not found
+(  docs/cvl/rules: line  150) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L94 - Anchor 'L94' not found
+(docs/cvl/cvl2/changes: line  107) ok        https://github.com/Certora/CVL2Migration/blob/cvl2/certora/spec/MethodLiterals.spec
+(docs/cvl/functions: line   38) broken    https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L24 - Anchor 'L24' not found
+-rate limited-   https://github.com/Certora/Examples/blob/b97218832625a88c6dffee8dcec8509f4114aa46/CVLByExample/TransientStorage/TransientFields/README.md | sleeping...
+(docs/cvl/imports: line   15) broken    https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/import/certora/specs/sub.spec#L24 - Anchor 'L24' not found
+(docs/cvl/statements: line  369) ok        https://github.com/Certora/Examples/blob/ae2eca20d8e6caf378ff10cf8066ecfc45d3658d/CVLByExample/RevertKeyWord/example.spec
+-rate limited-   https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L14 | sleeping...
+(  docs/cvl/hooks: line  331) ok        https://github.com/Certora/Examples/blob/b97218832625a88c6dffee8dcec8509f4114aa46/CVLByExample/TransientStorage/Hooks/README.md
+( docs/cvl/ghosts: line  197) broken    https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec#L12 - Anchor 'L12' not found
+(docs/cvl/imports: line   18) broken    https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L8 - Anchor 'L8' not found
+(docs/cvl/functions: line   40) broken    https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L38 - Anchor 'L38' not found
+(docs/cvl/invariants: line   95) broken    https://github.com/Certora/Examples/blob/cli-beta/CVLByExample/StrongInvariants/README.md - 404 Client Error: Not Found for url: https://github.com/Certora/Examples/blob/cli-beta/CVLByExample/StrongInvariants/README.md
+(docs/cvl/functions: line    5) broken    https://github.com/Certora/Examples/blob/bf3255766c28068eea2d0513edb8daca7bcaa206/CVLByExample/function-summary/multi-contract/certora/specs/spec_with_summary.spec#L6 - Anchor 'L6' not found
+-rate limited-   https://github.com/Certora/Examples/blob/master/CVLByExample/Summarization/GhostSummary/GhostSums/README.md | sleeping...
+( docs/cvl/ghosts: line   76) broken    https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/CVLByExample/Types/Structs/BankAccounts/certora/specs/structs.spec#L119 - Anchor 'L119' not found
+( docs/cvl/ghosts: line   78) broken    https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/CVLByExample/Types/Structs/BankAccounts/certora/specs/structs.spec#L113 - Anchor 'L113' not found
+( docs/cvl/ghosts: line   72) broken    https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/DEFI/LiquidityPool/certora/specs/Full.spec#L46 - Anchor 'L46' not found
+( docs/cvl/ghosts: line   74) broken    https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/DEFI/ERC20/certora/specs/ERC20Fixed.spec#L99 - Anchor 'L99' not found
+-rate limited-   https://github.com/Certora/Examples/blob/master/CVLByExample/Summarization/GhostSummary/GhostSums/README.md | sleeping...
+(docs/cvl/imports: line   20) broken    https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L14 - Anchor 'L14' not found
+(docs/cvl/imports: line   19) broken    https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L10 - Anchor 'L10' not found
+(docs/cvl/imports: line   16) broken    https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L3 - Anchor 'L3' not found
+(docs/cvl/imports: line   14) broken    https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L1 - Anchor 'L1' not found
+(  docs/cvl/hooks: line  332) ok        https://github.com/Certora/Examples/blob/b97218832625a88c6dffee8dcec8509f4114aa46/CVLByExample/TransientStorage/TransientFields/README.md
+(  docs/cvl/hooks: line  531) ok        https://github.com/Certora/Examples/tree/28cb774fc03767e8aeaf00ea1bb0fac7db595fc9/ReferenceManual/HookReentrancy
+(docs/prover/cli/options: line 1831) ok        https://github.com/Certora/Examples/tree/master/CVLByExample/ExtensionContracts
+-rate limited-   https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf | sleeping...
+(docs/cvl/foundry-integration: line   56) ok        https://github.com/Certora/Examples/tree/master/FoundryIntegration
+(docs/solana/usage: line   20) ok        https://github.com/Certora/SolanaExamples
+(docs/solana/options: line   98) ok        https://github.com/Certora/SolanaExamples/blob/main/certora/summaries/cvlr_summaries_core.txt
+(docs/solana/usage: line  129) ok        https://github.com/Certora/SolanaExamples/blob/main/cvlr_by_example/first_example/Cargo.toml
+-rate limited-   https://github.com/Certora/cvlr-soroban/blob/main/cvlr-soroban/src/nondet.rs | sleeping...
+(docs/prover/approx/harnessing: line   33) ok        https://github.com/Certora/comet/blob/certora/certora/harness/CometHarnessWrappers.sol
+(docs/solana/speclanguage: line    9) ok        https://github.com/Certora/cvlr
+(docs/sunbeam/usage: line   14) ok        https://github.com/Certora/cvlr-soroban/
+(docs/gambit/gambit: line   97) ok        https://github.com/Certora/gambit/tree/master/benchmarks
+-rate limited-   https://github.com/Certora/sunbeam-tutorials/blob/main/projects/token/certora_build.py | sleeping...
+(docs/sunbeam/usage: line   41) broken    https://github.com/Certora/reflector-subscription-contract/blob/51944577dc4536e9cf9711db6e125fe1e2254054/src/lib.rs#L44 - Anchor 'L44' not found
+(docs/gambit/gambit: line   30) ok        https://github.com/Certora/gambit/releases
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line   95) ok        https://github.com/markdown-it/markdown-it-container/blob/master/LICENSE
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/deflist/README: line   38) ok        https://github.com/markdown-it/markdown-it-deflist/blob/master/LICENSE
+(docs/user-guide/install_evm_compiler: line  138) ok        https://github.com/vyperlang/vyper
+(docs/user-guide/install: line   50) ok        https://github.com/orgs/Certora/repositories
+-rate limited-   https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf | sleeping...
+-rate limited-   https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf | sleeping...
+(docs/solana/options: line   77) ok        https://github.com/Certora/SolanaExamples/blob/main/certora/summaries/cvlr_inlining_core.txt
+(docs/gambit/gambit: line   36) ok        https://github.com/Certora/gambit
+-rate limited-   https://github.com/Certora/sunbeam-tutorials/blob/main/projects/token/certora_build.py | sleeping...
+(docs/gambit/gambit: line  323) redirect  https://github.com/Certora/gambit/blob/master/benchmarks/config-jsons/ - permanently to https://github.com/Certora/gambit/tree/master/benchmarks/config-jsons
+(docs/user-guide/tutorials: line   13) ok        https://github.com/Certora/tutorials-code
+(docs/user-guide/install: line   43) ok        https://github.com/crytic/solc-select
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  137) ok        https://github.com/goessner
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line    1) broken    https://github.com/goessner/markdown-it-texmath/blob/master/licence.txt - 404 Client Error: Not Found for url: https://github.com/goessner/markdown-it-texmath/blob/master/licence.txt
+(docs/user-guide/install: line   46) redirect  https://github.com/ethereum/solidity/releases - permanently to https://github.com/argotorg/solidity/releases
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  106) ok        https://github.com/goessner/markdown-it-texmath/issues/15
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/container/README: line    7) ok        https://github.com/markdown-it/markdown-it
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  109) ok        https://github.com/goessner/markdown-it-texmath/issues/9
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line  112) ok        https://github.com/goessner/mdmath/issues/50
+(docs/user-guide/out-of-resources/timeout: line  257) broken    https://github.com/OpenZeppelin/openzeppelin-contracts/blob/21c8312b022f495ebe3621d5daeed20552b43ff9/contracts/utils/math/Math.sol#L197 - Anchor 'L197' not found
+(docs/sunbeam/installation: line   48) ok        https://github.com/WebAssembly/wabt
+(docs/sunbeam/usage: line   99) ok        https://github.com/Certora/sunbeam-tutorials/blob/main/projects/token/certora_build.py
+(.venv/lib/python3.10/site-packages/mdit_py_plugins/texmath/README: line    7) redirect  https://github.com/Khan/KaTeX - permanently to https://github.com/KaTeX/KaTeX
+(docs/solana/options: line  168) ok        https://github.com/Certora/SolanaExamples/blob/66c1f406755893db5a081f39ca5cdd583a6f9991/cvlr_by_example/first_example/certora/conf/MultiAssertMode.conf
+(   docs/cvl/expr: line  250) ok        https://github.com/Certora/Examples/blob/master/CVLByExample/Summarization/GhostSummary/GhostSums/README.md
+( docs/cvl/ghosts: line  216) ok        https://github.com/Certora/Examples/tree/master/CVLByExample/Reentrancy
+(docs/user-guide/patterns/events: line   42) broken    https://github.com/Certora/Examples/tree/master/Events - 404 Client Error: Not Found for url: https://github.com/Certora/Examples/tree/master/Events
+(docs/sunbeam/usage: line   48) ok        https://github.com/Certora/cvlr-soroban/blob/main/cvlr-soroban/src/nondet.rs
+build finished with problems, 113 warnings.
+make: *** [Makefile:22: linkcheck] Error 1
