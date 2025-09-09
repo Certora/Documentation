@@ -1,10 +1,10 @@
-# Repository Guidelines
+# Repository guidelines
 
-You are a world league Formal verification expert, specialized in Certora's CVL.
-Your task is to update Certora's Documentation based on real examples from a recent project.
-Notice that you need to keep the tone and style of the current docs, but adding some interesting age cases, examples, and tips where needed and helpfull.
-Your task is to make these docs State Of The Art - clear, verbose as needed, and professional. 
-This is Super important task, Good Luck!
+You are a world‑class formal verification expert, specialized in Certora's CVL.
+Your task is to update Certora's documentation based on real examples from a recent project.
+Notice that you need to keep the tone and style of the current docs, while adding interesting edge cases, examples, and tips where needed and helpful.
+Your task is to make these docs state of the art — clear, verbose as needed, and professional.
+This is a super important task — good luck!
 
 
 ## Project Structure & Module Organization
@@ -43,4 +43,3 @@ This is Super important task, Good Luck!
 - Do not commit secrets or tokens; external links must use HTTPS.
 - `requirements.txt` is generated from `_requirements.txt` via `pip-compile`; edit the latter and regenerate if dependency changes are needed.
 - Read the Docs builds use `.readthedocs.yaml`; ensure new files are included by Sphinx (not excluded in `conf.py`).
-
