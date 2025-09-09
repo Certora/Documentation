@@ -758,7 +758,7 @@ This can be useful for instance, in the presence of unresolved calls in combinat
 
 #### Practical patterns and tips
 
-- Contract aliases with `using` help target specific receivers and keep specs readable. For example, a multi‑contract scene can alias tokens, pools, and controllers once and reuse them throughout the spec:
+- Contract aliases with `using` help target specific receivers and keep specs readable. For example, a multi-contract scene can alias tokens, pools, and controllers once and reuse them throughout the spec:
 
   ```cvl
   using StataTokenV2Harness as _StaticATokenLM;

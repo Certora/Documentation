@@ -600,7 +600,7 @@ invariants have been verified).
 Practical example: solvency envelope
 ------------------------------------
 
-It is common to assert a coarse solvency envelope and then use `filtered` and `preserved` to keep the proof tractable while avoiding vacuity. For an ERC‑4626‑style wrapper over an interest‑bearing aToken, the following is effective:
+It is common to assert a coarse solvency envelope and then use `filtered` and `preserved` to keep the proof tractable while avoiding vacuity. For an ERC-4626-style wrapper over an interest-bearing aToken, the following is effective:
 
 ```cvl
 /// Total aTokens (scaled) covering totalSupply of shares

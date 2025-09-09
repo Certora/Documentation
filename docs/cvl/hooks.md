@@ -204,7 +204,7 @@ was used as the key into the mapping `C.users`; the variable `v` will contain
 the value that is written, and the variable `old_value` will contain the value
 that was previously stored there.
 
-Real‑world storage hooks
+Real-world storage hooks
 ------------------------
 
 Two patterns often help scale larger specs:
@@ -566,4 +566,3 @@ At this point, you may expect that the hook will be triggered a second time,
 but because there is already a hook executing, this second update to `x` will
 not trigger the hook.  Therefore the `xStoreCount` ghost will *not* be updated
 a second time, so its final value will be `1`.
-

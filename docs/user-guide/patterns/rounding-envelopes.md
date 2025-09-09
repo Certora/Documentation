@@ -1,6 +1,6 @@
 # Rounding Envelopes
 
-Practical, solver‑friendly bounds for protocols with fixed‑point arithmetic and rounding, distilled from ERC‑4626 wrappers and Aave‑style indices (RAY), and applicable to many designs.
+Practical, solver-friendly bounds for protocols with fixed-point arithmetic and rounding, distilled from ERC-4626 wrappers and Aave-style indices (RAY), and applicable to many designs.
 
 ## Preview vs. Actual
 
@@ -47,7 +47,7 @@ rule depositUpperBound(env e){
 }
 ```
 
-## Non‑Zero Mint Condition
+## Non-Zero Mint Condition
 
 Ensure at least one share is minted when assets cover one aToken at current index.
 
@@ -80,7 +80,7 @@ rule mintBounds(env e){
 }
 ```
 
-## Joining/Splitting Near‑Additivity
+## Joining/Splitting Near-Additivity
 
 Sum of conversions is within ±1 of converting the sum when rounding to integer shares.
 

@@ -224,7 +224,7 @@ Examples and edge cases
 
 This section distills patterns from larger production specs. Each example is self‑contained and designed to be adapted to your scene.
 
-- Preview equals actual (ERC‑4626). EIP‑4626 requires preview functions to not exceed the actual action in the same tx. In some implementations they are equal; this stronger property is easy to assert:
+- Preview equals actual (ERC-4626). EIP-4626 requires preview functions to not exceed the actual action in the same tx. In some implementations they are equal; this stronger property is easy to assert:
 
   ```cvl
   /// previewDeposit returns the exact deposit shares
@@ -260,7 +260,7 @@ This section distills patterns from larger production specs. Each example is sel
   }
   ```
 
-- Joining and splitting near‑additivity. When conversions round, splitting/merging accounts yields off‑by‑one envelopes. Use mathints to avoid silent overflow:
+- Joining and splitting near-additivity. When conversions round, splitting/merging accounts yields off-by-one envelopes. Use mathints to avoid silent overflow:
 
   ```cvl
   /// Convert sum of assets is within [parts, parts+1]
@@ -275,7 +275,7 @@ This section distills patterns from larger production specs. Each example is sel
   }
   ```
 
-- Deposit envelopes by index (Aave‑style index RAY). Bound deposited aTokens relative to requested `assets` and index. For `index > RAY` the bound is `+1 aToken`; for `index == RAY` it tightens to `+0.5 aToken`:
+- Deposit envelopes by index (Aave-style index RAY). Bound deposited aTokens relative to requested `assets` and index. For `index > RAY` the bound is `+1 aToken`; for `index == RAY` it tightens to `+0.5 aToken`:
 
   ```cvl
   rule depositUpperBound(env e){
@@ -290,7 +290,7 @@ This section distills patterns from larger production specs. Each example is sel
   }
   ```
 
-- Non‑zero mint condition. Ensure users receive at least one share when depositing at least one unit in index terms:
+- Non-zero mint condition. Ensure users receive at least one share when depositing at least one unit in index terms:
 
   ```cvl
   rule depositMintsAtLeastOne(env e){

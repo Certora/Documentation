@@ -61,7 +61,7 @@ In real protocols, arithmetic often requires precise rounding envelopes. CVL fun
   }
   ```
 
-- Tight, solver‑friendly models for up/down mulDiv used across specs:
+- Tight, solver-friendly models for up/down mulDiv used across specs:
 
   ```cvl
   function mulDivDownAbstractPlus(uint256 x, uint256 y, uint256 z) returns uint256 {
