@@ -46,9 +46,9 @@ Using CVL functions
 Math and rounding summaries
 ---------------------------
 
-In real protocols, arithmetic often requires precise rounding envelopes. CVL functions are a clean way to centralize these rules as small, composable summaries.
+In real protocols, arithmetic often requires precise rounding envelopes. CVL functions are a clean way to centralize these rules as small, reusable summaries.
 
-- Round-aware mulDiv abstraction with explicit direction:
+- Round-aware `mulDiv` abstraction with explicit direction:
 
   ```cvl
   // Rounds up or down depending on a Math.Rounding enum
@@ -61,7 +61,7 @@ In real protocols, arithmetic often requires precise rounding envelopes. CVL fun
   }
   ```
 
-- Tight, solver-friendly models for up/down mulDiv used across specs:
+- Tight, solver-friendly models for up/down `mulDiv` used across specs:
 
   ```cvl
   function mulDivDownAbstractPlus(uint256 x, uint256 y, uint256 z) returns uint256 {

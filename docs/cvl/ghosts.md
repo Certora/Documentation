@@ -195,8 +195,8 @@ Restrictions on ghost axioms
 ----------------------------
 - A ghost axiom cannot refer to Solidity or CVL functions or to other ghosts. It can refer to the ghost itself.
 - Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
- `forall` can be used in order to refer the storage referred to by the parameters. Example:
- https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec
+ `forall` can be used in order to refer the storage referred to by the parameters. Example: see the ghost-mapping summary spec on GitHub:
+ [ghost mapping summary example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec)
 
 
 

@@ -230,8 +230,7 @@ function's _sighash_ is unresolved. In the example below there is a function
 call `target.call(data)`. The sighash of the called function depends on the parameter
 `data` and cannot be known beforehand.
 
-Example reference implementation:
-https://github.com/Certora/Examples/blob/master/CVLByExample/UnresolvedCallSummarization/TrusterLenderPool.sol
+Example reference implementation: [Truster Lender Pool](https://github.com/Certora/Examples/blob/master/CVLByExample/UnresolvedCallSummarization/TrusterLenderPool.sol)
 
 One can specify the scope (`unresolved external in <scope>`) for which the
 unresolved summary will apply. The options are:

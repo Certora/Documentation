@@ -70,6 +70,7 @@ exclude_patterns = [
     ".github",
     "Examples/*",
     "AGENTS.md",
+    "AGENTS",
 ]
 
 
