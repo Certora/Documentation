@@ -597,3 +597,62 @@ is always logically sound to add a `requireInvariant` to a `preserved` block,
 even for complicated interdependent invariants (as long as the required
 invariants have been verified).
 
+Practical example: solvency envelope
+------------------------------------
+
+It is common to assert a coarse solvency envelope and then use `filtered` and `preserved` to keep the proof tractable while avoiding vacuity. For an ERC‑4626‑style wrapper over an interest‑bearing aToken, the following is effective:
+
+```cvl
+/// Total aTokens (scaled) covering totalSupply of shares
+invariant solvency_total_asset_geq_total_supply()
+    (_AToken.scaledBalanceOf(currentContract) >= totalSupply())
+    filtered { f ->
+        f.contract == currentContract
+        && !harnessMethodsMinusHarnessClaimMethods(f)
+        && !claimFunctions(f)
+        && f.selector != sig:emergencyEtherTransfer(address,uint256).selector
+        && f.selector != sig:claimDoubleRewardOnBehalfSame(address, address, address).selector } {
+
+    preserved withdraw(uint256 assets, address receiver, address owner) with (env e) {
+        require balanceOf(owner) <= totalSupply();
+    }
+
+    preserved depositWithPermit(uint256 assets, address receiver, uint256 deadline,
+                                IERC4626StataToken.SignatureParams signature, bool toAave) with (env e) {
+        require balanceOf(receiver) <= totalSupply();
+        require e.msg.sender != currentContract;
+    }
+
+    preserved depositATokens(uint256 assets, address receiver) with (env e) {
+        require balanceOf(receiver) <= totalSupply();
+        require e.msg.sender != currentContract;
+    }
+
+    preserved deposit(uint256 assets, address receiver) with (env e) {
+        require balanceOf(receiver) <= totalSupply();
+        require e.msg.sender != currentContract;
+    }
+
+    preserved mint(uint256 shares, address receiver) with (env e) {
+        require balanceOf(receiver) <= totalSupply();
+        require e.msg.sender != currentContract;
+    }
+
+    preserved redeem(uint256 shares, address receiver, address owner) with (env e) {
+        require balanceOf(owner) <= totalSupply();
+    }
+
+    preserved redeemATokens(uint256 shares, address receiver, address owner) with (env e) {
+        require balanceOf(owner) <= totalSupply();
+    }
+
+    preserved emergencyTokenTransfer(address asset, address to, uint256 amount) with (env e) {
+        require rate() >= RAY();
+    }
+}
+```
+
+This showcases a few practical points:
+- Use `filtered` to exclude methods irrelevant to the solvency relation (e.g., reward claims, emergency Ether transfers).
+- Express simple local side‑conditions inside `preserved` blocks rather than as global invariants.
+- Guard sender assumptions explicitly to avoid degenerate self‑calls.

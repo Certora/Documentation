@@ -759,6 +759,46 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
 This summary is a short syntax for a summary that contains an `assert false;` and checks that the summarized method is not reached.
 This can be useful for instance, in the presence of unresolved calls in combination with the `unresolved external` syntax to ensure that every unresolved call is actually dispatched correctly (i.e. use `unresolved external in _._ => DISPATCH [...] default ASSERT_FALSE`). It also enables more optimizations in the Prover and may lead to shorter running times.
 
+Practical patterns and tips
+---------------------------
+
+- Contract aliases with `using` help target specific receivers and keep specs readable. For example, a multi‑contract scene can alias tokens, pools, and controllers once and reuse them throughout the spec:
+
+  ```cvl
+  using StataTokenV2Harness as _StaticATokenLM;
+  using SymbolicLendingPool as _SymbolicLendingPool;
+  using RewardsControllerHarness as _RewardsController;
+  using ATokenInstance as _AToken;
+  ```
+
+- Prefer `envfree` for pure/view‑like calls in specs to avoid unnecessary environment coupling:
+
+  ```cvl
+  methods {
+      function balanceOf(address) external returns (uint256) envfree;
+      function totalSupply() external returns (uint256) envfree;
+      function _AToken.scaledTotalSupply() external returns (uint256) envfree;
+  }
+  ```
+
+- Speed up verification by summarizing irrelevant internals with `NONDET` and by routing through `DISPATCHER(true)` for methods whose behavior is exercised via on‑chain logic:
+
+  ```cvl
+  methods {
+      // Ignore internal reward distribution mechanics; we assert effects via balances.
+      function _.getAssetIndex(address, address) external => NONDET;
+
+      // Let the implementation run (true) when available; fallback to summary when unresolved.
+      function _.scaledTotalSupply() external => DISPATCHER(true);
+  }
+  ```
+
+- Isolate environment explicitly with `with (env e)` when you need to pin `msg.sender`, `block.timestamp`, or similar for a particular call, and use plain `envfree` elsewhere. A consistent pattern across a spec keeps models smaller and avoids accidental dependencies between calls.
+
+```{tip}
+Heavyweight dependencies (Lending pools, incentive controllers) typically benefit from coarse summaries in the spec and fine‑grained assertions on observable effects (balances, indices) in rules and invariants.
+```
+
 (expression-summary)=
 #### Expression summaries
 

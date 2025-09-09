@@ -314,3 +314,20 @@ for reverting behaviors of `noUserDefinedRevertFlows` and `emptyRequire`,
 which do not have user-defined revert messages. 
 This means that if `saw_user_defined_revert_msg` is not marked persistent, 
 the rule cannot distinguishing between methods that may revert with user-defined messages and methods that may not.
+
+Patterns from practice
+----------------------
+
+- Aggregate with a single ghost. Track the sum of scaled balances (or other per‑account data) by updating a ghost in an `Sstore` hook. This enables global checks without iterating storage:
+
+  ```cvl
+  ghost mathint sumAllATokenScaledBalance {
+      init_state axiom sumAllATokenScaledBalance == 0;
+  }
+
+  hook Sstore _AToken._userState[KEY address a].(offset 0) uint128 balance (uint128 old_balance) {
+      sumAllATokenScaledBalance = sumAllATokenScaledBalance + balance - old_balance;
+  }
+  ```
+
+- Ghost math with conservative axioms. When introducing ghosts such as `_ghostPow(x,y)` for fixed‑point exponentiation, prefer monotonicity and bound relations to exact equalities which may be broken by rounding. Keep axioms minimal and purposeful to avoid over‑constraining the solver.

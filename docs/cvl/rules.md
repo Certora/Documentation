@@ -219,6 +219,128 @@ example and run the rule on the example.  Instead, the Prover translates the
 contract code and the rule into a logical formula with logical variables
 representing the unspecified variables from the rule.
 
+Examples and edge cases
+-----------------------
+
+This section distills patterns from larger production specs. Each example is self‑contained and designed to be adapted to your scene.
+
+- Preview equals actual (ERC‑4626). EIP‑4626 requires preview functions to not exceed the actual action in the same tx. In some implementations they are equal; this stronger property is easy to assert:
+
+  ```cvl
+  /// previewDeposit returns the exact deposit shares
+  rule previewDepositAmountCheck(){
+      env e1; env e2;
+      uint256 assets; address receiver;
+      uint256 previewShares = previewDeposit(e1, assets);
+      uint256 shares       = deposit(e2, assets, receiver);
+      assert previewShares == shares, "preview equals actual";
+  }
+  ```
+
+- Preview independence from allowance. Previews should ignore allowance and max limits. Keep the environment controlled and assert equality across different allowance states:
+
+  ```cvl
+  rule previewDepositIndependentOfAllowanceApprove(){
+      env e1; env e2; env e3; env e4; env e5;
+      address user; uint256 assets;
+
+      uint256 before1 = _AToken.allowance(currentContract, user);
+      require assets < before1;
+      uint256 p1 = previewDeposit(e1, assets);
+
+      _AToken.approve(e2, currentContract, before1 - assets); // adjust to equality
+      require _AToken.allowance(currentContract, user) == assets;
+      uint256 p2 = previewDeposit(e3, assets);
+
+      _AToken.approve(e4, currentContract, 0);
+      require _AToken.allowance(currentContract, user) < assets;
+      uint256 p3 = previewDeposit(e5, assets);
+
+      assert p1 == p2 && p2 == p3, "preview ignores allowance";
+  }
+  ```
+
+- Joining and splitting near‑additivity. When conversions round, splitting/merging accounts yields off‑by‑one envelopes. Use mathints to avoid silent overflow:
+
+  ```cvl
+  /// Convert sum of assets is within [parts, parts+1]
+  rule convertSumOfAssetsPreserved(uint256 a1, uint256 a2) {
+      env e;
+      uint256 s1 = convertToShares(e, a1);
+      uint256 s2 = convertToShares(e, a2);
+      uint256 as = require_uint256(a1 + a2);
+      mathint js = convertToShares(e, as);
+      assert js >= s1 + s2;
+      assert js <  s1 + s2 + 2;
+  }
+  ```
+
+- Deposit envelopes by index (Aave‑style index RAY). Bound deposited aTokens relative to requested `assets` and index. For `index > RAY` the bound is `+1 aToken`; for `index == RAY` it tightens to `+0.5 aToken`:
+
+  ```cvl
+  rule depositUpperBound(env e){
+      uint256 assets; address receiver;
+      uint256 before = _AToken.balanceOf(currentContract);
+      uint256 idx = _SymbolicLendingPool.getReserveNormalizedIncome(asset());
+      require e.msg.sender != currentContract;
+      uint256 shares = deposit(e, assets, receiver);
+      uint256 after  = _AToken.balanceOf(currentContract);
+      assert (idx > RAY()  => after - before <= assets + idx / RAY());
+      assert (idx == RAY() => after - before <= assets + idx / (2 * RAY()));
+  }
+  ```
+
+- Non‑zero mint condition. Ensure users receive at least one share when depositing at least one unit in index terms:
+
+  ```cvl
+  rule depositMintsAtLeastOne(env e){
+      uint256 assets; address receiver;
+      uint256 idx = _SymbolicLendingPool.getReserveNormalizedIncome(asset());
+      require e.msg.sender != currentContract;
+      uint256 shares = deposit(e, assets, receiver);
+      assert assets * RAY() >= to_mathint(idx) => shares != 0;
+  }
+  ```
+
+- Mint envelopes. When minting shares directly, the receiver’s balance increases by the requested amount, up to an extra unit due to rounding:
+
+  ```cvl
+  rule mintBounds(env e){
+      uint256 shares; address receiver;
+      require e.msg.sender != currentContract;
+      uint256 idx  = _SymbolicLendingPool.getReserveNormalizedIncome(asset());
+      uint256 pre  = balanceOf(e, receiver);
+      require pre + shares <= max_uint256; // avoid overflow in spec
+      uint256 assets = mint(e, shares, receiver);
+      uint256 post = balanceOf(e, receiver);
+      assert (idx >= RAY());
+      assert to_mathint(post) >= pre + shares;
+      assert to_mathint(post) <= pre + shares + 1;
+  }
+  ```
+
+- Duplicate reward claims do not amplify payout. Whether the contract has sufficient funds or not, listing the same reward twice must not increase net rewards to a user beyond the computed claimable amount:
+
+  ```cvl
+  rule prevent_duplicate_reward_claiming_single_reward() {
+      single_RewardToken_setup();
+      rewardsController_arbitrary_single_reward_setup();
+      env e; require e.msg.sender != currentContract;
+
+      uint256 bal0 = _DummyERC20_rewardToken.balanceOf(e.msg.sender);
+      mathint claimable = getClaimableRewards(e, e.msg.sender, _DummyERC20_rewardToken);
+
+      // Attempt to claim the same reward twice
+      claimDoubleRewardOnBehalfSame(e, e.msg.sender, e.msg.sender, _DummyERC20_rewardToken);
+
+      uint256 bal1 = _DummyERC20_rewardToken.balanceOf(e.msg.sender);
+      mathint diff = bal1 - bal0;
+      uint256 unclaimed = getUnclaimedRewards(e.msg.sender, _DummyERC20_rewardToken);
+
+      assert diff + unclaimed <= claimable, "duplicate claim changes rewards";
+  }
+  ```
+
 The logical formula is designed so that if a particular example satisfies the
 requirements and also causes an assertion to fail, then the formula will
 evaluate to `true` on that example; otherwise the formula will evaluate
@@ -230,4 +352,3 @@ there are, the SMT solver provides an example to the Prover, which then
 translates it into an example for the user.  If the SMT solver reports that the
 formula is unsatisfiable, then we are guaranteed that whenever the `require`
 statements are true, the `assert` statements are also true.
-
