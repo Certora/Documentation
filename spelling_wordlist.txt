@@ -161,6 +161,15 @@ skolemized
 Soroban
 splitter
 stablecoin
+ITeams
+Additivity
+aToken
+RAY
+addressZeroNotPlayer
+leaderBelongsToTeam
+nonExistTeamHasNoPlayers
+teamHasMaxThreePlayers
+certora
 struct
 structs
 subdirectories
