@@ -334,7 +334,7 @@ We will write the above invariant using ghost variables exclusively. First, we w
 ghost _map(uint) returns uint;
 ```
 
-The above declaration declares a _ghost function_. The ghost function takes a `uint` argument \(represnting a key in the map\) and returns a `uint` value. We want `_map` to return for each given key the same value as returned by the `map` in the code. We can state this property as an invariant:
+The above declaration declares a _ghost function_. The ghost function takes a `uint` argument \(representing a key in the map\) and returns a `uint` value. We want `_map` to return for each given key the same value as returned by the `map` in the code. We can state this property as an invariant:
 
 ```text
 invariant checkMapGhost(uint someKey) get(someKey) == _map(someKey)
@@ -355,7 +355,7 @@ hook Sstore map[KEY uint k] uint v {
 }
 ```
 
-This hook will match on every storage write to `map[k]`, denoting the written value by `v`. Optionally, and not shown in the syntax above, we can also specify the ovewritten value of `map[k`\]. The body of the hook is the injected code. It will apply `havoc` on the `_map` ghost, meaning that every key-value association it stored is "forgotten" by the prover, and results in a completely new instance of `_map`. However, we restrict the new instance of `_map` using the old `_map` definition, with the `assuming ...` syntax. Under `assuming` we get a two-state context: we can see both old and new instances of `_map`, accessible with `_map@old` and `_map@new`. We require that `_map@old` and `_map@new` are exactly the same for all keys except for `k`, the one we write to, and for `k` we require that `_map@new(k) == v` .
+This hook will match on every storage write to `map[k]`, denoting the written value by `v`. Optionally, and not shown in the syntax above, we can also specify the overwritten value of `map[k`\]. The body of the hook is the injected code. It will apply `havoc` on the `_map` ghost, meaning that every key-value association it stored is "forgotten" by the prover, and results in a completely new instance of `_map`. However, we restrict the new instance of `_map` using the old `_map` definition, with the `assuming ...` syntax. Under `assuming` we get a two-state context: we can see both old and new instances of `_map`, accessible with `_map@old` and `_map@new`. We require that `_map@old` and `_map@new` are exactly the same for all keys except for `k`, the one we write to, and for `k` we require that `_map@new(k) == v` .
 
 If we run `checkMapGhost` with only the `SSTORE` hook, the rule will pass for all functions but fail in the initial state, where no values were written. It is possible to specify initial state axioms on ghosts.
 
