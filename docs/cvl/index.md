@@ -26,6 +26,8 @@ ghosts.md
 defs.md
 hooks.md
 transient.md
+storage-extension-annotations.md
+lsp.md
 foundry-integration.md
 ```
 

@@ -32,6 +32,8 @@ approximative
 autofinders
 axiomatization
 axiomatized
+bitvector
+bitvectors
 bitwidth
 bitwise
 blockchain
@@ -49,6 +51,7 @@ bytemap
 callee
 cex
 changelog
+changelogs
 checkmark
 cheatcode
 cheatcodes
@@ -59,6 +62,7 @@ config
 conjoined
 decompilation
 decompiler
+decompiles
 deduplication
 dereference
 dereferences
@@ -83,6 +87,7 @@ foldable
 fuzzer
 getter
 getters
+github
 hashcode
 havoc
 havoced
@@ -96,6 +101,7 @@ initializations
 injective
 injectivity
 inlined
+inlines
 inlining
 inlinings
 instantiation
@@ -219,3 +225,11 @@ munge
 WASM
 EVM
 hotspots
+Prover
+prover
+subtyping
+typecheck
+typechecking
+formattable
+stdout
+stderr

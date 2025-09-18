@@ -6,6 +6,10 @@ pre- and post-conditions for client code. Unlike CVL for Solidity, CVLR is
 embedded in Rust. It is compiled by the Rust compiler and has simple operational
 semantics.
 
+CVLR is deployed to [crates.io](https://crates.io/crates/cvlr). The development version can be found at [https://github.com/Certora/cvlr](https://github.com/Certora/cvlr).
+Please note that CVLR is independent from the Solana ecosystem, specific CVLR features for 
+Solana are maintained as part of the [cvlr-solana](https://crates.io/crates/cvlr-solana) package.
+
 ## Assertions
 
 The simplest feature of CVLR is assertions. An assertion is written as
@@ -17,7 +21,7 @@ and in the current execution state `cond` is false.
 For example, `cvlr_assert!(true)` is never violated, while `cvlr_assert!(false)`
 is always violated when reached.
 
-What makes `cvlr_assert!()` special is that it is verified symbolically by the
+What makes `cvlr_assert!` special is that it is verified symbolically by the
 Certora Prover. That is, the Prover returns `Violated` if there is an input and
 an execution of the program that reaches that assertion and violates it.
 
@@ -81,12 +85,12 @@ The function being verified is `compute_fee`. We have included it in the spec
 file for simplicity.
 
 ```rust
-use cvlr::{nondet, asserts::*, cvlr_rule as rule, clog};
+use cvlr::prelude::*;
 
 pub fn compute_fee(amount: u64, fee_bps: u16) -> Option<u64> {
     if amount == 0 { return None; }
     let fee = amount.checked_mul(fee_bps).checked_div(10_000);
-    Some(fee)
+    fee
 }
 
 #[rule]

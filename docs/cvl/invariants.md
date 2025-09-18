@@ -52,6 +52,8 @@ contract_name ::= id
 See {doc}`basics` for the `id` production, {doc}`expr` for the `expression`
 production, and {doc}`statements` for the `block` production.
 
+
+(invariant-overview)=
 Overview
 --------
 
@@ -92,11 +94,7 @@ is an unresolved external call that can modify the state of the current contract
 
  A full example for `weak` and `strong invariant` can be found in our [Examples Repository](https://github.com/Certora/Examples/blob/cli-beta/CVLByExample/StrongInvariants/README.md). 
 
-If an invariant is proven, it is safe to assume that it holds in other rules
-and invariants.  The
-{ref}`requireInvariant command <requireInvariant>` makes it easy to add this
-assumption to another rule, and is a quick way to rule out counterexamples that
-start in impossible states.  See also {doc}`/docs/user-guide/patterns/safe-assum`.
+
 
 ```{note}
 Invariants are intended to describe the state of a contract at a particular
@@ -433,6 +431,24 @@ filtered {
     assert property_of(e1, arg);
 }
 ```
+
+(requireInvariant_exp)=
+Requiring Invariants
+----------------
+If an invariant is proven, it is safe to assume that it holds in other rules
+and invariants.  The
+{ref}`requireInvariant command <requireInvariant>` makes it easy to add this
+assumption to another rule, and is a quick way to rule out counterexamples that
+start in impossible states. Using the command will assume the expression of the invariant to hold
+before the rule starts in the pre-state and for strong invariants after each unresolved function call that modifies the state. 
+Note, if the invariant takes any parameters as input, initially, the parameters are {term}`havoc`ed and only assigned their value at the 
+location the `requireInvariant` command is placed. 
+
+```{note}
+ `requireInvariant` assumes the required invariant to hold. This means if an `invariant A` uses `requireInvariant B`, 
+ and `B` is violated, but `A` is verified, the proof of `A` can be the result of incorrectly assuming that `B` holds.
+ ```
+
 
 ```{eval-rst}
 .. index::

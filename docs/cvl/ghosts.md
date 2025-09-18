@@ -35,10 +35,12 @@ persistent_ghost ::=  "persistent" "ghost" type id                             (
 type ::= basic_type
        | "mapping" "(" cvl_type "=>" type ")"
 
+axioms ::= axiom [ axioms ]
+
 axiom ::= [ "init_state" ] "axiom" expression ";"
 ```
 
-See {doc}`types` for the `type` and `cvl_type` productions, and {doc}`expr` for
+See {doc}`types` for the `basic_type` and `cvl_type` productions, and {doc}`expr` for
 the `expression` syntax.
 
 (ghost-variables)=
@@ -67,11 +69,13 @@ ghost (uint, uint) x;                              // tuples are not CVL types
 ghost mapping(mapping(uint => uint) => address) y; // mappings cannot be keys
 ```
 
-- [simple `ghost` variable example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L113)
+- [A simple `ghost` variable example](https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/DEFI/LiquidityPool/certora/specs/Full.spec#L46)
 
-- This example uses an [`init_state` axiom](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ERC20/certora/specs/ERC20.spec#L114)
+- [This example](https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/DEFI/ERC20/certora/specs/ERC20Fixed.spec#L99) has an `init_state` axiom
 
-- [`ghost mapping` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/structs/BankAccounts/certora/specs/Bank.spec#L117)
+- [A `ghost mapping` example](https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/CVLByExample/Types/Structs/BankAccounts/certora/specs/structs.spec#L119)
+
+- [A nested `ghost mapping` example](https://github.com/Certora/Examples/blob/f1be39c8ac49e5af9b2d450673dde5c1bc6257f2/CVLByExample/Types/Structs/BankAccounts/certora/specs/structs.spec#L113)
 
 (ghost-functions)=
 Ghost Functions
@@ -109,6 +113,9 @@ function example(address user) {
     balances[user] = x;
 }
 ```
+
+You can also use ghost variables in a [`sum` or `usum` expression](project:#ghost-mapping-sums)
+to calculate the total of numeric values in a ghost mapping.
 
 The most common reason to use a ghost is to communicate information from a hook
 back to the rule that triggered it.  For example, the following CVL checks
@@ -169,8 +176,10 @@ In any rule that uses bar, no application of bar could ever evaluate to a number
 
 ### Initial state axioms
 
-When writing invariants, initial axioms are a way to express the “constructor state” of a ghost function. They are used 
-only when checking the base step of invariants {ref}`invariant-as-rule`. Before checking the initial state of an invariant, the Certora Prover adds a `require` for each `init_state` axiom. `init_state` axioms are not used in rules or the preservation check for invariants.
+When writing invariants, initial axioms are a way to express the “constructor state” of a ghost function or variable. They are used 
+only when checking the base step of invariants (see {ref}`Invariants Overview <invariant-overview>` for how invariants are checked). 
+Before checking the initial state of an invariant, the Certora Prover adds a `require` for each `init_state` axiom. 
+`init_state` axioms are not used in rules or the preservation check for invariants.
 
 ```cvl
 ghost mathint sumBalances{

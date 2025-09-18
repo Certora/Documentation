@@ -21,10 +21,8 @@ block ::= statement { statement }
 
 statement ::= type id [ "=" expr ] ";"
 
-            | "require" expr ";"
-            | "static_require" expr ";"
+            | "require" expr [ "," string ] ";"
             | "assert" expr [ "," string ] ";"
-            | "static_assert" expr [ "," string ] ";"
             | "satisfy" expr [ "," string ] ";"
 
             | "requireInvariant" id "(" exprs ")" ";"
@@ -33,6 +31,7 @@ statement ::= type id [ "=" expr ] ";"
             | "if" expr statement [ "else" statement ]
             | "{" block "}"
             | "return" [ expr ] ";"
+            | "revert" "(" [string] ")" ";"
 
             | function_call ";"
             | "reset_storage" expr ";"
@@ -71,9 +70,13 @@ a rule, while the `assert` statement is used to specify the expected behavior
 of contract functions.
 
 During verification, the Prover will ignore any {term}`model` that causes the
-`require` expressions to evaluate to false.  Unlike Solidity, the `require`
-statement does not contain a descriptive message, because the Prover will never
-consider an example where the `require` statement evaluates to `false`.
+`require` expressions to evaluate to false.  Therefore it is important to carefully
+consider the reason for excluding such behaviors from consideration of the prover,
+as violations of a desired property can be missed by using `require` too aggressively.  
+An explanation message can be added to the require statement to aid in documenting
+and reviewing this reason.
+There is a prover option `--enforce_require_reason` that makes this non-optional
+and will give an error for any require without a message.
 
 The `assert` statements define the expected behavior of contract functions.  If
 it is possible to generate a model that causes the `assert` expression to
@@ -167,7 +170,7 @@ all the pessimistic assertions for the program.
 ## `requireInvariant` statements
 
 
-`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/ variables for which the invariant should hold.
+`requireInvariant` is shorthand for `require` of the expression of the invariant where the invariant parameters have to be substituted with the values/variables for which the invariant should hold. Note, the `requireInvariant` command is not evaluated where the `requireInvariant` occurs in the rule, but instead it is required before the rule starts in the pre-state and for strong invariants after each unresolved function call that modifies the state. Only the invariant parameters are evaluated at the place where the `requireInvariant` occurs, for details see {ref}`requireInvariant_exp`.
 
 - [`requireInvariant` example](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/ConstantProductPool/certora/spec/ConstantProductPool.spec#L178)
 
@@ -317,13 +320,13 @@ satisfy amount >= 0;
 
 Here, the `require` statement ensures that the `amount` must be greater than zero. This means there cannot be a witness of the `satisfy` command with `amount` equal to zero.
 
-### 3. Modeling Reverts in Solidity Calls
+### 3. Revert
 
-The default method of calling Solidity functions within CVL is to assume they do not revert.
+The default behavior for calling functions within CVL is to assume they do not revert.
 This behavior can be adjusted with the `@withrevert` modifier.
-After every Solidity call, even if it is not marked with `@withrevert`, a builtin variable called `lastReverted` is updated according to whether the Solidity call reverted or not.
+After every call, even if it is not marked with `@withrevert`, a builtin variable called `lastReverted` is updated according to whether the call reverted or not.
 
-Note: For calls without `@withrevert`, `lastReverted` is automatically set to to false.
+Note: After calls without `@withrevert`, `lastReverted` will always be false.
 
 #### Syntax:
 
@@ -344,6 +347,30 @@ assert lastReverted, "Expected revert when value exceeds limit";
 ```
 
 In this example, the `@withrevert` modifier is applied to the `Deposit` function call, which is expected to revert if the `value` exceeds the specified `limit`. The `assert` statement checks whether `lastReverted` is true, ensuring that the contract execution does revert as anticipated when the condition is violated. The error message in the `assert` provides additional context about the expectation.
+
+Since version 8, this applies not only for Solidity function calls. CVL functions can now revert as well, and the `revert` statement is available in CVL. CVL functions also set the `lastReverted` variable, just like Solidity functions and reverts of calls without `@withrevert` are propagated up to their callers. Only if no call in the call stack had a `@withrevert` annotation do we assume no revert happened. A call with `@withrevert` stops propagation of reverts and will not make the calling function revert, but instead allows reading the `lastReverted` variable immediately after it to check whether the call reverted.
+A CVL function can revert either from a call inside it (without `@withrevert`) that reverts or from an explicit revert using the `revert` statement.
+
+##### Example:
+
+```cvl
+function cvlFunctionThatMayRevert(bool input) {
+    if (!input) {
+        revert("Input was false in CVL function");
+    }
+}
+
+rule revertInCVL {
+    bool b;
+    cvlFunctionThatMayRevert@withrevert(b);
+    assert lastReverted <=> !b;
+}
+```
+- [Further examples](https://github.com/Certora/Examples/blob/ae2eca20d8e6caf378ff10cf8066ecfc45d3658d/CVLByExample/RevertKeyWord/example.spec)
+
+```{note}
+It is possible to enable the behavior before version 8 where CVL functions cannot revert and do not set the `lastReverted` variable with the `prover_args "-cvlFunctionRevert false"` option. This is meant as a compatibility option where specs need to be adjusted to the new behavior and will be retired in a future release.
+```
 
 ### 4. Return Statement
 

@@ -243,6 +243,7 @@ approximation is {term}`sound`: it won't cause violations to be hidden.  See
 {ref}`grounding` for more detail.
 ```
 
+(ghost-mapping-sums)=
 Ghost Mapping Sums
 ------------------
 
@@ -403,8 +404,8 @@ each checked method.  Rules that use this feature are referred to as
 Another possible way to have the Prover consider options for a function is by
 using an `address` typed variable and "calling" the function on it, e.g.
 `address a; a.foo(...);`. In this case the Prover will consider every possible
-contract in the {ref}scene that implements a function that matches the signature
-provided by the call (if no such function exists in the {ref}scene the prover will
+contract in the {term}`scene` that implements a function that matches the signature
+provided by the call (if no such function exists in the {term}`scene` the prover will
 fail with an error).
 Note: The values that the address variable can take are the addresses that are
 associated with the relevant contracts in the scene. Notably, other values would

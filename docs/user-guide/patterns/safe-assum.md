@@ -1,60 +1,22 @@
+```{role} cvl(code)
+:language: cvl
+```
+
 # Listing Safe Assumptions
 
 The "Listing Safe Assumptions" design pattern introduces a structured approach to document and validate essential assumptions. Let's delve into the importance of this design pattern using the provided example.
 
+```{cvlinclude} /CVLByExample/Ecrecover/ecrecover.spec
+:cvlobject: ecrecoverAxioms zeroValue ownerSignatureIsUnique
+:caption: {clink}`ecrecover.spec</CVLByExample/Ecrecover/ecrecover.spec>`
+:emphasize-lines: 4, 5
+```
 
-```cvl
-methods {
-    function isSigned(address _addr, bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) external returns (bool) envfree;
-    function executeMyFunctionFromSignature(uint8 v, bytes32 r, bytes32 s, address owner, uint256 myParam, uint256 deadline) external;
-    function getHash(address owner, uint256 myParam, uint256 deadline) external returns(bytes32) envfree;
-}
-
-/*** # ecrecover properties:
-# 1. zero value:
-        ecrecover(0, v, r, s) == 0
-# 2. deterministic 
-        ecrecover(msgHash, v, r, s) == _addr on different calls.  
-# 3. uniqueness of signature
-        ecrecover(msgHash, v, r, s) != 0 => ecrecover(msgHash', v, r, s) == 0
-        where msgHash' != msgHash
-# 4. Dependency on r and s
-        ecrecover(msgHash, v, r, s) != 0 => ecrecover(msgHash, v, r', s) == 0
-        where r' != r
-        ecrecover(msgHash, v, r, s) != 0 => ecrecover(msgHash, v, r, s') == 0
-        where s' != s
-**/
-
-function ecrecoverAxioms() {
-  // zero value:
-  require (forall uint8 v. forall bytes32 r. forall bytes32 s. ecrecover(to_bytes32(0), v, r, s) == 0);
-  // uniqueness of signature
-  require (forall uint8 v. forall bytes32 r. forall bytes32 s. forall bytes32 h1. forall bytes32 h2.
-    h1 != h2 => ecrecover(h1, v, r, s) != 0 => ecrecover(h2, v, r, s) == 0);
-  // dependency on r and s
-  require (forall bytes32 h. forall uint8 v. forall bytes32 s. forall bytes32 r1. forall bytes32 r2.
-    r1 != r2 => ecrecover(h, v, r1, s) != 0 => ecrecover(h, v, r2, s) == 0);
-  require (forall bytes32 h. forall uint8 v. forall bytes32 r. forall bytes32 s1. forall bytes32 s2.
-    s1 != s2 => ecrecover(h, v, r, s1) != 0 => ecrecover(h, v, r, s2) == 0);
-}
-
-rule ownerSignatureIsUnique () {
-    ecrecoverAxioms();
-    bytes32 msgHashA; bytes32 msgHashB;
-    uint8 v; bytes32 r; bytes32 s; 
-    address addr; 
-    require msgHashA != msgHashB; 
-    require addr != 0;
-    assert isSigned(addr, msgHashA, v, r, s ) => !isSigned(addr, msgHashB, v, r, s );
-}
-
-invariant zero_message(uint8 v, bytes32 r, bytes32 s)
-    ecrecover(to_bytes32(0), v, r, s) == 0;
-    { 
-        preserved {
-            ecrecoverAxioms();
-        }
-    } 
+```{warning}
+The _uniqueness of signature_ axiom is not sound. There are some rare cases where
+{cvl}`ecrecover(h2, v, r, s)` will not return zero for the wrong hash. This is why
+you must always check that the address returned by {cvl}`ecrecover` is the
+correct one.
 ```
 
 ## Context:
