@@ -1957,7 +1957,7 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 This option controls how the Prover handles unresolved external calls with an 
 empty input buffer (length 0). 
-By default, such calls will havoc all storage of external contracts in 
+By default, such calls will {term}`havoc` all storage of external contracts in 
 the {term}`scene`, i.e., of all contracts except for the main verified contract. 
 When `--optimistic_fallback` is enabled, the Prover inserts an Optimistic fallback 
 Dispatcher summary. 
@@ -1984,7 +1984,7 @@ implementation of `fallback()` is highlighted by a red outline for the
 **When to use it?**
 
 Enable this option to avoid spurious counter examples due to {ref}`AUTO summaries <auto-summary>` 
-doing a full state havoc for external calls with empty input buffers.
+doing a full state {term}`havoc` for external calls with empty input buffers.
 
 **Example**
 
