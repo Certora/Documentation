@@ -1955,23 +1955,91 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option controls how the Prover handles unresolved external calls with an empty input buffer (length 0). By default, such calls will {term}`havoc` all storage state of external contracts. When `optimistic_fallback` is enabled, these calls will instead:
+This option controls how the Prover handles unresolved external calls with an 
+empty input buffer (length 0). 
+By default, such calls will {term}`havoc` all storage of external contracts in 
+the {term}`scene`, i.e., of all contracts except for the main verified contract. 
+When `--optimistic_fallback` is enabled, the Prover inserts an Optimistic fallback 
+Dispatcher summary. 
+This summary dispatches to all implementations of the `fallback` function that 
+are available in any contract in the scene. 
+Furthermore, an additional dispatch option is inserted for the case when the callee 
+address is chosen by the Prover to be a user address (i.e. an EOA, with `extcodesize` 0); 
+then, the given ETH value is transferred to that user address.
 
-- Execute the fallback function in the specified contract (if it exists).
-- Revert if no fallback function is available.
-- Execute a transfer if applicable.
+Note that the calls made within the Optimistic fallback Dispatcher summary do not
+fall under the restrictions of {ref}`norevert <with-revert>` calls. If the chosen `fallback` 
+implementation reverts, or if the code size of the unknown contract is non-zero, 
+the value is transferred back, but the path is not excluded from verification.
 
-This modifies the behavior of {ref}`AUTO summaries <auto-summary>` by preventing unnecessary state {term}`havoc` for empty input calls.
+Furthermore, note that only non-trivial `fallback` implementations are used for the 
+dispatcher, i.e., ones that do not always revert.
+
+In the " Contracts Call Resolutions" tab, the absence of any explicit 
+implementation of `fallback()` is highlighted by a red outline for the 
+`[?].fallback` entry. 
+ (The same highlighting is also used for when an {ref}`AUTO summary <auto-summary>` 
+ is applied for some call.)
 
 **When to use it?**
 
-Enable this option to avoid spurious counter examples for external calls with empty input buffers.
+Enable this option to avoid spurious counter examples due to {ref}`AUTO summaries <auto-summary>` 
+doing a full state {term}`havoc` for external calls with empty input buffers.
 
 **Example**
 
-To avoid spurious counter examples for external calls with empty input buffers:
+Consider a contract that contains this snippet:
+```solidity
+  ...
+  a.call{value: amount}("");
+  ...
+```
 
-_Command line_
+Assume that the callee, `a`, is unresolved. (When the callee is resolved, 
+this option has no effect on that call.) This case will show up as an entry labeled
+`[?].fallback` in the Contract Call Resolutions pane on the left of the report. 
+If `--optimistic_fallback` was not set and thus a havoc of all storage. 
+The entry will be highlighted in red in this case and indicate use of 
+the "AUTO havoc" summary.
+
+```{figure} opt-fallback-auto-havoc.png
+:name: opt-fallback-auto-havoc
+:align: center
+:height: 400
+
+Call Resolutions entry for an unresolved call to the fallback function summarized as AUTO havoc
+```
+
+Now, if we set `--optimistic_fallback`, the call is still unresolved, 
+but the contents of the `[?].fallback` entry in the Call Resolutions 
+differ. The summary is designated as "Optimistic fallback DISPATCHER"
+instead of "AUTO havoc". Furthermore there is an item called
+"alternative explicit fallbacks" listing all the implementations of 
+`fallback` that were found in the scene.
+If no implementations were found, this is stated, and the box is highlighted
+in red, like in the "AUTO havoc" case. This means that if `adr` has `extcodesize` 0, 
+the call transfers `amount` to `adr`, otherwise the call has no effect.
+
+```{figure} opt-fallback-disp-no-impl.png
+:name: opt-fallback-disp-no-impl
+:align: center
+:height: 400
+
+Call Resolutions entry for Optimistic fallback DISPATCHER when there are no fallback implementations
+```
+
+If any `fallback` implementations were found in the scene, they are listed, and 
+the box is not highlighted red.
+
+```{figure} opt-fallback-disp-with-impl.png
+:name: opt-fallback-disp-with-impl
+:align: center
+:height: 400
+
+Call Resolutions entry for Optimistic fallback DISPATCHER when there are no fallback implementations
+```
+
+Example invocation:
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_fallback
@@ -1989,14 +2057,14 @@ _Configuration file_
 
 **Option values**
 ```sh
-<contract>:<slot>=<address>
+<contract>:<field>=<address>
 ```
 
 **What does it do?**
-Links a slot in a struct with another contract.
+Links an address field in all structs to a fixed contract address.
 
 **When to use it?**
-Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, it will be interpreted as any possible address, resulting in many nonsensical counterexamples.
+Many times a contract includes the address of another contract inside a field of one of its structs. If we do not use `struct_link`, such an address will be interpreted as any possible address, resulting in many nonsensical counterexamples. This is applied to all structs, even when they are values within a mapping or array.
 
 **Example**
 
@@ -2015,7 +2083,7 @@ struct TokenPair {
 ```
 
 We have two contracts `BankToken.sol` and `LoanToken.sol`. 
-To set `tokenA` of the `tokenPair` to be `BankToken`, and `tokenB` to be `LoanToken`:
+To set the `tokenA` field of the `tokenPair` struct to be `BankToken`, and `tokenB` to be `LoanToken`:
 
 _Command line_
 
@@ -2032,6 +2100,19 @@ _Configuration file_
 ]
 ```
 
+````{caution}
+The `struct_link` syntax does not specify the struct's type name (`TokenPair`, in the example above) because it is applied to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defines 
+
+```solidity
+struct ReserveTokens {
+    IERC20 tokenA;
+    IERC20 tokenB;
+    IERC20 tokenC;
+}
+```
+
+... then the `struct_link` setting above would result in the same fixed address values for `tokenA` and `tokenB` in instances of this struct, which is likely an unintended constraint. Similarly, structs that are values in a mapping or array will _all_ get the same address linkage.
+````
 
 
 Options for job metadata and dashboard filtering

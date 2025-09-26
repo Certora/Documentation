@@ -165,6 +165,30 @@ a boolean expression that may refer to the variable `var`.  The filter
 expression may not refer to other method parameters or any variables defined in
 the rule.
 
+```{warning}
+If you want to filter on a method in a rule, it **must** be defined as a parameter 
+of the rule, not as a variable inside the rule body.
+
+**Incorrect** - this will not work:
+```cvl
+rule myRule() 
+filtered { f -> f.isView }  // Error: f is not a rule parameter
+{
+    method f;  // Declaring method inside rule body
+    f(...);
+}
+```
+
+**Correct** - define the method as a rule parameter:
+```cvl
+rule myRule(method f)  // Method defined as parameter
+filtered { f -> f.isView }
+{
+    f(...);
+}
+```
+```
+
 Before verifying that a method `m` satisfies a parametric rule, the `expr` is
 evaluated with `var` bound to a `method` object.  This allows `expr` to refer
 to the fields of `var`, such as `var.selector` and `var.isView`.  See
