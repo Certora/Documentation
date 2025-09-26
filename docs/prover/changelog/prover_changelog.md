@@ -14,8 +14,8 @@ Prover Release Notes
 ### CVL
 - [feat] `revert` keyword and calling CVL functions with `@withRevert` are now supported, enabling correct reasoning about CVL function reverts when used as summaries.
 - [bugfix] Updated `requireInvariant` semantics: invariants are only assumed before a rule starts, fixing unsound assumptions.
-- [feat] Re‑routing summaries: allow summarizing internal functions with storage parameters by rerouting to a Solidity harness/library function.
-- [feat] CVL formatter: invoke `certoraCVLFormatter <SPEC_FILE> --overwrite` to auto‑format CVL specs.
+- [feat] Re-routing summaries: allow summarizing internal functions with storage parameters by rerouting to a Solidity harness/library function.
+- [feat] CVL formatter: invoke `certoraCVLFormatter <SPEC_FILE> --overwrite` to auto-format CVL specs.
 
 ### Prover
 - [feat] Basic sanity checks now run by default, equivalent to setting `"rule_sanity": "basic"` previously.
@@ -172,7 +172,7 @@ If no contract with such a function exists, a `require(false)` will be inserted,
 - The `-prover_args` option `-smt_easy_LIA` is now set to `true` by default.
 
 ### CLI
-- [feature] The `—method` flag now also accepts a list of methods.
+- [feature] The `--method` flag now also accepts a list of methods.
 
 ### Misc
 - Supporting precise bytemap semantics (unaligned reads, overlapping, etc.). Disabled by default, can be enabled via `-prover_args "-smt_preciseBytemaps true"`.
@@ -718,4 +718,3 @@ function foo(MyComplexStruct memory z, uint x) external returns (uint) {
  - Improved error messages
  - Improved console output
  - Improved call resolution output
-

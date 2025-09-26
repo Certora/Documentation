@@ -21,3 +21,13 @@ __pycache__
 #direnv
 .envrc
 .direnv
+
+
+# Virtual environment
+.venv/
+
+# dev files
+reference_files/
+
+# error files
+errors.txt
