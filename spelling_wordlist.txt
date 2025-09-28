@@ -9,6 +9,8 @@ Disjunction
 Ethereum
 FEoD
 Hoare
+Imprecision
+Imprecisions
 Kashi
 Keccak
 Linux
@@ -97,6 +99,8 @@ hyperproperties
 hyperproperty
 immutable
 immutables
+imprecision
+imprecisions
 initializations
 injective
 injectivity
