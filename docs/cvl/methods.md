@@ -52,7 +52,7 @@ method_spec      ::= "function"
                      ";"
                      | catch_unresolved_calls_entry
 
-catch_unresolved_calls_entry ::= "unresolved external in" pattern "=>" dispatch_list ";"
+catch_unresolved_calls_entry ::= "unresolved external in" pattern "=>" method_summary ";"
 
 pattern          ::= exact_pattern | wildcard_pattern | catch_all_pattern
 
@@ -226,7 +226,7 @@ methods {
 
 Catch unresolved-calls entries are a special type of summary declaration that
 instructs the Prover to replace calls to unresolved external function calls
-with a specific kind of summary, dispatch list.
+with a summary.
 By default, the Prover will use an {ref}`AUTO summary <auto-summary>` for
 unresolved function calls, but that may produce spurious counter examples.
 Catch unresolved-calls entries let the user refine the summary used for
@@ -260,8 +260,8 @@ _not_ be applied to this unresolved call - only an entry that matches `D.bar`
 will be used.
 ```
 
-Catch unresolved-calls entries can only be summarized with a dispatch list
-summary.
+Catch unresolved-calls entries can only be summarized with a dispatch list,
+`HAVOC` or `NONDET` summary.
 
 As with `DISPATCHER`, there are optimistic and pessimistic dispatch lists. This can
 be specified via `DISPATCH(optimistic=<true|false>). When the `optimistic` option 
