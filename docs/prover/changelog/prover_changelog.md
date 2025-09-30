@@ -5,6 +5,16 @@ Prover Release Notes
 ```{contents}
 ```
 
+8.3.0 (October 5, 2025)
+-----------------------
+### Rule Report
+- [feat] Imprecisions are now reported as rule notifications and shown in the Call Trace labeled as `IMPRECISION`.
+
+### CVL
+- [feat] Wildcard summaries (`_.foo`) now support dispatch lists, allowing users to restrict unresolved calls to a specific set of contracts.
+- [feat] Unresolved external calls (`_._`) can now be summarized with `NONDET` or `HAVOC`, in addition to dispatch lists, for more flexible modeling.
+
+
 8.1.0 (August 11, 2025)
 ----------------------
 ### Infrastructure
