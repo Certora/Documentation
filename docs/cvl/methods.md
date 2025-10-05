@@ -884,6 +884,34 @@ function cvlTransferFrom(address token, address from, address to, uint amount) {
 }
 ```
 
+
+Similarly, `executingContract` can be used to refer to the caller that makes
+the summarized call. This is useful for modeling wrappers (such as SafeERC20)
+where the callee should observe `msg.sender` as the wrapper contract:
+
+```cvl
+methods {
+    // SafeERC20 internal functions summarized as direct token calls
+    function _.safeTransfer(address token, address to, uint256 value) internal with(env e)
+        => cvl_safeTransfer(executingContract, e, token, to, value) expect void;
+}
+
+// CVL function that directly calls transfer on the token
+function cvl_safeTransfer(address executing_contract, env e, address token, address to, uint256 value) {
+    // Ensure the callee sees the same caller as the wrapper
+    require e.msg.sender == executing_contract, "The caller must be the contract executing the SafeERC20 function";
+
+    bool success = token.transfer(e, to, value);
+
+    // SafeERC20 reverts on failure; model this behavior
+    require success, "SafeERC20 would revert on failure, so we model this behavior";
+}
+```
+
+Here `executingContract` ensures that the `e.msg.sender` observed by the
+token's `transfer` matches the contract that executed the wrapper, just as it
+would if we directly linked and called the token's `transfer` implementation.
+
 When summarizing an internal library function to an expression, you cannot refer to a variable that is `storage`,
 since CVL functions cannot take variables that are `storage`; for summaries involving `storage` references,
 refer to {ref}`rerouting summaries <rerouting-summaries>`. You can refer to other variables,
