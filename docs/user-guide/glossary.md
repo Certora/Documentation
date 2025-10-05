@@ -143,26 +143,36 @@ underapproximation
 
 optimistic assumptions
 pessimistic assertions
-  Some input programs include constructs that the Prover cannot handle precisely and must instead approximate. 
-  This means the Prover may ignore certain program behaviors, 
-  such as what happens when a loop executes more times than a fixed unrolling limit.
+  Some input programs contain constructs that the Prover can only handle in
+  an approximative way. This approximation entails that the Prover will
+  disregard some specific parts of the programs behavior, like for example the
+  behavior induced by a loop being unrolled beyond a fixed number of times.
+  For each of these constructs the Prover provides a flag controlling whether
+  it should handle them optimistically or pessimistically. (See the links at the
+  end of this paragraph for examples of "optimistic" flags.)
 
-  The Prover provides options that let you choose between 
-  pessimistic and optimistic handling for each approximation. (See the end of this section for examples.)
+  In pessimistic mode (which is the default) _pessimistic assertions_ are
+  inserted into the program that check whether there is any behavior that needs
+  to be approximated, for instance whether loops are present with bounds
+  exceeding {ref}`--loop_iter`. If this is the case, the rule will fail with
+  a corresponding message.
 
-  In pessimistic mode (the default), the Prover inserts pessimistic assertions 
-  that check whether the program includes behavior that requires approximation, 
-  such as a loop exceeding the bound set by {ref}`--loop_iter`. 
-  If such behavior is detected, the rule fails with an explanatory message.
+  In optimistic mode, instead of the assertions, _optimistic assumptions_ are
+  introduced in each of the places where an approximation happens. Each assumption
+  excludes the relevant behavior from checking for one occurrence of the problematic
+  construct, e.g., for each loop.
 
-  In optimistic mode, the Prover instead inserts optimistic assumptions 
-  at each point where approximation would occur. 
-  These assumptions explicitly exclude the relevant behavior from verification, for example, assuming that no loop exceeds the iteration bound.
+  In a more general sense, "pessimistic" behavior rather reports a failure, making
+  sure that no error is missed, but risking to report irrelevant errors, and vice 
+  versa for "optimistic" behavior. 
+  Pessimistic behavior thus corresponds to {term}`overapproximation`s, and optimistic 
+  to {term}`underapproximation`s.
 
-  For a list of all available optimistic options, see {ref}`prover-cli-options`. 
-  Examples include {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`, and
-  {ref}`--optimistic_summary_recursion`. For more background on these approximations, refer to {ref}`prover-approximations`.
-
+  For a list of all "optimistic" settings see {ref}`prover-cli-options`.
+  Examples include {ref}`--optimistic_hashing`, {ref}`--optimistic_loop`,
+  {ref}`--optimistic_summary_recursion`, and more. Also see
+  {ref}`prover-approximations` for more background on some of the
+  approximations.
 
 parametric rule
   A parametric rule is a rule that calls an ambiguous method, either using a

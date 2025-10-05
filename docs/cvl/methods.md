@@ -258,7 +258,7 @@ summary (and a dispatch list summary is only applicable for a catch
 unresolved-calls entries).
 
 As with `DISPATCH`, there are optimistic and pessimistic dispatch lists. This can
-be specified via `DISPATCHER(optimistic=<true|false>). When the `optimistic` option 
+be specified via `DISPATCHER(optimistic=<true|false>)`. When the `optimistic` option 
 is not specified in parentheses, the Prover will use a pessimistic dispatch list to 
 ensure sound reasoning.
 
