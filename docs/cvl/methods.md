@@ -44,17 +44,21 @@ The syntax for the `methods` block is given by the following [EBNF grammar](ebnf
 methods          ::= "methods" "{" { method_spec } "}"
 
 method_spec      ::= "function"
-                     ( exact_pattern | wildcard_pattern | catch_all_pattern | catch_unresolved_calls_pattern )
+                     pattern
                      [ "returns" "(" evm_types ")" ]
                      [ "envfree" |  "with" "(" "env" id ")" ]
                      [ "optional" ]
                      [ "=>" method_summary [ "" | "UNRESOLVED" | "ALL" | "DELETE" ] ]
                      ";"
+                     | catch_unresolved_calls_entry
+
+catch_unresolved_calls_entry ::= "unresolved external in" pattern "=>" method_summary ";"
+
+pattern          ::= exact_pattern | wildcard_pattern | catch_all_pattern
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
 catch_all_pattern ::= id "." "_" "external"
-catch_unresolved_calls_pattern ::= "_" "." "_" "external"
 
 visibility ::= "internal" | "external"
 
@@ -70,6 +74,9 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "AUTO"
                    | "ASSERT_FALSE"
                    | expr [ "expect" id ]
+                   | dispatch_list
+
+dispatch_list     ::=
                    | "DISPATCH" [ "(optimistic=false)" ]  "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
                    | "DISPATCH" [ "(optimistic=true)" ]  "[" dispatch_list_pattern [","] | empty "]"
 
@@ -94,7 +101,7 @@ contract functions.
  - {ref}`exact-methods-entries` match a single method of a single contract.
  - {ref}`wildcard-methods-entries` match a single method signature on all contracts.
  - {ref}`catch-all-entries` apply a single summary to all methods of a specific contract.
- - {ref}`catch-unresolved-calls-entry` apply a summary to all calls that cannot be statically resolved in any contract.
+ - {ref}`catch-unresolved-calls-entry` apply a summary to calls whose method signature cannot be statically resolved.
 
 
 (exact-methods-entries)=
@@ -219,7 +226,7 @@ methods {
 
 Catch unresolved-calls entries are a special type of summary declaration that
 instructs the Prover to replace calls to unresolved external function calls
-with a specific kind of summary, dispatch list.
+with a summary.
 By default, the Prover will use an {ref}`AUTO summary <auto-summary>` for
 unresolved function calls, but that may produce spurious counter examples.
 Catch unresolved-calls entries let the user refine the summary used for
@@ -253,12 +260,11 @@ _not_ be applied to this unresolved call - only an entry that matches `D.bar`
 will be used.
 ```
 
-Catch unresolved-calls entries can only be summarized with a dispatch list
-summary (and a dispatch list summary is only applicable for a catch
-unresolved-calls entries).
+Catch unresolved-calls entries can only be summarized with a dispatch list,
+`HAVOC` or `NONDET` summary.
 
-As with `DISPATCH`, there are optimistic and pessimistic dispatch lists. This can
-be specified via `DISPATCHER(optimistic=<true|false>)`. When the `optimistic` option 
+As with `DISPATCHER`, there are optimistic and pessimistic dispatch lists. This can
+be specified via `DISPATCH(optimistic=<true|false>). When the `optimistic` option 
 is not specified in parentheses, the Prover will use a pessimistic dispatch list to 
 ensure sound reasoning.
 
@@ -722,6 +728,31 @@ Before this version, this may cause vacuous results.
 ```{note}
 `DISPATCHER` summaries cannot be used to summarize library calls.
 ```
+(dispatch-list)=
+#### `DISPATCH` list summaries
+Similar to `DISPATCHER` which dispatches an unresolved method call to all contracts
+implementing the relevant function, we can also dynamically dispatch unresolved calls
+to a user-specified list of possible implementations.
+
+This is most commonly useful on calls where the method sighash is unresolved, see 
+{ref}`catch-unresolved-calls-entry` for a detailed example in such a case.
+
+We can also use the `DISPATCH` list on {ref}`wildcard-methods-entries`, to
+restrict which contract's implementations of the method to consider:
+```cvl
+methods {
+    function _.foo() external => DISPATCH(true)[ C.foo(), D._ ];
+}
+```
+This will dispatch unresolved calls of a method `foo` to implementations in contracts
+`C` and `D`.  Note, if `C` and `D` are the only contracts implementing `foo` in the scene, 
+then this is equivalent to using `DISPATCHER(true)`. 
+It is not necessary to specify the exact method (as in `C.foo()`) when using a dispatch
+list on a wildcard, it suffices to give the receiver (as in `D._`).
+It only makes a difference when giving `fallback=true` in which case we would consider also
+a fallback function in `D` in the example, but not in `C`.
+
+A `DISPATCH` summary is only useful on unresolved calls, so no application policy should be specified.
 
 (auto-summary)=
 #### `AUTO` summaries
