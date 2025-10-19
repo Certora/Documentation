@@ -447,6 +447,10 @@ _Configuration file_
 "coverage_info": "advanced"
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
+
 (--foundry)=
 ## `foundry`
 
@@ -480,6 +484,10 @@ _Configuration file_
 
 ```json
 "foundry": true
+```
+
+```{note}
+Ranger does not support this option currently.
 ```
 
 (--independent_satisfy)=
@@ -561,6 +569,10 @@ _Configuration file_
 "independent_satisfy": true
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
+
 (--multi_assert_check)=
 ## `multi_assert_check`
 
@@ -612,6 +624,9 @@ _Configuration file_
 "multi_assert_check": true
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
 
 (--multi_example)=
 ## `multi_example`
@@ -639,6 +654,9 @@ _Configuration file_
 "multi_example": true
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
 
 (--project_sanity)=
 ## `project_sanity`
@@ -678,7 +696,9 @@ _Configuration file_
 "project_sanity": true
 ```
 
-
+```{note}
+Ranger does not support this option currently.
+```
 
 (--rule_sanity)=
 ## `rule_sanity`
@@ -713,6 +733,9 @@ _Configuration file_
 "rule_sanity": "basic"
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
 
 (--short_output)=
 ## `short_output`
@@ -1203,6 +1226,9 @@ _Configuration file_
 "vyper": "/usr/local/bin/vyper0.3.10"
 ```
 
+```{note}
+Ranger does not support this option currently.
+```
 
 Options regarding source code loops
 ===================================
