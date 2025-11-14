@@ -237,12 +237,13 @@ The `constructor()` preserved block applies on the base step of the invariant ch
 and the arguments of the constructor are not captured in the preserved block.
 
 ### Generic preserved blocks
-If there is no method signature, the preserved block is a default block that is
-used for all methods that don't have a specific preserved block, including the
-`fallback()` method, but not the constructor.
-If an invariant has both a default preserved block and a
+A method block with no method signature is called the generic preserved block. 
+The generic preserved block is used for all methods that don't have a specific preserved block, 
+including the `fallback()` method. Note, the generic preserved block is not applied 
+for the induction base step, for the induction base step use `preserved constructor()` instead.
+If an invariant has both a generic preserved block and a
 specific preserved block for a method, the specific preserved block is used;
-the default preserved block will not be executed.
+the generic preserved block will not be executed.
 
 ### Binding the environment
 The `with` declaration is used to give a name to the {term}`environment` used
