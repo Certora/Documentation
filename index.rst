@@ -23,6 +23,7 @@ Contents
    docs/prover/index.md
    docs/sunbeam/index.rst
    docs/solana/index.rst
+   docs/move/index.rst
    docs/gambit/index.md
 
 
