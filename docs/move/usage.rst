@@ -1,9 +1,9 @@
-Move Prover Setup and Specification Guide
-=========================================
+MoveProver Setup and Specification Guide
+========================================
 
 This guide explains how to set up Move specifications ("specs"), write rules,
 summaries, and advanced constructs for verifying Sui Move contracts with the
-Certora Move Prover.
+Certora MoveProver.
 
 Setup
 -----
@@ -80,7 +80,7 @@ Key points:
 * ``cvlm_satisfy`` creates a *satisfy rule*: it asks the prover to explore whether an execution satisfying the condition exists.
 * ``cvlm_assert`` and other CVLM constructs may also be used.
 
-The Move Prover can also automatically generate sanity rules using
+The MoveProver can also automatically generate sanity rules using
 ``module_sanity``.  
 See `the CVLM sources <https://github.com/Certora/cvl-move-proto/tree/main/cvlm/sources>`_
 for additional details.
@@ -112,7 +112,7 @@ To restrict which rules run, use:
 Sanity Rules
 ------------
 
-The Move Prover can automatically generate “sanity” rules for selected functions
+The MoveProver can automatically generate “sanity” rules for selected functions
 via ``target`` and ``target_sanity``:
 
 .. code-block:: rust
