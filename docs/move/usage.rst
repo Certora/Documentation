@@ -27,10 +27,8 @@ example from Sui’s documentation:
 
     [dependencies]
     reviews_rating = { local = "../sui/examples/move/reviews_rating" }
-    cvlm = { git = "https://github.com/Certora/cvl-move-proto.git",
-             subdir = "cvlm", rev = "main" }
-    certora_sui_summaries = { git = "https://github.com/Certora/cvl-move-proto.git",
-                              subdir = "certora_sui_summaries",  rev = "main" }
+    cvlm = { git = "https://github.com/Certora/cvl-move-proto.git", subdir = "cvlm", rev = "main" }
+    certora_sui_summaries = { git = "https://github.com/Certora/cvl-move-proto.git", subdir = "certora_sui_summaries",  rev = "main" }
 
     [addresses]
     spec = "0x0"
