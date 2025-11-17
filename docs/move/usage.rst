@@ -104,10 +104,10 @@ This logs missing summaries, unsupported features, and other setup hints.
 
 To restrict which rules will be checked, use:
 
-* ``--rule <https://docs.certora.com/en/latest/docs/prover/cli/options.html#rule>``
-* ``--excludeRule <https://docs.certora.com/en/latest/docs/prover/cli/options.html#exclude-rule``
-* ``--method <https://docs.certora.com/en/latest/docs/prover/cli/options.html#method>``
-* ``--excludeMethod <https://docs.certora.com/en/latest/docs/prover/cli/options.html#exclude-method>``
+* ``--rule``_
+* ``--excludeRule``_
+* ``--method``_
+* ``--excludeMethod``_
 
 Sanity Rules
 ------------
@@ -263,3 +263,8 @@ Documentation is available in the
 `manifest module <https://github.com/Certora/cvl-move-proto/blob/main/cvlm/sources/manifest.move>`_,
 and examples appear in the
 `Sui platform summaries <https://github.com/Certora/cvl-move-proto/tree/main/certora_sui_summaries/sources>`_.
+
+.. _--rule: https://docs.certora.com/en/latest/docs/prover/cli/options.html#rule
+.. _--excludeRule: https://docs.certora.com/en/latest/docs/prover/cli/options.html#exclude-rule
+.. _--method: https://docs.certora.com/en/latest/docs/prover/cli/options.html#method
+.. _--excludeMethod: https://docs.certora.com/en/latest/docs/prover/cli/options.html#exclude-method
