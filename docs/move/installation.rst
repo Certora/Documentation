@@ -39,7 +39,7 @@ Installing the SuiProver
 Move and Sui Setup
 ------------------
 
-#. TODO
+#. `Install the Sui CLI <https://docs.sui.io/guides/developer/getting-started/sui-install>`
 
 
 ----
