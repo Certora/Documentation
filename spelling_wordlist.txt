@@ -82,6 +82,8 @@ eBPF
 enum
 enums
 envfree
+excludeRule
+excludeMethod
 executable
 executables
 expressivity
