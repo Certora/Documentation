@@ -1,9 +1,9 @@
-SuiProver Setup and Specification Guide
+Sui Prover Setup and Specification Guide
 =======================================
 
 This guide explains how to set up Move specifications ("specs"), write rules,
 summaries, and advanced constructs for verifying Sui Move contracts with the
-Certora SuiProver.
+Certora Sui Prover.
 
 Setup
 -----
@@ -76,11 +76,11 @@ called ``cvlm_manifest``. For example:
 Key points:
 
 * ``cvlm_manifest`` registers rules in the module.  
-* When the SuiProver runs a rule, **all parameters are nondeterministically instantiated**.  
-* ``cvlm_satisfy`` creates a *satisfy rule*: it asks the SuiProver to explore whether a state satisfying the condition exists.
+* When the Sui Prover runs a rule, **all parameters are nondeterministically instantiated**.  
+* ``cvlm_satisfy`` creates a *satisfy rule*: it asks the Sui Prover to explore whether a state satisfying the condition exists.
 * ``cvlm_assert`` and other CVLM constructs may also be used.
 
-The SuiProver can also automatically generate sanity rules using
+The Sui Prover can also automatically generate sanity rules using
 ``module_sanity``.  
 See `the CVLM sources <https://github.com/Certora/cvl-move-proto/tree/main/cvlm/sources>`_
 for additional details.
@@ -92,13 +92,13 @@ To check a spec, run the following from the directory containing ``Move.toml``:
 
 .. code-block:: bash
 
-    certoraSuiProver.py --server production --prover_version "master"
+    certoraSui Prover.py --server production --prover_version "master"
 
 To enable verbose setup logging (recommended initially):
 
 .. code-block:: bash
 
-    certoraSuiProver.py --java_args "-Dverbose.setup.helpers" ...
+    certoraSui Prover.py --java_args "-Dverbose.setup.helpers" ...
 
 This logs missing summaries, unsupported features, and other setup hints.
 
@@ -112,7 +112,7 @@ To restrict which rules will be checked, use:
 Sanity Rules
 ------------
 
-The SuiProver can automatically generate “sanity” rules for selected functions
+The Sui Prover can automatically generate “sanity” rules for selected functions
 via ``target`` and ``target_sanity``:
 
 .. code-block:: rust
@@ -135,7 +135,7 @@ via ``target`` and ``target_sanity``:
         target_sanity();
     }
 
-The SuiProver generates two rules per target:
+The Sui Prover generates two rules per target:
 
 * A **satisfy-true** rule (execution reaches the end)  
 * An **assert-true** rule (all assertions hold)
@@ -182,13 +182,13 @@ Explanation:
 
 * ``target`` registers callable functions from the contract.  
 * ``invoker`` names the entry point used to call them.  
-* The SuiProver generates **one sub-rule per (rule × target) combination**.
+* The Sui Prover generates **one sub-rule per (rule × target) combination**.
 
 Summaries
 ---------
 
 Complex logic (e.g., loops) can be replaced with *summaries* that are easier for
-the SuiProver to reason about.  
+the Sui Prover to reason about.  
 Consider this loop:
 
 .. code-block:: rust
