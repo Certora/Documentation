@@ -104,10 +104,10 @@ This logs missing summaries, unsupported features, and other setup hints.
 
 To restrict which rules will be checked, use:
 
-* ``--rule``_
-* ``--excludeRule``_
-* ``--method``_
-* ``--excludeMethod``_
+* `--rule`_
+* `--excludeRule`_
+* `--method`_
+* `--excludeMethod`_
 
 Sanity Rules
 ------------
