@@ -10,10 +10,10 @@ Installation
 .. _WSL: https://learn.microsoft.com//install
 
    
-Installing the MoveProver
+Installing the SuiProver
 -------------------------
 
-#. First, we will need to install the Certora MoveProver.
+#. First, we will need to install the Certora SuiProver.
    For that, please visit `Certora.com <https://www.certora.com/>`_ and sign up for a
    free account at `Certora sign-up page <https://www.certora.com/signup>`_.
 #. You will receive an email with a temporary password and a *Certora Key*.
@@ -44,5 +44,5 @@ Move and Sui Setup
 
 ----
 
-With that, you should be all set for using Certora MoveProver. Congratulations!
+With that, you should be all set for using Certora SuiProver. Congratulations!
 

@@ -1,7 +1,7 @@
-MoveProver: Verifying Move Contracts for Sui
-============================================
+SuiProver: Verifying Move Contracts for Sui
+===========================================
 
-*Certora MoveProver* enables formal verification of `Move`_ based smart contracts for the `Sui`_ Blockchain.
+*Certora SuiProver* enables formal verification of `Move`_ based smart contracts for the `Sui`_ Blockchain.
 
 .. toctree::
    :maxdepth: 1

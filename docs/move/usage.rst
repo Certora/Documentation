@@ -1,14 +1,14 @@
-MoveProver Setup and Specification Guide
-========================================
+SuiProver Setup and Specification Guide
+=======================================
 
 This guide explains how to set up Move specifications ("specs"), write rules,
 summaries, and advanced constructs for verifying Sui Move contracts with the
-Certora MoveProver.
+Certora SuiProver.
 
 Setup
 -----
 
-Move “specs” (rules and summaries) are written in Move. Typically these live in
+Move “specs” (rules and `summaries <https://docs.certora.com/en/latest/docs/user-guide/glossary.html#term-summary>`_) are written in Move. Typically these live in
 their own Move package, often named ``spec``. This package will depend on:
 
 - The Move code being verified
@@ -76,11 +76,11 @@ called ``cvlm_manifest``. For example:
 Key points:
 
 * ``cvlm_manifest`` registers rules in the module.  
-* When the prover runs a rule, **all parameters are nondeterministically instantiated**.  
-* ``cvlm_satisfy`` creates a *satisfy rule*: it asks the prover to explore whether an execution satisfying the condition exists.
+* When the SuiProver runs a rule, **all parameters are nondeterministically instantiated**.  
+* ``cvlm_satisfy`` creates a *satisfy rule*: it asks the SuiProver to explore whether a state satisfying the condition exists.
 * ``cvlm_assert`` and other CVLM constructs may also be used.
 
-The MoveProver can also automatically generate sanity rules using
+The SuiProver can also automatically generate sanity rules using
 ``module_sanity``.  
 See `the CVLM sources <https://github.com/Certora/cvl-move-proto/tree/main/cvlm/sources>`_
 for additional details.
@@ -102,17 +102,17 @@ To enable verbose setup logging (recommended initially):
 
 This logs missing summaries, unsupported features, and other setup hints.
 
-To restrict which rules run, use:
+To restrict which rules will be checked, use:
 
-* ``--rule``  
-* ``--excludeRule``  
-* ``--method``  
-* ``--excludeMethod``  
+* ``--rule``_  
+* ``--excludeRule``_ 
+* ``--method``
+* ``--excludeMethod``_ 
 
 Sanity Rules
 ------------
 
-The MoveProver can automatically generate “sanity” rules for selected functions
+The SuiProver can automatically generate “sanity” rules for selected functions
 via ``target`` and ``target_sanity``:
 
 .. code-block:: rust
@@ -135,7 +135,7 @@ via ``target`` and ``target_sanity``:
         target_sanity();
     }
 
-The prover generates two rules per target:
+The SuiProver generates two rules per target:
 
 * A **satisfy-true** rule (execution reaches the end)  
 * An **assert-true** rule (all assertions hold)
@@ -182,13 +182,13 @@ Explanation:
 
 * ``target`` registers callable functions from the contract.  
 * ``invoker`` names the entry point used to call them.  
-* The prover generates **one sub-rule per (rule × target) combination**.
+* The SuiProver generates **one sub-rule per (rule × target) combination**.
 
 Summaries
 ---------
 
 Complex logic (e.g., loops) can be replaced with *summaries* that are easier for
-the prover to reason about.  
+the SuiProver to reason about.  
 Consider this loop:
 
 .. code-block:: rust
@@ -263,3 +263,8 @@ Documentation is available in the
 `manifest module <https://github.com/Certora/cvl-move-proto/blob/main/cvlm/sources/manifest.move>`_,
 and examples appear in the
 `Sui platform summaries <https://github.com/Certora/cvl-move-proto/tree/main/certora_sui_summaries/sources>`_.
+
+.. _--rule: https://docs.certora.com/en/latest/docs/prover/cli/options.html#rule
+.. _--excludeRule: https://docs.certora.com/en/latest/docs/prover/cli/options.html#exclude-rule
+.. _--method: https://docs.certora.com/en/latest/docs/prover/cli/options.html#method
+.. _--excludeMethod: https://docs.certora.com/en/latest/docs/prover/cli/options.html#exclude-method
