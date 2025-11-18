@@ -1,5 +1,5 @@
 Sui Prover Setup and Specification Guide
-=======================================
+========================================
 
 This guide explains how to set up Move specifications ("specs"), write rules,
 summaries, and advanced constructs for verifying Sui Move contracts with the
@@ -98,7 +98,7 @@ To enable verbose setup logging (recommended initially):
 
 .. code-block:: bash
 
-    certoraSui Prover.py --java_args "-Dverbose.setup.helpers" ...
+    certoraSuiProver.py --java_args "-Dverbose.setup.helpers" ...
 
 This logs missing summaries, unsupported features, and other setup hints.
 

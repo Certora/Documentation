@@ -39,7 +39,7 @@ Installing the Sui Prover
 Move and Sui Setup
 ------------------
 
-#. `Install the Sui CLI <https://docs.sui.io/guides/developer/getting-started/sui-install>`
+#. `Install the Sui CLI <https://docs.sui.io/guides/developer/getting-started/sui-install>`_
 
 
 ----

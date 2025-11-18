@@ -1,5 +1,5 @@
 Sui Prover: Verifying Move Contracts for Sui
-===========================================
+============================================
 
 *Certora Sui Prover* enables formal verification of `Move`_ based smart contracts for the `Sui`_ Blockchain.
 
