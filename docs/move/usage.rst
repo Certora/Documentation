@@ -92,7 +92,7 @@ To check a spec, run the following from the directory containing ``Move.toml``:
 
 .. code-block:: bash
 
-    certoraSui Prover.py --server production --prover_version "master"
+    certoraSuiProver.py --server production --prover_version "master"
 
 To enable verbose setup logging (recommended initially):
 
