@@ -138,7 +138,7 @@ via ``target`` and ``target_sanity``:
 The Sui Prover generates two rules per target:
 
 * A **satisfy-true** rule (execution reaches the end)  
-* An **assert-true** rule (all assertions hold)
+* An **assert-true** rule (only test implicit `pessimistic assertions <https://docs.certora.com/en/latest/docs/user-guide/glossary.html#term-pessimistic-assertions>`_)
 
 For more on sanity rules, see the
 `EVM Prover documentation <https://docs.certora.com/en/latest/docs/cvl/builtin.html#how-sanity-is-checked>`_.
