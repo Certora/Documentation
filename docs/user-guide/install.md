@@ -31,7 +31,7 @@ Step 1: Prerequisites
   java -version
   ```
 
-  If the version is < 19, download and install Java version 19 or later from
+  If the version is lower than 19, download and install Java version 19 or later from
   [Oracle](https://www.oracle.com/java/technologies/downloads/).
 </details>
 
