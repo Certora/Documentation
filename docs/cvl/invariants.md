@@ -44,6 +44,7 @@ preserved_block ::= "preserved"
 
 method_signature ::= [ contract_name "." ] id  "(" [ evm_type [ id ] { "," evm_type [ id ] } ] ")"
                      | "fallback" "(" ")"
+                     | "constructor" "(" ")"
 
 contract_name ::= id
                 | "_"
@@ -227,18 +228,22 @@ If an invariant has multiple preserved blocks with the same method signature
 where one signature is more specific and the other is more general (as in 
 the `_.method` case), then the more specific preserved block will apply.
 
-If a preserved block specifies a method signature, the signature must either be `fallback()` or
+If a preserved block specifies a method signature, the signature must either be `fallback()`, `constructor()` or
 match one of the contract methods, and the preserved block only applies when
 checking preservation of that contract method.  The `fallback()` preserved block
 applies only to the `fallback()` function that should be defined in the contract.
 The arguments of the method are in scope within the preserved block.
+The `constructor()` preserved block applies on the base step of the invariant check
+and the arguments of the constructor are not captured in the preserved block.
 
 ### Generic preserved blocks
-If there is no method signature, the preserved block is a default block that is
-used for all methods that don't have a specific preserved block, including the
-`fallback()` method.  If an invariant has both a default preserved block and a
+A method block with no method signature is called the generic preserved block. 
+The generic preserved block is used for all methods that don't have a specific preserved block, 
+including the `fallback()` method. Note, the generic preserved block is not applied 
+for the induction base step, for the induction base step use `preserved constructor()` instead.
+If an invariant has both a generic preserved block and a
 specific preserved block for a method, the specific preserved block is used;
-the default preserved block will not be executed.
+the generic preserved block will not be executed.
 
 ### Binding the environment
 The `with` declaration is used to give a name to the {term}`environment` used
