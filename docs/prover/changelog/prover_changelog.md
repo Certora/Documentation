@@ -5,6 +5,16 @@ Prover Release Notes
 ```{contents}
 ```
 
+8.5.1 (November 25, 2025)
+-------------------------
+### CVLM
+- [feat] Added new Certora Sui Prover (CLI command: `certoraSuiProver`) for Sui smart contract specifications written in the new Certora Verification Language for Move (CVLM).
+
+### CVL
+- [feat] Added support for new `preserved constructor()` block for stating assumptions before constructor code is executed when checking the base step of an invariant.
+- [feat] Improved VSCode extension's CVL formatting related to unintended line breaks, aggressive empty-line removal, and unnecessary changes to parentheses.
+
+
 8.3.0 (October 5, 2025)
 -----------------------
 ### Rule Report
