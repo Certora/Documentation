@@ -40,7 +40,7 @@ Follow these steps to configure CI for GitHub Actions on your repository:
 
         - name: Install java
           uses: actions/setup-java@v1
-          with: { java-version: "11", java-package: jre }
+          with: { java-version: "21", java-package: jre }
 
         # It's recommended to pin the latest certora-cli version available in https://pypi.org/project/certora-cli/
         - name: Install certora cli
