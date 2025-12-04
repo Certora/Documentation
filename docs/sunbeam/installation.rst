@@ -23,7 +23,7 @@ Installing Sunbeam
    If you need to upgrade, follow these instructions in the
    `Python Beginners Guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_.
 #. Next, install Java. Check your Java version: ``java --version``.
-   If the version is lower than 19, download and install Java version 19 or later from
+   If the version is lower than 21, download and install Java version 21 or later from
    `Oracle <https://www.oracle.com/java/technologies/downloads/>`_.
 #. Then, install the Certora Prover: ``pip3 install certora-cli``.
 
