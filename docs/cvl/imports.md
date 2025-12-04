@@ -8,9 +8,9 @@ spec file, while others such as rules and invariants must be explicitly
 `use`d. Functions, definitions, filters, and preserved blocks of the imported spec can be overridden by the importing 
 spec. If a spec defines a function and uses it (e.g. in a rule or function), and another spec imports it and overrides 
 it, uses in the imported spec use the new version.
-Overrides only apply locally in the spec they are declared in. Consider a spec file A containing imports from 
-a spec file B and overrides modifying them. If it is again imported in a third spec file C, C will inherit the original 
-declarations from A and B, and will not see the overrides in A. If they should apply also in C, they must be repeated.
+Overrides only apply locally in the spec they are declared in. Consider a spec file `A` containing imports from 
+a spec file `B` and overrides modifying them in `A`. If `A` is again imported in a third spec file `C`, `C` will inherit the original 
+declarations from `A` and `B`, however it will not also apply the overrides for `A`. If they should apply also in `C`, they must be repeated.
 
 Examples
 --------
