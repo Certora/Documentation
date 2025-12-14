@@ -10,5 +10,5 @@ partial-apply.md
 safe-assum.md
 require-invariants.md
 events.md
+rounding-envelopes.md
 ```
-

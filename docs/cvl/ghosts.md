@@ -195,7 +195,8 @@ Restrictions on ghost axioms
 ----------------------------
 - A ghost axiom cannot refer to Solidity or CVL functions or to other ghosts. It can refer to the ghost itself.
 - Since the signature of a ghost contains just parameter types without names, it cannot refer to its parameters. 
- `forall` can be used in order to refer the storage referred to by the parameters. [Example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec#L12).
+ `forall` can be used in order to refer the storage referred to by the parameters. Example: see the ghost-mapping summary spec on GitHub:
+ [ghost mapping summary example](https://github.com/Certora/Examples/blob/61ac29b1128c68aff7e8d1e77bc80bfcbd3528d6/CVLByExample/summary/ghost-summary/ghost-mapping/certora/specs/WithGhostSummary.spec)
 
 
 
@@ -314,3 +315,20 @@ for reverting behaviors of `noUserDefinedRevertFlows` and `emptyRequire`,
 which do not have user-defined revert messages. 
 This means that if `saw_user_defined_revert_msg` is not marked persistent, 
 the rule cannot distinguishing between methods that may revert with user-defined messages and methods that may not.
+
+Patterns from practice
+----------------------
+
+- Aggregate with a single ghost. Track the sum of scaled balances (or other per-account data) by updating a ghost in an `Sstore` hook. This enables global checks without iterating storage:
+
+  ```cvl
+  ghost mathint sumAllATokenScaledBalance {
+      init_state axiom sumAllATokenScaledBalance == 0;
+  }
+
+  hook Sstore _AToken._userState[KEY address a].(offset 0) uint128 balance (uint128 old_balance) {
+      sumAllATokenScaledBalance = sumAllATokenScaledBalance + balance - old_balance;
+  }
+  ```
+
+- Ghost math with conservative axioms. When introducing ghosts such as `_ghostPow(x,y)` for fixed-point exponentiation, prefer monotonicity and bound relations to exact equalities which may be broken by rounding. Keep axioms minimal and purposeful to avoid over-constraining the solver.

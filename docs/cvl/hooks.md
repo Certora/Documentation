@@ -204,6 +204,47 @@ was used as the key into the mapping `C.users`; the variable `v` will contain
 the value that is written, and the variable `old_value` will contain the value
 that was previously stored there.
 
+Real-world storage hooks
+------------------------
+
+Two patterns often help scale larger specs:
+
+- Gate storage reads to a single known instance using slot/offset addressing. This prevents spurious models where an arbitrary address is treated as the reward token, aToken, or underlying:
+
+  ```cvl
+  // Only allow a single registered reward token at the expected slot/index.
+  hook Sload address reward (slot 0x4fad66563f105be0bff96185c9058c4934b504d3ba15ca31e86294f0b01fd200).(offset 32)[INDEX uint256 i] /* _rewardTokens */ {
+      require reward == _DummyERC20_rewardToken;
+  }
+
+  // Constrain the aToken and underlying addresses to the harnessed instances.
+  hook Sload address aToken     (slot 0x55029d3f54709e547ed74b2fc842d93107ab1490ab7555dd9dd0bf6451101900).(offset 0)  /* aToken */ {
+      require aToken == _AToken;
+  }
+  hook Sload address underlying (slot 0x0773e532dfede91f04b12a73d3d2acd361424f41f76b4fb79f090161e36b4e00).(offset 0) /* _asset */ {
+      require underlying == _DummyERC20_aTokenUnderlying;
+  }
+  ```
+
+  ```{note}
+  Slot/offset hooks are low-level and must match the target layout exactly. Prefer named access paths when possible; fall back to slots when the layout is stable and names are unavailable.
+  ```
+
+- Mirror on-chain deltas into ghosts with `Sstore` hooks to enable global checks without scanning storage. For example, track the sum of scaled balances using a single ghost:
+
+  ```cvl
+  ghost mathint sumAllATokenScaledBalance {
+      init_state axiom sumAllATokenScaledBalance == 0;
+  }
+
+  // Update the ghost on every balance write: new minus old.
+  hook Sstore _AToken._userState[KEY address a].(offset 0) uint128 balance (uint128 old_balance) {
+      sumAllATokenScaledBalance = sumAllATokenScaledBalance + balance - old_balance;
+  }
+  ```
+
+  This enables invariants over the aggregate (e.g., conservation across actions) without enumerating all keys.
+
 There are a few restrictions on the available combinations of low-level and
 high-level access paths:
  - You cannot access struct fields on access paths that contain `slot` or
@@ -525,5 +566,3 @@ At this point, you may expect that the hook will be triggered a second time,
 but because there is already a hook executing, this second update to `x` will
 not trigger the hook.  Therefore the `xStoreCount` ghost will *not* be updated
 a second time, so its final value will be `1`.
-
-
