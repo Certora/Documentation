@@ -5,6 +5,12 @@ Prover Release Notes
 ```{contents}
 ```
 
+8.6.3 (January 6, 2026)
+-------------------------
+### CVL
+- [feat] Improved invariant base case expressiveness: Previously, storage of all contracts in the scene was assumed zeroed (i.e. all freshly deployed). Now, only `currentContract` storage is zeroed while others may have arbitrary states. To express assumptions about the deployment scenario, the `preserved constructor` block can be applied and now allows stating assumptions about all contracts in the scene. As the scenario checked by default is now more general than before, previously verified invariants may show new counterexamples, requiring adjustment to add such assumptions. The previous behavior can be retained via a new `prover_args` flag `-allContractsZeroedForInvariantBaseCase true`.
+
+
 8.5.1 (November 25, 2025)
 -------------------------
 ### CVLM
