@@ -93,7 +93,7 @@ is an unresolved external call that can modify the state of the current contract
  2. _After_ the call `c`: Assume the invariant holds. The semantics is that the call did not break the invariant.  
  3. In the case `c` is a `delegatecall`, after assuming the invariant in step 2, havoc the current's contact storage and assert the invariant once more. This step simulates the scenario that a `delegatecall` modifies the current contract's storage.
 
- A full example for `weak` and `strong invariant` can be found in our [Examples Repository](https://github.com/Certora/Examples/blob/cli-beta/CVLByExample/StrongInvariants/README.md). 
+ A full example for `weak` and `strong invariant` can be found in our [Examples Repository](https://github.com/Certora/Examples/blob/master/DEFI/LiquidityPool/README.md#strongweak-invariants-flashloan). 
 
 
 
