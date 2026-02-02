@@ -10,10 +10,10 @@ Installation
 .. _WSL: https://learn.microsoft.com//install
 
    
-Installing Sunbeam
-------------------
+Installing the Sui Prover
+-------------------------
 
-#. First, we will need to install the Sunbeam Prover.
+#. First, we will need to install the Certora Sui Prover.
    For that, please visit `Certora.com <https://www.certora.com/>`_ and sign up for a
    free account at `Certora sign-up page <https://www.certora.com/signup>`_.
 #. You will receive an email with a temporary password and a *Certora Key*.
@@ -36,26 +36,13 @@ Installing Sunbeam
    :ref:`Step 3 of the Prover installation <installation-step-3>`.
 
 
-Rust and Stellar CLI Setup
---------------------------
+Move and Sui Setup
+------------------
 
-#. We recommend installing Rust as on the
-   `official Rust website <https://www.rust-lang.org/tools/install>`_: 
-   ``curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh``
-#. Next, install the WASM target like so: ``rustup target add wasm32-unknown-unknown``
-#. We recommend setting up the Stellar CLI as shown
-   `here <https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup#install-the-stellar-cli>`_.
-#. We also recommend installing the `wabt <https://github.com/WebAssembly/wabt>`_ toolkit. 
-   ``wasm2wat`` is a useful tool for converting the WASM bytecode to a human readable format.
-   Ensure that ``wasm2wat`` is executable as a command from your terminal.
-   You will have to add ``wabt/bin`` to your ``PATH`` by running
-   ``export PATH=~/path/to/wabt/bin:$PATH``. 
-#. Install `just` like so: ``cargo install just``.
-#. Finally, install ``rustfilt`` like so: ``cargo install rustfilt``.
+#. `Install the Sui CLI <https://docs.sui.io/guides/developer/getting-started/sui-install>`_
+
 
 ----
 
-With that, you should be all set for using Certora Sunbeam. Congratulations!
+With that, you should be all set for using Certora Sui Prover. Congratulations!
 
-To learn more about using Certora Sunbeam, check out the
-`Sunbeam Tutorials <https://certora-sunbeam-tutorials.readthedocs-hosted.com/en/latest/>`_.
