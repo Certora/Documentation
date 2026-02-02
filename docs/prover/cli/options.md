@@ -1857,12 +1857,12 @@ base contract with the one from the extension contract.
 This flag should be used as an addition to the {ref}`--contract_extensions` flag
 in cases where the proxy pattern is implemented in such a way that the base
 contract actually has dummy implementations of the functions in the extension
-contracts (that are used to delegatecall to the corresponding function in the
+contracts (that are used to delegate-call to the corresponding function in the
 extension contract).
 
 **Example**
 Say we have a base contract `A` that uses an extension contract `B`. `A`
-implements a function `foo()` that delegatecalls the `foo()` function in
+implements a function `foo()` that delegate-calls the `foo()` function in
 contract `B`. Without this flag the Prover will fail to "transfer" `B.foo()`
 into `A`. Setting this flag will cause `B`'s implementation to override `A`'s.
 
