@@ -1844,6 +1844,29 @@ This option is not supported from the command line and must be used via a config
 ```
 
 
+(--contract_extensions_override)=
+## `--contract_extensions_override`
+
+**What does it do?**
+If this flag is set in addition to the {ref}`--contract_extensions` flag, then
+when the Prover encounters a function that is implemented both in the base and
+extension contracts, it will override the implementation of the function in the
+base contract with the one from the extension contract.
+
+**When to use it?**
+This flag should be used as an addition to the {ref}`--contract_extensions` flag
+in cases where the proxy pattern is implemented in such a way that the base
+contract actually has dummy implementations of the functions in the extension
+contracts (that are used to delegatecall to the corresponding function in the
+extension contract).
+
+**Example**
+Say we have a base contract `A` that uses an extension contract `B`. `A`
+implements a function `foo()` that delegatecalls the `foo()` function in
+contract `B`. Without this flag the Prover will fail to "transfer" `B.foo()`
+into `A`. Setting this flag will cause `B`'s implementation to override `A`'s.
+
+
 (--contract_recursion_limit)=
 ## `contract_recursion_limit`
 
