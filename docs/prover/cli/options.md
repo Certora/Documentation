@@ -190,20 +190,20 @@ _Configuration file_
 **What does it do?**
 Typically, all rules and {term}`invariant`s (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
 With `split_rules` the user can run specific rules or invariants on separate dedicated Prover jobs.
-A new job will be created and executed for each rule or invariant that matches a 
+A new job will be created and executed for each rule or invariant that matches a
 {term}`rule name pattern` in `split_rules` an additional job will be created for the rest of the rules and invariants.
 After launching the generated jobs, the original job will return with a link to the dashboard,
 listing the status of the generated jobs.
 
 **When to use it?**
-This option is useful when some rules or invariants take a much longer time than the rest. 
-Splitting the difficult rules or invariants to their own dedicated Prover jobs 
-will give them more resources that will potentially reduce their chance to timeout 
+This option is useful when some rules or invariants take a much longer time than the rest.
+Splitting the difficult rules or invariants to their own dedicated Prover jobs
+will give them more resources that will potentially reduce their chance to timeout
 and will decrease the time to get the final job result for the less computationally intensive rules.
 
 ```{note}
 When used together with the {ref}`--rule` option, the logic is to collect all rules
-and invariants that match {term}`rule name pattern`s of {ref}`--rule` and then 
+and invariants that match {term}`rule name pattern`s of {ref}`--rule` and then
 subtract from them all rules that match any {ref}`--exclude_rule` patterns.
 ```
 
@@ -307,9 +307,9 @@ the method signature argument will usually need to be quoted in the command line
 ## `exclude_method`
 
 **What does it do?**
-This option is the opposite of {ref}`--method` and will exclude from 
-{term}`parametric rule`s and {term}`invariant`s any method mentioned in this list. 
-The methods and their contracts are interpreted in the same way as they are in the 
+This option is the opposite of {ref}`--method` and will exclude from
+{term}`parametric rule`s and {term}`invariant`s any method mentioned in this list.
+The methods and their contracts are interpreted in the same way as they are in the
 {ref}`--method` option.
 
 **When to use it?**
@@ -451,11 +451,11 @@ _Configuration file_
 ## `foundry`
 
 **What does it do?**
-Collects all test files in the project (files ending with `.t.sol`), 
-and runs the {ref}`foundry_integration` on them (specifically, 
-the `verifyFoundryFuzzTestsNoRevert` builtin rule). 
-As with the {ref}`--project_sanity` option, 
-the search is over files in the current git repository if such exists, 
+Collects all test files in the project (files ending with `.t.sol`),
+and runs the {ref}`foundry_integration` on them (specifically,
+the `verifyFoundryFuzzTestsNoRevert` builtin rule).
+As with the {ref}`--project_sanity` option,
+the search is over files in the current git repository if such exists,
 otherwise over all files in the tree under the current working directory.
 
 ```{note}
@@ -490,7 +490,7 @@ The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` inde
 Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode),
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
 
-As an illustrative example of the default mode, 
+As an illustrative example of the default mode,
 consider the following rule `R` that has two satisfy statements:
 
 ```cvl
@@ -517,13 +517,13 @@ rule R2_default {
 }
 ```
 
-Without turning `independent_satisfy` mode on, `R2` would have failed, 
+Without turning `independent_satisfy` mode on, `R2` would have failed,
 as it would try to satisfy `b && !b`, an unsatisfiable contradiction.
 Turning on the `independent_satisfy` mode will ignore all currently unchecked satisfy statements for each sub-rule.
-It would also generate and check two sub-rules, 
-but with a slight difference: 
-`R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed, 
-and `R2` where `satisfy b` is removed, 
+It would also generate and check two sub-rules,
+but with a slight difference:
+`R1` where `b` is satisfied (by `b=true`) while `satisfy !b` is removed,
+and `R2` where `satisfy b` is removed,
 and `!b` is satisfied (by `b=false`).
 
 The two `independent_satisfy` generated sub-rules will be equivalent to:
@@ -542,7 +542,7 @@ rule R2_independent {
 ```
 
 **When to use it?**
-When you have a rule with multiple {ref}`satisfy statement <satisfy>`s, 
+When you have a rule with multiple {ref}`satisfy statement <satisfy>`s,
 and you would like to demonstrate each statement separately.
 
 **Example**
@@ -565,9 +565,9 @@ _Configuration file_
 ## `multi_assert_check`
 
 **What does it do?**
-This mode checks each assertion statement that occurs in a rule, separately. 
-The check is done by decomposing each rule into multiple sub-rules, 
-each of which checks one assertion, while it assumes all preceding assertions. 
+This mode checks each assertion statement that occurs in a rule, separately.
+The check is done by decomposing each rule into multiple sub-rules,
+each of which checks one assertion, while it assumes all preceding assertions.
 In addition, all assertions that originate from the Solidity code (as opposed to those from the specification), are checked together by a designated, single sub-rule.
 
 As an illustrative example, consider the following rule `R` that has two assertions:
@@ -689,12 +689,12 @@ none|basic|advanced
 ```
 
 **What does it do?**
-This option enables sanity checking for rules.  
+This option enables sanity checking for rules.
 The `rule_sanity` option must be followed by one of `none`, `basic`, or `advanced`.
 See {doc}`../checking/sanity` for more information about sanity checks.
 
 **When to use it?**
-We suggest using this option routinely while developing rules.  
+We suggest using this option routinely while developing rules.
 It is also a useful check if you notice rules passing surprisingly quickly or easily.
 
 **Example**
@@ -771,7 +771,7 @@ The same settings in a conf file:
   ...
 }
 ```
-The key of each entry is either a contract name pattern or a path pattern. 
+The key of each entry is either a contract name pattern or a path pattern.
 Path patterns must end with one of the following suffixes: `.sol`, `.vy`, or `.yul`.
 
 It is not allowed to set both the map and the non-map attributes together (e.g., {ref}`--solc` and {ref}`--compiler_map`).
@@ -886,7 +886,7 @@ In Solidity projects, information about packages' location is usually stored in 
 ## `packages_path`
 
 **What does it do?**
-Gets the path to a directory including the Solidity packages. 
+Gets the path to a directory including the Solidity packages.
 For more details on packages and remapping see the [Packages and Remappings](packages_and_remappings.md) section.
 
 **When to use it?**
@@ -1127,7 +1127,7 @@ _Configuration file_
 "solc_via_ir": true
 ```
 
- (--solc_via_ir_map)=   
+ (--solc_via_ir_map)=
 ## `solc_via_ir_map`
 
 **What does it do?**
@@ -1355,7 +1355,7 @@ This option sets the minimal difficulty threshold for the auto-{term}`summarizat
 
 **When to use it?**
 If the results of an initial run with {ref}`--nondet_difficult_funcs` were unsatisfactory,
-one can adjust the default threshold to apply the auto-{term}`summarization` to potentially 
+one can adjust the default threshold to apply the auto-{term}`summarization` to potentially
 more or fewer internal functions.
 
 The notification in the rule report that contains the applied summaries will present the current threshold used by the Prover.
@@ -1566,11 +1566,11 @@ Options that help reduce the running time
 ## `compilation_steps_only`
 
 **What does it do?**
-Stops execution after compiling the source code and specification, 
+Stops execution after compiling the source code and specification,
 without sending a verification request to the Certora cloud.
 
 **When to use it?**
-Use this option to check for syntax and compilation errors in your spec without running a full verification. 
+Use this option to check for syntax and compilation errors in your spec without running a full verification.
 This is useful when you want quick feedback on spec validity without waiting for analysis results.
 
 Example use cases:
@@ -1729,7 +1729,7 @@ _Configuration file_
 This attribute controls the maximum number of rule evaluations that can be executed concurrently.
 By default, it is set to the number of available CPU cores on the host machine, allowing optimal parallelization under typical conditions.
 Setting this value to a lower number limits the number of rule evaluation tasks that can run in parallel.
-By capping the concurrency level, this attribute helps regulate system resource usage, particularly memory consumption, 
+By capping the concurrency level, this attribute helps regulate system resource usage, particularly memory consumption,
 and can prevent resource exhaustion.
 
 
@@ -1767,7 +1767,7 @@ Options to set addresses and link contracts
 Sets the address of a contract to a given address.
 
 **When to use it?**
-When we have an external contract with a constant address. 
+When we have an external contract with a constant address.
 By default, Certora's client assigns addresses as it sees fit to contracts.
 
 **Example**
@@ -1833,6 +1833,29 @@ contract already has such a function and this would cause a conflict).
 ```{note}
 This option is not supported from the command line and must be used via a configuration file.
 ```
+
+
+(--contract_extensions_override)=
+## `--contract_extensions_override`
+
+**What does it do?**
+If this flag is set in addition to the {ref}`--contract_extensions` flag, then
+when the Prover encounters a function that is implemented both in the base and
+extension contracts, it will override the implementation of the function in the
+base contract with the one from the extension contract.
+
+**When to use it?**
+This flag should be used as an addition to the {ref}`--contract_extensions` flag
+in cases where the proxy pattern is implemented in such a way that the base
+contract actually has dummy implementations of the functions in the extension
+contracts (that are used to delegatecall to the corresponding function in the
+extension contract).
+
+**Example**
+Say we have a base contract `A` that uses an extension contract `B`. `A`
+implements a function `foo()` that delegatecalls the `foo()` function in
+contract `B`. Without this flag the Prover will fail to "transfer" `B.foo()`
+into `A`. Setting this flag will cause `B`'s implementation to override `A`'s.
 
 
 (--contract_recursion_limit)=
@@ -1955,35 +1978,35 @@ certoraRun Bank.sol --verify Bank:Bank.spec --optimistic_contract_recursion true
 
 **What does it do?**
 
-This option controls how the Prover handles unresolved external calls with an 
-empty input buffer (length 0). 
-By default, such calls will {term}`havoc` all storage of external contracts in 
-the {term}`scene`, i.e., of all contracts except for the main verified contract. 
-When `--optimistic_fallback` is enabled, the Prover inserts an Optimistic fallback 
-Dispatcher summary. 
-This summary dispatches to all implementations of the `fallback` function that 
-are available in any contract in the scene. 
-Furthermore, an additional dispatch option is inserted for the case when the callee 
-address is chosen by the Prover to be a user address (i.e. an EOA, with `extcodesize` 0); 
+This option controls how the Prover handles unresolved external calls with an
+empty input buffer (length 0).
+By default, such calls will {term}`havoc` all storage of external contracts in
+the {term}`scene`, i.e., of all contracts except for the main verified contract.
+When `--optimistic_fallback` is enabled, the Prover inserts an Optimistic fallback
+Dispatcher summary.
+This summary dispatches to all implementations of the `fallback` function that
+are available in any contract in the scene.
+Furthermore, an additional dispatch option is inserted for the case when the callee
+address is chosen by the Prover to be a user address (i.e. an EOA, with `extcodesize` 0);
 then, the given ETH value is transferred to that user address.
 
 Note that the calls made within the Optimistic fallback Dispatcher summary do not
-fall under the restrictions of {ref}`norevert <with-revert>` calls. If the chosen `fallback` 
-implementation reverts, or if the code size of the unknown contract is non-zero, 
+fall under the restrictions of {ref}`norevert <with-revert>` calls. If the chosen `fallback`
+implementation reverts, or if the code size of the unknown contract is non-zero,
 the value is transferred back, but the path is not excluded from verification.
 
-Furthermore, note that only non-trivial `fallback` implementations are used for the 
+Furthermore, note that only non-trivial `fallback` implementations are used for the
 dispatcher, i.e., ones that do not always revert.
 
-In the " Contracts Call Resolutions" tab, the absence of any explicit 
-implementation of `fallback()` is highlighted by a red outline for the 
-`[?].fallback` entry. 
- (The same highlighting is also used for when an {ref}`AUTO summary <auto-summary>` 
+In the " Contracts Call Resolutions" tab, the absence of any explicit
+implementation of `fallback()` is highlighted by a red outline for the
+`[?].fallback` entry.
+ (The same highlighting is also used for when an {ref}`AUTO summary <auto-summary>`
  is applied for some call.)
 
 **When to use it?**
 
-Enable this option to avoid spurious counter examples due to {ref}`AUTO summaries <auto-summary>` 
+Enable this option to avoid spurious counter examples due to {ref}`AUTO summaries <auto-summary>`
 doing a full state {term}`havoc` for external calls with empty input buffers.
 
 **Example**
@@ -1995,11 +2018,11 @@ Consider a contract that contains this snippet:
   ...
 ```
 
-Assume that the callee, `a`, is unresolved. (When the callee is resolved, 
+Assume that the callee, `a`, is unresolved. (When the callee is resolved,
 this option has no effect on that call.) This case will show up as an entry labeled
-`[?].fallback` in the Contract Call Resolutions pane on the left of the report. 
-If `--optimistic_fallback` was not set and thus a havoc of all storage. 
-The entry will be highlighted in red in this case and indicate use of 
+`[?].fallback` in the Contract Call Resolutions pane on the left of the report.
+If `--optimistic_fallback` was not set and thus a havoc of all storage.
+The entry will be highlighted in red in this case and indicate use of
 the "AUTO havoc" summary.
 
 ```{figure} opt-fallback-auto-havoc.png
@@ -2010,14 +2033,14 @@ the "AUTO havoc" summary.
 Call Resolutions entry for an unresolved call to the fallback function summarized as AUTO havoc
 ```
 
-Now, if we set `--optimistic_fallback`, the call is still unresolved, 
-but the contents of the `[?].fallback` entry in the Call Resolutions 
+Now, if we set `--optimistic_fallback`, the call is still unresolved,
+but the contents of the `[?].fallback` entry in the Call Resolutions
 differ. The summary is designated as "Optimistic fallback DISPATCHER"
 instead of "AUTO havoc". Furthermore there is an item called
-"alternative explicit fallbacks" listing all the implementations of 
+"alternative explicit fallbacks" listing all the implementations of
 `fallback` that were found in the scene.
 If no implementations were found, this is stated, and the box is highlighted
-in red, like in the "AUTO havoc" case. This means that if `adr` has `extcodesize` 0, 
+in red, like in the "AUTO havoc" case. This means that if `adr` has `extcodesize` 0,
 the call transfers `amount` to `adr`, otherwise the call has no effect.
 
 ```{figure} opt-fallback-disp-no-impl.png
@@ -2028,7 +2051,7 @@ the call transfers `amount` to `adr`, otherwise the call has no effect.
 Call Resolutions entry for Optimistic fallback DISPATCHER when there are no fallback implementations
 ```
 
-If any `fallback` implementations were found in the scene, they are listed, and 
+If any `fallback` implementations were found in the scene, they are listed, and
 the box is not highlighted red.
 
 ```{figure} opt-fallback-disp-with-impl.png
@@ -2082,7 +2105,7 @@ struct TokenPair {
 }
 ```
 
-We have two contracts `BankToken.sol` and `LoanToken.sol`. 
+We have two contracts `BankToken.sol` and `LoanToken.sol`.
 To set the `tokenA` field of the `tokenPair` struct to be `BankToken`, and `tokenB` to be `LoanToken`:
 
 _Command line_
@@ -2101,7 +2124,7 @@ _Configuration file_
 ```
 
 ````{caution}
-The `struct_link` syntax does not specify the struct's type name (`TokenPair`, in the example above) because it is applied to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defines 
+The `struct_link` syntax does not specify the struct's type name (`TokenPair`, in the example above) because it is applied to all structs. Note the potential for confusion if multiple structs in the same contract use the same name for address fields that should hold different addresses. E.g. if `Bank.sol` also defines
 
 ```solidity
 struct ReserveTokens {
@@ -2236,8 +2259,8 @@ Use this flag when you prefer not to manually add explicit `DISPATCHER` summarie
 
 **Example**
 
-Suppose a contract `C` creates a new instance of a contract `Foo`. 
-`Foo` calls some method `m()`. 
+Suppose a contract `C` creates a new instance of a contract `Foo`.
+`Foo` calls some method `m()`.
 To inline the constructor of `Foo` at the creation site, and automatically {ref}`--link` the method `m()` to `Foo`:
 
 _Command line_
@@ -2322,7 +2345,7 @@ Version options
 Shows the version of the local installation of `certora-cli` you have.
 
 **When to use it?**
-When you suspect you have an old installation. To install the newest version, use 
+When you suspect you have an old installation. To install the newest version, use
 ```sh
 pip install --upgrade certora-cli
 ```
@@ -2343,7 +2366,7 @@ certoraRun --version
 ```
 
 **What does it do?**
-This option lets you select a specific version of the Certora Prover. 
+This option lets you select a specific version of the Certora Prover.
 
 **When to use it?**
 Use this flag to reproduce behavior from an earlier version of the Prover, which is especially useful when features have been changed or deprecated in newer releases.
@@ -2372,18 +2395,18 @@ Conf file options
 ## `override_base_config`
 
 **What does it do?**
-Allows you to import options from another `.conf` file. 
-This option gets as a value a path to the imported `.conf` file. 
-If the path is relative, it is relative to the current working directory, 
+Allows you to import options from another `.conf` file.
+This option gets as a value a path to the imported `.conf` file.
+If the path is relative, it is relative to the current working directory,
 regardless of the original `.conf` file's location.
-Options in the imported `.conf` file will be overridden if the same option appears also in the original `.conf` file or in the command line. 
+Options in the imported `.conf` file will be overridden if the same option appears also in the original `.conf` file or in the command line.
 It is only possible to import from a single `.conf` file and
 the imported `.conf` file cannot import from yet another `.conf` file.
 
 
 **When to use it?**
-When you want to use the same options for multiple runs, but with some small changes. 
-For example, you can have a base config file with all the options you need, 
+When you want to use the same options for multiple runs, but with some small changes.
+For example, you can have a base config file with all the options you need,
 and then create a new `.conf` file that imports the base one
 and overrides only the options you want to change.
 
@@ -2484,7 +2507,7 @@ _Configuration file_
 ## `precise_bitwise_ops`
 
 **What does it do?**
-This option models bitwise operations exactly, instead of using the default {term}`overapproximation`. 
+This option models bitwise operations exactly, instead of using the default {term}`overapproximation`.
 It is useful when the Prover reports a counterexample caused by incorrect modeling of bitwise operations, but enabling this option can significantly increase verification time.
 
 **Limitations**
@@ -2517,7 +2540,7 @@ _Configuration file_
 ## `prover_args`
 
 The `prover_args` option allows you to provide fine-grained tuning options to the
-Prover. 
+Prover.
 `prover_args` receives a string containing Prover-specific options, and will be sent as-is to the Prover.
 `prover_args` cannot set Prover options that are set by standalone `certoraRun` options (e.g. the Prover option `-t` is
 set by {ref}`--smt_timeout` therefore cannot appear in `prover_args`). `prover_args` value must be quoted.
@@ -2609,7 +2632,7 @@ _Configuration file_
 (-smt_groundquantifiers)=
 ### `smt_groundQuantifiers`
 
-This option disables quantifier grounding. 
+This option disables quantifier grounding.
 See {ref}`grounding` for more information.
 
 **Usage**
@@ -2672,12 +2695,12 @@ Sets the maximum splitting depth.
 
 **When to use it?**
 
-When the deepest {term}`split`s are too heavy to solve, 
-but not too high in number, increasing this will lead to smaller, 
-but more numerous {term}`split leaves`, 
+When the deepest {term}`split`s are too heavy to solve,
+but not too high in number, increasing this will lead to smaller,
+but more numerous {term}`split leaves`,
 which run at the full SMT timeout (as set by {ref}`--smt_timeout`).
 Conversely, if run time is too high because there are too many splits,
-decreasing this number means that more time is spent on fewer, 
+decreasing this number means that more time is spent on fewer,
 but bigger split leaves.
 The default value for this option is 10.
 
