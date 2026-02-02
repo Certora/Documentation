@@ -1845,7 +1845,7 @@ This option is not supported from the command line and must be used via a config
 
 
 (--contract_extensions_override)=
-## `--contract_extensions_override`
+## `contract_extensions_override`
 
 **What does it do?**
 If this flag is set in addition to the {ref}`--contract_extensions` flag, then
