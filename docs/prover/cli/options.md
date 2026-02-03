@@ -1866,6 +1866,18 @@ implements a function `foo()` that delegate-calls the `foo()` function in
 contract `B`. Without this flag the Prover will fail to "transfer" `B.foo()`
 into `A`. Setting this flag will cause `B`'s implementation to override `A`'s.
 
+_command line_
+
+```sh
+certoraRun --contract_extensions_override
+```
+
+_configuration file_
+
+```json
+"contract_extensions_override": true
+```
+
 
 (--contract_recursion_limit)=
 ## `contract_recursion_limit`
