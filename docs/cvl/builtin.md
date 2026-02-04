@@ -27,6 +27,7 @@ built_in_rule_name ::=
     | "deepSanity"
     | "viewReentrancy"
     | "safeCasting"
+    | "uncheckedOverflow"
 ```
 
 (built-in-msg-value-in-loop)=
@@ -211,7 +212,7 @@ This ensures that the external call cannot observe `currentContract` in any stat
 called from `currentContract`. 
 
 
-(built-in-has-delegate-calls)=
+(built-in-safe-casting)=
 Safe Casting &mdash; `safeCasting`
 --------------------------------------------------
 
@@ -224,3 +225,26 @@ This rule can be enabled by including
 use builtin rule safeCasting;
 ```
 in a spec file. In addition, the line `safe_casting_builtin : true` must be added to the conf file.
+
+
+(built-in-unchecked-overflow)=
+Unchecked Overflow &mdash; `uncheckedOverflow`
+--------------------------------------------------
+
+The `uncheckedOverflow` built-in looks for cases where any of the operations `+, -, *` appearing within an `unchecked` solidity block can actually overflow.
+
+For example:
+```
+function basicMul(uint128 x, uint128 y) public pure returns (uint)  {
+    unchecked {
+        return x * y;
+    }
+}
+```
+This will fail the builtin rule, because the multiplilcation is a `uint128` multipication (even if it's later considered as a `uint`).
+
+This rule can be enabled by including
+```cvl
+use builtin rule uncheckedOverflow;
+```
+in a spec file. In addition, the line `unchecked_overflow_builtin : true` must be added to the conf file.
