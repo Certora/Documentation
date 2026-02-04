@@ -241,10 +241,9 @@ function basicMul(uint128 x, uint128 y) public pure returns (uint)  {
     }
 }
 ```
-This will fail the builtin rule, because the multiplilcation is a `uint128` multipication (even if it's later considered as a `uint`).
+This will fail the builtin rule, because the multiplication is a `uint128` multiplication (even if it's later considered as a `uint`).
 
 This rule can be enabled by including
 ```cvl
 use builtin rule uncheckedOverflow;
 ```
-in a spec file. In addition, the line `unchecked_overflow_builtin : true` must be added to the conf file.
