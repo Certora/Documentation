@@ -245,6 +245,9 @@ contracts in the {term}`scene` will be used.
 You may provide multiple method signatures, in which case the Prover will run on
 each of the listed methods.
 
+One can also provide only the method name (without any arguments). If there are
+several overloads for this function name all of them will be selected.
+
 **When to use it?**
 This option is useful when focusing on a specific counterexample; running on a
 specific contract method saves time.
@@ -275,6 +278,12 @@ _Command line_
 
 ```sh
 certoraRun Bank.sol --verify Bank:Bank.spec --method 'C.deposit(uint)'
+```
+
+or (using only the method name):
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --method 'C.deposit'
 ```
 
 _Configuration file_
