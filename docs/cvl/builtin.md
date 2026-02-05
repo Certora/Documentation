@@ -218,13 +218,13 @@ Safe Casting &mdash; `safeCasting`
 
 The `safeCasting` built-in rule is there to catch cases where an explicit cast in solidity is actually out of bounds. 
 For example, if an `uint` is cast to a `uint64`, the rule will fail if there is some external function in the contract, that can be called
-in such a way, that the value being cast is larger than `2^64 - 1`. Casting between signed and unsigned values are also checked. So if an `uint` is cast to an `int`, and the cast value is larger than `2^255 - 1`. the rule will fail.
+in such a way, that the value being cast is larger than `2^64 - 1`. Casting between signed and unsigned values are also checked. So if an `uint` is cast to an `int`, and the cast value is larger than `2^255 - 1`, the rule will fail.
 
 This rule can be enabled by including
 ```cvl
 use builtin rule safeCasting;
 ```
-in a spec file. In addition, the line `safe_casting_builtin : true` must be added to the conf file.
+in a spec file. In addition, the line `"safe_casting_builtin" : true` must be added to the conf file.
 
 
 (built-in-unchecked-overflow)=
@@ -247,3 +247,4 @@ This rule can be enabled by including
 ```cvl
 use builtin rule uncheckedOverflow;
 ```
+In addition, the line `"unchecked_overflow_builtin" : true` must be added to the conf file.
