@@ -15,7 +15,7 @@ Prover Release Notes
 
 ### CI/CD
 - [feat] The GitHub action now replaces active reviews within the same configurations.
-- [feat] Added GitHub Actions API support for cancelling jobs and refreshing job status. This will require adding an additional workflow as described [here](https://github.com/Certora/certora-run-action/blob/main/README.md#certora-api-integration).
+- [feat] Added GitHub Actions API support for cancelling jobs and refreshing job status.
 - [feat] Added support for [Solana](https://github.com/Certora/certora-run-action/blob/main/README.md#inputs), [Sui](https://github.com/Certora/certora-run-action/blob/main/README.md#-note-installing-the-sui-cli), [Soroban](https://github.com/Certora/certora-run-action/blob/main/README.md#-note-installing-the-soroban-environment) and [Vyper](https://github.com/Certora/certora-run-action/blob/main/README.md#inputs).
 - [feat] Improved error logging by GitHub action.
 
