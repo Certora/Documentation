@@ -50,6 +50,8 @@ bugfix
 bytecode
 bytecodes
 bytemap
+cancelled
+cancelling
 callee
 cex
 changelog

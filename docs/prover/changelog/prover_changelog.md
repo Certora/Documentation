@@ -5,6 +5,21 @@ Prover Release Notes
 ```{contents}
 ```
 
+8.8.0 (February 9, 2026)
+-------------------------
+### CVL
+- [feat] Added a builtin rule, `uncheckedOverflow` that checks whether arithmetic operations can overflow or underflow in `unchecked` code. The analysis is done for each external method and each unchecked operation that is reachable from the method call.
+- [feat] Added a builtin rule, `safeCasting` that checks whether any Solidity casting operator can be out of bounds (e.g., whether in `uint16(x)`, is it possible for `x` to be larger than `2^16-1`). Analysis is done for each external method and each casting operation that is reachable from the method call.
+- [feat] The `--method` and `--exclude_method` flags now allow providing only the method name (without any parameter types) for EVM. If there are several overloads for this function name, all of them will be matched.
+- [feat] New flag, `--assume_no_casting_overflow`, assumes no casting operations in Solidity are out of bounds. E.g., for `int16(x)` in Solidity code, `x` is assumed to be in the valid range of an `int16` when this flag is used. Note that this is an underapproximation, as Solidity does not revert on such out-of-bounds values.
+
+### CI/CD
+- [feat] The GitHub action now replaces active reviews within the same configurations.
+- [feat] Added GitHub Actions API support for cancelling jobs and refreshing job status. This will require adding an additional workflow as described [here](https://github.com/Certora/certora-run-action/blob/main/README.md#certora-api-integration).
+- [feat] Added support for [Solana](https://github.com/Certora/certora-run-action/blob/main/README.md#inputs), [Sui](https://github.com/Certora/certora-run-action/blob/main/README.md#-note-installing-the-sui-cli), [Soroban](https://github.com/Certora/certora-run-action/blob/main/README.md#-note-installing-the-soroban-environment) and [Vyper](https://github.com/Certora/certora-run-action/blob/main/README.md#inputs).
+- [feat] Improved error logging by GitHub action.
+
+
 8.6.3 (January 6, 2026)
 -------------------------
 ### CVL
