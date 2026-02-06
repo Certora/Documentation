@@ -5,7 +5,7 @@ Prover Release Notes
 ```{contents}
 ```
 
-8.8.0 (February 10, 2026)
+8.8.0 (February 9, 2026)
 -------------------------
 ### CVL
 - [feat] Added a builtin rule, `uncheckedOverflow` that checks whether arithmetic operations can overflow or underflow in `unchecked` code. The analysis is done for each external method and each unchecked operation that is reachable from the method call.
