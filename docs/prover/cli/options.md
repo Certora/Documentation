@@ -2524,6 +2524,29 @@ _Configuration file_
 ```
 
 
+(--assume_no_casting_overflow)=
+## `assume_no_casting_overflow`
+
+This option adds an implicit assumption to all Solidity casting operation. For example, if `int16(x)` appears in the Solidity code, then it is assumed that `x` is indeed in the valid range of `int16` at this point in the program.
+
+Note that this flag may result in an underapproximation, i.e., it may result in the tool not checking some valid runs. That is because solidity does not revert on out-of-bounds casting operations. Therefore, it is important to use this option with caution.
+
+**Example**
+
+To assume Solidity casts do not overflow / underflow:
+
+_Command line_
+
+```sh
+certoraRun proj.conf --assume_no_casting_overflow true
+```
+
+_Configuration file_
+
+```json
+"assume_no_casting_overflow": true
+```
+
 (--precise_bitwise_ops)=
 ## `precise_bitwise_ops`
 
