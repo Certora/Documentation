@@ -2529,7 +2529,7 @@ _Configuration file_
 
 This option adds an implicit assumption to all Solidity casting operation. For example, if `int16(x)` appears in the Solidity code, then it is assumed that `x` is indeed in the valid range of `int16` at this point in the program.
 
-Note that this flag may result in an underapproximation, i.e., it may result in the tool not checking some valid runs. That is because solidity does not revert on out-of-bounds casting operations. Therefore, it is important to use this option with caution.
+Note that this flag may result in an underapproximation, i.e., it may result in the tool not checking some valid runs. That is because Solidity does not revert on out-of-bounds casting operations. Therefore, it is important to use this option with caution.
 
 **Example**
 
