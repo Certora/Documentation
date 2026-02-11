@@ -27,7 +27,7 @@ built_in_rule_name ::=
     | "deepSanity"
     | "viewReentrancy"
     | "safeCasting"
-    | "uncheckedOverflow"
+    | "uncheckedOverflows"
 ```
 
 (built-in-msg-value-in-loop)=
@@ -228,10 +228,10 @@ in a spec file. In addition, the line `"safe_casting_builtin" : true` must be ad
 
 
 (built-in-unchecked-overflow)=
-Unchecked Overflow &mdash; `uncheckedOverflow`
+Unchecked Overflow &mdash; ``
 --------------------------------------------------
 
-The `uncheckedOverflow` built-in looks for cases where any of the operations `+, -, *` appearing within an `unchecked` solidity block can actually overflow.
+The `` built-in looks for cases where any of the operations `+, -, *` appearing within an `unchecked` solidity block can actually overflow.
 
 For example:
 ```
@@ -245,6 +245,6 @@ This will fail the builtin rule, because the multiplication is a `uint128` multi
 
 This rule can be enabled by including
 ```cvl
-use builtin rule uncheckedOverflow;
+use builtin rule uncheckedOverflows;
 ```
 In addition, the line `"unchecked_overflow_builtin" : true` must be added to the conf file.
