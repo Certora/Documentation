@@ -228,10 +228,10 @@ in a spec file. In addition, the line `"safe_casting_builtin" : true` must be ad
 
 
 (built-in-unchecked-overflow)=
-Unchecked Overflow &mdash; ``
+Unchecked Overflow &mdash; `uncheckedOverflows`
 --------------------------------------------------
 
-The `` built-in looks for cases where any of the operations `+, -, *` appearing within an `unchecked` solidity block can actually overflow.
+The `uncheckedOverflows` built-in looks for cases where any of the operations `+, -, *` appearing within an `unchecked` solidity block can actually overflow.
 
 For example:
 ```
