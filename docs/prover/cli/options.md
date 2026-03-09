@@ -191,7 +191,7 @@ _Configuration file_
 Typically, all rules and {term}`invariant`s (after being filtered by {ref}`--rule` and {ref}`--exclude_rule`) are evaluated in a single Prover job.
 With `split_rules` the user can run specific rules or invariants on separate dedicated Prover jobs.
 A new job will be created and executed for each rule or invariant that matches a
-{term}`rule name pattern` in `split_rules` an additional job will be created for the rest of the rules and invariants.
+{term}`rule name pattern` in `split_rules` and an additional job will be created for the rest of the rules and invariants.
 After launching the generated jobs, the original job will return with a link to the dashboard,
 listing the status of the generated jobs.
 
@@ -495,7 +495,7 @@ _Configuration file_
 ## `independent_satisfy`
 
 **What does it do?**
-The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occurs in a rule.
+The independent satisfy mode checks each {ref}`satisfy statement <satisfy>` independently from all other satisfy statements that occur in a rule.
 Normally, each satisfy statement will be turned into a sub-rule (similarly to the {ref}`--multi_assert_check` mode),
 but previously encountered satisfy statements will be still considered when creating a satisfying assignment.
 
@@ -630,7 +630,7 @@ Show several counterexamples for failed assert statements and several witnesses 
 By default, the Prover returns a single example per rule, either a counterexample (for `assert` violations) or a witness (for `satisfy` verification). When this flag is enabled, the Prover will attempt to generate multiple examples from different control-flow paths or logical reasons, offering a broader view of the rule's behavior.
 
 **When to use it?**
-Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and refine in the specification or implementation.
+Use this flag when debugging complex rules where multiple, distinct scenarios might lead to failure or success. Seeing several examples can help identify different edge cases and refine the specification or implementation.
 
 **Example**
 
@@ -654,7 +654,7 @@ _Configuration file_
 
 **What does it do?**
 Runs the builtin sanity rule on all methods in the project. If the Prover is run
-from within a git project, all `.sol` files in the in the git repository are added
+from within a git project, all `.sol` files in the git repository are added
 to the scene and the {ref}`builtin sanity rule <built-in-sanity>` is run on
 them. Otherwise, _all_ `.sol` files in the tree under the current working
 directory are collected.
@@ -785,7 +785,7 @@ Path patterns must end with one of the following suffixes: `.sol`, `.vy`, or `.y
 
 It is not allowed to set both the map and the non-map attributes together (e.g., {ref}`--solc` and {ref}`--compiler_map`).
 
-If a map attribute was set, all files/contracts declared in as sources must be mapped.
+If a map attribute was set, all files/contracts declared as sources must be mapped.
 
 For contract patterns, the wildcard character `*` replaces any character that is allowed in contract names.
 
@@ -2772,7 +2772,7 @@ _Configuration file_
 
 **What does it do?**
 
-We can tell the Certora Prover to continue even when the a {term}`split` has had
+We can tell the Certora Prover to continue even when a {term}`split` has had
 a maximum-depth timeout. Note that this is only useful when there exists a
 {term}`counterexample` for the rule under verification, since in order to prove
 the absence of counterexamples (i.e. correctness), all splits need to be
