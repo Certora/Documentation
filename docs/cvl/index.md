@@ -16,6 +16,7 @@ expr.md
 statements.md
 imports.md
 using.md
+linking.md
 methods.md
 rules.md
 builtin.md

@@ -16,6 +16,9 @@ A spec may contain any of the following:
  - **[Using statements](using):** Using statements allow a specification to reference
    multiple contracts.
 
+ - **{ref}`Links blocks <linking>`:** `links` blocks declare contract linking inline in the
+   spec, mapping storage variables holding addresses to specific contract instances.
+
  - **[Methods blocks](methods):** `methods` blocks contain information on how methods
    should be summarized by the Prover during verification.
 

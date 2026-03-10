@@ -1966,6 +1966,13 @@ _Configuration file_
 ]
 ```
 
+```{note}
+You can also declare linking inline in your spec using a {ref}`links block <linking>`,
+which provides type checking, precise struct paths, and support for arrays,
+mappings, and wildcards.  The `links` block and `--link` flag cannot be used
+together for the same contract.
+```
+
 (--optimistic_contract_recursion)=
 ## `optimistic_contract_recursion`
 
@@ -2157,6 +2164,13 @@ struct ReserveTokens {
 
 ... then the `struct_link` setting above would result in the same fixed address values for `tokenA` and `tokenB` in instances of this struct, which is likely an unintended constraint. Similarly, structs that are values in a mapping or array will _all_ get the same address linkage.
 ````
+
+```{note}
+Consider using a {ref}`links block <linking>` in your spec instead of
+`--struct_link`.  The `links` block targets specific storage paths and avoids the
+ambiguity of matching all structs with the same field name.  The `links` block and
+`--struct_link` flag cannot be used together for the same contract.
+```
 
 
 Options for job metadata and dashboard filtering
