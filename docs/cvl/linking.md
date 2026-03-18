@@ -3,10 +3,10 @@
 ===========
 
 The `links` block allows you to declare contract linking directly in your CVL
-specification, replacing the {ref}`--link` and {ref}`--struct_link` CLI flags.
-Each entry in the `links` block tells the Prover that a particular storage
-location holding an address should be resolved to a specific contract instance
-in the {term}`scene`.
+specification, replacing the {ref}`--link` and {ref}`--struct_link` conf file
+attributes. Each entry in the `links` block tells the Prover that a particular
+storage location holding an address should be resolved to a specific contract
+instance in the {term}`scene`.
 
 The `links` block supports linking simple scalar fields, struct fields, array
 elements, mapping entries, immutable variables, and arbitrary nesting of these.
@@ -52,7 +52,7 @@ Basic Linking
 
 The simplest form of linking maps a storage variable that holds an address to a
 contract instance in the scene.  This is equivalent to using the {ref}`--link`
-CLI flag.
+conf file attribute.
 
 Given a contract with a storage variable `token` of type `address` (or a
 contract type like `IERC20`):

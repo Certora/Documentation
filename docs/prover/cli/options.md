@@ -1939,6 +1939,13 @@ _Configuration file_
 <contract>:<slot>=<address>
 ```
 
+```{note}
+The recommended approach is to declare linking inline in your spec using a
+{ref}`links block <linking>`, which provides type checking, precise struct
+paths, and support for arrays, mappings, and wildcards. The `links` block and
+`--link` flag cannot be used together in the same Prover run.
+```
+
 **What does it do?**
 Links a slot in a contract with another contract.
 
@@ -1964,13 +1971,6 @@ _Configuration file_
 "link": [
     "Bank:underlyingToken=BankToken"
 ]
-```
-
-```{note}
-You can also declare linking inline in your spec using a {ref}`links block <linking>`,
-which provides type checking, precise struct paths, and support for arrays,
-mappings, and wildcards.  The `links` block and `--link` flag cannot be used
-together for the same contract.
 ```
 
 (--optimistic_contract_recursion)=
