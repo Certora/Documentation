@@ -211,6 +211,21 @@ field of the `Pool` contract instance in the scene is a pointer to the `Asset`
 contract instance in the scene.  With this information, the Prover is able to
 resolve the calls to the methods on `Pool.asset` using the code in `Asset.sol`.
 
+```{tip}
+Instead of using the `--link` CLI flag, you can declare linking directly in your
+spec using a {ref}`links block <linking>`:
+
+    using Pool as pool;
+    using Asset as asset;
+
+    links {
+        pool.asset => asset;
+    }
+
+The `links` block is type-checked and also supports linking struct fields, array
+elements, mapping entries, and more.  See {ref}`linking` for full details.
+```
+
 With this option, the Prover is no longer able to construct a counterexample to
 the `integrityOfDeposit` rule, so the rule passes. Note that the external calls
 to the `Asset` contract no longer appear in the "Call Resolution" tab, because
