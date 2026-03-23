@@ -330,7 +330,7 @@ Migrating from CLI Flags
 -------------------------
 
 If you are currently using `--link` or `--struct_link`, you can migrate to the
-`links` block as follows:
+`links` block as follows (assuming `using` statements have defined `pool` and `tokenImpl`):
 
 | CLI Flag | `links` Block Equivalent |
 | --- | --- |
