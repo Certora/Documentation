@@ -9,8 +9,12 @@ Prover Release Notes
 8.11.1 (March 31, 2026)
 -----------------------
 ### CVL
+- [feat] Added CVL `links` Block. The new `links` block in CVL lets you bind storage variables to target contracts directly in your spec, providing a preferred alternative to the .conf file's `link` and `struct_link` fields. It supports field access, array and mapping indices (with numeric literals, `to_bytesX`, or contract aliases), wildcards, struct traversal, and multiple link targets per slot. All paths are fully typechecked against the contract's storage layout, catching errors like unknown fields, type mismatches, and out-of-bounds indices on static arrays at compile time.
+- [feat] TAC Dump Improved. The html generated for viewing “TAC dump” diagnostics received several improvements: Added support for the browser’s back & forward buttons. When clicking on a variable, its input and output variables are also highlighted to make finding them easier. And a new “Dataflow” view was added. In this view one can track the flow of data through a graph of variables.
+- [feat] Improved Semantics for `requireInvariant` with Strong Invariants. When a rule or invariant uses a `requireInvariant` command with a `strong invariant`, the  invariant is re-assumed after any `HAVOC` in the rule/invariant. This can reduce false counterexamples after external calls due to violated (strong) invariants.
 
 ### CI/CD
+- [feat] New Review Comment Features: `gh-review` indicates when to add a review comment to the PR with options `always`, `failure`, and `never` (default is `always`). `gh-review-jobs` indicates which jobs to include in the GitHub review comment with options `all` or `failed` (default is `all`). If `gh-review` is `never`, the status link points to a summary page like [this](https://prover.certora.com/v1/github-app/548812e5-3138-4e85-a4c5-af8164eb4086/jobs). This link only works for public repositories; private repositories still point to the Prover job page. We also added a new extensive [Troubleshooting section](https://github.com/Certora/certora-run-action/?tab=readme-ov-file#troubleshooting) to the documentation.
 
 
 8.8.0 (February 9, 2026)
