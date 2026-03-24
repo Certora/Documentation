@@ -14,8 +14,8 @@ variants one by one. We will begin with the TAC report without Prover result
 information, since its constituents are present in the other variants as well.
 
 ```{note}
-In addition to the information below, there is a brief explanation of how to 
-use TAC reports in the 
+In addition to the information below, there is a brief explanation of how to
+use TAC reports in the
 [webinar on timeouts](https://www.youtube.com/watch?v=mntP0_EN-ZQ).
 ```
 
@@ -36,17 +36,17 @@ Regular nodes and call nodes. Regular nodes have a solid outline, while call
 nodes have a dashed outline. Clicking on a regular nodes will make the source
 code box (discussed below) focus on the corresponding TAC source code; clicking
 on a call node will replace the currently displayed CFG with the CFG that
-belongs to the called method. 
+belongs to the called method.
 
 ```{note}
-Only external calls are explicit in the TAC report's CFGs. Internal calls are 
+Only external calls are explicit in the TAC report's CFGs. Internal calls are
 inlined on the TAC source code level.
 ```
 
 [^nested-cfg]: Strictly speaking, there is a set of CFGs available for each
     verification condition. Every external call has its own CFG, and the CFGs
     are related by call nodes which lead from a call site to the corresponding
-    callee's CFG. Intuitively, this set can be viewed as one CFG with nested 
+    callee's CFG. Intuitively, this set can be viewed as one CFG with nested
     sub-CFGs for the calls.
 
 The upper-mid left part of a TAC report contains the TAC source code. The
@@ -93,8 +93,8 @@ arrows indicating the "depth" of a call in the call links
 % TODO: ok to show these Aave/delvtech|element method names in this picture?
 
 The bottom part of the TAC report shows a more-detailed control-flow relations
- within individual nodes. These are usually not useful for the tool user, so we
- will ignore them in the remainder of this document.
+within individual nodes and variables. These are usually not useful for the
+tool user, so we will ignore them in the remainder of this document.
 
 ### SAT TAC reports
 
@@ -122,18 +122,18 @@ The valuation is given in the box in the top right. It lists every variable in
 the TAC program along with the value that it has in the current counterexample.
 
 ```{note}
-The names of the TAC variables are often not helpful for understanding what they 
-mean, but the context (e.g. operations they occur in, or the source pointers) can 
+The names of the TAC variables are often not helpful for understanding what they
+mean, but the context (e.g. operations they occur in, or the source pointers) can
 give some hints.
-Running the Prover with the option 
-`--prover_args "-canonicalizeTAC false"` can lead to more helpful variable names 
+Running the Prover with the option
+`--prover_args "-canonicalizeTAC false"` can lead to more helpful variable names
 in some cases, especially the names of CVL variables are mostly preserved.
 ```
 
 ### UNSAT TAC reports
 
 By default, the TAC report in the UNSAT case is the same as the plain TAC
-report. 
+report.
 
 When the `--coverage_info` option is set either to `basic` or `advanced`
 (default is `none`), a version of the TAC reports is shown that illustrates
@@ -160,12 +160,12 @@ example TAC report for a run with a Timeout result
 The figure above shows a TAC report that was generated from a Certora Prover run
 that timed out. Compared to the plain TAC report, additional information is
 available in three ways:
- - Explanations and statistics are given in the box in the top right corner 
+ - Explanations and statistics are given in the box in the top right corner
    (double click to expand).
- - CFG nodes have colors that indicate how the Prover run went and which parts 
+ - CFG nodes have colors that indicate how the Prover run went and which parts
    are difficult.
- - In the source code box there is difficulty information given by color 
-   highlights to some commands and by additional text giving difficulty 
+ - In the source code box there is difficulty information given by color
+   highlights to some commands and by additional text giving difficulty
    statistics on difficult code blocks .
 
 
@@ -175,7 +175,7 @@ available in three ways:
 The box in the top right of the Timeout TAC reports contains explanations on the
 node colors as well as statistical information pertaining to how difficult the
 verification is to solve in general and what might be the particularly difficult
-parts.   
+parts.
 
 ```{figure} timeout-tac-report-explanation-box.png
 :name: timeout tac report explanation box
@@ -197,7 +197,7 @@ the contents of the box are the following:
 The fill-colors of the graph nodes in the timeout TAC report summarize the
 outcomes of the individual control flow splits for the current rule. See
 {ref}`control-flow-splitting` for background on the procedure.
-An additional violet gradient is used to indicate nodes that are likely to 
+An additional violet gradient is used to indicate nodes that are likely to
 contain code that is difficult for the Prover to handle.
 
 Nodes that have a green fill color are contained exclusively in splits that have
@@ -233,20 +233,20 @@ indicated by the yellow fill color
 When a call node has a violet gradient, this means its subgraph contains at
 least one node with a violet gradient. When a regular node has a violet gradient
 this means that our heuristic analysis of the node's difficulty has marked it as
-potentially difficult. 
+potentially difficult.
 
 In practice, the violet highlighting typically means that there are at least two
 nonlinear operations in the node, or a high number of case splits.
 {term}`Nonlinear operations <nonlinear arithmetic>` include multiplications of
 two non-constant values, divisions by a non-constant value, and more. Case
-splits can be induced by hashing unbounded arrays among other things. 
+splits can be induced by hashing unbounded arrays among other things.
 
 When a regular node is marked violet, the source code in the source code box of
 the report will contain highlights of the relevant lines, as well as a summary
 of the difficult operations a the top of the block corresponding to the node.
 
 ```{figure} timeout-tac-report-source-code.png
-:name: timeout tac report source code highlights 
+:name: timeout tac report source code highlights
 :align: center
 
 Source code with highlighting and difficulty summary
