@@ -53,6 +53,7 @@ bytemap
 cancelled
 cancelling
 callee
+calldata
 cex
 changelog
 changelogs

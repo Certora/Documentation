@@ -39,3 +39,8 @@ Here's a brief overview:
 
 ### define complex functionally  (view/pure)
 `powerOfTen`: A utility function to compute the n-th power of 10.
+
+## Harness for unresolved calls
+
+For a specialized harness that intercepts unresolved external calls,
+see {ref}`unresolved-harness`.
