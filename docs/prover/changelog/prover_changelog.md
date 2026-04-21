@@ -6,7 +6,7 @@ Prover Release Notes
 ```
 
 
-8.11.1 (March 31, 2026)
+8.11.3 (April 21, 2026)
 -----------------------
 ### CVL
 - [feat] Added CVL `links` Block. The new `links` block in CVL lets you bind storage variables to target contracts directly in your spec, providing a preferred alternative to the .conf file's `link` and `struct_link` fields. It supports field access, array and mapping indices (with numeric literals, `to_bytesX`, or contract aliases), wildcards, struct traversal, and multiple link targets per slot. All paths are fully type checked against the contract's storage layout, catching errors like unknown fields, type mismatches, and out-of-bounds indices on static arrays at compile time.
