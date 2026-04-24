@@ -26,9 +26,20 @@ external `CALL` to a Solidity contract named
 `CertoraUnresolvedHarness`.  Before invoking the harness's `fallback`
 function, the Prover writes the original call context (callee address,
 sender, calldata size, expected return size, ETH value, and gas) into
-seven fixed storage slots.  The user can then implement arbitrary
+seven fixed storage slots in the harness. The user can then implement arbitrary
 return-value logic in the fallback, and — crucially — can summarize the
 harness's helper functions from CVL.
+
+Note that if the goal is to implement purely dispatching logic to existing
+contracts in the scene, it is recommended to use
+{ref}`catch-unresolved-calls entries <catch-unresolved-calls-entry>`.
+The unresolved harness supports more fine-grained logic, such as modeling
+methods that do not exist in the scene in any implementing contract, or
+calls to precompiled contracts that do not use the ABI convention.
+An additional use case is handling of proxy calls.
+Finally, by capturing the call in a Solidity contract, you can perform
+memory and calldata lookups that are sometimes harder to express in CVL
+alone.
 
 Enabling the feature
 --------------------
@@ -47,6 +58,7 @@ harness contract in the scene:
 The harness contract **must** be named exactly
 `CertoraUnresolvedHarness` and **must** appear in the `files` list.
 See {ref}`-useUnresolvedHarness` for the CLI reference.
+We provide a template in the next sections.
 
 Storage slot layout
 -------------------
@@ -102,7 +114,9 @@ contract CertoraUnresolvedHarness {
     uint256 public callValue;           // slot 5
     uint256 public callGas;             // slot 6
 
-    // === External helpers (summarizable in CVL) ===
+    // further fields can be customized
+
+    // === Example optional external helpers (summarizable in CVL) ===
 
     // Single uint256 return
     function getResult(bytes4 selector)
@@ -121,14 +135,17 @@ contract CertoraUnresolvedHarness {
     // === Fallback ===
 
     fallback() external payable {
+        // how to extract the selector
         bytes4 selector;
         if (msg.data.length >= 4) {
             selector = bytes4(msg.data[:4]);
         }
 
+        // example: modeling based on assumed expected output
         if (outSize == 64) {
             // Two-element return
-            (bool flag, uint256 val) = this.getResultPair();
+            // use `this.` to allow summarizing `getResultPair` as an external function in CVL
+            (bool flag, uint256 val) = this.getResultPair(); 
             bytes memory ret = abi.encode(flag, val);
             assembly { return(add(ret, 0x20), mload(ret)) }
         } else if (inSize == 0 && outSize == 0) {
@@ -139,19 +156,28 @@ contract CertoraUnresolvedHarness {
             bytes memory ret = abi.encode(result);
             assembly { return(add(ret, 0x20), mload(ret)) }
         }
+        // returning values must use `abi.encode` and the assembly block using `return` opcode
     }
 }
 ```
 
-### Design points
+```{note}
+To return values from the fallback, use `abi.encode` to construct the
+return buffer and the `return` opcode via inline assembly.  A regular
+Solidity `return` statement does not work in a fallback that needs to
+return arbitrary bytes.
+```
+
+### Example usage in this template
 
 1. **External helper functions** — `getResult` and `getResultPair`
-   make external calls to `this`, so they appear as separate methods
-   that can be {ref}`summarized <summaries>` in CVL.  The fallback
+   make external calls to `this`, so they appear as separate external methods
+   that can be {ref}`summarized <summaries>` in CVL.  By invoking them, the fallback
    delegates to these helpers, letting you control return values from
    your spec.
 
-2. **Branching on `outSize`** — the Prover writes `outSize` to slot 4
+2. **Branching on `outSize`** — the Prover writes `outSize` of the original call
+   to storage slot 4 (`outSize` field)
    before the fallback runs, so the fallback can return the correct
    number of bytes for different call sites.
 
@@ -192,23 +218,26 @@ rule checkCalleeIsRecorded {
     env e;
     address t;
     require t != 0;
-    myFunction(e, t);
-    assert harness.originalCallee() == t;
+    myFunction(e, t); // calls a single unresolved method with target `t`
+    assert harness.originalCallee() == t; // harness captures the target `t` 
 }
 ```
 
 Interaction with CALL opcode hooks
 -----------------------------------
 
-When the feature is active, redirected calls become `CALL` opcodes
-targeting the harness contract.  The harness fallback may also make
-internal `CALL`s to its own helpers (e.g. `this.getResult()`).
+When the feature is active, redirected calls are still executed as
+`CALL` opcodes, so they trigger {ref}`CALL hooks <call-hooks>`.
+In addition, the harness fallback may itself issue `CALL`s to its own
+helpers (e.g. `this.getResult()`).
 
-If you use {ref}`CALL hooks <call-hooks>`, you will likely want to
+If you use {ref}`CALL hooks <call-hooks>`, you may want to
 filter out the harness's own calls.  Use the
 {ref}`executingContract <executingContract>` special variable:
 
 ```cvl
+using CertoraUnresolvedHarness as harness;
+
 persistent ghost mathint redirectedCallCount {
     init_state axiom redirectedCallCount == 0;
 }
@@ -221,13 +250,6 @@ hook CALL(uint g, address addr, uint value,
         redirectedCallCount = redirectedCallCount + 1;
     }
 }
-```
-
-To recover the original callee address (before redirection), read
-slot 0:
-
-```cvl
-assert harness.originalCallee() == expectedTarget;
 ```
 
 Limitations
