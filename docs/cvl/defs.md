@@ -9,14 +9,14 @@ In CVL, **definitions** serve as type-checked macros, encapsulating commonly use
 
 ```cvl
 methods {
-  foo(uint256) returns bool envfree
+  function foo(uint256) external returns(bool) envfree;
 }
 
-definition MAX_UINT256() returns uint256 = 0xffffffffffffffffffffffffffffffff;
+definition MAX_UINT128() returns uint256 = 0xffffffffffffffffffffffffffffffff;
 definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
 
 rule my_rule(uint256 x) {
-  require is_even(x) && x <= MAX_UINT256();
+  require is_even(x) && x <= MAX_UINT128();
   foo@withrevert(x);
   assert !lastReverted;
 }
@@ -32,11 +32,11 @@ Definitions can include an application of another definition, allowing for arbit
 `is_odd` and `is_odd_no_overflow` both reference other definitions:
 
 ```cvl
-definition MAX_UINT256() returns uint256 = 0xffffffffffffffffffffffffffffffff;
+definition MAX_UINT128() returns uint256 = 0xffffffffffffffffffffffffffffffff;
 definition is_even(uint256 x) returns bool = exists uint256 y . 2 * y == x;
 definition is_odd(uint256 x) returns bool = !is_even(x);
 definition is_odd_no_overflow(uint256 x) returns bool =
-    is_odd(x) && x <= MAX_UINT256();
+    is_odd(x) && x <= MAX_UINT128();
 ```
 
 ### Type Error circular dependency

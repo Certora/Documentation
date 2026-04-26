@@ -38,7 +38,8 @@ statement ::= type id [ "=" expr ] ";"
 
             | "havoc" id [ "assuming" expr ] ";"
 
-lhs ::= id [ "[" expr "]" ] [ "," lhs ]
+lhs_atom ::= id { "[" expr "]" } { "." id }
+lhs      ::= lhs_atom { "," lhs_atom }
 ```
 
 See {doc}`basics` for the `id` and `string` productions.  See {doc}`types` for

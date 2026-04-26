@@ -32,8 +32,10 @@ link_path     ::= id "." id { link_segment }
 link_segment  ::= "." id
                | "[" index_expr "]"
 
+to_bytes_fn   ::= "to_bytes1" | "to_bytes2" | ... | "to_bytes32"
+
 index_expr    ::= number
-               | "to_bytes" number "(" number ")"
+               | to_bytes_fn "(" number ")"
                | id
                | "_"
 ```
