@@ -2738,6 +2738,35 @@ _Configuration file_
 ```
 
 
+(-useUnresolvedHarness)=
+### `useUnresolvedHarness`
+
+When enabled, the Prover redirects unresolved external calls to a
+user-provided Solidity contract named `CertoraUnresolvedHarness`
+instead of applying a {ref}`havoc summary <havoc-summary>`.
+See {ref}`unresolved-harness` for full details.
+
+**Usage**
+
+To enable the unresolved call harness:
+
+_Command line_
+
+```sh
+certoraRun Bank.sol CertoraUnresolvedHarness.sol \
+    --verify Bank:Bank.spec \
+    --prover_args '-useUnresolvedHarness true'
+```
+
+_Configuration file_
+
+```json
+"prover_args": [
+  "-useUnresolvedHarness true"
+]
+```
+
+
 (control-flow-splitting-options)=
 Control flow splitting options
 ------------------------------
