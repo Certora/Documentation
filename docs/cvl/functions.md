@@ -14,11 +14,11 @@ The syntax for CVL functions is given by the following [EBNF grammar](ebnf-synta
 function ::= [ "override" ]
              "function" id
              [ "(" params ")" ]
-             [ "returns" type ]
+             [ "returns" ( type | "(" type { "," type } ")" ) ]
              block
 ```
 
-See {doc}`basics` for the `id` production, {doc}`types` for the `type` production,
+See {doc}`basics` for the `id` production, {doc}`types` for the `cvl_type` production,
 and {doc}`statements` for the `block` production.
 
 Examples
@@ -35,6 +35,17 @@ Examples
     }
     ```
   
+- Function returning multiple values:
+    ```cvl
+    function min_max(uint256 x, uint256 y) returns (uint256, uint256) {
+        if (x < y) {
+            return (x, y);
+        } else {
+            return (y, x);
+        }
+    }
+    ```
+
 - [CVL function with no return](https://github.com/Certora/Examples/blob/14668d39a6ddc67af349bc5b82f73db73349ef18/CVLByExample/LiquidityPool/certora/specs/pool.spec#L24)
 
 - [Overriding a function from imported spec](https://github.com/Certora/Examples/blob/be09cf32c55e39f5f5aa8cba1431f9e519b52365/CVLByExample/import/certora/specs/sub.spec#L38)

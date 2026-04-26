@@ -58,7 +58,7 @@ pattern          ::= exact_pattern | wildcard_pattern | catch_all_pattern
 
 exact_pattern    ::= [ id "." ] id "(" evm_params ")" visibility [ "returns" "(" evm_types ")" ]
 wildcard_pattern ::= "_" "." id "(" evm_params ")" visibility
-catch_all_pattern ::= id "." "_" "external"
+catch_all_pattern ::= ( id | "_" ) "." "_" "external"
 
 visibility ::= "internal" | "external"
 
@@ -70,22 +70,22 @@ method_summary   ::= "ALWAYS" "(" value ")"
                    | "NONDET"
                    | "HAVOC_ECF"
                    | "HAVOC_ALL"
-                   | "DISPATCHER" [ "(" ( "true" | "false" ) ")" ]
+                   | "DISPATCHER" [ "(" ( "true" | "false" | dispatch_args ) ")" ]
                    | "AUTO"
                    | "ASSERT_FALSE"
                    | expr [ "expect" id ]
                    | dispatch_list
 
-dispatch_list     ::=
-                   | "DISPATCH" [ "(optimistic=false)" ]  "[" dispatch_list_pattern [","] | empty "]" "default" method_summary
-                   | "DISPATCH" [ "(optimistic=true)" ]  "[" dispatch_list_pattern [","] | empty "]"
+dispatch_list    ::= "DISPATCH" [ "(" dispatch_args ")" ]
+                     "[" [ dispatch_pattern { "," dispatch_pattern } [ "," ] ] "]"
+                     [ "default" method_summary ]
 
-dispatch_list_patterns ::= dispatch_list_patterns "," dispatch_pattern
-                          | dispatch_pattern
+dispatch_args    ::= dispatch_arg { "," dispatch_arg }
+dispatch_arg     ::= ( "optimistic" | "use_fallback" ) "=" ( "true" | "false" )
 
-dispatch_pattern ::= | "_" "." id "(" evm_params ")"
-                     | id "." "_"
-                     | id "." id "(" evm_params ")"
+dispatch_pattern ::= "_" "." id "(" evm_params ")"
+                   | id "." "_"
+                   | id "." id "(" evm_params ")"
 ```
 
 See {doc}`types` for the `evm_type` production.  See {doc}`basics`
@@ -454,7 +454,8 @@ methods {
 `with(env e)` clauses
 ---------------------
 
-After the `optional` annotation, an entry may contain a `with(env e)` clause.
+An entry may contain a `with(env e)` clause in place of the `envfree` annotation,
+before any `optional` annotation.
 The `with` clause introduces a new variable (`e` for `with(env e)`) to represent
 the {ref}`environment <env>` that is passed to a summarized function; the
 variable can be used in function summaries.  `with` clauses may only be used if
@@ -715,7 +716,7 @@ In some cases there's a proxy contract that only has a fallback function and
 that fallback then delegates function calls it receives to some other contract.
 For this case it could be useful for `DISPATCHER` summaries to also inline the
 `fallback` function of known contracts. To enable this use the following syntax:
- * `DISPATCHER(optimistic=<true|false>, use_fallback<true|false>)`
+ * `DISPATCHER(optimistic=<true|false>, use_fallback=<true|false>)`
 
 ```{note}
 The most commonly used dispatcher mode is `DISPATCHER(true)`, because in almost
