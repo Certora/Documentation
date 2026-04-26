@@ -38,7 +38,7 @@ methods that do not exist in the scene in any implementing contract, or
 calls to precompiled contracts that do not use the ABI convention.
 An additional use case is handling of proxy calls.
 Finally, by capturing the call in a Solidity contract, you can perform
-memory and calldata lookups that are sometimes harder to express in CVL
+memory and calldata accesses that are sometimes harder to express in CVL
 alone.
 
 Enabling the feature
