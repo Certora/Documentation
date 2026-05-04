@@ -222,56 +222,24 @@ A few guidelines:
 - **`smt_timeout`** in seconds. 6000 (100 minutes) is a reasonable upper
   bound for hard rules; ratchet down for fast ones.
 
-## 11. `package.metadata.certora`
+## 11. Keep `package.metadata.certora` minimal
 
-This block in your `Cargo.toml` controls what `cargo certora-sbf` ships to
-verification:
-
-```toml
-[package.metadata.certora]
-sources = [
-    "Cargo.toml",
-    "src/**/*.rs",
-    # Cross-crate dependencies — list explicitly:
-    # "../shared/Cargo.toml",
-    # "../shared/src/**/*.rs",
-]
-solana_inlining  = ["certora/summaries/cvlr_inlining_core.txt"]
-solana_summaries = ["certora/summaries/cvlr_summaries_core.txt"]
-```
-
-Keep `sources` minimal. Every extra file adds compile time. If you have a
-multi-crate workspace, list only the crates this verification job actually
-touches.
+The `[package.metadata.certora]` block in your `Cargo.toml` controls what
+`cargo certora-sbf` ships to verification. Every extra entry in `sources`
+adds compile time, so list only the crates this verification job actually
+touches; in a multi-crate workspace, do **not** glob the whole tree.
 
 `solana_inlining.txt` and `solana_summaries.txt` are environment files used
 to fine-tune which functions the Prover inlines and which it summarises.
 Start without them; add entries only when a specific rule demands it.
 
+See {ref}`solana_project_setup` for the canonical block.
+
 ## 12. Layout convention
 
-The recurring layout this guide assumes:
-
-```
-src/certora/
-├── mod.rs              # module declarations
-├── nondet.rs           # `impl Nondet for …` for project types
-├── hooks.rs            # static flags + hook helpers
-├── log.rs              # msg! stub + CvlrLog impls for project types
-├── mocks/              # mirrors src/ tree, replaces heavy fns
-│   ├── mod.rs
-│   └── …
-└── specs/
-    ├── mod.rs
-    ├── base.rs         # parametric harnesses (`base_deposit`, …)
-    └── solvency/       # one folder per property family
-        ├── mod.rs
-        ├── props.rs    # `impl CvlrProp for SolvencyInvariant`
-        └── solvency.rs # one #[rule] per (handler × property)
-```
-
-You don't have to follow it exactly, but the prove-it-works experience is
-much better when files have predictable shapes:
+{ref}`solana_project_setup` shows the recommended source-tree layout. The
+prove-it-works experience is much better when files have predictable
+shapes:
 
 - `nondet.rs` — only `impl Nondet`s, nothing else.
 - `mocks/foo.rs` — only mock implementations, mirroring `src/foo.rs`.

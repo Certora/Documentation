@@ -14,29 +14,12 @@ The mechanism is always the same: conditional compilation under
 
 ## The `certora` feature
 
-Every verification-time crate dependency and code path lives behind this
-flag, as introduced in {ref}`solana_project_setup`:
-
-```toml
-[features]
-default       = []
-no-entrypoint = []
-certora       = ["no-entrypoint", "dep:cvlr", "dep:cvlr-solana"]
-
-[dependencies]
-cvlr        = { workspace = true, optional = true }
-cvlr-solana = { workspace = true, optional = true }
-```
-
-In `lib.rs`:
-
-```rust
-#[cfg(feature = "certora")]
-pub mod certora;
-```
-
-When the feature is off (production builds), nothing in `src/certora/` is
-compiled, no cvlr code is linked, and your binary is unchanged.
+Every verification-time crate dependency and code path lives behind the
+`certora` Cargo feature. {ref}`solana_project_setup` shows the full
+`Cargo.toml` block and the `lib.rs` wiring; the rest of this page assumes
+that scaffolding is in place. When the feature is off (production builds),
+nothing in `src/certora/` is compiled, no cvlr code is linked, and your
+binary is unchanged.
 
 ## Pattern A — full implementation swap
 
@@ -277,26 +260,10 @@ wiring depends on your crate; the simplest version is to
 
 ## File layout convention
 
-Keep mocks under `src/certora/mocks/` and mirror the production tree:
-
-```
-src/
-├── processor.rs
-├── state.rs
-├── math.rs
-└── certora/
-    ├── mod.rs
-    ├── hooks.rs
-    ├── log.rs
-    └── mocks/
-        ├── mod.rs
-        ├── math.rs              ← compute_fee_mock, compute_interest_mock
-        ├── cpi.rs               ← mock_token_transfer, mock_token_burn
-        └── processor.rs         ← optional: alternative processor variants
-```
-
-This makes it trivial to find the mock for a production function: same path,
-under `certora/mocks/`.
+Keep mocks under `src/certora/mocks/` and **mirror the production tree** —
+the mock for `src/foo.rs` lives at `src/certora/mocks/foo.rs`. This makes it
+trivial to find the mock for any production function. See
+{ref}`solana_project_setup` for the full recommended source-tree layout.
 
 ## When to mock vs. when to leave it real
 

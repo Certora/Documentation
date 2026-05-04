@@ -321,29 +321,6 @@ pub fn rule_can_always_cancel() {
 This is more powerful than what trait-parameterised harnesses give you,
 because the *path through the protocol* is part of the search.
 
-## Bounded vectors via `cvlr-vectors`
-
-`cvlr-vectors::cvt_no_resizable_vec!` is the recommended primitive for
-constructing a `Vec<T>` of a specific compile-time capacity:
-
-```rust
-use cvlr_vectors::cvt_no_resizable_vec;
-
-let xs: Vec<u64>     = cvt_no_resizable_vec!([nondet::<u64>(), nondet::<u64>()]; 10);
-let empty: Vec<u64>  = cvt_no_resizable_vec!([]; 10);
-```
-
-A thin project-local wrapper macro keeps the capacity choice consistent:
-
-```rust
-#[macro_export]
-macro_rules! cvlr_vec10 {
-    ($items:tt) => { cvlr_vectors::cvt_no_resizable_vec!($items; 10) };
-}
-```
-
-See {ref}`solana_nondet_vectors` for the capacity choice trade-offs.
-
 ## Hooks for invariant tracking
 
 A complementary pattern: when an invariant must be *checked at runtime*
