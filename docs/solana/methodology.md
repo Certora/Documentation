@@ -180,47 +180,57 @@ earlier ones holding). Then split the rule.
 
 ## 10. Conf hygiene
 
-A typical project keeps a `base.conf` with shared prover args, then per-rule
-confs that inherit from it.
+Start from the
+[spec template's `run.conf`](https://github.com/Certora/solana-spec-template/blob/main/confs/run.conf)
+and extend it per rule rather than reinventing the prover-args set per
+project. The template ships:
 
 ```json
-// certora/conf/base.conf
+// run.conf
 {
-    "loop_iter":    "3",
-    "rule_sanity":  "basic",
-    "smt_timeout":  "6000",
+    "msg":                  "Certora Verification Rules",
+    "loop_iter":            1,
+    "optimistic_loop":      false,
+    "smt_timeout":          6000,
+    "cargo_tools_version":  "v1.43",
+    "java_args": ["-Dlevel.sbf=info"],
     "prover_args": [
-        "-solanaOptimisticJoin true",
-        "-solanaOptimisticOverlaps true",
-        "-solanaOptimisticMemcpyPromotion true",
-        "-solanaOptimisticMemcmp true",
-        "-solanaOptimisticNoMemmove true",
-        "-solanaTACOptimize 3",
-        "-solanaTACMathInt true",
         "-unsatCoresForAllAsserts true",
-        "-s [z3:def{randomSeed=1},z3:def{randomSeed=2},z3:def{randomSeed=3}]"
+        "-solanaSkipCallRegInst true",
+        "-solanaTACOptimize 2",
+        "-solanaStackSize 8192",
+        "-solanaTACMathInt true"
     ]
 }
 ```
 
+Per-rule confs inherit and override:
+
 ```json
-// certora/conf/deposit.conf
+// deposit.conf
 {
-    "files": ["base.conf"],
-    "rule":  ["rule_solvency_deposit", "rule_monotonicity_deposit"]
+    "files":       ["run.conf"],
+    "rule":        ["rule_solvency_deposit", "rule_monotonicity_deposit"],
+    "rule_sanity": "basic"
 }
 ```
 
-A few guidelines:
+A few guidelines for tuning these defaults:
 
-- **Pin `loop_iter`.** Default unrolling depth; bump only if you have a
-  loop that genuinely needs more iterations.
-- **Bump `solanaStackSize` only when you hit stack errors.** It does not
-  help otherwise.
-- **Multiple Z3 random seeds reduce flakiness on hard rules.** Listing 3-10
-  seeds and letting the Prover race them is a low-cost robustness boost.
-- **`smt_timeout`** in seconds. 6000 (100 minutes) is a reasonable upper
+- **`loop_iter`** controls loop unrolling depth. The template defaults to
+  `1`; bump only for loops that genuinely need more iterations, and prefer
+  bounded `Vec<T>` (see {ref}`solana_nondet_vectors`) for spec-driven
+  bounds.
+- **`solanaStackSize`** the template ships with `8192`; raise further only
+  if you hit stack errors. Lowering does not help.
+- **`smt_timeout`** is in seconds. 6000 (100 minutes) is a reasonable upper
   bound for hard rules; ratchet down for fast ones.
+- **Multiple Z3 random seeds** are a low-cost robustness boost on flaky
+  rules — append e.g.
+  `"-s [z3:def{randomSeed=1},z3:def{randomSeed=2},z3:def{randomSeed=3}]"`
+  to `prover_args`. Not in the template default; opt in when you need it.
+- **`rule_sanity: basic`** runs the vacuity check on every rule (see
+  {ref}`solana-sanity-vacuity`). Recommended for every conf.
 
 ## 11. Keep `package.metadata.certora` minimal
 
@@ -229,9 +239,12 @@ The `[package.metadata.certora]` block in your `Cargo.toml` controls what
 adds compile time, so list only the crates this verification job actually
 touches; in a multi-crate workspace, do **not** glob the whole tree.
 
-`solana_inlining.txt` and `solana_summaries.txt` are environment files used
-to fine-tune which functions the Prover inlines and which it summarises.
-Start without them; add entries only when a specific rule demands it.
+`cvlr_inlining.txt` and `cvlr_summaries.txt` are baseline annotations the
+Prover needs to handle Rust / Solana stdlib correctly — they are required
+scaffolding, not optional fine-tuning. Use the
+[spec template's set](https://github.com/Certora/solana-spec-template/tree/main/envs)
+unmodified for the stdlib parts, and add project-specific entries on top
+when a particular rule demands it.
 
 See {ref}`solana_project_setup` for the canonical block.
 
@@ -286,6 +299,8 @@ why it was OK to ignore.**
 ## 15. Where to find more
 
 - The high-level CVLR reference: {ref}`speclanguage`.
+- The Certora Solana spec template (recommended starting scaffold):
+  [Certora/solana-spec-template](https://github.com/Certora/solana-spec-template).
 - `cvlr` source / API: [github.com/Certora/cvlr](https://github.com/Certora/cvlr).
 - `cvlr-solana` source / API:
   [github.com/Certora/cvlr-solana](https://github.com/Certora/cvlr-solana/).

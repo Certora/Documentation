@@ -15,6 +15,18 @@ crates.io releases of the 0.4 line.
 | `cvlr-solana`  | `0.4` (≥ 0.4.3) | crates.io or `git+https://github.com/Certora/cvlr-solana.git` (branch `v0.4`)     |
 | `cvlr-vectors` | `0.4`           | crates.io (only needed for bounded-`Vec` macros, see {ref}`solana_nondet_vectors`) |
 
+```{tip}
+**Quick start.** Most projects should bootstrap from the
+[Certora Solana spec template](https://github.com/Certora/solana-spec-template)
+rather than wire everything by hand. Clone it into your contract's source
+directory as `certora/` and run `python certora-setup.py`. The template
+ships with the recommended `run.conf`, the baseline `cvlr_inlining*.txt`
+and `cvlr_summaries*.txt` environment files (Rust/Solana stdlib, Anchor),
+and a `justfile` for common tasks. The rest of this page documents the
+layout and contents the template produces, so you can read or modify
+them with confidence.
+```
+
 ## 1. Workspace `Cargo.toml`
 
 ```toml
@@ -50,24 +62,27 @@ cvlr-solana = { workspace = true, optional = true }
 # cvlr-vectors = { workspace = true, optional = true }   # if needed
 
 [package.metadata.certora]
-sources = [
-    "Cargo.toml",
-    "src/**/*.rs",
-]
-solana_inlining  = ["certora/summaries/cvlr_inlining_core.txt"]
-solana_summaries = ["certora/summaries/cvlr_summaries_core.txt"]
+sources          = ["src/**/*.rs"]
+solana_inlining  = ["src/certora/envs/cvlr_inlining.txt"]
+solana_summaries = ["src/certora/envs/cvlr_summaries.txt"]
 ```
 
 The `[package.metadata.certora]` block tells `cargo certora-sbf` (and through
 it the Prover) which files to ship to the verification cloud and where to
-find any inlining / summary hints. Keep `sources` tight — extra files slow
+find inlining / summaries. Keep `sources` tight — extra files slow
 compilation. If you have a multi-crate workspace, list only the crates this
 verification job actually touches.
 
-`solana_inlining.txt` and `solana_summaries.txt` are environment files used to
-fine-tune which functions the Prover inlines and which it summarises. Start
-without them; add entries only when a specific rule demands it. See
-{ref}`--solana_inlining` and {ref}`--solana_summaries` for details.
+`cvlr_inlining.txt` and `cvlr_summaries.txt` are **required** environment
+files: they tell the Prover which Rust / Solana standard-library functions
+to inline (`memcpy`, `Pubkey::find_program_address`, allocator routines,
+…) and which to summarise (`AccountInfo` field offsets, `CVT_nondet_*`
+helpers, …). Without them, verification of any non-trivial program will
+fail. Start from the
+[spec template's set](https://github.com/Certora/solana-spec-template/tree/main/envs)
+— it covers the core stdlib, anchor, and a place to drop project-specific
+entries — rather than from empty files. See {ref}`--solana_inlining` and
+{ref}`--solana_summaries` for the CLI flags.
 
 ## 3. Wire the `certora` module into your crate
 
@@ -86,13 +101,6 @@ compiled, no cvlr code is linked, and your binary is unchanged.
 ```
 my_program/
 ├── Cargo.toml
-├── certora/                  ← run configs and environment files
-│   ├── conf/
-│   │   ├── base.conf         ← shared prover_args
-│   │   └── deposit.conf      ← per-rule conf, inherits from base
-│   └── summaries/
-│       ├── cvlr_inlining_core.txt
-│       └── cvlr_summaries_core.txt
 └── src/
     ├── lib.rs                ← `#[cfg(feature = "certora")] pub mod certora;`
     ├── processor.rs          ← real handlers (deposit, withdraw, …)
@@ -102,6 +110,12 @@ my_program/
         ├── nondet.rs         ← `impl Nondet for …` for project types
         ├── hooks.rs          ← static flags + hook helpers
         ├── log.rs            ← `msg!` stub + `CvlrLog` impls
+        ├── confs/            ← run configs (.conf files)
+        │   ├── run.conf      ← default conf shipped by the template
+        │   └── deposit.conf  ← per-rule confs that extend run.conf
+        ├── envs/             ← inlining and summaries environment files
+        │   ├── cvlr_inlining.txt
+        │   └── cvlr_summaries.txt
         ├── mocks/            ← mirrors src/ tree, replaces heavy fns
         │   └── …
         └── specs/
@@ -111,6 +125,12 @@ my_program/
                 ├── props.rs  ← `impl CvlrProp for SolvencyInvariant`
                 └── solvency.rs   ← one `#[rule]` per (handler × property)
 ```
+
+This is the layout produced by the spec-template setup script. Older
+projects sometimes keep `confs/` and the env files at the project root
+(`<crate>/certora/conf/` and `<crate>/certora/summaries/`) instead of
+under `src/certora/`; both are supported, and the path you put in
+`[package.metadata.certora]` is the source of truth.
 
 This layout is a convention, not a requirement, but the rest of this guide
 assumes it. The intent is that each file has a predictable shape:
@@ -124,41 +144,48 @@ assumes it. The intent is that each file has a predictable shape:
 When something doesn't fit any of those buckets, that is a signal that you're
 probably solving a different problem than you think you are.
 
-## 5. A minimal `Default.conf`
+## 5. The default `run.conf`
 
-Create `certora/conf/Default.conf` next to your program:
+The spec template ships the following
+[`run.conf`](https://github.com/Certora/solana-spec-template/blob/main/confs/run.conf)
+as the recommended starting point:
 
 ```json
 {
-    "msg": "rule_my_first_property",
-    "rule": ["rule_my_first_property"],
-    "rule_sanity": "basic",
-    "optimistic_loop": false,
-    "loop_iter": 3,
+    "msg":                  "Certora Verification Rules",
+    "loop_iter":            1,
+    "optimistic_loop":      false,
+    "smt_timeout":          6000,
+    "cargo_tools_version":  "v1.43",
+    "java_args": ["-Dlevel.sbf=info"],
     "prover_args": [
-        "-solanaOptimisticJoin true",
-        "-solanaOptimisticOverlaps true",
-        "-solanaOptimisticMemcpyPromotion true",
-        "-solanaOptimisticMemcmp true",
-        "-solanaOptimisticNoMemmove true"
+        "-unsatCoresForAllAsserts true",
+        "-solanaSkipCallRegInst true",
+        "-solanaTACOptimize 2",
+        "-solanaStackSize 8192",
+        "-solanaTACMathInt true"
     ]
 }
 ```
 
+Use this as `confs/run.conf` and override `rule` / `msg` per invocation, or
+extend it with per-rule files (e.g. `deposit.conf` with `"files":
+["run.conf"]` and a specific `rule` list). Add `"rule_sanity": "basic"`
+when you want vacuity checks on every rule (recommended — see
+{ref}`solana-sanity-vacuity`).
+
 Run it from the program directory:
 
 ```sh
-cd certora/conf
-certoraSolanaProver Default.conf
+certoraSolanaProver src/certora/confs/run.conf --rule rule_my_first_property
 ```
 
 The Prover invokes `cargo certora-sbf` to build the project. Building with
 the `certora` feature is handled automatically. Results are posted to the
 Certora cloud; the URL is printed on the terminal.
 
-For larger projects, split the conf into a shared `base.conf` and per-rule
-files that inherit from it. See {ref}`solana_methodology` for guidelines on
-conf hygiene and recommended `prover_args`.
+See {ref}`solana_methodology` for guidance on per-rule conf hygiene and
+when each `prover_arg` is worth tuning.
 
 ## What's next
 

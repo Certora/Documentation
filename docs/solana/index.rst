@@ -15,6 +15,12 @@ Rust), an embedded DSL that lives in two crates:
   helpers (nondeterministic ``AccountInfo``, ``Pubkey``, anchor account
   wrappers, clock helpers).
 
+The recommended starting scaffold for new projects is the
+`Certora Solana spec template <https://github.com/Certora/solana-spec-template>`_
+— it ships the canonical ``run.conf``, the baseline inlining / summaries
+files, and a setup script that wires everything into your ``Cargo.toml``.
+The pages below assume the layout that template produces.
+
 The pages below are organised so that you can read top-to-bottom for a full
 walkthrough, or jump directly to the topic you need.
 
