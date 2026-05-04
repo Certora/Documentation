@@ -1,3 +1,4 @@
+(solana_options)=
 # Solana-Specific Options / CLI Flags
 
 This page documents Solana-specific Certora Prover options, which include CLI flags or ``prover_args`` flags.
