@@ -5,6 +5,17 @@ Prover Release Notes
 ```{contents}
 ```
 
+8.13.0 (May 5, 2026)
+--------------------
+### Dashboard
+- [feat] Added storage path for unresolved calls. If an unresolved call’s callee address was read from storage, the call resolution pane will now display the full path to the storage variable. This is supported for EVM only at this time.
+
+### Solana
+- [feat] Added support for rule splitting. The Solana Prover now supports the `--split_rules` CLI flag. This works the [same as with Solidity](https://docs.certora.com/en/latest/docs/prover/cli/options.html#split-rules) except that the rules to be split are supplied by the `--rule` flag.
+
+### Soroban
+- [feat] Added multi-assert for Soroban smart contracts. Added support for `multi-assert` mode in the Soroban ecosystem. This can be enabled using the `-multi_assert_check` CLI flag and the behavior is the [same as with Solidity](https://docs.certora.com/en/latest/docs/prover/cli/options.html#multi-assert-check).
+
 
 8.11.3 (April 21, 2026)
 -----------------------
