@@ -29,7 +29,6 @@ walkthrough, or jump directly to the topic you need.
    :caption: Setup and tooling
 
    installation
-   project-setup
    usage
    options
    output
