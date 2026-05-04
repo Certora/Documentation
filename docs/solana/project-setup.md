@@ -69,9 +69,31 @@ solana_summaries = ["src/certora/envs/cvlr_summaries.txt"]
 
 The `[package.metadata.certora]` block tells `cargo certora-sbf` (and through
 it the Prover) which files to ship to the verification cloud and where to
-find inlining / summaries. Keep `sources` tight — extra files slow
-compilation. If you have a multi-crate workspace, list only the crates this
-verification job actually touches.
+find inlining / summaries.
+
+The `sources` glob lists the files that are uploaded to the Certora cloud
+**alongside the compiled binary**. They power the *Jump to Source* feature
+in the rule report: clicking a frame in a counterexample's call trace
+opens the originating Rust source. Without `sources`, Jump to Source is
+disabled, but verification itself still runs.
+
+```{warning}
+**Source-code leakage risk.** Files listed in `sources` are uploaded to
+the Certora cloud and persisted there. **By default, Certora reports
+are private to the user submitting the jobs. If the user however decides
+to shared the URL _publicly_ via the "Copy Link", the source files are exposed**
+ — anyone with the URL can browse the code in the report's source viewer. If your
+program is closed-source, treat report URLs as containing the source.
+Two practical consequences:
+
+- **Trim `sources` to the minimum** needed for your verification job —
+  not your whole repository. A workspace-wide glob (`../**/*.rs`)
+  uploads more than you probably want.
+- **Audit before going public.** Before making a Certora report public
+  PR, blog post, or chat, decide whether the linked source is OK to
+  publish. If not, keep the URL private or run verification with a 
+  narrower `sources` set.
+```
 
 `cvlr_inlining.txt` and `cvlr_summaries.txt` are **required** environment
 files: they tell the Prover which Rust / Solana standard-library functions

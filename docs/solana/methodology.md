@@ -239,6 +239,14 @@ The `[package.metadata.certora]` block in your `Cargo.toml` controls what
 adds compile time, so list only the crates this verification job actually
 touches; in a multi-crate workspace, do **not** glob the whole tree.
 
+```{warning}
+Files listed in `sources` are **uploaded to the Certora cloud** to power
+*Jump to Source* in the rule report. If that report is shared _publicly_
+via the "Copy Link" button in the web report, these sources are also
+available publicly. See {ref}`solana_project_setup`
+for the full discussion.
+```
+
 `cvlr_inlining.txt` and `cvlr_summaries.txt` are baseline annotations the
 Prover needs to handle Rust / Solana stdlib correctly — they are required
 scaffolding, not optional fine-tuning. Use the
