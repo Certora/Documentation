@@ -367,17 +367,6 @@ Use `NativeInt` for solvency / monotonicity invariants where overflow would
 only be a real bug if it could actually happen. Don't reach for it when `u64`
 is genuinely the right model (e.g. simulating a counter that wraps).
 
-## Multi-assert mode
-
-A rule with several independent asserts will report only the first failing one
-and stop. To get a per-assert report, run with multi-assert mode by setting
-`multi_assert_check` in the conf. See {ref}`solana_options` for details.
-
-In multi-assert mode each assert becomes its own child result. This is useful
-when a rule expresses a checklist of related properties. Don't use it when
-asserts are sequential (later ones depend on earlier ones holding) — split
-the rule instead.
-
 ## Putting it together
 
 The shape of most practical specs is: snapshot the pre-state, restrict it
@@ -385,21 +374,13 @@ with `assume_pre`, run the handler, snapshot the post-state, log both, and
 assert a relation:
 
 ```rust
-use cvlr::log::{cvlr_log_with, CvlrLog, CvlrLogger};
 use cvlr::mathint::NativeInt;
 use cvlr::prelude::*;
 
+// Snapshot type with a CvlrLog impl as shown in the previous section
+// (substituting NativeInt for the field types).
 pub struct Snapshot { tokens: NativeInt, shares: NativeInt }
-
-impl CvlrLog for Snapshot {
-    #[inline(always)]
-    fn log(&self, tag: &str, logger: &mut CvlrLogger) {
-        logger.log_scope_start(tag);
-        cvlr_log_with("tokens", &self.tokens, logger);
-        cvlr_log_with("shares", &self.shares, logger);
-        logger.log_scope_end(tag);
-    }
-}
+// impl CvlrLog for Snapshot { /* … as above … */ }
 
 #[rule]
 pub fn rule_deposit_preserves_solvency() {

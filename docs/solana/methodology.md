@@ -121,24 +121,15 @@ struct.
 
 ## 7. Use `NativeInt` for arithmetic invariants
 
-`u64` arithmetic in the Prover is exact, including wraparound. Spurious
-overflow counterexamples are common. When you mean *mathematical*
-inequality, use `cvlr::mathint::NativeInt`:
-
-```rust
-use cvlr::mathint::NativeInt;
-
-let t: NativeInt = pre_tokens.into();
-let s: NativeInt = pre_shares.into();
-cvlr_assume!(s <= t);
-let total = t + NativeInt::from(amount);
-cvlr_assume!(NativeInt::is_u64(total));     // bound when needed
-cvlr_assert!(s * total <= (s + NativeInt::from(amount)) * t);
-```
+When you assert a *mathematical* invariant — solvency, monotonicity, no
+dilution — `u64` wraparound produces spurious counterexamples. Lift to
+`cvlr::mathint::NativeInt` at the boundary, do the arithmetic there, and
+re-bound at the end if needed. See {ref}`speclanguage` for the API and a
+worked example.
 
 When *not* to use `NativeInt`: when wraparound is the actual semantics
-(counters, cyclic indices). Use it for invariants ("solvency", "monotonic",
-"no dilution"), not for simulating native arithmetic.
+(counters, cyclic indices). Use it for invariants, not for simulating
+native arithmetic.
 
 ## 8. `clog!` aggressively
 
