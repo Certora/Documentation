@@ -38,6 +38,7 @@ walkthrough, or jump directly to the topic you need.
    nondet
    mocks
    accounts
+   anchor
    parametric-rules
    methodology
 
