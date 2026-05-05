@@ -86,12 +86,12 @@ solana_summaries = ["src/certora/envs/cvlr_summaries.txt"]
 ```
 
 The `[package.metadata.certora]` block tells `cargo certora-sbf` (and through
-it the Prover) which files to ship to the verification cloud and where to
+it the Prover) which files to submit to a cloud job and where to
 find inlining / summaries.
 
 The `sources` glob lists the files that are uploaded to the Certora cloud
 **alongside the compiled binary**. They power the *Jump to Source* feature
-in the rule report: clicking a frame in a counterexample's call trace
+in the rule report: clicking an entry in a counterexample's call trace
 opens the originating Rust source. Without `sources`, Jump to Source is
 disabled, but verification itself still runs.
 
@@ -115,26 +115,15 @@ Two practical consequences:
 
 `cvlr_inlining.txt` and `cvlr_summaries.txt` are **required** environment
 files: they tell the Prover which Rust / Solana standard-library functions
-to inline (`memcpy`, `Pubkey::find_program_address`, allocator routines,
-…) and which to summarise (`AccountInfo` field offsets, `CVT_nondet_*`
-helpers, …). Without them, verification of any non-trivial program will
-fail. Start from the
+to inline. Start from the
 [spec template's set](https://github.com/Certora/solana-spec-template/tree/main/envs)
 — it covers the core stdlib, anchor, and a place to drop project-specific
-entries — rather than from empty files. See {ref}`--solana_inlining` and
+entries — rather than from empty files. With these defaults, for instance, `solana_program::account_info::lamports` is inlined, while `rust_alloc` and `rust_dealloc` are not. The summaries file describes points-to summaries for important functions; as an example, the defaults summarize the impact of `solana_pubkey::Pubkey::create_program_address`. See {ref}`--solana_inlining` and
 {ref}`--solana_summaries` for the CLI flags.
 
 ### Wire the `certora` module into your crate
 
-In `lib.rs` (or `src/lib.rs`):
 
-```rust
-#[cfg(feature = "certora")]
-pub mod certora;
-```
-
-When the feature is off (production builds), nothing in `src/certora/` is
-compiled, no cvlr code is linked, and your binary is unchanged.
 
 ### Recommended directory layout
 
@@ -166,23 +155,23 @@ my_program/
                 └── solvency.rs   ← one `#[rule]` per (handler × property)
 ```
 
-This is the layout produced by the spec-template setup script. Older
-projects sometimes keep `confs/` and the env files at the project root
-(`<crate>/certora/conf/` and `<crate>/certora/summaries/`) instead of
-under `src/certora/`; both are supported, and the path you put in
-`[package.metadata.certora]` is the source of truth.
+This is the layout produced by the spec-template setup script. Ensure that the attributes in `[package.metadata.certora]` point to the right path.
 
-This layout is a convention, not a requirement, but the rest of this guide
-assumes it. The intent is that each file has a predictable shape:
+This layout is a convention, not a requirement, but the rest of this guide assumes it. We recommend following this structure.
+
+- In `lib.rs` (or `src/lib.rs`), add:
+
+```rust
+#[cfg(feature = "certora")]
+pub mod certora;
+```
+
+When the `certora` feature is off (production builds), nothing in `src/certora/` is
+compiled, no cvlr code is linked, and your binary is unchanged.
 
 - `nondet.rs` — only `impl Nondet`s, nothing else.
 - `mocks/foo.rs` — only mock implementations, mirroring `src/foo.rs`.
-- `specs/<topic>/<topic>.rs` — only `#[rule]` functions, one or two lines
-  each.
-- `specs/<topic>/props.rs` — only `CvlrProp` impls.
-
-When something doesn't fit any of those buckets, that is a signal that you're
-probably solving a different problem than you think you are.
+- `specs/<topic>/<topic>.rs` — only `#[rule]` functions, possibly created using `CvlrProp` impls in `specs/<topic>/props.rs` (see {ref}`CvlrProp trait <solana_parametric_rules>`).
 
 ## Configuration Formats
 

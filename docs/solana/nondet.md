@@ -2,9 +2,9 @@
 # Nondet & Havoc
 
 Verification reasons about *all* possible inputs and *all* possible starting
-states. To get there, you replace concrete values with non-deterministic
-("havoced") ones using `nondet()`. This page covers every variant beyond
-primitives.
+states. To encode which values should be treated as symbolic ("havoced") inputs,
+you replace concrete values with non-deterministic ones using `nondet()`. This
+page covers variants beyond primitives.
 
 For the basic concept of nondeterministic values and the `nondet::<T>()`
 function on primitive types, see the {ref}`speclanguage` page.
@@ -67,25 +67,7 @@ impl Nondet for Status {
 }
 ```
 
-A `% N` keeps the discriminant in range without an extra `assume`. For enums
-where the Prover should be told exactly which variants are valid, use a
-fallthrough that panics — the panic acts as a soft assume:
-
-```rust
-impl Nondet for Status {
-    fn nondet() -> Self {
-        match nondet::<u8>() {
-            0 => Status::Active,
-            1 => Status::Paused,
-            2 => Status::Closed,
-            _ => panic!(),       // unreachable in any meaningful execution
-        }
-    }
-}
-```
-
-For bitflags or types with sparse valid encodings, list each valid value
-explicitly in the match.
+A `% N` keeps the discriminant in range without an extra `assume`. 
 
 ## Havocing `Pubkey` and `Option<Pubkey>`
 
@@ -101,8 +83,7 @@ let maybe_key: Option<Pubkey>  = cvlr_nondet_option_pubkey();
 
 Use `cvlr_nondet_pubkey()` rather than `nondet::<Pubkey>()` so that the Prover
 treats it as an opaque 32-byte identifier rather than havocing 32 individual
-bytes (the latter is slower and gives the Prover more rope to hang itself
-with).
+bytes.
 
 ## `alloc_ref_havoced` and `alloc_mut_ref_havoced`
 
@@ -154,7 +135,7 @@ them into a property struct's `assume_pre()` method — see
 (solana_nondet_vectors)=
 ## Bounded vectors
 
-`Vec<T>` is unbounded by default, which makes most properties undecidable. To
+`Vec<T>` is an unbounded-length heap data structure, and the Solana Prover cannot precisely reason about unbounded-length data structures on the heap. To
 verify code that takes a `Vec<T>`, use the **bounded vector** macros from
 `cvlr-vectors`:
 
@@ -169,15 +150,7 @@ let v: Vec<u64> = cvt_no_resizable_vec!([nondet::<u64>(), nondet::<u64>()]; 10);
 let v: Vec<Pubkey> = cvt_no_resizable_vec!([]; 16);
 ```
 
-The capacity is a fixed compile-time bound. The Prover unrolls loops up to
-that bound, so keep it as small as your spec actually needs (often 4 or 8).
-
-```{tip}
-**Capacity choice.** The Prover unrolls every loop over a bounded vector up
-to the capacity. A capacity of 4 is often enough; 10 is a comfortable
-default; 16 is reasonable for "list of accounts" cases. Don't pick 100 —
-verification will time out.
-```
+The capacity is a fixed compile-time bound, and the vector cannot grow larger than the capacity. Choose a sensible bound for the verification task.
 
 For projects where you'll havoc many `Vec<T>`s of the same element type, wrap
 the macro in your own helper and use it consistently:

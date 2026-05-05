@@ -12,15 +12,15 @@ and **`macro_rules!` for environment generation**.
 A naive spec for a vault with two handlers (`deposit`, `withdraw`) and three
 properties (`solvency`, `monotonicity`, `no_dilution`) is a 6-rule
 copy-paste. A real protocol has 10+ handlers and a similar number of
-properties — that's 100+ near-identical rules. Factoring is not a luxury.
+properties — that's 100+ near-identical rules. A well-defined project
+structure for verification is required.
 
-The two patterns below cover essentially every spec organisation you'll
-need. **Use traits when the harness is uniform across properties, and
+The two patterns below are recommended spec organisation practices. **Use traits when the harness is uniform across properties, and
 macros when the setup itself differs per rule.**
 
 ## Pattern 1 — Trait-parameterised harnesses
 
-This is the workhorse. Define one trait describing what a "property" is,
+Define one trait describing what a "property" is,
 write one harness per handler that runs the handler and checks any property
 implementing that trait, and write one struct per property. The
 cross-product of (handler × property) is then trivial:
@@ -338,9 +338,9 @@ pub fn was_invariant_checked() -> bool { unsafe { INVARIANT_CHECKED } }
 
 ```rust
 //! src/state.rs
-use cvlr::cvlr_hook_on_exit as cvt_hook_end;
+use cvlr::cvlr_hook_on_exit;
 
-#[cfg_attr(feature = "certora", cvt_hook_end(crate::certora::hooks::invariant_was_checked()))]
+#[cfg_attr(feature = "certora", cvlr_hook_on_exit(crate::certora::hooks::invariant_was_checked()))]
 pub fn check_invariant(v: &Vault) {
     assert!(v.shares <= v.tokens);
 }

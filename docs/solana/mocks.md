@@ -1,25 +1,38 @@
 (solana_mocks)=
 # Mocks & Feature Gates
 
-Real Solana programs are full of code the Prover should not — and sometimes
-*cannot* — reason about exactly: cross-program invocations (CPIs), heavy
-arithmetic, syscalls, large tables, third-party libraries. The standard
-technique is to keep the production code unchanged and **swap in a simpler
-implementation when verifying**. This page collects the four patterns that
-cover virtually every case.
+Solana programs may contain code that isn't relevant for the verification
+task, or that the Prover *cannot* reason about exactly: cross-program
+invocations (CPIs), heavy non-linear arithmetic. The standard technique is
+to keep the production code unchanged and **swap in a simpler
+implementation when verifying**. This page collects the patterns that can
+be used to swap in an implementation for verification (also known as
+mocking).
 
 The mechanism is always the same: conditional compilation under
 `#[cfg(feature = "certora")]`. The `certora` feature is enabled only when
 `certoraSolanaProver` builds your crate.
 
+
+## Important design consideration
+
+1. **A mock should use the *weakest* assumptions.**
+   Returning `nondet()` is usually right — it forces the Prover to consider
+   every outcome. Pinning a return value (e.g. `Ok(0)`) is acceptable only
+   when the rule explicitly does not care.
+
+2. **Don't change the production signature for verification.** That is what
+   `cvlr::mock_fn` and trait indirection are for. Keeping signatures stable
+   means specs continue to compile after refactors and the spec is closer to
+   the production code.
+
 ## The `certora` feature
 
 Every verification-time crate dependency and code path lives behind the
 `certora` Cargo feature. {ref}`solana_project_setup` shows the full
-`Cargo.toml` block and the `lib.rs` wiring; the rest of this page assumes
-that scaffolding is in place. When the feature is off (production builds),
-nothing in `src/certora/` is compiled, no cvlr code is linked, and your
-binary is unchanged.
+`Cargo.toml` block and the changes to your project's `lib.rs`. When the
+feature is off (production builds), nothing in `src/certora/` is compiled, 
+no cvlr code is linked, and your binary is unchanged.
 
 ## Pattern A — full implementation swap
 
@@ -50,7 +63,7 @@ Use this when:
 - The function is small and self-contained.
 - The result can be modelled as "any value of type T" without losing the
   important contract.
-- Callers don't need to observe side effects.
+- While this pattern is simple, it also adds a few extra lines to the code base.
 
 Use a **trait-based mock** (Pattern C) instead when behaviour must vary
 per-rule.
@@ -59,7 +72,8 @@ per-rule.
 
 Editing a production function to add `#[cfg]` blocks is invasive. The
 `cvlr::mock_fn` attribute lets you redirect the call site instead, leaving
-the original function definition untouched at the source level:
+the original function definition untouched at the source level (only one line
+needs to be added to the source code):
 
 ```rust
 // src/processor.rs
@@ -86,9 +100,7 @@ pub fn compute_fee_mock(_amount: u64, _bps: u16) -> u64 {
 When `--feature certora` is on, calls to `compute_fee` are redirected to
 `compute_fee_mock`. The mock's signature **must match** the original.
 
-The optional `when="..."` argument lets you toggle individual mocks per conf
-without rebuilding — used when one rule wants the real function and another
-wants the mock:
+The optional `when="..."` argument is a regular [cargo feature](https://doc.rust-lang.org/cargo/reference/features.html) that is included in the compiled code when enabled. That is, `Cargo.toml` needs to have an entry `certora-mock-fees = []`, and the environment flag `CARGO_FEATURES="certora-mock-fees"` is used for compilation.
 
 ```rust
 #[cfg_attr(
@@ -147,15 +159,14 @@ Then pick per rule:
 ```
 
 Use this when one rule wants the worst-case behaviour and another wants a
-specific simplification.
+specific concrete simplification.
 
 ## Pattern D — `cvlr_hook_on_exit` for tracking calls
 
 Sometimes the body of a mock is `Ok(())` but you still want to *observe*
 that it was called — for example, to assert "after handler X runs, function
 Y was called exactly once". The `cvlr::cvlr_hook_on_exit` attribute lets a
-mock raise a side-effect when it returns. Many specs alias it as
-`cvt_hook_end` for brevity.
+mock raise a side-effect when it returns. 
 
 ```rust
 // src/certora/hooks.rs
@@ -183,12 +194,12 @@ pub fn last_was_burn()     -> bool { unsafe { LAST_CALL == LastCall::Burn } }
 ```rust
 // src/certora/mocks/cpi.rs
 
-use cvlr::cvlr_hook_on_exit as cvt_hook_end;
+use cvlr::cvlr_hook_on_exit;
 use cvlr::nondet::nondet;
 use crate::certora::hooks::*;
 use solana_program::{program_error::ProgramError, pubkey::Pubkey};
 
-#[cfg_attr(feature = "certora", cvt_hook_end(transfer_was_called()))]
+#[cfg_attr(feature = "certora", cvlr_hook_on_exit(transfer_was_called()))]
 pub fn mock_token_transfer(
     _from: &Pubkey,
     _to: &Pubkey,
@@ -197,7 +208,7 @@ pub fn mock_token_transfer(
     Ok(())
 }
 
-#[cfg_attr(feature = "certora", cvt_hook_end(burn_was_called()))]
+#[cfg_attr(feature = "certora", cvlr_hook_on_exit(burn_was_called()))]
 pub fn mock_token_burn(
     _owner: &Pubkey,
     _amount: u64,
@@ -264,29 +275,6 @@ Keep mocks under `src/certora/mocks/` and **mirror the production tree** —
 the mock for `src/foo.rs` lives at `src/certora/mocks/foo.rs`. This makes it
 trivial to find the mock for any production function. See
 {ref}`solana_project_setup` for the full recommended source-tree layout.
-
-## When to mock vs. when to leave it real
-
-| Situation                                                   | Mock?                                                  |
-| ----------------------------------------------------------- | ------------------------------------------------------ |
-| Pure arithmetic that fits in `NativeInt`                    | No — let the Prover see the math.                       |
-| Loop with bound > a handful of iterations                   | Yes — the Prover unrolls. Mock or split the rule.      |
-| Cross-program invocation (`invoke`, `invoke_signed`)        | Yes — almost always. Use Pattern D if you need to track. |
-| SPL Token transfer / mint / burn                            | Yes. Use Pattern D to assert which side ran.           |
-| Borrow rate / price / oracle math with rounding tables      | Yes. Pattern A or B with `nondet()`.                   |
-| The function whose property you're verifying                | **No.** Don't mock the system under test.              |
-
-Two design principles:
-
-1. **A mock should be the *weakest* function consistent with the contract.**
-   Returning `nondet()` is usually right — it forces the Prover to consider
-   every outcome. Pinning a return value (e.g. `Ok(0)`) is acceptable only
-   when the rule explicitly does not care.
-
-2. **Don't change the production signature for verification.** That is what
-   `cvlr::mock_fn` and trait indirection are for. Keeping signatures stable
-   means specs continue to compile after refactors and the spec is closer to
-   the production code.
 
 ## What's next
 
