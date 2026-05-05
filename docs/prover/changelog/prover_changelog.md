@@ -7,7 +7,7 @@ Prover Release Notes
 
 8.13.0 (May 5, 2026)
 --------------------
-### Dashboard
+### Rule Report
 - [feat] Added storage path for unresolved calls. If an unresolved call’s callee address was read from storage, the call resolution pane will now display the full path to the storage variable. This is supported for EVM only at this time.
 
 ### Solana
