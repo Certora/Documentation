@@ -170,8 +170,8 @@ return arbitrary bytes.
 
 ### Example usage in this template
 
-1. **External helper functions** — `getResult` and `getResultPair`
-   make external calls to `this`, so they appear as separate external methods
+1. **External helper functions** — `fallback` calls `getResult` and `getResultPair`
+   via external calls to `this`, so they appear as separate external methods
    that can be {ref}`summarized <summaries>` in CVL.  By invoking them, the fallback
    delegates to these helpers, letting you control return values from
    your spec.
@@ -224,7 +224,7 @@ rule checkCalleeIsRecorded {
 ```
 
 Interaction with CALL opcode hooks
------------------------------------
+----------------------------------
 
 When the feature is active, redirected calls are still executed as
 `CALL` opcodes, so they trigger {ref}`CALL hooks <call-hooks>`.
