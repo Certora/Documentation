@@ -128,6 +128,12 @@ calling contract*[^reentrancy] (a `HAVOC_ECF` summary).  See
   caused by reentrancy, you can override this assumption using a `HAVOC_ALL`
   summary; see {ref}`havoc-summary` for details.
 
+```{note}
+For fine-grained control over unresolved calls, you can redirect them
+to a Solidity harness contract instead of using havoc summaries.
+See {ref}`unresolved-harness` for details.
+```
+
 We can see this behavior by verifying the `integrityOfDeposit` rule against the
 `Pool` contract without giving the Prover access to the `Asset` contract.
 The {clink}`JustPool.conf</DEFI/LiquidityPool/JustPool.conf>` config file does

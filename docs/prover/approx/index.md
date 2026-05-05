@@ -18,6 +18,7 @@ overlooked by the Prover.
 loops.md
 summarization.md
 harnessing.md
+unresolved-harness.md
 hashing.md
 grounding.md
 ```

@@ -263,6 +263,13 @@ will be used.
 Catch unresolved-calls entries can only be summarized with a dispatch list,
 `HAVOC` or `NONDET` summary.
 
+```{note}
+As an alternative to catch-unresolved-calls entries, you can redirect
+all unresolved external calls to a Solidity harness contract using
+the {ref}`-useUnresolvedHarness` prover option.
+See {ref}`unresolved-harness` for details.
+```
+
 As with `DISPATCHER`, there are optimistic and pessimistic dispatch lists. This can
 be specified via `DISPATCH(optimistic=<true|false>). When the `optimistic` option 
 is not specified in parentheses, the Prover will use a pessimistic dispatch list to 
