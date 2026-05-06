@@ -33,12 +33,14 @@ The prelude pulls in the items you almost always need:
 | `rule`             | the `#[rule]` attribute                        |
 | `nondet`           | the `nondet::<T>()` function                   |
 | `cvlr_assert!`     | assertion macro                                |
-| `cvlr_assert_eq!`  | equality assertion (logs both sides)           |
-| `cvlr_assert_lt!`  | strict less-than assertion                     |
-| `cvlr_assert_le!`  | less-or-equal assertion                        |
+| `cvlr_assert_{eq,ne,le,lt,ge,gt}!` | comparison-aware assertions (log both sides) |
+| `cvlr_assert_that!` / `cvlr_assert_all!` | the assertion DSL — see {ref}`assert-dsl` |
 | `cvlr_assume!`     | restrict the search space (precondition)       |
+| `cvlr_assume_{eq,ne,le,lt,ge,gt}!` | matching specialised `assume` variants |
+| `cvlr_assume_that!` / `cvlr_assume_all!` | the `assume` DSL |
 | `cvlr_satisfy!`    | existential check (at least one execution …)  |
 | `clog!`            | log values into counterexamples                |
+| `Nondet`, `CvlrLog` | derive macros (from `cvlr::derive`)          |
 
 Individual items can also be imported directly (e.g. `use cvlr::{rule, nondet};`).
 
@@ -127,15 +129,23 @@ an execution of the program that reaches that assertion and violates it.
 
 All assertion macros come from `cvlr::prelude::*`. They desugar to the same
 thing: a check that fails the rule when the condition is false. The
-specialised forms (`_eq!`, `_lt!`, `_le!`) produce better counterexample
-messages because they report both sides of the comparison.
+specialised forms produce better counterexample messages because they
+report both sides of the comparison.
 
 | Macro                        | Use for                                                | Equivalent to                               |
 | ---------------------------- | ------------------------------------------------------ | ------------------------------------------- |
 | `cvlr_assert!(cond)`         | a single boolean condition                             | the canonical form                          |
-| `cvlr_assert_eq!(a, b)`      | equality between values (logs both on failure)         | `cvlr_assert!(a == b)` with better messages |
+| `cvlr_assert_eq!(a, b)`      | equality                                               | `cvlr_assert!(a == b)` with better messages |
+| `cvlr_assert_ne!(a, b)`      | inequality                                             | `cvlr_assert!(a != b)`                      |
 | `cvlr_assert_lt!(a, b)`      | strict less-than                                       | `cvlr_assert!(a < b)`                       |
 | `cvlr_assert_le!(a, b)`      | less-or-equal                                          | `cvlr_assert!(a <= b)`                      |
+| `cvlr_assert_gt!(a, b)`      | strict greater-than                                    | `cvlr_assert!(a > b)`                       |
+| `cvlr_assert_ge!(a, b)`      | greater-or-equal                                       | `cvlr_assert!(a >= b)`                      |
+
+The `assume` macros mirror the assertion family one-for-one:
+`cvlr_assume_eq!`, `cvlr_assume_ne!`, `cvlr_assume_le!`, `cvlr_assume_lt!`,
+`cvlr_assume_ge!`, `cvlr_assume_gt!` — same comparisons, but constrain the
+search space instead of failing the rule.
 
 ```rust
 use cvlr::prelude::*;
@@ -144,7 +154,8 @@ use cvlr::prelude::*;
 pub fn rule_assert_basics() {
     let x: u64 = nondet();
     let y: u64 = nondet();
-    cvlr_assume!(x <= 100 && y <= 100);
+    cvlr_assume_le!(x, 100);
+    cvlr_assume_le!(y, 100);
 
     cvlr_assert!(x + y >= x);
     cvlr_assert_eq!(x.saturating_sub(y) + y, x.max(y));
@@ -153,12 +164,53 @@ pub fn rule_assert_basics() {
 }
 ```
 
-```{note}
-**Version note.** Older code (cvlr ≤ 0.4.0) imports `cvt_assert!` /
-`cvt_assume!` from `cvlr::asserts::cvt::*`. Current code uses
-`cvlr_assert!` / `cvlr_assume!` from `cvlr::prelude::*`. The semantics are
-identical; it is a rename only. New rules should use the `cvlr_*` forms.
+#### Guarded assertions: `cvlr_assert_if!` and friends
+
+`cvlr_assert_if!(guard, body)` only fires when `guard` evaluates to
+`true` — useful when the property only makes sense in some branch:
+
+```rust
+cvlr_assert_if!(amount > 0, fee > 0);
 ```
+
+The full guarded family follows the same `_eq` / `_le` / `_lt` / `_ge` /
+`_gt` / `_ne` suffixes: `cvlr_assert_eq_if!(guard, a, b)`,
+`cvlr_assert_le_if!(guard, a, b)`, and so on.
+
+(assert-dsl)=
+#### `cvlr_assert_that!` — comparison-aware DSL
+
+`cvlr_assert_that!(expr)` looks at `expr` and picks the most informative
+underlying macro automatically:
+
+```rust
+cvlr_assert_that!(a < b);          // -> cvlr_assert_lt!(a, b)
+cvlr_assert_that!(a == b);         // -> cvlr_assert_eq!(a, b)
+cvlr_assert_that!(p && q);         // -> cvlr_assert!(p && q)
+cvlr_assert_that!(if cond { a > b });   // guarded form
+```
+
+Use it when you'd rather write the condition once than juggle suffixes.
+The matching `cvlr_assume_that!` does the same lowering for assumes, and
+`cvlr_eval_that!` evaluates without asserting (useful when you need the
+bool back).
+
+#### Bulk assertions: `cvlr_assert_all!`
+
+`cvlr_assert_all!` takes a list of conditions and asserts each in turn —
+each becomes its own underlying assertion, so the counterexample
+identifies *which* conjunct failed:
+
+```rust
+cvlr_assert_all!(
+    post.tokens >= pre.tokens,
+    post.shares <= post.tokens,
+    post.tokens < cap
+);
+```
+
+`cvlr_assume_all!` is the corresponding bulk assume. `cvlr_eval_all!`
+returns a single `bool` that is the AND of all the conjuncts.
 
 ### `cvlr_satisfy!` — existential checks
 
@@ -264,11 +316,11 @@ bounded vectors, ...) see {ref}`solana_nondet`.
 
 ## Logging with `clog!`
 
-`clog!` writes values into the counterexample report. It is a no-op when the
-rule passes, so it is essentially free to leave in.
+`clog!` writes values into the counterexample report. It is a no-op when
+the rule passes; there is no cost to leaving it in production specs.
 
 ```rust
-clog!();                       // breadcrumb / marker
+clog!();                       // position marker (no values logged)
 clog!(amount);                 // single primitive
 clog!(x, y, r);                // multiple primitives in one call
 clog!(pre, post);              // structs implementing CvlrLog
@@ -282,16 +334,36 @@ without logged inputs is hard to read.
 
 ### `CvlrLog` — log your own structs
 
-To `clog!` a custom struct, implement the `CvlrLog` trait. The pattern is
-boilerplate; copy it for every snapshot type you define.
+To `clog!` a custom struct, derive `CvlrLog` (shipped with `cvlr ≥ 0.5`):
 
 ```rust
-use cvlr::log::{cvlr_log_with, CvlrLog, CvlrLogger};
+use cvlr::prelude::*;
 
+#[derive(cvlr::derive::CvlrLog)]
 pub struct VaultSnapshot {
     pub tokens: u64,
     pub shares: u64,
 }
+
+let pre  = VaultSnapshot { tokens: vault.tokens, shares: vault.shares };
+// ... run handler ...
+let post = VaultSnapshot { tokens: vault.tokens, shares: vault.shares };
+clog!(pre, post);
+cvlr_assert_le!(post.shares, post.tokens);
+```
+
+Counterexamples will then show both snapshots with all named fields. The
+derive works on structs (named or tuple) and on enums (each variant is
+logged with its field values).
+
+#### Manual `impl CvlrLog`
+
+Reach for the manual impl only when you want a custom layout — for
+example, omitting some fields, renaming them in the report, or logging a
+derived value:
+
+```rust
+use cvlr::log::{cvlr_log_with, CvlrLog, CvlrLogger};
 
 impl CvlrLog for VaultSnapshot {
     #[inline(always)]
@@ -303,18 +375,6 @@ impl CvlrLog for VaultSnapshot {
     }
 }
 ```
-
-Now you can write:
-
-```rust
-let pre  = VaultSnapshot { tokens: vault.tokens, shares: vault.shares };
-// ... run handler ...
-let post = VaultSnapshot { tokens: vault.tokens, shares: vault.shares };
-clog!(pre, post);
-cvlr_assert_le!(post.shares, post.tokens);
-```
-
-Counterexamples will then show both snapshots with all named fields.
 
 ## `mathint::NativeInt` — arithmetic without overflow noise
 
@@ -401,15 +461,18 @@ pub fn rule_deposit_preserves_solvency() {
 }
 ```
 
-This `pre` / `assume_pre` / run / `post` / `clog!` / assert shape is the
-workhorse of practical specs. It is generalised in {ref}`solana_parametric_rules`.
+This `pre` / `assume_pre` / run / `post` / `clog!` / assert sequence is
+the standard shape of practical specs. It is generalised in
+{ref}`solana_parametric_rules`.
 
 ## What's next
 
 - {ref}`solana_project_setup` — wiring CVLR into a Cargo workspace.
 - {ref}`solana_nondet` — nondet beyond primitives: enums, references,
   bounded vectors.
+- {ref}`solana_spec` — `CvlrFormula`, predicates, lemmas, and the
+  `cvlr_spec` / `cvlr_rules` machinery for scaling rule count.
 - {ref}`solana_mocks` — feature-gated mocks for CPIs and heavy code.
 - {ref}`solana_accounts` — verifying handlers that take `&[AccountInfo]`.
-- {ref}`solana_parametric_rules` — scaling specs with traits and macros.
+- {ref}`solana_parametric_rules` — non-uniform setup with `macro_rules!`.
 - {ref}`solana_methodology` — best practices for writing rules that close.

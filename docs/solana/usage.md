@@ -24,13 +24,15 @@ This section covers how to wire CVLR into a Cargo workspace so that the
 Solana Certora Prover can build and verify your program. The remainder of
 the page focuses on the run-time configuration.
 
-This guide targets **`cvlr ≥ 0.4`** and **`cvlr-solana ≥ 0.4.3`**, the current
-crates.io releases of the 0.4 line.
+This guide targets **`cvlr ≥ 0.6`** and **`cvlr-solana ≥ 0.5`**, the current
+crates.io releases. Most code on the page works on `cvlr ≥ 0.4`; features
+flagged with a "since 0.5" / "since 0.6" note (the `cvlr::derive` macros
+and the `cvlr::spec` layer) require the corresponding minimum.
 
-| Crate          | Current version | Source                                                                            |
+| Crate          | Minimum version | Source                                                                            |
 | -------------- | --------------- | --------------------------------------------------------------------------------- |
-| `cvlr`         | `0.4` (≥ 0.4.0) | crates.io or `git+https://github.com/Certora/cvlr.git` (branch `v0.4`)            |
-| `cvlr-solana`  | `0.4` (≥ 0.4.3) | crates.io or `git+https://github.com/Certora/cvlr-solana.git` (branch `v0.4`)     |
+| `cvlr`         | `0.6`           | crates.io or `git+https://github.com/Certora/cvlr.git`                            |
+| `cvlr-solana`  | `0.5`           | crates.io or `git+https://github.com/Certora/cvlr-solana.git`                     |
 | `cvlr-vectors` | `0.4`           | crates.io (only needed for bounded-`Vec` macros, see {ref}`solana_nondet_vectors`) |
 
 ```{tip}
@@ -49,17 +51,17 @@ them with confidence.
 
 ```toml
 [workspace.dependencies]
-cvlr         = "0.4"
-cvlr-solana  = "0.4"
+cvlr         = "0.6"
+cvlr-solana  = "0.5"
 cvlr-vectors = "0.4"   # optional: only if you use bounded vectors
 ```
 
-If you need the bleeding-edge branch instead of crates.io:
+If you need the development branch instead of crates.io:
 
 ```toml
 [workspace.dependencies]
-cvlr        = { git = "https://github.com/Certora/cvlr.git",        branch = "v0.4" }
-cvlr-solana = { git = "https://github.com/Certora/cvlr-solana.git", branch = "v0.4" }
+cvlr        = { git = "https://github.com/Certora/cvlr.git" }
+cvlr-solana = { git = "https://github.com/Certora/cvlr-solana.git" }
 ```
 
 ### Per-program `Cargo.toml`
@@ -149,10 +151,10 @@ my_program/
         │   └── …
         └── specs/
             ├── mod.rs
-            ├── base.rs       ← parametric harnesses (CvlrProp trait)
+            ├── base.rs       ← parametric harnesses (`base_<handler>` fns)
             └── solvency/
-                ├── props.rs  ← `impl CvlrProp for SolvencyInvariant`
-                └── solvency.rs   ← one `#[rule]` per (handler × property)
+                ├── preds.rs  ← `#[cvlr::predicate]` definitions
+                └── solvency.rs   ← `cvlr_rules! { … }` block per property
 ```
 
 This is the layout produced by the spec-template setup script. Ensure that the attributes in `[package.metadata.certora]` point to the right path.
@@ -169,9 +171,12 @@ pub mod certora;
 When the `certora` feature is off (production builds), nothing in `src/certora/` is
 compiled, no cvlr code is linked, and your binary is unchanged.
 
-- `nondet.rs` — only `impl Nondet`s, nothing else.
+- `nondet.rs` — only `Nondet` derives / impls, nothing else.
 - `mocks/foo.rs` — only mock implementations, mirroring `src/foo.rs`.
-- `specs/<topic>/<topic>.rs` — only `#[rule]` functions, possibly created using `CvlrProp` impls in `specs/<topic>/props.rs` (see {ref}`CvlrProp trait <solana_parametric_rules>`).
+- `specs/<topic>/<topic>.rs` — only `#[rule]` functions and the
+  `cvlr_rules!` blocks that emit them; the predicates they reference live
+  in `specs/<topic>/preds.rs` (see {ref}`solana_spec` and
+  {ref}`solana_parametric_rules`).
 
 ## Configuration Formats
 

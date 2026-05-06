@@ -1,189 +1,156 @@
 (solana_parametric_rules)=
 # Parametric Rules & Macros
 
-Once you have more than one or two rules, you'll notice copy-paste piling
-up: every rule reads the same accounts, calls the same handler, snapshots
+Specs with more than one or two rules accumulate duplicated boilerplate:
+each rule reads the same accounts, calls the same handler, snapshots
 state, and asserts a property. This page covers the two techniques that
-scale rule count without the duplication: **trait-parameterised harnesses**
-and **`macro_rules!` for environment generation**.
+scale rule count without the duplication: the **`cvlr-spec` layer**
+(`cvlr_spec!` + `cvlr_rules!`) and **`macro_rules!` for environment
+generation**.
 
 ## Why factor at all?
 
-A naive spec for a vault with two handlers (`deposit`, `withdraw`) and three
-properties (`solvency`, `monotonicity`, `no_dilution`) is a 6-rule
-copy-paste. A real protocol has 10+ handlers and a similar number of
-properties — that's 100+ near-identical rules. A well-defined project
-structure for verification is required.
+A vault with two handlers (`deposit`, `withdraw`) and three properties
+(`solvency`, `monotonicity`, `no_dilution`) requires 6 rules. A
+production protocol with 10+ handlers and a similar number of properties
+produces 100+ near-identical rules. A well-defined project structure for
+verification is required.
 
-The two patterns below are recommended spec organisation practices. **Use traits when the harness is uniform across properties, and
+The two patterns below are recommended spec organisation practices. **Use
+the spec layer when the harness is uniform across properties; reach for
 macros when the setup itself differs per rule.**
 
-## Pattern 1 — Trait-parameterised harnesses
+## Pattern 1 — `cvlr-spec` and `cvlr_rules!`
 
-Define one trait describing what a "property" is,
-write one harness per handler that runs the handler and checks any property
-implementing that trait, and write one struct per property. The
-cross-product of (handler × property) is then trivial:
+The `cvlr-spec` crate (shipped with `cvlr ≥ 0.6`) provides the building
+blocks: `CvlrFormula` for predicates, `CvlrSpec` for `(requires, ensures)`
+pairs, and `cvlr_rules!` to instantiate them across many handler harnesses.
+The full primitive reference lives in {ref}`solana_spec`, and the
+end-to-end Vault example there shows what a finished spec looks like.
+This page covers the parts that the spec page doesn't: how the
+`base_<handler>` harness is shaped, how the project-local glue macro
+hooks `cvlr_rules!` into your `#[rule]`s, and how the same pattern
+extends to handlers that take `&[AccountInfo]`.
+
+### The `base_<handler>` shape
+
+Each base harness is generic over `S: CvlrSpec`. It havocs a pre-state,
+calls `spec.assume_requires(&pre)`, runs the handler with nondet
+arguments, snapshots the post-state, and calls
+`spec.check_ensures(&post, &pre)`:
 
 ```rust
 //! src/certora/specs/base.rs
 
-use cvlr::log::CvlrLog;
 use cvlr::prelude::*;
+use cvlr::spec::CvlrSpec;
 use crate::state::Vault;
-use crate::operations::{vault_deposit, vault_withdraw, DepositEffect};
-
-pub struct OpParams { pub amount: u64 }
-
-/// Every property checked over a vault implements this trait.
-pub trait CvlrProp: CvlrLog {
-    /// Snapshot the parts of the vault state this property cares about.
-    fn new(vault: &Vault) -> Self;
-    /// Restrict the pre-state to legal inputs for this property.
-    fn assume_pre(&self);
-    /// Assert what should hold after the handler runs.
-    fn check_post(&self, old: &Self, params: OpParams);
-}
+use crate::operations::{vault_deposit, vault_withdraw};
 
 #[inline(always)]
-pub fn base_deposit<P: CvlrProp>() {
-    let mut vault: Vault = nondet();
-    let pre = P::new(&vault);
-    pre.assume_pre();
+pub fn base_deposit<S>(spec: &S)
+where
+    S: CvlrSpec<Context = Vault>,
+{
+    let mut v: Vault = nondet();
+    let pre = v;
+    spec.assume_requires(&pre);
 
     let amount: u64 = nondet();
-    let _effect: DepositEffect = vault_deposit(&mut vault, amount).unwrap();
+    vault_deposit(&mut v, amount).unwrap();
 
-    let post = P::new(&vault);
-    clog!(pre, post);
-    post.check_post(&pre, OpParams { amount });
+    clog!(pre, v);
+    spec.check_ensures(&v, &pre);
 }
 
 #[inline(always)]
-pub fn base_withdraw<P: CvlrProp>() {
-    let mut vault: Vault = nondet();
-    let pre = P::new(&vault);
-    pre.assume_pre();
+pub fn base_withdraw<S>(spec: &S)
+where
+    S: CvlrSpec<Context = Vault>,
+{
+    let mut v: Vault = nondet();
+    let pre = v;
+    spec.assume_requires(&pre);
 
     let amount: u64 = nondet();
-    vault_withdraw(&mut vault, amount).unwrap();
+    vault_withdraw(&mut v, amount).unwrap();
 
-    let post = P::new(&vault);
-    clog!(pre, post);
-    post.check_post(&pre, OpParams { amount });
+    clog!(pre, v);
+    spec.check_ensures(&v, &pre);
 }
 ```
 
-A property is a tiny struct + impl:
+For these to compile, `Vault` needs `Nondet`, `CvlrLog`, and `Copy` —
+derive the first two with `cvlr::derive::Nondet` and
+`cvlr::derive::CvlrLog`.
+
+### The project-local glue macro
+
+`cvlr_rules!` expands to one `cvlr_rule_for_spec!` per base, which calls a
+project-supplied macro `cvlr_impl_rule!`. That macro is where you
+control how a `(rule_name, spec, base)` triple becomes a `#[rule]`. A
+minimal version:
 
 ```rust
-//! src/certora/specs/solvency/props.rs
+//! src/certora/specs/glue.rs
 
-use cvlr::log::{cvlr_log_with, CvlrLog, CvlrLogger};
-use cvlr::mathint::NativeInt;
-use cvlr::prelude::*;
-use crate::certora::specs::base::{CvlrProp, OpParams};
-use crate::state::Vault;
-
-pub struct SolvencyInvariant {
-    tokens: NativeInt,
-    shares: NativeInt,
-}
-
-impl CvlrLog for SolvencyInvariant {
-    #[inline(always)]
-    fn log(&self, tag: &str, l: &mut CvlrLogger) {
-        l.log_scope_start(tag);
-        cvlr_log_with("tokens", &self.tokens, l);
-        cvlr_log_with("shares", &self.shares, l);
-        l.log_scope_end(tag);
-    }
-}
-
-impl CvlrProp for SolvencyInvariant {
-    fn new(v: &Vault) -> Self {
-        Self { tokens: v.tokens.into(), shares: v.shares.into() }
-    }
-    fn assume_pre(&self) {
-        cvlr_assume!(self.shares <= self.tokens);
-    }
-    fn check_post(&self, _old: &Self, _: OpParams) {
-        cvlr_assert_le!(self.shares, self.tokens);
-    }
+#[macro_export]
+macro_rules! cvlr_impl_rule {
+    ($rule_name:ident, $spec:expr, $base:ident) => {
+        #[rule]
+        pub fn $rule_name() {
+            $base(&$spec);
+        }
+    };
 }
 ```
 
-And a second one:
+The spec template ships a default `cvlr_impl_rule!`; copy or import it.
+With the glue in place, the `cvlr_rules!` block (see
+{ref}`solana_spec`) generates one `#[rule]` per base function in the
+list.
+
+### When the harness reads from accounts
+
+Real Solana handlers don't take a value-typed `Vault` — they take a
+`&[AccountInfo]`. The spec layer still applies; the predicate's context
+is a value-only *view* of the account state, and the base harness reads
+it from the account before and after the handler runs:
 
 ```rust
-pub struct Monotonicity {
-    tokens: u64,
-}
+#[derive(cvlr::derive::Nondet, cvlr::derive::CvlrLog, Clone, Copy)]
+pub struct VaultView { tokens: u64, shares: u64 }
 
-impl CvlrLog for Monotonicity { /* … */ }
+impl<'a> From<&AccountInfo<'a>> for VaultView { /* … */ }
 
-impl CvlrProp for Monotonicity {
-    fn new(v: &Vault) -> Self { Self { tokens: v.tokens } }
-    fn assume_pre(&self) { /* nothing */ }
-    fn check_post(&self, old: &Self, p: OpParams) {
-        // After a deposit, tokens go up by amount.
-        cvlr_assert_eq!(self.tokens, old.tokens + p.amount);
-    }
-}
-```
-
-The rule files are then trivial:
-
-```rust
-//! src/certora/specs/solvency/solvency.rs
-
-use cvlr::prelude::*;
-use crate::certora::specs::base::{base_deposit, base_withdraw};
-use crate::certora::specs::solvency::props::SolvencyInvariant;
-
-#[rule] pub fn rule_solvency_deposit()  { base_deposit::<SolvencyInvariant>(); }
-#[rule] pub fn rule_solvency_withdraw() { base_withdraw::<SolvencyInvariant>(); }
-```
-
-```rust
-//! src/certora/specs/monotonicity/monotonicity.rs
-
-#[rule] pub fn rule_monotonicity_deposit() { base_deposit::<Monotonicity>(); }
-```
-
-To add a new property, write one struct + impl. To add a new handler, write
-one `base_handler` function. The cross-product gets a one-line rule each.
-
-### When the harness needs accounts
-
-The same pattern works when the harness builds an account array. The trait
-becomes parameterised over `&AccountInfo` rather than over the value
-struct:
-
-```rust
-pub trait CvlrAccountProp: CvlrLog {
-    fn new(vault: &AccountInfo, user: &AccountInfo) -> Self;
-    fn assume_pre(&self);
-    fn check_post(&self, old: &Self);
+#[predicate]
+fn vv_solvent(v: &VaultView) {
+    v.shares <= v.tokens;
 }
 
 #[inline(always)]
-pub fn base_deposit_accounts<P: CvlrAccountProp>() {
+pub fn base_deposit_accounts<S>(spec: &S)
+where
+    S: CvlrSpec<Context = VaultView>,
+{
     let acc_infos: [AccountInfo; 8] = cvlr_deserialize_nondet_accounts();
     let vault_info = &acc_infos[0];
-    let user_info  = &acc_infos[1];
 
-    let pre = P::new(vault_info, user_info);
-    pre.assume_pre();
+    let pre: VaultView = vault_info.into();
+    spec.assume_requires(&pre);
 
     let amount: u64 = nondet();
     process_deposit(&acc_infos, amount).unwrap();
 
-    let post = P::new(vault_info, user_info);
+    let post: VaultView = vault_info.into();
     clog!(pre, post);
-    post.check_post(&pre);
+    spec.check_ensures(&post, &pre);
 }
 ```
+
+The same `cvlr_rules!` block then drives this base harness — the spec
+doesn't need to know whether the pre-state came from a havoced value or
+a havoced account.
 
 ## Pattern 2 — `macro_rules!` for environment generation
 
@@ -324,27 +291,10 @@ because the *path through the protocol* is part of the search.
 ## Hooks for invariant tracking
 
 A complementary pattern: when an invariant must be *checked at runtime*
-inside the handler (not just before/after), use a hook to record that the
-check ran. The mechanism is an `unsafe static` flag flipped by a hook on
-function exit (see {ref}`solana_mocks` for the underlying mechanism).
-
-```rust
-//! src/certora/hooks.rs
-static mut INVARIANT_CHECKED: bool = false;
-pub fn reset_invariant()      { unsafe { INVARIANT_CHECKED = false; } }
-pub fn invariant_was_checked(){ unsafe { INVARIANT_CHECKED = true;  } }
-pub fn was_invariant_checked() -> bool { unsafe { INVARIANT_CHECKED } }
-```
-
-```rust
-//! src/state.rs
-use cvlr::cvlr_hook_on_exit;
-
-#[cfg_attr(feature = "certora", cvlr_hook_on_exit(crate::certora::hooks::invariant_was_checked()))]
-pub fn check_invariant(v: &Vault) {
-    assert!(v.shares <= v.tokens);
-}
-```
+inside the handler (not just before/after), use a hook to record that
+the check ran. The mechanism — an `unsafe static` flag flipped by a
+`cvlr_hook_on_exit` on the runtime check function — is documented as
+Pattern D in {ref}`solana_mocks`. Reuse it directly:
 
 ```rust
 //! src/certora/specs/invariants.rs
@@ -357,24 +307,27 @@ pub fn rule_deposit_runs_invariant_check() {
 }
 ```
 
-This catches refactors that accidentally remove an invariant check from a
-handler.
+This catches refactors that accidentally remove an invariant check from
+a handler.
 
 ## When to choose which
 
 | Situation                                                        | Use                              |
 | ---------------------------------------------------------------- | -------------------------------- |
-| Many properties × many handlers, uniform setup                   | Trait-parameterised harnesses    |
+| Many properties × many handlers, uniform setup                   | `cvlr_spec!` + `cvlr_rules!`     |
+| Same invariant pre/post across many handlers                     | `cvlr_invar_spec!` + `cvlr_invariant_rules!` |
 | Different rules need different starting states                   | `macro_rules!` for setup          |
 | Multi-step state-machine exploration (sequence of handler calls) | `macro_rules!` chains             |
 | Bounded `Vec<T>` of varying element types                        | `nondet_vec_of!` + `cvlr-vectors` |
 | Verifying that a runtime check actually runs                     | `cvlr_hook_on_exit` + static flag |
 
-The two patterns compose cleanly: a trait-parameterised harness can call
-into setup macros, and a property's `assume_pre` / `check_post` can use
-hook-flag readers.
+The two patterns compose cleanly: a `base_<handler>` harness can call into
+setup macros, and a predicate's body can read hook-flag state via plain
+function calls.
 
 ## What's next
 
+- {ref}`solana_spec` — full reference for `CvlrFormula`, predicates,
+  lemmas, and the spec macros used in Pattern 1.
 - {ref}`solana_methodology` — practical guidelines for writing rules that
   actually verify, not just compile.

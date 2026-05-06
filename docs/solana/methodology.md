@@ -19,11 +19,11 @@ pub fn rule_p04_deposit_preserves_solvency() { /* … */ }
 
 Why:
 
-- Forces you to know what you're proving before you fight the Prover.
+- Forces you to define what you're proving before invoking the Prover.
 - Makes Prover output traceable to a written specification.
 - Gives reviewers a unit to look up.
 
-A property without an ID is a property you'll forget you have.
+A property without an ID is easily lost track of.
 
 ## 2. Don't disable the default sanity check
 
@@ -100,13 +100,37 @@ The vast majority of useful properties have the shape:
 > *Before the handler ran, X. After it ran, Y.*
 
 Read state into a value-only struct before, run the handler, read it again
-after. The {ref}`CvlrProp trait <solana_parametric_rules>` formalises this.
+after. The {ref}`cvlr-spec layer <solana_spec>` formalises this —
+predicates package the snapshot fields, `cvlr_spec!` packages
+requires/ensures, and `cvlr_rules!` instantiates the cross-product across
+handlers.
 
 If you find yourself writing the same `let pre = …; let post = …;
-cvlr_assert!(…)` pattern more than three times, factor it into a property
-struct.
+cvlr_assert!(…)` pattern more than three times, factor it into a
+predicate (`#[cvlr::predicate]`) and a `cvlr_spec!`.
 
-## 7. Use `NativeInt` for arithmetic invariants
+## 7. Reach for `cvlr_rules!` once you have a property × handler grid
+
+A protocol with M handlers and N properties yields M × N rules. Writing
+each by hand is repetitive and lets typos drift the rules out of sync.
+Once you have a working `cvlr_spec!` and one `base_<handler>` harness
+per handler, let `cvlr_rules!` fan out the cross-product:
+
+```rust
+cvlr_rules! {
+    name: "solvency",
+    spec: cvlr_spec! { requires: IsSolvent, ensures: SolvencyPreserved },
+    bases: [base_deposit, base_withdraw, base_redeem],
+}
+```
+
+This expands to `solvency_deposit`, `solvency_withdraw`, and
+`solvency_redeem`, each driven by the same spec. Adding a new handler
+becomes one more entry in `bases`; adding a new property is one more
+`cvlr_rules!` block. See {ref}`solana_spec` for the spec primitives and
+{ref}`solana_parametric_rules` for the surrounding harness shape.
+
+## 8. Use `NativeInt` for arithmetic invariants
 
 When you assert a *mathematical* invariant — solvency, monotonicity, no
 dilution — `u64` wraparound produces spurious counterexamples. Lift to
@@ -118,7 +142,7 @@ When *not* to use `NativeInt`: when wraparound is the actual semantics
 (counters, cyclic indices). Use it for invariants, not for simulating
 native arithmetic.
 
-## 8. `clog!` aggressively
+## 9. Log all nondet inputs with `clog!`
 
 A counterexample without logged inputs is unreadable. The rule is simple:
 **every value you produced with `nondet()` should appear in some `clog!`
@@ -137,7 +161,7 @@ cvlr_assert!(/* … */ true);
 For struct-valued snapshots, implement `CvlrLog` once (see
 {ref}`speclanguage`) and `clog!(pre, post)` everywhere.
 
-## 9. `multi_assert_check` for compound rules
+## 10. `multi_assert_check` for compound rules
 
 A rule with several independent asserts will report only the first failing
 one and stop. To get a per-assert report, set `multi_assert_check` in the
@@ -156,7 +180,7 @@ its own child result.
 When *not* to use it: when the asserts are sequential (later ones depend on
 earlier ones holding). Then split the rule — say you have a rule with two asserts; when verifying the second assert, the first `assert` should be turned into an `assume`.
 
-## 10. Conf hygiene
+## 11. Conf hygiene
 
 Start from the
 [spec template's `run.conf`](https://github.com/Certora/solana-spec-template/blob/main/confs/run.conf)
@@ -202,7 +226,7 @@ A few guidelines for tuning these defaults:
 - **`rule_sanity: basic`** runs the vacuity check on every rule (see
   {ref}`solana-sanity-vacuity`). Recommended for every conf.
 
-## 11. Keep `package.metadata.certora` minimal
+## 12. Keep `package.metadata.certora` minimal
 
 The `[package.metadata.certora]` block in your `Cargo.toml` controls what
 `cargo certora-sbf` ships to verification. Every extra entry in `sources`
@@ -226,22 +250,23 @@ when a particular rule demands it.
 
 See {ref}`solana_project_setup` for the canonical block.
 
-## 12. Layout convention
+## 13. Layout convention
 
 {ref}`solana_project_setup` shows the recommended source-tree layout. The
 prove-it-works experience is much better when files have predictable
 shapes:
 
-- `nondet.rs` — only `impl Nondet`s, nothing else.
+- `nondet.rs` — only `Nondet` derives / impls, nothing else.
 - `mocks/foo.rs` — only mock implementations, mirroring `src/foo.rs`.
-- `specs/<topic>/<topic>.rs` — only `#[rule]` functions, one or two lines
-  each.
-- `specs/<topic>/props.rs` — only `CvlrProp` impls.
+- `specs/<topic>/<topic>.rs` — only `#[rule]` functions and the
+  `cvlr_rules!` blocks that emit them.
+- `specs/<topic>/preds.rs` — only `#[cvlr::predicate]` definitions and
+  reusable predicate constructors.
 
-When something doesn't fit any of those buckets, that's a signal: you're
-probably solving a different problem than you think you are.
+Code that does not fit any of these buckets is a signal that the task
+may have been misframed.
 
-## 13. Iterate on rules in a tight loop
+## 14. Iterate on rules incrementally
 
 A practical workflow:
 
@@ -254,25 +279,27 @@ A practical workflow:
 6. Re-run. Repeat.
 
 ```{tip}
-The rule of thumb: **never silence a counterexample without writing down
-why it was OK to ignore.**
+Guideline: **never silence a counterexample without recording the
+justification.**
 ```
 
-## 14. Common antipatterns
+## 15. Common antipatterns
 
-- **A passing rule that asserts nothing meaningful.** The fastest way to
-  ship a "verified" spec that protects nothing. Sanity-rule everything.
-- **A 200-line rule.** Split it. The Prover is happier and so are reviewers.
+- **A passing rule that asserts nothing meaningful.** Produces a
+  "verified" spec with no actual coverage. Apply the sanity check to
+  every rule.
+- **A 200-line rule.** Split it — both the Prover and reviewers benefit
+  from smaller units.
 - **Mocks that hard-code success.** `Ok(())` mocks should be the exception;
   `Ok(nondet())` is the default.
 - **Importing production state types into rules and mutating fields by
-  hand.** Use `Nondet` and `assume_pre` instead — it's clearer and
-  composes.
+  hand.** Use `Nondet` to havoc the state and a `#[cvlr::predicate]`
+  to constrain it instead — it's clearer and composes.
 - **Catching production bugs by reading Prover output, not the code.** When
   a counterexample reveals a real bug, fix the code; don't add assumes to
   make the rule pass.
 
-## 15. Where to find more
+## 16. Where to find more
 
 - The high-level CVLR reference: {ref}`speclanguage`.
 - The Certora Solana spec template (recommended starting scaffold):

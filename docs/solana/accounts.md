@@ -8,10 +8,9 @@ account-handling helpers in `cvlr-solana`.
 
 ## Producing nondet accounts
 
-### Current pattern: `cvlr_deserialize_nondet_accounts`
+### `cvlr_deserialize_nondet_accounts`
 
-The recommended way (cvlr-solana ≥ 0.4.3) to spawn a fixed-size array of
-nondeterministic `AccountInfo`s:
+Spawn a fixed-size array of nondeterministic `AccountInfo`s:
 
 ```rust
 use cvlr::prelude::*;
@@ -38,23 +37,6 @@ What you get:
 - The array length is a compile-time constant. Pick the smallest size that
   matches your handler's signature. Common values are 4, 8, 16.
 
-### Older pattern: `acc_infos_with_mem_layout!()`
-
-In cvlr-solana 0.4.0–0.4.2 (and still working in newer versions for
-backward compatibility) the same role was played by a macro:
-
-```rust
-use cvlr_solana::acc_infos_with_mem_layout;
-
-let acc_infos: [AccountInfo; 8] = acc_infos_with_mem_layout!();
-```
-
-```{note}
-**Version note.** `cvlr_deserialize_nondet_accounts()` and
-`acc_infos_with_mem_layout!()` are interchangeable in practice. Prefer the
-function form in new code.
-```
-
 ### Slicing to the right length
 
 Many handlers take exactly `N` accounts. Allocate a generous array, then
@@ -80,8 +62,8 @@ let optional:   Option<Pubkey>          = cvlr_nondet_option_pubkey();
 
 Use `cvlr_nondet_pubkey()` rather than `nondet::<Pubkey>()` so the Prover
 treats it as an opaque 32-byte identifier rather than havocing 32 individual
-bytes (the latter is slower and gives the Prover more rope to hang itself
-with).
+bytes (the latter is slower and produces a wider search space than
+necessary).
 
 ## Reading typed state out of an account
 

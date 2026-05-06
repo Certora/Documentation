@@ -10,7 +10,9 @@ Rust), an embedded DSL that lives in two crates:
 
 * `cvlr <https://github.com/Certora/cvlr>`_ — core verification primitives
   (``#[rule]``, ``cvlr_assert!``, ``cvlr_assume!``, ``nondet``, ``clog!``, the
-  ``Nondet`` trait, ``mock_fn``, ``cvlr_hook_on_exit``, …).
+  ``Nondet`` and ``CvlrLog`` derives, ``CvlrFormula`` / ``cvlr_lemma!`` /
+  ``cvlr_spec!`` / ``cvlr_rules!`` for the spec layer, ``mock_fn``,
+  ``cvlr_hook_on_exit``, …).
 * `cvlr-solana <https://github.com/Certora/cvlr-solana>`_ — Solana-specific
   helpers (nondeterministic ``AccountInfo``, ``Pubkey``, anchor account
   wrappers, clock helpers).
@@ -41,6 +43,7 @@ walkthrough, or jump directly to the topic you need.
 
    speclanguage
    nondet
+   spec
    mocks
    accounts
    anchor

@@ -11,40 +11,42 @@ function on primitive types, see the {ref}`speclanguage` page.
 
 ## The `Nondet` trait
 
-For your own types, implement `cvlr::nondet::Nondet`:
+The recommended way to give your own types a `Nondet` impl is the derive
+macro from `cvlr::derive` (shipped with `cvlr ≥ 0.5`):
 
 ```rust
-use cvlr::nondet::Nondet;
 use cvlr::prelude::*;
 
-#[derive(Clone, Copy)]
+#[derive(cvlr::derive::Nondet, Clone, Copy)]
 pub struct Vault {
-    pub tokens:  u64,
-    pub shares:  u64,
-    pub paused:  bool,
+    pub tokens: u64,
+    pub shares: u64,
+    pub paused: bool,
 }
 
-impl Nondet for Vault {
-    fn nondet() -> Self {
-        Vault {
-            tokens: nondet(),
-            shares: nondet(),
-            paused: nondet(),
-        }
-    }
-}
-
-// Now you can write:
+// Each field is havoced independently:
 let v: Vault = nondet();
 ```
 
-The trait composes recursively. As long as every field has a `Nondet` impl,
-you can mechanically derive yours. Project convention is to keep all
-`impl Nondet for …` blocks together in `src/certora/nondet.rs`.
+The derive works on structs (named or tuple) and on enums (each variant's
+fields are havoced; the discriminant is itself nondet). It composes
+recursively — as long as every field has a `Nondet` impl, you can derive
+yours.
 
-## Havocing enums
+```{tip}
+The convention in customer projects is to leave `#[derive(cvlr::derive::Nondet)]`
+on the production struct unconditionally. The derive doesn't generate code
+that depends on `cvlr` being linked unless `nondet()` is actually called,
+so you don't need to gate it behind `#[cfg(feature = "certora")]`.
+```
 
-Enums need a `match` over a nondet discriminant:
+### Manual `impl Nondet` — when you need it
+
+The derive is the right answer for almost every type. A situation
+where you need a hand-written impl is when the type contains a
+ field whose `Nondet` impl needs custom pre-conditions baked in.
+
+The shape is straightforward:
 
 ```rust
 use cvlr::nondet::Nondet;
@@ -67,7 +69,10 @@ impl Nondet for Status {
 }
 ```
 
-A `% N` keeps the discriminant in range without an extra `assume`. 
+A `% N` keeps the discriminant in range without an extra `assume`. For
+enums where the Prover should be told that *only* certain variants are
+valid (e.g. bitflags), list each valid value explicitly and let the
+fallthrough `panic!()` rule out the rest.
 
 ## Havocing `Pubkey` and `Option<Pubkey>`
 
@@ -128,9 +133,9 @@ cvlr_assume!(vault.shares <= vault.tokens);     // protocol invariant
 cvlr_assume!(!vault.paused);                    // we're proving the active path
 ```
 
-Patterns like the above scale poorly when repeated across every rule. Factor
-them into a property struct's `assume_pre()` method — see
-{ref}`solana_parametric_rules`.
+Patterns like the above scale poorly when repeated across every rule.
+Factor them into a `#[cvlr::predicate]` and reuse it across rules — see
+{ref}`solana_spec`.
 
 (solana_nondet_vectors)=
 ## Bounded vectors

@@ -232,7 +232,7 @@ pub fn rule_withdraw_calls_transfer() {
 }
 ```
 
-This pattern shines when:
+This pattern is appropriate when:
 
 - You're verifying a handler that performs CPIs you don't want to model
   precisely.

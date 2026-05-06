@@ -64,9 +64,10 @@ macro_rules! cvlr_anchor_new_context {
 
 Two things to choose between:
 
-- **`cvlr_anchor_account`** skips Anchor's `try_deserialize` and stuffs a
-  fully nondet `T` straight into `Account`. Faster for the Prover; doesn't
-  exercise the deserializer's owner / discriminator checks.
+- **`cvlr_anchor_account`** bypasses Anchor's `try_deserialize` and
+  places a fully nondet `T` directly into `Account`. Faster for the
+  Prover; does not exercise the deserializer's owner / discriminator
+  checks.
 - **`cvlr_anchor_account_try_from`** runs the real `try_deserialize` on
   nondet bytes. Slower, but lets you verify that the deserializer's checks
   hold under the `info.owner == &T::owner()` precondition.
