@@ -315,4 +315,4 @@ To see the complete list of command line options for `cargo certora-sbf` run
 ## What's next
 
 - {ref}`speclanguage` — the CVLR primitives.
-- {ref}`solana_methodology` — practical guidelines for organising specs.
+- {ref}`solana_methodology` — practical guidelines for organizing specs.

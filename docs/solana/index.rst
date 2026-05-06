@@ -23,7 +23,7 @@ The recommended starting scaffold for new projects is the
 files, and a setup script that wires everything into your ``Cargo.toml``.
 The pages below assume the layout that template produces.
 
-The pages below are organised so that you can read top-to-bottom for a full
+The pages below are organized so that you can read top-to-bottom for a full
 walkthrough, or jump directly to the topic you need.
 
 .. toctree::

@@ -36,7 +36,7 @@ The prelude pulls in the items you almost always need:
 | `cvlr_assert_{eq,ne,le,lt,ge,gt}!` | comparison-aware assertions (log both sides) |
 | `cvlr_assert_that!` / `cvlr_assert_all!` | the assertion DSL — see {ref}`assert-dsl` |
 | `cvlr_assume!`     | restrict the search space (precondition)       |
-| `cvlr_assume_{eq,ne,le,lt,ge,gt}!` | matching specialised `assume` variants |
+| `cvlr_assume_{eq,ne,le,lt,ge,gt}!` | matching specialized `assume` variants |
 | `cvlr_assume_that!` / `cvlr_assume_all!` | the `assume` DSL |
 | `cvlr_satisfy!`    | existential check (at least one execution …)  |
 | `clog!`            | log values into counterexamples                |
@@ -129,7 +129,7 @@ an execution of the program that reaches that assertion and violates it.
 
 All assertion macros come from `cvlr::prelude::*`. They desugar to the same
 thing: a check that fails the rule when the condition is false. The
-specialised forms produce better counterexample messages because they
+specialized forms produce better counterexample messages because they
 report both sides of the comparison.
 
 | Macro                        | Use for                                                | Equivalent to                               |
@@ -462,7 +462,7 @@ pub fn rule_deposit_preserves_solvency() {
 ```
 
 This `pre` / `assume_pre` / run / `post` / `clog!` / assert sequence is
-the standard shape of practical specs. It is generalised in
+the standard shape of practical specs. It is generalized in
 {ref}`solana_parametric_rules`.
 
 ## What's next

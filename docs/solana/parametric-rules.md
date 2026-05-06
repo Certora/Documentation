@@ -16,7 +16,7 @@ production protocol with 10+ handlers and a similar number of properties
 produces 100+ near-identical rules. A well-defined project structure for
 verification is required.
 
-The two patterns below are recommended spec organisation practices. **Use
+The two patterns below are recommended spec organization practices. **Use
 the spec layer when the harness is uniform across properties; reach for
 macros when the setup itself differs per rule.**
 
@@ -285,7 +285,7 @@ pub fn rule_can_always_cancel() {
 }
 ```
 
-This is more powerful than what trait-parameterised harnesses give you,
+This is more powerful than what trait-parameterized harnesses give you,
 because the *path through the protocol* is part of the search.
 
 ## Hooks for invariant tracking

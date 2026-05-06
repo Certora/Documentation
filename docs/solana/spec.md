@@ -9,12 +9,13 @@ lemmas.
 This page covers the three layers, smallest first:
 
 1. **Predicates** — boolean expressions over a context type
-   ([`CvlrFormula`](#cvlrformula)).
+   ({ref}`CvlrFormula <solana_spec_cvlrformula>`).
 2. **Lemmas** — verified theorems that can be reused inside other rules
-   ([`cvlr_lemma!`](#lemmas)).
+   ({ref}`cvlr_lemma! <solana_spec_lemmas>`).
 3. **Specs** — packaged (requires, ensures) pairs for handlers, instantiated
    as a cross-product of rules
-   ([`cvlr_spec!`](#specs-for-handlers) and [`cvlr_rules!`](#bulk-rule-generation)).
+   ({ref}`cvlr_spec! <solana_spec_specs_for_handlers>` and
+   {ref}`cvlr_rules! <solana_spec_bulk_rule_generation>`).
 
 ```{note}
 Everything on this page is opt-in. The lower-level primitives covered in
@@ -22,6 +23,7 @@ Everything on this page is opt-in. The lower-level primitives covered in
 working as before and can be mixed freely with the spec layer.
 ```
 
+(solana_spec_cvlrformula)=
 ## `CvlrFormula`
 
 A `CvlrFormula` is a boolean expression with an associated `Context` type.
@@ -90,7 +92,7 @@ let b: bool = IsSolvent.eval(&v);     // get a bool back
 
 The function body is a sequence of boolean expressions; multiple
 expressions are conjoined. Comparisons (`==`, `!=`, `<`, `<=`, `>`, `>=`)
-are lowered to the corresponding specialised `cvlr_assert_*` /
+are lowered to the corresponding specialized `cvlr_assert_*` /
 `cvlr_assume_*` macro automatically, so counterexamples include both
 sides of the comparison.
 
@@ -179,7 +181,7 @@ cvlr_def_predicates! {
 ```
 
 For two-state predicates, `cvlr_def_states_predicate!` mirrors the
-two-arg form of the attribute:
+two-argument form of the attribute:
 
 ```rust
 cvlr_def_states_predicate! {
@@ -192,7 +194,7 @@ cvlr_def_states_predicate! {
 ### Manual `impl CvlrFormula`
 
 For full control — e.g. a predicate that does something non-trivial in
-`assume` (like calling specialised `cvlr_assume_*` helpers):
+`assume` (like calling specialized `cvlr_assume_*` helpers):
 
 ```rust
 struct VaultWellFormed;
@@ -227,6 +229,7 @@ PascalCase conversion. If a predicate was defined with
 `cvlr_def_predicate!` (which produces a unit struct directly), reference
 it by its struct name and use `cvlr_and!` instead.
 
+(solana_spec_lemmas)=
 ## Lemmas
 
 A **lemma** is a logical statement of the form *"if `requires` holds, then
@@ -313,9 +316,10 @@ cvlr_lemma! {
 }
 ```
 
+(solana_spec_specs_for_handlers)=
 ## Specs (for handlers)
 
-A `CvlrSpec` is the two-state generalisation of a lemma: the precondition
+A `CvlrSpec` is the two-state generalization of a lemma: the precondition
 holds before the handler runs; the postcondition holds after, and may
 compare post-state to pre-state.
 
@@ -364,6 +368,7 @@ let invar = cvlr_invar_spec! {
 };
 ```
 
+(solana_spec_bulk_rule_generation)=
 ## Bulk rule generation
 
 `cvlr_rules!` generates a `#[rule]` per `(name, base_function)` pair. The
@@ -411,7 +416,7 @@ threading `assume_requires` / `check_ensures`.
 
 Putting the pieces together: a single property defined once, instantiated
 across multiple handlers. This is the shape customer specs converge on
-once the harness stabilises.
+once the harness stabilizes.
 
 ```rust
 //! src/certora/specs/solvency.rs
@@ -494,7 +499,7 @@ only the body changes.
 | --------- | --- |
 | Reusable named assertion over one state | `#[cvlr::predicate]` |
 | One-shot, inline | `cvlr_predicate!` |
-| Comparing pre-state and post-state | `#[cvlr::predicate]` with two args |
+| Comparing pre-state and post-state | `#[cvlr::predicate]` with two arguments |
 | Proved theorem reused in many rules | `cvlr_lemma!` + `.apply()` |
 | Same `(requires, ensures)` across many handlers | `cvlr_spec!` + `cvlr_rules!` |
 | Same invariant across many handlers | `cvlr_invar_spec!` + `cvlr_invariant_rules!` |

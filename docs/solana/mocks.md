@@ -61,11 +61,11 @@ pub fn compute_interest(_principal: u64, _rate_bps: u16, _days: u32) -> u64 {
 Use this when:
 
 - The function is small and self-contained.
-- The result can be modelled as "any value of type T" without losing the
+- The result can be modeled as "any value of type T" without losing the
   important contract.
 - While this pattern is simple, it also adds a few extra lines to the code base.
 
-Use a **trait-based mock** (Pattern C) instead when behaviour must vary
+Use a **trait-based mock** (Pattern C) instead when behavior must vary
 per-rule.
 
 ## Pattern B — `cvlr::mock_fn` attribute
@@ -115,7 +115,7 @@ pub fn compute_fee(amount: u64, bps: u16) -> u64 { /* … */ }
 
 ## Pattern C — trait-based mock indirection
 
-When the production code calls into something whose behaviour must vary by
+When the production code calls into something whose behavior must vary by
 rule, hide the call behind a trait. Provide a real impl and one or more
 verification impls. Each rule picks which one to instantiate.
 
@@ -158,7 +158,7 @@ Then pick per rule:
 #[rule] pub fn rule_deposit_zero_fee() { /* … */ deposit::<ZeroFee>(&mut v, amt); /* … */ }
 ```
 
-Use this when one rule wants the worst-case behaviour and another wants a
+Use this when one rule wants the worst-case behavior and another wants a
 specific concrete simplification.
 
 ## Pattern D — `cvlr_hook_on_exit` for tracking calls

@@ -100,7 +100,7 @@ The vast majority of useful properties have the shape:
 > *Before the handler ran, X. After it ran, Y.*
 
 Read state into a value-only struct before, run the handler, read it again
-after. The {ref}`cvlr-spec layer <solana_spec>` formalises this —
+after. The {ref}`cvlr-spec layer <solana_spec>` formalizes this —
 predicates package the snapshot fields, `cvlr_spec!` packages
 requires/ensures, and `cvlr_rules!` instantiates the cross-product across
 handlers.
