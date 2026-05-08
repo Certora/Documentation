@@ -186,3 +186,66 @@ When you have a rule with multiple assertions:
 ```bash
 certoraSolanaProver --multi_assert_check
 ```
+
+## `--split_rules`
+
+**What does it do?**
+
+Typically, all rules (after being filtered by `--rule`) are evaluated in a single Prover job.
+With `--split_rules`, the user can run specific rules on separate dedicated Prover jobs.
+A new job will be created and executed for each rule that matches a name in `--split_rules`, and an additional job will be created for the rest of the rules.
+After launching the generated jobs, the original job will return with a link to the dashboard,
+listing the status of the generated jobs.
+
+**Note:** Wildcard matching of rule names is not allowed. Each rule name must be specified exactly.
+
+**When to use it?**
+
+This option is useful when some rules take a much longer time than the rest.
+Splitting the difficult rules to their own dedicated Prover jobs
+will give them more resources that will potentially reduce their chance to timeout
+and will decrease the time to get the final job result for the less computationally intensive rules.
+
+**Example**
+
+If your Rust module includes the following rules:
+```rust
+#[rule]
+fn rule_complex_state_transitions() {
+    ...
+}
+
+#[rule]
+fn rule_invariant_preservation() {
+    ...
+}
+
+#[rule]
+fn rule_simple_balance_check() {
+    ...
+}
+
+#[rule]
+fn rule_basic_permission_check() {
+    ...
+}
+```
+
+To run `rule_complex_state_transitions` and `rule_invariant_preservation` on separate Prover jobs from the rest of the rules:
+
+```bash
+certoraSolanaProver --split_rules rule_complex_state_transitions rule_invariant_preservation --rule rule_complex_state_transitions rule_invariant_preservation rule_simple_balance_check rule_basic_permission_check
+```
+
+In a configuration file:
+```json
+{
+  "rule": ["rule_complex_state_transitions", "rule_invariant_preservation", "rule_simple_balance_check", "rule_basic_permission_check"],
+  "split_rules": ["rule_complex_state_transitions", "rule_invariant_preservation"]
+}
+```
+
+This will create:
+- One job for `rule_complex_state_transitions`
+- One job for `rule_invariant_preservation` 
+- One job for the remaining rules (`rule_simple_balance_check` and `rule_basic_permission_check`)
