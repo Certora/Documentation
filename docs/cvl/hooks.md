@@ -33,13 +33,25 @@ pattern ::= "Sstore" access_path param [ "(" param ")" ]
 access_path ::= id
               | [ id "." ] "(" "slot" number ")"
               | access_path "." id
+              | access_path "." "length"
               | access_path "[" "KEY"   basic_type id "]"
               | access_path "[" "INDEX" basic_type id "]"
               | access_path "." "(" "offset" number ")"
 
-opcode ::= "ALL_SLOAD" | "ALL_SSTORE" | "ALL_TLOAD" | "ALL_TSTORE" | ...
+opcode ::= "ALL_SLOAD"     | "ALL_SSTORE"   | "ALL_TLOAD"   | "ALL_TSTORE"
+         | "ADDRESS"       | "BALANCE"      | "ORIGIN"      | "CALLER"
+         | "CALLVALUE"     | "CODESIZE"     | "CODECOPY"    | "GASPRICE"
+         | "EXTCODESIZE"   | "EXTCODECOPY"  | "EXTCODEHASH" | "BLOCKHASH"
+         | "COINBASE"      | "TIMESTAMP"    | "NUMBER"      | "DIFFICULTY"
+         | "GASLIMIT"      | "CHAINID"      | "SELFBALANCE" | "BASEFEE"
+         | "MSIZE"         | "GAS"
+         | "LOG0" | "LOG1" | "LOG2" | "LOG3" | "LOG4"
+         | "CREATE1"       | "CREATE2"
+         | "CALL"          | "CALLCODE"     | "DELEGATECALL"| "STATICCALL"
+         | "REVERT"        | "BLOBHASH"     | "SELFDESTRUCT"
 
 param  ::= evm_type id
+params ::= param { "," param }
 ```
 
 See {ref}`opcode-hooks` below for the list of available opcodes.
