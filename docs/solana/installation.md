@@ -19,14 +19,11 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
    rustup toolchain install 1.85
    ```
 
-2. Install `certora-sbf` cargo sub-command
+2. Install [`certora-sbf`](https://github.com/Certora/cargo-certora-sbf) cargo sub-command
 
    ```
-   cargo +1.85 install cargo-certora-sbf
+   cargo install cargo-certora-sbf
    ```
-
-   Note that a minimal version of Rust required to install `certora-sbf` is
-   v1.85.
 
 4. Test the installation by using `certora-sbf` to download and install Certora
    Platform Tools
