@@ -11,27 +11,34 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
 
    `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
-   It is useful to have Rust versions 1.75, 1.79, and 1.81 or above installed.
+   It is useful to have Rust versions 1.75, 1.79, and 1.85 or above installed.
 
    ```
    rustup toolchain install 1.79
    rustup toolchain install 1.75
-   rustup toolchain install 1.81
+   rustup toolchain install 1.85
    ```
 
 2. Install `certora-sbf` cargo sub-command
 
-   `cargo +1.81 install cargo-certora-sbf`
+   `cargo +1.85 install cargo-certora-sbf`
 
    Note that a minimal version of Rust required to install `certora-sbf` is
-   v1.81.
+   v1.85.
 
 3. Test the installation by using `certora-sbf` to download and install Certora
    Platform Tools
 
    `cargo certora-sbf --no-build`
 
-4. It is strongly recommended to install VSCode and the rust-analyzer extension.
+4. Install [llvm](https://releases.llvm.org/), you can typically install it also via apt or brew.
+
+5. Install [rustfilt](https://github.com/luser/rustfilt)
+   ```
+   cargo install rustfilt
+   ```
+
+7. It is strongly recommended to install VSCode and the rust-analyzer extension.
 
 ----
 
