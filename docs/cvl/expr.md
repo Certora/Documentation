@@ -46,11 +46,11 @@ binop ::= "+" | "-" | "*" | "/" | "%" | "^"
         | "=>" | "<=>" | "xor" | ">>>"
 
 specials_fields ::=
-           | "block" "." [ "number" | "timestamp" ]
-           | "msg"   "." [ "address" | "sender" | "value" ]
+           | "block" "." [ "number" | "timestamp" | "basefee" | "coinbase" | "difficulty" | "gaslimit" ]
+           | "msg"   "." [ "sender" | "value" ]
            | "tx"    "." [ "origin" ]
            | "length"
-           | "selector" | "isPure" | "isView" | "numberOfArguments" | "isFallback"
+           | "selector" | "isPure" | "isView" | "numberOfArguments" | "isFallback" | "contract"
 
 special_vars ::=
            | "lastReverted"

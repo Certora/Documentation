@@ -34,7 +34,7 @@ The syntax for invariants is given by the following [EBNF grammar](ebnf-syntax):
 invariant ::= [ "weak" | "strong" ] "invariant" id
               [ "(" params ")" ]
               expression
-              [ "filtered" "{" id "->" expression "}" ]
+              [ "filtered" "{" id "->" expression { "," id "->" expression } "}" ]
               [ "{" { preserved_block } "}" ]
 
 preserved_block ::= "preserved"
