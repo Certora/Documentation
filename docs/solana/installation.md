@@ -11,7 +11,7 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
 
    `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
-Rust 1.85 or above is recommended to be able to build `cargo-certora-sbf` and when using `cvlr-solana` ≥ 0.5. Version 1.75 can be used when analyzing programs that use `cvlr-solana` versions (below or equal to 0.4) and programs that are bundled with Solana v1.18 (Rust version 1.79 matches the one bundled with Solana v2.1). Install whichever versions correspond to the Solana releases you target:
+Rust 1.85 or above is recommended when using `cvlr-solana` ≥ 0.5. Version 1.75 or 1.79 can be used when analyzing programs that use `cvlr-solana` versions below or equal to 0.4. Use 1.75 when the target program is bundled with Solana v1.18 and version 1.79 when targeting Solana v2.1. Install whichever version correspond to the Solana release you target:
 
 
    ```
