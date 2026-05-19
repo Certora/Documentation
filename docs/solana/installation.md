@@ -11,12 +11,13 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
 
    `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
-   It is useful to have Rust versions 1.75, 1.79, and 1.85 or above installed.
+Rust 1.85 or above is recommended to be able to build cargo-certora-sbf and when using cvlr-solana ≥ 0.5. Version 1.75 can be used when analyzing programs that use older cvlr-solana versions (below or equal to 0.4) and programs that are bundled with Solana v1.18 (1.79 matches the one bundled with Solana v2.1). Install whichever versions correspond to the Solana releases you target:
+
 
    ```
-   rustup toolchain install 1.79
-   rustup toolchain install 1.75
-   rustup toolchain install 1.85
+   rustup toolchain install 1.85   # (recommended) if the program under analysis uses Solana v2.3
+   rustup toolchain install 1.79   # (alternatively) if the program under analysis uses Solana v2.1
+   rustup toolchain install 1.75   # (alternatively) if the program under analysis uses Solana v1.18
    ```
 
 2. Install [`certora-sbf`](https://github.com/Certora/cargo-certora-sbf) cargo sub-command
