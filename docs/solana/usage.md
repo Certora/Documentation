@@ -1,13 +1,13 @@
 (solana_usage)=
-# Using the Solana Certora Prover
+# Using the Certora Solana Prover
 
 ## Overview
 
-This page is a guide to using the Solana Certora Prover. It covers wiring
+This page is a guide to using the Certora Solana Prover. It covers wiring
 CVLR into a Cargo workspace, the configuration formats accepted by the
 Prover, and how to execute verification locally and remotely.
 
-A typical Solana project integrated with the Solana Certora Prover includes:
+A typical Solana project integrated with the Certora Solana Prover includes:
 
 - A Solana smart contract written in Rust.
 
@@ -21,7 +21,7 @@ repository contains a collection of example projects.
 ## Project Setup
 
 This section covers how to wire CVLR into a Cargo workspace so that the
-Solana Certora Prover can build and verify your program. The remainder of
+Certora Solana Prover can build and verify your program. The remainder of
 the page focuses on the run-time configuration.
 
 This guide targets **`cvlr ≥ 0.6`** and **`cvlr-solana ≥ 0.5`**, the current
@@ -133,7 +133,7 @@ entries — rather than from empty files. With these defaults, for instance, `so
 my_program/
 ├── Cargo.toml
 └── src/
-    ├── lib.rs                ← `#[cfg(feature = "certora")] pub mod certora;`
+    ├── lib.rs                ← #[cfg(feature = "certora")] pub mod certora;
     ├── processor.rs          ← real handlers (deposit, withdraw, …)
     ├── state.rs              ← real state types (Vault, …)
     └── certora/
