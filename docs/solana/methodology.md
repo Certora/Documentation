@@ -73,19 +73,7 @@ If you must reason about sequences (multisig flows, time-locked actions),
 use the {ref}`macro chain pattern <solana_parametric_rules>` to enumerate
 transitions explicitly — but keep the per-step body tiny.
 
-## 5. Mock vs. inline — the trade-off
-
-| You're calling…                                            | Default                              |
-| ---------------------------------------------------------- | ------------------------------------ |
-| Code under verification                                    | Inline (don't mock)                  |
-| Pure arithmetic that fits in `NativeInt`                   | Inline                               |
-| A loop bounded by a small constant                         | Inline                               |
-| A loop bounded by a configurable constant                  | Inline if small (≤ 4); else mock     |
-| A CPI                                                      | Mock (Pattern D — track the call)    |
-| Heavy table-driven math                                    | Mock (Pattern A or B with `nondet`)  |
-| A function whose result the rule does not use              | Mock with `Ok(())`                   |
-
-Two principles:
+## 5. Principles for mocking
 
 - **A mock should be the *weakest* function consistent with the contract.**
   `nondet()` returns are usually right; pinning a specific value hides
