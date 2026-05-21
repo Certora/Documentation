@@ -14,14 +14,11 @@ in :ref:`Invariants (from The Certora Verification Language)<invariants>`.
 
 Teams example
 -------------
-The :clink:`ITeams</CVLByExample/Teams/ITeams.sol>` interface, shown below,
+The :clink:`ITeams</CVLByExample/Teams/ITeams.sol>` interface,
 is an interface for managing teams consisting of two players and a team leader.
 
-.. dropdown:: :clink:`ITeams interface</CVLByExample/Teams/ITeams.sol>`
-
-   .. literalinclude:: ../../Examples/CVLByExample/Teams/ITeams.sol
-      :language: solidity
-      :lines: 13-
+ITeams source on GitHub:
+https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/ITeams.sol
 
 A contract implementing this interface should satisfy the following properties:
 
@@ -55,9 +52,8 @@ No team for address zero
 We can readily deduce from the properties that :solidity:`teamOf(address(0))` must be
 zero. Here it is written as an invariant:
 
-.. cvlinclude:: ../../Examples/CVLByExample/Teams/Teams.spec
-   :cvlobject: methods addressZeroNotPlayer
-   :caption: :clink:`The team of zero is zero</CVLByExample/Teams/Teams.spec>`
+See CVL spec on GitHub (methods addressZeroNotPlayer):
+https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/Teams.spec
 
 We declared the functions :solidity:`teamOf` and :solidity:`leaderOf` as :cvl:`envfree`
 to remove the need for an :cvl:`env` type argument.
@@ -68,9 +64,8 @@ Another invariant property is that the team-id of the leader of team :math:`x` i
 :math:`x`. This only holds if :math:`x` is not zero and the leader is not
 :solidity:`address(0)`. Here is the property written as an invariant:
 
-.. cvlinclude:: ../../Examples/CVLByExample/Teams/Teams.spec
-   :cvlobject: leaderBelongsToTeam
-   :caption: :clink:`The team's leader is part of the team</CVLByExample/Teams/Teams.spec>`
+See CVL spec on GitHub (leaderBelongsToTeam):
+https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/Teams.spec
 
 
 .. index::
@@ -89,9 +84,8 @@ Before team :solidity:`i` is created, :solidity:`leaderOf(i)` must be
 :solidity:`address(0)`. In such a case, there should be no players in team :solidity:`i`.
 We can write this condition as:
 
-.. cvlinclude:: ../../Examples/CVLByExample/Teams/NoPreserved.spec
-   :cvlobject: nonExistTeamHasNoPlayers
-   :caption: :clink:`nonExistTeamHasNoPlayers without preserved block</CVLByExample/Teams/NoPreserved.spec>`
+See CVL spec on GitHub (nonExistTeamHasNoPlayers without preserved block):
+https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/NoPreserved.spec
 
 Running this rule, the Prover will find the following violation,
 which you can see in this rule report `nonExistTeamHasNoPlayers violation report`_.
@@ -129,9 +123,8 @@ we already proved this in :ref:`no_team_for_address_zero`, we can simply
 :index:`require that the invariant<single: requireInvariant>`
 :cvl:`addressZeroNotPlayer` holds, like so:
 
-.. cvlinclude:: ../../Examples/CVLByExample/Teams/Teams.spec
-   :cvlobject: nonExistTeamHasNoPlayers
-   :caption: :clink:`Non created team has no players</CVLByExample/Teams/Teams.spec>`
+See CVL spec on GitHub (nonExistTeamHasNoPlayers with preserved block):
+https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/Teams.spec
 
 .. seealso::
 
@@ -156,23 +149,22 @@ To enhance readability we'll define two helper functions:
 
 Their definitions are given below.
 
-.. dropdown:: :clink:`fourDifferentAddresses</CVLByExample/Teams/Teams.spec>`
+.. dropdown:: fourDifferentAddresses
 
-   .. cvlinclude:: ../../Examples/CVLByExample/Teams/Teams.spec
-      :cvlobject: fourDifferentAddresses
+   See CVL snippet on GitHub:
+   https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/Teams.spec
 
-.. dropdown:: :clink:`sameTeam</CVLByExample/Teams/Teams.spec>`
+.. dropdown:: sameTeam
 
-   .. cvlinclude:: ../../Examples/CVLByExample/Teams/Teams.spec
-      :cvlobject: sameTeam
+   See CVL snippet on GitHub:
+   https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/Teams.spec
 
 The rule
 """"""""
 Here is the complete rule.
 
-.. cvlinclude:: ../../Examples/CVLByExample/Teams/Teams.spec
-   :cvlobject: teamHasMaxThreePlayers
-   :caption: :clink:`A team has at most three players</CVLByExample/Teams/Teams.spec>`
+See CVL spec on GitHub (teamHasMaxThreePlayers):
+https://github.com/Certora/Examples/blob/master/CVLByExample/Teams/Teams.spec
 
 As you can see, we used a different preserved block here. This preserved block adds
 a pre-condition only when verifying the invariant on the function :cvl:`createTeam`
