@@ -1,6 +1,6 @@
-# Get started with the Solana Certora Prover
+# Get started with the Certora Solana Prover
 
-## Installing Solana Certora Prover
+## Installing Certora Solana Prover
 
 Begin by following the steps in the {ref}`Certora Prover installation guide <installation>`.
 
@@ -35,7 +35,7 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
 
 ----
 
-Congratulations! You have just completed Solana Certora Prover's installation and setup.
+Congratulations! You have just completed Certora's Solana Prover installation and setup.
 
 ```{caution}
 We strongly recommend trying the tool on basic examples to verify correct installation.
