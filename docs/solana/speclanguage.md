@@ -430,8 +430,8 @@ is genuinely the right model (e.g. simulating a counter that wraps).
 ## Putting it together
 
 The shape of most practical specs is: snapshot the pre-state, restrict it
-with `assume_pre`, run the handler, snapshot the post-state, log both, and
-assert a relation:
+with using `cvlr-assume`, run the handler, snapshot the post-state, log both, and
+assert a relation using `cvlr-assert*`:
 
 ```rust
 use cvlr::mathint::NativeInt;

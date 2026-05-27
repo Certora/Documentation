@@ -211,14 +211,6 @@ as the recommended starting point:
     "optimistic_loop":      false,
     "smt_timeout":          6000,
     "cargo_tools_version":  "v1.43",
-    "java_args": ["-Dlevel.sbf=info"],
-    "prover_args": [
-        "-unsatCoresForAllAsserts true",
-        "-solanaSkipCallRegInst true",
-        "-solanaTACOptimize 2",
-        "-solanaStackSize 8192",
-        "-solanaTACMathInt true"
-    ]
 }
 ```
 

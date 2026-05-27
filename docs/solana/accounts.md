@@ -118,6 +118,10 @@ and `Program<'info, T>` handles. Building those wrappers from a havoced
 `AccountInfo` array needs a small set of project-local helpers — see
 {ref}`solana_anchor` for the helper set and a full Anchor harness example.
 
+```{note}
+This was tested with Anchor version <= 0.32.1.
+```
+
 ### Account-loader-flavored helpers
 
 Some projects use a trait-bound deserializer (often called something like
