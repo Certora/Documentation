@@ -10,6 +10,10 @@ helpers on top to bridge between raw `AccountInfo`s and the Anchor types.
 
 This page collects those helpers and shows the end-to-end harness shape.
 
+```{note}
+This was tested with Anchor version <= 0.32.1.
+```
+
 ## Project-local Anchor helpers
 
 Anchor verification harnesses do **not** come bundled with `cvlr-solana` —
