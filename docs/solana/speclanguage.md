@@ -456,12 +456,11 @@ pub fn rule_deposit_preserves_solvency() {
 
     let post = Snapshot { tokens: tokens.into(), shares: shares.into() };
     clog!(pre, post);
-    cvlr_assume!(post.shares <= post.tokens);
     cvlr_assert_le!(post.shares, post.tokens);
 }
 ```
 
-This `pre` / `assume_pre` / run / `post` / `clog!` / assert sequence is
+This `pre` / assumes / run / `post` / `clog!` / assert sequence is
 the standard shape of practical specs. It is generalized in
 {ref}`solana_parametric_rules`.
 
