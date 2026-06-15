@@ -5,6 +5,11 @@ Prover Release Notes
 ```{contents}
 ```
 
+8.16.1 (June 15, 2026)
+----------------------
+Various bug fixes and performance improvements.
+
+
 8.13.0 (May 5, 2026)
 --------------------
 ### Rule Report
