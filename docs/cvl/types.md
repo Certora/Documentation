@@ -154,6 +154,17 @@ Child.ParentFileType      invalid2; // user-defined types are not inherited
 Parent.ChildFileType      invalid3; // ChildFileType is not visible in Parent
 ```
 
+```{note}
+If two *different* types in the {term}`scene` share the same qualified name — for
+example two vendored libraries both named `Math`, each declaring its own
+`enum Rounding` — then `Math.Rounding` is ambiguous and is rejected.  To
+disambiguate, qualify the type by a contract that *imports* the definition you
+want, rather than by the duplicated declaring library: if `Vault` imports the
+first `Math`, then `Vault.Rounding` names that library's `Rounding`.  This
+requires an importing contract that sees a single definition; a contract that
+imports *both* `Math` libraries is itself ambiguous.
+```
+
 Additional CVL types
 --------------------
 
