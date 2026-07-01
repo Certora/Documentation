@@ -163,8 +163,9 @@ rejected.  (Same-named types with *identical* definitions are treated as one typ
 and remain usable.)  To disambiguate, qualify the type by a contract that *imports*
 the definition you want, rather than by the duplicated declaring library: if `Vault`
 imports the first `Math`, then `Vault.Rounding` names that library's `Rounding`, and you can refer to fields using `Vault.Rounding.Floor`.
-Use a contract that imports only the one definition — a contract that imports
-*both* is itself ambiguous.
+Solidity forbids importing two same-named libraries into one file except under
+aliases, so a disambiguating contract normally imports just one of them; a contract
+that (via aliases) imports both is itself ambiguous.
 ```
 
 Additional CVL types
