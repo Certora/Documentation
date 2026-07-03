@@ -93,7 +93,11 @@ pitfalls follow:
 
  - **Unsatisfiable axioms make every rule vacuous.**  If no `res` can satisfy
    the constraints, rules pass trivially.  The floor characterization above
-   is satisfiable for every input, but always confirm this with the
+   is satisfiable whenever the true quotient fits in `uint256`; when
+   `x * y / d` exceeds `max_uint256` no such `res` exists, so those paths
+   are silently pruned &mdash; much as the real `mulDivDown` reverts on
+   overflow, but without any visible signal.  This is exactly the corner
+   where coverage disappears, so always confirm with the
    {doc}`sanity checks </docs/prover/checking/sanity>` after introducing an
    abstraction (see also {doc}`vacuity <vacuity>`).
  - **Weak axioms lose precision, not soundness.**  The abstraction above

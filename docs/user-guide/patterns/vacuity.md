@@ -85,10 +85,14 @@ impractical.
    {doc}`/docs/user-guide/multicontract/index`).
 
 3. **Use `--optimistic_fallback` for unresolved low-level calls.**  If the
-   vacuity comes from an unresolved `.call{value: ...}` rather than a
-   summarized method, {ref}`--optimistic_fallback` assumes the unresolved
-   call succeeds instead of havocing the entire scene.  Like all optimistic
-   options this is an unsound assumption, so record why it is acceptable.
+   vacuity comes from an unresolved external call with an empty input buffer
+   (`.call{value: ...}("")`, `send`, or `transfer`) rather than a summarized
+   method, {ref}`--optimistic_fallback` replaces the whole-scene havoc with
+   a dispatcher over the non-trivial `fallback` implementations in the
+   scene, plus a plain ETH transfer when the callee is an externally owned
+   account.  Reverting paths are still verified.  Like all optimistic
+   options this narrows the modeled behaviors, so record why it is
+   acceptable.
 
 4. **Filter as a last resort.**  Only after the steps above have been tried
    should the method be excluded from parametric rules with a `filtered`
