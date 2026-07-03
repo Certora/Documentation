@@ -10,5 +10,9 @@ partial-apply.md
 safe-assum.md
 require-invariants.md
 events.md
+unstructured-storage.md
+multicall.md
+relational-math.md
+vacuity.md
 ```
 

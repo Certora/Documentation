@@ -31,9 +31,11 @@ Unary
 Vyper
 Yices
 Yul
+additivity
 approximative
 autofinders
 axiomatization
+axiomatize
 axiomatized
 bitvector
 bitvectors
@@ -125,6 +127,7 @@ iteratively
 lifecycle
 logics
 macOS
+mitigations
 modularity
 modularization
 modularize
@@ -132,6 +135,7 @@ modularly
 monotonicity
 multicontract
 namespace
+namespaced
 natively
 nondeterministically
 nonlinearity
@@ -149,6 +153,7 @@ pragmas
 pre
 prebuilt
 precompiled
+precomputed
 prepended
 preprocess
 preprocessing
