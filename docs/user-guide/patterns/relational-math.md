@@ -45,7 +45,7 @@ avoid both, and usually capture what users actually rely on:
 
  - **Additivity up to rounding** &mdash; splitting an operation loses at most
    one unit per split (see
-   {doc}`multi-call properties <multicall>`).
+   {doc}`multi-call properties <multi-call-properties>`).
 
 Each of these detects real rounding-direction and accounting bugs, and none
 of them requires the solver to reason about the exact product `x * y`.

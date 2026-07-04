@@ -11,7 +11,7 @@ safe-assum.md
 require-invariants.md
 events.md
 unstructured-storage.md
-multicall.md
+multi-call-properties.md
 relational-math.md
 vacuity.md
 ```
