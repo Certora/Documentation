@@ -465,7 +465,7 @@ state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1
 and `s1` and `s2` are variables of type `storage`. The valid bases of comparison are:
 
 1. A contract: either the name of a contract imported with a {ref}`using statement <using-stmt>`,
-   or the keyword {ref}`currentContract`,
+   or the keyword {ref}`currentContract <currentContract>`,
 2. The keyword `nativeBalances`, or
 3. The name of a ghost variable or function
 
