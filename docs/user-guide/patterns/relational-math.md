@@ -26,6 +26,8 @@ avoid both, and usually capture what users actually rely on:
 
    ```cvl
    rule convertToSharesMonotone(uint256 a1, uint256 a2) {
+       // convertToShares and convertToAssets are declared envfree in the
+       // methods block (omitted here)
        require a1 <= a2;
        assert convertToShares(a1) <= convertToShares(a2);
    }

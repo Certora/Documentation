@@ -28,6 +28,7 @@ rule depositAdditivity(env e, uint256 x, uint256 y) {
 
     // scenario 1: batched deposit
     deposit(e, require_uint256(x + y));
+    // balanceOf is declared envfree in the methods block (omitted here)
     uint256 sharesBatched = balanceOf(e.msg.sender);
 
     // scenario 2: split deposit, restarted from the same state

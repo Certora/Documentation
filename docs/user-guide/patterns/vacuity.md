@@ -43,9 +43,11 @@ summarized as `NONDET` (a typical shortcut for taming a complex callee).  The
 pool's state then never changes, so `sharesAfter == sharesBefore` and the
 slippage check fails whenever `minShares(msg.value) > 0`.  Every rule that
 calls `stake` becomes vacuous.
-The same effect occurs with unresolved low-level calls
-(`.call{value: ...}`, `send`, `transfer`) whose default havoc approximation
-lets the callee return `false` on every path when the caller requires success.
+The same effect occurs with unresolved low-level calls: for
+`.call{value: ...}` and `send`, the default havoc approximation lets the call
+return `false` on every path when the caller requires success; `transfer`
+reverts on failure instead of returning `false`, so there the havoc manifests
+as a call that reverts on every path.
 
 ## The repair sequence
 

@@ -64,6 +64,7 @@ that the antecedent is reachable:
 ```cvl
 rule feeChargedOnLargeWithdrawal(env e, uint256 amount) {
     uint256 fee = withdraw(e, amount);
+    // feeThreshold is declared envfree in the methods block (omitted here)
     assert amount > feeThreshold() => fee > 0;
 }
 

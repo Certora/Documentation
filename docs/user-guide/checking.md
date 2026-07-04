@@ -31,6 +31,9 @@ For more information on coverage measures, check out [mutation testing](https://
 
 *Note: Vacuity in real-world examples often arises from combinations of requirements, not just isolated statements.*
 
+See {doc}`patterns/vacuity` for the most common root causes of vacuity and a
+repair sequence that restores coverage instead of hiding the problem.
+
 ## Identifying Tautology Specifications
 
 Tautology, a special case of vacuity known as the "vacuous assertion," occurs when a statement is always true regardless of the system's state. An example is provided below:
