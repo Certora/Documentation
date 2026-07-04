@@ -464,7 +464,8 @@ Storage comparisons also support narrowing the scope of comparison to specific c
 state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1[r] != s2[r]`, where `r` is a "storage comparison basis",
 and `s1` and `s2` are variables of type `storage`. The valid bases of comparison are:
 
-1. The name of a contract imported with a {ref}`using statement <using-stmt>`,
+1. A contract: either the name of a contract imported with a {ref}`using statement <using-stmt>`,
+   or the keyword {ref}`currentContract`,
 2. The keyword `nativeBalances`, or
 3. The name of a ghost variable or function
 
@@ -474,7 +475,7 @@ The application of the basis restricts the comparison
 to only consider the portion of global state identified by the basis.
 
 If the qualifier is a contract identifier
-imported via `using`, then the comparison operation will only consider the storage fields of that contract. For example:
+(imported via `using`, or the keyword `currentContract`), then the comparison operation will only consider the storage fields of that contract. For example:
 
 ```cvl
 using MyContract as c;
