@@ -156,7 +156,7 @@ Parent.ChildFileType      invalid3; // ChildFileType is not visible in Parent
 
 ```{note}
 If two user-defined types in the {term}`scene` share the same qualified name but
-have **different** definitions — for example two vendored libraries both named
+have **different** definitions — for example two libraries both named
 `Math`, one declaring `enum Rounding { Floor, Ceil, Trunc, Expand }` and the other
 `enum Rounding { Down, Up, Zero }` — then `Math.Rounding` is ambiguous and is
 rejected.  (Same-named types with *identical* definitions are treated as one type
