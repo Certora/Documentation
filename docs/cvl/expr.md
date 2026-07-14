@@ -698,7 +698,7 @@ function hashingScheme3CVL(HashingExample.SignedMessage s) returns bytes32 {
 The scheme implemented in `hashingScheme4` is not supported at the moment, as it combines a `bytes` type with primitives.
 The `keccak256` built-in function supports two kinds of inputs:
 - a single `bytes` parameter
-- a list of primitive (e.g., `uint256`, `uint8`, `addresss`) parameters
+- a list of primitive (e.g., `uint256`, `uint8`, `address`) parameters
 
 ```{note}
 `keccak256` is currently ***unsupported*** in quantified expressions.
@@ -745,7 +745,7 @@ contract ECExample {
 
 The following CVL function is equivalent to the `wrap_ecrecover` function in the Solidity snippet:
 ```cvl
-function wrap_ecrecoverCVL(bytes32 digest, uint8 v, bytes32 r, bytes32 s) returns address {
+function wrap_ecrecoverCVL(bytes32 digest, uint8 v, bytes32 r, bytes32 s) returns (address) {
   return ecrecover(digest,v,r,s);
 }
 ```
