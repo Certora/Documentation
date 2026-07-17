@@ -11,27 +11,36 @@ Begin by following the steps in the {ref}`Certora Prover installation guide <ins
 
    `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
-   It is useful to have Rust versions 1.75, 1.79, and 1.81 or above installed.
+Rust 1.85 or above is recommended when using `cvlr-solana` ≥ 0.5. Version 1.75 or 1.79 can be used when analyzing programs that use `cvlr-solana` versions below or equal to 0.4. Use 1.75 when the target program is bundled with Solana v1.18 and version 1.79 when targeting Solana v2.1. Install whichever version correspond to the Solana release you target:
+
 
    ```
-   rustup toolchain install 1.79
-   rustup toolchain install 1.75
-   rustup toolchain install 1.81
+   rustup toolchain install 1.85   # (recommended) if the program under analysis uses Solana v2.3
+   rustup toolchain install 1.79   # (alternatively) if the program under analysis uses Solana v2.1
+   rustup toolchain install 1.75   # (alternatively) if the program under analysis uses Solana v1.18
    ```
 
-2. Install `certora-sbf` cargo sub-command
+2. Install [`certora-sbf`](https://github.com/Certora/cargo-certora-sbf) cargo sub-command
 
-   `cargo +1.81 install cargo-certora-sbf`
+   ```
+   cargo install cargo-certora-sbf
+   ```
 
-   Note that a minimal version of Rust required to install `certora-sbf` is
-   v1.81.
-
-3. Test the installation by using `certora-sbf` to download and install Certora
+4. Test the installation by using `certora-sbf` to download and install Certora
    Platform Tools
 
-   `cargo certora-sbf --no-build`
+   ```
+   cargo certora-sbf --no-build
+   ```
 
-4. It is strongly recommended to install VSCode and the rust-analyzer extension.
+6. Install [llvm](https://releases.llvm.org/), you can typically install it also via apt or brew.
+
+7. Install [rustfilt](https://github.com/luser/rustfilt)
+   ```
+   cargo install rustfilt
+   ```
+
+8. It is strongly recommended to install VSCode and the rust-analyzer extension.
 
 ----
 
