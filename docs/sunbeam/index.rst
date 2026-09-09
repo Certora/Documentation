@@ -1,5 +1,5 @@
 Sunbeam: Formal Verification for WebAssembly
-=================================
+============================================
 
 *Certora Sunbeam* enables formal verification of WASM programs. See the `Certora Sunbeam Tutorials`_ to learn how to use it!
 
