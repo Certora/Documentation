@@ -1,7 +1,7 @@
-Sunbeam: Verification for Soroban
+Sunbeam: Formal Verification for WebAssembly
 =================================
 
-*Certora Sunbeam* enables formal verification of `Soroban`_ smart contracts. See the `Certora Sunbeam Tutorials`_ to learn how to use it!
+*Certora Sunbeam* enables formal verification of WASM programs. It was originally built for `Soroban`_ smart contracts but applies to other WASM as well. See the `Certora Sunbeam Tutorials`_ to learn how to use it!
 
 .. toctree::
    :maxdepth: 1
