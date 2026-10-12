@@ -41,7 +41,7 @@ In CVL 2, methods block entries must now start with `function` and end with
 [MethodsEntries.spec-diff]: https://github.com/Certora/CVL2Migration/compare/cvl1..cvl2?diff=split#diff-9cd1ae6f2c8146e323568cb25c79d4f6671fcb690872dce33591bd514759fc24
 
 ```cvl
-transferFrom(address, address, uint) returns(bool) envfree
+function transferFrom(address, address, uint) returns(bool) envfree
 ```
 will become
 ```cvl
