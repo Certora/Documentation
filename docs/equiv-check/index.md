@@ -1,200 +1,170 @@
 (equivcheck-intro)=
-The Certora Equivalence Checker
-===============================
+Concord: The Certora Equivalence Checker
+========================================
 
-This chapter describes how one can use the Certora Prover to
-  check the equivalence of two smart contract functions.
+Concord checks whether two implementations of the same external function
+  behave identically.
+It is useful for validating refactors, gas optimizations, and compiler or
+  compiler-setting changes.
 
-```{note}
-Currently the equivalence checker only compares two `pure` functions,
-  but we are actively working to develop an
-  equivalence checker for non-`pure` functions as well.
+```{warning}
+Concord is experimental. Treat its results as a strong signal, not as a
+  replacement for a full specification.
 ```
 
-The equivalence checker front-end automatically generates (1) a
-  CVL spec to check if two functions are equivalent, and, (2) a
-  configuration file (`.conf`) for running the Certora Prover.
+## What "equivalent" means
+
+Concord starts both contracts in the same state, calls the chosen function in
+  each with the same calldata, and checks that the two executions cannot be
+  told apart.
+
+Both executions start with identical:
+- calldata,
+- environment (`msg.sender`, `msg.value`, block variables, and so on),
+- storage and transient storage, compared slot by slot,
+- immutables, balances, and contract address.
+
+Concord then checks that, on every input:
+- both functions make the same external calls, in the same order, with the
+  same target, value, and calldata,
+- both functions emit the same events, in the same order, with the same topics
+  and data,
+- both functions revert, or neither does, and the returned or revert data is
+  identical,
+- both functions leave storage in the same state.
+
+Because storage is compared slot by slot, the two contracts must use the same
+  storage layout.
+Gas usage is not compared.
 
 ## Installation
 
-The equivalence checker is part of the `certora-cli` package; see {ref}`installation`.
+Concord is part of the `certora-cli` package; see {ref}`installation`.
+Concord does not have its own command yet.
+Run it as a Python module:
 
+```bash
+python3 -m certora_cli.certoraConcord <args>
+```
+
+## Usage
+
+Concord takes exactly two contracts and one method:
+
+```bash
+python3 -m certora_cli.certoraConcord Original.sol Refactored.sol \
+    --check_method "deposit(uint256)"
+```
+
+- **The two contracts.** Pass each contract as `path/to/File.sol:ContractName`.
+  You can drop `:ContractName` when the contract has the same name as its file.
+  Both contracts can be in the same file.
+- **`--check_method`.** Give the method's full ABI signature, without a
+  contract prefix, for example `transfer(address,uint256)`.
+  The method must exist in both contracts with the same signature.
+
+As with the Certora Prover, you can put the arguments in a `.conf` file:
+
+```json
+{
+    "files": [
+        "Original.sol",
+        "Refactored.sol"
+    ],
+    "check_method": "deposit(uint256)",
+    "solc": "solc8.30",
+    "msg": "Concord: Original vs Refactored deposit"
+}
+```
+
+```bash
+python3 -m certora_cli.certoraConcord concord.conf
+```
+
+Most standard EVM options work with Concord, for example
+  {ref}`--solc`, {ref}`--solc_optimize`, {ref}`--compiler_map`,
+  {ref}`--loop_iter`, and {ref}`--optimistic_loop`.
+CVL-specific options are rejected, including {ref}`--verify`,
+  {ref}`--rule_sanity`, {ref}`--link`, and {ref}`--method`.
+Use `--check_method` instead of `--method`.
+
+Only Solidity is supported.
+Vyper and Rust contracts are not.
 
 (equivalence-checker-example)=
 ## Example
 
-Consider two contracts, `BasicMathGood.sol` and `BasicMathBad.sol` shown
-  below with two functions, `add` and `add_mult`.
+`Refactored` rewrites `deposit` with compound assignments:
 
 ```solidity
-contract BasicMathGood {
-    function add(uint256 a, uint256 b) public pure returns(uint256) {
-        return a + b;
+contract Original {
+    mapping(address => uint256) public balances;
+    uint256 public total;
+
+    event Deposit(address indexed who, uint256 amount);
+
+    function deposit(uint256 amount) external {
+        require(amount > 0, "zero");
+        balances[msg.sender] = balances[msg.sender] + amount;
+        total = total + amount;
+        emit Deposit(msg.sender, amount);
     }
 }
 
-contract BasicMathBad {
-    function add_uncheck(uint256 a, uint256 b) public pure returns(uint256) {
-        unchecked {
-            return a * b;
-        }
+contract Refactored {
+    mapping(address => uint256) public balances;
+    uint256 public total;
+
+    event Deposit(address indexed who, uint256 amount);
+
+    function deposit(uint256 amount) external {
+        require(amount > 0, "zero");
+        balances[msg.sender] += amount;
+        total += amount;
+        emit Deposit(msg.sender, amount);
     }
 }
 ```
 
-We are interested in checking the equivalence of `add` and `add_uncheck`.
-While this is a simple case,
-  you can imagine scenarios where
-  the functions are more complex.
-Equivalence checking can be used to check whether two functions that
-  may be implemented differently, are still semantically equivalent.
-The following sections describe how to use the tool.
+Running Concord on `deposit(uint256)` produces a single rule,
+  `Equivalence of Original and Refactored on deposit(uint256)`.
+The rule passes if the two functions are equivalent.
 
-## Usage
+Suppose `Refactored` replaced the `require` with a custom error, for example
+  `if (amount == 0) revert ZeroAmount();`.
+The two functions would no longer be equivalent: both revert on the same
+  inputs, but the revert data differs.
+Concord would report a counterexample.
 
-`certoraEqCheck` can be run either in default (`def`) mode,
- in which the user must supply all the required information as
- command line arguments (see below),
- or in a `conf` mode where the user supplies a
- Certora Prover `conf` file along with additional arguments.
+## Reading counterexamples
 
-### Default mode
+When the rule fails, Concord shows the following:
+- the concrete calldata and environment that expose the difference,
+- the external calls and events each function produced before they diverged,
+- the first difference.
 
-To run the equivalence checker in default mode,
-  use `certoraEqCheck`:
+The first difference is one of the following:
+- an event or call that appears in one function but not the other,
+- two events or calls that differ,
+- different return or revert data,
+- a storage slot that ends with different values.
 
-```bash
-certoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
-```
+## Tips
 
-For the functions in {ref}`equivalence-checker-example`, this would look as follows:
+- **Internal functions.** Concord automatically finds internal functions that
+  appear in both contracts with the same signature.
+  It proves each pair equivalent separately, then reuses that result.
+  Keeping shared helpers under the same name and signature helps Concord
+  scale.
+- **Loops.** Loops are unrolled up to {ref}`--loop_iter`, as in the Prover.
+  Set it to a bound that covers the inputs you care about.
+- **Bitwise operations.** If the functions use bitwise operations heavily,
+  add {ref}`--precise_bitwise_ops` for sound results.
+  This slows the check down.
 
-```bash
-certoraEqCheck def Test/EqCheck/BasicMathGood.sol:add:solc8.0 Test/EqCheck/BasicMathBad.sol:add_pass:solc8.0
-```
+## Legacy tool: `certoraEqCheck`
 
-In the above example, `solc` is the name of the executable
-  for the Solidity compiler version you are using.
-The Solidity compilers do not need to be the same for both arguments to
- `certoraEqCheck`, it only need to be appropriate for the given contract.
-Also note how
-  the contract field can be omitted if the contract name is the same
-  the file name.
-
-
-### Configuration mode
-
-To run the equivalence checker in the configuration mode,
-  use `certoraEqCheck` as follows:
-
-```bash
-certoraEqCheck conf <path_to_conf>.conf contract:function contract:function
-```
-
-For the functions in {ref}`equivalence-checker-example`, this would be:
-
-```bash
-   certoraEqCheck conf Test/EqCheck/testGood.conf BasicMathGood:add BasicMathBad:add_mult
-```
-
-where `testGood.conf` is the standard Certora configuration file
-  and contains:
-
-```json
-{
-    "disable_local_typechecking": true,
-    "files": ["BasicMathGood.sol", "BasicMathBad.sol"],
-    "msg": "Equivalence Check",
-    "optimistic_loop": true,
-    "loop_iter": "4",
-    "process": "emv",
-    "short_output": true,
-    "rule_sanity": "basic",
-    "solc": "solc8.0",
-    "solc_optimize": "200",
-    "server": "staging",
-    "prover_version": "master"
-}
-```
-
-```{note}
-Use {ref}`--precise_bitwise_ops` if you are comparing functions with bitwise operations.
-This will slow down the tool slightly,
-but ensure that the results are sound.
-```
-
-`certoraEqCheck` produces two files that are then used to run the
-  Certora Prover automatically.
-The first one is a CVL specification file, whose content
-  in the case of the example shown here is:
-
-```
-  using BasicMathBad as B;
-
-// sets everything but the callee the same in two environments
-function e_equivalence(env e1, env e2) {
-    require e1.msg.sender == e2.msg.sender;
-    require e1.block.timestamp == e2.block.timestamp;
-    require e1.msg.value == e2.msg.value;
-    // require e1.msg.data == e2.msg.data;
-}
-
-rule equivalence_of_revert_conditions()
-{
-    bool add_revert;
-    bool add_mult_revert;
-    // using this as opposed to generating input parameters is experimental
-    env e_add; calldataarg args;
-    env e_add_mult;
-    e_equivalence(e_add, e_add_mult);
-
-    add@withrevert(e_add, args);
-    add_revert = lastReverted;
-
-    B.add_mult@withrevert(e_add_mult, args);
-    add_mult_revert = lastReverted;
-
-    assert(add_revert == add_mult_revert);
-}
-
-rule equivalence_of_return_value()
-{
-    uint256 add_uint256_out0;
-    uint256 add_mult_uint256_out0;
-
-    env e_add; calldataarg args;
-    env e_add_mult;
-
-    e_equivalence(e_add, e_add_mult);
-
-    add_uint256_out0 = add(e_add, args);
-    add_mult_uint256_out0 = B.add_mult(e_add_mult, args);
-
-    assert(add_uint256_out0 == add_mult_uint256_out0);
-}
-```
-
-The second one is a standard Certora `conf` file:
-
-```
-{
-    "disable_local_typechecking": true,
-    "files": [
-        "Test/EqCheck/BasicMathGood.sol",
-        "Test/EqCheck/BasicMathBad.sol"
-    ],
-    "msg": "EquivalenceCheck of add and add_mult",
-    "optimistic_loop": true,
-    "loop_iter": "4",
-    "process": "emv",
-    "short_output": true,
-    "rule_sanity": "basic",
-    "server": "staging",
-    "prover_version": "master",
-    "solc_optimize": "200",
-    "verify": "BasicMathGood:Test/EqCheck/add_to_add_mult_equivalence.spec",
-    "solc": "solc8.0"
-}
-```
-
-The script then invokes the Certora Prover using this `conf` file.
+Older versions of this page described `certoraEqCheck`.
+That tool is still shipped, but it only handles `pure` functions.
+It works by generating a CVL spec and running the Prover on it.
+Use Concord for new work.
