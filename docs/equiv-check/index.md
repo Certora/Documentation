@@ -18,9 +18,6 @@ Typical uses:
 Concord is experimental. Each run prints a warning that says so.
 ```
 
-The older `certoraEqCheck` tool is described at the end of this page, in
-{ref}`equivcheck-pure`. It covers `pure` functions only.
-
 (equivcheck-install)=
 ## Installation
 
@@ -234,62 +231,3 @@ the difference, and one of these messages:
 - With bytecode inputs, counterexamples have no source mapping, and Concord
   cannot use the source to simplify the problem. Large methods can be slower to
   check than the same methods given as source.
-
-(equivcheck-pure)=
-## Pure functions with `certoraEqCheck`
-
-`certoraEqCheck` is an older tool. It compares two `pure` functions, or two
-`view` functions of the same contract. It generates a CVL spec and a `.conf`
-file, and it runs the Prover with them. The spec checks that the two functions
-revert on the same inputs, that they return the same value, and that they leave
-storage the same. Unlike Concord, the two functions can have different names.
-
-### Default mode
-
-In default mode, you give all the information on the command line:
-
-```bash
-certoraEqCheck def "path_to_file:contract:function:solc" "path_to_file:contract:function:solc"
-```
-
-For example:
-
-```bash
-certoraEqCheck def BasicMathGood.sol:add:solc8.0 BasicMathBad.sol:add_mult:solc8.0
-```
-
-Here `solc8.0` is the name of the Solidity compiler executable. The two
-compilers do not have to be the same. If the contract name is the same as the
-file name, you can leave it out.
-
-### Configuration mode
-
-In configuration mode, you give a Prover `.conf` file and the two functions:
-
-```bash
-certoraEqCheck conf <path_to_conf>.conf contract:function contract:function
-```
-
-For example:
-
-```bash
-certoraEqCheck conf testGood.conf BasicMathGood:add BasicMathBad:add_mult
-```
-
-Here `testGood.conf` is a standard Prover configuration file:
-
-```json
-{
-    "files": ["BasicMathGood.sol", "BasicMathBad.sol"],
-    "msg": "Equivalence Check",
-    "optimistic_loop": true,
-    "loop_iter": "4",
-    "solc": "solc8.0"
-}
-```
-
-```{note}
-If you compare functions with bitwise operations, use
-{ref}`--precise_bitwise_ops`. The run is slightly slower, but the results are
-sound.
-```
