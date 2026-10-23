@@ -35,7 +35,7 @@ python -m certora_cli.certoraConcord <files> --check_method "<signature>"
 
 Concord takes two inputs and the signature of the method to compare.
 
-From Solidity source, name the two contracts in the usual `file:contract` form:
+From Solidity or Vyper source, name the two contracts in the usual `file:contract` form:
 
 ```bash
 certoraConcord Token.sol:TokenV1 Token.sol:TokenV2 --check_method "transfer(address,uint256)"
@@ -104,13 +104,18 @@ proves that the calls themselves are equal.
 
 - Gas use.
 - The kind of call (`CALL`, `STATICCALL` or `DELEGATECALL`).
-- Final ETH balances.
+- Contract creation (`CREATE` and `CREATE2`) and `SELFDESTRUCT`.
 - Final transient storage.
+
+Concord does not compare final ETH balances directly. They follow from the
+equal starting balances and from the value of each compared external call. The
+exceptions are the ETH that contract creation and `SELFDESTRUCT` move, because
+Concord does not compare those.
 
 (equivcheck-inputs)=
 ## Inputs
 
-### Solidity contracts
+### Solidity and Vyper contracts
 
 Give exactly two contracts. Concord compiles them like the Prover does, so the
 usual compiler options apply, for example {ref}`--solc` and
@@ -146,7 +151,7 @@ A bytecode file has no ABI. Concord finds the method by the selector of the
 `check_method` signature. For the same reason, the counterexample does not
 decode the method arguments.
 
-You cannot mix bytecode files with Solidity files in one run.
+You cannot mix bytecode files with source files in one run.
 
 (equivcheck-options)=
 ## Options
@@ -227,7 +232,6 @@ the difference, and one of these messages:
   storage layout.
 - Concord does not run a constructor. It compares the deployed code of the two
   contracts.
-- Vyper contracts are not supported.
 - With bytecode inputs, counterexamples have no source mapping, and Concord
   cannot use the source to simplify the problem. Large methods can be slower to
   check than the same methods given as source.
