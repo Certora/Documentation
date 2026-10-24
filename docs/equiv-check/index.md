@@ -256,8 +256,8 @@ solar --emit bin-runtime --evm-version prague -O none Counter.sol \
 cp out/solc/Counter.bin-runtime Counter.solc.hex
 ```
 
-Use a solar build from its main branch, or a release newer than 0.2.0. See
-{ref}`equivcheck-solc-vs-solar-differences` for the reason. These commands
+Use a solar build from its main branch, or a release newer than 0.2.0 (see
+{ref}`equivcheck-solc-vs-solar-differences` for the reason). These commands
 compile without optimization. To compare optimized builds, turn on the
 optimizer in both compilers.
 
