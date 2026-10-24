@@ -195,6 +195,19 @@ Use {ref}`--prover_args` to pass these settings to Concord:
 : Tracks all long memory copies precisely. This can fix a false difference,
   but it makes the formulas larger and the run slower.
 
+`-assumeCalldataBound true`
+: Assumes that the calldata size is below 2^255. See
+  {ref}`equivcheck-solc-vs-solar`.
+
+`-ignoreRevertData true`
+: Does not compare the data of reverts. A revert still has to match a revert.
+  See {ref}`equivcheck-solc-vs-solar`.
+
+`-assumeWordAlignedStrings true`
+: Assumes that every buffer of non-constant length, for example a string, has a
+  length that is a multiple of 32. This assumption is unsound. See
+  {ref}`equivcheck-solc-vs-solar`.
+
 (equivcheck-results)=
 ## Reading the results
 
@@ -222,6 +235,91 @@ the difference, and one of these messages:
 - `<method> included an event *missing* in <method>`.
 - `The executions left storage in conflicting states`, followed by the value of
   the storage slot in each contract.
+
+(equivcheck-solc-vs-solar)=
+## Comparing `solc` and solar
+
+You can use Concord to check that a contract compiled by
+[solar](https://github.com/paradigmxyz/solar) behaves like the same contract
+compiled by `solc`. Concord compares the runtime bytecode of the two builds one
+method at a time.
+
+### Build the two bytecode files
+
+Compile the same source with both compilers. Use the same EVM version and the
+same optimizer setting for both builds.
+
+```bash
+solc --bin-runtime --evm-version prague -o out/solc Counter.sol
+solar --emit bin-runtime --evm-version prague -O none Counter.sol \
+  | jq -r '.contracts["Counter.sol:Counter"]["bin-runtime"]' > Counter.solar.hex
+cp out/solc/Counter.bin-runtime Counter.solc.hex
+```
+
+Use a solar build from its main branch, or a release newer than 0.2.0. The
+0.2.0 release needs `-Zcodegen`, and it behaves differently from `solc` on some
+storage states that the contract cannot produce by itself:
+
+- It returns an `address` read from storage without masking it to 160 bits.
+- If the length word of a string in storage is malformed, `solc` reverts with
+  `Panic(0x22)`, and solar 0.2.0 does not.
+
+Concord starts both programs from the same arbitrary storage, so it reports
+these cases as differences.
+
+### Write one conf per method
+
+Concord checks one method per run, so write one conf for each external method
+of the contract. Turn on the options that the comparison needs:
+
+```json
+{
+    "files": [
+        "Counter.solc.hex",
+        "Counter.solar.hex"
+    ],
+    "check_method": "increment(uint256)",
+    "prover_args": [
+        "-assumeCalldataBound true",
+        "-ignoreRevertData true"
+    ]
+}
+```
+
+### Options for `solc` and solar
+
+`-assumeCalldataBound true`
+: `solc` checks the size of the arguments with a signed comparison, and solar
+  with an unsigned comparison. For calldata of 2^255 + 4 bytes or more, the two
+  checks give different results. Without this option, Concord reports
+  this difference for almost every method that takes arguments. A real call
+  cannot carry that much calldata, so the option removes only inputs that cannot
+  occur. If the option is on, Concord prints a warning.
+
+`-ignoreRevertData true`
+: `solc` can send several `require` failures with messages of different lengths
+  to one shared revert. Concord cannot prove that two revert buffers are equal
+  if one revert site has more than one buffer layout. So without this option,
+  Concord can report a difference for two reverts with the same bytes. With the option, Concord does not compare the data of reverts, so it
+  misses differences in error messages, custom errors and `Panic` codes. If
+  revert data matters to you, run the method again without the option.
+
+`-assumeWordAlignedStrings true`
+: Turn this option on only for methods that return, emit or hash a string read
+  from storage. The two compilers copy a string into memory in different ways.
+  Without this option, Concord can see two different buffers that hold the same
+  bytes. The option assumes that every buffer of non-constant length has a
+  length that is a multiple of 32. This assumption is unsound: Concord does not
+  check executions with other lengths, for example a string of 5 or 33 bytes.
+  If a method is equivalent only with this option, read the result as
+  "equivalent for word-aligned lengths".
+
+### Known differences
+
+A method that creates a contract with `new` embeds the creation code of that
+contract. Each compiler embeds its own build, so Concord reports a difference
+for such methods. To check the created contract, compare its two builds on their
+own.
 
 (equivcheck-limits)=
 ## Limitations
