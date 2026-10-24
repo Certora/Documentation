@@ -22,13 +22,7 @@ Concord is experimental. Each run prints a warning that says so.
 ## Installation
 
 Concord is part of the `certora-cli` package. See {ref}`installation`. You run
-it with the `certoraConcord` command. If your installation does not have that
-command, run the module through the Python interpreter of your `certora-cli`
-installation:
-
-```bash
-python -m certora_cli.certoraConcord <files> --check_method "<signature>"
-```
+it with the `certoraConcord` command.
 
 (equivcheck-quickstart)=
 ## Quick start
