@@ -203,7 +203,7 @@ Use {ref}`--prover_args` to pass these settings to Concord:
 : Does not compare the data of reverts. A revert still has to match a revert.
   See {ref}`equivcheck-solc-vs-solar`.
 
-`-assumeWordAlignedStrings true`
+`-assumeWordAlignedBuffers true`
 : Assumes that every buffer of non-constant length, for example a string, has a
   length that is a multiple of 32. This assumption is unsound. See
   {ref}`equivcheck-solc-vs-solar`.
@@ -256,16 +256,8 @@ solar --emit bin-runtime --evm-version prague -O none Counter.sol \
 cp out/solc/Counter.bin-runtime Counter.solc.hex
 ```
 
-Use a solar build from its main branch, or a release newer than 0.2.0. The
-0.2.0 release needs `-Zcodegen`, and it behaves differently from `solc` on some
-storage states that the contract cannot produce by itself:
-
-- It returns an `address` read from storage without masking it to 160 bits.
-- If the length word of a string in storage is malformed, `solc` reverts with
-  `Panic(0x22)`, and solar 0.2.0 does not.
-
-Concord starts both programs from the same arbitrary storage, so it reports
-these cases as differences.
+Use a solar build from its main branch, or a release newer than 0.2.0. See
+{ref}`equivcheck-solc-vs-solar-differences` for the reason.
 
 ### Write one conf per method
 
@@ -300,11 +292,12 @@ of the contract. Turn on the options that the comparison needs:
 : `solc` can send several `require` failures with messages of different lengths
   to one shared revert. Concord cannot prove that two revert buffers are equal
   if one revert site has more than one buffer layout. So without this option,
-  Concord can report a difference for two reverts with the same bytes. With the option, Concord does not compare the data of reverts, so it
-  misses differences in error messages, custom errors and `Panic` codes. If
-  revert data matters to you, run the method again without the option.
+  Concord can report a difference for two reverts with the same bytes. With the
+  option, Concord does not compare the data of reverts, so it misses differences
+  in error messages, custom errors and `Panic` codes. If revert data matters to
+  you, run the method again without the option.
 
-`-assumeWordAlignedStrings true`
+`-assumeWordAlignedBuffers true`
 : Turn this option on only for methods that return, emit or hash a string read
   from storage. The two compilers copy a string into memory in different ways.
   Without this option, Concord can see two different buffers that hold the same
@@ -314,12 +307,25 @@ of the contract. Turn on the options that the comparison needs:
   If a method is equivalent only with this option, read the result as
   "equivalent for word-aligned lengths".
 
-### Known differences
+(equivcheck-solc-vs-solar-differences)=
+### Differences that no option removes
 
-A method that creates a contract with `new` embeds the creation code of that
-contract. Each compiler embeds its own build, so Concord reports a difference
-for such methods. To check the created contract, compare its two builds on their
-own.
+For these differences, Concord is right: the two bytecodes behave differently.
+Each one has its own way to handle it.
+
+A method that creates a contract with `new`
+: The method embeds the creation code of the contract it creates, and each
+  compiler embeds its own build. To check the created contract, build it with
+  both compilers and compare its methods in separate runs.
+
+The solar 0.2.0 release
+: Concord starts both programs from the same arbitrary storage, so it also
+  compares storage states that the contract cannot write by itself. On such
+  states, solar 0.2.0 differs from `solc`. It returns an `address` read from
+  storage without masking it to 160 bits. If the length word of a string in
+  storage is malformed, `solc` reverts with `Panic(0x22)`, and solar 0.2.0 does
+  not. Newer solar builds behave like `solc` in both cases, so use one of them.
+  The 0.2.0 release also needs `-Zcodegen` to emit bytecode.
 
 (equivcheck-limits)=
 ## Limitations
