@@ -781,6 +781,9 @@ The behavior of the `AUTO` summary depends on the type of call[^opcodes]:
    `AUTO` summary behavior for the `CALL` opcode
    with 0 length `calldata` can be changed with {ref}`-optimisticFallback`.
 
+To make `AUTO` summaries use `HAVOC_ALL` for all calls that are not made with
+`STATICCALL`, use the {ref}`-havocAllByDefault` option.
+
 [^opcodes]: The behavior of `AUTO` summaries is actually determined by the EVM
   opcode used to make the call: calls made using the `STATICCALL` opcode use
   the `NONDET` summary, calls using `CALL` or `CREATE` opcode use the `HAVOC_ECF`

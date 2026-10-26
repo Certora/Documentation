@@ -2626,6 +2626,57 @@ _Configuration file_
 ]
 ```
 
+(-havocallbydefault)=
+### `havocAllByDefault`
+
+This option makes the {ref}`AUTO summary <auto-summary>` use the
+{ref}`HAVOC_ALL <havoc-summary>` approximation for all calls that are not made
+with the `STATICCALL` opcode.
+Calls made with `STATICCALL` still use the `NONDET` approximation.
+The default value is `false`.
+
+Without this option, `AUTO` uses `HAVOC_ECF` for `CALL` and `CREATE`, and it
+havocs only the caller's storage for `DELEGATECALL` and `CALLCODE`.
+`HAVOC_ECF` assumes that the call does not change the state of the calling
+contract.
+With this option, the Prover assumes that the call can change the state of any
+contract, including the calling contract.
+This lets the Prover find violations that come from reentrancy (a call back
+into the calling contract) through unresolved calls.
+
+The option affects every call that gets the `AUTO` behavior:
+ * unresolved calls that do not match any summary,
+ * calls with an explicit `AUTO` summary,
+ * the unknown contract that a `DISPATCHER(false)` summary considers.
+
+Calls with a different explicit summary, for example `HAVOC_ECF` or
+`DISPATCHER(true)`, do not change.
+
+```{note}
+`HAVOC_ALL` is {term}`sound`, but it removes all knowledge about the state of
+every contract after the call.
+The Prover can therefore report more violations, and some of them can be
+spurious.
+```
+
+**Usage**
+
+To use `HAVOC_ALL` as the default summary for unresolved calls:
+
+_Command line_
+
+```sh
+certoraRun Bank.sol --verify Bank:Bank.spec --prover_args '-havocAllByDefault true'
+```
+
+_Configuration file_
+
+```json
+"prover_args": [
+  "-havocAllByDefault true"
+]
+```
+
 
 
 (-maxnumberofreachchecksbasedondomination)=
