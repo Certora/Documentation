@@ -36,7 +36,11 @@ Various bug fixes and performance improvements.
 8.8.0 (February 9, 2026)
 -------------------------
 ### CVL
-- [feat] Added a builtin rule, `uncheckedOverflow` that checks whether arithmetic operations can overflow or underflow in `unchecked` code. The analysis is done for each external method and each unchecked operation that is reachable from the method call.
+- [feat] Added a builtin rule, `uncheckedOverflows`, which checks whether
+  arithmetic operations can overflow or underflow in `unchecked` code. The
+  analysis covers each external method and each unchecked operation reachable
+  from that method call. See
+  {doc}`the built-in rule reference </docs/cvl/builtin>` for usage.
 - [feat] Added a builtin rule, `safeCasting` that checks whether any Solidity casting operator can be out of bounds (e.g., whether in `uint16(x)`, is it possible for `x` to be larger than `2^16-1`). Analysis is done for each external method and each casting operation that is reachable from the method call.
 - [feat] The `--method` and `--exclude_method` flags now allow providing only the method name (without any parameter types) for EVM. If there are several overloads for this function name, all of them will be matched.
 - [feat] New flag, `--assume_no_casting_overflow`, assumes no casting operations in Solidity are out of bounds. E.g., for `int16(x)` in Solidity code, `x` is assumed to be in the valid range of an `int16` when this flag is used. Note that this is an underapproximation, as Solidity does not revert on such out-of-bounds values.

@@ -60,6 +60,7 @@ special_vars ::=
            | "_"
            | "max_uint" | "max_address" | "max_uint8" | ... | "max_uint256"
            | "nativeBalances"
+           | "nativeCodesize"
            | "calledContract"
            | "executingContract"
 
@@ -360,6 +361,13 @@ There are also several built-in variables:
   * `nativeBalances` is a mapping of the native token balances, i.e. ETH for Ethereum.
     The balance of an `address a` can be expressed using `nativeBalances[a]`.
 
+ * `nativeCodesize` maps each address to its EVM code size in bytes, as returned
+   by the `EXTCODESIZE` instruction.  For an `address a`, use
+   `nativeCodesize[a]` to read this value.  The result has type `uint256`.
+   For example, `require nativeCodesize[a] > 0;` constrains `a` to have
+   nonzero code size in the modeled state.  To compare code sizes across saved
+   states, use the `nativeCodesize` basis of {ref}`storage-comparison`.
+
  * `calledContract` is only available in {ref}`expression summaries <expression-summary>`.
    It refers to the receiver contract of a summarized method call.
 
@@ -465,8 +473,9 @@ state represented by `storage` variables. This syntax is `s1[r] == s2[r]` or `s1
 and `s1` and `s2` are variables of type `storage`. The valid bases of comparison are:
 
 1. The name of a contract imported with a {ref}`using statement <using-stmt>`,
-2. The keyword `nativeBalances`, or
-3. The name of a ghost variable or function
+2. The keyword `nativeBalances`,
+3. The keyword `nativeCodesize`, or
+4. The name of a ghost variable or function
 
 It is an error to use different bases on different sides of the comparison operator, and it is also
 an error to use a comparison basis on one side and not the other.
@@ -509,6 +518,18 @@ two states.
 
 If the qualifier is the identifier `nativeBalances`, then the account balances
 of all contracts are compared between the two storage states.
+If the qualifier is `nativeCodesize`, then the code-size mappings are compared:
+
+```cvl
+storage before = lastStorage;
+// Execute the contract calls whose effect on code sizes is being checked.
+assert lastStorage[nativeCodesize] == before[nativeCodesize];
+```
+
+This comparison checks code sizes, not bytecode contents or code hashes.
+The unqualified comparison `s1 == s2` does not compare `nativeCodesize`, so use
+this explicit basis when code-size equality is part of the property.
+
 Finally, if the basis is the name of a ghost function or variable, the values of that
 function/variable are compared between storage states.
 
